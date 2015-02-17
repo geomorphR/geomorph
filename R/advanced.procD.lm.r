@@ -1,6 +1,6 @@
 #' Procrustes ANOVA and pairwise tests for shape data, using complex linear models
 #'
-#' The function quantifies the relative amount of shape variation explained by  a suite of factors
+#' The function quantifies the relative amount OF shape variation explained by  a suite of factors
 #' and covariates in a "full" model, after accounting for variation in a "reduced" model.  Inputs are 
 #' formulae for full and reduced models (order is not important), plus indication if means or slopes 
 #' are to be comapred among groups, with appropriate formulae to define how they should be compared.
