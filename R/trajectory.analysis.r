@@ -118,7 +118,7 @@ trajectory.analysis<-function(f1,data=NULL,estimate.traj=TRUE,traj.pts=NULL,iter
     Plm[,,1] <- SS.obs    
     fac12<-single.factor(form.in)
     lsmeans.obs <- ls.means(fac12, cov.mf=NULL, y)
-    traj.specs.obs<- aperm(array(t(lsmeans.obs), c(p,n1,k1)), c(2,1,3)) 
+    traj.specs.obs<- aperm(array(t(lsmeans.obs), c(p,k1,n1)), c(2,1,3)) 
     trajsize.obs<-trajsize(traj.specs.obs,n1,k1) 
     trajdir.obs<-trajorient(traj.specs.obs,n1,p); diag(trajdir.obs)<-0 
     trajshape.obs<-trajshape(traj.specs.obs) 
@@ -130,7 +130,7 @@ trajectory.analysis<-function(f1,data=NULL,estimate.traj=TRUE,traj.pts=NULL,iter
       SS.r <- SS.random(y, Xs, SS.obs, Yalt = "RRPP")
       Plm[,,i+1] <- SS.r$SS
       lsmeans.r <- ls.means(fac12, cov.mf=NULL, SS.r$Y)
-      traj.specs.r<- aperm(array(t(lsmeans.r), c(p,n1,k1)), c(2,1,3)) 
+      traj.specs.r<- aperm(array(t(lsmeans.r), c(p,k1,n1)), c(2,1,3)) 
       trajsize.r<-trajsize(traj.specs.r,n1,k1) 
       trajdir.r<-trajorient(traj.specs.r,n1,p); diag(trajdir.r)<-0 
       trajshape.r<-trajshape(traj.specs.r) 
