@@ -145,7 +145,12 @@ trajectory.analysis<-function(f1,data=NULL,estimate.traj=TRUE,traj.pts=NULL,iter
     Z.lm <- Effect.size.matrix(Plm)
     Z.size <- Effect.size.matrix(PSize); diag(Z.size) <- 0
     Z.dir <- Effect.size.matrix(POrient); diag(Z.dir) <- 0
-    Z.shape <- Effect.size.matrix(PShape); diag(Z.shape) <- 0   
+    Z.shape <- Effect.size.matrix(PShape); diag(Z.shape) <- 0 
+    rownames(P.val.size) <- colnames(P.val.size) <- rownames(P.val.dir) <- colnames(P.val.dir) <- 
+      rownames(P.val.shape) <- colnames(P.val.shape) <- rownames(Z.size) <- colnames(Z.size) <-
+      rownames(Z.dir) <- colnames(Z.dir) <- rownames(Z.shape) <- colnames(Z.shape) <-
+      rownames(trajsize.obs) <- colnames(trajsize.obs) <- rownames(trajdir.obs) <- colnames(trajdir.obs) <-
+      rownames(trajshape.obs) <- colnames(trajshape.obs) <- levels(dat[,k-1])
     anova.tab <- data.frame(anova.tab, Z = c(Z.lm, NA, NA), P.value = c(P.val.lm, NA, NA))
     anova.title = "\nRandomized Residual Permutation Procedure used\n"
     attr(anova.tab, "heading") <- paste("\nType I (Sequential) Sums of Squares and Cross-products\n",anova.title)
@@ -226,6 +231,6 @@ trajectory.analysis<-function(f1,data=NULL,estimate.traj=TRUE,traj.pts=NULL,iter
     if(k1 == 2) print(results[-4]) else print(results)
     y.plot<-matrix(t(two.d.array(traj.specs.obs)),ncol=p1,byrow=TRUE)
     trajplot(y.plot,traj.specs.obs)
-
   }
+  results
 }
