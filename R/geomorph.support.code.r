@@ -348,7 +348,7 @@ trajplot<-function(Data,M){
 
 writeland.nts <- function(A, spec.name, comment=NULL){
   ntsfile=paste(spec.name,".nts",sep="")
-  file.create(file=ntsfile, overwrite = TRUE)
+  file.create(file=ntsfile)
   if(is.null(comment)){
     cat(paste('"',spec.name,sep=""),file= ntsfile,sep="\n",append=TRUE)
   }
