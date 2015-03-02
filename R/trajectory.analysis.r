@@ -159,8 +159,8 @@ trajectory.analysis<-function(f1,data=NULL,estimate.traj=TRUE,traj.pts=NULL,iter
          Size=list(Obs.dif=trajsize.obs,Z=Z.size,P = P.val.size),
          Direction=list(Obs.dif=trajdir.obs,Z=Z.dir,P = P.val.dir),
          Shape=list(Obs.dif=trajshape.obs,Z=Z.shape,P = P.val.shape))
-    if(k1 == 2) return(results[-4]) else return(results)
     trajplot(y,traj.specs.obs)
+    if(k1 == 2) return(results[-4]) else return(results)
   }
   
   if(estimate.traj==FALSE){
@@ -228,9 +228,9 @@ trajectory.analysis<-function(f1,data=NULL,estimate.traj=TRUE,traj.pts=NULL,iter
                     ANOVA.Size=size.tab,
                     ANOVA.Dir = dir.tab,
                     ANOVA.shape=shape.tab)
-    if(k1 == 2) return(results[-4]) else return(results)
     y.plot<-matrix(t(two.d.array(traj.specs.obs)),ncol=p1,byrow=TRUE)
     trajplot(y.plot,traj.specs.obs)
+    if(k1 == 2) return(results[-4]) else return(results)
   }
   results
 }
