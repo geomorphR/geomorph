@@ -33,6 +33,8 @@ CHANGES IN GEOMORPH VERSION 2.1.3
 
     o Corrected error printing output of ANOVA table of bilat.symmetry()
 
+    o Removed redundant permutation loop in phylo.pls()
+
 
 CHANGES IN GEOMORPH VERSION 2.1.2
 
