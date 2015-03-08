@@ -1,9 +1,15 @@
 CHANGES IN GEOMORPH VERSION 2.1.4
 
+  OTHER CHANGES
+
+    o warpRefMesh() generalised - now takes a mesh3d object (i.e. made from read.ply()) rather than calling read.ply() directly
+
   BUG FIXES
 
     o Corrected error readland.tps()
-    o Corrected errors trajectory.analysis
+
+    o Corrected errors trajectory.analysis()
+
 
 CHANGES IN GEOMORPH VERSION 2.1.3
 
