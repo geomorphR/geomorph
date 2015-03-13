@@ -76,8 +76,8 @@ readland.tps <- function (file, specID = c("None", "ID", "imageID"),
     imscale = array(1, nspecs)
   }
   crvs <- grep("CURVES=", tpsfile, ignore.case)
-  if (readcurves == TRUE){ 
-    if (length(crvs) == 0){ stop("No CURVES= field present in file") } 
+  if(length(crvs)>0){
+    if (readcurves == TRUE && length(crvs) == 0){ stop("No CURVES= field present in file") } 
     ncurve <- as.numeric(sub("CURVES=", "", tpsfile[crvs], ignore.case))
     ncurvepts <- as.numeric(sub("POINTS=", "", tpsfile[grep("POINTS=", tpsfile, ignore.case)], ignore.case))
       if (max(ncurve) - min(ncurve) != 0) {
@@ -85,14 +85,7 @@ readland.tps <- function (file, specID = c("None", "ID", "imageID"),
       if (warnmsg == T) {print(paste("Landmarks 1:", p, " are fixed landmarks.", sep=""))
                          print(paste("Landmarks ", p+1, ":", p+sum(ncurvepts[1:ncurve[1]]), " are semilandmarks.", sep=""))}
       p <- nland[1] + sum(ncurvepts[1:ncurve[1]]) 
-      }
-  if (readcurves == FALSE && length(crvs) != 0){ 
-    pts <- grep("POINTS=", tpsfile, ignore.case)
-    pts <- cbind(pts+1, (pts + pts))
-    outlinepts <- NULL
-    for(i in 1:nrow(pts)){ outlinepts <- c(outlinepts, (pts[i,1]:pts[i,2]))}
-    tpsfile <- tpsfile[-outlinepts]
-  }
+  }    
   tmp <- tpsfile[-(grep("=", tpsfile))]
   options(warn = -1)
   tmp <- matrix(as.numeric(unlist(strsplit(tmp, split = " +"))),ncol = k, byrow = T)
@@ -147,5 +140,6 @@ readland.tps <- function (file, specID = c("None", "ID", "imageID"),
       }
     }
   }
+if (readcurves==F){coords<-coords[1:nland,,]}    
 return(coords = coords)                    
 }
