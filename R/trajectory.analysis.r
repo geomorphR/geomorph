@@ -87,7 +87,7 @@
 #'
 #' trajectory.analysis(motionpaths$trajectories~motionpaths$groups,
 #' estimate.traj=FALSE, traj.pts=5,iter=15)
-trajectory.analysis<-function(f1,data=NULL,estimate.traj=TRUE,traj.pts=NULL,iter=99){
+trajectory.analysis<-function(f1,data=NULL,estimate.traj=TRUE,traj.pts=NULL,iter=999){
   form.in<-formula(f1)
   Terms<-terms(form.in)
   dat<-model.frame(form.in)
