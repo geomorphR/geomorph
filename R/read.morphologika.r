@@ -45,6 +45,7 @@ read.morphologika<-function(file){
   if(length(grep("wireframe",mfile,ignore.case=T))>0) {
     strtwf <- grep("wireframe",mfile, ignore.case=T)
     endwf <-strtwf + grep("[",mfile[strtwf+1:length(mfile)], fixed=T)[1]
+      if(is.na(endwf)){ endwf <- length(mfile)}
     wiref <- matrix(as.numeric(unlist(strsplit(mfile[(strtwf+1):(endwf-1)]," "))),ncol=2, byrow=T) }  
   if(!is.null(wiref) && is.null(labvalmat)) return(list(coords = coords, wireframe = wiref)) 
   if(is.null(wiref) && !is.null(labvalmat)) return(list(coords = coords, labels = labvalmat)) 
