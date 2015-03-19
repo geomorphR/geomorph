@@ -42,6 +42,11 @@ read.morphologika<-function(file){
     tmp <- unlist(strsplit(mfile[grep("labels",mfile,ignore.case=T) + 1]," "))
     labvals <- unlist(strsplit(mfile[grep("labelvalues",mfile,ignore.case=T) + 1:n]," "))
     labvalmat <- matrix(labvals, ncol=length(tmp), byrow=T, dimnames=list(names,tmp)) }
+  if(length(grep("groups",mfile,ignore.case=T))>0) {
+    tmp <- matrix(unlist(strsplit(mfile[grep("groups",mfile,ignore.case=T) + 1]," ")), ncol=2, byrow=T)
+    gpval <- NULL
+    for(i in 1:nrow(tmp)){ gpval <- c(gpval, rep(tmp[i,1], tmp[i,2]))}
+    labvalmat <- cbind(labvalmat, groups=gpval) }
   if(length(grep("wireframe",mfile,ignore.case=T))>0) {
     strtwf <- grep("wireframe",mfile, ignore.case=T)
     endwf <-strtwf + grep("[",mfile[strtwf+1:length(mfile)], fixed=T)[1]
