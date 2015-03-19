@@ -3,6 +3,8 @@ CHANGES IN GEOMORPH VERSION 2.1.4
   OTHER CHANGES
 
     o warpRefMesh() generalised - now takes a mesh3d object (i.e. made from read.ply()) rather than calling read.ply() directly
+    
+    o read.morphologika now reads [groups] option and adds these data to the $labels matrix
 
   BUG FIXES
 
