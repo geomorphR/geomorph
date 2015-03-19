@@ -11,6 +11,8 @@ CHANGES IN GEOMORPH VERSION 2.1.4
     o Corrected errors trajectory.analysis()
     
     o Corrected an issue with gpagen that flipped principal axes
+    
+    o Fixed error in read.morphologika with reading [wireframe] in some morphologika files
 
 
 CHANGES IN GEOMORPH VERSION 2.1.3
