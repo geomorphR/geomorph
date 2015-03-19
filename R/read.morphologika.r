@@ -6,7 +6,7 @@
 #'  landmark coordinates. Morphologika files are text files in one of the standard formats for 
 #'  geometric morphometrics (see O'Higgins and Jones 1998,2006). 
 #' 
-#'  If the headers "[labels]" and "[labelvalues]" are present, then a data matrix containing all 
+#'  If the headers "[labels]", "[labelvalues]" and "[groups]" are present, then a data matrix containing all 
 #'  individual specimen information is returned.
 #'  If the header "[wireframe]" is present, then a matrix of the landmark addresses for the wireframe is
 #'  returned (see \code{\link{plotRefToTarget}} option 'links')
