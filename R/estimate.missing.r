@@ -75,7 +75,7 @@ estimate.missing<-function(A,method=c("TPS","Reg")){
     A2<-A
     complete<-A[,,-spec.NA]
     incomplete<-A[,,spec.NA]
-    Y.gpa<-gpagen(complete,PrinAxes=FALSE)
+    Y.gpa<-gpagen(complete,ShowPlot = FALSE, PrinAxes=FALSE)
     ref<-mshape(arrayspecs(two.d.array(Y.gpa$coords)*Y.gpa$Csize,p,k))
     complete<-arrayspecs(two.d.array(Y.gpa$coords)*Y.gpa$Csize,p,k)
     if(length(dim(incomplete))>2){
