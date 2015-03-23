@@ -4,7 +4,9 @@ CHANGES IN GEOMORPH VERSION 2.1.4
 
     o warpRefMesh() generalised - now takes a mesh3d object (i.e. made from read.ply()) rather than calling read.ply() directly
     
-    o read.morphologika now reads [groups] option and adds these data to the $labels matrix
+    o read.morphologika() now reads [groups] option and adds these data to the $labels matrix
+    o plotOutliers() now has option groups to plot outliers by levels(groups) using group means
+
 
   BUG FIXES
 
@@ -12,9 +14,9 @@ CHANGES IN GEOMORPH VERSION 2.1.4
 
     o Corrected errors trajectory.analysis()
     
-    o Corrected an issue with gpagen that flipped principal axes
+    o Corrected an issue with gpagen() that flipped principal axes
     
-    o Fixed error in read.morphologika with reading [wireframe] in some morphologika files
+    o Fixed error in read.morphologika() with reading [wireframe] in some morphologika files
 
 
 CHANGES IN GEOMORPH VERSION 2.1.3
