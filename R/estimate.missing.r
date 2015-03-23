@@ -33,8 +33,8 @@
 #' @param method Method for estimating missing landmark locations
 #' @author Dean Adams
 #' @keywords utilities
-#' @return Function returns a n x p matrix of coordinates for the target specimen that includes the original landmarks
-#' plus the estimated coordinates for the missing landmarks. 
+#' @return Function returns an array (p x k x n) of the same dimensions as input A, including coordinates for the target specimens 
+#' (the original landmarks plus the estimated coordinates for the missing landmarks). 
 #' @export
 #' @references Claude, J. 2008. Morphometrics with R. Springer, New York.
 #' @references  Bookstein, F. L., K. Schafer, H. Prossinger, H. Seidler, M. Fieder, G. Stringer, G. W. Weber, 
