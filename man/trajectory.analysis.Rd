@@ -5,7 +5,7 @@
 \title{Quantify and compare shape change trajectories}
 \usage{
 trajectory.analysis(f1, data = NULL, estimate.traj = TRUE,
-  traj.pts = NULL, iter = 99)
+  traj.pts = NULL, iter = 999)
 }
 \arguments{
 \item{f1}{A formula for the linear model (e.g., y~x1+x2)}

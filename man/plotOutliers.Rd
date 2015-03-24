@@ -4,13 +4,16 @@
 \alias{plotOutliers}
 \title{Find potential outliers}
 \usage{
-plotOutliers(A)
+plotOutliers(A, groups = NULL)
 }
 \arguments{
 \item{A}{An array (p x k x n) containing GPA-aligned coordinates for a set of specimens}
+
+\item{groups}{An optional factor defining groups}
 }
 \value{
-Function returns the landmark addresses of all specimens ordered as in the plot.
+Function returns the landmark addresses of all specimens ordered as in the plot. If groups are used, function returns
+a list structure and a plot for each level in groups.
 }
 \description{
 Function plots all specimens ordered by distance from the mean.
@@ -20,6 +23,9 @@ The function creates a plot of all specimens ordered by their Procrustes distanc
 The median distance (unbroken line) and upper and lower quartiles (dashed lines) summarize the distances
 from the mean shape. Specimens falling above the upper quartile are plotted in red. The addresses of all specimens are
 returned in the order displayed in the plot for further inspection by \code{\link{plotRefToTarget}}.
+
+If the data have strong group structure and there is reasonable belief that the whole sample mean should not be used,
+then a factor defining the groups can be used.
 }
 \examples{
 data(plethodon)

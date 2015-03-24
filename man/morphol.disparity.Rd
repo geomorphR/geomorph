@@ -26,8 +26,8 @@ The function estimates morphological disparity and performs pairwise comparisons
 between groups. The function takes as input GPA-aligned shape data [e.g., \code{\link{gpagen}}] and a grouping factor, and
 estimates disparity as the Procrustes variance for each group, which is the sum of the diagonal elements
 of the group covariance matrix (e.g., Zelditch et al. 2012). The group Procrustes variances are used as
-test values, and these are then statistically evaluated through permutation, where the rows of the shape
-matrix are randomized relative to the grouping variable. The function can be used to obtain disparity for the whole
+test values, and these are then statistically evaluated through permutation, where the vectors of residuals
+are randomized among groups. The function can be used to obtain disparity for the whole
 dataset by using a dummy group factor assigning all specimens to one group, in which case only Procrustes variance is returned.
 }
 \examples{
