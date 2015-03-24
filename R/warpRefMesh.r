@@ -39,8 +39,8 @@
 #' of Deformations. IEEE Transactions on Pattern Analysis and Machine Intelligence 11(6):567-585.
 #' @references  Rohlf, F. J. 1998. On Applications of Geometric Morphometrics to Studies of Ontogeny and Phylogeny. Systematic Biology. 47:147-158.
 warpRefMesh <- function(mesh, mesh.coord, ref, color=NULL, centered=FALSE){
-  if (inherits(mesh, "shape3d") == FALSE || inherits(mesh, "mesh3d") == FALSE){
-    stop ("File is not a shape3d/mesh3d object or xyz matrix") }
+  if (inherits(mesh, "mesh3d") == FALSE){
+    stop ("File is not a mesh3d object or xyz matrix") }
   open3d(); shade3d(mesh) ; title3d(main="Imported Mesh")
   mesh.vb <- as.matrix(t(mesh$vb)[,-4])
     if (centered == TRUE){ mesh.vb <- scale(mesh.vb, scale = FALSE) }
