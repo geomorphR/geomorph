@@ -30,13 +30,15 @@ Function performs Procrustes ANOVA with permutation procedures to assess statist
 The function quantifies the relative amount of shape variation attributable to one or more factors in a
   linear model and assesses this variation via permutation. Data input is specified by a formula (e.g.,
   y~X), where 'y' specifies the response variables (shape data), and 'X' contains one or more independent
-  variables (discrete or continuous). The response matrix 'y' must be in the form of a two-dimensional data
-  matrix of dimension (n x [p x k]), rather than a 3D array.  It is assumed that the landmarks have previously
-  been aligned using Generalized Procrustes Analysis (GPA) [e.g., with \code{\link{gpagen}}]. The function
-  \code{\link{two.d.array}} can be used to obtain a two-dimensional data matrix from a 3D array of landmark
-  coordinates. The names specified for the independent (x) variables in the formula represent one or more
+  variables (discrete or continuous). The response matrix 'y' can be either in the form of a two-dimensional data
+  matrix of dimension (n x [p x k]), or a 3D array (p x n x k).  It is assumed that the landmarks have previously
+  been aligned using Generalized Procrustes Analysis (GPA) [e.g., with \code{\link{gpagen}}].
+  The names specified for the independent (x) variables in the formula represent one or more
   vectors containing continuous data or factors. It is assumed that the order of the specimens in the
   shape matrix matches the order of values in the independent variables.
+
+The function \code{\link{two.d.array}} can be used to obtain a two-dimensional data matrix from a 3D array of landmark
+  coordinates; however this step is no longer necessary, as procD.lm can receive 3D arrays as depedendent variables.
 
 The function performs statistical assessment of the terms in the model using Procrustes distances among
   specimens, rather than explained covariance matrices among variables. With this approach, the sum-of-squared
@@ -60,15 +62,14 @@ The function performs statistical assessment of the terms in the model using Pro
 ### MANOVA example for Goodall's F test (multivariate shape vs. factors)
 data(plethodon)
 Y.gpa<-gpagen(plethodon$land)    #GPA-alignment
-y<-two.d.array(Y.gpa$coords)
 
-procD.lm(y~plethodon$species*plethodon$site,iter=99)
+procD.lm(Y.gpa$coords ~ plethodon$species*plethodon$site,iter=99)
 
 ### Regression example
 data(ratland)
 rat.gpa<-gpagen(ratland)         #GPA-alignment
 
-procD.lm(two.d.array(rat.gpa$coords)~rat.gpa$Csize,iter=99)
+procD.lm(rat.gpa$coords ~ rat.gpa$Csize,iter=99)
 
 ## using RRPP
  procD.lm(two.d.array(rat.gpa$coords)~rat.gpa$Csize,iter=49,RRPP=TRUE)
