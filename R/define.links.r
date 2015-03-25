@@ -51,10 +51,9 @@ define.links <- function(spec, ptsize=1){
       }
   # 3D
   if (checkdim == 3) {
-    if(is.null(size)){ size = 5 }
-    ids <- plot3d(spec[, 1], spec[, 2],spec[, 3], size = ptsize,
-         xlim = range(spec[, 1]), ylim = range(spec[, 2]), zlim = range(spec[, 3]), 
-         asp = 1, box=F, axes=F, xlab="", ylab="", zlab="")
+    if(is.null(ptsize)){ ptsize = 5 }
+    ids <- plot3d(spec[, 1], spec[, 2],spec[, 3], size = ptsize, aspect=FALSE, 
+                  box=F, axes=F, xlab="", ylab="", zlab="")
     text3d(spec[, 1], spec[, 2], spec[, 3], texts = paste(1:dim(spec)[1]), 
          adj = 1.3, pos = 4)
     repeat{
@@ -62,9 +61,9 @@ define.links <- function(spec, ptsize=1){
             cat("Select landmarks to link","\n")
             sel1 <- sel2 <- ans <- NULL
             sel1 <- selectpoints3d(ids["data"], value= FALSE, button = "right")[2]
-            points3d(spec[sel1,1],spec[sel1,2],spec[sel1,3],size=10,color="yellow",add=TRUE)
+            points3d(spec[sel1,1],spec[sel1,2],spec[sel1,3],size=ptsize*2,color="red",add=TRUE)
             sel2 <- selectpoints3d(ids["data"], value= FALSE, button = "right")[2]
-            points3d(spec[sel2,1],spec[sel2,2],spec[sel2,3],size=10,color="yellow",add=TRUE)
+            points3d(spec[sel2,1],spec[sel2,2],spec[sel2,3],size=ptsize*2,color="red",add=TRUE)
             segments3d(rbind(spec[sel1,], spec[sel2,]), lwd = 1)
             links <- rbind(links, c(sel1,sel2)) 
             cat(paste("link made between landmarks", sel1, "&", sel2, "\n", "Continue? type y/n"))
