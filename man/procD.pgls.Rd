@@ -34,8 +34,8 @@ in a manner that can accommodate
 high-dimensional datasets. The approach is derived from the statistical equivalency between parametric methods
 utilizing covariance matrices and methods based on distance matrices (Adams 2014). Data input is specified by
 a formula (e.g., y~X), where 'y' specifies the response variables (shape data), and 'X' contains one or more
-independent variables (discrete or continuous). The response matrix 'y' must be in the form of a two-dimensional data
-  matrix of dimension (n x [p x k]), rather than a 3D array.  It is assumed that the landmarks have previously
+independent variables (discrete or continuous). The response matrix 'y' can be either in the form of a two-dimensional data
+  matrix of dimension (n x [p x k]), or a 3D array (p x n x k).  It is assumed that the landmarks have previously
   been aligned using Generalized Procrustes Analysis (GPA) [e.g., with \code{\link{gpagen}}].
   The user must also specify a phylogeny describing the evolutionary relationships among species (of class phylo).
   Note that the specimen labels for both x and y must match the labels on the tips of the phylogeny.
@@ -64,10 +64,10 @@ Two possible resampling procedures are provided. First, if RRPP=FALSE,
 ### Example of D-PGLS for high-dimensional data
 data(plethspecies)
 Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment
-procD.pgls(two.d.array(Y.gpa$coords)~Y.gpa$Csize,plethspecies$phy,iter=49)
+procD.pgls(Y.gpa$coords ~ Y.gpa$Csize,plethspecies$phy,iter=49)
 
 ### Example of D-PGLS for high-dimensional data, using RRPP
-procD.pgls(two.d.array(Y.gpa$coords)~Y.gpa$Csize,plethspecies$phy,iter=49,RRPP=TRUE)
+procD.pgls(Y.gpa$coords ~ Y.gpa$Csize,plethspecies$phy,iter=49,RRPP=TRUE)
 }
 \author{
 Dean Adams and Michael Collyer
