@@ -40,8 +40,8 @@ designed as a post-hoc test to MANCOVA, where the latter has identified signific
 covariate*group interaction term.
 
 As input the user provides a formula describing the linear model of how shape (y) varies as a function of a factor (a)
- or factorial interaction (a*b). A single covariate must also be added.  The shape data (y)
- must be in the form of a two-dimensional data matrix of dimension (n x [p x k]), rather than a 3D array.
+ or factorial interaction (a*b). A single covariate must also be added.  Shape data (y) can be
+ in the form of a two-dimensional data matrix of dimension (n x [p x k]) or a 3D array (p x k x n).
  It is assumed that the landmarks have previously been aligned using Generalized Procrustes Analysis (GPA)
    [e.g., with \code{\link{gpagen}}]. The function \code{\link{two.d.array}} can be used to
    obtain a two-dimensional data matrix from a 3D array of landmark coordinates.
@@ -72,7 +72,7 @@ This test is essentially the same as procD.lm with post-hoc comparisons among sl
 ### MANCOVA example for Goodall's F test (multivariate shape vs. factors)
 data(plethodon)
 Y.gpa<-gpagen(plethodon$land)    #GPA-alignment
-y<-two.d.array(Y.gpa$coords)
+y <- Y.gpa$coords
 
 ## Pairwise slope vector correlations
 pairwise.slope.test(y~plethodon$site, ~ Y.gpa$Csize, iter=24, angle.type="r")
