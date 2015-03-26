@@ -76,9 +76,7 @@ procD.lm <- function(f1, iter = 999, RRPP = FALSE, int.first = FALSE, verbose=FA
   if(nrow(Y) != nrow(mod.mf)) stop("Different numbers of specimens in dependent and independent variables")
   if(int.first == TRUE) ko = TRUE else ko = FALSE
   Terms <- terms(form.in, keep.order = ko)
-
   if (any(is.na(Y)) == T) stop("Response data matrix (shape) contains missing values. Estimate these first (see 'estimate.missing').")
-  if (is.null(dimnames(Y)[[1]])) warning("No specimen names in response matrix. Assuming specimens in same order.")
 
   anova.parts.obs <- anova.parts(form.in, Yalt = "observed", keep.order=ko)
   anova.tab <-anova.parts.obs$table  
