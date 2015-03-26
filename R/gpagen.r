@@ -128,7 +128,7 @@ gpagen<-function(A, Proj=TRUE,ProcD=TRUE,PrinAxes=TRUE,ShowPlot=TRUE,curves = NU
   ptsz<-pointscale
   if(PrinAxes==TRUE){
     ref<-mshape(temp); rot <- prcomp(ref)$rotation
-    for(i in 1:2) if(sign(rot[i,i])!=1) rot[1:k,i] = -rot[1:k,i]
+    for(i in 1:k) if(sign(rot[i,i])!=1) rot[1:k,i] = -rot[1:k,i]
     for(i in 1:dim(temp)[[3]]){temp[,,i]<-temp[,,i] %*% rot }
   }
   if(ShowPlot==TRUE){ plotAllSpecimens(temp,pointscale=ptsz)}
