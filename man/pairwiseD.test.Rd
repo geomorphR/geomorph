@@ -35,7 +35,7 @@ The Function can handle, single-factor ANOVA, factorial ANOVA, and ANCOVA design
 As input the user provides a formula describing the linear model of how shape (y) varies as a function of a factor (a)
  or factorial interaction (a*b). A single covariate, matrix of covariates, or data frame of covariates can also be added.
  E.g., covariates = x1, covariates = cbind(x1, x2, x3,...), or covariates = data.frame(x1, x2, x3,...).
- The shape data (y) must be in the form of a two-dimensional data matrix of dimension (n x [p x k]), rather than a 3D array.
+ an be either in the form of a two-dimensional data matrix of dimension (n x [p x k]), or a 3D array (p x n x k).
  It is assumed that the landmarks have previously been aligned using Generalized Procrustes Analysis (GPA)
  [e.g., with \code{\link{gpagen}}]. The function \code{\link{two.d.array}} can be used to obtain a two-dimensional data matrix
  from a 3D array of landmark coordinates. From the data, the Euclidean distances among group means are estimated, and used
@@ -59,7 +59,7 @@ This test is essentially the same as procD.lm with post-hoc comparisons among le
 \examples{
 data(plethodon)
 Y.gpa<-gpagen(plethodon$land)    #GPA-alignment
-y<-two.d.array(Y.gpa$coords)
+y <- Y.gpa$coords
 ### Procrustes ANOVA
 procD.lm(y~plethodon$species,iter=99)
 
