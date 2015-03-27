@@ -5,11 +5,10 @@
 #' formulae for full and reduced models (order is not important), plus indication if means or slopes 
 #' are to be comapred among groups, with appropriate formulae to define how they should be compared.
 #' 
-#'   The response matrix 'y' must be in the form of a two-dimensional data 
-#'   matrix of dimension (n x [p x k]), rather than a 3D array.  It is assumed that the landmarks have previously 
-#'   been aligned using Generalized Procrustes Analysis (GPA) [e.g., with \code{\link{gpagen}}]. The function
-#'   \code{\link{two.d.array}} can be used to obtain a two-dimensional data matrix from a 3D array of landmark
-#'   coordinates. The names specified for the independent (x) variables in the formula represent one or more 
+#'   The response matrix 'y' can be in the form of a two-dimensional data 
+#'   matrix of dimension (n x [p x k]) or a 3D array (p x k x n).  It is assumed that the landmarks have previously 
+#'   been aligned using Generalized Procrustes Analysis (GPA) [e.g., with \code{\link{gpagen}}]. The names specified for the 
+#'   independent (x) variables in the formula represent one or more 
 #'   vectors containing continuous data or factors. It is assumed that the order of the specimens in the 
 #'   shape matrix matches the order of values in the independent variables.
 #'
@@ -20,9 +19,9 @@
 #'   to distance-based anova designs (Anderson 2001). Unlike procD.lm, this function is strictly for comparison
 #'   of two nested models.  The function will readily accept non-nested models, but the results will not be meaningful.
 #'   (Use of procD.lm will be more suitable in most cases.)  A residual randomization permutation procedure (RRPP) is utilized 
-#'   for reduced model residuals to evalute the SS between models (Collyer et al. 2014).  Effect-sizes (Z-scores) are 
+#'   for reduced model residuals to evalute the SS between models (Collyer et al. 2015).  Effect-sizes (Z-scores) are 
 #'   computed as standard deviates of the SS sampling 
-#'   distributions generated, which might be more intuitive for P-values than F-values (see Collyer et al. 2014).  
+#'   distributions generated, which might be more intuitive for P-values than F-values (see Collyer et al. 2015).  
 #'   
 #'   Pairwise tests are only performed if formulae are provided to compute such results.
 #' @param f1 A formula for a linear model, containing the response matrix (e.g., y ~ x1 + x2)
@@ -44,7 +43,7 @@
 #' ### Example of comparison of allometries between two populations of pupfish
 #' ### After accounting for sexual dimorphism, Method 1
 #' data(pupfish)
-#' shape <-two.d.array(pupfish$coords)   # GPA-alignment previously performed
+#' shape <-pupfish$coords   # GPA-alignment previously performed
 #' CS <- pupfish$CS
 #' Sex <- pupfish$Sex
 #' Pop <- pupfish$Pop
@@ -58,20 +57,14 @@
 #' advanced.procD.lm(f1, f2, groups = ~Pop, slope = ~ log(CS), angle.type = "r", iter=24)
 advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL, angle.type = c("r", "deg", "rad"), iter=999, verbose = FALSE){
   data=NULL
-  f1 <- formula(f1)
-  f2 <- formula(f2)
+  f1 <- as.formula(f1)
+  Y <- eval(f1[[2]], parent.frame())
+  if(length(dim(Y)) == 3)  Y <- two.d.array(Y) else Y <- as.matrix(Y)
+  f1 <- as.formula(paste(c("Y",f1[[3]]),collapse="~"))
+  f2 <- as.formula(f2)
   k1 <- length(attr(terms(f1), "term.labels"))
   k2 <- length(attr(terms(f2), "term.labels"))
-  Y <- as.matrix(eval(f1[[2]], parent.frame()))
-  if (length(dim(Y)) != 2) {
-    stop("Response matrix (shape) not a 2D array. Use 'two.d.array' first.")
-  }  
-  if (any(is.na(Y)) == T) {
-    stop("Response data matrix (shape) contains missing values. Estimate these first (see 'estimate.missing').")
-  }
-  if (is.null(dimnames(Y)[[1]])) {
-    print("No specimen names in response matrix. Assuming specimens in same order.")
-  }
+  if (any(is.na(Y)) == T) stop("Response data matrix (shape) contains missing values. Estimate these first (see 'estimate.missing').")
   if(k1 > k2) ff <- f1 else ff <- f2
   if(k1 > k2) fr <- f2 else fr <- f1
   if(k1 == k2) stop("Models have same df")
