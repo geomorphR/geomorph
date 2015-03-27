@@ -24,7 +24,7 @@
 #'   single-factor designs, the two approaches are identical.  However, when evaluating factorial models it has been
 #'   shown that RRPP attains higher statistical power and thus has greater ability to identify patterns in data should
 #'   they be present (see Anderson and terBraak 2003). Effect-sizes (Z-scores) are computed as standard deviates of the SS 
-#'   sampling distributions generated, which might be more intuitive for P-values than F-values (see Collyer et al. 2014).
+#'   sampling distributions generated, which might be more intuitive for P-values than F-values (see Collyer et al. 2015).
 #'   
 #'   This test is essentially the same as procD.lm with post-hoc comparisons among least squares (LS) means for appropriate
 #'   models.  However, differences in means are calculated simultaneously with the same random permutations peformed for ANOVA,
