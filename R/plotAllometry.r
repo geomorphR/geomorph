@@ -93,8 +93,8 @@ plotAllometry<-function(A,sz,groups=NULL,method=c("CAC","RegScore","PredLine"),w
     y <- as.matrix(A)
   }
   if(logsz == TRUE){size<-as.matrix(log(sz)); xlab<-"log(Size)" 
-    print("Natural log of size is used.")} 
-  if(logsz == FALSE) { size<-as.matrix(sz); xlab<-"Size" 
+    print("Natural log of size is used.")} else 
+      { size<-matrix(sz); xlab<-"Size" 
     print("Size has not been log transformed.")}
   n<-nrow(size)
   if(is.null(rownames(size))){
