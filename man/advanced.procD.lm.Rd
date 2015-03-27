@@ -34,8 +34,8 @@ formulae for full and reduced models (order is not important), plus indication i
 are to be comapred among groups, with appropriate formulae to define how they should be compared.
 }
 \details{
-The response matrix 'y' must be in the form of a two-dimensional data
-  matrix of dimension (n x [p x k]), rather than a 3D array.  It is assumed that the landmarks have previously
+The response matrix 'y' can be on the form of a two-dimensional data
+  matrix of dimension (n x [p x k]) or a 3D array (p x k x n0.  It is assumed that the landmarks have previously
   been aligned using Generalized Procrustes Analysis (GPA) [e.g., with \code{\link{gpagen}}]. The function
   \code{\link{two.d.array}} can be used to obtain a two-dimensional data matrix from a 3D array of landmark
   coordinates. The names specified for the independent (x) variables in the formula represent one or more
@@ -49,9 +49,9 @@ The function performs statistical assessment of the terms in the model using Pro
   to distance-based anova designs (Anderson 2001). Unlike procD.lm, this function is strictly for comparison
   of two nested models.  The function will readily accept non-nested models, but the results will not be meaningful.
   (Use of procD.lm will be more suitable in most cases.)  A residual randomization permutation procedure (RRPP) is utilized
-  for reduced model residuals to evalute the SS between models (Collyer et al. 2014).  Effect-sizes (Z-scores) are
+  for reduced model residuals to evalute the SS between models (Collyer et al. 2015).  Effect-sizes (Z-scores) are
   computed as standard deviates of the SS sampling
-  distributions generated, which might be more intuitive for P-values than F-values (see Collyer et al. 2014).
+  distributions generated, which might be more intuitive for P-values than F-values (see Collyer et al. 2015).
 
 Pairwise tests are only performed if formulae are provided to compute such results.
 }
@@ -59,7 +59,7 @@ Pairwise tests are only performed if formulae are provided to compute such resul
 ### Example of comparison of allometries between two populations of pupfish
 ### After accounting for sexual dimorphism, Method 1
 data(pupfish)
-shape <-two.d.array(pupfish$coords)   # GPA-alignment previously performed
+shape <- pupfish$coords   # GPA-alignment previously performed
 CS <- pupfish$CS
 Sex <- pupfish$Sex
 Pop <- pupfish$Pop
