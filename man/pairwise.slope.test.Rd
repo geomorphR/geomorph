@@ -43,15 +43,14 @@ As input the user provides a formula describing the linear model of how shape (y
  or factorial interaction (a*b). A single covariate must also be added.  Shape data (y) can be
  in the form of a two-dimensional data matrix of dimension (n x [p x k]) or a 3D array (p x k x n).
  It is assumed that the landmarks have previously been aligned using Generalized Procrustes Analysis (GPA)
-   [e.g., with \code{\link{gpagen}}]. The function \code{\link{two.d.array}} can be used to
-   obtain a two-dimensional data matrix from a 3D array of landmark coordinates.
-   From the data, the slopes for each group are estimated, and pairwise differences in slopes determined.
+ [e.g., with \code{\link{gpagen}}]. From the data, the slopes for each group are estimated, and pairwise differences
+ in slopes determined.
 
 It is assumed that one has verified a significant group*covariate interaction [e.g., with \code{\link{procD.lm}}].
   To evaluate significance of the pairwise differences, two possible resampling procedures are provided. First, if
   RRPP=FALSE, the rows of the matrix of shape variables are randomized relative to the design matrix. This is
   analogous to a 'full' randomization. Second, if RRPP=TRUE, a residual randomization permutation procedure
-  is utilized (Collyer et al. 2014). Here, residual shape values from a reduced model are
+  is utilized (Collyer et al. 2015). Here, residual shape values from a reduced model are
   obtained, and are randomized with respect to the linear model under consideration. These are then added to
   predicted values from the remaining effects to obtain pseudo-values from which SS are calculated. NOTE: for
   single-factor designs, the two approaches are identical.  However, when evaluating factorial models it has been
