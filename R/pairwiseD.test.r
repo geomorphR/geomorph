@@ -9,17 +9,16 @@
 #'  
 #'  As input the user provides a formula describing the linear model of how shape (y) varies as a function of a factor (a) 
 #'  or factorial interaction (a*b). A single covariate, matrix of covariates, or data frame of covariates can also be added.
-#'  E.g., covariates = x1, covariates = cbind(x1, x2, x3,...), or covariates = data.frame(x1, x2, x3,...).
-#'  an be either in the form of a two-dimensional data matrix of dimension (n x [p x k]), or a 3D array (p x n x k). 
+#'  E.g., covariates = x1, covariates = cbind(x1, x2, x3,...), or covariates = data.frame(x1, x2, x3,...).  Shape data (y)
+#'  can be either in the form of a two-dimensional data matrix of dimension (n x [p x k]), or a 3D array (p x n x k). 
 #'  It is assumed that the landmarks have previously been aligned using Generalized Procrustes Analysis (GPA) 
-#'  [e.g., with \code{\link{gpagen}}]. The function \code{\link{two.d.array}} can be used to obtain a two-dimensional data matrix 
-#'  from a 3D array of landmark coordinates. From the data, the Euclidean distances among group means are estimated, and used 
+#'  [e.g., with \code{\link{gpagen}}]. From the data, the Euclidean distances among group means are estimated, and used 
 #'  as test values.
 #'   
 #'   To evaluate significance of group differences, two possible resampling procedures are provided. First, if 
 #'   RRPP=FALSE, the rows of the matrix of shape variables are randomized relative to the design matrix. This is 
 #'   analogous to a 'full' randomization. Second, if RRPP=TRUE, a residual randomization permutation procedure 
-#'   is utilized (Collyer et al. 2014). Here, residual shape values from a reduced model are
+#'   is utilized (Collyer et al. 2015). Here, residual shape values from a reduced model are
 #'   obtained, and are randomized with respect to the linear model under consideration. These are then added to 
 #'   predicted values from the remaining effects to obtain pseudo-values from which SS are calculated. NOTE: for
 #'   single-factor designs, the two approaches are identical.  However, when evaluating factorial models it has been
@@ -29,7 +28,7 @@
 #'   
 #'   This test is essentially the same as procD.lm with post-hoc comparisons among least squares (LS) means for appropriate
 #'   models.  However, differences in means are calculated simultaneously with the same random permutations peformed for ANOVA,
-#'   making it less so a post-hoc test and more so a simultaneous test of pairwise contrasts (see Collyer et al. 2014).
+#'   making it less so a post-hoc test and more so a simultaneous test of pairwise contrasts (see Collyer et al. 2015).
 #'
 #' @param f1 A formula for the linear model from which groups are to be compared (e.g., y~x1*x2)
 #' @param f2 A right-side formula for one or more covariates (e.g., ~ CS + altitude)
