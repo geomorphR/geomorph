@@ -78,9 +78,9 @@ procD.lm <- function(f1, iter = 999, RRPP = FALSE, int.first = FALSE, verbose=FA
   mod.mf <- model.frame(Terms)
   if (any(is.na(Y)) == T) stop("Response data matrix (shape) contains missing values. Estimate these first (see 'estimate.missing').")
 
-  anova.parts.obs <- anova.parts(form.new, Yalt = "observed", keep.order=ko)
+  anova.parts.obs <- anova.parts(f1 = form.new, Yalt = "observed", keep.order=ko)
   anova.tab <-anova.parts.obs$table  
-  Xs <- mod.mats(mod.mf, keep.order=ko)
+  Xs <- mod.mats(form.new, mod.mf, keep.order=ko)
   k <- length(Xs$Xs) - 1
   P <-array(0, c(k, 1, iter+1))
   SS.obs <-anova.parts.obs$SS[1:k]
