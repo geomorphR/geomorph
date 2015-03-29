@@ -89,9 +89,9 @@ plotAllometry<-function(f1, f2 = NULL, method=c("CAC","RegScore","PredLine"),war
   n<-nrow(cov.mf)
   if(length(cov.mf[[1]]) > n) stop("Only a single variable for size can be used as covariate.  Consider using prcoD.lm for multiple variables")
   if(logsz == TRUE) {
-    cov.mf <- model.frame(~log(Size), data=dat)
     xlab <- "log(Size)"
     fnew <- as.formula("y~log(Size)")
+    cov.mf <- model.frame(fnew, cov.mf)
     print(noquote("Natural log of size is used."))
     } else 
       { 
@@ -106,14 +106,21 @@ plotAllometry<-function(f1, f2 = NULL, method=c("CAC","RegScore","PredLine"),war
     if(dim(fac.mf)[[2]] > 1) {
       groups<- single.factor(f2)
       f2 <- as.formula("~ groups")
-      fac.mf <- model.frame(f2)}
-    Xs2 <- mod.mats.w.cov(fac.mf,cov.mf, interaction=TRUE, keep.order=FALSE)
-    Xs1 <- mod.mats.w.cov(fac.mf,cov.mf, interaction=FALSE, keep.order=FALSE)
+      fac.mf <- model.frame(f2)
+    }
+    fTerms <- terms(f2, data = fac.mf)
+    cTerms <- terms(fnew, data = cov.mf)
+    all.terms <- c(attr(cTerms, "term.labels"), attr(fTerms, "term.labels"))
+    f3 <- as.formula(paste(" y ~",paste(all.terms, collapse="+")))
+    f4 <- as.formula(paste(" y ~",paste(all.terms, collapse="*")))
+    
+    Xs2 <- mod.mats(f4,dat1=model.frame(f4), keep.order=FALSE)
+    Xs1 <- mod.mats(f3,dat1=model.frame(f3), keep.order=FALSE)
     k <- length(Xs2$Xs) - 1
     X2 <- Xs2$Xs[[k+1]]
     X1 <- Xs1$Xs[[k]]
-    anova.parts.obs2 <- anova.parts(fnew, X=Xs2, Yalt="observed")
-    anova.parts.obs1 <- anova.parts(fnew, X=Xs1, Yalt="observed")
+    anova.parts.obs2 <- anova.parts(f4, X=Xs2, Yalt="observed")
+    anova.parts.obs1 <- anova.parts(f3, X=Xs1, Yalt="observed")
     anova.tab2 <-anova.parts.obs2$table 
     anova.tab <-anova.parts.obs1$table 
     SS.obs <- anova.parts.obs2$SS[1:k]
@@ -134,7 +141,7 @@ plotAllometry<-function(f1, f2 = NULL, method=c("CAC","RegScore","PredLine"),war
       
   } else {
     fac.mf <- NULL 
-    Xs <- mod.mats(cov.mf, keep.order=FALSE)
+    Xs <- mod.mats(fnew,cov.mf, keep.order=FALSE)
     k <- length(Xs$Xs) - 1
     X <- Xs$Xs[[k+1]]
     anova.parts.obs <- anova.parts(fnew, X=Xs, Yalt="observed")
@@ -171,7 +178,7 @@ plotAllometry<-function(f1, f2 = NULL, method=c("CAC","RegScore","PredLine"),war
   asp = NULL
   if(anova.tab[1,7]>0.05){ asp <- 1}
   y.cent<-y-y.mn
-  size<-cov.mf[[1]]
+  size<-cov.mf[[2]]
   a<-(t(y.cent)%*%size)%*%(1/(t(size)%*%size)); a<-a%*%(1/sqrt(t(a)%*%a))
   CAC<-y.cent%*%a  
   resid<-y.cent%*%(diag(dim(y.cent)[2])-a%*%t(a))
@@ -272,9 +279,9 @@ plotAllometry<-function(f1, f2 = NULL, method=c("CAC","RegScore","PredLine"),war
   }
   
   if(verbose==TRUE){ 
-    if(method=="CAC"){return(list(allom.score=CAC,resid.shape=RSC,logSize=size,ProcDist.lm=anova.tab,pred.shape=Ahat))}
-    if(method=="RegScore"){return(list(allom.score=Reg.proj,logSize=size,ProcDist.lm=anova.tab,pred.shape=Ahat))}
-    if(method=="PredLine"){return(list(allom.score=pred.val,logSize=size,ProcDist.lm=anova.tab2,pred.shape=Ahat))}
+    if(method=="CAC") list(allom.score=CAC,resid.shape=RSC,logSize=log(Size),ProcDist.lm=anova.tab,pred.shape=Ahat)
+    if(method=="RegScore") list(allom.score=Reg.proj,logSize=log(Size),ProcDist.lm=anova.tab,pred.shape=Ahat)
+    if(method=="PredLine") list(allom.score=pred.val,logSize=log(Size),ProcDist.lm=anova.tab2,pred.shape=Ahat)
   }
-  if(verbose==FALSE){ return(ProcDist.lm=anova.tab)}
+  if(verbose==FALSE) return(ProcDist.lm=anova.tab)
 }
