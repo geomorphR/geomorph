@@ -178,4 +178,3 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL, angle.type = c(
   }
   out
 }
-
