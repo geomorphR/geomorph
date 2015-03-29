@@ -430,21 +430,23 @@ RRP.submodels <- function(Xs, Y){
 }
 
 # Submodel design matrices for use in RRPP, etc.
-mod.mats <- function(mod.mf, keep.order=FALSE){
-    Terms <- terms(mod.mf, keep.order = keep.order)
+mod.mats <- function(f1, dat1, keep.order=FALSE){
+    Terms <- terms(f1, data=dat1, keep.order = keep.order)
     k <- length(attr(Terms, "term.labels"))
+    n <- dim(dat1)[[1]]
     Xs <- as.list(array(0,k+1))
-    Xs[[1]] <- matrix(1,nrow(mod.mf))
+    Xs[[1]] <- matrix(1,n)
     for(i in 1:k){
-        Xs[[i+1]] <- model.matrix(Terms[1:i], data = mod.mf)
+        Xs[[i+1]] <- model.matrix(Terms[1:i], data = dat1)
     }
     list(Xs=Xs, terms =  attr(Terms, "term.labels"))
 }
 
-mod.mats.w.cov <- function(fac.mf, cov.mf, keep.order =FALSE, interaction = FALSE){
-    fTerms <- terms(fac.mf, keep.order = keep.order)
-    cTerms <- terms(cov.mf, keep.order = keep.order)
+mod.mats.w.cov <- function(f1, f2, dat1, dat2, keep.order =FALSE, interaction = FALSE){
+    fTerms <- terms(f1, data = dat1, keep.order = keep.order)
+    cTerms <- terms(f2, data = dat2, keep.order = keep.order)
     all.terms <- c(attr(cTerms, "term.labels"), attr(fTerms, "term.labels"))
+    dat12 <- merge(dat1, dat2, by="row.names")
     if(interaction == FALSE) form.full <- as.formula(paste("~", paste(all.terms,collapse="+")))
     if(interaction == TRUE) {
         cPart <- paste(attr(cTerms, "term.labels"),collapse="+")
@@ -460,11 +462,10 @@ mod.mats.w.cov <- function(fac.mf, cov.mf, keep.order =FALSE, interaction = FALS
     }
     Terms.full <- terms(form.full, keep.order = keep.order)
     k <- length(attr(Terms.full, "term.labels"))
+    n <- dim(dat12)[[1]]
     Xs <- as.list(array(,(k+1)))
-    Xs[[1]] <- matrix(1,nrow(fac.mf))
-    for(i in 1:k){
-        Xs[[i+1]] <- model.matrix(Terms.full[1:i])
-    }
+    Xs[[1]] <- matrix(1,n)
+    for(i in 1:k) Xs[[i+1]] <- model.matrix(Terms.full[1:i], data=dat12, by="row.names")
     list(Xs=Xs, terms = attr(Terms.full, "term.labels"))
 }
 
@@ -535,7 +536,7 @@ anova.parts <- function(f1, X = NULL, Yalt = c("observed","resample", "RRPP"), k
     Terms <- terms(form.in, keep.order = keep.order)
     mf <- model.frame(Terms)
     if(is.null(X)){
-        Xs <- mod.mats(mf, keep.order = keep.order)
+        Xs <- mod.mats(f1 = form.in, dat1 = mf, keep.order = keep.order)
     } else {Xs = X}
     anova.terms <- Xs$terms
     k <- length(Xs$Xs) - 1
@@ -583,7 +584,7 @@ anova.pgls.parts <- function(f1, X = NULL, Pcor, Yalt = c("observed","resample",
     mf <- model.frame(Terms)
     Y <- eval(form.in[[2]], parent.frame())
     if(is.null(X)){
-        Xs <- mod.mats(mf, keep.order = keep.order)
+        Xs <- mod.mats(f1=form.in, dat1=mf, keep.order = keep.order)
     } else {Xs = X}
     anova.terms <- Xs$terms
     k <- length(Xs$Xs) - 1
