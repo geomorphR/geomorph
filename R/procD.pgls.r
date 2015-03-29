@@ -87,8 +87,8 @@ procD.pgls<-function(f1, phy, iter=999, int.first = FALSE, RRPP=FALSE, verbose=F
   }
   eigC.vect = eigC$vectors[,1:(length(lambda))]
   Pcor <- solve(eigC.vect%*% diag(sqrt(lambda)) %*% t(eigC.vect)) 
-  PY <- Pcor%*%Y   #Garland & Ives 2000 transformation
-  Xs = mod.mats(mf)
+  PY <- Pcor%*%Y   
+  Xs = mod.mats(form.in, mf)
   
   anova.parts.obs <- anova.pgls.parts(form.in, X=NULL, Pcor, Yalt = "observed", keep.order=ko)
   anova.tab <-anova.parts.obs$table  
