@@ -34,11 +34,10 @@ formulae for full and reduced models (order is not important), plus indication i
 are to be comapred among groups, with appropriate formulae to define how they should be compared.
 }
 \details{
-The response matrix 'y' can be on the form of a two-dimensional data
-  matrix of dimension (n x [p x k]) or a 3D array (p x k x n0.  It is assumed that the landmarks have previously
-  been aligned using Generalized Procrustes Analysis (GPA) [e.g., with \code{\link{gpagen}}]. The function
-  \code{\link{two.d.array}} can be used to obtain a two-dimensional data matrix from a 3D array of landmark
-  coordinates. The names specified for the independent (x) variables in the formula represent one or more
+The response matrix 'y' can be in the form of a two-dimensional data
+  matrix of dimension (n x [p x k]) or a 3D array (p x k x n).  It is assumed that the landmarks have previously
+  been aligned using Generalized Procrustes Analysis (GPA) [e.g., with \code{\link{gpagen}}]. The names specified for the
+  independent (x) variables in the formula represent one or more
   vectors containing continuous data or factors. It is assumed that the order of the specimens in the
   shape matrix matches the order of values in the independent variables.
 
@@ -59,7 +58,7 @@ Pairwise tests are only performed if formulae are provided to compute such resul
 ### Example of comparison of allometries between two populations of pupfish
 ### After accounting for sexual dimorphism, Method 1
 data(pupfish)
-shape <- pupfish$coords   # GPA-alignment previously performed
+shape <-pupfish$coords   # GPA-alignment previously performed
 CS <- pupfish$CS
 Sex <- pupfish$Sex
 Pop <- pupfish$Pop
