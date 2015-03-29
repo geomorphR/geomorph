@@ -88,15 +88,16 @@
 #' trajectory.analysis(motionpaths$trajectories~motionpaths$groups,
 #' estimate.traj=FALSE, traj.pts=5,iter=15)
 trajectory.analysis<-function(f1,data=NULL,estimate.traj=TRUE,traj.pts=NULL,iter=999){
-  form.in<-formula(f1)
+  form.in <- formula(f1)
+  Y <- eval(form.in[[2]], parent.frame())
+  if(length(dim(Y)) == 3)  Y <- two.d.array(Y) else Y <- as.matrix(Y)
+  form.in <- as.formula(paste(c("Y",form.in[[3]]),collapse="~"))
   Terms<-terms(form.in)
   dat<-model.frame(form.in)
   y<-as.matrix(dat[1])
   ncol.x<-length(attr(Terms,"term.labels"))  
   all.terms<-attr(Terms,"term.labels")
   k <- length(all.terms)
-  if (length(dim(y))!=2){
-    stop("Response matrix (shape) not a 2D array. Use 'two.d.array' first.")  }
   if(any(is.na(y))==T){
     stop("Response data matrix (shape) contains missing values. Estimate these first(see 'estimate.missing').")  }
   
@@ -112,7 +113,7 @@ trajectory.analysis<-function(f1,data=NULL,estimate.traj=TRUE,traj.pts=NULL,iter
     k1<-length(levels(dat[,k]))
     anova.parts.obs <- anova.parts(form.in, Yalt = "observed", keep.order=TRUE)
     anova.tab <-anova.parts.obs$table  
-    Xs <- mod.mats(dat, keep.order=TRUE)
+    Xs <- mod.mats(form.in, dat, keep.order=TRUE)
     Plm <-array(, c(k, 1, iter+1))
     SS.obs <-anova.parts.obs$SS[1:k]
     Plm[,,1] <- SS.obs    
@@ -168,7 +169,7 @@ trajectory.analysis<-function(f1,data=NULL,estimate.traj=TRUE,traj.pts=NULL,iter
       stop("Number of points in the trajectory not specified.") }
     if(length(attr(Terms,"term.labels")) > 1) stop("If data are already trajectories, only a single-factor model is currently supported. (See Help file)")
     X <- model.matrix(Terms)
-    Xs <- mod.mats(dat)
+    Xs <- mod.mats(form.in,dat)
     k <- length(Xs$Xs) - 1
     k1<-traj.pts
     n1<-nrow(y)
