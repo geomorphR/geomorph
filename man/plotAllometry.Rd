@@ -12,8 +12,7 @@ plotAllometry(f1, f2 = NULL, method = c("CAC", "RegScore", "PredLine"),
 \item{f1}{A formula (of the form shape ~ size); shape can be a matrix (n x [p1 x k]) or 3D array (p1 x k x n) containing
 GPA-aligned coordinates for the specimens}
 
-\item{f2}{An optional right hand formula for groups (e.g., ~ groups); multiple factors can be used (e.g., ~ A*B) but "groups"
-will be returned as a single factor in the ANOVA table}
+\item{f2}{An optional right hand formula for groups (e.g., ~ groups); must be a single factor}
 
 \item{method}{Method for estimating allometric shape components; see below for details}
 
