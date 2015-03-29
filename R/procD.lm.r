@@ -71,14 +71,14 @@ procD.lm <- function(f1, iter = 999, RRPP = FALSE, int.first = FALSE, verbose=FA
   form.in <- formula(f1)
   Y <- eval(form.in[[2]], parent.frame())
   if(length(dim(Y)) == 3)  Y <- two.d.array(Y) else Y <- as.matrix(Y)
-  form.in <- as.formula(paste(c("Y",form.in[[3]]),collapse="~"))
-  mod.mf <- model.frame(form.in)
-  if(nrow(Y) != nrow(mod.mf)) stop("Different numbers of specimens in dependent and independent variables")
+  if(nrow(Y) != nrow(model.frame(form.in[-2]))) stop("Different numbers of specimens in dependent and independent variables")
+  form.new <- as.formula(paste(c("Y",form.in[[3]]),collapse="~"))
   if(int.first == TRUE) ko = TRUE else ko = FALSE
-  Terms <- terms(form.in, keep.order = ko)
+  Terms <- terms(form.new, keep.order = ko)
+  mod.mf <- model.frame(Terms)
   if (any(is.na(Y)) == T) stop("Response data matrix (shape) contains missing values. Estimate these first (see 'estimate.missing').")
 
-  anova.parts.obs <- anova.parts(form.in, Yalt = "observed", keep.order=ko)
+  anova.parts.obs <- anova.parts(form.new, Yalt = "observed", keep.order=ko)
   anova.tab <-anova.parts.obs$table  
   Xs <- mod.mats(mod.mf, keep.order=ko)
   k <- length(Xs$Xs) - 1
