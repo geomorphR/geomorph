@@ -4,16 +4,16 @@
 \alias{plotAllometry}
 \title{Plot allometric patterns in landmark data}
 \usage{
-plotAllometry(A, sz, groups = NULL, method = c("CAC", "RegScore",
-  "PredLine"), warpgrids = TRUE, iter = 249, label = NULL, mesh = NULL,
-  logsz = TRUE, verbose = FALSE)
+plotAllometry(f1, f2 = NULL, method = c("CAC", "RegScore", "PredLine"),
+  warpgrids = TRUE, iter = 249, label = NULL, mesh = NULL,
+  logsz = TRUE, RRPP = FALSE, verbose = FALSE)
 }
 \arguments{
-\item{A}{matrix (n x [p1 x k]) or 3D array (p1 x k x n) containing GPA-aligned coordinates for the specimens}
+\item{f1}{A formula (of the form shape ~ size); shape can be a matrix (n x [p1 x k]) or 3D array (p1 x k x n) containing
+GPA-aligned coordinates for the specimens}
 
-\item{sz}{A vector of size measures for all specimens (centroid size or any other reasonable size measure)}
-
-\item{groups}{An optional vector containing group labels for each specimen if available}
+\item{f2}{An optional right hand formula for groups (e.g., ~ groups); multiple factors can be used (e.g., ~ A*B) but "groups"
+will be returned as a single factor in the ANOVA table}
 
 \item{method}{Method for estimating allometric shape components; see below for details}
 
@@ -29,10 +29,12 @@ of asymmetry if {warpgrids= TRUE} (see \code{\link{warpRefMesh}}).}
 
 \item{logsz}{A logical value indicating whether log(size) is used}
 
+\item{RRPP}{A logical value to indicate if a randomized residual permutation procedure (RRPP) should be used for statistical tests}
+
 \item{verbose}{A logical value indicating whether the output is basic or verbose (see Value below)}
 }
 \value{
-Function returns an ANOVA table of statistical results for size: df, SS, MS, Prand.
+Function returns an ANOVA table of statistical results for size: df, SS, MS, F, Z,Prand.
 If verbose=TRUE, function returns a list with the following components:
  \item{ProcDist.lm}{An ANOVA table as above}
  \item{allom.score}{ A matrix of the allometry shape scores}
@@ -48,7 +50,7 @@ The function performs a regression of shape on size, and generates a plot that d
 multivariate relationship between size and shape
   derived from landmark data (i.e., allometry). It is assumed that the landmarks have previously been
   aligned using Generalized Procrustes Analysis (GPA) [e.g., with \code{\link{gpagen}}]. The abscissa
-  of the plot is log(centroid size) while the ordinate represents shape [NOTE: the function takes the
+  of the plot is size (or log of size) while the ordinate represents shape [NOTE: the function takes the
   input size and performed log-transformation automatically by default (logsz = TRUE), as log(Size) should be used].
   Three complementary approaches can be implemented to visualize allometry:
  \enumerate{
@@ -79,16 +81,16 @@ data(ratland)
 Y.gpa<-gpagen(ratland,PrinAxes=FALSE)    #GPA-alignment
 
 #Using CAC for plot
-plotAllometry(Y.gpa$coords,Y.gpa$Csize,method="CAC", iter=5)
+plotAllometry(Y.gpa$coords ~ Y.gpa$Csize, method="CAC", iter=9)
 
 #Using Regression Scores for plot
-plotAllometry(Y.gpa$coords,Y.gpa$Csize,method="RegScore", iter=5)
+plotAllometry(Y.gpa$coords ~ Y.gpa$Csize, method="RegScore", iter=9)
 
 #Using predicted allometry curve for plot
-plotAllometry(Y.gpa$coords,Y.gpa$Csize,method="PredLine", iter=5)
+plotAllometry(Y.gpa$coords ~ Y.gpa$Csize, method="PredLine", iter=9)
 }
 \author{
-Dean Adams
+Dean Adams and Michael Collyer
 }
 \references{
 Adams, D.C., F.J. Rohlf, and D.E. Slice. 2013. A field comes of age: geometric morphometrics
