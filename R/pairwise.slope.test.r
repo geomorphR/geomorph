@@ -89,7 +89,7 @@ pairwise.slope.test <- function (f1, f2, iter = 999, int.first = FALSE, angle.ty
   
   cov.mf <- model.frame(as.formula(f2))
   if(length(attr(terms(cov.mf),"term.labels")) > 1) stop("Pairwise comparisons of slopes can only be considered for a single covariate. \n Use advanced.procD.lm for multiple covariates or complex model designs.")
-  Xs <- mod.mats.w.cov(fac.mf, cov.mf, keep.order=ko, interaction = TRUE)
+  Xs <- mod.mats.w.cov(f1=f1, f2=f2, dat1=fac.mf, dat2=cov.mf, keep.order=ko, interaction = TRUE)
   k <- length(Xs$Xs) - 1
   X <- Xs$Xs[[k+1]]
   anova.parts.obs <- anova.parts(f1, X = Xs,Yalt = "observed", keep.order=ko)
