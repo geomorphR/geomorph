@@ -433,9 +433,8 @@ RRP.submodels <- function(Xs, Y){
 mod.mats <- function(mod.mf, keep.order=FALSE){
     Terms <- terms(mod.mf, keep.order = keep.order)
     k <- length(attr(Terms, "term.labels"))
-    Y <- as.matrix(mod.mf[1])
     Xs <- as.list(array(0,k+1))
-    Xs[[1]] <- matrix(1,nrow(Y))
+    Xs[[1]] <- matrix(1,nrow(mod.mf))
     for(i in 1:k){
         Xs[[i+1]] <- model.matrix(Terms[1:i], data = mod.mf)
     }
@@ -446,8 +445,7 @@ mod.mats.w.cov <- function(fac.mf, cov.mf, keep.order =FALSE, interaction = FALS
     fTerms <- terms(fac.mf, keep.order = keep.order)
     cTerms <- terms(cov.mf, keep.order = keep.order)
     all.terms <- c(attr(cTerms, "term.labels"), attr(fTerms, "term.labels"))
-    Y <- as.matrix(fac.mf[1])
-    if(interaction == FALSE) form.full <- as.formula(paste("Y ~", paste(all.terms,collapse="+")))
+    if(interaction == FALSE) form.full <- as.formula(paste("~", paste(all.terms,collapse="+")))
     if(interaction == TRUE) {
         cPart <- paste(attr(cTerms, "term.labels"),collapse="+")
         fPart <- paste(attr(fTerms, "term.labels"),collapse="+")
@@ -458,12 +456,12 @@ mod.mats.w.cov <- function(fac.mf, cov.mf, keep.order =FALSE, interaction = FALS
             }
         }
         iParts <- paste(iParts, collapse="+")
-        form.full <- as.formula(paste("Y ~", paste(cPart, fPart, iParts, sep="+")))
+        form.full <- as.formula(paste("~", paste(cPart, fPart, iParts, sep="+")))
     }
     Terms.full <- terms(form.full, keep.order = keep.order)
     k <- length(attr(Terms.full, "term.labels"))
     Xs <- as.list(array(,(k+1)))
-    Xs[[1]] <- matrix(1,nrow(Y))
+    Xs[[1]] <- matrix(1,nrow(fac.mf))
     for(i in 1:k){
         Xs[[i+1]] <- model.matrix(Terms.full[1:i])
     }
@@ -532,10 +530,10 @@ SS.pgls.random <- function(Y, Xs, SS, Pcor, Yalt = c("resample", "RRPP")){ # lik
 
 anova.parts <- function(f1, X = NULL, Yalt = c("observed","resample", "RRPP"), keep.order = FALSE){
     form.in <- formula(f1)
+    Y <- eval(form.in[[2]], parent.frame())
     Yalt = match.arg(Yalt)
     Terms <- terms(form.in, keep.order = keep.order)
     mf <- model.frame(Terms)
-    Y <- as.matrix(mf[1])
     if(is.null(X)){
         Xs <- mod.mats(mf, keep.order = keep.order)
     } else {Xs = X}
