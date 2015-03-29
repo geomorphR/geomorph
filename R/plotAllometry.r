@@ -34,8 +34,7 @@
 #'
 #' @param f1 A formula (of the form shape ~ size); shape can be a matrix (n x [p1 x k]) or 3D array (p1 x k x n) containing 
 #' GPA-aligned coordinates for the specimens
-#' @param f2 An optional right hand formula for groups (e.g., ~ groups); multiple factors can be used (e.g., ~ A*B) but "groups" 
-#' will be returned as a single factor in the ANOVA table
+#' @param f2 An optional right hand formula for groups (e.g., ~ groups); must be a single factor
 #' @param method Method for estimating allometric shape components; see below for details
 #' @param warpgrids A logical value indicating whether deformation grids for small and large shapes 
 #'  should be displayed (note: if groups are provided no TPS grids are shown)
@@ -97,17 +96,14 @@ plotAllometry<-function(f1, f2 = NULL, method=c("CAC","RegScore","PredLine"),war
       { 
         xlab <- "Size"
         fnew <- as.formula("y~Size")
+        cov.mf <- model.frame(fnew, data=cov.mf)
         print(noquote("Size has not been log transformed."))
       }                                                                                          
   method <- match.arg(method)
 
   if(!is.null(f2)) {
     fac.mf <- model.frame(f2)
-    if(dim(fac.mf)[[2]] > 1) {
-      groups<- single.factor(f2)
-      f2 <- as.formula("~ groups")
-      fac.mf <- model.frame(f2)
-    }
+    if(dim(fac.mf)[[2]] > 1) stop("Only a single grouping variable can be used")
     fTerms <- terms(f2, data = fac.mf)
     cTerms <- terms(fnew, data = cov.mf)
     all.terms <- c(attr(cTerms, "term.labels"), attr(fTerms, "term.labels"))
