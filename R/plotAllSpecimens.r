@@ -32,7 +32,7 @@ plotAllSpecimens<-function(A,mean=TRUE,links=NULL,pointscale=1,meansize=2){
     mn<-mshape(A)
   }
   if(k==2){
-    plot(A[,1,],A[,2,],asp=1, pch=21,bg="gray",xlab="x",ylab="y",cex=pointscale) 
+    plot(A[,1,],A[,2,],asp=1, pch=21,bg="gray",xlab="x",ylab="y",cex=pointscale*1) 
     if(mean==TRUE){ 
       points(mn,pch=21,bg="black",cex=meansize) 
       if(is.null(links)==FALSE){

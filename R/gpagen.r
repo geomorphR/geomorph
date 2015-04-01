@@ -37,9 +37,9 @@
 #' @param PrinAxes A logical value indicating whether or not to align the shape data by principal axes 
 #' @param curves An optional matrix defining which landmarks should be treated as semilandmarks on boundary 
 #'   curves, and which landmarks specify the tangent directions for their sliding
+#' @param pointscale An optional value defining the size of the points for all specimens
 #' @param surfaces An optional vector defining which landmarks should be treated as semilandmarks on surfaces
-#' @param ShowPlot A logical value indicating whether or not a plot of Procrustes residuals should be displayed (calls \code{\link{plotAllSpecimens}})
-#' @param ... Options to be passed to \code{\link{plotAllSpecimens}}
+#' @param ShowPlot A logical value indicating whether or not a plot of Procrustes residuals should be displayed
 #' @keywords analysis
 #' @export
 #' @author Dean Adams
@@ -93,8 +93,8 @@
 #' #Using Procrustes Distance for sliding
 #' gpagen(A=scallops$coorddata, curves=scallops$curvslide, surfaces=scallops$surfslide) 
 #' @useDynLib geomorph
-gpagen<-function(A, Proj=TRUE,ProcD=TRUE,PrinAxes=TRUE,ShowPlot=TRUE,curves=NULL,surfaces=NULL,
-                 ...){
+gpagen<-function(A, Proj=TRUE,ProcD=TRUE,PrinAxes=TRUE,ShowPlot=TRUE,curves = NULL, surfaces = NULL,
+                 pointscale=1){
   if (length(dim(A))!=3){
     stop("Data matrix not a 3D array (see 'arrayspecs').")  }
   if(any(is.na(A))==T){
@@ -125,11 +125,12 @@ gpagen<-function(A, Proj=TRUE,ProcD=TRUE,PrinAxes=TRUE,ShowPlot=TRUE,curves=NULL
   if(Proj==TRUE){temp<-orp(temp)  }
   dimnames(temp)[[3]]<-dimnames(A)[[3]]
   names(specs.size)<-dimnames(A)[[3]]
+  ptsz<-pointscale
   if(PrinAxes==TRUE){
     ref<-mshape(temp); rot <- prcomp(ref)$rotation
     for(i in 1:k) if(sign(rot[i,i])!=1) rot[1:k,i] = -rot[1:k,i]
     for(i in 1:dim(temp)[[3]]){temp[,,i]<-temp[,,i] %*% rot }
   }
-  if(ShowPlot==TRUE){ plotAllSpecimens(temp,...)}
+  if(ShowPlot==TRUE){ plotAllSpecimens(temp,pointscale=ptsz)}
   return(list(coords=temp,Csize=specs.size))
 }
