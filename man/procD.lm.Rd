@@ -72,7 +72,7 @@ rat.gpa<-gpagen(ratland)         #GPA-alignment
 procD.lm(rat.gpa$coords ~ rat.gpa$Csize,iter=99)
 
 ## using RRPP
- procD.lm(two.d.array(rat.gpa$coords)~rat.gpa$Csize,iter=49,RRPP=TRUE)
+ procD.lm(rat.gpa$coords ~ rat.gpa$Csize,iter=49,RRPP=TRUE)
 }
 \author{
 Dean Adams and Michael Collyer
