@@ -18,14 +18,14 @@ for optimizing the positions of semilandmarks}
 
 \item{PrinAxes}{A logical value indicating whether or not to align the shape data by principal axes}
 
-\item{ShowPlot}{A logical value indicating whether or not a plot of Procrustes residuals should be displayed}
+\item{ShowPlot}{A logical value indicating whether or not a plot of Procrustes residuals should be displayed (calls \code{\link{plotAllSpecimens}})}
 
 \item{curves}{An optional matrix defining which landmarks should be treated as semilandmarks on boundary
 curves, and which landmarks specify the tangent directions for their sliding}
 
 \item{surfaces}{An optional vector defining which landmarks should be treated as semilandmarks on surfaces}
 
-\item{pointscale}{An optional value defining the size of the points for all specimens}
+\item{...}{Options to be passed to \code{\link{plotAllSpecimens}}}
 }
 \value{
 Function returns a list with the following components:
