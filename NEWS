@@ -6,9 +6,11 @@ CHANGES IN GEOMORPH VERSION 2.1.4
     
     o read.morphologika() now reads [groups] option and adds these data to the $labels matrix
     o plotOutliers() now has option groups to plot outliers by levels(groups) using group means
-    o morphol.disparity() help file updated to correctly indicate that group shape residuals, rather than shape values, themselves,
-      are randomized in the permutation procedure
-
+    o morphol.disparity() help file updated to correctly indicate that group shape residuals, rather than shape values, themselves, are randomized in the permutation procedure
+    
+    o Internal changes to support functions for compatability with R 3.1.3 
+    
+    o Generalized plot inputs in gpagen()
 
   BUG FIXES
 
