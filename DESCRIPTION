@@ -7,7 +7,7 @@ Author: Dean Adams, Michael Collyer, Emma Sherratt
 Maintainer: Dean Adams <dcadams@iastate.edu>
 Depends: rgl, R(>= 3.1.0)
 Imports: jpeg, ape, geiger, phytools
-Description: This package allows users to read, manipulate, and digitize landmark data, generate shape
+Description: Read, manipulate, and digitize landmark data, generate shape
     variables via Procrustes analysis for points, curves and surfaces, perform
     shape analyses, and provide graphical depictions of shapes and patterns of
     shape variation.
