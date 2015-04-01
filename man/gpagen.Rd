@@ -5,7 +5,7 @@
 \title{Generalized Procrustes analysis of points, curves, and surfaces}
 \usage{
 gpagen(A, Proj = TRUE, ProcD = TRUE, PrinAxes = TRUE, ShowPlot = TRUE,
-  curves = NULL, surfaces = NULL, ...)
+  curves = NULL, surfaces = NULL, pointscale = 1)
 }
 \arguments{
 \item{A}{An array (p x k x n) containing landmark coordinates for a set of specimens}
