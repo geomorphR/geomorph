@@ -66,7 +66,7 @@
 #' procD.lm(rat.gpa$coords ~ rat.gpa$Csize,iter=99)
 #' 
 #' ## using RRPP
-#'  procD.lm(two.d.array(rat.gpa$coords)~rat.gpa$Csize,iter=49,RRPP=TRUE)
+#'  procD.lm(rat.gpa$coords ~ rat.gpa$Csize,iter=49,RRPP=TRUE)
 procD.lm <- function(f1, iter = 999, RRPP = FALSE, int.first = FALSE, verbose=FALSE){
   form.in <- formula(f1)
   Y <- eval(form.in[[2]], parent.frame())
