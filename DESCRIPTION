@@ -1,8 +1,8 @@
 Package: geomorph
 Date: 2015-03-06
 Type: Package
-Title: Geometric Morphometric Analyses of 2d/3D Landmark Data
-Version: 2.1.4
+Title: Geometric Morphometric Analyses of 2D/3D Landmark Data
+Version: 2.1.5
 Author: Dean Adams, Michael Collyer, Emma Sherratt
 Maintainer: Dean Adams <dcadams@iastate.edu>
 Depends: rgl, R(>= 3.1.0)
