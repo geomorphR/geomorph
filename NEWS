@@ -1,3 +1,9 @@
+CHANGES IN GEOMORPH VERSION 2.1.5
+
+  BUG FIXES
+    o Corrected an error in plotAllometry() where verbose=T did not return
+
+
 CHANGES IN GEOMORPH VERSION 2.1.4
 
   OTHER CHANGES
@@ -5,10 +11,12 @@ CHANGES IN GEOMORPH VERSION 2.1.4
     o warpRefMesh() generalised - now takes a mesh3d object (i.e. made from read.ply()) rather than calling read.ply() directly
     
     o read.morphologika() now reads [groups] option and adds these data to the $labels matrix
+
     o plotOutliers() now has option groups to plot outliers by levels(groups) using group means
+
     o morphol.disparity() help file updated to correctly indicate that group shape residuals, rather than shape values, themselves, are randomized in the permutation procedure
     
-    o Internal changes to support functions for compatability with R 3.1.3 
+    o Internal changes to support functions for compatibility with R 3.1.3 
     
     o Generalized plot inputs in gpagen()
 
@@ -35,7 +43,7 @@ CHANGES IN GEOMORPH VERSION 2.1.3
 
     o Additional input options added to pairwiseD.test() and pairwise.slope.test() 
 
-    o Ability to accomodate singular phylogenetic covariance matrices in: physignal(), compare.evol.rates(), procD.pgls() and phylo.pls()
+    o Ability to accommodate singular phylogenetic covariance matrices in: physignal(), compare.evol.rates(), procD.pgls() and phylo.pls()
 
     o Enhanced digitizing capability in: build.template(), define.modules(), define.sliders.3d(), digit.fixed(), digitsurface(), and editTemplate() )
 
