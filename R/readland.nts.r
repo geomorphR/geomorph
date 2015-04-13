@@ -61,13 +61,14 @@ readland.nts<-function(file){
   speclab<-NULL; 
   if(r.lab==TRUE){
     speclab<-tmp[1:n]
-    tmp<-tmp[-(1:length(speclab))]   }
+    tmp<-tmp[-(1:length(speclab))]   
+  }
   if(c.lab==TRUE){ tmp<-tmp[-(1:(p*k))] }
   if(missdata==TRUE){tmp<-sub(missval,NA,tmp)}
   options(warn=-1)
   landdata<-matrix(as.numeric(tmp),ncol=k,byrow=TRUE)
   if(sum(which(is.na(landdata)==TRUE))>0){print("NOTE.  Missing data identified.")}
   coords <- aperm(array(t(landdata), c(k,p,n)), c(2,1,3))
-  dimnames(coords)[[3]]<-speclab
+  dimnames(coords)[[3]]<-as.list(speclab)
   return(coords=coords)
 }
