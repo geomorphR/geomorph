@@ -24,8 +24,6 @@
 #' @references O'Higgins P and Jones N (2006) Tools for statistical shape analysis. Hull York Medical School.   
 read.morphologika<-function(file){
   mfile<-scan(file=file,what="char",quote="",sep="\n",strip.white=TRUE,comment.char="\"",quiet=TRUE)
-  if(length(grep("\t",mfile))>0) { 
-    stop("File contains tab characters.Morphologika files should be delimited by spaces.") } 
   if(length(grep("[",mfile, fixed=T))<1){
     stop("File does not appear to be a Morphologika format text file.")}
   n <- as.numeric(mfile[grep("individuals",mfile,ignore.case=T) + 1])
@@ -34,16 +32,16 @@ read.morphologika<-function(file){
   labvalmat <- wiref <- names <- NULL
   rawdat <- mfile[grep("rawpoints",mfile,ignore.case=T) + 1:(n*p+n)]
   rawdat <- rawdat[-grep("'",rawdat)]
-  landdata <- matrix(as.numeric(unlist(strsplit(gsub(" +$", "", rawdat), " +"))), ncol=k, byrow=T)
+  landdata <- matrix(as.numeric(unlist(strsplit(gsub(" +$", "", rawdat), "\\s+"))), ncol=k, byrow=T)
   coords<-arrayspecs(landdata,p,k)
   names <- mfile[grep("names",mfile,ignore.case=T) + 1:n]
   if(!is.null(names)) dimnames(coords)[[3]]<-names
   if(length(grep("label",mfile,ignore.case=T))>0) {
-    tmp <- unlist(strsplit(mfile[grep("labels",mfile,ignore.case=T) + 1]," "))
-    labvals <- unlist(strsplit(mfile[grep("labelvalues",mfile,ignore.case=T) + 1:n]," "))
+    tmp <- unlist(strsplit(mfile[grep("labels",mfile,ignore.case=T) + 1],"\\s+"))
+    labvals <- unlist(strsplit(mfile[grep("labelvalues",mfile,ignore.case=T) + 1:n],"\\s+"))
     labvalmat <- matrix(labvals, ncol=length(tmp), byrow=T, dimnames=list(names,tmp)) }
   if(length(grep("groups",mfile,ignore.case=T))>0) {
-    tmp <- matrix(unlist(strsplit(mfile[grep("groups",mfile,ignore.case=T) + 1]," ")), ncol=2, byrow=T)
+    tmp <- matrix(unlist(strsplit(mfile[grep("groups",mfile,ignore.case=T) + 1],"\\s+")), ncol=2, byrow=T)
     gpval <- NULL
     for(i in 1:nrow(tmp)){ gpval <- c(gpval, rep(tmp[i,1], tmp[i,2]))}
     labvalmat <- cbind(labvalmat, groups=gpval) }
@@ -51,7 +49,7 @@ read.morphologika<-function(file){
     strtwf <- grep("wireframe",mfile, ignore.case=T)
     endwf <-strtwf + grep("[",mfile[strtwf+1:length(mfile)], fixed=T)[1]
       if(is.na(endwf)){ endwf <- length(mfile)}
-    wiref <- matrix(as.numeric(unlist(strsplit(mfile[(strtwf+1):(endwf-1)]," "))),ncol=2, byrow=T) }  
+    wiref <- matrix(as.numeric(unlist(strsplit(mfile[(strtwf+1):(endwf-1)],"\\s+"))),ncol=2, byrow=T) }  
   if(!is.null(wiref) && is.null(labvalmat)) return(list(coords = coords, wireframe = wiref)) 
   if(is.null(wiref) && !is.null(labvalmat)) return(list(coords = coords, labels = labvalmat)) 
   if(!is.null(wiref) && !is.null(labvalmat)) return(list(coords = coords, labels = labvalmat, wireframe = wiref)) 
