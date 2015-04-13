@@ -3,6 +3,9 @@ CHANGES IN GEOMORPH VERSION 2.1.5
   BUG FIXES
     o Corrected an error in plotAllometry() where verbose=T did not return
 
+  OTHER CHANGES
+    o readland.nts, readland.tps and readmulti.nts now allows both tab and space delimited files
+
 
 CHANGES IN GEOMORPH VERSION 2.1.4
 
