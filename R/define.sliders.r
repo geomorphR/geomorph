@@ -28,7 +28,7 @@
 #' }
 #' }
 #' 
-#' #' \subsection{Selection in 3D}{ 
+#' \subsection{Selection in 3D}{ 
 #' Choosing which landmarks will be sliders involves landmark selection using a mouse in the rgl plot window. 
 #' With a standard 3-button (PC) buildtemplate uses:
 #' \enumerate{
@@ -63,7 +63,7 @@
 #' as "curveslide.csv". Matrix (or "curveslide.csv") is designed for use by \code{\link{gpagen}} during GPA.
 #' @export
 #' @keywords utilities
-#' @seealso  \code{\link{digitize2d}}, \code{\link{gpagen}}
+#' @seealso  \code{\link{digitize2d}}, \code{\link{digit.fixed}}, \code{\link{gpagen}}
 #' @author Dean Adams, Erik Otarola-Castillo, Emma Sherratt
 #' @references Bookstein, F. J. 1997 Landmark Methods for Forms without Landmarks: Morphometrics of 
 #' Group Differences in Outline Shape. Medical Image Analysis 1(3):225-243.

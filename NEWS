@@ -6,7 +6,7 @@ CHANGES IN GEOMORPH VERSION 2.1.5
   OTHER CHANGES
     o ‘read’ functions now allow both tab and space delimited files
 
-    o define.sliders is new function for defining sliding semilandmarks for 2D and 3D curves; define.sliders.2d and define.sliders.3d now defunct
+    o define.sliders is new function for defining sliding semilandmarks for 2D and 3D curves; define.sliders.2d and define.sliders.3d deprecated
 
 
 CHANGES IN GEOMORPH VERSION 2.1.4
