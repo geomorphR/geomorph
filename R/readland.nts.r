@@ -41,7 +41,7 @@ readland.nts<-function(file){
   if (length(comment) != 0){
     ntsfile<-scan(file=file,what="char",quote="",sep="\n",strip.white=TRUE,comment.char="\'",quiet=TRUE)
   }
-  header<-unlist(strsplit(ntsfile[1]," "))
+  header<-unlist(strsplit(ntsfile[1],"\\s+"))
   if(header[1]!=1){
     stop("NTS file not a rectangular matrix. First value in parameter line must be '1'.") }
   header<-casefold(header,upper=TRUE)
@@ -56,8 +56,7 @@ readland.nts<-function(file){
   missdata<-ifelse(header[4]!=0,T,F)
   if(missdata==TRUE){missval<-ifelse(dimval==6,header[5],header[6]) } 
   n<-header[2];k<-header[dimval];p<-header[3]/k;   
-  tmp<-gsub("\\t"," ",ntsfile[-1])  #replace tabs with spaces
-  tmp<-unlist(strsplit(tmp,split=" +"))
+  tmp<-unlist(strsplit(ntsfile[-1],"\\s+"))
   speclab<-NULL; 
   if(r.lab==TRUE){
     speclab<-tmp[1:n]

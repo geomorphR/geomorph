@@ -82,13 +82,13 @@ readland.tps <- function (file, specID = c("None", "ID", "imageID"),
     ncurvepts <- as.numeric(sub("POINTS=", "", tpsfile[grep("POINTS=", tpsfile, ignore.case)], ignore.case))
       if (max(ncurve) - min(ncurve) != 0) {
         stop("Number of curves not the same for all specimens.") }
-      if (warnmsg == T) {print(paste("Landmarks 1:", p, " are fixed landmarks.", sep=""))
+      if (warnmsg == T && readcurves==T) {print(paste("Landmarks 1:", p, " are fixed landmarks.", sep=""))
                          print(paste("Landmarks ", p+1, ":", p+sum(ncurvepts[1:ncurve[1]]), " are semilandmarks.", sep=""))}
       p <- nland[1] + sum(ncurvepts[1:ncurve[1]]) 
   }    
   tmp <- tpsfile[-(grep("=", tpsfile))]
   options(warn = -1)
-  tmp <- matrix(as.numeric(unlist(strsplit(tmp, split = " +"))),ncol = k, byrow = T)
+  tmp <- matrix(as.numeric(unlist(strsplit(tmp,"\\s+"))),ncol = k, byrow = T)
  
   if (warnmsg == T) {
     if (sum(which(is.na(tmp) == TRUE)) > 0) {

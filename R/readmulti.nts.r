@@ -37,7 +37,7 @@ readmulti.nts<-function(filelist){
     if (length(comment) != 0){
       ntsfile<-scan(file=file,what="char",quote="",sep="\n",strip.white=TRUE,comment.char="\'",quiet=TRUE)
     }
-    header<-unlist(strsplit(ntsfile[1]," "))
+    header<-unlist(strsplit(ntsfile[1],"\\s+"))
     if(header[1]!=1){
       stop("NTS file not a rectangular matrix. First value in parameter line must be '1'.") }
     header<-casefold(header,upper=TRUE)
@@ -55,8 +55,7 @@ readmulti.nts<-function(filelist){
     nind<-rbind(nind,p)
     if (min(nind)!=max(nind)) {
       stop("Number of landmarks not the same in all files.") } 
-    tmp<-gsub("\\t"," ",ntsfile[-1])  #replace tabs with spaces
-    tmp<-unlist(strsplit(tmp,split=" +"))
+    tmp<-unlist(strsplit(ntsfile[-1],"\\s+"))
     rowlab<-NULL; 
     if(r.lab==TRUE){
       rowlab<-tmp[1:p]
