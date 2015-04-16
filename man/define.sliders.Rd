@@ -49,7 +49,7 @@ in the following order:
 }
 }
 
-#' \subsection{Selection in 3D}{
+\subsection{Selection in 3D}{
 Choosing which landmarks will be sliders involves landmark selection using a mouse in the rgl plot window.
 With a standard 3-button (PC) buildtemplate uses:
 \enumerate{
@@ -83,7 +83,7 @@ Bookstein, F. J. 1997 Landmark Methods for Forms without Landmarks: Morphometric
 Group Differences in Outline Shape. Medical Image Analysis 1(3):225-243.
 }
 \seealso{
-\code{\link{digitize2d}}, \code{\link{gpagen}}
+\code{\link{digitize2d}}, \code{\link{digit.fixed}}, \code{\link{gpagen}}
 }
 \keyword{utilities}
 

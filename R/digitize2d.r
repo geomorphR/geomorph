@@ -10,12 +10,11 @@
 #' for subsequent analysis (see the function \code{\link{define.sliders.2d}}).
 #' 
 #' \subsection{The Digitizing Session}{
-#' Users may digitize all specimens in one session, or may return at a later time to complete digitizing. 
-#' In the latter case, the user provides the same filelist and TPS file and the function will
-#' determine where the user left off. 
+#' Digitizing landmarks from 2D photos requires that a scale bar is placed in the image in order to scale the coordinate data. The 'scale' option requires: a single number (e.g. 10) which means that the scale to be measured in all images is a 10mm scale bar; OR a vector the same length as the filelist containing a number for the scale of each image. If scale=NULL, then the digitized coordinates will not be scaled. This option is NOT recommended.
 #' 
-#' If specimens have missing landmarks, these can be incorporated during the digitizing process 
-#' using the 'a' option as described below (a=absent).  
+#' Users may digitize all specimens in one session, or may return at a later time to complete digitizing. In the latter case, the user provides the same filelist and TPS file and the function will determine where the user left off. 
+#' 
+#' If specimens have missing landmarks, these can be incorporated during the digitizing process using the 'a' option as described below (a=absent).  
 #' }
 #' 
 #' 
@@ -33,25 +32,23 @@
 #' asked to select it again.
 #' 
 #'  To digitize a missing landmark, simply click on any location in the image. Then, when 
-#'  prompted to keep selection, choose 'a' (for absent).  Missing landmarks can only be included during
-#'  the digitizing process when verbose=TRUE. 
+#'  prompted to keep selection, choose 'a' (for absent).  Missing landmarks can only be included during the digitizing process when verbose=TRUE. 
 #'  
-#' If verbose = FALSE the digitizing of landmarks is continuous and uninterrupted. Here the user
-#'  will not be prompted to approve each landmark selection. 
+#' If verbose = FALSE the digitizing of landmarks is continuous and uninterrupted. Here the user will not be prompted to approve each landmark selection. 
 #'  
-#'   At the end of digitizing, the landmark coordinates are written to a TPS file. The x,y values are scaled if a vector fo scales 
-#'   is included."}
+#'   At the end of digitizing, the landmark coordinates are written to a TPS file. The x,y values are scaled if a vector fo scales is included.
+#'   }
 #' 
 #' @param filelist A list of names of jpeg images to be digitized. 
 #' @param nlandmarks Number of landmarks to be digitized.
-#' @param scale An optional vector containing the length of the scale to be placed on each image.
+#' @param scale An vector containing the length of the scale to be placed on each image.
 #' @param tpsfile The name of a TPS file to be created or read
 #' @param verbose logical. User decides whether to digitize in verbose or silent format (see details), default is verbose
 #' @return Function returns a tps file containing the digitized landmark coordinates.
 #' @keywords digitizing
 #' @export
-#' @author Dean Adams Erik Otarola-Castillo and Emma Sherratt
-digitize2d <- function (filelist, nlandmarks, scale = NULL, tpsfile, verbose = TRUE) 
+#' @author Dean Adams, Erik Otarola-Castillo and Emma Sherratt
+digitize2d <- function (filelist, nlandmarks, scale=NULL, tpsfile, verbose = TRUE) 
 {
   flist <- dir()
   if (sum(which(flist == tpsfile)) == 0) {
@@ -70,13 +67,12 @@ digitize2d <- function (filelist, nlandmarks, scale = NULL, tpsfile, verbose = T
   if(length(scale) != length(filelist)){
     if(length(scale)==1) { cat("Only 1 scale measure provided. Will use scale =", scale, " for all specimens.\n")
       scale = rep(scale, length(filelist))
-    } else 
-      stop("Scale not provided for every specimen.")
+    }
   }
   digitized <- apply(two.d.array(newdata), 1, sum)
   digstart <- min(which(digitized == 0))
   for (i in digstart:length(filelist)) {
-    cat(paste("Digitizing specimen ", i, " in filelist"), 
+    cat(paste("Digitizing specimen", i, "in filelist"), 
         "\n")
     spec.name <- unlist(strsplit(basename(filelist[i]), "\\."))[1]
     specimen <- readJPEG(filelist[i], native = T)
@@ -85,6 +81,7 @@ digitize2d <- function (filelist, nlandmarks, scale = NULL, tpsfile, verbose = T
          ylab = "y", asp = 1, tck = 0, xaxt = "n", yaxt = "n")
     rasterImage(specimen, 1, 1, dim(specimen)[2], dim(specimen)[1])
     if (is.null(scale)) {
+      cat("Scale not provided! Proceed with caution.\n") 
       scalebar = 1
     }
     if (!is.null(scale)) {
