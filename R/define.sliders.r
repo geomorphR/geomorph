@@ -61,8 +61,8 @@
 #' 
 #' @param landmarks A matrix containing 2D or 3D landmark coordinates of landmarks and semilandmarks, OR A vector containing a sequence of numbers correspnding to the landmarks in the order they appear along the curve (for AUTO mode)
 #' @param nsliders Number of landmarks to be semilandmarks that slide along curves
-#' @param surfsliders Logical (3D only) If 'landmarks' contains landmarks that are "surface sliders",
-#' made by \code{\link{buildtemplate}}, "surfslide.csv" should be in working directory 
+#' @param surfsliders (3D only) If 'landmarks' contains "surface sliders",
+#' e.g. made by \code{\link{buildtemplate}}, these should be given as a vector or use surfsliders = T, and function looks for "surfslide.csv" in working directory.
 #' @param write.file A logical value indicating whether the matrix is written to file as .csv.
 #' @return Function returns a 'nsliders-x-3' matrix containing the landmark address of the curve sliders, indicating the landmarks between which the slider landmarks will "slide". If write.file = T the matrix is also written to working directory as "curveslide.csv". Matrix (or "curveslide.csv") is designed for use by \code{\link{gpagen}} during GPA.
 #' @export
@@ -72,7 +72,7 @@
 #' @references Bookstein, F. J. 1997 Landmark Methods for Forms without Landmarks: Morphometrics of 
 #' Group Differences in Outline Shape. Medical Image Analysis 1(3):225-243.
 
-define.sliders<-function(landmarks, nsliders, surfsliders=FALSE, write.file = TRUE) {
+define.sliders<-function(landmarks, nsliders, surfsliders=NULL, write.file = TRUE) {
   checkmat <- is.matrix(landmarks)
   if (checkmat==FALSE) { 
     nsliders <- length(landmarks)
@@ -117,9 +117,11 @@ define.sliders<-function(landmarks, nsliders, surfsliders=FALSE, write.file = TR
   # 3D routine
   if (checkdim==3) {
     rownames(spec) <- c(1:nrow(spec)) 
-    if (surfsliders == TRUE){
+    if(!is.null(surfsliders)){
+    if(is.logical(surfsliders)){
       surf <- as.matrix(read.csv("surfslide.csv", header=T))
-      spec <- spec[-surf,]
+      spec <- spec[-surf,]} else     
+    spec <- spec[-surfsliders,]
     }
     n <- dim(spec)[1]
     index <- as.numeric(rownames(spec))
