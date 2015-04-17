@@ -7,7 +7,7 @@
 digit.curves(start, curve, nPoints, closed = T)
 }
 \arguments{
-\item{start}{A vector of coordinates for the fixed landmark defining the start of the curve}
+\item{start}{A vector of x,y,(z) coordinates for the fixed landmark defining the start of the curve}
 
 \item{curve}{A p-x-k matrix of 2D or 3D coordinates for a set of ordered points defining a curve}
 
@@ -28,7 +28,7 @@ The start of the curve is a fixed landmark on the curve that is equivalent (homo
 'curve' is a p-x-k matrix of 2D or 3D coordinates for a set of ordered points defining a curve. This can be the pixels of an outline calculated in ImageJ (save xy coordinates) or any other reasonable way of obtaining ordered coorinates along a curve (including sampling by hand using
 \code{\link{digit.fixed}} or \code{\link{digitize2d}} - but note that there should be more points defining the curve than nPoints in order to accurately calculate the semilandmarks).
 
-#' If 'closed = T', the function returns the coordinates of the 'start' landmark plus nPoints. If 'closed = F', the function returns the coordinates of the 'start' landmark, plus nPoints and the end of the curve.
+If 'closed = T', the function returns the coordinates of the 'start' landmark plus nPoints. If 'closed = F', the function returns the coordinates of the 'start' landmark, plus nPoints and the end of the curve.
 }
 \author{
 Emma Sherratt
