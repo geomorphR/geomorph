@@ -25,8 +25,7 @@
 #'  \item Click to choose the last landmark between which semi-landmark will "slide",
 #'  Selected landmarks will be filled in and lines are drawn connecting the three landmarks, 
 #'  and will highlight the sliding semilandmark in red and the flanking landmarks in blue. 
-#' }
-#' }
+#' } }
 #' 
 #' \subsection{Selection in 3D}{ 
 #' Choosing which landmarks will be sliders involves landmark selection using a mouse in the rgl plot window. 
@@ -51,26 +50,41 @@
 #'  \item Click to choose sliding landmark,
 #'  \item Click to choose the last landmark between which semi-landmark will "slide",
 #' Screen will show lines connecting the three landmarks, and will highlight the sliding semilandmark in red. 
-#' }
+#' } }
+#' 
+#' \subsection{AUTO mode}{ 
+#' The input 'landmarks' can be simply a vector of numbers corresponding to the "sliders" (semilandmarks) in the order they appear along a curve on the specimen. This can be made by c() or seq() or any other reasonable method.
+#'  
+#'  If the sliders form a closed curve, then the function assumes that the first and last landmarks in the 'landmarks' vector are THE SAME are fixed (not sliders). e.g. if landmark 1 is a fixed landmark, and 2, 3 and 4 are semilandmarks, then sliders = c(1,2,3,4,1).
+#   If the sliders form an open curve, then the function assumes the first and last landmarks are DIFFERENT and are fixed (not sliders), e.g. if landmark 1 and 5 are fixed landmarks, and 2, 3 and 4 are semilandmarks, then sliders = c(1,2,3,4,5).
 #' }
 #' 
-#' @param spec Name of specimen, as an object matrix containing 2D or 3D landmark coordinates
+#' @param landmarks A matrix containing 2D or 3D landmark coordinates of landmarks and semilandmarks, OR A vector containing a sequence of numbers correspnding to the landmarks in the order they appear along the curve (for AUTO mode)
 #' @param nsliders Number of landmarks to be semilandmarks that slide along curves
-#' @param surfsliders Logical (3D only) If 'spec' contains landmarks that are "surface sliders",
+#' @param surfsliders Logical (3D only) If 'landmarks' contains landmarks that are "surface sliders",
 #' made by \code{\link{buildtemplate}}, "surfslide.csv" should be in working directory 
-#' @return Function returns a 'nsliders-x-3' matrix containing the landmark address of the curve sliders, indicating the 
-#' landmarks between which the slider landmarks will "slide". The matrix is also written to working directory
-#' as "curveslide.csv". Matrix (or "curveslide.csv") is designed for use by \code{\link{gpagen}} during GPA.
+#' @param write.file A logical value indicating whether the matrix is written to file as .csv.
+#' @return Function returns a 'nsliders-x-3' matrix containing the landmark address of the curve sliders, indicating the landmarks between which the slider landmarks will "slide". If write.file = T the matrix is also written to working directory as "curveslide.csv". Matrix (or "curveslide.csv") is designed for use by \code{\link{gpagen}} during GPA.
 #' @export
 #' @keywords utilities
-#' @seealso  \code{\link{digitize2d}}, \code{\link{digit.fixed}}, \code{\link{gpagen}}
-#' @author Dean Adams, Erik Otarola-Castillo, Emma Sherratt
+#' @seealso  \code{\link{digitize2d}}, \code{\link{digit.fixed}}, \code{\link{gpagen}}, \code{\link{digit.curves}}
+#' @author Emma Sherratt, Dean Adams, Erik Otarola-Castillo 
 #' @references Bookstein, F. J. 1997 Landmark Methods for Forms without Landmarks: Morphometrics of 
 #' Group Differences in Outline Shape. Medical Image Analysis 1(3):225-243.
-define.sliders<-function(spec, nsliders,surfsliders=FALSE) {
-  spec.name <- deparse(substitute(spec))
-  checkmat <- is.matrix(spec)
-  if (checkmat==FALSE) { stop("Input must be a p-x-k matrix of landmark coordinates")}
+
+define.sliders<-function(landmarks, nsliders, surfsliders=FALSE, write.file = TRUE) {
+  checkmat <- is.matrix(landmarks)
+  if (checkmat==FALSE) { 
+    nsliders <- length(landmarks)
+    CV <- matrix(NA, ncol=3, nrow=nsliders-2)
+    for (i in 1:(nsliders-2)){
+      CV[i,] <- landmarks[1:3]
+      landmarks <- landmarks[-1] }
+    colnames(CV)<-c("before","slide","after")
+    if(write.file == TRUE){write.table(CV,file="curveslide.csv",row.names=FALSE,col.names=TRUE,sep=",")}
+    return(CV)
+  }
+  if (checkmat == TRUE) { spec <- landmarks }
   checkdim <- dim(spec)[2]
   # 2D routine
   if (checkdim==2) {
@@ -97,7 +111,7 @@ define.sliders<-function(spec, nsliders,surfsliders=FALSE) {
       }
     }
     colnames(selected)<-c("before","slide","after")
-    write.table(selected,file="curveslide.csv",row.names=FALSE,col.names=TRUE,sep=",")
+    if(write.file == TRUE){write.table(selected,file="curveslide.csv",row.names=FALSE,col.names=TRUE,sep=",")}
     return(selected)
   }
   # 3D routine
@@ -135,7 +149,7 @@ define.sliders<-function(spec, nsliders,surfsliders=FALSE) {
     }
     
     colnames(curveslide)<-c("before","slide","after")
-    write.table(curveslide,file="curveslide.csv",row.names=FALSE,col.names=TRUE,sep=",")
+    if(write.file == TRUE){write.table(curveslide,file="curveslide.csv",row.names=FALSE,col.names=TRUE,sep=",")}
     return(curveslide)  
 }
 }

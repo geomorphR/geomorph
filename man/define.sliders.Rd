@@ -4,20 +4,20 @@
 \alias{define.sliders}
 \title{Select points to "slide" along curves.}
 \usage{
-define.sliders(spec, nsliders, surfsliders = FALSE)
+define.sliders(landmarks, nsliders, surfsliders = FALSE, write.file = TRUE)
 }
 \arguments{
-\item{spec}{Name of specimen, as an object matrix containing 2D or 3D landmark coordinates}
+\item{landmarks}{A matrix containing 2D or 3D landmark coordinates of landmarks and semilandmarks, OR A vector containing a sequence of numbers correspnding to the landmarks in the order they appear along the curve (for AUTO mode)}
 
 \item{nsliders}{Number of landmarks to be semilandmarks that slide along curves}
 
-\item{surfsliders}{Logical (3D only) If 'spec' contains landmarks that are "surface sliders",
+\item{surfsliders}{Logical (3D only) If 'landmarks' contains landmarks that are "surface sliders",
 made by \code{\link{buildtemplate}}, "surfslide.csv" should be in working directory}
+
+\item{write.file}{A logical value indicating whether the matrix is written to file as .csv.}
 }
 \value{
-Function returns a 'nsliders-x-3' matrix containing the landmark address of the curve sliders, indicating the
-landmarks between which the slider landmarks will "slide". The matrix is also written to working directory
-as "curveslide.csv". Matrix (or "curveslide.csv") is designed for use by \code{\link{gpagen}} during GPA.
+Function returns a 'nsliders-x-3' matrix containing the landmark address of the curve sliders, indicating the landmarks between which the slider landmarks will "slide". If write.file = T the matrix is also written to working directory as "curveslide.csv". Matrix (or "curveslide.csv") is designed for use by \code{\link{gpagen}} during GPA.
 }
 \description{
 An interactive function to define which landmarks will "slide" along two-dimensional (2D) or
@@ -46,8 +46,7 @@ in the following order:
  \item Click to choose the last landmark between which semi-landmark will "slide",
  Selected landmarks will be filled in and lines are drawn connecting the three landmarks,
  and will highlight the sliding semilandmark in red and the flanking landmarks in blue.
-}
-}
+} }
 
 \subsection{Selection in 3D}{
 Choosing which landmarks will be sliders involves landmark selection using a mouse in the rgl plot window.
@@ -72,18 +71,23 @@ To define the sliders, for each sliding landmark along the curve in the format '
  \item Click to choose sliding landmark,
  \item Click to choose the last landmark between which semi-landmark will "slide",
 Screen will show lines connecting the three landmarks, and will highlight the sliding semilandmark in red.
-}
+} }
+
+\subsection{AUTO mode}{
+The input 'landmarks' can be simply a vector of numbers corresponding to the "sliders" (semilandmarks) in the order they appear along a curve on the specimen. This can be made by c() or seq() or any other reasonable method.
+
+If the sliders form a closed curve, then the function assumes that the first and last landmarks in the 'landmarks' vector are THE SAME are fixed (not sliders). e.g. if landmark 1 is a fixed landmark, and 2, 3 and 4 are semilandmarks, then sliders = c(1,2,3,4,1).
 }
 }
 \author{
-Dean Adams, Erik Otarola-Castillo, Emma Sherratt
+Emma Sherratt, Dean Adams, Erik Otarola-Castillo
 }
 \references{
 Bookstein, F. J. 1997 Landmark Methods for Forms without Landmarks: Morphometrics of
 Group Differences in Outline Shape. Medical Image Analysis 1(3):225-243.
 }
 \seealso{
-\code{\link{digitize2d}}, \code{\link{digit.fixed}}, \code{\link{gpagen}}
+\code{\link{digitize2d}}, \code{\link{digit.fixed}}, \code{\link{gpagen}}, \code{\link{digit.curves}}
 }
 \keyword{utilities}
 

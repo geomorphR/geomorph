@@ -61,7 +61,7 @@ At the end of digitizing, the landmark coordinates are written to a TPS file. Th
   }
 }
 \author{
-Dean Adams Erik Otarola-Castillo and Emma Sherratt
+Dean Adams, Erik Otarola-Castillo and Emma Sherratt
 }
 \keyword{digitizing}
 
