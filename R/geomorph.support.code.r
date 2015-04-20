@@ -446,7 +446,6 @@ mod.mats.w.cov <- function(f1, f2, dat1, dat2, keep.order =FALSE, interaction = 
     fTerms <- terms(f1, data = dat1, keep.order = keep.order)
     cTerms <- terms(f2, data = dat2, keep.order = keep.order)
     all.terms <- c(attr(cTerms, "term.labels"), attr(fTerms, "term.labels"))
-    dat12 <- merge(dat1, dat2, by="row.names")
     if(interaction == FALSE) form.full <- as.formula(paste("~", paste(all.terms,collapse="+")))
     if(interaction == TRUE) {
         cPart <- paste(attr(cTerms, "term.labels"),collapse="+")
@@ -462,10 +461,10 @@ mod.mats.w.cov <- function(f1, f2, dat1, dat2, keep.order =FALSE, interaction = 
     }
     Terms.full <- terms(form.full, keep.order = keep.order)
     k <- length(attr(Terms.full, "term.labels"))
-    n <- dim(dat12)[[1]]
+    n <- dim(dat1)[[1]]
     Xs <- as.list(array(,(k+1)))
     Xs[[1]] <- matrix(1,n)
-    for(i in 1:k) Xs[[i+1]] <- model.matrix(Terms.full[1:i], data=dat12, by="row.names")
+    for(i in 1:k) Xs[[i+1]] <- model.matrix(Terms.full[1:i])
     list(Xs=Xs, terms = attr(Terms.full, "term.labels"))
 }
 
