@@ -23,3 +23,5 @@ Details of the installion can be found here: <url> http://www.geomorph.net/insta
 <code> install.packages("devtools")</code>
 
 <code> devtools::install_github("EmSherratt/geomorph",ref = "Develop")</code>
+
+##NOTE FOR THE PRE-RELEASE (BETA) VERSION: We strongly discourage you from publishing results with this version, unless you check with the authors first.
