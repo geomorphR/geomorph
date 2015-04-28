@@ -275,9 +275,9 @@ plotAllometry<-function(f1, f2 = NULL, method=c("CAC","RegScore","PredLine"),war
   }
   
   if(verbose==TRUE){ 
-    if(method=="CAC") list(allom.score=CAC,resid.shape=RSC,logSize=log(Size),ProcDist.lm=anova.tab,pred.shape=Ahat)
-    if(method=="RegScore") list(allom.score=Reg.proj,logSize=log(Size),ProcDist.lm=anova.tab,pred.shape=Ahat)
-    if(method=="PredLine") list(allom.score=pred.val,logSize=log(Size),ProcDist.lm=anova.tab2,pred.shape=Ahat)
+    if(method=="CAC") return(list(allom.score=CAC,resid.shape=RSC,logSize=log(Size),ProcDist.lm=anova.tab,pred.shape=Ahat))
+    if(method=="RegScore") return(list(allom.score=Reg.proj,logSize=log(Size),ProcDist.lm=anova.tab,pred.shape=Ahat))
+    if(method=="PredLine") return(list(allom.score=pred.val,logSize=log(Size),ProcDist.lm=anova.tab2,pred.shape=Ahat))
   }
   if(verbose==FALSE) return(ProcDist.lm=anova.tab)
 }
