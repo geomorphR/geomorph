@@ -64,12 +64,13 @@
 #' ref<-mshape(Y.gpa$coords)
 #' plotRefToTarget(ref,Y.gpa$coords[,,1],method="points")
 plotRefToTarget<-function(M1,M2,mesh= NULL,outline=NULL,method=c("TPS","vector","points","surface"),
-                          mag=1.0,links=NULL, label=FALSE,...){
+                          mag=1.0,links=NULL, label=FALSE, gridPars = NULL, ...){
   method <- match.arg(method)
   if(any(is.na(M1))==T){
     stop("Data contains missing values. Estimate these first (see 'estimate.missing').")  }
   if(any(is.na(M2))==T){
     stop("Data contains missing values. Estimate these first (see 'estimate.missing').")  }
+  if(is.null(gridPars)) gP = gridPar() else gP=gridPars
   k<-dim(M1)[2]
   mag<-(mag-1)
   M2<-M2+(M2-M1)*mag
@@ -80,7 +81,16 @@ plotRefToTarget<-function(M1,M2,mesh= NULL,outline=NULL,method=c("TPS","vector",
   }
   if(k==2){
     if(method=="TPS"){
-      tps(M1,M2,20)
+      tps(M1,M2,gP$n.col.cell, sz=gP$pt.size, pt.bg=gP$pt.bg, grid.col=gP$grid.col, grid.lwd=gP$grid.lwd, grid.lty=gP$grid.lty)
+      if(is.null(links)==FALSE){
+        for (i in 1:nrow(links)){
+          linkcol <- rep(gP$link.col,nrow(links))[1:nrow(links)]
+          linklwd <- rep(gP$link.lwd,nrow(links))[1:nrow(links)]
+          linklty <- rep(gP$link.lty,nrow(links))[1:nrow(links)]
+          segments(M2[links[i,1],1],M2[links[i,1],2],M2[links[i,2],1],M2[links[i,2],2],
+                   col=linkcol[i],lty=linklty[i],lwd=linklwd[i])
+        }
+      }
       if(label == TRUE){text(M2, label = paste(1:dim(M2)[1]), adj = 0.5, pos = 1, cex=0.8)}
       if(!is.null(outline)){
         curve.warp <- tps2d(outline, M1, M2)
@@ -88,26 +98,26 @@ plotRefToTarget<-function(M1,M2,mesh= NULL,outline=NULL,method=c("TPS","vector",
       if(!is.null(outline)){
         points(curve.warp,pch=19, cex=0.1) 
       }
-      if(is.null(links)==FALSE){
-        for (i in 1:nrow(links)){
-          segments(M2[links[i,1],1],M2[links[i,1],2],M2[links[i,2],1],M2[links[i,2],2],lwd=2)
-        }
-      }
+      points(M2,pch=21,cex=gP$pt.size, bg=gP$pt.bg)
     }
     if(method=="vector"){
-      plot(M1,asp=1,pch=21,bg="gray",xlim=limits(M1[,1],1.25),ylim=limits(M1[,2],1.25),cex=1,xlab="x",ylab="y",...)
-      if(label == TRUE){text(M1, label = paste(1:dim(M1)[1]), adj = 0.5, pos = 1, cex=0.8)}
-      arrows(M1[,1],M1[,2],M2[,1],M2[,2],length=0.075,lwd=2)
+      plot(M1,asp=1,type="n",xlab="x",ylab="y",xlim=limits(M1[,1],1.25),ylim=limits(M1[,2],1.25),...)
       if(is.null(links)==FALSE){
         for (i in 1:nrow(links)){
-          segments(M2[links[i,1],1],M2[links[i,1],2],M2[links[i,2],1],M2[links[i,2],2],lwd=1,lty=2)
+          linkcol <- rep(gP$link.col,nrow(links))[1:nrow(links)]
+          linklwd <- rep(gP$link.lwd,nrow(links))[1:nrow(links)]
+          linklty <- rep(gP$link.lty,nrow(links))[1:nrow(links)]
+          segments(M2[links[i,1],1],M2[links[i,1],2],M2[links[i,2],1],M2[links[i,2],2],
+                   col=linkcol[i],lty=linklty[i],lwd=linklwd[i])
         }
       }
+      if(label == TRUE){text(M1, label = paste(1:dim(M1)[1]), adj = 0.5, pos = 1, cex=0.8)}
+      arrows(M1[,1],M1[,2],M2[,1],M2[,2],length=0.075,lwd=2)
+      points(M1,pch=21,bg=gP$pt.bg,cex=gP$pt.size)
     }
     if(method=="points"){
-      plot(M1,asp=1,pch=21,bg="gray",xlim=limits(M1[,1],1.25),ylim=limits(M1[,2],1.25),cex=1,xlab="x",ylab="y",...)
+      plot(M1,asp=1,pch=21,type="n",xlim=limits(M1[,1],1.25),ylim=limits(M1[,2],1.25),xlab="x",ylab="y",...)
       if(label == TRUE){text(M1, label = paste(1:dim(M1)[1]), adj = 0.5, pos = 1, col = "gray", cex=0.8)}
-      points(M2,asp=1,pch=21,bg="black",cex=1)
       if(!is.null(outline)){
         curve.warp <- tps2d(outline, M1, M2)
       }
@@ -116,11 +126,19 @@ plotRefToTarget<-function(M1,M2,mesh= NULL,outline=NULL,method=c("TPS","vector",
         points(curve.warp,pch=19, cex=0.1,col="black") 
       }
       if(is.null(links)==FALSE){
+        linkcol <- rep(gP$link.col,nrow(links))[1:nrow(links)]
+        linklwd <- rep(gP$link.lwd,nrow(links))[1:nrow(links)]
+        linklty <- rep(gP$link.lty,nrow(links))[1:nrow(links)]
+        tarlinkcol <- rep(gP$tar.link.col,nrow(links))[1:nrow(links)]
+        tarlinklwd <- rep(gP$tar.link.lwd,nrow(links))[1:nrow(links)]
+        tarlinklty <- rep(gP$tar.link.lty,nrow(links))[1:nrow(links)]
         for (i in 1:nrow(links)){
-          segments(M1[links[i,1],1],M1[links[i,1],2],M1[links[i,2],1],M1[links[i,2],2],lwd=1,lty=2, col= "gray")
-          segments(M2[links[i,1],1],M2[links[i,1],2],M2[links[i,2],1],M2[links[i,2],2],lwd=1,lty=2, col= "black")
+          segments(M1[links[i,1],1],M1[links[i,1],2],M1[links[i,2],1],M1[links[i,2],2],col=linkcol[i],lty=linklty[i],lwd=linklwd[i])
+          segments(M2[links[i,1],1],M2[links[i,1],2],M2[links[i,2],1],M2[links[i,2],2],col=tarlinkcol[i],lty=tarlinklty[i],lwd=tarlinklwd[i])
         }
       }
+      points(M2,pch=21,bg=gP$tar.pt.bg,cex=gP$tar.pt.size)
+      points(M1,pch=21,bg=gP$pt.bg,cex=gP$pt.size)
     }
     if(method=="surface"){
       stop("Surface plotting for 3D landmarks only.")
