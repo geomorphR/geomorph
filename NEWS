@@ -1,10 +1,11 @@
 CHANGES IN GEOMORPH VERSION 2.1.5
 
   NEW FEATURES
+    o new gridPar() function to customize TPS grids with plotRefToTarget
 
     o new digit.curves() function to calculate equidistant semilandmarks alone 2D and 3D curves
 
-    o define.sliders is new interactive function for defining sliding semilandmarks for 2D and 3D curves, plus an automatic mode when given a sequence of semilandmarks along a curve
+    o define.sliders() is new interactive function for defining sliding semilandmarks for 2D and 3D curves, plus an automatic mode when given a sequence of semilandmarks along a curve
 
   BUG FIXES
     o Corrected an error in plotAllometry() where verbose=T did not return
@@ -12,7 +13,7 @@ CHANGES IN GEOMORPH VERSION 2.1.5
   OTHER CHANGES
     o ‘read’ functions now allow both tab and space delimited files
 
-    o define.sliders.2d and define.sliders.3d deprecated (replaced by define.sliders)
+    o define.sliders.2d() and define.sliders.3d() deprecated (replaced by define.sliders)
 
 
 CHANGES IN GEOMORPH VERSION 2.1.4
