@@ -6,8 +6,10 @@
 \usage{
 gridPar(pt.bg = "black", pt.size = 1.5, n.col.cell = 20,
   grid.col = "black", grid.lwd = 1, grid.lty = 1, link.col = "black",
-  link.lwd = 2, link.lty = 1, tar.pt.bg = "gray", tar.pt.size = 1,
-  tar.link.col = "gray", tar.link.lwd = 2, tar.link.lty = 1)
+  link.lwd = 2, link.lty = 1, out.col = "black", out.cex = 0.1,
+  tar.pt.bg = "gray", tar.pt.size = 1, tar.link.col = "gray",
+  tar.link.lwd = 2, tar.link.lty = 1, tar.out.col = "gray",
+  tar.out.cex = 0.1)
 }
 \arguments{
 \item{pt.bg}{Background color of reference configuration points (single value or vector of values)}
@@ -28,6 +30,10 @@ gridPar(pt.bg = "black", pt.size = 1.5, n.col.cell = 20,
 
 \item{link.lty}{The line type of links for reference configurations (single value or vector of values)}
 
+\item{out.col}{The color of outline for reference configurations (single value or vector of values)}
+
+\item{out.cex}{The size of plotting symbol of outline for reference configurations (single value or vector of values)}
+
 \item{tar.pt.bg}{Background color of target configuration points (single value or vector of values)}
 
 \item{tar.pt.size}{Scale factor for target configuration points (single value or vector of values)}
@@ -37,6 +43,10 @@ gridPar(pt.bg = "black", pt.size = 1.5, n.col.cell = 20,
 \item{tar.link.lwd}{The line weight of links for target configurations (single value or vector of values)}
 
 \item{tar.link.lty}{The line type of links for target configurations (single value or vector of values)}
+
+\item{tar.out.col}{The color of outline for target configurations (single value or vector of values)}
+
+\item{tar.out.cex}{The size of plotting symbol of outline for target configurations (single value or vector of values)}
 }
 \description{
 Function produces a list of parameter changes within \code{\link{plotRefToTarget}} (2D only)
@@ -62,6 +72,9 @@ plotRefToTarget(ref,Y.gpa$coords[,,39], gridPars=GP2, mag=3, method="vector")
 
 GP3 <- gridPar(pt.bg = "blue", pt.size = 1.5, tar.pt.bg = "orange", tar.pt.size = 1)
 plotRefToTarget(ref,Y.gpa$coords[,,39], gridPars=GP3, mag=3, method="points")
+
+GP4 <- gridPar(tar.out.col = "red", tar.out.cex = 0.3)
+plotRefToTarget(ref,Y.gpa$coords[,,39], gridPars=GP4, mag=3, outline=plethodon$outline, method="TPS")
 }
 \author{
 Michael Collyer
