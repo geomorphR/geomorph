@@ -24,7 +24,7 @@
 #' @export
 #' @author Michael Collyer
 #' @seealso  \code{\link{plotRefToTarget}}
-#' 
+#' @examples
 #' data(plethodon) 
 #' Y.gpa<-gpagen(plethodon$land)    #GPA-alignment
 #' 
@@ -33,15 +33,12 @@
 #' plotRefToTarget(ref,Y.gpa$coords[,,39]) # default settings
 #' 
 #' GP1 <- gridPar(pt.bg = "red", pt.size = 1, link.col="blue", link.lwd=2, n.col.cell=50)
-#' 
 #' plotRefToTarget(ref,Y.gpa$coords[,,39], gridPars=GP1, mag=2, links=plethodon$links, method="TPS")
 #' 
 #' GP2 <- gridPar(pt.bg = "green", pt.size = 1)
-#' 
 #' plotRefToTarget(ref,Y.gpa$coords[,,39], gridPars=GP2, mag=3, method="vector")
 #' 
 #' GP3 <- gridPar(pt.bg = "blue", pt.size = 1.5, tar.pt.bg = "orange", tar.pt.size = 1) 
-#' 
 #' plotRefToTarget(ref,Y.gpa$coords[,,39], gridPars=GP3, mag=3, method="points")
 gridPar <- function(pt.bg = "black", 
                     pt.size = 1.5,

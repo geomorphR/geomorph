@@ -36,7 +36,8 @@
 #' @param method Method used to visualize shape difference; see below for details
 #' @param mag The desired magnification to be used when visualizing the shape difference (e.g., mag=2)
 #' @param links An optional matrix defining for links between landmarks
-#' @param label A logical value indicating whether landmark numbers will be plotted 
+#' @param label A logical value indicating whether landmark numbers will be plotted
+#' @param gridPars An optional object made by \code{\link{gridPar}}
 #' @param ... Parameters to be passed to \code{\link{plot}}, \code{\link{plot3d}} or \code{\link{shade3d}}
 #' @return If using {method="surface"}, function will return the warped mesh3d object.
 #' @keywords visualization
@@ -47,7 +48,7 @@
 #' @seealso  \code{\link{warpRefMesh}}
 #' @seealso  \code{\link{warpRefOutline}}
 #' @examples
-#' 
+#' # Two dimensional data
 #' data(plethodon) 
 #' Y.gpa<-gpagen(plethodon$land)    #GPA-alignment
 #' ref<-mshape(Y.gpa$coords)
@@ -58,7 +59,6 @@
 #' 
 #'
 #' # Three dimensional data
-#' 
 #' data(scallops)
 #' Y.gpa<-gpagen(A=scallops$coorddata, curves=scallops$curvslide, surfaces=scallops$surfslide)
 #' ref<-mshape(Y.gpa$coords)

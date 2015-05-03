@@ -25,6 +25,8 @@ plotRefToTarget(M1, M2, mesh = NULL, outline = NULL, method = c("TPS",
 
 \item{label}{A logical value indicating whether landmark numbers will be plotted}
 
+\item{gridPars}{An optional object made by \code{\link{gridPar}}}
+
 \item{...}{Parameters to be passed to \code{\link{plot}}, \code{\link{plot3d}} or \code{\link{shade3d}}}
 }
 \value{
@@ -62,6 +64,7 @@ Four distinct methods for plots are available:
  This function combines numerous plotting functions found in Claude (2008).
 }
 \examples{
+# Two dimensional data
 data(plethodon)
 Y.gpa<-gpagen(plethodon$land)    #GPA-alignment
 ref<-mshape(Y.gpa$coords)
@@ -72,7 +75,6 @@ plotRefToTarget(ref,Y.gpa$coords[,,39],method="points",outline=plethodon$outline
 
 
 # Three dimensional data
-
 data(scallops)
 Y.gpa<-gpagen(A=scallops$coorddata, curves=scallops$curvslide, surfaces=scallops$surfslide)
 ref<-mshape(Y.gpa$coords)
