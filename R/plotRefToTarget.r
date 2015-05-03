@@ -96,7 +96,7 @@ plotRefToTarget<-function(M1,M2,mesh= NULL,outline=NULL,method=c("TPS","vector",
         curve.warp <- tps2d(outline, M1, M2)
       }
       if(!is.null(outline)){
-        points(curve.warp,pch=19, cex=0.1) 
+        points(curve.warp,pch=19, cex=gP$tar.out.cex, col=gP$tar.out.col) 
       }
       points(M2,pch=21,cex=gP$pt.size, bg=gP$pt.bg)
     }
@@ -122,8 +122,8 @@ plotRefToTarget<-function(M1,M2,mesh= NULL,outline=NULL,method=c("TPS","vector",
         curve.warp <- tps2d(outline, M1, M2)
       }
       if(!is.null(outline)){
-        points(outline,pch=19, cex=0.1,col="gray") 
-        points(curve.warp,pch=19, cex=0.1,col="black") 
+        points(outline,pch=19, cex=gP$out.cex, col=gP$out.col) 
+        points(curve.warp,pch=19, cex=gP$tar.out.cex, col=gP$tar.out.col) 
       }
       if(is.null(links)==FALSE){
         linkcol <- rep(gP$link.col,nrow(links))[1:nrow(links)]

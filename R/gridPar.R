@@ -5,6 +5,7 @@
 #' The function allows users to vary certain plotting parameters to produce different
 #' graphical outcomes for \code{\link{plotRefToTarget}}.  Not all parameters need to be adjusted to use this
 #' function.  This function currently only works with 2D shape data.
+#' 
 #'   
 #' @param pt.bg Background color of reference configuration points (single value or vector of values)
 #' @param pt.size Scale factor for reference configuration points (single value or vector of values)
@@ -15,11 +16,15 @@
 #' @param link.col The color of links for reference configurations (single value or vector of values)
 #' @param link.lwd The line weight of links for reference configurations (single value or vector of values)
 #' @param link.lty The line type of links for reference configurations (single value or vector of values)
+#' @param out.col The color of outline for reference configurations (single value or vector of values)
+#' @param out.cex The size of plotting symbol of outline for reference configurations (single value or vector of values)
 #' @param tar.pt.bg Background color of target configuration points (single value or vector of values)
 #' @param tar.pt.size Scale factor for target configuration points (single value or vector of values)
 #' @param tar.link.col The color of links for target configurations (single value or vector of values)
 #' @param tar.link.lwd The line weight of links for target configurations (single value or vector of values)
 #' @param tar.link.lty The line type of links for target configurations (single value or vector of values)
+#' @param tar.out.col The color of outline for target configurations (single value or vector of values)
+#' @param tar.out.cex The size of plotting symbol of outline for target configurations (single value or vector of values)
 #' @keywords visualization
 #' @export
 #' @author Michael Collyer
@@ -40,6 +45,9 @@
 #' 
 #' GP3 <- gridPar(pt.bg = "blue", pt.size = 1.5, tar.pt.bg = "orange", tar.pt.size = 1) 
 #' plotRefToTarget(ref,Y.gpa$coords[,,39], gridPars=GP3, mag=3, method="points")
+#' 
+#' GP4 <- gridPar(tar.out.col = "red", tar.out.cex = 0.3) 
+#' plotRefToTarget(ref,Y.gpa$coords[,,39], gridPars=GP4, mag=3, outline=plethodon$outline, method="TPS")
 gridPar <- function(pt.bg = "black", 
                     pt.size = 1.5,
                     n.col.cell = 20,
@@ -49,15 +57,21 @@ gridPar <- function(pt.bg = "black",
                     link.col = "black",
                     link.lwd = 2,
                     link.lty = 1,
+                    out.col = "black",
+                    out.cex = 0.1,
                     tar.pt.bg = "gray",
                     tar.pt.size = 1,
                     tar.link.col = "gray",
                     tar.link.lwd = 2,
-                    tar.link.lty = 1
+                    tar.link.lty = 1,
+                    tar.out.col = "gray",
+                    tar.out.cex = 0.1
 ){
   list(pt.bg=pt.bg,pt.size=pt.size,n.col.cell=n.col.cell,
        grid.col=grid.col,grid.lwd=grid.lwd,grid.lty=grid.lty,
        link.col=link.col,link.lwd=link.lwd,link.lty=link.lty,
+       out.col=out.col,out.cex=out.cex,
        tar.pt.bg=tar.pt.bg,tar.pt.size=tar.pt.size,
-       tar.link.col=tar.link.col,tar.link.lwd=tar.link.lwd,tar.link.lty=tar.link.lty)
+       tar.link.col=tar.link.col,tar.link.lwd=tar.link.lwd,tar.link.lty=tar.link.lty,
+       tar.out.col=tar.out.col,tar.out.cex=tar.out.cex)
 }
