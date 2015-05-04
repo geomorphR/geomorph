@@ -1,10 +1,9 @@
 #' Set up parameters for grids, points, and links in plotRefToTarget
 #'
-#' Function produces a list of parameter changes within \code{\link{plotRefToTarget}} (2D only)
+#' Function produces a list of parameter changes within \code{\link{plotRefToTarget}}.
 #'
 #' The function allows users to vary certain plotting parameters to produce different
-#' graphical outcomes for \code{\link{plotRefToTarget}}.  Not all parameters need to be adjusted to use this
-#' function.
+#' graphical outcomes for \code{\link{plotRefToTarget}}.  Not all parameters need to be adjusted to use this function, as the defaults above will be used.
 #' 
 #'   
 #' @param pt.bg Background color of reference configuration points (single value or vector of values)
