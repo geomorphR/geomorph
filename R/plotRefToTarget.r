@@ -38,12 +38,13 @@
 #' @param links An optional matrix defining for links between landmarks
 #' @param label A logical value indicating whether landmark numbers will be plotted
 #' @param gridPars An optional object made by \code{\link{gridPar}}
-#' @param ... Parameters to be passed to \code{\link{plot}}, \code{\link{plot3d}} or \code{\link{shade3d}}
+#' @param ... Additional parameters not covered by \code{\link{gridPar}} to be passed to \code{\link{plot}}, \code{\link{plot3d}} or \code{\link{shade3d}}
 #' @return If using {method="surface"}, function will return the warped mesh3d object.
 #' @keywords visualization
 #' @export
 #' @author Dean Adams & Emma Sherratt
 #' @references Claude, J. 2008. Morphometrics with R. Springer, New York. 
+#' @seealso  \code{\link{gridPar}}
 #' @seealso  \code{\link{define.links}}
 #' @seealso  \code{\link{warpRefMesh}}
 #' @seealso  \code{\link{warpRefOutline}}
@@ -56,13 +57,16 @@
 #' plotRefToTarget(ref,Y.gpa$coords[,,39],mag=2,outline=plethodon$outline)   #magnify difference by 2X
 #' plotRefToTarget(ref,Y.gpa$coords[,,39],method="vector",mag=3)
 #' plotRefToTarget(ref,Y.gpa$coords[,,39],method="points",outline=plethodon$outline)
-#' 
+#' plotRefToTarget(ref,Y.gpa$coords[,,39],gridPars=gridPar(pt.bg = "green", pt.size = 1),method="vector",mag=3)
 #'
 #' # Three dimensional data
 #' data(scallops)
 #' Y.gpa<-gpagen(A=scallops$coorddata, curves=scallops$curvslide, surfaces=scallops$surfslide)
 #' ref<-mshape(Y.gpa$coords)
 #' plotRefToTarget(ref,Y.gpa$coords[,,1],method="points")
+#' scallinks <- matrix(c(1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,11,11,12,12,13,13,14,14,15,15,16,16,1), nrow=16, byrow=T)
+#' plotRefToTarget(ref,Y.gpa$coords[,,1],gridPars=gridPar(pt.bg = "blue", link.col="blue", link.lwd=2), method="points", links = scallinks)
+#' 
 plotRefToTarget<-function(M1,M2,mesh= NULL,outline=NULL,method=c("TPS","vector","points","surface"),
                           mag=1.0,links=NULL, label=FALSE, gridPars = NULL, ...){
   method <- match.arg(method)
@@ -152,15 +156,23 @@ plotRefToTarget<-function(M1,M2,mesh= NULL,outline=NULL,method=c("TPS","vector",
       tps(M1[,1:2],M2[,1:2],20)
       if(is.null(links)==FALSE){
         for (i in 1:nrow(links)){
-          segments(M2[links[i,1],1],M2[links[i,1],2],M2[links[i,2],1],M2[links[i,2],2],lwd=1)
+          linkcol <- rep(gP$link.col,nrow(links))[1:nrow(links)]
+          linklwd <- rep(gP$link.lwd,nrow(links))[1:nrow(links)]
+          linklty <- rep(gP$link.lty,nrow(links))[1:nrow(links)]
+          segments(M2[links[i,1],1],M2[links[i,1],2],M2[links[i,2],1],M2[links[i,2],2],
+                   col=linkcol[i],lty=linklty[i],lwd=linklwd[i])
         }
       }
       title("X,Y tps grid")
       b<-c(1,3)
       tps(M1[,b],M2[,b],20)
       if(is.null(links)==FALSE){
+        linkcol <- rep(gP$link.col,nrow(links))[1:nrow(links)]
+        linklwd <- rep(gP$link.lwd,nrow(links))[1:nrow(links)]
+        linklty <- rep(gP$link.lty,nrow(links))[1:nrow(links)]
         for (i in 1:nrow(links)){
-          segments(M2[links[i,1],1],M2[links[i,1],3],M2[links[i,2],1],M2[links[i,2],3],lwd=1)
+          segments(M2[links[i,1],1],M2[links[i,1],3],M2[links[i,2],1],M2[links[i,2],3],
+                   col=linkcol[i],lty=linklty[i],lwd=linklwd[i])
         }
       }
       title("Y,Z tps grid")
@@ -168,24 +180,34 @@ plotRefToTarget<-function(M1,M2,mesh= NULL,outline=NULL,method=c("TPS","vector",
       on.exit(par(old.par))
     }
     if(method=="vector"){
-      plot3d(M1,type="s",col="gray",size=1.25,aspect=FALSE,...)
-      if(label == TRUE){text3d(M1, texts = paste(1:dim(M1)[1]), adj = 1.3, pos = 4, cex=0.8)}
+      plot3d(M1,type="s",col=gP$pt.bg,size=gP$pt.size,aspect=FALSE,...)
+      if(label == TRUE){text3d(M1, texts = paste(1:dim(M1)[1]), adj=gP$txt.adj,pos=gP$txt.pos,cex=gP$txt.cex,col=gP$txt.col)}
       for (i in 1:nrow(M1)){
         segments3d(rbind(M1[i,],M2[i,]),lwd=2)
       }
       if(is.null(links)==FALSE){
+        tarlinkcol <- rep(gP$tar.link.col,nrow(links))[1:nrow(links)]
+        tarlinklwd <- rep(gP$tar.link.lwd,nrow(links))[1:nrow(links)]
+        tarlinklty <- rep(gP$tar.link.lty,nrow(links))[1:nrow(links)]
         for (i in 1:nrow(links)){
-          segments3d(rbind(M2[links[i,1],],M2[links[i,2],]),lwd=.75)
+          segments3d(rbind(M2[links[i,1],],M2[links[i,2],]),col=tarlinkcol[i],lty=tarlinklty[i],lwd=tarlinklwd[i])
         }
       }
     }
     if(method=="points"){
-      plot3d(M1,type="s",col="gray",size=1.25,aspect=FALSE,...)
-      if(label == TRUE){text3d(M1, texts = paste(1:dim(M1)[1]), adj = 1.3, pos = 4, cex=0.8)}
-      points3d(M2,color="black",size=5)
+      plot3d(M1,type="s",col=gP$pt.bg,size=gP$pt.size,aspect=FALSE,...)
+      plot3d(M2,type="s", col=gP$tar.pt.bg,size=gP$tar.pt.size, add=T)
+      if(label == TRUE){text3d(M1, texts = paste(1:dim(M1)[1]), adj=gP$txt.adj,pos=gP$txt.pos,cex=gP$txt.cex,col=gP$txt.col)}
       if(is.null(links)==FALSE){
+        linkcol <- rep(gP$link.col,nrow(links))[1:nrow(links)]
+        linklwd <- rep(gP$link.lwd,nrow(links))[1:nrow(links)]
+        linklty <- rep(gP$link.lty,nrow(links))[1:nrow(links)]
+        tarlinkcol <- rep(gP$tar.link.col,nrow(links))[1:nrow(links)]
+        tarlinklwd <- rep(gP$tar.link.lwd,nrow(links))[1:nrow(links)]
+        tarlinklty <- rep(gP$tar.link.lty,nrow(links))[1:nrow(links)]
         for (i in 1:nrow(links)){
-          segments3d(rbind(M2[links[i,1],],M2[links[i,2],]),lwd=.75)
+          segments3d(rbind(M1[links[i,1],],M1[links[i,2],]),col=linkcol[i],lty=linklty[i],lwd=linklwd[i])
+          segments3d(rbind(M2[links[i,1],],M2[links[i,2],]),col=tarlinkcol[i],lty=tarlinklty[i],lwd=tarlinklwd[i])
         }
       }
     }
@@ -198,7 +220,7 @@ plotRefToTarget<-function(M1,M2,mesh= NULL,outline=NULL,method=c("TPS","vector",
       warp <- tps2d3d(vb, M1, M2)
       warp.PLY$vb <- rbind(t(warp), 1)
       open3d(); shade3d(warp.PLY, ...)
-      if(label == TRUE){text3d(M1, texts = paste(1:dim(M1)[1]), adj = 1.3, pos = 4, cex=0.8)}
+      if(label == TRUE){text3d(M1, texts = paste(1:dim(M1)[1]), adj=gP$txt.adj,pos=gP$txt.pos,cex=gP$txt.cex,col=gP$txt.col)}
       return(warp.PLY)
     }
   }

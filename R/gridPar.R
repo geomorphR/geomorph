@@ -4,7 +4,7 @@
 #'
 #' The function allows users to vary certain plotting parameters to produce different
 #' graphical outcomes for \code{\link{plotRefToTarget}}.  Not all parameters need to be adjusted to use this
-#' function.  This function currently only works with 2D shape data.
+#' function.
 #' 
 #'   
 #' @param pt.bg Background color of reference configuration points (single value or vector of values)
@@ -15,8 +15,8 @@
 #' @param grid.lty The line type for grid lines (single numerical value, as in base R \code{\link{plot}})
 #' @param txt.adj The adjustment value of the landmark label (one or two values, as in base R \code{\link{text}}) 
 #' @param txt.pos The position of the landmark label (single numerical value, as in base R \code{\link{text}}) 
-#' @param txt.cex The size of the landmark label text (single numerical value)
-#' @param txt.col The color of the landmark label text (single numerical value)
+#' @param txt.cex The size of the landmark label text (single numerical value, as in base R \code{\link{text}})
+#' @param txt.col The color of the landmark label text (single numerical value, as in base R \code{\link{text}})
 #' @param link.col The color of links for reference configurations (single value or vector of values)
 #' @param link.lwd The line weight of links for reference configurations (single value or vector of values)
 #' @param link.lty The line type of links for reference configurations (single value or vector of values)
@@ -31,28 +31,31 @@
 #' @param tar.out.cex The size of plotting symbol of outline for target configurations (single value or vector of values)
 #' @keywords visualization
 #' @export
-#' @author Michael Collyer
+#' @author Michael Collyer & Emma Sherratt
 #' @seealso  \code{\link{plotRefToTarget}}
 #' @examples
 #' data(plethodon) 
 #' Y.gpa<-gpagen(plethodon$land)    #GPA-alignment
-#' 
 #' ref<-mshape(Y.gpa$coords)
-#' 
 #' plotRefToTarget(ref,Y.gpa$coords[,,39]) # default settings
 #' 
+#' # Altering points and links
 #' GP1 <- gridPar(pt.bg = "red", pt.size = 1, link.col="blue", link.lwd=2, n.col.cell=50)
 #' plotRefToTarget(ref,Y.gpa$coords[,,39], gridPars=GP1, mag=2, links=plethodon$links, method="TPS")
 #' 
-#' GP2 <- gridPar(pt.bg = "green", pt.size = 1)
+#' # Altering point color
+#' GP2 <- gridPar(pt.bg = "green", pt.size = 1) 
 #' plotRefToTarget(ref,Y.gpa$coords[,,39], gridPars=GP2, mag=3, method="vector")
 #' 
+#' # Altering ref and target points
 #' GP3 <- gridPar(pt.bg = "blue", pt.size = 1.5, tar.pt.bg = "orange", tar.pt.size = 1) 
 #' plotRefToTarget(ref,Y.gpa$coords[,,39], gridPars=GP3, mag=3, method="points")
 #' 
+#' # Altering outline color
 #' GP4 <- gridPar(tar.out.col = "red", tar.out.cex = 0.3) 
 #' plotRefToTarget(ref,Y.gpa$coords[,,39], gridPars=GP4, mag=3, outline=plethodon$outline, method="TPS")
 #' 
+#' # Altering text labels
 #' GP5 <- gridPar(txt.pos = 3, txt.col = "red") 
 #' plotRefToTarget(ref,Y.gpa$coords[,,39], gridPars=GP5, mag=3, method="vector", label=T)
 gridPar <- function(pt.bg = "black", 
