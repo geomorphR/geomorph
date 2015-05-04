@@ -42,7 +42,7 @@
 #' @return If using {method="surface"}, function will return the warped mesh3d object.
 #' @keywords visualization
 #' @export
-#' @author Dean Adams & Emma Sherratt
+#' @author Dean Adams, Emma Sherratt & Michael Collyer
 #' @references Claude, J. 2008. Morphometrics with R. Springer, New York. 
 #' @seealso  \code{\link{gridPar}}
 #' @seealso  \code{\link{define.links}}
