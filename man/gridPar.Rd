@@ -5,7 +5,8 @@
 \title{Set up parameters for grids, points, and links in plotRefToTarget}
 \usage{
 gridPar(pt.bg = "black", pt.size = 1.5, n.col.cell = 20,
-  grid.col = "black", grid.lwd = 1, grid.lty = 1, link.col = "black",
+  grid.col = "black", grid.lwd = 1, grid.lty = 1, txt.adj = 0.5,
+  txt.pos = 1, txt.cex = 0.8, txt.col = "black", link.col = "black",
   link.lwd = 2, link.lty = 1, out.col = "black", out.cex = 0.1,
   tar.pt.bg = "gray", tar.pt.size = 1, tar.link.col = "gray",
   tar.link.lwd = 2, tar.link.lty = 1, tar.out.col = "gray",
@@ -22,7 +23,15 @@ gridPar(pt.bg = "black", pt.size = 1.5, n.col.cell = 20,
 
 \item{grid.lwd}{Scale factor for the weight of grid lines (single numerical value)}
 
-\item{grid.lty}{The line type for grid lines (single numerical value, as in base R plot function)}
+\item{grid.lty}{The line type for grid lines (single numerical value, as in base R \code{\link{plot}})}
+
+\item{txt.adj}{The adjustment value of the landmark label (one or two values, as in base R \code{\link{text}})}
+
+\item{txt.pos}{The position of the landmark label (single numerical value, as in base R \code{\link{text}})}
+
+\item{txt.cex}{The size of the landmark label text (single numerical value)}
+
+\item{txt.col}{The color of the landmark label text (single numerical value)}
 
 \item{link.col}{The color of links for reference configurations (single value or vector of values)}
 
@@ -75,6 +84,9 @@ plotRefToTarget(ref,Y.gpa$coords[,,39], gridPars=GP3, mag=3, method="points")
 
 GP4 <- gridPar(tar.out.col = "red", tar.out.cex = 0.3)
 plotRefToTarget(ref,Y.gpa$coords[,,39], gridPars=GP4, mag=3, outline=plethodon$outline, method="TPS")
+
+GP5 <- gridPar(txt.pos = 3, txt.col = "red")
+plotRefToTarget(ref,Y.gpa$coords[,,39], gridPars=GP5, mag=3, method="vector", label=T)
 }
 \author{
 Michael Collyer

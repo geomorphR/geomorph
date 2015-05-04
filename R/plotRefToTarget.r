@@ -91,7 +91,7 @@ plotRefToTarget<-function(M1,M2,mesh= NULL,outline=NULL,method=c("TPS","vector",
                    col=linkcol[i],lty=linklty[i],lwd=linklwd[i])
         }
       }
-      if(label == TRUE){text(M2, label = paste(1:dim(M2)[1]), adj = 0.5, pos = 1, cex=0.8)}
+      if(label == TRUE){text(M2, label=paste(1:dim(M2)[1]),adj=gP$txt.adj,pos=gP$txt.pos,cex=gP$txt.cex,col=gP$txt.col)}
       if(!is.null(outline)){
         curve.warp <- tps2d(outline, M1, M2)
       }
@@ -111,13 +111,13 @@ plotRefToTarget<-function(M1,M2,mesh= NULL,outline=NULL,method=c("TPS","vector",
                    col=linkcol[i],lty=linklty[i],lwd=linklwd[i])
         }
       }
-      if(label == TRUE){text(M1, label = paste(1:dim(M1)[1]), adj = 0.5, pos = 1, cex=0.8)}
+      if(label == TRUE){text(M1, label=paste(1:dim(M1)[1]),adj=gP$txt.adj,pos=gP$txt.pos,cex=gP$txt.cex,col=gP$txt.col)}
       arrows(M1[,1],M1[,2],M2[,1],M2[,2],length=0.075,lwd=2)
       points(M1,pch=21,bg=gP$pt.bg,cex=gP$pt.size)
     }
     if(method=="points"){
       plot(M1,asp=1,pch=21,type="n",xlim=limits(M1[,1],1.25),ylim=limits(M1[,2],1.25),xlab="x",ylab="y",...)
-      if(label == TRUE){text(M1, label = paste(1:dim(M1)[1]), adj = 0.5, pos = 1, col = "gray", cex=0.8)}
+      if(label == TRUE){text(M1, label=paste(1:dim(M1)[1]),adj=gP$txt.adj,pos=gP$txt.pos,cex=gP$txt.cex,col=gP$txt.col)}
       if(!is.null(outline)){
         curve.warp <- tps2d(outline, M1, M2)
       }

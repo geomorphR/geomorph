@@ -12,7 +12,11 @@
 #' @param n.col.cell The number of square cells (along x axis) for grids (single numerical value)
 #' @param grid.col The color of grid lines (single value)
 #' @param grid.lwd Scale factor for the weight of grid lines (single numerical value)
-#' @param grid.lty The line type for grid lines (single numerical value, as in base R plot function)
+#' @param grid.lty The line type for grid lines (single numerical value, as in base R \code{\link{plot}})
+#' @param txt.adj The adjustment value of the landmark label (one or two values, as in base R \code{\link{text}}) 
+#' @param txt.pos The position of the landmark label (single numerical value, as in base R \code{\link{text}}) 
+#' @param txt.cex The size of the landmark label text (single numerical value)
+#' @param txt.col The color of the landmark label text (single numerical value)
 #' @param link.col The color of links for reference configurations (single value or vector of values)
 #' @param link.lwd The line weight of links for reference configurations (single value or vector of values)
 #' @param link.lty The line type of links for reference configurations (single value or vector of values)
@@ -48,12 +52,19 @@
 #' 
 #' GP4 <- gridPar(tar.out.col = "red", tar.out.cex = 0.3) 
 #' plotRefToTarget(ref,Y.gpa$coords[,,39], gridPars=GP4, mag=3, outline=plethodon$outline, method="TPS")
+#' 
+#' GP5 <- gridPar(txt.pos = 3, txt.col = "red") 
+#' plotRefToTarget(ref,Y.gpa$coords[,,39], gridPars=GP5, mag=3, method="vector", label=T)
 gridPar <- function(pt.bg = "black", 
                     pt.size = 1.5,
                     n.col.cell = 20,
                     grid.col = "black",
                     grid.lwd = 1,
                     grid.lty = 1,
+                    txt.adj = 0.5,
+                    txt.pos = 1, 
+                    txt.cex = 0.8,
+                    txt.col = "black",
                     link.col = "black",
                     link.lwd = 2,
                     link.lty = 1,
@@ -69,6 +80,7 @@ gridPar <- function(pt.bg = "black",
 ){
   list(pt.bg=pt.bg,pt.size=pt.size,n.col.cell=n.col.cell,
        grid.col=grid.col,grid.lwd=grid.lwd,grid.lty=grid.lty,
+       txt.adj=txt.adj,txt.pos=txt.pos,txt.cex=txt.cex,txt.col=txt.col,
        link.col=link.col,link.lwd=link.lwd,link.lty=link.lty,
        out.col=out.col,out.cex=out.cex,
        tar.pt.bg=tar.pt.bg,tar.pt.size=tar.pt.size,
