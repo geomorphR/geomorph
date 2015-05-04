@@ -1,9 +1,9 @@
 CHANGES IN GEOMORPH VERSION 2.1.5
 
   NEW FEATURES
-    o new gridPar() function to customize plots of plotRefToTarget
+    o new gridPar() is a new function to customize plots of plotRefToTarget
 
-    o new digit.curves() function to calculate equidistant semilandmarks alone 2D and 3D curves
+    o new digit.curves() is a new function to calculate equidistant semilandmarks along 2D and 3D curves
 
     o define.sliders() is new interactive function for defining sliding semilandmarks for 2D and 3D curves, plus an automatic mode when given a sequence of semilandmarks along a curve
 
