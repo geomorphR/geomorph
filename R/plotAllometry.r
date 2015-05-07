@@ -29,8 +29,7 @@
 #'   the regression is of the form: shape~size+groups (Note: to examine the interaction term use \code{\link{procD.lm}}).
 #'   Specimens from each group are plotted using distinct colors based on the order in which the groups are
 #'   found in the dataset, and using R's standard color palette: black, red, green, blue, cyan, magenta,
-#'   yellow, and gray. NOTE: to change the colors of the groups, simply substitute a vector of the desired colors for 
-#'   each specimen.
+#'   yellow, and gray. 
 #'
 #' @param f1 A formula (of the form shape ~ size); shape can be a matrix (n x [p1 x k]) or 3D array (p1 x k x n) containing 
 #' GPA-aligned coordinates for the specimens
