@@ -324,7 +324,7 @@ trajshape<-function(M){
 # general plotting function for phenotypic trajectories
 trajplot<-function(Data,M){
   n<-dim(M)[3]; p<-dim(M)[1]
-  plot(Data[,1:2],type="n",xlab="Summary Axis I", ylab="Summary Axis II",main="Two Dimensional View  of Phenotypic Trajectories",asp=1)
+  plot(Data[,1:2],type="n",xlab="PC I", ylab="PC II",main="Two Dimensional View  of Phenotypic Trajectories",asp=1)
   points(Data[,1:2],pch=21,bg="gray",cex=.75)
   for (i in 1:n){  	 	
     for (j in 1:(p-1)){		
