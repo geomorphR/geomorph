@@ -88,7 +88,8 @@ plotRefToTarget<-function(M1,M2,mesh= NULL,outline=NULL,method=c("TPS","vector",
   }
   if(k==2){
     if(method=="TPS"){
-      tps(M1,M2,gP$n.col.cell, sz=gP$pt.size, pt.bg=gP$pt.bg, grid.col=gP$grid.col, grid.lwd=gP$grid.lwd, grid.lty=gP$grid.lty)
+      tps(M1,M2,gP$n.col.cell, sz=gP$pt.size, pt.bg=gP$pt.bg, grid.col=gP$grid.col, 
+          grid.lwd=gP$grid.lwd, grid.lty=gP$grid.lty)
       if(is.null(links)==FALSE){
         for (i in 1:nrow(links)){
           linkcol <- rep(gP$link.col,nrow(links))[1:nrow(links)]
@@ -98,7 +99,8 @@ plotRefToTarget<-function(M1,M2,mesh= NULL,outline=NULL,method=c("TPS","vector",
                    col=linkcol[i],lty=linklty[i],lwd=linklwd[i])
         }
       }
-      if(label == TRUE){text(M2, label=paste(1:dim(M2)[1]),adj=gP$txt.adj,pos=gP$txt.pos,cex=gP$txt.cex,col=gP$txt.col)}
+      if(label == TRUE){text(M2, label=paste(1:dim(M2)[1]),adj=gP$txt.adj,
+                             pos=gP$txt.pos,cex=gP$txt.cex,col=gP$txt.col)}
       if(!is.null(outline)){
         curve.warp <- tps2d(outline, M1, M2)
       }
@@ -108,7 +110,8 @@ plotRefToTarget<-function(M1,M2,mesh= NULL,outline=NULL,method=c("TPS","vector",
       points(M2,pch=21,cex=gP$pt.size, bg=gP$pt.bg)
     }
     if(method=="vector"){
-      plot(M1,asp=1,type="n",xlab="x",ylab="y",xlim=limits(M1[,1],1.25),ylim=limits(M1[,2],1.25),...)
+      plot(M1,asp=1,type="n",xlab="x",ylab="y",xlim=limits(M1[,1],1.25),
+           ylim=limits(M1[,2],1.25),...)
       if(is.null(links)==FALSE){
         for (i in 1:nrow(links)){
           linkcol <- rep(gP$link.col,nrow(links))[1:nrow(links)]
@@ -118,13 +121,16 @@ plotRefToTarget<-function(M1,M2,mesh= NULL,outline=NULL,method=c("TPS","vector",
                    col=linkcol[i],lty=linklty[i],lwd=linklwd[i])
         }
       }
-      if(label == TRUE){text(M1, label=paste(1:dim(M1)[1]),adj=gP$txt.adj,pos=gP$txt.pos,cex=gP$txt.cex,col=gP$txt.col)}
+      if(label == TRUE){text(M1, label=paste(1:dim(M1)[1]),adj=gP$txt.adj,
+                             pos=gP$txt.pos,cex=gP$txt.cex,col=gP$txt.col)}
       arrows(M1[,1],M1[,2],M2[,1],M2[,2],length=0.075,lwd=2)
       points(M1,pch=21,bg=gP$pt.bg,cex=gP$pt.size)
     }
     if(method=="points"){
-      plot(M1,asp=1,pch=21,type="n",xlim=limits(M1[,1],1.25),ylim=limits(M1[,2],1.25),xlab="x",ylab="y",...)
-      if(label == TRUE){text(M1, label=paste(1:dim(M1)[1]),adj=gP$txt.adj,pos=gP$txt.pos,cex=gP$txt.cex,col=gP$txt.col)}
+      plot(M1,asp=1,pch=21,type="n",xlim=limits(M1[,1],1.25),
+           ylim=limits(M1[,2],1.25),xlab="x",ylab="y",...)
+      if(label == TRUE){text(M1, label=paste(1:dim(M1)[1]),adj=gP$txt.adj,
+                             pos=gP$txt.pos,cex=gP$txt.cex,col=gP$txt.col)}
       if(!is.null(outline)){
         curve.warp <- tps2d(outline, M1, M2)
       }
@@ -140,8 +146,12 @@ plotRefToTarget<-function(M1,M2,mesh= NULL,outline=NULL,method=c("TPS","vector",
         tarlinklwd <- rep(gP$tar.link.lwd,nrow(links))[1:nrow(links)]
         tarlinklty <- rep(gP$tar.link.lty,nrow(links))[1:nrow(links)]
         for (i in 1:nrow(links)){
-          segments(M1[links[i,1],1],M1[links[i,1],2],M1[links[i,2],1],M1[links[i,2],2],col=linkcol[i],lty=linklty[i],lwd=linklwd[i])
-          segments(M2[links[i,1],1],M2[links[i,1],2],M2[links[i,2],1],M2[links[i,2],2],col=tarlinkcol[i],lty=tarlinklty[i],lwd=tarlinklwd[i])
+          segments(M1[links[i,1],1],M1[links[i,1],2],
+                   M1[links[i,2],1],M1[links[i,2],2],col=linkcol[i],
+                   lty=linklty[i],lwd=linklwd[i])
+          segments(M2[links[i,1],1],M2[links[i,1],2],M2[links[i,2],1],
+                   M2[links[i,2],2],col=tarlinkcol[i],
+                   lty=tarlinklty[i],lwd=tarlinklwd[i])
         }
       }
       points(M2,pch=21,bg=gP$tar.pt.bg,cex=gP$tar.pt.size)
@@ -162,7 +172,8 @@ plotRefToTarget<-function(M1,M2,mesh= NULL,outline=NULL,method=c("TPS","vector",
           linkcol <- rep(gP$link.col,nrow(links))[1:nrow(links)]
           linklwd <- rep(gP$link.lwd,nrow(links))[1:nrow(links)]
           linklty <- rep(gP$link.lty,nrow(links))[1:nrow(links)]
-          segments(M2[links[i,1],1],M2[links[i,1],2],M2[links[i,2],1],M2[links[i,2],2],
+          segments(M2[links[i,1],1],M2[links[i,1],2],
+                   M2[links[i,2],1],M2[links[i,2],2],
                    col=linkcol[i],lty=linklty[i],lwd=linklwd[i])
         }
       }
@@ -174,7 +185,8 @@ plotRefToTarget<-function(M1,M2,mesh= NULL,outline=NULL,method=c("TPS","vector",
         linklwd <- rep(gP$link.lwd,nrow(links))[1:nrow(links)]
         linklty <- rep(gP$link.lty,nrow(links))[1:nrow(links)]
         for (i in 1:nrow(links)){
-          segments(M2[links[i,1],1],M2[links[i,1],3],M2[links[i,2],1],M2[links[i,2],3],
+          segments(M2[links[i,1],1],M2[links[i,1],3],
+                   M2[links[i,2],1],M2[links[i,2],3],
                    col=linkcol[i],lty=linklty[i],lwd=linklwd[i])
         }
       }
@@ -184,7 +196,8 @@ plotRefToTarget<-function(M1,M2,mesh= NULL,outline=NULL,method=c("TPS","vector",
     }
     if(method=="vector"){
       plot3d(M1,type="s",col=gP$pt.bg,size=gP$pt.size,aspect=FALSE,...)
-      if(label == TRUE){text3d(M1, texts = paste(1:dim(M1)[1]), adj=gP$txt.adj,pos=gP$txt.pos,cex=gP$txt.cex,col=gP$txt.col)}
+      if(label == TRUE){text3d(M1, texts = paste(1:dim(M1)[1]), adj=(gP$txt.adj+gP$pt.size),
+                               pos=(gP$txt.pos+gP$pt.size),cex=gP$txt.cex,col=gP$txt.col)}
       for (i in 1:nrow(M1)){
         segments3d(rbind(M1[i,],M2[i,]),lwd=2)
       }
@@ -193,14 +206,17 @@ plotRefToTarget<-function(M1,M2,mesh= NULL,outline=NULL,method=c("TPS","vector",
         tarlinklwd <- rep(gP$tar.link.lwd,nrow(links))[1:nrow(links)]
         tarlinklty <- rep(gP$tar.link.lty,nrow(links))[1:nrow(links)]
         for (i in 1:nrow(links)){
-          segments3d(rbind(M2[links[i,1],],M2[links[i,2],]),col=tarlinkcol[i],lty=tarlinklty[i],lwd=tarlinklwd[i])
+          segments3d(rbind(M2[links[i,1],],M2[links[i,2],]),
+                     col=tarlinkcol[i],lty=tarlinklty[i],lwd=tarlinklwd[i])
         }
       }
     }
     if(method=="points"){
-      plot3d(M1,type="s",col=gP$pt.bg,size=gP$pt.size,aspect=FALSE,...)
+      plot3d(M1,type="s",col=gP$pt.bg,size=gP$pt.size,aspect=FALSE,
+             xlab="x", ylab="y",zlab="z",...)
       plot3d(M2,type="s", col=gP$tar.pt.bg,size=gP$tar.pt.size, add=T)
-      if(label == TRUE){text3d(M1, texts = paste(1:dim(M1)[1]), adj=gP$txt.adj,pos=gP$txt.pos,cex=gP$txt.cex,col=gP$txt.col)}
+      if(label == TRUE){text3d(M1, texts = paste(1:dim(M1)[1]), adj=(gP$txt.adj+gP$pt.size),
+                               pos=(gP$txt.pos+gP$pt.size),cex=gP$txt.cex,col=gP$txt.col)}
       if(is.null(links)==FALSE){
         linkcol <- rep(gP$link.col,nrow(links))[1:nrow(links)]
         linklwd <- rep(gP$link.lwd,nrow(links))[1:nrow(links)]
@@ -209,8 +225,10 @@ plotRefToTarget<-function(M1,M2,mesh= NULL,outline=NULL,method=c("TPS","vector",
         tarlinklwd <- rep(gP$tar.link.lwd,nrow(links))[1:nrow(links)]
         tarlinklty <- rep(gP$tar.link.lty,nrow(links))[1:nrow(links)]
         for (i in 1:nrow(links)){
-          segments3d(rbind(M1[links[i,1],],M1[links[i,2],]),col=linkcol[i],lty=linklty[i],lwd=linklwd[i])
-          segments3d(rbind(M2[links[i,1],],M2[links[i,2],]),col=tarlinkcol[i],lty=tarlinklty[i],lwd=tarlinklwd[i])
+          segments3d(rbind(M1[links[i,1],],M1[links[i,2],]),
+                     col=linkcol[i],lty=linklty[i],lwd=linklwd[i])
+          segments3d(rbind(M2[links[i,1],],M2[links[i,2],]),
+                     col=tarlinkcol[i],lty=tarlinklty[i],lwd=tarlinklwd[i])
         }
       }
     }
@@ -223,7 +241,8 @@ plotRefToTarget<-function(M1,M2,mesh= NULL,outline=NULL,method=c("TPS","vector",
       warp <- tps2d3d(vb, M1, M2)
       warp.PLY$vb <- rbind(t(warp), 1)
       open3d(); shade3d(warp.PLY, ...)
-      if(label == TRUE){text3d(M1, texts = paste(1:dim(M1)[1]), adj=gP$txt.adj,pos=gP$txt.pos,cex=gP$txt.cex,col=gP$txt.col)}
+      if(label == TRUE){text3d(M1, texts = paste(1:dim(M1)[1]), adj=gP$txt.adj,
+                               pos=gP$txt.pos,cex=gP$txt.cex,col=gP$txt.col)}
       return(warp.PLY)
     }
   }
