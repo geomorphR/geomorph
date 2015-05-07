@@ -40,7 +40,8 @@
 #' 
 #' # Altering points and links
 #' GP1 <- gridPar(pt.bg = "red", pt.size = 1, link.col="blue", link.lwd=2, n.col.cell=50)
-#' plotRefToTarget(ref,Y.gpa$coords[,,39], gridPars=GP1, mag=2, links=plethodon$links, method="TPS")
+#' plotRefToTarget(ref,Y.gpa$coords[,,39], gridPars=GP1, mag=2, 
+#' links=plethodon$links, method="TPS")
 #' 
 #' # Altering point color
 #' GP2 <- gridPar(pt.bg = "green", pt.size = 1) 
@@ -52,11 +53,12 @@
 #' 
 #' # Altering outline color
 #' GP4 <- gridPar(tar.out.col = "red", tar.out.cex = 0.3) 
-#' plotRefToTarget(ref,Y.gpa$coords[,,39], gridPars=GP4, mag=3, outline=plethodon$outline, method="TPS")
+#' plotRefToTarget(ref,Y.gpa$coords[,,39], gridPars=GP4, mag=3, 
+#' outline=plethodon$outline, method="TPS")
 #' 
 #' # Altering text labels
 #' GP5 <- gridPar(txt.pos = 3, txt.col = "red") 
-#' plotRefToTarget(ref,Y.gpa$coords[,,39], gridPars=GP5, mag=3, method="vector", label=T)
+#' plotRefToTarget(ref,Y.gpa$coords[,,39], gridPars=GP5, mag=3, method="vector", label=TRUE)
 gridPar <- function(pt.bg = "black", 
                     pt.size = 1.5,
                     n.col.cell = 20,

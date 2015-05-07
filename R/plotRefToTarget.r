@@ -54,18 +54,21 @@
 #' Y.gpa<-gpagen(plethodon$land)    #GPA-alignment
 #' ref<-mshape(Y.gpa$coords)
 #' plotRefToTarget(ref,Y.gpa$coords[,,39])
-#' plotRefToTarget(ref,Y.gpa$coords[,,39],mag=2,outline=plethodon$outline)   #magnify difference by 2X
+#' plotRefToTarget(ref,Y.gpa$coords[,,39],mag=2,outline=plethodon$outline)   #magnify by 2X
 #' plotRefToTarget(ref,Y.gpa$coords[,,39],method="vector",mag=3)
 #' plotRefToTarget(ref,Y.gpa$coords[,,39],method="points",outline=plethodon$outline)
-#' plotRefToTarget(ref,Y.gpa$coords[,,39],gridPars=gridPar(pt.bg = "green", pt.size = 1),method="vector",mag=3)
+#' plotRefToTarget(ref,Y.gpa$coords[,,39],gridPars=gridPar(pt.bg = "green", pt.size = 1),
+#' method="vector",mag=3)
 #'
 #' # Three dimensional data
 #' data(scallops)
 #' Y.gpa<-gpagen(A=scallops$coorddata, curves=scallops$curvslide, surfaces=scallops$surfslide)
 #' ref<-mshape(Y.gpa$coords)
 #' plotRefToTarget(ref,Y.gpa$coords[,,1],method="points")
-#' scallinks <- matrix(c(1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,11,11,12,12,13,13,14,14,15,15,16,16,1), nrow=16, byrow=T)
-#' plotRefToTarget(ref,Y.gpa$coords[,,1],gridPars=gridPar(pt.bg = "blue", link.col="blue", link.lwd=2), method="points", links = scallinks)
+#' scallinks <- matrix(c(1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,11,11,12,12,13,13,
+#' 14,14,15,15,16,16,1), nrow=16, byrow=TRUE)
+#' plotRefToTarget(ref,Y.gpa$coords[,,1],gridPars=gridPar(pt.bg = "blue", link.col="blue",
+#'  link.lwd=2), method="points", links = scallinks)
 #' 
 plotRefToTarget<-function(M1,M2,mesh= NULL,outline=NULL,method=c("TPS","vector","points","surface"),
                           mag=1.0,links=NULL, label=FALSE, gridPars = NULL, ...){
