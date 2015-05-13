@@ -16,7 +16,7 @@ plotGMPhyloMorphoSpace(phy, A, labels = TRUE, ancStates = TRUE,
 
 \item{ancStates}{A logical value indicating whether ancestral state values should be returned}
 
-\item{plot.param}{A list of plotting parameters for the tips (t.bg,t.pch.t.cex), nodes (n.bg,n.pch.n.cex), branches (l.col, lwd), and taxa labels (txt.cex, txt.adj, txt.col)}
+\item{plot.param}{A list of plotting parameters for the tips (t.bg, t.pch., t.cex), nodes (n.bg, n.pch., n.cex), branches (l.col, lwd), and taxa labels (txt.cex, txt.adj, txt.col)}
 }
 \value{
 Function returns estimated ancestral states if {ancStates=TRUE}

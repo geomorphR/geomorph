@@ -11,7 +11,7 @@
 #' @param A A matrix (n x [p x k]) or 3D array (p x k x n) containing GPA-aligned coordinates for a set of specimens
 #' @param labels A logical value indicating whether taxa labels (tips and ancestors) should be included
 #' @param ancStates A logical value indicating whether ancestral state values should be returned
-#' @param plot.param A list of plotting parameters for the tips (t.bg,t.pch.t.cex), nodes (n.bg,n.pch.n.cex), branches (l.col, lwd), and taxa labels (txt.cex, txt.adj, txt.col)
+#' @param plot.param A list of plotting parameters for the tips (t.bg, t.pch., t.cex), nodes (n.bg, n.pch., n.cex), branches (l.col, lwd), and taxa labels (txt.cex, txt.adj, txt.col)
 #' @export
 #' @keywords visualization
 #' @author Dean Adams & Emma Sherratt
