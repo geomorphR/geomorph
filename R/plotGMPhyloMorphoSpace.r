@@ -25,7 +25,8 @@
 #' Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment    
 #'
 #' plotGMPhyloMorphoSpace(plethspecies$phy,Y.gpa$coords)
-#' plotGMPhyloMorphoSpace(plethspecies$phy,Y.gpa$coords, plot.param=list(t.bg="blue",txt.col="red",n.cex=1))
+#' plotGMPhyloMorphoSpace(plethspecies$phy,Y.gpa$coords, 
+#'                  plot.param=list(t.bg="blue",txt.col="red",n.cex=1))
 plotGMPhyloMorphoSpace<-function(phy,A,labels=TRUE,ancStates=TRUE, 
                                  plot.param = list()){
   if(any(is.na(A))==T){
