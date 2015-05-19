@@ -35,7 +35,8 @@ data(plethspecies)
 Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment
 
 plotGMPhyloMorphoSpace(plethspecies$phy,Y.gpa$coords)
-plotGMPhyloMorphoSpace(plethspecies$phy,Y.gpa$coords, plot.param=list(t.bg="blue",txt.col="red",n.cex=1))
+plotGMPhyloMorphoSpace(plethspecies$phy,Y.gpa$coords,
+                 plot.param=list(t.bg="blue",txt.col="red",n.cex=1))
 }
 \author{
 Dean Adams & Emma Sherratt
