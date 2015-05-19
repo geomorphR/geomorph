@@ -14,6 +14,8 @@ CHANGES IN GEOMORPH VERSION 2.1.5
     o ‘read’ functions now allow both tab and space delimited files
 
     o define.sliders.2d() and define.sliders.3d() deprecated (replaced by define.sliders)
+    
+    o buildtemplate() and digit.surface() now have automatic modes, allowing landmark data collected elsewhere to be used to build and fit templates of surface-sliding semilandmarks
 
 
 CHANGES IN GEOMORPH VERSION 2.1.4
