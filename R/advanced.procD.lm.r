@@ -40,21 +40,30 @@
 #' @references Collyer, M.L., D.J. Sekora, and D.C. Adams. 2015. A method for analysis of phenotypic change for phenotypes described 
 #' by high-dimensional data. Heredity. 113: doi:10.1038/hdy.2014.75.
 #' @examples
-#' ### Example of comparison of allometries between two populations of pupfish
-#' ### After accounting for sexual dimorphism, Method 1
-#' data(pupfish)
-#' shape <-pupfish$coords   # GPA-alignment previously performed
-#' CS <- pupfish$CS
-#' Sex <- pupfish$Sex
-#' Pop <- pupfish$Pop
-#' f1 <-  shape ~ log(CS) + Sex + Pop
-#' f2 <- ~ log(CS)*Sex*Pop
-#' advanced.procD.lm(f1, f2, groups = ~Pop, slope = ~ log(CS), angle.type = "r", iter=24)
-#' 
-#' ### Method 2
-#' f1 <-  shape ~ log(CS)*Sex
-#' f2 <- ~ log(CS)*Sex*Pop
-#' advanced.procD.lm(f1, f2, groups = ~Pop, slope = ~ log(CS), angle.type = "r", iter=24)
+#'data(plethodon)
+#'Y.gpa<-gpagen(plethodon$land)    #GPA-alignment
+#'Y<-two.d.array(Y.gpa$coords)
+#'CS <- Y.gpa$Csize
+#'sp<- plethodon$species
+#'st<- plethodon$site
+#'
+#'# Example of a nested model comparison (as with ANOVA with RRPP)
+#'advanced.procD.lm(Y ~ log(CS) + sp, ~ log(CS)*sp*st, iter=19)
+#'
+#'# Example of a test of a factor interaction, plus pairwise comparisons (replaces pairwiseD.test)
+#'advanced.procD.lm(Y ~ st*sp, ~st + sp, groups = ~st*sp, iter=19)
+#'
+#'# Example of a test of a factor interaction, plus pairwise comparisons, accounting for a common allomtry
+#'# (replaces pairwiseD.test)
+#'advanced.procD.lm(Y ~ log(CS) + st*sp, ~log(CS) + st + sp, groups = ~st*sp, slope = ~log(CS), iter=19)
+#'
+#'# Example of a test of homogeneity of slopes, plus pairwise slopes comparisons
+#'# (replaces pairwise.slope.test)
+#'advanced.procD.lm(Y ~ log(CS)*st*sp, ~log(CS) + st*sp, groups = ~st*sp, slope = ~log(CS), angle.type = "deg", iter=19)
+#'
+#'# Example of partial pairwise comparisons, given greater model complexity
+#'advanced.procD.lm(Y ~ log(CS)*st*sp, ~log(CS) + st*sp, groups = ~sp, slope = ~log(CS), angle.type = "deg", iter=19)
+
 advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL, angle.type = c("r", "deg", "rad"), iter=999, verbose = FALSE){
   data=NULL
   f1 <- as.formula(f1)
@@ -120,6 +129,7 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL, angle.type = c(
     }
     P.val <- pval(P)
     Z.score <- effect.size(P)
+
     anova.tab <- data.frame(df = c(dfr,dff), SSE = c(SSEr, SSEf), SS = c(NA, SSm),
                             F = c(NA, Fs), Z = c(NA, Z.score), P = c(NA,P.val))
     rownames(anova.tab) <- c(paste(attr(red.terms, "term.labels"), collapse="+"),
@@ -168,13 +178,15 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL, angle.type = c(
     P.Means.dist <- Pval.matrix(P.mean.dist)
     P.Slopes.dist <- Pval.matrix(P.slope.dist)
     P.Cor <- Pval.matrix(P.cor)
+    dimnames(Angles.dist) <- dimnames(P.Means.dist) <- dimnames(P.Slopes.dist) <- dimnames(P.Cor) <- dimnames(Means.dist)
     if(verbose==TRUE) out = list(anova.table = anova.tab, LS.means = m, Group.slopes = Bslopes) else out = list(anova.table = anova.tab)
     if(angle.type == "r") {out = c(out, list(LS.Means.dist = Means.dist, Prob.Means.dist = P.Means.dist, Slopes.dist = Slopes.dist,
                   Prob.Slopes.dist = P.Slopes.dist, Slopes.correlation = Angles.dist, Prob.Slopes.cor = P.Cor))
     } else {out = c(out, list(LS.Means.dist = Means.dist, Prob.Means.dist = P.Means.dist, Slopes.dist = Slopes.dist,
                  Prob.Slopes.dist = P.Slopes.dist, Slopes.angle = Angles.dist, Prob.Slopes.angle = P.Cor))
     }
-    if(verbose == TRUE) out = c(out, list(SS.rand = P))
+    if(verbose == TRUE) out = c(out, list(SS.rand = P, random.mean.dist=P.mean.dist, 
+                                          random.slopes.dist=P.slope.dist, random.slope.comp=P.cor))
   }
   out
 }
