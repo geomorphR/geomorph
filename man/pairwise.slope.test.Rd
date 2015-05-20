@@ -2,7 +2,7 @@
 % Please edit documentation in R/pairwise.slope.test.r
 \name{pairwise.slope.test}
 \alias{pairwise.slope.test}
-\title{Pairwise Slope test}
+\title{Pairwise Slope test (deprecated)}
 \usage{
 pairwise.slope.test()
 }

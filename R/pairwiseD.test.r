@@ -1,4 +1,4 @@
-#' PairwiseD.test
+#' PairwiseD.test (deprecated)
 #' 
 #' Function deprecated: use 'advanced.procD.lm' instead
 #' @export

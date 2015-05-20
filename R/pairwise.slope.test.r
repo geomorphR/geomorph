@@ -1,4 +1,4 @@
-#' Pairwise Slope test
+#' Pairwise Slope test (deprecated)
 #' 
 #' Function deprecated: use 'advanced.procD.lm' instead
 #' @export

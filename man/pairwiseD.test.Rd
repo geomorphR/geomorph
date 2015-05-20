@@ -2,7 +2,7 @@
 % Please edit documentation in R/pairwiseD.test.r
 \name{pairwiseD.test}
 \alias{pairwiseD.test}
-\title{PairwiseD.test}
+\title{PairwiseD.test (deprecated)}
 \usage{
 pairwiseD.test()
 }
