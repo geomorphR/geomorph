@@ -27,6 +27,8 @@
 #'   \item{pvalue}{The significance level of the observed association}
 #'   \item{Xscores}{PLS scores for the first block of landmarks (when {verbose=TRUE})}
 #'   \item{Yscores}{PLS scores for the second block of landmarks (when {verbose=TRUE})}
+#'   \item{left.singular.coef}{Left matrix singular value coefficients (loadings) for principal vector (when {verbose=TRUE})}
+#'   \item{right.singular.coef}{Right matrix singular value coefficients (loadings) for principal vector (when {verbose=TRUE})}
 #' @references  Rohlf, F.J., and M. Corti. 2000. The use of partial least-squares to study covariation in shape. 
 #' Systematic Biology 49: 740-753.
 #' @examples
