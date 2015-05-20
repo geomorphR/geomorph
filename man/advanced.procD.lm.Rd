@@ -81,7 +81,6 @@ advanced.procD.lm(Y ~ log(CS) + sp, ~ log(CS)*sp*st, iter=19)
 # Example of a test of a factor interaction, plus pairwise comparisons (replaces pairwiseD.test)
 advanced.procD.lm(Y ~ st*sp, ~st + sp, groups = ~st*sp, iter=19)
 
-<<<<<<< HEAD
 # Example of a test of a factor interaction, plus pairwise comparisons, accounting for a common allomtry
 # (replaces pairwiseD.test)
 advanced.procD.lm(Y ~ log(CS) + st*sp,
@@ -98,21 +97,6 @@ groups = ~st*sp, slope = ~log(CS), angle.type = "deg", iter=19)
 advanced.procD.lm(Y ~ log(CS)*st*sp,
 ~log(CS) + st*sp,
 groups = ~sp, slope = ~log(CS), angle.type = "deg", iter=19)
-=======
-# Example of a test of a factor interaction, plus pairwise comparisons, accounting for
-#a common allomtry (replaces pairwiseD.test)
-advanced.procD.lm(Y ~ log(CS) + st*sp, ~log(CS) + st + sp, groups = ~st*sp,
-   slope = ~log(CS), iter=19)
-
-# Example of a test of homogeneity of slopes, plus pairwise slopes comparisons
-# (replaces pairwise.slope.test)
-advanced.procD.lm(Y ~ log(CS)*st*sp, ~log(CS) + st*sp,
-   groups = ~st*sp, slope = ~log(CS), angle.type = "deg", iter=19)
-
-# Example of partial pairwise comparisons, given greater model complexity
-advanced.procD.lm(Y ~ log(CS)*st*sp, ~log(CS) + st*sp, groups = ~sp,
-   slope = ~log(CS), angle.type = "deg", iter=19)
->>>>>>> f0275c8354a2885ce49c605cc25e0f26bbabb684
 }
 \author{
 Michael Collyer
