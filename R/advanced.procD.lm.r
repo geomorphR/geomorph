@@ -31,12 +31,25 @@
 #' @param angle.type A value specifying whether differences between slopes should be represented by vector
 #' correlations (r), radians (rad) or degrees (deg)
 #' @param iter Number of iterations for significance testing
-#' @param verbose A logical value specifying whether additional output should be displayed
+#' @param verbose A logical value specifying whether additional output should be displayed (see Value below)
 #' @keywords analysis
 #' @export
 #' @author Michael Collyer
 #' @return Function returns an ANOVA table of statistical results for model comparison: error df (for each model), SS, MS,
-#' F ratio, Z, and Prand.
+#' F ratio, Z, and Prand.  The following may also be returned.
+#'   \item{Means.dist}{Pairwise distance between means, if applicable}
+#'   \item{LS.Means.dist}{Pairwise distance between LS means, if applicable}
+#'   \item{Prob.Means.dist}{P-values for pairwise distances between means}
+#'   \item{Slopes.dist}{Pairwise distance between slope vectors (difference in amount of shape change), if applicable}
+#'   \item{Prob.Slopes.dist}{P-values for pairwise distances between slopes}
+#'   \item{Slopes.correlation}{Pairwise vector correlations between slope vectors, if applicable}
+#'   \item{Prob.Slopes.cor}{P-values for pairwise correlations between slope vectors (high correlation less significant)}
+#'   \item{Slopes.angle}{Angles between between slope vectors, if applicable}
+#'   \item{Prob.Slopes.angle}{P-values for pairwise angles between slope vectors}
+#'   \item{SS.rand}{Random SS from RRPP permutations (when {verbose=TRUE})}
+#'   \item{random.mean.dist}{random pairwise distances between means from RRPP permutations (when {verbose=TRUE})}
+#'   \item{random.slope.dist}{random pairwise distances between slopes from RRPP permutations (when {verbose=TRUE})}
+#'   \item{random.slope.comp}{random pairwise slope direction comparisons (r or angle) from RRPP permutations (when {verbose=TRUE})}
 #' @references Collyer, M.L., D.J. Sekora, and D.C. Adams. 2015. A method for analysis of phenotypic change for phenotypes described 
 #' by high-dimensional data. Heredity. 113: doi:10.1038/hdy.2014.75.
 #' @examples
@@ -55,14 +68,20 @@
 #'
 #'# Example of a test of a factor interaction, plus pairwise comparisons, accounting for a common allomtry
 #'# (replaces pairwiseD.test)
-#'advanced.procD.lm(Y ~ log(CS) + st*sp, ~log(CS) + st + sp, groups = ~st*sp, slope = ~log(CS), iter=19)
+#'advanced.procD.lm(Y ~ log(CS) + st*sp, 
+#'~log(CS) + st + sp, 
+#'groups = ~st*sp, slope = ~log(CS), iter=19)
 #'
 #'# Example of a test of homogeneity of slopes, plus pairwise slopes comparisons
 #'# (replaces pairwise.slope.test)
-#'advanced.procD.lm(Y ~ log(CS)*st*sp, ~log(CS) + st*sp, groups = ~st*sp, slope = ~log(CS), angle.type = "deg", iter=19)
+#'advanced.procD.lm(Y ~ log(CS)*st*sp, 
+#'~log(CS) + st*sp, 
+#'groups = ~st*sp, slope = ~log(CS), angle.type = "deg", iter=19)
 #'
 #'# Example of partial pairwise comparisons, given greater model complexity
-#'advanced.procD.lm(Y ~ log(CS)*st*sp, ~log(CS) + st*sp, groups = ~sp, slope = ~log(CS), angle.type = "deg", iter=19)
+#'advanced.procD.lm(Y ~ log(CS)*st*sp, 
+#'~log(CS) + st*sp, 
+#'groups = ~sp, slope = ~log(CS), angle.type = "deg", iter=19)
 
 advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL, angle.type = c("r", "deg", "rad"), iter=999, verbose = FALSE){
   data=NULL
