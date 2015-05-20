@@ -4,34 +4,17 @@
 \alias{gridPar}
 \title{Set up parameters for grids, points, and links in plotRefToTarget}
 \usage{
-gridPar(pt.bg = "black", pt.size = 1.5, n.col.cell = 20,
-  grid.col = "black", grid.lwd = 1, grid.lty = 1, txt.adj = 0.5,
-  txt.pos = 1, txt.cex = 0.8, txt.col = "black", link.col = "black",
-  link.lwd = 2, link.lty = 1, out.col = "black", out.cex = 0.1,
-  tar.pt.bg = "gray", tar.pt.size = 1, tar.link.col = "gray",
-  tar.link.lwd = 2, tar.link.lty = 1, tar.out.col = "gray",
-  tar.out.cex = 0.1)
+gridPar(pt.bg = "gray", pt.size = 1.5, link.col = "gray", link.lwd = 2,
+  link.lty = 1, out.col = "gray", out.cex = 0.1, tar.pt.bg = "black",
+  tar.pt.size = 1, tar.link.col = "black", tar.link.lwd = 2,
+  tar.link.lty = 1, tar.out.col = "black", tar.out.cex = 0.1,
+  n.col.cell = 20, grid.col = "black", grid.lwd = 1, grid.lty = 1,
+  txt.adj = 0.5, txt.pos = 1, txt.cex = 0.8, txt.col = "black")
 }
 \arguments{
 \item{pt.bg}{Background color of reference configuration points (single value or vector of values)}
 
 \item{pt.size}{Scale factor for reference configuration points (single value or vector of values)}
-
-\item{n.col.cell}{The number of square cells (along x axis) for grids (single numerical value)}
-
-\item{grid.col}{The color of grid lines (single value)}
-
-\item{grid.lwd}{Scale factor for the weight of grid lines (single numerical value)}
-
-\item{grid.lty}{The line type for grid lines (single numerical value, as in base R \code{\link{plot}})}
-
-\item{txt.adj}{The adjustment value of the landmark label (one or two values, as in base R \code{\link{text}})}
-
-\item{txt.pos}{The position of the landmark label (single numerical value, as in base R \code{\link{text}})}
-
-\item{txt.cex}{The size of the landmark label text (single numerical value, as in base R \code{\link{text}})}
-
-\item{txt.col}{The color of the landmark label text (single numerical value, as in base R \code{\link{text}})}
 
 \item{link.col}{The color of links for reference configurations (single value or vector of values)}
 
@@ -56,6 +39,22 @@ gridPar(pt.bg = "black", pt.size = 1.5, n.col.cell = 20,
 \item{tar.out.col}{The color of outline for target configurations (single value or vector of values)}
 
 \item{tar.out.cex}{The size of plotting symbol of outline for target configurations (single value or vector of values)}
+
+\item{n.col.cell}{The number of square cells (along x axis) for grids (single numerical value)}
+
+\item{grid.col}{The color of grid lines (single value)}
+
+\item{grid.lwd}{Scale factor for the weight of grid lines (single numerical value)}
+
+\item{grid.lty}{The line type for grid lines (single numerical value, as in base R \code{\link{plot}})}
+
+\item{txt.adj}{The adjustment value of the landmark label (one or two values, as in base R \code{\link{text}})}
+
+\item{txt.pos}{The position of the landmark label (single numerical value, as in base R \code{\link{text}})}
+
+\item{txt.cex}{The size of the landmark label text (single numerical value, as in base R \code{\link{text}})}
+
+\item{txt.col}{The color of the landmark label text (single numerical value, as in base R \code{\link{text}})}
 }
 \description{
 Function produces a list of parameter changes within \code{\link{plotRefToTarget}}.
