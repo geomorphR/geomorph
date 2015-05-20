@@ -720,8 +720,11 @@ pls = function(x,y){ # x and y must be vectors or matrices
     }
     
     r <- cor(XScores[, 1], YScores[, 1])
-    list(r=r, XScores = matrix(XScores[,1]), YScores = matrix(YScores[,1]))
+    rownames(U) <-colnames(x)
+    rownames(V) <- colnames(y)
+    list(r=r, XScores = matrix(XScores[,1]), YScores = matrix(YScores[,1]), U=U, V=V)
 }
+
 
 
 # P-values  (for procD.lm RRPP method)
