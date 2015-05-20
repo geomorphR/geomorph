@@ -62,7 +62,7 @@ CS <- Y.gpa$Csize
 sp<- plethodon$species
 st<- plethodon$site
 
-# Example of a nested model comparison
+# Example of a nested model comparison (as with ANOVA with RRPP)
 advanced.procD.lm(Y ~ log(CS) + sp, ~ log(CS)*sp*st, iter=19)
 
 # Example of a test of a factor interaction, plus pairwise comparisons (replaces pairwiseD.test)
