@@ -36,6 +36,8 @@
 #' #2B-PLS between head shape and food use data
 #' two.b.pls(Y.gpa$coords,plethShapeFood$food,iter=99)
 #' 
+#' # To obtain PLS coefficients, x and y scores, and random values
+#' two.b.pls(Y.gpa$coords,plethShapeFood$food,iter=99, verbose = TRUE)
 two.b.pls<- function (A1, A2, warpgrids = TRUE, iter = 999, verbose = FALSE, label = NULL,ShowPlot=TRUE){
     if (any(is.na(A1)) == T) {
       stop("Data matrix 1 contains missing values. Estimate these first (see 'estimate.missing').")
