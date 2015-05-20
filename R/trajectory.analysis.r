@@ -54,14 +54,19 @@
 #'   \item{Direction$Obs.dif}{A matrix of pairwise differences in trajectory orientation}
 #'   \item{Direction$Z}{A matrix of effect sizes for differences in trajectory orientation}
 #'   \item{Direction$P}{A matrix of pairwise significance levels for differences in trajectory orientation}
-#'   \item{tShape$Obs.dif}{A matrix of pairwise differences in trajectory shape (if applicable)}
-#'   \item{tShape$Z}{A matrix of pairwise effect sizes for differences in trajectory shape (if applicable)}
-#'   \item{tShape$P}{A matrix of pairwise significane levels for differences in trajectory shape (if applicable)}
+#'   \item{Shape$Obs.dif}{A matrix of pairwise differences in trajectory shape (if applicable)}
+#'   \item{Shape$Z}{A matrix of pairwise effect sizes for differences in trajectory shape (if applicable)}
+#'   \item{Random.values}{All random values for all RRPP permutations (when {verbose=TRUE})}
 #' @return If "estimate.traj=FALSE", the function returns a list with the following components: 
 #'   \item{MANOVA.location.covariation}{Procrustes ANOVA table}
 #'   \item{ANOVA.Size}{Results of permutational-ANOVA assessing variation in trajectory size}
 #'   \item{ANOVA.Dir}{Results of permutational-ANOVA assessing variation in trajectory orientation}
 #'   \item{ANOVA.Shape}{Results of permutational-ANOVA assessing variation in trajectory shape (if applicable)}
+#'   \item{random.SS.location}{Random SS from RRPP permutations (when {verbose=TRUE})}
+#'   \item{random.SS.size}{Random SS from RRPP permutations (when {verbose=TRUE})}
+#'   \item{random.SS.dir}{Random SS from RRPP permutations (when {verbose=TRUE})}
+#'   \item{random.SS.shape}{Random SS from RRPP permutations (when {verbose=TRUE})}
+#'  
 #' @references Collyer, M.L., and D.C. Adams. 2013. Phenotypic trajectory analysis: Comparison of 
 #'  shape change patterns in evolution and ecology. Hystrix. 24:75-83.
 #' @references Adams, D. C. 2010. Parallel evolution of character displacement driven by competitive 
