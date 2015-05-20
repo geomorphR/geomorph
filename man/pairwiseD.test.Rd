@@ -2,15 +2,11 @@
 % Please edit documentation in R/pairwiseD.test.r
 \name{pairwiseD.test}
 \alias{pairwiseD.test}
-\title{PairwiseD.test
-#'
-Function deprecated: use 'advanced.procD.lm' instead}
+\title{PairwiseD.test}
 \usage{
 pairwiseD.test()
 }
 \description{
-PairwiseD.test
-#'
 Function deprecated: use 'advanced.procD.lm' instead
 }
 

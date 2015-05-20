@@ -1,5 +1,5 @@
 #' PairwiseD.test
-#' #' 
+#' 
 #' Function deprecated: use 'advanced.procD.lm' instead
 #' @export
 pairwiseD.test <- function(){
