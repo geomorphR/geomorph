@@ -2,11 +2,16 @@
 % Please edit documentation in R/pairwiseD.test.r
 \name{pairwiseD.test}
 \alias{pairwiseD.test}
-\title{PairwiseD.test (deprecated)}
+\title{Deprecated functions in geomorph}
 \usage{
 pairwiseD.test()
 }
 \description{
-Function deprecated: use 'advanced.procD.lm' instead
+The following function has been deprecated in geomorph
+}
+\details{
+This function has been deprecated. Below shows the original function and the replacement function.
+
+pairwiseD.test: use 'advanced.procD.lm' instead
 }
 
