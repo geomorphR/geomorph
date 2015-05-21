@@ -38,6 +38,7 @@
 #' @param links An optional matrix defining for links between landmarks
 #' @param label A logical value indicating whether landmark numbers will be plotted
 #' @param gridPars An optional object made by \code{\link{gridPar}}
+#' @param useRefPts An option (logical value) to use reference configuration points rather than target configuration points (when {method = "TPS"})
 #' @param ... Additional parameters not covered by \code{\link{gridPar}} to be passed to \code{\link{plot}}, \code{\link{plot3d}} or \code{\link{shade3d}}
 #' @return If using {method="surface"}, function will return the warped mesh3d object.
 #' @keywords visualization
@@ -71,7 +72,7 @@
 #'  link.lwd=2), method="points", links = scallinks)
 #' 
 plotRefToTarget<-function(M1,M2,mesh= NULL,outline=NULL,method=c("TPS","vector","points","surface"),
-                          mag=1.0,links=NULL, label=FALSE, gridPars = NULL, ...){
+                          mag=1.0,links=NULL, label=FALSE, gridPars = NULL, useRefPts=FALSE,...){
   method <- match.arg(method)
   if(any(is.na(M1))==T){
     stop("Data contains missing values. Estimate these first (see 'estimate.missing').")  }
@@ -89,7 +90,7 @@ plotRefToTarget<-function(M1,M2,mesh= NULL,outline=NULL,method=c("TPS","vector",
   if(k==2){
     if(method=="TPS"){
       tps(M1,M2,gP$n.col.cell, sz=gP$pt.size, pt.bg=gP$pt.bg, grid.col=gP$grid.col, 
-          grid.lwd=gP$grid.lwd, grid.lty=gP$grid.lty)
+          grid.lwd=gP$grid.lwd, grid.lty=gP$grid.lty, refpts=useRefPts)
       if(is.null(links)==FALSE){
         for (i in 1:nrow(links)){
           linkcol <- rep(gP$link.col,nrow(links))[1:nrow(links)]
@@ -107,7 +108,7 @@ plotRefToTarget<-function(M1,M2,mesh= NULL,outline=NULL,method=c("TPS","vector",
       if(!is.null(outline)){
         points(curve.warp,pch=19, cex=gP$tar.out.cex, col=gP$tar.out.col) 
       }
-      points(M2,pch=21,cex=gP$pt.size, bg=gP$pt.bg)
+      if(useRefPts==FALSE) points(M2,pch=21,cex=gP$pt.size, bg=gP$pt.bg) else points(M1,pch=21,cex=gP$pt.size, bg=gP$pt.bg)
     }
     if(method=="vector"){
       plot(M1,asp=1,type="n",xlab="x",ylab="y",xlim=limits(M1[,1],1.25),
