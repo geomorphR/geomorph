@@ -64,7 +64,7 @@ NOTE: there is no pan (translate) functionality in rgl library for all platforms
 
 \subsection{AUTO mode}{
 The function as described above (for interactive mode) calls \code{\link{digit.fixed}}, prompting the user to select fixed landmarks
-in the rgl window. However if the user has digitized these fixed landmark elsewehere (e.g., in other sofwtare), then the input for
+in the rgl window. However if the user has digitized these fixed landmark elsewhere (e.g., in other software), then the input for
 parameter 'fixed' can be a p-x-k matrix of 3D coordinates. In this case, the function the function will automatically use these
 landmarks and fit the template of sliding semilandmarks.
 }

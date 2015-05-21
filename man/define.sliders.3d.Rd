@@ -7,13 +7,11 @@
 define.sliders.3d()
 }
 \description{
-The following functions have been deprecated in geomorph
+The following function has been deprecated in geomorph
 }
 \details{
 This function has been deprecated. Below shows the original function and the replacement function.
 
-define.sliders.2d: use define.sliders
-
-define.sliders.3d: use define.sliders
+define.sliders.3d: use \code{\link{define.sliders}} instead
 }
 

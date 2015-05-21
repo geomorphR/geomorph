@@ -2,11 +2,16 @@
 % Please edit documentation in R/pairwise.slope.test.r
 \name{pairwise.slope.test}
 \alias{pairwise.slope.test}
-\title{Pairwise Slope test}
+\title{Deprecated functions in geomorph}
 \usage{
 pairwise.slope.test()
 }
 \description{
-Function deprecated: use 'advanced.procD.lm' instead
+The following function has been deprecated in geomorph
+}
+\details{
+This function has been deprecated. Below shows the original function and the replacement function.
+
+pairwise.slope.test: use \code{\link{advanced.procD.lm}} instead
 }
 

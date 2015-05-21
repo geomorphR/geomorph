@@ -2,7 +2,7 @@
 % Please edit documentation in R/digit.curves.r
 \name{digit.curves}
 \alias{digit.curves}
-\title{Calculate Semilandmarks Along A Curve}
+\title{Calculate semilandmarks along a curve}
 \usage{
 digit.curves(start, curve, nPoints, closed = T)
 }

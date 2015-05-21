@@ -1,12 +1,12 @@
 #' Procrustes ANOVA and pairwise tests for shape data, using complex linear models
 #'
 #' The function quantifies the relative amount of shape variation explained by  a suite of factors
-#' and covariates in a "full" model, after accounting for variation in a "reduced" model.  Inputs are 
+#' and covariates in a "full" model, after accounting for variation in a "reduced" model. Inputs are 
 #' formulae for full and reduced models (order is not important), plus indication if means or slopes 
 #' are to be comapred among groups, with appropriate formulae to define how they should be compared.
 #' 
 #'   The response matrix 'y' can be in the form of a two-dimensional data 
-#'   matrix of dimension (n x [p x k]) or a 3D array (p x k x n).  It is assumed that the landmarks have previously 
+#'   matrix of dimension (n x [p x k]) or a 3D array (p x k x n). It is assumed that the landmarks have previously 
 #'   been aligned using Generalized Procrustes Analysis (GPA) [e.g., with \code{\link{gpagen}}]. The names specified for the 
 #'   independent (x) variables in the formula represent one or more 
 #'   vectors containing continuous data or factors. It is assumed that the order of the specimens in the 
@@ -16,9 +16,10 @@
 #'   specimens, rather than explained covariance matrices among variables. With this approach, the sum-of-squared 
 #'   Procrustes distances are used as a measure of SS (see Goodall 1991). The SS betwen models is evaluated through 
 #'   permutation. In morphometrics this approach is known as a Procrustes ANOVA (Goodall 1991), which is equivalent
-#'   to distance-based anova designs (Anderson 2001). Unlike procD.lm, this function is strictly for comparison
-#'   of two nested models.  The function will readily accept non-nested models, but the results will not be meaningful.
-#'   (Use of procD.lm will be more suitable in most cases.)  A residual randomization permutation procedure (RRPP) is utilized 
+#'   to distance-based anova designs (Anderson 2001). Unlike \code{\link{procD.lm}}, this function is strictly for comparison
+#'   of two nested models. The function will readily accept non-nested models, but the results will not be meaningful.
+#'   (Use of \code{\link{procD.lm}} will be more suitable in most cases.)  
+#'   A residual randomization permutation procedure (RRPP) is utilized 
 #'   for reduced model residuals to evalute the SS between models (Collyer et al. 2015).  Effect-sizes (Z-scores) are 
 #'   computed as standard deviates of the SS sampling 
 #'   distributions generated, which might be more intuitive for P-values than F-values (see Collyer et al. 2015).  
@@ -35,6 +36,7 @@
 #' @keywords analysis
 #' @export
 #' @author Michael Collyer
+#' @seealso \code{\link{procD.lm}}
 #' @return Function returns an ANOVA table of statistical results for model comparison: error df (for each model), SS, MS,
 #' F ratio, Z, and Prand.  The following may also be returned.
 #'   \item{Means.dist}{Pairwise distance between means, if applicable}
@@ -66,8 +68,8 @@
 #'# Example of a test of a factor interaction, plus pairwise comparisons (replaces pairwiseD.test)
 #'advanced.procD.lm(Y ~ st*sp, ~st + sp, groups = ~st*sp, iter=19)
 #'
-#'# Example of a test of a factor interaction, plus pairwise comparisons, accounting for a common allomtry
-#'# (replaces pairwiseD.test)
+#'# Example of a test of a factor interaction, plus pairwise comparisons, 
+#'# accounting for a common allomtry  (replaces pairwiseD.test)
 #'advanced.procD.lm(Y ~ log(CS) + st*sp, 
 #'~log(CS) + st + sp, 
 #'groups = ~st*sp, slope = ~log(CS), iter=19)
