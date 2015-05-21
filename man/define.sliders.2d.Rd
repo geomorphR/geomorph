@@ -12,6 +12,6 @@ The following function has been deprecated in geomorph
 \details{
 This function has been deprecated. Below shows the original function and the replacement function.
 
-define.sliders.2d: use define.sliders instead
+define.sliders.2d: use \code{\link{define.sliders}} instead
 }
 

@@ -12,6 +12,6 @@ The following function has been deprecated in geomorph
 \details{
 This function has been deprecated. Below shows the original function and the replacement function.
 
-pairwiseD.test: use 'advanced.procD.lm' instead
+pairwiseD.test: use \code{\link{advanced.procD.lm}} instead
 }
 
