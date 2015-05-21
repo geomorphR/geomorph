@@ -167,7 +167,8 @@ plotRefToTarget<-function(M1,M2,mesh= NULL,outline=NULL,method=c("TPS","vector",
       old.par <- par(no.readonly = TRUE)
       layout(matrix(c(1,2),1,2))
       par(mar=c(1,1,1,1))
-      tps(M1[,1:2],M2[,1:2],20)
+      tps(M1[,1:2],M2[,1:2],gP$n.col.cell, sz=gP$pt.size, pt.bg=gP$pt.bg, grid.col=gP$grid.col, 
+          grid.lwd=gP$grid.lwd, grid.lty=gP$grid.lty, refpts=useRefPts)
       if(is.null(links)==FALSE){
         for (i in 1:nrow(links)){
           linkcol <- rep(gP$link.col,nrow(links))[1:nrow(links)]
@@ -180,7 +181,8 @@ plotRefToTarget<-function(M1,M2,mesh= NULL,outline=NULL,method=c("TPS","vector",
       }
       title("X,Y tps grid")
       b<-c(1,3)
-      tps(M1[,b],M2[,b],20)
+      tps(M1[,b],M2[,b],gP$n.col.cell, sz=gP$pt.size, pt.bg=gP$pt.bg, grid.col=gP$grid.col, 
+          grid.lwd=gP$grid.lwd, grid.lty=gP$grid.lty, refpts=useRefPts)
       if(is.null(links)==FALSE){
         linkcol <- rep(gP$link.col,nrow(links))[1:nrow(links)]
         linklwd <- rep(gP$link.lwd,nrow(links))[1:nrow(links)]
