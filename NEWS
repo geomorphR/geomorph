@@ -1,3 +1,7 @@
+CHANGES IN GEOMORPH VERSION 2.1.6
+
+
+
 CHANGES IN GEOMORPH VERSION 2.1.5
 
   NEW FEATURES
@@ -11,7 +15,7 @@ CHANGES IN GEOMORPH VERSION 2.1.5
 
   OTHER CHANGES
     o pairwiseD.test() and pairwise.slope.test() deprecated 
-    o ‘read’ functions now allow both tab and space delimited files
+    o 'read' functions now allow both tab and space delimited files
     o define.sliders.2d() and define.sliders.3d() deprecated (replaced by define.sliders)
 
 CHANGES IN GEOMORPH VERSION 2.1.4
