@@ -1,12 +1,12 @@
 #' Procrustes ANOVA and pairwise tests for shape data, using complex linear models
 #'
 #' The function quantifies the relative amount of shape variation explained by  a suite of factors
-#' and covariates in a "full" model, after accounting for variation in a "reduced" model.  Inputs are 
+#' and covariates in a "full" model, after accounting for variation in a "reduced" model. Inputs are 
 #' formulae for full and reduced models (order is not important), plus indication if means or slopes 
 #' are to be comapred among groups, with appropriate formulae to define how they should be compared.
 #' 
 #'   The response matrix 'y' can be in the form of a two-dimensional data 
-#'   matrix of dimension (n x [p x k]) or a 3D array (p x k x n).  It is assumed that the landmarks have previously 
+#'   matrix of dimension (n x [p x k]) or a 3D array (p x k x n). It is assumed that the landmarks have previously 
 #'   been aligned using Generalized Procrustes Analysis (GPA) [e.g., with \code{\link{gpagen}}]. The names specified for the 
 #'   independent (x) variables in the formula represent one or more 
 #'   vectors containing continuous data or factors. It is assumed that the order of the specimens in the 
@@ -16,9 +16,10 @@
 #'   specimens, rather than explained covariance matrices among variables. With this approach, the sum-of-squared 
 #'   Procrustes distances are used as a measure of SS (see Goodall 1991). The SS betwen models is evaluated through 
 #'   permutation. In morphometrics this approach is known as a Procrustes ANOVA (Goodall 1991), which is equivalent
-#'   to distance-based anova designs (Anderson 2001). Unlike procD.lm, this function is strictly for comparison
-#'   of two nested models.  The function will readily accept non-nested models, but the results will not be meaningful.
-#'   (Use of procD.lm will be more suitable in most cases.)  A residual randomization permutation procedure (RRPP) is utilized 
+#'   to distance-based anova designs (Anderson 2001). Unlike \code{\link{procD.lm}}, this function is strictly for comparison
+#'   of two nested models. The function will readily accept non-nested models, but the results will not be meaningful.
+#'   (Use of \code{\link{procD.lm}} will be more suitable in most cases.)  
+#'   A residual randomization permutation procedure (RRPP) is utilized 
 #'   for reduced model residuals to evalute the SS between models (Collyer et al. 2015).  Effect-sizes (Z-scores) are 
 #'   computed as standard deviates of the SS sampling 
 #'   distributions generated, which might be more intuitive for P-values than F-values (see Collyer et al. 2015).  
@@ -31,30 +32,59 @@
 #' @param angle.type A value specifying whether differences between slopes should be represented by vector
 #' correlations (r), radians (rad) or degrees (deg)
 #' @param iter Number of iterations for significance testing
-#' @param verbose A logical value specifying whether additional output should be displayed
+#' @param verbose A logical value specifying whether additional output should be displayed (see Value below)
 #' @keywords analysis
 #' @export
 #' @author Michael Collyer
+#' @seealso \code{\link{procD.lm}}
 #' @return Function returns an ANOVA table of statistical results for model comparison: error df (for each model), SS, MS,
-#' F ratio, Z, and Prand.
+#' F ratio, Z, and Prand.  The following may also be returned.
+#'   \item{Means.dist}{Pairwise distance between means, if applicable}
+#'   \item{LS.Means.dist}{Pairwise distance between LS means, if applicable}
+#'   \item{Prob.Means.dist}{P-values for pairwise distances between means}
+#'   \item{Slopes.dist}{Pairwise distance between slope vectors (difference in amount of shape change), if applicable}
+#'   \item{Prob.Slopes.dist}{P-values for pairwise distances between slopes}
+#'   \item{Slopes.correlation}{Pairwise vector correlations between slope vectors, if applicable}
+#'   \item{Prob.Slopes.cor}{P-values for pairwise correlations between slope vectors (high correlation less significant)}
+#'   \item{Slopes.angle}{Angles between between slope vectors, if applicable}
+#'   \item{Prob.Slopes.angle}{P-values for pairwise angles between slope vectors}
+#'   \item{SS.rand}{Random SS from RRPP permutations (when {verbose=TRUE})}
+#'   \item{random.mean.dist}{random pairwise distances between means from RRPP permutations (when {verbose=TRUE})}
+#'   \item{random.slope.dist}{random pairwise distances between slopes from RRPP permutations (when {verbose=TRUE})}
+#'   \item{random.slope.comp}{random pairwise slope direction comparisons (r or angle) from RRPP permutations (when {verbose=TRUE})}
 #' @references Collyer, M.L., D.J. Sekora, and D.C. Adams. 2015. A method for analysis of phenotypic change for phenotypes described 
 #' by high-dimensional data. Heredity. 113: doi:10.1038/hdy.2014.75.
 #' @examples
-#' ### Example of comparison of allometries between two populations of pupfish
-#' ### After accounting for sexual dimorphism, Method 1
-#' data(pupfish)
-#' shape <-pupfish$coords   # GPA-alignment previously performed
-#' CS <- pupfish$CS
-#' Sex <- pupfish$Sex
-#' Pop <- pupfish$Pop
-#' f1 <-  shape ~ log(CS) + Sex + Pop
-#' f2 <- ~ log(CS)*Sex*Pop
-#' advanced.procD.lm(f1, f2, groups = ~Pop, slope = ~ log(CS), angle.type = "r", iter=24)
-#' 
-#' ### Method 2
-#' f1 <-  shape ~ log(CS)*Sex
-#' f2 <- ~ log(CS)*Sex*Pop
-#' advanced.procD.lm(f1, f2, groups = ~Pop, slope = ~ log(CS), angle.type = "r", iter=24)
+#'data(plethodon)
+#'Y.gpa<-gpagen(plethodon$land)    #GPA-alignment
+#'Y<-two.d.array(Y.gpa$coords)
+#'CS <- Y.gpa$Csize
+#'sp<- plethodon$species
+#'st<- plethodon$site
+#'
+#'# Example of a nested model comparison (as with ANOVA with RRPP)
+#'advanced.procD.lm(Y ~ log(CS) + sp, ~ log(CS)*sp*st, iter=19)
+#'
+#'# Example of a test of a factor interaction, plus pairwise comparisons (replaces pairwiseD.test)
+#'advanced.procD.lm(Y ~ st*sp, ~st + sp, groups = ~st*sp, iter=19)
+#'
+#'# Example of a test of a factor interaction, plus pairwise comparisons, 
+#'# accounting for a common allomtry  (replaces pairwiseD.test)
+#'advanced.procD.lm(Y ~ log(CS) + st*sp, 
+#'~log(CS) + st + sp, 
+#'groups = ~st*sp, slope = ~log(CS), iter=19)
+#'
+#'# Example of a test of homogeneity of slopes, plus pairwise slopes comparisons
+#'# (replaces pairwise.slope.test)
+#'advanced.procD.lm(Y ~ log(CS)*st*sp, 
+#'~log(CS) + st*sp, 
+#'groups = ~st*sp, slope = ~log(CS), angle.type = "deg", iter=19)
+#'
+#'# Example of partial pairwise comparisons, given greater model complexity
+#'advanced.procD.lm(Y ~ log(CS)*st*sp, 
+#'~log(CS) + st*sp, 
+#'groups = ~sp, slope = ~log(CS), angle.type = "deg", iter=19)
+
 advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL, angle.type = c("r", "deg", "rad"), iter=999, verbose = FALSE){
   data=NULL
   f1 <- as.formula(f1)
@@ -120,6 +150,7 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL, angle.type = c(
     }
     P.val <- pval(P)
     Z.score <- effect.size(P)
+
     anova.tab <- data.frame(df = c(dfr,dff), SSE = c(SSEr, SSEf), SS = c(NA, SSm),
                             F = c(NA, Fs), Z = c(NA, Z.score), P = c(NA,P.val))
     rownames(anova.tab) <- c(paste(attr(red.terms, "term.labels"), collapse="+"),
@@ -168,13 +199,15 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL, angle.type = c(
     P.Means.dist <- Pval.matrix(P.mean.dist)
     P.Slopes.dist <- Pval.matrix(P.slope.dist)
     P.Cor <- Pval.matrix(P.cor)
+    dimnames(Angles.dist) <- dimnames(P.Means.dist) <- dimnames(P.Slopes.dist) <- dimnames(P.Cor) <- dimnames(Means.dist)
     if(verbose==TRUE) out = list(anova.table = anova.tab, LS.means = m, Group.slopes = Bslopes) else out = list(anova.table = anova.tab)
     if(angle.type == "r") {out = c(out, list(LS.Means.dist = Means.dist, Prob.Means.dist = P.Means.dist, Slopes.dist = Slopes.dist,
                   Prob.Slopes.dist = P.Slopes.dist, Slopes.correlation = Angles.dist, Prob.Slopes.cor = P.Cor))
     } else {out = c(out, list(LS.Means.dist = Means.dist, Prob.Means.dist = P.Means.dist, Slopes.dist = Slopes.dist,
                  Prob.Slopes.dist = P.Slopes.dist, Slopes.angle = Angles.dist, Prob.Slopes.angle = P.Cor))
     }
-    if(verbose == TRUE) out = c(out, list(SS.rand = P))
+    if(verbose == TRUE) out = c(out, list(SS.rand = P, random.mean.dist=P.mean.dist, 
+                                          random.slopes.dist=P.slope.dist, random.slope.comp=P.cor))
   }
   out
 }

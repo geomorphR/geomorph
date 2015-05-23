@@ -44,9 +44,16 @@
 #' NOTE: there is no pan (translate) functionality in rgl library for all platforms at this time.
 #' The template can be edited using function \code{\link{editTemplate}}. 
 #' }
+#' 
+#' \subsection{AUTO mode}{ 
+#' The function as described above (for interactive mode) calls \code{\link{digit.fixed}}, prompting the user to select fixed landmarks
+#' in the rgl window. However if the user has digitized these fixed landmark elsewhere (e.g., in other software), then the input for
+#' parameter 'fixed' can be a p-x-k matrix of 3D coordinates. In this case, the function will automatically use these landmarks to build the 
+#' template of sliding semilandmarks.
+#' }
 #'
 #' @param spec Name of surface file, as either an object of class shape3d/mesh3d, or matrix of three-dimensional vertex coordinates.
-#' @param fixed numeric: The number of fixed template landmarks
+#' @param fixed numeric Either: a single value designating the number of fixed template landmarks to be selected by \code{\link{digit.fixed}}, OR a p-x-k matrix of 3D coordinates collected previously
 #' @param surface.sliders numeric: The number of template surface sliders desired 
 #' @param ptsize numeric: Size to plot the mesh points (vertices), e.g. 0.1 for dense meshes, 3 for sparse meshes
 #' @param center Logical Whether the object 'spec' should be centered prior to digitizing (default {center=TRUE})
@@ -65,7 +72,7 @@
 #' @references Mitteroecker P & Gunz P (2009) Advances in Geometric Morphometrics. Evolutionary Biology 36(2):235-247.
 
 buildtemplate<-function(spec, fixed, surface.sliders, ptsize = 1, center = TRUE)    {
-  if(fixed<4){stop ("Number of fixed points is not sufficient.")}
+  if(length(fixed)==1 && fixed<4){stop ("Number of fixed points is not sufficient.")}
   spec.name<-deparse(substitute(spec))
   mesh <- NULL
   if (inherits(spec, "shape3d") == TRUE || inherits(spec, "mesh3d") == TRUE){
@@ -82,11 +89,20 @@ buildtemplate<-function(spec, fixed, surface.sliders, ptsize = 1, center = TRUE)
     if (center == TRUE){ specimen <- scale(spec, scale = FALSE) }
     if (center == FALSE){ specimen <- spec }
   } else { stop ("File is not matrix in form: vertices by xyz")} 
-  selected<-digit.fixed(spec,fixed,index=TRUE,ptsize, center)
-  fix<-selected$fix
-  selected<-selected$selected
-  surfs<-specimen[-fix,]
-  template<-rbind(selected,kmeans(x=surfs,centers=surface.sliders,iter.max=100)$centers)
+  # Manual Mode
+  if(length(fixed)==1){
+    selected<-digit.fixed(spec,fixed,index=TRUE,ptsize, center)
+    lmk.add<-selected$fix
+    lmk.coords<-selected$selected }
+  # Automatic mode
+  if(inherits(fixed, "matrix") == TRUE){
+    lmk.coords <- fixed
+    lmk.add <- NULL
+    for(i in 1:nrow(fixed)){
+      lmk.add <- rbind(lmk.add, which.min(sqrt((fixed[i,1]-specimen[,1])^2+(fixed[i,2]-specimen[,2])^2+(fixed[i,3]-specimen[,3])^2))[1])}
+    fixed <- nrow(fixed)} 
+  surfs<-specimen[-lmk.add,]
+  template<-rbind(lmk.coords,kmeans(x=surfs,centers=surface.sliders,iter.max=100)$centers)
   points3d(template[-(1:fixed),1],template[-(1:fixed),2],template[-(1:fixed),3],size=10,col="blue")
   writeland.nts(template, spec.name, comment="Landmark coordinates for digitized template")
   write.table(template,file="template.txt",row.names=F,col.names=TRUE)

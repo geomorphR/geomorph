@@ -41,7 +41,7 @@ readland.nts<-function(file){
   if (length(comment) != 0){
     ntsfile<-scan(file=file,what="char",quote="",sep="\n",strip.white=TRUE,comment.char="\'",quiet=TRUE)
   }
-  header<-unlist(strsplit(ntsfile[1]," "))
+  header<-unlist(strsplit(ntsfile[1],"\\s+"))
   if(header[1]!=1){
     stop("NTS file not a rectangular matrix. First value in parameter line must be '1'.") }
   header<-casefold(header,upper=TRUE)
@@ -56,18 +56,18 @@ readland.nts<-function(file){
   missdata<-ifelse(header[4]!=0,T,F)
   if(missdata==TRUE){missval<-ifelse(dimval==6,header[5],header[6]) } 
   n<-header[2];k<-header[dimval];p<-header[3]/k;   
-  tmp<-gsub("\\t"," ",ntsfile[-1])  #replace tabs with spaces
-  tmp<-unlist(strsplit(tmp,split=" +"))
+  tmp<-unlist(strsplit(ntsfile[-1],"\\s+"))
   speclab<-NULL; 
   if(r.lab==TRUE){
     speclab<-tmp[1:n]
-    tmp<-tmp[-(1:length(speclab))]   }
+    tmp<-tmp[-(1:length(speclab))]   
+  }
   if(c.lab==TRUE){ tmp<-tmp[-(1:(p*k))] }
   if(missdata==TRUE){tmp<-sub(missval,NA,tmp)}
   options(warn=-1)
   landdata<-matrix(as.numeric(tmp),ncol=k,byrow=TRUE)
   if(sum(which(is.na(landdata)==TRUE))>0){print("NOTE.  Missing data identified.")}
   coords <- aperm(array(t(landdata), c(k,p,n)), c(2,1,3))
-  dimnames(coords)[[3]]<-speclab
+  dimnames(coords)[[3]]<-as.list(speclab)
   return(coords=coords)
 }

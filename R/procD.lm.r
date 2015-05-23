@@ -43,7 +43,7 @@
 #' @export
 #' @author Dean Adams and Michael Collyer
 #' @return Function returns an ANOVA table of statistical results for all factors: df (for each factor), SS, MS,
-#' Rsquare, F ratio, Z-score, and Prand.
+#' Rsquare, F ratio, Z-score, and Prand.  If verbose=TRUE, random SS are provided.
 #' @references Anderson MJ. 2001. A new method for non-parametric multivariate analysis of variance. 
 #'    Austral Ecology 26: 32-46.
 #' @references Anderson MJ. and C.J.F. terBraak. 2003. Permutation tests for multi-factorial analysis of variance.

@@ -125,7 +125,8 @@ NULL
 
 #### TPS and GPA routines (DCA and J Claude code) 
 
-tps<-function(matr, matt, n,sz=1.5){		#DCA: altered from J. Claude: 2D only	
+tps<-function(matr, matt, n,sz=1.5, pt.bg="black",
+              grid.col="black", grid.lwd=1, grid.lty=1, refpts=FALSE){		#DCA: altered from J. Claude: 2D only	
   xm<-min(matt[,1])
   ym<-min(matt[,2])
   xM<-max(matt[,1])
@@ -137,9 +138,9 @@ tps<-function(matr, matt, n,sz=1.5){		#DCA: altered from J. Claude: 2D only
   M<-as.matrix(expand.grid(a,b))
   ngrid<-tps2d(M,matr,matt)
   plot(ngrid, cex=0.2,asp=1,axes=FALSE,xlab="",ylab="")
-  for (i in 1:m){lines(ngrid[(1:n)+(i-1)*n,])}
-  for (i in 1:n){lines(ngrid[(1:m)*n-i+1,])}
-  points(matt,pch=21,bg="black",cex=sz)
+  for (i in 1:m){lines(ngrid[(1:n)+(i-1)*n,], col=grid.col,lwd=grid.lwd,lty=grid.lty)}
+  for (i in 1:n){lines(ngrid[(1:m)*n-i+1,], col=grid.col,lwd=grid.lwd,lty=grid.lty)}
+  if(refpts==FALSE) points(matt,pch=21,bg=pt.bg,cex=sz) else points(matr,pch=21,bg=pt.bg,cex=sz)
 }
 
 tps2d<-function(M, matr, matt)
@@ -323,7 +324,7 @@ trajshape<-function(M){
 # general plotting function for phenotypic trajectories
 trajplot<-function(Data,M){
   n<-dim(M)[3]; p<-dim(M)[1]
-  plot(Data[,1:2],type="n",xlab="Summary Axis I", ylab="Summary Axis II",main="Two Dimensional View  of Phenotypic Trajectories",asp=1)
+  plot(Data[,1:2],type="n",xlab="PC I", ylab="PC II",main="Two Dimensional View  of Phenotypic Trajectories",asp=1)
   points(Data[,1:2],pch=21,bg="gray",cex=.75)
   for (i in 1:n){  	 	
     for (j in 1:(p-1)){		
@@ -719,8 +720,11 @@ pls = function(x,y){ # x and y must be vectors or matrices
     }
     
     r <- cor(XScores[, 1], YScores[, 1])
-    list(r=r, XScores = matrix(XScores[,1]), YScores = matrix(YScores[,1]))
+    rownames(U) <-colnames(x)
+    rownames(V) <- colnames(y)
+    list(r=r, XScores = matrix(XScores[,1]), YScores = matrix(YScores[,1]), U=U, V=V)
 }
+
 
 
 # P-values  (for procD.lm RRPP method)

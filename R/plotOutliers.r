@@ -44,13 +44,16 @@ plotOutliers <- function(A, groups = NULL){
     names(d) <- dimnames(A.d)[[1]] 
     D <- d[order(d, decreasing=TRUE)]
     Q <- summary(D)
-    LL <- Q[2] - 1.5*(Q[5]-Q[2])
-    UL <- Q[5] + 1.5*(Q[5]-Q[2])
+    Med <- as.numeric(summary(D)[3])
+    LL <- as.numeric(Q[2] - 1.5*(Q[5]-Q[2]))
+    UL <- as.numeric(Q[5] + 1.5*(Q[5]-Q[2]))
     plot(D, type="p", ylab= "Procrustes Distance from Mean", pch=19, xlab="", xaxt='n', main = j)
-    abline(a=LL, b=0,lty=2,col= "blue") ; abline(a=Q[3],b=0,col= "blue") ;  abline(a=UL,b=0,lty=2,col= "blue")
-    text(x= nrow(A.d), y=LL, labels= "lower quartile", col = "blue", cex=0.5)
-    text(x= nrow(A.d), y=Q[3], labels= "median",col = "blue", cex=0.5)
-    text(x= nrow(A.d), y=UL, labels= "upper quartile",col = "blue", cex=0.5)
+      abline(a=LL, b=0,lty=2,col= "blue")
+      abline(a=Med,b=0,col= "blue")
+      abline(a=UL,b=0,lty=2,col= "blue")
+      text(x= nrow(A.d), y=LL, labels= "lower quartile", col = "blue", cex=0.5)
+      text(x= nrow(A.d), y=Med, labels= "median",col = "blue", cex=0.5)
+      text(x= nrow(A.d), y=UL, labels= "upper quartile",col = "blue", cex=0.5)
     if(any(D >= UL)) { 
       points(D[which(D >= UL)], pch=19, col="red")
       text(D[which(D >= UL)], labels=names(D)[which(D >= UL)], col= "red", adj=0.8, pos=4, cex=0.5)

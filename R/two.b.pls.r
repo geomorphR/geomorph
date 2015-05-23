@@ -27,6 +27,8 @@
 #'   \item{pvalue}{The significance level of the observed association}
 #'   \item{Xscores}{PLS scores for the first block of landmarks (when {verbose=TRUE})}
 #'   \item{Yscores}{PLS scores for the second block of landmarks (when {verbose=TRUE})}
+#'   \item{left.singular.coef}{Left matrix singular value coefficients (loadings) for principal vector (when {verbose=TRUE})}
+#'   \item{right.singular.coef}{Right matrix singular value coefficients (loadings) for principal vector (when {verbose=TRUE})}
 #' @references  Rohlf, F.J., and M. Corti. 2000. The use of partial least-squares to study covariation in shape. 
 #' Systematic Biology 49: 740-753.
 #' @examples
@@ -35,7 +37,7 @@
 #'
 #' #2B-PLS between head shape and food use data
 #' two.b.pls(Y.gpa$coords,plethShapeFood$food,iter=99)
-#' 
+#'
 two.b.pls<- function (A1, A2, warpgrids = TRUE, iter = 999, verbose = FALSE, label = NULL,ShowPlot=TRUE){
     if (any(is.na(A1)) == T) {
       stop("Data matrix 1 contains missing values. Estimate these first (see 'estimate.missing').")
@@ -181,8 +183,9 @@ two.b.pls<- function (A1, A2, warpgrids = TRUE, iter = 999, verbose = FALSE, lab
     }
 
     if (verbose == TRUE) {
-      return(list(x.scores = XScores[, 1], y.scores = YScores[, 
-                                                              1], PLS.corr = PLS.obs, pvalue = P.val, pls.random = pls.val))
+      return(list(x.scores = XScores[, 1], y.scores = YScores[,1], 
+                  PLS.corr = PLS.obs, pvalue = P.val, pls.random = pls.val,
+                  left.singular.coef=pls.xy$U[,1], right.singular.coef=pls.xy$V[,1]))
     }
     if (verbose == FALSE) {
       return(list(PLS.corr = PLS.obs, pvalue = P.val))

@@ -42,6 +42,7 @@
 #'   described below
 #' @param iter Number of iterations for significance testing
 #' @param traj.pts An optional value specifying the number of points in each trajectory (if estimate.traj=FALSE)
+#' @param verbose A logical indicator for verbose (random) output (observed cases always first)
 #' @export
 #' @keywords analysis
 #' @author Dean Adams and Michael Collyer
@@ -53,14 +54,19 @@
 #'   \item{Direction$Obs.dif}{A matrix of pairwise differences in trajectory orientation}
 #'   \item{Direction$Z}{A matrix of effect sizes for differences in trajectory orientation}
 #'   \item{Direction$P}{A matrix of pairwise significance levels for differences in trajectory orientation}
-#'   \item{tShape$Obs.dif}{A matrix of pairwise differences in trajectory shape (if applicable)}
-#'   \item{tShape$Z}{A matrix of pairwise effect sizes for differences in trajectory shape (if applicable)}
-#'   \item{tShape$P}{A matrix of pairwise significane levels for differences in trajectory shape (if applicable)}
+#'   \item{Shape$Obs.dif}{A matrix of pairwise differences in trajectory shape (if applicable)}
+#'   \item{Shape$Z}{A matrix of pairwise effect sizes for differences in trajectory shape (if applicable)}
+#'   \item{Random.values}{All random values for all RRPP permutations (when {verbose=TRUE})}
 #' @return If "estimate.traj=FALSE", the function returns a list with the following components: 
 #'   \item{MANOVA.location.covariation}{Procrustes ANOVA table}
 #'   \item{ANOVA.Size}{Results of permutational-ANOVA assessing variation in trajectory size}
 #'   \item{ANOVA.Dir}{Results of permutational-ANOVA assessing variation in trajectory orientation}
 #'   \item{ANOVA.Shape}{Results of permutational-ANOVA assessing variation in trajectory shape (if applicable)}
+#'   \item{random.SS.location}{Random SS from RRPP permutations (when {verbose=TRUE})}
+#'   \item{random.SS.size}{Random SS from RRPP permutations (when {verbose=TRUE})}
+#'   \item{random.SS.dir}{Random SS from RRPP permutations (when {verbose=TRUE})}
+#'   \item{random.SS.shape}{Random SS from RRPP permutations (when {verbose=TRUE})}
+#'  
 #' @references Collyer, M.L., and D.C. Adams. 2013. Phenotypic trajectory analysis: Comparison of 
 #'  shape change patterns in evolution and ecology. Hystrix. 24:75-83.
 #' @references Adams, D. C. 2010. Parallel evolution of character displacement driven by competitive 
@@ -79,6 +85,11 @@
 #' Y.gpa<-two.d.array(gpagen(plethodon$land)$coords)    
 #'
 #' trajectory.analysis(Y.gpa~plethodon$species*plethodon$site,iter=15)
+#' 
+#' # Retaining random values (first sets are always observed)
+#' tra <- trajectory.analysis(Y.gpa~plethodon$species*plethodon$site,iter=15, verbose = TRUE)
+#' tra$anova.table
+#' tra$Random.values
 #'
 #' #2: Compare motion trajectories
 #' data(motionpaths) 
@@ -87,7 +98,10 @@
 #'
 #' trajectory.analysis(motionpaths$trajectories~motionpaths$groups,
 #' estimate.traj=FALSE, traj.pts=5,iter=15)
-trajectory.analysis<-function(f1,data=NULL,estimate.traj=TRUE,traj.pts=NULL,iter=999){
+#' 
+#' trajectory.analysis(motionpaths$trajectories~motionpaths$groups,
+#' estimate.traj=FALSE, traj.pts=5,iter=15, verbose=TRUE)
+trajectory.analysis<-function(f1,data=NULL,estimate.traj=TRUE,traj.pts=NULL,iter=999, verbose=FALSE){
   form.in <- formula(f1)
   Y <- eval(form.in[[2]], parent.frame())
   if(length(dim(Y)) == 3)  Y <- two.d.array(Y) else Y <- as.matrix(Y)
@@ -152,16 +166,30 @@ trajectory.analysis<-function(f1,data=NULL,estimate.traj=TRUE,traj.pts=NULL,iter
       rownames(Z.dir) <- colnames(Z.dir) <- rownames(Z.shape) <- colnames(Z.shape) <-
       rownames(trajsize.obs) <- colnames(trajsize.obs) <- rownames(trajdir.obs) <- colnames(trajdir.obs) <-
       rownames(trajshape.obs) <- colnames(trajshape.obs) <- levels(dat[,k-1])
+    dimnames(Plm)[[1]] <- dimnames(anova.tab)[[1]][1:k]
+    dimnames(PSize)[[1]] <- dimnames(PSize)[[2]] <- 
+      dimnames(POrient)[[1]] <- dimnames(POrient)[[2]] <- 
+      dimnames(PShape)[[1]] <- dimnames(PShape)[[2]] <- levels(dat[,k-1])
+    
     anova.tab <- data.frame(anova.tab, Z = c(Z.lm, NA, NA), P.value = c(P.val.lm, NA, NA))
     anova.title = "\nRandomized Residual Permutation Procedure used\n"
     attr(anova.tab, "heading") <- paste("\nType I (Sequential) Sums of Squares and Cross-products\n",anova.title)
     class(anova.tab) <- c("anova", class(anova.tab))
-    results <- list(anova.table = anova.tab, 
+
+    if (k1 > 2) Random.values=list(random.SS=Plm,random.size.dif = PSize, random.dir.dif = POrient, random.shape.dif = PShape) else 
+      Random.values=list(random.SS=Plm,random.size.dif = PSize, random.dir.dif = POrient)
+    if(verbose==FALSE) results <- list(anova.table = anova.tab, 
          Size=list(Obs.dif=trajsize.obs,Z=Z.size,P = P.val.size),
          Direction=list(Obs.dif=trajdir.obs,Z=Z.dir,P = P.val.dir),
          Shape=list(Obs.dif=trajshape.obs,Z=Z.shape,P = P.val.shape))
+    else results <- list(anova.table = anova.tab, 
+                         Size=list(Obs.dif=trajsize.obs,Z=Z.size,P = P.val.size),
+                         Direction=list(Obs.dif=trajdir.obs,Z=Z.dir,P = P.val.dir),
+                         Shape=list(Obs.dif=trajshape.obs,Z=Z.shape,P = P.val.shape),
+                         Random.values=Random.values)
     trajplot(y,traj.specs.obs)
-    if(k1 == 2) return(results[-4]) else return(results)
+    if(k1 == 2) return(results[-4]) else 
+        return(results)
   }
   
   if(estimate.traj==FALSE){
@@ -225,10 +253,23 @@ trajectory.analysis<-function(f1,data=NULL,estimate.traj=TRUE,traj.pts=NULL,iter
     class(size.tab) <- c("anova", class(size.tab))
     class(dir.tab) <- c("anova", class(dir.tab))
     class(shape.tab) <- c("anova", class(shape.tab))
-    results <- list(MANOVA.location.covariation = anova.tab, 
-                    ANOVA.Size=size.tab,
-                    ANOVA.Dir = dir.tab,
-                    ANOVA.shape=shape.tab)
+    if(verbose==TRUE) {
+      results <- list(MANOVA.location.covariation = anova.tab, 
+                      ANOVA.Size=size.tab,
+                      ANOVA.Dir = dir.tab,
+                      ANOVA.shape=shape.tab,
+                      random.SS.location=as.vector(Plm), 
+                      random.SS.size=as.vector(PSize), 
+                      random.SS.dir=as.vector(POrient), 
+                      random.SS.shape=as.vector(PShape))
+    } else
+    {
+      results <- list(MANOVA.location.covariation = anova.tab, 
+                      ANOVA.Size=size.tab,
+                      ANOVA.Dir = dir.tab,
+                      ANOVA.shape=shape.tab)
+    }
+    
     y.plot<-matrix(t(two.d.array(traj.specs.obs)),ncol=p1,byrow=TRUE)
     trajplot(y.plot,traj.specs.obs)
     if(k1 == 2) return(results[-4]) else return(results)

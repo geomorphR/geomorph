@@ -12,8 +12,8 @@
 #'  To use function digitsurface, the template must be constructed first, and 'template.txt' be in the working directory. Because template 
 #'  matching is based on the correspondence of fixed landmark points in the template and the specimen, a minimum of four fixed landmarks must be used. 
 #' 
-#' Some of the "fixed" landmarks digitized with digitsurface can be later designated as "curve sliders" using function \code{\link{define.sliders.3d}} 
-#'  if required (see details in \code{\link{digit.fixed}}).
+#' Some of the "fixed" landmarks digitized with digitsurface can be later designated as "curve sliders" using function 
+#' \code{\link{define.sliders.3d}} if required (see details in \code{\link{digit.fixed}}).
 #'  NOTE: Function centers the mesh before digitizing by default (center=TRUE). If one chooses not to center,
 #'  specimen may be difficult to manipulate in rgl window.
 #' 
@@ -41,22 +41,30 @@
 #' 
 #' NOTE: there is no pan (translate) functionality in rgl library for all platforms at this time.
 #' }
+#' 
+#' \subsection{AUTO mode}{ 
+#' The function as described above (for interactive mode) calls \code{\link{digit.fixed}}, prompting the user to select fixed landmarks
+#' in the rgl window. However if the user has digitized these fixed landmark elsewhere (e.g., in other software), then the input for
+#' parameter 'fixed' can be a p-x-k matrix of 3D coordinates. In this case, the function the function will automatically use these
+#' landmarks and fit the template of sliding semilandmarks.
+#' }
 #'
 #' @param spec Name of surface file, as either an object of class shape3d/mesh3d, or matrix of three-dimensional vertex coordinates.
+#' @param fixed numeric Either: a single value designating the number of fixed template landmarks to be selected by \code{\link{digit.fixed}}, OR a p-x-k matrix of 3D coordinates collected previously
+#' @param ptsize numeric: Size to plot the mesh points (vertices), e.g. 0.1 for dense meshes, 3 for sparse meshes
+#' @param center Logical Whether the object 'spec' should be centered prior to digitizing (default {center=TRUE})
 #' @seealso \code{\link{buildtemplate}}
 #' @seealso \code{\link{read.ply}} 
 #' @seealso \code{\link{digit.fixed}} 
-#' @param fixed numeric: The number of fixed template landmarks 
-#' @param ptsize numeric: Size to plot the mesh points (vertices), e.g. 0.1 for dense meshes, 3 for sparse meshes
-#' @param center Logical Whether the object 'spec' should be centered prior to digitizing (default {center=TRUE})
 #' @return Function writes to the working directory an NTS file with the name of the specimen and .nts suffix containing the landmark coordinates.   
 #' @references Gunz P, Mitteroecker P, & Bookstein FJ (2005) Semilandmarks in Three Dimensions. Modern Morphometrics in Physical Anthropology, ed Slice DE (Springer-Verlag, New York), pp 73-98.
 #' @references Mitteroecker P & Gunz P (2009) Advances in Geometric Morphometrics. Evolutionary Biology 36(2):235-247. 
 #' @export
 #' @keywords digitizing
 #' @author Erik Otarola-Castillo & Emma Sherratt
+
 digitsurface<-function(spec, fixed, ptsize = 1, center = TRUE)    {
-  if(fixed<4){stop ("Number of fixed points is not sufficient.")}
+  if(length(fixed)==1 && fixed<4){stop ("Number of fixed points is not sufficient.")}
   spec.name<-deparse(substitute(spec))
   mesh <- NULL
   if (inherits(spec, "shape3d") == TRUE || inherits(spec, "mesh3d") == TRUE){
@@ -73,13 +81,22 @@ digitsurface<-function(spec, fixed, ptsize = 1, center = TRUE)    {
     if (center == TRUE){ specimen <- scale(spec, scale = FALSE) }
     if (center == FALSE){ specimen <- spec }
   } else { stop ("File is not matrix in form: vertices by xyz")} 
-  selected<-digit.fixed(spec, fixed,index=T,ptsize, center)
+  # Manual Mode
+  if(length(fixed)==1){
+    selected<-digit.fixed(spec,fixed,index=TRUE,ptsize, center)
+    lmk.add<-selected$fix}
+  # Automatic mode
+  if(inherits(fixed, "matrix") == TRUE){
+    lmk.add <- NULL
+    for(i in 1:nrow(fixed)){
+      lmk.add <- rbind(lmk.add, which.min(sqrt((fixed[i,1]-specimen[,1])^2+(fixed[i,2]-specimen[,2])^2+(fixed[i,3]-specimen[,3])^2))[1])}
+    fixed <- nrow(fixed)} 
   template<-as.matrix(read.table("template.txt",header=TRUE))
   specimen<-trans(as.matrix(specimen))
-  template<-trans(template)*(csize(specimen[selected$fix,])[[1]]/csize(template[(1:fixed),])[[1]])  
-  template<-template%*%(pPsup(template[(1:fixed),],specimen[selected$fix,]))[[3]] 
-  template.tps<-tps2d3d(template[-(1:fixed),],template[(1:fixed),],specimen[selected$fix,])             
-  spec.surfs<-specimen[-selected$fix,]
+  template<-trans(template)*(csize(specimen[lmk.add,])[[1]]/csize(template[(1:fixed),])[[1]])  
+  template<-template%*%(pPsup(template[(1:fixed),],specimen[lmk.add,]))[[3]] 
+  template.tps<-tps2d3d(template[-(1:fixed),],template[(1:fixed),],specimen[lmk.add,])             
+  spec.surfs<-specimen[-lmk.add,]
   nei<-numeric(dim(template.tps)[1])
   sliders<-matrix(NA,nrow=dim(template.tps)[1],ncol=3)
   for (i in 1:dim(template.tps)[1])     {
@@ -92,9 +109,9 @@ digitsurface<-function(spec, fixed, ptsize = 1, center = TRUE)    {
     mesh$vb <- rbind(t(specimen), 1)
     shade3d(mesh, add=TRUE) 
   }
-  points3d(specimen[selected$fix,],col="red",size=10)
+  points3d(specimen[lmk.add,],col="red",size=10)
   points3d(template.tps,col="blue",size=10)
   points3d(sliders[,1:3],size=10,col="green")
-  selected.out <- rbind(specimen[selected$fix,],sliders)
+  selected.out <- rbind(specimen[lmk.add,],sliders)
   writeland.nts(selected.out, spec.name, comment=NULL)
 }

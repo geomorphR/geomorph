@@ -1,339 +1,226 @@
+CHANGES IN GEOMORPH VERSION 2.1.5
+
+  NEW FEATURES
+    o ability to include pre-digitized landmarks added to build.template() and digitsurface()
+    o new gridPar() is a new function to customize plots of plotRefToTarget
+    o new digit.curves() is a new function to calculate equidistant semilandmarks along 2D and 3D curves
+    o define.sliders() is new interactive function for defining sliding semilandmarks for 2D and 3D curves, plus an automatic mode when given a sequence of semilandmarks along a curve
+
+  BUG FIXES
+    o Corrected an error in plotAllometry() where verbose=T did not return
+
+  OTHER CHANGES
+    o pairwiseD.test() and pairwise.slope.test() deprecated 
+    o ‘read’ functions now allow both tab and space delimited files
+    o define.sliders.2d() and define.sliders.3d() deprecated (replaced by define.sliders)
+
 CHANGES IN GEOMORPH VERSION 2.1.4
 
   OTHER CHANGES
-
     o warpRefMesh() generalised - now takes a mesh3d object (i.e. made from read.ply()) rather than calling read.ply() directly
-    
     o read.morphologika() now reads [groups] option and adds these data to the $labels matrix
     o plotOutliers() now has option groups to plot outliers by levels(groups) using group means
     o morphol.disparity() help file updated to correctly indicate that group shape residuals, rather than shape values, themselves, are randomized in the permutation procedure
-    
-    o Internal changes to support functions for compatability with R 3.1.3 
-    
+    o Internal changes to support functions for compatibility with R 3.1.3 
     o Generalized plot inputs in gpagen()
 
   BUG FIXES
-
     o Corrected error readland.tps()
-
     o Corrected errors trajectory.analysis()
-    
     o Corrected an issue with gpagen() that flipped principal axes
-    
     o Fixed error in read.morphologika() with reading [wireframe] in some morphologika files
-
 
 CHANGES IN GEOMORPH VERSION 2.1.3
 
   NEW FEATURES
-
     o new plotOutliers() function to identify potential outliers
-
     o new define.links() function for enhanced plotting of shapes
 
   OTHER CHANGES
-
     o Additional input options added to pairwiseD.test() and pairwise.slope.test() 
-
-    o Ability to accomodate singular phylogenetic covariance matrices in: physignal(), compare.evol.rates(), procD.pgls() and phylo.pls()
-
+    o Ability to accommodate singular phylogenetic covariance matrices in: physignal(), compare.evol.rates(), procD.pgls() and phylo.pls()
     o Enhanced digitizing capability in: build.template(), define.modules(), define.sliders.3d(), digit.fixed(), digitsurface(), and editTemplate() )
-
     o plotAllometry() input can be 2D matrix or 3D array
-
     o read.ply() reads normals for enhanced downstream digitizing from ply files
-
     o readland.tps()  reads curves from tps files and convert them to landmarks (semilandmarks)
-
     o plotTangentSpace() has enhanced plotting flexibility with labels and colors
 
   BUG FIXES
-
     o Corrected error printing output of ANOVA table of bilat.symmetry()
-
     o Removed redundant permutation loop in phylo.pls() 
-
 
 CHANGES IN GEOMORPH VERSION 2.1.2
 
   NEW FEATURES
-
     o New function advanced.procD.lm() for statistically comparing two or explanatory models
-
     o Added warping of outline in plotRefToTarget()
-
     o New function to warp a specimen outline to the reference: warpRefOutline()
-
     o Added ShowPlot option to two.b.pls
-
     o Added RRPP option to procD.pgls()
-
     o New dataset pupfish
 
   BUG FIXES
-
     o Fixed output of procD.lm() when verbose=TRUE
-
     o Fixed reflections of aligned coordinate axes when PrinAxes=TRUE in gpagen()
 
-
   OTHER CHANGES
-
     o Enhanced underlying code in procD.lm(), procD.pgls() pairwiseD.test() and pairwise.slope.test()
-
     o Removed k>3 restriction in arrayspecs()
-
     o Added is.numeric check to phylo.pls()
-
     o Removed arrows from plots when groups included in plotAllometry()
 
 CHANGES IN GEOMORPH VERSION 2.1.1
 
   BUG FIXES
-
     o Fixed concatenated SSCP matrix issue in procD.lm(), pairwise.D.test() and pairwise.slope.test()
-
     o Corrected issue reading specimen names in readland.tps()
-
     o Corrected color options for plotting groups in plotTangentSpace()
-
     o Corrected test for slope:group interaction in plotAllometry()
 
   NEW FEATURES
-
     o Specimens rotated to their principal axes in gpagen() with option to disable
 
   OTHER CHANGES
-
     o Underlying code for ancestral state estimation changed to use fastAnc (phytools)
 
 CHANGES IN GEOMORPH VERSION 2.1
 
   NEW FUNCTIONS
-
     o procD.pgls() added to assess high-dimensional ANOVA and regression models in a phylogenetic context
-
     o pairwise.slope.test() added to compare slopes of regression lines
 
   NEW FEATURES
-
     o Residual randomization options added to procD.lm() and pairwise.d.test()
-
     o Enhanced capabilities of digitize2d(). Function now reads multiple images and outputs TPS file, can be used with missing data, and digitizing session can be restarted where previous session stopped.
 
   BUG FIXES
-
     o Fixed scale issue in digitize2d()
 
   OTHER CHANGES
-
     o Ability to plot specimen labels added to two.b.pls(), morphol.integr(), and phylo.pls()
-
-
     o Slight ANOVA table output adjustment in bilat.symmetry()
-
     o Vector of labels can be added for plotting in plotAllometry() and plotTangentSpace()
-
     o Labels for ancestral states addd to plotGMPhyloMorphoSpace()
 
-
 CHANGES IN GEOMORPH VERSION 2.0.1
-
     o Small change to C-code for gpagen
 
 CHANGES IN GEOMORPH VERSION 2.0
 
   NEW FEATURES
-
     o New function phylo.pls() for assessing the multivariate association between two blocks of variables in a phylogenetic context
-
     o New function two.b.pls() for assessing the multivariate association between two blocks of variables
-
     o New function morphol.disparity() to compare Procrustes variance disparity among groups
-
     o F-ratios and R-squared values added to output of ProcD.lm()
-
     o 3D Visualizations now include "surface" option to view shape deformation as warped mesh3d surfaces in the following: plotRefToTarget(), plotTangentSpace(), plotAllometry(), and bilat.symmetry()
-
     o New I/O functions: warpRefMesh() to create a mesh3d surface that represents the mean shape, findMeanSpec() to assist in choosing a template ply file for use with warpRefMesh that identifies specimen closest to the mean shape, and defline.modules() to interactively assign landmarks to modular partitions [currently 2D only]
-
     o Generalized data input to allow 3D array or 2D matrix of data added to the following analysis functions: compare.evol.rates(), phylo.pls(), morphol.integr(), two.b.pls(), physignal(), and plotGMPhyloMorphoSpace()
-
     o Ability to input univariate data added to compare.evol.rates() and physignal()
-
     o Verbose output = T/F added to the following functions: bilat.symmetry(), phylo.pls(), two.b.pls(), morphol.integr(), plotAllometry(), plotTangentSpace(), physignal()
 
   OTHER CHANGES
-
     o Added calculation of pairwise Pvalues, and the option to assess a single group in  function compare.evol.rates() 
-
     o Additional graphical output added to morphol.integr()
-
     o Missing data handling altered (now NA is used)
-
     o byLand option in arrayspecs() has been removed
-
     o Residual shape component (RSC) plot added and scores returned for plotAllometry (method = "CAC")
-
     o Procrustes ANOVA added to plotAllometry output
-
     o Centering = T/F option added to following 3D digitizing functions: build.Template(), digit.fixed(), digitsurface(), and plotSpec()
-
     o read.vrml now defunct
 
   INTERNAL CODING CHANGES
-
     o Major re-organization of underlying R code structure and format
-
     o Optimized code to improve speed and performance in following functions: arrayspecs(), readland.tps(), readland.nts(), readmulti.nts(), two.d.array(), plotTangentSpace(), trajectory.analysis(), bilat.symmetry(), gpagen() 
-
     o Simplified plotting options in bilat.symmetry()
 
   BUG FIXES 
-
     o Corrected small coding error in digitize2D and updated flexibility of the function
-
-######
 
 CHANGES IN GEOMORPH VERSION 1.1-6
 
   OTHER CHANGES
-
     o Minor I/O enhancements in readmulti.nts()
-
     o Minor I/O enhancements in define.sliders.3d() to allow sliders to be in any order
-
     o Simplified pPsup (original code from J. Claude) to not include size re-scaling by beta (underlying function used in trajectory.analysis() only)
-
     o Added name.check for groups in compare.evol.rates()
- 
 
 CHANGES IN GEOMORPH VERSION 1.1-5
 
   NEW FEATURES
-
     o New function compare.evol.rates() for comparing multivariate evolutionary rates on phylogenies
-
     o define.sliders.2d() and define.sliders.3d() replace curves2d() and digit.curves() 
-
     o Option allowing specimens to be colored by group added to plotTangentSpace() and PlotAllometry() 
 
   BUG FIXES 
-
     o Corrected parameter estimates when groups specified for Regression Score option in plotAllometry()
 
-
   OTHER CHANGES
-
     o Simplified options in morphol.integr()
-
     o curves2d() and digit.curves() deprecated 
-
 
 CHANGES IN GEOMORPH VERSION 1.1-4
 
   NEW FEATURES
-
     o Enhanced plotting of ply files in read.ply()
-
     o digitsurface(), buildtemplate(), plotspec(), digitfixed(), and digitcurves() now support ply file input
 
   OTHER CHANGES
-
     o Minor changes to plot window options in plotting functions
-
     o Change to magnification factor usage in plotRefToTartget()
 
 CHANGES IN GEOMORPH VERSION 1.1-3
 
   OTHER CHANGES
-
     o Improved NAMESPACE file and package usage
-
     o Generalized read.vrml() code for additional file formats
-
-
 
 CHANGES IN GEOMORPH VERSION 1.1-2
 
   NEW FEATURES
-
     o pairwiseD.test() function added
-
     o bilat.symmetry() output includes symmetric and asymmetric shape components
 
   BUG FIXES 
-
     o Corrected readland.tps() to allow for non-numeric ID and reading a single specimen per file
-
     o Corrected landmark plotting issue and added greater directory flexibility in curves2D() 
-
     o Added greater directory flexibility and fixed header output in digitize2D() 
-
     o Added greater flexibility in reading distinct file formats in read.morphologika()
-
     o Corrected angle calculations in fixed.angle()
-
     o Corrected plotting of deformations grids in plotTangentSpace()
- 
     o Corrected ancestral state output in physignal() and PlotGMPhyloMorphoSpace()
 
   OTHER CHANGES
-
     o Adjusted plotting routines in morphol.integr() to be compatible with new CRAN guidelines
-
     o Adjusted plotting routines in bilat.symmetry() to be compatible with new CRAN guidelines
-
     o Alternative ancestral state reconstruction and tests for bifurcating tree implemeneted in physignal()
-
     o Alternative ancestral state reconstruction and tests for bifurcating tree implemeneted in PlotGMPhyloMorphoSpace()
-
 
 CHANGES IN GEOMORPH VERSION 1.1-1
 
     o Removed dependency in physignal() on getAncStates() from geiger, which is no longer supported
-
     o Removed dependency in plotGMPhyloMorphoSpace() on getAncStates() from geiger, which is no longer supported
-
 
 CHANGES IN GEOMORPH VERSION 1.1-0
 
   NEW FEATURES
-
     o bilat.symmetry() function added
-
     o writeland.tps() function added
-
     o fixed.angle() function added
-
     o compare.modular.partitions() generalized to allow 2 or more partitions
-
     o morphol.integr() generalized to allow 2 or more partitions
-
     o trajectory.analysis() re-written to accept formulas, allowing greater flexibility for motion analysis
-
     o PLS scores added to output morphol.integr() 
-
     o Ancestral states added to output physignal()
-
     o Centroid size and allometry scores added as output in plotAllometry()
-
     o PC scores added to output of plotTangentSpace()
-
     o Option added to select PC axes for plot in plotTangentSpace()
-
     o Option added to include specimen numbers to plotTangentSpace()
 
   BUG FIXES
-
     o buildtemplate() positional error in plot between template and scan corrected
-
     o digit.curves() error with passing objects to internal function corrected
-
     o gpgen() occassional reflection issue corrected
 
   OTHER CHANGES
-
     o read.morphologika() accepts greater variety of input file formats
-
     o new example data added for trajectory.analysis() (motionpaths)
