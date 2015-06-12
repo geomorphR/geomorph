@@ -126,8 +126,8 @@ plotTangentSpace<-function (A, axis1 = 1, axis2 = 2, warpgrids = TRUE, mesh = NU
         title3d(main=paste("PC ", axis1," positive"))
         }
       }
-    }
     layout(1)
+    }
   if(verbose==TRUE){ return(list(pc.summary = summary(pc.res), pc.scores = pcdata, pc.shapes= shapes)) }
   if(verbose==FALSE){ return(pc.summary = summary(pc.res)) }
 }
