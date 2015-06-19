@@ -55,6 +55,10 @@ Y.gpa<-gpagen(plethodon$land)    #GPA-alignment
 gp <- as.factor(paste(plethodon$species, plethodon$site)) # group must be a factor
 plotTangentSpace(Y.gpa$coords, groups = gp)
 
+## To plot residual shapes from an allometry regression (note: must add mean back in!)
+plotTangentSpace(arrayspecs(resid(lm(two.d.array(Y.gpa$coords)~Y.gpa$Csize))+
+         predict(lm(two.d.array(Y.gpa$coords)~1)),12,2))
+
 ##To change colors of groups
 col.gp <- rainbow(length(levels(gp)))
    names(col.gp) <- levels(gp)

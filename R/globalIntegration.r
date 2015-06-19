@@ -57,4 +57,5 @@ globalIntegration<-function(A){
   plot(BEval,PWvar,asp=1,main=eq)
   abline(lm(PWvar~BEval),lwd=2,col="black")
   lines(c(BEval[start],BEval[start]+10),c(PWvar[start],PWvar[start]-10),lty=3,lwd=2,col="red")
-}
+  return(slope)
+  }

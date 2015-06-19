@@ -1,5 +1,9 @@
 CHANGES IN GEOMORPH VERSION 2.1.6
 
+  NEW FEATURES
+    o new globalIntegration() function for evaluating integration vs. self-similarity of shape variation 
+    
+  OTHER CHANGES    
     o pairwiseD.test and pairwise.slope.test now defunct
 
 CHANGES IN GEOMORPH VERSION 2.1.5
