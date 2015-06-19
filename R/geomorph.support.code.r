@@ -820,3 +820,26 @@ Hat.anova.tab <- function(D, f1, keep.order=TRUE){ # assumes dependent is distan
     rownames(a.tab) <- c(attr(Terms, "term.labels"), "Residuals", "Total")
     a.tab
 }
+
+#' Defunct functions in geomorph
+#'
+#' The following functions are no longer supported in geomorph
+#'
+#' pairwiseD.test: use advanced.procD.lm
+#' 
+#' pairwise.slope.test: use advanced.procD.lm 
+#' @export
+pairwiseD.test<-function()    {
+  .Defunct()
+}
+#' Defunct functions in geomorph
+#'
+#' The following functions are no longer supported in geomorph
+#'
+#' pairwiseD.test: use advanced.procD.lm
+#' 
+#' pairwise.slope.test: use advanced.procD.lm 
+#' @export
+pairwise.slope.test<-function()    {
+  .Defunct()
+}
