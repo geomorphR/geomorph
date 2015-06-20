@@ -115,6 +115,7 @@ compare.evol.rates<-function(phy,A,gp,iter=999 ){
     return(list(sigma.d = sigmad.obs))
   }
   if (nlevels(gp) > 1) {
+    sigmad.obs<-sigma.d(phy,x,ntaxa,gp) 
     ones<-array(1,N)
     C<-vcv.phylo(phy); C<-C[rownames(x),rownames(x)]
     a.obs<-colSums(solve(C))%*%x/sum(solve(C))  
