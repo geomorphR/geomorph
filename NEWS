@@ -4,7 +4,7 @@ CHANGES IN GEOMORPH VERSION 2.1.6
     o new globalIntegration() function for evaluating integration vs. self-similarity of shape variation 
     
   OTHER CHANGES   
-    o phylogenetic simulation in compare.evol.rates() enhanced
+    o phylogenetic simulation procedure in compare.evol.rates() enhanced to use a single rate matrix
     o pairwiseD.test and pairwise.slope.test now defunct
 
 CHANGES IN GEOMORPH VERSION 2.1.5

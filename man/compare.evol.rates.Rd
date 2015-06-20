@@ -33,8 +33,8 @@ The function compares rates of morphological evolution for two or more groups of
  between species in morphospace after phylogenetic transformation (Adams 2014). From the data the rate of shape evolution
  for each group is calculated, and a ratio of rates is obtained. If three or more groups of species are used, the ratio of
  the maximum to minimum rate is used as a test statistic (see Adams 2014). Significance testing
- is accomplished by phylogenetic simulation in which tips data are obtained under Brownian motion using a single
- evolutionary rate for all species on the phylogeny. If three or more groups of species are used, pairwise p-values are also returned. A histogram of evolutionary rate ratios obtained via phylogenetic simulation is presented,
+ is accomplished by phylogenetic simulation in which tips data are obtained under Brownian motion using a common
+ evolutionary rate pattern for all species on the phylogeny. If three or more groups of species are used, pairwise p-values are also returned. A histogram of evolutionary rate ratios obtained via phylogenetic simulation is presented,
  with the observed value designated by an arrow in the plot. The function can be used to obtain a rate for the whole
  dataset of species by using a dummy group factor assigning all species to one group.
 
