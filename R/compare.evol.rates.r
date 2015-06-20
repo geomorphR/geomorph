@@ -8,8 +8,8 @@
 #'  between species in morphospace after phylogenetic transformation (Adams 2014). From the data the rate of shape evolution
 #'  for each group is calculated, and a ratio of rates is obtained. If three or more groups of species are used, the ratio of 
 #'  the maximum to minimum rate is used as a test statistic (see Adams 2014). Significance testing 
-#'  is accomplished by phylogenetic simulation in which tips data are obtained under Brownian motion using a single 
-#'  evolutionary rate for all species on the phylogeny. If three or more groups of species are used, pairwise p-values are also returned. A histogram of evolutionary rate ratios obtained via phylogenetic simulation is presented, 
+#'  is accomplished by phylogenetic simulation in which tips data are obtained under Brownian motion using a common 
+#'  evolutionary rate pattern for all species on the phylogeny. If three or more groups of species are used, pairwise p-values are also returned. A histogram of evolutionary rate ratios obtained via phylogenetic simulation is presented, 
 #'  with the observed value designated by an arrow in the plot. The function can be used to obtain a rate for the whole
 #'  dataset of species by using a dummy group factor assigning all species to one group.
 #'  
@@ -115,8 +115,10 @@ compare.evol.rates<-function(phy,A,gp,iter=999 ){
     return(list(sigma.d = sigmad.obs))
   }
   if (nlevels(gp) > 1) {
-    sigmad.obs<-sigma.d(phy,x,ntaxa,gp) 
-    rate.mat<-diag(sigmad.obs$sigma.all,p)
+    ones<-array(1,N)
+    C<-vcv.phylo(phy); C<-C[rownames(x),rownames(x)]
+    a.obs<-colSums(solve(C))%*%x/sum(solve(C))  
+    rate.mat<-t(x-ones%*%a.obs)%*%solve(C)%*%(x-ones%*%a.obs)/N
     x.sim<-sim.char(phy,rate.mat,nsim=iter) 
     sig.sim<-1
     if (nlevels(gp) > 2) {
