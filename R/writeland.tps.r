@@ -10,7 +10,7 @@
 #' @export
 #' @keywords IO
 #' @author Dean Adams
-writeland.tps<-function(A, file){
+writeland.tps<-function(A, file, scale = NULL){
   n<-dim(A)[3]
   k<-dim(A)[2]
   p<-dim(A)[1]
@@ -19,6 +19,10 @@ writeland.tps<-function(A, file){
   for(i in 1:n){
     write(lmline,file,append = TRUE)
     write.table(A[,,i],file,col.names = FALSE, row.names = FALSE,append=TRUE)
+    if(!is.null(scale)){
+      scaleline<-paste("SCALE", "=", scale, sep="")
+      write(scaleline,file,append=TRUE)
+      }
     if(is.null(dimnames(A)[[3]])==FALSE){
       idline<-paste("ID=",dimnames(A)[[3]][i],sep="")
       write(idline,file,append = TRUE)  
