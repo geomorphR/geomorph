@@ -5,7 +5,8 @@ CHANGES IN GEOMORPH VERSION 2.1.6
     
   OTHER CHANGES   
     o phylogenetic simulation procedure in compare.evol.rates() enhanced to use a single rate matrix
-    o pairwiseD.test and pairwise.slope.test now defunct
+    o pairwiseD.test() and pairwise.slope().test now defunct
+    o define.sliders.2d() and define.sliders.3d() now defunct
 
 CHANGES IN GEOMORPH VERSION 2.1.5
 
