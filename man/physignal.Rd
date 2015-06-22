@@ -4,7 +4,7 @@
 \alias{physignal}
 \title{Assessing phylogenetic signal in morphometric data}
 \usage{
-physignal(phy, A, iter = 999, method = c("Kmult", "SSC"))
+physignal(phy, A, iter = 999, ShowPlot = TRUE, method = c("Kmult", "SSC"))
 }
 \arguments{
 \item{phy}{A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape}
@@ -12,6 +12,8 @@ physignal(phy, A, iter = 999, method = c("Kmult", "SSC"))
 \item{A}{A matrix (n x [p x k]) or 3D array (p x k x n) containing GPA-aligned coordinates for a set of specimens}
 
 \item{iter}{Number of iterations for significance testing}
+
+\item{ShowPlot}{A logical value indicating whether or not the plot should be returned}
 
 \item{method}{Method for estimating phylogenetic signal (Kmult or SSC)}
 }

@@ -29,6 +29,7 @@
 #' @param phy A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape
 #' @param A A matrix (n x [p x k]) or 3D array (p x k x n) containing GPA-aligned coordinates for a set of specimens
 #' @param iter Number of iterations for significance testing
+#' @param ShowPlot A logical value indicating whether or not the plot should be returned
 #' @param method Method for estimating phylogenetic signal (Kmult or SSC)
 #' @keywords analysis
 #' @author Dean Adams
@@ -52,7 +53,7 @@
 #' #Test for phylogenetic signal in size
 #' Csize <- matrix(Y.gpa$Csize, dimnames=list(names(Y.gpa$Csize))) # make matrix Csize with names
 #' physignal(plethspecies$phy,Csize,method="Kmult",iter=99)
-physignal<-function(phy,A,iter=999,method=c("Kmult","SSC")){
+physignal<-function(phy,A,iter=999,ShowPlot=TRUE,method=c("Kmult","SSC")){
   method <- match.arg(method)
   if(any(is.na(A))==T){
     stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').")  }
