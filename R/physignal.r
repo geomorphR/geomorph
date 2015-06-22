@@ -156,7 +156,8 @@ physignal<-function(phy,A,iter=999,ShowPlot=TRUE,method=c("Kmult","SSC")){
     }  
     P.val<-P.val/(iter+1)
     SSC.val[iter+1]=SSC.o
-    if(dim(x)[2]>1) {  plotGMPhyloMorphoSpace(phy,A,ancStates=FALSE) }
+    if(dim(x)[2]>1) {  
+      if(ShowPlot==TRUE){ plotGMPhyloMorphoSpace(phy,A,ancStates=FALSE)}}
     return(list(phy.signal=SSC.o,pvalue=P.val)) 
   }
 }

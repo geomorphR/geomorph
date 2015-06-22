@@ -145,8 +145,11 @@ compare.evol.rates<-function(phy,A,gp,ShowPlot=TRUE,iter=999 ){
       gp.sig.sim[lower.tri(gp.sig.sim)]<-NA
     }
     rate.val[iter+1]=sigmad.obs$ratio
-    hist(rate.val,30,freq=TRUE,col="gray",xlab="SigmaD ratio")
-    arrows(sigmad.obs$ratio,50,sigmad.obs$ratio,5,length=0.1,lwd=2)
+    if(ShowPlot==TRUE){ 
+      hist(rate.val,30,freq=TRUE,col="gray",xlab="SigmaD ratio")
+      arrows(sigmad.obs$ratio,50,sigmad.obs$ratio,5,length=0.1,lwd=2)
+      
+    }
     if (nlevels(gp) > 2) {
       return(list(sigma.d = sigmad.obs$sigma.all, sigmad.all = sigmad.obs$sigma.d.all, 
                   sigmad.ratio = sigmad.obs$ratio, pvalue = sig.sim, pairwise.pvalue = gp.sig.sim))
