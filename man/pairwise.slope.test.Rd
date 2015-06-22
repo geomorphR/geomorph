@@ -10,8 +10,6 @@ pairwise.slope.test()
 The following functions are no longer supported in geomorph
 }
 \details{
-pairwiseD.test: use advanced.procD.lm
-
 pairwise.slope.test: use advanced.procD.lm
 }
 

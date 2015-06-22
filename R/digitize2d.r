@@ -36,7 +36,7 @@
 #'  
 #' If verbose = FALSE the digitizing of landmarks is continuous and uninterrupted. Here the user will not be prompted to approve each landmark selection. 
 #'  
-#'   At the end of digitizing, the landmark coordinates are written to a TPS file. The x,y values are scaled if a vector fo scales is included.
+#'   At the end of digitizing, the landmark coordinates are written to a TPS file. The x,y values are unscaled if a vector of scales is included, and the scale is returned on line SCALE= after each specimen x,y data.
 #'   }
 #' 
 #' @param filelist A list of names of jpeg images to be digitized. 
@@ -82,7 +82,7 @@ digitize2d <- function (filelist, nlandmarks, scale=NULL, tpsfile, verbose = TRU
     rasterImage(specimen, 1, 1, dim(specimen)[2], dim(specimen)[1])
     if (is.null(scale)) {
       cat("Scale not provided! Proceed with caution.\n") 
-      scalebar = 1
+      scalebar = NULL
     }
     if (!is.null(scale)) {
       cat("Set scale =", scale[i], "\n")
@@ -139,9 +139,9 @@ digitize2d <- function (filelist, nlandmarks, scale=NULL, tpsfile, verbose = TRU
         selected[ii, 2] <- fix$y
       }
     }
-    output <- selected * scalebar
-    newdata[, , i] <- output
-    writeland.tps(newdata, tpsfile)
+    newdata[, , i] <- selected
+    if(!is.null(scalebar)){writeland.tps(newdata, tpsfile, scale = scalebar)}
+    if(is.null(scalebar)){writeland.tps(newdata, tpsfile)}
     if (i < length(filelist)) {
       cat(paste("Continue to next specimen (y/n)?"), "\n")
       ans <- readLines(n = 1)
@@ -150,4 +150,5 @@ digitize2d <- function (filelist, nlandmarks, scale=NULL, tpsfile, verbose = TRU
       }
     }
   }
+  cat(paste("All specimens in filelist have been digitized to",  tpsfile), "\n")
 }

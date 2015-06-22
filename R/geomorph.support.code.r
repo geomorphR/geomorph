@@ -827,7 +827,6 @@ Hat.anova.tab <- function(D, f1, keep.order=TRUE){ # assumes dependent is distan
 #'
 #' pairwiseD.test: use advanced.procD.lm
 #' 
-#' pairwise.slope.test: use advanced.procD.lm 
 #' @export
 pairwiseD.test<-function()    {
   .Defunct()
@@ -835,11 +834,28 @@ pairwiseD.test<-function()    {
 #' Defunct functions in geomorph
 #'
 #' The following functions are no longer supported in geomorph
-#'
-#' pairwiseD.test: use advanced.procD.lm
 #' 
 #' pairwise.slope.test: use advanced.procD.lm 
 #' @export
 pairwise.slope.test<-function()    {
+  .Defunct()
+}
+
+#' Defunct functions in geomorph
+#'
+#' The following functions are no longer supported in geomorph
+#'
+#' define.sliders.2d: use define.sliders
+#' @export
+define.sliders.2d<-function()    {
+  .Defunct()
+}
+#' Defunct functions in geomorph
+#'
+#' The following functions are no longer supported in geomorph
+#'
+#' define.sliders.3d: use define.sliders
+#' @export
+define.sliders.3d<-function()    {
   .Defunct()
 }
