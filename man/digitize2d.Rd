@@ -57,7 +57,7 @@ To digitize a missing landmark, simply click on any location in the image. Then,
 
 If verbose = FALSE the digitizing of landmarks is continuous and uninterrupted. Here the user will not be prompted to approve each landmark selection.
 
-At the end of digitizing, the landmark coordinates are written to a TPS file. The x,y values are scaled if a vector fo scales is included.
+At the end of digitizing, the landmark coordinates are written to a TPS file. The x,y values are unscaled if a vector of scales is included, and the scale is returned on line SCALE= after each specimen x,y data.
   }
 }
 \author{
