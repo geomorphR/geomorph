@@ -150,4 +150,5 @@ digitize2d <- function (filelist, nlandmarks, scale=NULL, tpsfile, verbose = TRU
       }
     }
   }
+  cat(paste("All specimens in filelist have been digitized to",  tpsfile), "\n")
 }
