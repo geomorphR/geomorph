@@ -28,12 +28,18 @@ digit.curves <- function(start, curve, nPoints, closed=T){
   if (checkmat==FALSE) { stop("Input must be a p-x-k matrix of landmark coordinates")}
   checkdim <- dim(curve)[2]
   nCurvePoints = nrow(curve)
-  if (checkdim==2) {  newPoints <- matrix(NA, ncol=2, nrow = nPoints) 
-                      start <- which.min(sqrt((curve[,1]-start[1])^2 + (curve[,2]-start[2])^2))}
+  if (checkdim==2) {  newPoints <- matrix(NA, ncol=2, nrow = nPoints)
+                      start <- as.numeric(start)
+                      start <- which.min(sqrt((start[1]-curve[,1])^2+
+                                              (start[2]-curve[,2])^2))
+                    }
   
   if (checkdim==3) {  newPoints <- matrix(NA, ncol=3, nrow = nPoints) 
-                      start <- which.min(sqrt((curve[,1]-start[1])^2 + (curve[,2]-start[2])^2 
-                                         + (curve[,3]-start[3])^2))}
+                      start <- as.numeric(start)
+                      start <- which.min(sqrt((start[1]-curve[,1])^2+
+                                              (start[2]-curve[,2])^2+
+                                              (start[3]-curve[,3])^2))
+                      }
   newPoints[1,] <- curve[start,]
   if(start!=1){curve <- rbind(curve[start:nCurvePoints,],
                                curve[1:(start-1),])} 

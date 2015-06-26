@@ -38,6 +38,10 @@
 #' gp <- as.factor(paste(plethodon$species, plethodon$site)) # group must be a factor
 #' plotTangentSpace(Y.gpa$coords, groups = gp) 
 #' 
+#' ## To plot residual shapes from an allometry regression (note: must add mean back in!) 
+#' plotTangentSpace(arrayspecs(resid(lm(two.d.array(Y.gpa$coords)~Y.gpa$Csize))+
+#'          predict(lm(two.d.array(Y.gpa$coords)~1)),12,2))
+#'  
 #' ##To change colors of groups
 #' col.gp <- rainbow(length(levels(gp))) 
 #'    names(col.gp) <- levels(gp)
@@ -126,8 +130,8 @@ plotTangentSpace<-function (A, axis1 = 1, axis2 = 2, warpgrids = TRUE, mesh = NU
         title3d(main=paste("PC ", axis1," positive"))
         }
       }
-    }
     layout(1)
+    }
   if(verbose==TRUE){ return(list(pc.summary = summary(pc.res), pc.scores = pcdata, pc.shapes= shapes)) }
   if(verbose==FALSE){ return(pc.summary = summary(pc.res)) }
 }
