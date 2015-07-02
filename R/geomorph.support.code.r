@@ -9,11 +9,15 @@
 #'  of shape variation and covariation, and provide graphical depictions of shapes and patterns of
 #'  shape variation.
 #' 
-#' @import rgl 
+#' @import rgl
+#' @import graphics
+#' @import grDevices
+#' @import stats
+#' @import utils 
+#' @import ape
 #' @importFrom geiger sim.char
 #' @importFrom jpeg readJPEG
 #' @importFrom phytools fastAnc
-#' @importFrom ape is.binary.tree compute.brlen vcv.phylo summary.phylo Ntip
 
 NULL
 
