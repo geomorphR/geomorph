@@ -9,12 +9,12 @@
 #'  of shape variation and covariation, and provide graphical depictions of shapes and patterns of
 #'  shape variation.
 #' 
+#' @import ape
 #' @import rgl
+#' @import stats
+#' @import utils
 #' @import graphics
 #' @import grDevices
-#' @import stats
-#' @import utils 
-#' @import ape
 #' @importFrom geiger sim.char
 #' @importFrom jpeg readJPEG
 #' @importFrom phytools fastAnc
