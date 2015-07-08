@@ -110,7 +110,8 @@ procD.pgls<-function(f1, phy, iter=999, int.first = FALSE, RRPP=FALSE, verbose=F
   P.val <- Pval.matrix(P)
   Z <- Effect.size.matrix(P)
   anova.tab <- data.frame(anova.tab, Z = c(Z, NA, NA), P.value = c(P.val, NA, NA))
-  anova.title = "\nRandomization of Raw Values used\n"
+  if(RRPP == TRUE) anova.title = "\nRandomized Residual Permutation Procedure used\n" 
+    else anova.title = "\nRandomization of Raw Values used\n"  
   attr(anova.tab, "heading") <- paste("\nType I (Sequential) Sums of Squares and Cross-products\n",anova.title)
   class(anova.tab) <- c("anova", class(anova.tab))
   if(verbose==TRUE)  {

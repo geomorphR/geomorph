@@ -91,17 +91,18 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL, angle.type = c(
   Y <- eval(f1[[2]], parent.frame())
   if(length(dim(Y)) == 3)  Y <- two.d.array(Y) else Y <- as.matrix(Y)
   f1 <- as.formula(paste(c("Y",f1[[3]]),collapse="~"))
-  f2 <- as.formula(f2)
-  k1 <- length(attr(terms(f1), "term.labels"))
-  k2 <- length(attr(terms(f2), "term.labels"))
+  if(length(as.formula(f2))==2) f2 <-as.formula(paste(c("Y",f2[[2]]),collapse="~"))
+  if(length(as.formula(f2))==3) f2 <-as.formula(paste(c("Y",f2[[3]]),collapse="~"))  
+  k1 <- qr(model.matrix(f1))$rank
+  k2 <- qr(model.matrix(f2))$rank
   if (any(is.na(Y)) == T) stop("Response data matrix (shape) contains missing values. Estimate these first (see 'estimate.missing').")
   if(k1 > k2) ff <- f1 else ff <- f2
   if(k1 > k2) fr <- f2 else fr <- f1
   if(k1 == k2) stop("Models have same df")
   full.terms <- terms(ff)
   red.terms <- terms(fr)
-  dfr <- nrow(Y) - qr(model.matrix(red.terms))$rank
-  dff <- nrow(Y) - qr(model.matrix(full.terms))$rank 
+  dfr <- nrow(Y) - k1
+  dff <- nrow(Y) - k2
   SSEr <- SSE(lm(Y ~ model.matrix(red.terms) - 1))
   SSEf <- SSE(lm(Y ~ model.matrix(full.terms) - 1))  
   SSm <- SSEr - SSEf
