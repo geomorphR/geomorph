@@ -61,7 +61,7 @@ readmulti.nts<-function(filelist){
       rowlab<-tmp[1:p]
       tmp<-tmp[-(1:length(rowlab))]   }
     if(c.lab==TRUE){ tmp<-tmp[-(1:k)] }
-    if(missdata==TRUE){tmp<-sub(missval,NA,tmp)}
+    if(missdata==TRUE){tmp[grep(missval,as.integer(tmp))] <- NA}
     options(warn=-1)
     data<-matrix(as.numeric(tmp),ncol=k,byrow=TRUE)
     landdata<-rbind(landdata,data)

@@ -63,7 +63,7 @@ readland.nts<-function(file){
     tmp<-tmp[-(1:length(speclab))]   
   }
   if(c.lab==TRUE){ tmp<-tmp[-(1:(p*k))] }
-  if(missdata==TRUE){tmp<-sub(missval,NA,tmp)}
+  if(missdata==TRUE){tmp[grep(missval,as.integer(tmp))] <- NA}
   options(warn=-1)
   landdata<-matrix(as.numeric(tmp),ncol=k,byrow=TRUE)
   if(sum(which(is.na(landdata)==TRUE))>0){print("NOTE.  Missing data identified.")}
