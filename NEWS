@@ -3,6 +3,7 @@ CHANGES IN GEOMORPH VERSION 2.1.7
   OTHER CHANGES   
     o Updated Imports packages as per new CRAN policies
     o Package ape now full Import for geomorph (no longer ImportsFrom)
+    o Enhanced input flexibility for advanced.ProcD.lm(): for single-factor analyses and matrix/variable input
 
 CHANGES IN GEOMORPH VERSION 2.1.6
 
