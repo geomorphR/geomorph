@@ -99,7 +99,7 @@ readland.tps <- function (file, specID = c("None", "ID", "imageID"),
   imscale <- aperm(array(rep(imscale, p * k), c(n, k, p)), 
                    c(3, 2, 1))
   coords <- coords * imscale
-  
+  if (readcurves==F){coords<-array(coords[1:nland,,], c(nland,k,n)) }
   if (specID == "None") {
       if (warnmsg == T) {print("No Specimen names extracted")
     }
@@ -125,7 +125,6 @@ readland.tps <- function (file, specID = c("None", "ID", "imageID"),
       }
     } 
   }
-  
   if (specID == "ID") {
     ID <- sub("ID=", "", tpsfile[grep("ID", tpsfile, ignore.case)], ignore.case)
     if (length(ID) == 0) {
@@ -140,6 +139,5 @@ readland.tps <- function (file, specID = c("None", "ID", "imageID"),
       }
     }
   }
-if (readcurves==F){coords<-coords[1:nland,,]}    
 return(coords = coords)                    
 }
