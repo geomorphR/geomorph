@@ -819,9 +819,6 @@ Hat.anova.tab <- function(D, f1, keep.order=TRUE){ # assumes dependent is distan
     a.tab <- data.frame(df,SS,MS,Rsq=R2,F=Fs)
     rownames(a.tab) <- c(attr(Terms, "term.labels"), "Residuals", "Total")
     a.tab
-<<<<<<< HEAD
-}
-=======
 }
 
 #' Defunct functions in geomorph
@@ -862,4 +859,4 @@ define.sliders.2d<-function()    {
 define.sliders.3d<-function()    {
   .Defunct()
 }
->>>>>>> Develop
+
