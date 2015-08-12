@@ -58,10 +58,6 @@ read.ply <- function (file, ShowSpecimen = TRUE, addNormals = TRUE)
   if (yline[3] != 0) {
     face <- as.matrix(as.numeric(unlist(strsplit(plyfile[(headerend + 
                                                             nvertices + 1):(headerend + nvertices + nface)], " "))))
-    if(nvertices != (range(face)[2]+1)){
-      tmp <- rbind(t(unique(cbind(xpts, ypts, zpts))),1) 
-      print(paste("Duplicated vertices removed =", ncol(vertices)-ncol(tmp)))
-      vertices <- tmp}
     face <- t(matrix(face, nrow = nface, byrow = T))
     face <- face[2:4,]
     face = face +1 
