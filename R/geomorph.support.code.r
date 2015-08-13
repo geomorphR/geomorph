@@ -514,7 +514,7 @@ SS.pgls.random <- function(Y, Xs, SS, Pcor, Yalt = c("resample", "RRPP")){ # lik
             SSEs.rrpp[i] <- SSE(lm(PY[,,i] ~ PXs[[i+1]] -1))
         }
         SS.r <- SSEs.null-SSEs.rrpp
-        Y <- solve(Pcor)%*%as.matrix(PY[,,k+1])
+        Y <- pseudoY[[i]]
         SSE.r <-SSEs.rrpp[k]
     }
     if(Yalt == "resample"){
@@ -525,7 +525,7 @@ SS.pgls.random <- function(Y, Xs, SS, Pcor, Yalt = c("resample", "RRPP")){ # lik
             SSEs.resample[i] <- SSE(lm(PYr ~ PXs[[i+1]] -1))
         }
         SS.r <- SSEs.null - SSEs.resample
-        Y <- solve(Pcor)%*%PYr
+        Y <- Yr
         SSE.r <-SSEs.resample[k]
     }
     list(SS=SS.r, Y=Y, SSE=SSE.r)
