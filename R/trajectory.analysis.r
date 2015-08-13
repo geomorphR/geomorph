@@ -108,20 +108,15 @@ trajectory.analysis<-function(f1,data=NULL,estimate.traj=TRUE,traj.pts=NULL,iter
   form.in <- as.formula(paste(c("Y",form.in[[3]]),collapse="~"))
   Terms<-terms(form.in)
   dat<-model.frame(form.in)
-  y<-as.matrix(dat[1])
-  ncol.x<-length(attr(Terms,"term.labels"))  
   all.terms<-attr(Terms,"term.labels")
-  k <- length(all.terms)
-  if(any(is.na(y))==T){
-    stop("Response data matrix (shape) contains missing values. Estimate these first(see 'estimate.missing').")  }
+  k <-length(all.terms)  
+  if(any(is.na(Y))==T) stop("Response data matrix (shape) contains missing values. Estimate these first(see 'estimate.missing').")  
   
   if(estimate.traj==TRUE){
-    y<-prcomp(y)$x
-    if(ncol.x<3){
-      stop("Model does not appear to be factorial.  Check model formula (see help file).") }
-    int.term<-grep(":",attr(Terms,"term.labels")[ncol.x])
-    if(int.term!=1){
-      stop("Last col of X-matrix does not contain interaction between main effects (see help file).") }          
+    y<-prcomp(Y)$x
+    if(k<3) stop("Model does not appear to be factorial.  Check model formula (see help file).") 
+    int.term<-grep(":",attr(Terms,"term.labels")[k])
+    if(int.term!=1) stop("Last col of X-matrix does not contain interaction between main effects (see help file).")        
     p<-ncol(y) 
     n1<-length(levels(dat[,k-1]))
     k1<-length(levels(dat[,k]))
@@ -132,7 +127,8 @@ trajectory.analysis<-function(f1,data=NULL,estimate.traj=TRUE,traj.pts=NULL,iter
     SS.obs <-anova.parts.obs$SS[1:k]
     Plm[,,1] <- SS.obs    
     fac12<-single.factor(form.in)
-    lsmeans.obs <- ls.means(fac12, cov.mf=NULL, y)
+    cov.mf = model.frame(dat[-1][which(is.factor(dat[-1])==F)])
+    lsmeans.obs <- ls.means(fac12, cov.mf=cov.mf, y)
     traj.specs.obs<- aperm(array(t(lsmeans.obs), c(p,k1,n1)), c(2,1,3)) 
     trajsize.obs<-trajsize(traj.specs.obs,n1,k1) 
     trajdir.obs<-trajorient(traj.specs.obs,n1,p); diag(trajdir.obs)<-0 
@@ -200,6 +196,7 @@ trajectory.analysis<-function(f1,data=NULL,estimate.traj=TRUE,traj.pts=NULL,iter
     Xs <- mod.mats(form.in,dat)
     k <- length(Xs$Xs) - 1
     k1<-traj.pts
+    y <- Y
     n1<-nrow(y)
     p1<-ncol(y)/k1  
     if (p1>2){

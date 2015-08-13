@@ -628,14 +628,16 @@ anova.pgls.parts <- function(f1, X = NULL, Pcor, Yalt = c("observed","resample",
     list(table = a.tab, B = coef(lm(Y ~ x - 1)), SS = SS, df = df, R2 = R2, F = Fs, Y = Y)
 }
 
-single.factor <- function(f1, keep.order = FALSE){# f1 is a factorial model formula
+single.factor <- function(f1, keep.order = FALSE, data=NULL) {# f1 is a factorial model formula
     form.in <- formula(f1)
     if(length(form.in) == 3) form.in <- form.in[-2]
     Terms <- terms(form.in, keep.order = keep.order)
     facs <- (model.frame(Terms))
+    for(i in 1:ncol(facs)) if(is.factor(facs[,i])==FALSE) facs[,i] <- NA
+    facs <- t(na.omit(t(facs)))
     g <- dim(facs)[[2]]
     newfac <- facs[,1]
-    if(g > 1) for(i in 2:g){newfac <-factor(paste(newfac, facs[,i], sep = ":")) }
+    if(g > 1) for(i in 2:g) newfac <-factor(paste(newfac, facs[,i], sep = ":")) 
     newfac
 }
 
