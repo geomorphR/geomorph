@@ -140,7 +140,7 @@ trajectory.analysis<-function(f1,data=NULL,estimate.traj=TRUE,traj.pts=NULL,iter
     for(i in 1:iter){
       SS.r <- SS.random(y, Xs, SS.obs, Yalt = "RRPP")
       Plm[,,i+1] <- SS.r$SS
-      lsmeans.r <- ls.means(fac12, cov.mf=NULL, SS.r$Y)
+      lsmeans.r <- ls.means(fac12, cov.mf=cov.mf, SS.r$Y)
       traj.specs.r<- aperm(array(t(lsmeans.r), c(p,k1,n1)), c(2,1,3)) 
       trajsize.r<-trajsize(traj.specs.r,n1,k1) 
       trajdir.r<-trajorient(traj.specs.r,n1,p); diag(trajdir.r)<-0 

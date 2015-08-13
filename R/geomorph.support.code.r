@@ -628,7 +628,7 @@ anova.pgls.parts <- function(f1, X = NULL, Pcor, Yalt = c("observed","resample",
     list(table = a.tab, B = coef(lm(Y ~ x - 1)), SS = SS, df = df, R2 = R2, F = Fs, Y = Y)
 }
 
-single.factor <- function(f1, keep.order = FALSE, data=NULL) {# f1 is a factorial model formula
+single.factor <- function(f1, keep.order = FALSE) {# f1 is a factorial model formula
     form.in <- formula(f1)
     if(length(form.in) == 3) form.in <- form.in[-2]
     Terms <- terms(form.in, keep.order = keep.order)
