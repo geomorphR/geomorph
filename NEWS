@@ -4,10 +4,12 @@ CHANGES IN GEOMORPH VERSION 2.1.7
     o Updated Imports packages as per new CRAN policies
     o Package ape now full Import for geomorph (no longer ImportsFrom)
     o Enhanced input flexibility for advanced.ProcD.lm(): for single-factor analyses and matrix/variable input
+    o Enhanced readland.nts() flexibility with specimen labels; now supports spaces in labels
+    o Generalized read.ply() to allow reading meshes with many properties
     
   BUG FIXES
     o Corrected error in warpRefMesh() where normals were incorrectly assigned to new mesh3d object
-        o Corrected error in readland.tps() which read in a file containing a single specimen as a 2D matrix rather than 3D array; this fixes the issue with digitize2d not working for a single file
+    o Corrected error in readland.tps() which read in a file containing a single specimen returned a 2D matrix rather than 3D array; this fixes the issue with digitize2d not working for a single file
 
 CHANGES IN GEOMORPH VERSION 2.1.6
 
