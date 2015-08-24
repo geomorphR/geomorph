@@ -57,8 +57,7 @@ Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment
 compare.evol.rates(plethspecies$phy,Y.gpa$coords,gp=gp.end,iter=49)
 
 #Calculate rates of size
-Csize <- matrix(Y.gpa$Csize, dimnames=list(names(Y.gpa$Csize))) # make matrix Csize with names
-compare.evol.rates(plethspecies$phy,Csize,gp=gp.end,iter=49)
+compare.evol.rates(plethspecies$phy,Y.gpa$Csize,gp=gp.end,iter=49)
 }
 \author{
 Dean Adams & Emma Sherratt
