@@ -10,6 +10,7 @@ CHANGES IN GEOMORPH VERSION 2.1.7
   BUG FIXES
     o Corrected error in warpRefMesh() where normals were incorrectly assigned to new mesh3d object
     o Corrected error in readland.tps() which read in a file containing a single specimen returned a 2D matrix rather than 3D array; this fixes the issue with digitize2d not working for a single file
+    o Corrected error in morphol.integr() where warpgrids = F did not work for 3D datasets
 
 CHANGES IN GEOMORPH VERSION 2.1.6
 
