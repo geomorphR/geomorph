@@ -15,6 +15,7 @@
 #' 
 #' @param spec Name of specimen, as an object matrix containing 2D or 3D landmark coordinates
 #' @param ptsize Numeric Size to plot the landmarks
+#' @param links Optional An existing links matrix to add on to
 #' @return Function returns a matrix of which landmarks will be linkes
 #' to be used by \code{\link{plotAllSpecimens}} & \code{\link{plotRefToTarget}} option 'links='.
 #' @export
@@ -23,13 +24,13 @@
 #' @seealso  \code{\link{plotRefToTarget}}
 #' @author Emma Sherratt
 #' 
-define.links <- function(spec, ptsize=1){
+define.links <- function(spec, ptsize=1, links = NULL){
   spec.name <- deparse(substitute(spec))
   checkmat <- is.matrix(spec)
   if (checkmat == FALSE) {
     stop("Input must be a p-x-k matrix of landmark coordinates") }
   checkdim <- dim(spec)[2]
-  links <- NULL
+  if(is.null(links)) links <- NULL
   # 2D
   if (checkdim == 2) {
     plot(spec[, 1], spec[, 2], cex = ptsize, pch=21, 
@@ -37,6 +38,10 @@ define.links <- function(spec, ptsize=1){
          xlab="x", ylab="y")
     text(spec[, 1], spec[, 2], label = paste(1:dim(spec)[1]), 
          adj = 0.5, pos = 1)
+    if(!is.null(links)){
+      for (i in 1:nrow(links)){
+        segments(spec[links[i,1],1],spec[links[i,1],2],spec[links[i,2],1],spec[links[i,2],2])
+      } }
     repeat{
             sel <- ans <- NULL
             cat("Select landmarks to link","\n")
@@ -56,6 +61,10 @@ define.links <- function(spec, ptsize=1){
                   box=F, axes=F, xlab="", ylab="", zlab="")
     text3d(spec[, 1], spec[, 2], spec[, 3], texts = paste(1:dim(spec)[1]), 
          adj = 1.3, pos = 4)
+    if(!is.null(links)){
+      for (i in 1:nrow(links)){
+        segments3d(rbind(spec[links[i,1],],spec[links[i,2],]))
+      } }
     repeat{
             rgl.bringtotop(stay = FALSE)
             cat("Select landmarks to link","\n")
