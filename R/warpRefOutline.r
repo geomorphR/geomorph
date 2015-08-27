@@ -36,9 +36,9 @@ warpRefOutline <- function(file, coord, ref){
   if (checkmat==FALSE) { stop("Input must be a p-x-k matrix of landmark coordinates")}
   checkdim <- dim(coord)[2]
   if (checkdim==3) {stop("Input must be a p-x-k matrix of two-dimensional landmark coordinates") }
-  if(grepl(".txt", file, ignore.case=TRUE) == TRUE) {outline <- as.matrix(read.table(file, header = F))
+  if(grepl(".txt", file, ignore.case=TRUE) == TRUE) {outline <- as.matrix(read.table(file, header = F))[,1:2]
                                                      npoints <- as.vector(nrow(outline)) }
-  if(grepl(".csv", file, ignore.case=TRUE) == TRUE) {outline <- as.matrix(read.csv(file, header = F))
+  if(grepl(".csv", file, ignore.case=TRUE) == TRUE) {outline <- as.matrix(read.csv(file, header = F))[,1:2]
                                                      npoints <- as.vector(nrow(outline))}
   if(grepl(".tps", file, ignore.case=TRUE) == TRUE) {
     tpsfile <- scan(file = file, what = "char", sep = "\n", quiet = TRUE)
