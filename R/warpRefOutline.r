@@ -52,12 +52,18 @@ warpRefOutline <- function(file, coord, ref){
     if (identical(imscale, numeric(0)) == TRUE) {imscale = 1}
     outline <- outline * imscale
   }
+  if(sum(range(outline[,1])) < sum(range(outline[,2]))){ layout(t(c(1,2))) }
+  if(sum(range(outline[,1])) > sum(range(outline[,2]))){ layout(c(1,2)) }
   plot(outline, pch=19, cex=0.3, main = "Imported outline", asp=T, xlab="x", ylab="y")
+  points(coord, pch=19, col="red")
+  text(coord, labels = c(1:nrow(coord)), adj=2)
   coord.sc <- scale(coord, scale=F)
   sc.mat <- matrix(rep(1,nrow(outline)), ncol=1) %*% apply(coord,2,mean)
   outline <- outline - sc.mat
   warp <- tps2d(outline, coord.sc, ref)
     plot(warp, pch=19, cex=0.3, main = "Warped outline", asp=T, xlab="x", ylab="y")
     points(ref, pch=19, cex=0.8, col= "red")
+    text(ref, labels = c(1:nrow(ref)), adj=2)
+  layout(1)
 return(list(outline=warp, npoints = npoints))
 }
