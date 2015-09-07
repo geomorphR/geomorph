@@ -40,7 +40,7 @@ globalIntegration<-function(A){
   L<-rbind(cbind(P,Q), cbind(t(Q),matrix(0,k+1,k+1)))
   Linv<-solve(L)
   L.be<-Linv[1:p,1:p]
-  eig.L<-eigen(L.be)
+  eig.L<-eigen(L.be, symmetric = TRUE)
   BE<-eig.L$values[1:(p-3)]; if(k==3){BE<-BE[1:(p-4)]}
   lambda <- zapsmall(eig.L$values)
   if(any(lambda == 0)){BE = lambda[lambda > 0]}
