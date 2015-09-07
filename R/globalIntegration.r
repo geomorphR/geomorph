@@ -34,7 +34,7 @@ globalIntegration<-function(A){
   ref<-mshape(A)
   p<-dim(ref)[1]; k<-dim(ref)[2]  
   Pdist<-as.matrix(dist(ref))
-  if(k==2){P<-Pdist^2*log(Pdist^2)}; if(k==3){P<-Pdist}
+  if(k==2){P<-Pdist^2*log(Pdist^2)}; if(k==3){P<- -Pdist}
   P[which(is.na(P))]<-0
   Q<-cbind(1, ref)
   L<-rbind(cbind(P,Q), cbind(t(Q),matrix(0,k+1,k+1)))
@@ -42,8 +42,10 @@ globalIntegration<-function(A){
   L.be<-Linv[1:p,1:p]
   eig.L<-eigen(L.be)
   BE<-eig.L$values[1:(p-3)]; if(k==3){BE<-BE[1:(p-4)]}
-  BEval<-log(eig.L$values[1:(p-3)]); if(k==3){BEval<-BEval[1:(p-4)]}
-  Emat<-eig.L$vectors[,1:(p-3)];if(k==3){Emat<-Emat[,1:(p-4)]}
+  lambda <- zapsmall(eig.L$values)
+  if(any(lambda == 0)){BE = lambda[lambda > 0]}
+  Emat<- eig.L$vectors[,1:(length(BE))]
+  BEval<-log(BE)
   Wmat<-NULL
   for (i in 1:dim(A)[[3]]){ 
     Wvec<-matrix(t(t(A[,,i])%*%Emat),nrow=1)
