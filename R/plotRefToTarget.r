@@ -68,15 +68,15 @@
 #' plotRefToTarget(ref,Y.gpa$coords[,,1],method="points")
 #' scallinks <- matrix(c(1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,11,11,12,12,13,13,
 #' 14,14,15,15,16,16,1), nrow=16, byrow=TRUE)
-#' plotRefToTarget(ref,Y.gpa$coords[,,1],gridPars=gridPar(pt.bg = "blue", link.col="blue",
-#'  link.lwd=2), method="points", links = scallinks)
+#' plotRefToTarget(ref,Y.gpa$coords[,,1],gridPars=gridPar(tar.pt.bg = "blue", tar.link.col="blue",
+#'  tar.link.lwd=2), method="points", links = scallinks)
 #' 
 plotRefToTarget<-function(M1,M2,mesh= NULL,outline=NULL,method=c("TPS","vector","points","surface"),
                           mag=1.0,links=NULL, label=FALSE, gridPars = NULL, useRefPts=FALSE,...){
   method <- match.arg(method)
-  if(any(is.na(M1))==T){
+  if(any(is.na(M1))==TRUE){
     stop("Data contains missing values. Estimate these first (see 'estimate.missing').")  }
-  if(any(is.na(M2))==T){
+  if(any(is.na(M2))==TRUE){
     stop("Data contains missing values. Estimate these first (see 'estimate.missing').")  }
   if(is.null(gridPars)) gP = gridPar() else gP=gridPars
   k<-dim(M1)[2]
@@ -84,18 +84,18 @@ plotRefToTarget<-function(M1,M2,mesh= NULL,outline=NULL,method=c("TPS","vector",
   M2<-M2+(M2-M1)*mag
   limits = function(x,s){ 
     r = range(x)
-    rc=scale(r,scale=F)
+    rc=scale(r,scale=FALSE)
     l=mean(r)+s*rc
   }
   if(k==2){
     if(method=="TPS"){
-      tps(M1,M2,gP$n.col.cell, sz=gP$pt.size, pt.bg=gP$pt.bg, grid.col=gP$grid.col, 
+      tps(M1,M2,gP$n.col.cell, sz=gP$tar.pt.size, pt.bg=gP$tar.pt.bg, grid.col=gP$grid.col, 
           grid.lwd=gP$grid.lwd, grid.lty=gP$grid.lty, refpts=useRefPts)
       if(is.null(links)==FALSE){
+        linkcol <- rep(gP$tar.link.col,nrow(links))[1:nrow(links)]
+        linklwd <- rep(gP$tar.link.lwd,nrow(links))[1:nrow(links)]
+        linklty <- rep(gP$tar.link.lty,nrow(links))[1:nrow(links)]
         for (i in 1:nrow(links)){
-          linkcol <- rep(gP$link.col,nrow(links))[1:nrow(links)]
-          linklwd <- rep(gP$link.lwd,nrow(links))[1:nrow(links)]
-          linklty <- rep(gP$link.lty,nrow(links))[1:nrow(links)]
           segments(M2[links[i,1],1],M2[links[i,1],2],M2[links[i,2],1],M2[links[i,2],2],
                    col=linkcol[i],lty=linklty[i],lwd=linklwd[i])
         }
@@ -104,20 +104,18 @@ plotRefToTarget<-function(M1,M2,mesh= NULL,outline=NULL,method=c("TPS","vector",
                              pos=gP$txt.pos,cex=gP$txt.cex,col=gP$txt.col)}
       if(!is.null(outline)){
         curve.warp <- tps2d(outline, M1, M2)
-      }
-      if(!is.null(outline)){
         points(curve.warp,pch=19, cex=gP$tar.out.cex, col=gP$tar.out.col) 
       }
-      if(useRefPts==FALSE) points(M2,pch=21,cex=gP$pt.size, bg=gP$pt.bg) else points(M1,pch=21,cex=gP$pt.size, bg=gP$pt.bg)
+      if(useRefPts==FALSE) points(M2,pch=21,cex=gP$tar.pt.size, bg=gP$tar.pt.bg) else points(M1,pch=21,cex=gP$pt.size, bg=gP$pt.bg)
     }
     if(method=="vector"){
       plot(M1,asp=1,type="n",xlab="x",ylab="y",xlim=limits(M1[,1],1.25),
            ylim=limits(M1[,2],1.25),...)
       if(is.null(links)==FALSE){
+        linkcol <- rep(gP$link.col,nrow(links))[1:nrow(links)]
+        linklwd <- rep(gP$link.lwd,nrow(links))[1:nrow(links)]
+        linklty <- rep(gP$link.lty,nrow(links))[1:nrow(links)]
         for (i in 1:nrow(links)){
-          linkcol <- rep(gP$link.col,nrow(links))[1:nrow(links)]
-          linklwd <- rep(gP$link.lwd,nrow(links))[1:nrow(links)]
-          linklty <- rep(gP$link.lty,nrow(links))[1:nrow(links)]
           segments(M2[links[i,1],1],M2[links[i,1],2],M2[links[i,2],1],M2[links[i,2],2],
                    col=linkcol[i],lty=linklty[i],lwd=linklwd[i])
         }
@@ -134,8 +132,6 @@ plotRefToTarget<-function(M1,M2,mesh= NULL,outline=NULL,method=c("TPS","vector",
                              pos=gP$txt.pos,cex=gP$txt.cex,col=gP$txt.col)}
       if(!is.null(outline)){
         curve.warp <- tps2d(outline, M1, M2)
-      }
-      if(!is.null(outline)){
         points(outline,pch=19, cex=gP$out.cex, col=gP$out.col) 
         points(curve.warp,pch=19, cex=gP$tar.out.cex, col=gP$tar.out.col) 
       }
@@ -167,13 +163,13 @@ plotRefToTarget<-function(M1,M2,mesh= NULL,outline=NULL,method=c("TPS","vector",
       old.par <- par(no.readonly = TRUE)
       layout(matrix(c(1,2),1,2))
       par(mar=c(1,1,1,1))
-      tps(M1[,1:2],M2[,1:2],gP$n.col.cell, sz=gP$pt.size, pt.bg=gP$pt.bg, grid.col=gP$grid.col, 
+      tps(M1[,1:2],M2[,1:2],gP$n.col.cell, sz=gP$tar.pt.size, pt.bg=gP$tar.pt.bg, grid.col=gP$grid.col, 
           grid.lwd=gP$grid.lwd, grid.lty=gP$grid.lty, refpts=useRefPts)
       if(is.null(links)==FALSE){
         for (i in 1:nrow(links)){
-          linkcol <- rep(gP$link.col,nrow(links))[1:nrow(links)]
-          linklwd <- rep(gP$link.lwd,nrow(links))[1:nrow(links)]
-          linklty <- rep(gP$link.lty,nrow(links))[1:nrow(links)]
+          linkcol <- rep(gP$tar.link.col,nrow(links))[1:nrow(links)]
+          linklwd <- rep(gP$tar.link.lwd,nrow(links))[1:nrow(links)]
+          linklty <- rep(gP$tar.link.lty,nrow(links))[1:nrow(links)]
           segments(M2[links[i,1],1],M2[links[i,1],2],
                    M2[links[i,2],1],M2[links[i,2],2],
                    col=linkcol[i],lty=linklty[i],lwd=linklwd[i])
@@ -181,12 +177,12 @@ plotRefToTarget<-function(M1,M2,mesh= NULL,outline=NULL,method=c("TPS","vector",
       }
       title("X,Y tps grid")
       b<-c(1,3)
-      tps(M1[,b],M2[,b],gP$n.col.cell, sz=gP$pt.size, pt.bg=gP$pt.bg, grid.col=gP$grid.col, 
+      tps(M1[,b],M2[,b],gP$n.col.cell, sz=gP$tar.pt.size, pt.bg=gP$tar.pt.bg, grid.col=gP$grid.col, 
           grid.lwd=gP$grid.lwd, grid.lty=gP$grid.lty, refpts=useRefPts)
       if(is.null(links)==FALSE){
-        linkcol <- rep(gP$link.col,nrow(links))[1:nrow(links)]
-        linklwd <- rep(gP$link.lwd,nrow(links))[1:nrow(links)]
-        linklty <- rep(gP$link.lty,nrow(links))[1:nrow(links)]
+        linkcol <- rep(gP$tar.link.col,nrow(links))[1:nrow(links)]
+        linklwd <- rep(gP$tar.link.lwd,nrow(links))[1:nrow(links)]
+        linklty <- rep(gP$tar.link.lty,nrow(links))[1:nrow(links)]
         for (i in 1:nrow(links)){
           segments(M2[links[i,1],1],M2[links[i,1],3],
                    M2[links[i,2],1],M2[links[i,2],3],
@@ -217,7 +213,7 @@ plotRefToTarget<-function(M1,M2,mesh= NULL,outline=NULL,method=c("TPS","vector",
     if(method=="points"){
       plot3d(M1,type="s",col=gP$pt.bg,size=gP$pt.size,aspect=FALSE,
              xlab="x", ylab="y",zlab="z",...)
-      plot3d(M2,type="s", col=gP$tar.pt.bg,size=gP$tar.pt.size, add=T)
+      plot3d(M2,type="s", col=gP$tar.pt.bg,size=gP$tar.pt.size, add=TRUE)
       if(label == TRUE){text3d(M1, texts = paste(1:dim(M1)[1]), adj=(gP$txt.adj+gP$pt.size),
                                pos=(gP$txt.pos+gP$pt.size),cex=gP$txt.cex,col=gP$txt.col)}
       if(is.null(links)==FALSE){
@@ -236,7 +232,7 @@ plotRefToTarget<-function(M1,M2,mesh= NULL,outline=NULL,method=c("TPS","vector",
       }
     }
     if (method == "surface") {
-      if(is.null(mesh)==T){
+      if(is.null(mesh)==TRUE){
         stop("Surface plotting requires a template mesh3d object (see 'warpRefMesh').")
       }
       warp.PLY <- mesh
