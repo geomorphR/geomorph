@@ -57,19 +57,12 @@
 #'
 #' ### Example of D-PGLS for high-dimensional data, using RRPP
 #' procD.pgls(Y.gpa$coords ~ Y.gpa$Csize,plethspecies$phy,iter=49,RRPP=TRUE)
-procD.pgls<-function(f1, phy, iter=999, int.first = FALSE, RRPP=FALSE, verbose=FALSE){
-  data=NULL
-  form.in <- formula(f1)
-  Y <- eval(form.in[[2]], parent.frame())
-  if(length(dim(Y)) == 3)  Y <- two.d.array(Y) else Y <- as.matrix(Y)
-  form.in <- as.formula(paste(c("Y",form.in[[3]]),collapse="~"))
+procD.pgls<-function(f1, phy, iter=999, int.first = FALSE, RRPP=FALSE, verbose=FALSE, ...){
+  pf <- procD.fit(f1,...)
   if(int.first == TRUE) ko = TRUE else ko = FALSE
-  Terms <- terms(form.in, keep.order = ko)
-  k <- length(attr(Terms, "term.labels"))
-  mf <- model.frame(form.in)
-  if (any(is.na(Y)) == T) {
-    stop("Response data matrix (shape) contains missing values. Estimate these first (see 'estimate.missing').")
-  }
+  Terms <- pf$Terms
+  k <- length(pf$Terms)
+  Y <- pf$Y
   if (is.null(dimnames(Y)[[1]])) {
     stop("No species names with Y-data")
   }
@@ -88,9 +81,8 @@ procD.pgls<-function(f1, phy, iter=999, int.first = FALSE, RRPP=FALSE, verbose=F
   eigC.vect = eigC$vectors[,1:(length(lambda))]
   Pcor <- solve(eigC.vect%*% diag(sqrt(lambda)) %*% t(eigC.vect)) 
   PY <- Pcor%*%Y   
-  Xs = mod.mats(form.in, mf)
-  
-  anova.parts.obs <- anova.pgls.parts(form.in, X=NULL, Pcor, Yalt = "observed", keep.order=ko)
+  Xs = mod.mats(pf)
+  anova.parts.obs <- anova.pgls.parts(pf, X=NULL, Pcor, Yalt = "observed", keep.order=ko)
   anova.tab <-anova.parts.obs$table  
   df <- anova.parts.obs$df[1:k]
   dfE <-anova.parts.obs$df[k+1]
@@ -99,8 +91,8 @@ procD.pgls<-function(f1, phy, iter=999, int.first = FALSE, RRPP=FALSE, verbose=F
   P[,,1] <- SS.obs <- anova.parts.obs$F[1:k]
   for(i in 1:iter){
     if(RRPP == TRUE) {    
-      SS.ran <- SS.pgls.random(Y, Xs, SS=SS.obs, Pcor,Yalt = "RRPP")
-    } else SS.ran <- SS.pgls.random(Y, Xs, Pcor, SS=SS.obs, Yalt = "resample")
+      SS.ran <- SS.pgls.random(Xs, Pcor,Yalt = "RRPP")
+    } else SS.ran <- SS.pgls.random(Xs, Pcor, Yalt = "resample")
     SS.r <- SS.ran$SS
     Yr <- SS.ran$Y
     SSE.r <- SS.ran$SSE

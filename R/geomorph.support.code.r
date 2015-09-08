@@ -418,6 +418,31 @@ SSE <- function(L){# L is a linear model
   sse
 }
 
+# lm fit modified for Procrustes residuals
+procD.fit <- function(f1,...){
+  form.in <- formula(f1)
+  Y <- eval(form.in[[2]], parent.frame())
+  if (any(is.na(Y)) == T) stop("Response data matrix (shape) contains missing values. Estimate these first (see 'estimate.missing').")
+  if(length(dim(Y)) == 3)  Y <- two.d.array(Y) else Y <- as.matrix(Y)
+  if(nrow(Y) != nrow(model.frame(form.in[-2]))) stop("Different numbers of specimens in dependent and independent variables")
+  form.new <- as.formula(paste(c("Y",form.in[[3]]),collapse="~"))
+  dots <- list(...)
+  if(is.null(dots$contrasts)) fit <- lm(form.new, x=TRUE, y=TRUE, model=TRUE, weights=dots$weights, offset=dots$offset) else
+    fit <- lm(form.new, contrasts = dots$contrasts, weights=dots$weights, offset=dots$offset, x=TRUE, y=TRUE, model=TRUE)
+  
+  mf <- model.frame(fit)
+  Y <- fit$y
+  if(is.matrix(Y)) n <- nrow(Y) else 
+    if(is.vector(Y)) n <- length(Y) else
+      stop("Y is neither a matrix nor vector")
+  X <- fit$x
+  if(!is.null(fit$weights)) w <- fit$weights else w <- rep(1,n)
+  Y <- Y*w; X <- X*w
+  Terms <- terms(mf)
+  list(fit = fit, Y = Y, X = X, Terms = attr(Terms,"term.labels"), mf=mf)
+}
+
+
 # residual randomization  (for procD.lm RRPP method et al.)
 RRP.submodels <- function(Xs, Y){
   p <- ncol(Y)
@@ -435,30 +460,28 @@ RRP.submodels <- function(Xs, Y){
 }
 
 # Submodel design matrices for use in RRPP, etc.
-mod.mats <- function(f1, dat1, keep.order=FALSE){
-    Terms <- terms(f1, data=dat1, keep.order = keep.order)
-    k <- length(attr(Terms, "term.labels"))
-    n <- dim(dat1)[[1]]
+
+mod.mats <- function(pf, keep.order=FALSE, ...){ # pf = procD.fit object
+    Terms <- pf$Terms
+    k <- length(Terms)
+    n <- nrow(pf$mf)
     Xs <- as.list(array(0,k+1))
-    Xs[[1]] <- matrix(1,n)
-    for(i in 1:k){
-        Xs[[i+1]] <- model.matrix(Terms[1:i], data = dat1)
-    }
-    list(Xs=Xs, terms =  attr(Terms, "term.labels"))
+    for(i in 1:(k+1)) Xs[[i]] = as.matrix(pf$X[,1:i])
+    list(y=pf$Y, Xs=Xs, terms =  Terms)
 }
 
-mod.mats.w.cov <- function(f1, f2, dat1, dat2, keep.order =FALSE, interaction = FALSE){
-    fTerms <- terms(f1, data = dat1, keep.order = keep.order)
-    cTerms <- terms(f2, data = dat2, keep.order = keep.order)
-    all.terms <- c(attr(cTerms, "term.labels"), attr(fTerms, "term.labels"))
+mod.mats.w.cov <- function(pf1, pf2, keep.order =FALSE, interaction = FALSE){
+    fTerms <- pf1$Terms
+    cTerms <- pf2$Terms
+    all.terms <- c(cTerms,fTerms)
     if(interaction == FALSE) form.full <- as.formula(paste("~", paste(all.terms,collapse="+")))
     if(interaction == TRUE) {
-        cPart <- paste(attr(cTerms, "term.labels"),collapse="+")
-        fPart <- paste(attr(fTerms, "term.labels"),collapse="+")
+        cPart <- paste(cTerms,collapse="+")
+        fPart <- paste(fTerms,collapse="+")
         iParts <- NULL
-        for(i in 1:length(attr(cTerms, "term.labels"))){
-            for(ii in 1:length(attr(fTerms, "term.labels"))){
-                iParts <-c(iParts,paste(attr(cTerms, "term.labels")[i],attr(fTerms, "term.labels")[ii],sep="*"))
+        for(i in 1:length(cTerms)){
+            for(ii in 1:length(fTerms)){
+                iParts <-c(iParts,paste(cTerms[i],fTerms[ii],sep="*"))
             }
         }
         iParts <- paste(iParts, collapse="+")
@@ -466,16 +489,27 @@ mod.mats.w.cov <- function(f1, f2, dat1, dat2, keep.order =FALSE, interaction = 
     }
     Terms.full <- terms(form.full, keep.order = keep.order)
     k <- length(attr(Terms.full, "term.labels"))
-    n <- dim(dat1)[[1]]
-    Xs <- as.list(array(,(k+1)))
-    Xs[[1]] <- matrix(1,n)
-    for(i in 1:k) Xs[[i+1]] <- model.matrix(Terms.full[1:i])
-    list(Xs=Xs, terms = attr(Terms.full, "term.labels"))
+    n <- nrow(pf1$mf)
+    k2 <- ncol(pf2$X); k1 <- ncol(pf1$X)
+    X = cbind(pf2$X,pf1$X[,-1])
+    if(interaction == TRUE){
+      Xplus <- array(,c(n, k2*(k1-1)))
+      for(i in 1:k2){
+        for(ii in 1:(k1-1)){
+          Xplus[,i*ii] <- as.matrix(pf2$X[,i])*as.matrix(pf1$X[,-1])[,ii]
+        }
+      }
+    X = cbind(X,Xplus)
+    }
+    Xs <- as.list(array(0,k+1))
+    for(i in 1:(k+1)) Xs[[i]] = as.matrix(X[,1:i])
+    list(y=pf1$Y, Xs=Xs, terms =  attr(Terms.full, "term.labels")
 }
 
 # function for generating random SS for submodels, using resample or RRPP
-SS.random <- function(Y, Xs, SS, Yalt = c("resample", "RRPP")){ # like anova.parts, but faster for resampling
-    k <- length(SS)
+SS.random <- function(Xs, Yalt = c("resample", "RRPP")){ # like anova.parts, but faster for resampling
+    k <- length(Xs$terms)
+    Y <- Xs$y
     SSEs.null <- SSEs.resample <- SSEs.rrpp <- numeric(k)
     if(Yalt == "RRPP"){
         pseudoY <- RRP.submodels(Xs$Xs, Y)
@@ -500,8 +534,9 @@ SS.random <- function(Y, Xs, SS, Yalt = c("resample", "RRPP")){ # like anova.par
 
 # function for generating random SS for submodels, using resample or RRPP
 # SS must be from a phylogentically corrected model
-SS.pgls.random <- function(Y, Xs, SS, Pcor, Yalt = c("resample", "RRPP")){ # like anova.parts, but faster for resampling
-    k <- length(SS)
+SS.pgls.random <- function(Xs, Pcor, Yalt = c("resample", "RRPP")){ # like anova.parts, but faster for resampling
+    k <- length(Xs$terms)
+    Y <- Xs$y
     Pcor=as.matrix(Pcor)
     SSEs.null <- SSEs.resample <- SSEs.rrpp <- numeric(k)
     PXs <- Xs$Xs
@@ -533,20 +568,14 @@ SS.pgls.random <- function(Y, Xs, SS, Pcor, Yalt = c("resample", "RRPP")){ # lik
 
 # ANOVA table exportable parts, based on osberved SS or SS.random output
 
-anova.parts <- function(f1, X = NULL, Yalt = c("observed","resample", "RRPP"), keep.order = FALSE){
-    form.in <- formula(f1)
-    Y <- eval(form.in[[2]], parent.frame())
-    Yalt = match.arg(Yalt)
-    Terms <- terms(form.in, keep.order = keep.order)
-    mf <- model.frame(Terms)
-    if(is.null(X)){
-        Xs <- mod.mats(f1 = form.in, dat1 = mf, keep.order = keep.order)
-    } else {Xs = X}
+anova.parts <- function(pf, X = NULL, Yalt = c("observed","resample", "RRPP"), keep.order = FALSE, ...){
+    if(is.null(X)) Xs <- mod.mats(pf, keep.order = keep.order) else Xs = X
+    Y=Xs$y
     anova.terms <- Xs$terms
-    k <- length(Xs$Xs) - 1
+    k <- length(Xs$terms)
     df <- SSEs <- array(0,k+1)
     df[1] <- 1
-    SSY <- SSEs[1] <- SSE(lm(Y ~ 1))
+    SSY <- SSEs[1] <- SSE(lm(Y ~ Xs$Xs[[1]]))
     for(i in 1:k){
         x <- Xs$Xs[[i+1]]
         df[i+1] <- qr(x)$rank
@@ -581,17 +610,11 @@ anova.parts <- function(f1, X = NULL, Yalt = c("observed","resample", "RRPP"), k
 
 # ANOVA table exportable parts, based on osberved SS or SS.random output
 # with phylogentic correction
-anova.pgls.parts <- function(f1, X = NULL, Pcor, Yalt = c("observed","resample", "RRPP"), keep.order = FALSE){
-    form.in <- formula(f1)
-    Yalt = match.arg(Yalt)
-    Terms <- terms(form.in, keep.order = keep.order)
-    mf <- model.frame(Terms)
-    Y <- eval(form.in[[2]], parent.frame())
-    if(is.null(X)){
-        Xs <- mod.mats(f1=form.in, dat1=mf, keep.order = keep.order)
-    } else {Xs = X}
+anova.pgls.parts <- function(pf, X = NULL, Pcor, Yalt = c("observed","resample", "RRPP"), keep.order = FALSE,...){
+    if(is.null(X)) Xs <- mod.mats(pf, keep.order = keep.order) else Xs = X
+    Y=Xs$y
     anova.terms <- Xs$terms
-    k <- length(Xs$Xs) - 1
+    k <- length(Xs$terms)
     df <- SSEs <- array(0,k+1)
     df[1] <- 1
     SSY <- SSEs[1] <- SSE(lm(Pcor%*%Y ~ Pcor%*%matrix(1,nrow(Y))-1))
@@ -599,7 +622,7 @@ anova.pgls.parts <- function(f1, X = NULL, Pcor, Yalt = c("observed","resample",
         x <- Xs$Xs[[i+1]]
         Px <- Pcor%*%x
         df[i+1] <- qr(x)$rank
-        SSEs[i+1] <- SSE(lm(Pcor%*%Y ~ Px - 1))
+        SSEs[i+1] <- SSE(lm(Pcor%*%Y ~ Px - Xs$Xs[[1]]))
     }
     SS.tmp <- c(SSEs[-1],SSEs[k + 1])
     SS <- (SSEs - SS.tmp)[1:(k)]
@@ -645,19 +668,12 @@ ls.means = function(fac, cov.mf=NULL, Y){ # must be single factor; use single.fa
     Y = as.matrix(Y)
     Xfac <- model.matrix(~fac)
     if(is.null(cov.mf)){
-        lsm <- rowsum(predict(lm(Y~fac)),fac)/as.vector(table(fac))
+        lsm <- coef(lm(Y~fac+0))
     } else {
-        Xcov <- model.matrix(terms(cov.mf))
-        X <- cbind(Xcov, Xfac[,-1])
-        fit <- lm(Y ~ X -1)
-        B <- coef(fit)
-        Xcov.mean <- Xcov
-        for(i in 1:ncol(Xcov)){Xcov.mean[,i] = mean(Xcov[,i])}
-        Xls <- cbind(Xcov.mean, Xfac[,-1])
-        Yhat <- as.matrix(Xls%*%B)
-        lsm <- as.matrix(aggregate(Yhat ~ fac, FUN = mean)[,-1])
+        Xcov <- Xcov.mean <- as.matrix(model.matrix(terms(cov.mf))[,-1])
+        for(i in 1:ncol(Xcov)) Xcov.mean[,i] = mean(Xcov[,i])
+        lsm <- coef(lm(predict(lm(y~Xcov+g+0), data.frame(Xcov.mean))~g+0))
     }
-    rownames(lsm) = levels(fac)
     lsm
 }
 
