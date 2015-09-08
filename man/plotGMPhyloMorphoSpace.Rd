@@ -31,8 +31,8 @@ Function returns estimated ancestral states if {ancStates=TRUE}
 Function plots a phylogenetic tree and a set of Procrustes-aligned specimens in tangent space
 }
 \details{
-The function creates a plot of the first two dimensions of tangent space for a set of Procrustes-aligned
-  specimens. The phylogenetic tree for these specimens is superimposed in this plot revealing how shape
+The function creates a plot of the principal dimensions of tangent space for a set of Procrustes-aligned
+  specimens. Default is a plot of PC axis 1 and 2. The phylogenetic tree for these specimens is superimposed in this plot revealing how shape
   evolves (e.g., Rohlf 2002; Klingenberg and Gidaszewski 2010). The plot also displays the ancestral
   states for each node of the phylogenetic tree (obtained from \code{\link[phytools]{fastAnc}}), whose values can optionally be returned.
 }
@@ -51,7 +51,7 @@ Dean Adams & Emma Sherratt
 Klingenberg, C. P., and N. A. Gidaszewski. 2010. Testing and quantifying phylogenetic
   signals and homoplasy in morphometric data. Syst. Biol. 59:245-261.
 
-Rohlf, F. J. 2002. Geometric morphometrics and phylogeny. Pp. 175'193 in N. Macleod, and
+Rohlf, F. J. 2002. Geometric morphometrics and phylogeny. Pp.175-193 in N. Macleod, and
   P. Forey, eds. Morphology, shape, and phylogeny. Taylor & Francis, London.
 }
 \keyword{visualization}

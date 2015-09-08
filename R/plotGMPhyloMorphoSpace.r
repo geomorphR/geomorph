@@ -2,8 +2,8 @@
 #'
 #' Function plots a phylogenetic tree and a set of Procrustes-aligned specimens in tangent space
 #'
-#' The function creates a plot of the first two dimensions of tangent space for a set of Procrustes-aligned 
-#'   specimens. The phylogenetic tree for these specimens is superimposed in this plot revealing how shape 
+#' The function creates a plot of the principal dimensions of tangent space for a set of Procrustes-aligned 
+#'   specimens. Default is a plot of PC axis 1 and 2. The phylogenetic tree for these specimens is superimposed in this plot revealing how shape 
 #'   evolves (e.g., Rohlf 2002; Klingenberg and Gidaszewski 2010). The plot also displays the ancestral 
 #'   states for each node of the phylogenetic tree (obtained from \code{\link[phytools]{fastAnc}}), whose values can optionally be returned. 
 #'
@@ -21,7 +21,7 @@
 #' @return Function returns estimated ancestral states if {ancStates=TRUE}
 #' @references Klingenberg, C. P., and N. A. Gidaszewski. 2010. Testing and quantifying phylogenetic 
 #'   signals and homoplasy in morphometric data. Syst. Biol. 59:245-261.
-#' @references Rohlf, F. J. 2002. Geometric morphometrics and phylogeny. Pp. 175'193 in N. Macleod, and 
+#' @references Rohlf, F. J. 2002. Geometric morphometrics and phylogeny. Pp.175-193 in N. Macleod, and 
 #'   P. Forey, eds. Morphology, shape, and phylogeny. Taylor & Francis, London.
 #' @examples
 #' data(plethspecies) 
@@ -90,28 +90,29 @@ plotGMPhyloMorphoSpace<-function(phy,A,labels=TRUE,ancStates=TRUE, axis1=1, axis
     if(labels==TRUE){
       text(pcdata[,axis1],pcdata[,axis2],rownames(pcdata),col=p.p$txt.col,cex=p.p$txt.cex,adj=p.p$txt.adj)
       }
-    }
-    if(!is.null(axis3)){
-      if(labels==TRUE){
-        plot3d(pcdata,type="n",xlim=limits(pcdata[,axis1],1.5),
+  }
+  # 3d phylomorphospace in rgl
+  if(!is.null(axis3)){
+    if(labels==TRUE){
+      plot3d(pcdata,type="n",xlim=limits(pcdata[,axis1],1.5),
              ylim=limits(pcdata[,axis2],1.5),
              zlim=limits(pcdata[,axis3],1.5),asp=1,
              xlab= "PC 1", ylab= "PC 2", zlab="PC 3") }
-      if(labels==FALSE) {
-        plot3d(pcdata,type="n",asp=1) }
-      points3d(pcdata[1:N,1], pcdata[1:N,2], pcdata[1:N,3],
+    if(labels==FALSE) {
+      plot3d(pcdata,type="n",asp=1) }
+    points3d(pcdata[1:N,1], pcdata[1:N,2], pcdata[1:N,3],
              col= p.p$t.bg, size=p.p$t.cex*4)
-      if(p.p$n.bg == "white"){ p.p$n.bg <- "grey"}
-      points3d(pcdata[(N + 1):nrow(pcdata),1], pcdata[(N + 1):nrow(pcdata),2], 
-               pcdata[(N + 1):nrow(pcdata),3], 
-               col= p.p$n.bg, size=p.p$n.cex*4)
-      for (i in 1:nrow(phy$edge)) {
-        lines3d(pcdata[(phy$edge[i, ]), 1], pcdata[(phy$edge[i, ]), 2],pcdata[(phy$edge[i, ]), 3], 
-                lwd=2)}
-      
-      if(labels==TRUE){
-        text3d(pcdata[,axis1],pcdata[,axis2],pcdata[,axis3],rownames(pcdata),col=p.p$txt.col,cex=p.p$txt.cex,adj=p.p$txt.adj)
-      }
+    if(p.p$n.bg == "white"){ p.p$n.bg <- "grey"}
+    points3d(pcdata[(N + 1):nrow(pcdata),1], pcdata[(N + 1):nrow(pcdata),2], 
+             pcdata[(N + 1):nrow(pcdata),3], 
+             col= p.p$n.bg, size=p.p$n.cex*4)
+    for (i in 1:nrow(phy$edge)) {
+      lines3d(pcdata[(phy$edge[i, ]), 1], pcdata[(phy$edge[i, ]), 2],pcdata[(phy$edge[i, ]), 3], 
+              lwd=2)}
+    
+    if(labels==TRUE){
+      text3d(pcdata[,axis1],pcdata[,axis2],pcdata[,axis3],rownames(pcdata),col=p.p$txt.col,cex=p.p$txt.cex,adj=p.p$txt.adj)
     }
-    if(ancStates==TRUE){ return(anc.states)  }
+  }
+  if(ancStates==TRUE){ return(anc.states)  }
 }
