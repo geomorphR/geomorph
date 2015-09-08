@@ -27,9 +27,9 @@ plotGMPhyloMorphoSpace(phy, A, tip.labels = TRUE, node.labels = TRUE,
 internal nodes are plotted along the Z-axis relative to time}
 
 \item{plot.param}{A list of plotting parameters for the tips (t.bg, t.pch, t.cex), nodes (n.bg, n.pch, n.cex),
-branches (l.col, lwd), and taxa labels (txt.cex, txt.adj, txt.col) and node labels (n.txt.cex, n.txt.adj, n.txt.col)}
+branches (l.col, lwd), taxa labels (txt.cex, txt.adj, txt.col) and node labels (n.txt.cex, n.txt.adj, n.txt.col)}
 
-\item{shaddow}{A logical value indicating whether a 2D phyloorphospace should be plotted at the base when zaxis="time"}
+\item{shadow}{A logical value indicating whether a 2D phylomorphospace should be plotted at the base when zaxis="time"}
 }
 \value{
 Function returns estimated ancestral states if {ancStates=TRUE}
@@ -42,8 +42,8 @@ The function creates a plot of the principal dimensions of tangent space for a s
   specimens. Default is a plot of PC axis 1 and 2. The phylogenetic tree for these specimens is superimposed in this plot revealing how shape
   evolves (e.g., Rohlf 2002; Klingenberg and Gidaszewski 2010). The plot also displays the ancestral
   states for each node of the phylogenetic tree (obtained from \code{\link[phytools]{fastAnc}}), whose values can optionally be returned.
-  If a tree with branch lengths scaled by time is included, the option zaxis = "time" plots a 3D phylomoprhospace, with internal nodes
-  positioned along the Z-axis scaled to time.
+  If a tree with branch lengths scaled by time is used, with the option zaxis = "time", the function plots a 3D phylomorphospace, with internal nodes positioned along the Z-axis scaled
+  to time (a.k.a. Chronophylomorphospace, Sakamoto & Ruta 2012).
 }
 \examples{
 data(plethspecies)
@@ -64,6 +64,9 @@ Klingenberg, C. P., and N. A. Gidaszewski. 2010. Testing and quantifying phyloge
 
 Rohlf, F. J. 2002. Geometric morphometrics and phylogeny. Pp.175-193 in N. Macleod, and
   P. Forey, eds. Morphology, shape, and phylogeny. Taylor & Francis, London.
+
+Sakamoto, M. and Ruta, M. 2012. Convergence and Divergence in the Evolution of Cat
+Skulls: Temporal and Spatial Patterns of Morphological Diversity. PLoSONE 7(7): e39752.
 }
 \keyword{visualization}
 

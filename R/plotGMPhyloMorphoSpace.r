@@ -6,8 +6,8 @@
 #'   specimens. Default is a plot of PC axis 1 and 2. The phylogenetic tree for these specimens is superimposed in this plot revealing how shape 
 #'   evolves (e.g., Rohlf 2002; Klingenberg and Gidaszewski 2010). The plot also displays the ancestral 
 #'   states for each node of the phylogenetic tree (obtained from \code{\link[phytools]{fastAnc}}), whose values can optionally be returned. 
-#'   If a tree with branch lengths scaled by time is included, the option zaxis = "time" plots a 3D phylomoprhospace, with internal nodes 
-#'   positioned along the Z-axis scaled to time.
+#'   If a tree with branch lengths scaled by time is used, with the option zaxis = "time", the function plots a 3D phylomorphospace, with internal nodes positioned along the Z-axis scaled 
+#'   to time (a.k.a. Chronophylomorphospace, Sakamoto & Ruta 2012).
 #'
 #' @param phy A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape
 #' @param A A matrix (n x [p x k]) or 3D array (p x k x n) containing GPA-aligned coordinates for a set of specimens
@@ -19,16 +19,18 @@
 #' internal nodes are plotted along the Z-axis relative to time
 #' @param ancStates A logical value indicating whether ancestral state values should be returned
 #' @param plot.param A list of plotting parameters for the tips (t.bg, t.pch, t.cex), nodes (n.bg, n.pch, n.cex), 
-#' branches (l.col, lwd), and taxa labels (txt.cex, txt.adj, txt.col) and node labels (n.txt.cex, n.txt.adj, n.txt.col)
-#' @param shaddow A logical value indicating whether a 2D phyloorphospace should be plotted at the base when zaxis="time"
+#' branches (l.col, lwd), taxa labels (txt.cex, txt.adj, txt.col) and node labels (n.txt.cex, n.txt.adj, n.txt.col)
+#' @param shadow A logical value indicating whether a 2D phylomorphospace should be plotted at the base when zaxis="time"
 #' @export
 #' @keywords visualization
 #' @author Dean Adams & Emma Sherratt
 #' @return Function returns estimated ancestral states if {ancStates=TRUE}
 #' @references Klingenberg, C. P., and N. A. Gidaszewski. 2010. Testing and quantifying phylogenetic 
 #'   signals and homoplasy in morphometric data. Syst. Biol. 59:245-261.
-#' @references Rohlf, F. J. 2002. Geometric morphometrics and phylogeny. Pp.175-193 in N. Macleod, and 
+#' @references Rohlf, F. J. 2002. Geometric morphometrics and phylogeny. Pp.175-193 in N. Macleod, and
 #'   P. Forey, eds. Morphology, shape, and phylogeny. Taylor & Francis, London.
+#' @references Sakamoto, M. and Ruta, M. 2012. Convergence and Divergence in the Evolution of Cat
+#' Skulls: Temporal and Spatial Patterns of Morphological Diversity. PLoSONE 7(7): e39752.
 #' @examples
 #' data(plethspecies) 
 #' Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment    
@@ -116,7 +118,7 @@ plotGMPhyloMorphoSpace<-function(phy,A,tip.labels=TRUE,node.labels=TRUE,ancState
              col= p.p$n.bg, size=p.p$n.cex*4)
     for (i in 1:nrow(phy$edge)) {
       lines3d(pcdata[(phy$edge[i, ]), xaxis], pcdata[(phy$edge[i, ]), yaxis],pcdata[(phy$edge[i, ]), zaxis], 
-              lwd=p.p$lwd)}
+              col=p.p$l.col, lwd=p.p$lwd)}
     if(tip.labels==TRUE){
       text3d(pcdata[1:N,xaxis],pcdata[1:N,yaxis],pcdata[1:N,zaxis],rownames(pcdata)[1:N],
              col=p.p$txt.col,cex=p.p$txt.cex,adj=p.p$txt.adj) }
@@ -142,7 +144,7 @@ plotGMPhyloMorphoSpace<-function(phy,A,tip.labels=TRUE,node.labels=TRUE,ancState
              col= p.p$n.bg, size=p.p$n.cex*4)
     for (i in 1:nrow(phy$edge)) {
       lines3d(pcdata[(phy$edge[i, ]), xaxis], pcdata[(phy$edge[i, ]), yaxis],zaxis[(phy$edge[i, ])], 
-              lwd=p.p$lwd)}
+              col=p.p$l.col, lwd=p.p$lwd)}
     if(tip.labels==TRUE){
       text3d(pcdata[1:N,xaxis],pcdata[1:N,yaxis],zaxis[1:N],rownames(pcdata)[1:N],
              col=p.p$txt.col,cex=p.p$txt.cex,adj=p.p$txt.adj) }
@@ -158,7 +160,7 @@ plotGMPhyloMorphoSpace<-function(phy,A,tip.labels=TRUE,node.labels=TRUE,ancState
                  max(zaxis), col= p.p$n.bg, size=p.p$n.cex*4,alpha = 0.5)
         for (i in 1:nrow(phy$edge)) {
           lines3d(pcdata[(phy$edge[i, ]), xaxis], pcdata[(phy$edge[i, ]), yaxis],max(zaxis), 
-                  lwd=p.p$lwd, alpha = 0.5)}
+                  col=p.p$l.col, lwd=p.p$lwd, alpha = 0.5)}
     }
   }
   if(ancStates==TRUE){ return(anc.states)  }
