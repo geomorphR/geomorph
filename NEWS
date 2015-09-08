@@ -1,5 +1,8 @@
 CHANGES IN GEOMORPH VERSION 2.1.7
 
+  NEW FEATURES
+    o plotGMPhyloMorphoSpace now plots 3D phylomorphospaces and chronophylomorphospaces
+
   OTHER CHANGES   
     o Updated Imports packages as per new CRAN policies
     o Package ape now full Import for geomorph (no longer ImportsFrom)
@@ -14,6 +17,7 @@ CHANGES IN GEOMORPH VERSION 2.1.7
     o Corrected error in readland.tps() which read in a file containing a single specimen returned a 2D matrix rather than 3D array; this fixes the issue with digitize2d not working for a single file
     o Corrected error in morphol.integr() where warpgrids = F did not work for 3D datasets
     o Corrected issue with globalIntegration for use with 3D data
+    o Corrected bug in plotRefToTarget method = "TPS" where the wrong options from gridPars were being passed
 
 CHANGES IN GEOMORPH VERSION 2.1.6
 
