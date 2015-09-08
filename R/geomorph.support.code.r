@@ -174,7 +174,7 @@ tps2d<-function(M, matr, matt)
 tps2d3d<-function(M, matr, matt){		#DCA: altered from J. Claude 2008  
   p<-dim(matr)[1]; k<-dim(matr)[2];q<-dim(M)[1]
   Pdist<-as.matrix(dist(matr))
-  ifelse(k==2,P<-Pdist^2*log(Pdist^2),P<-Pdist) 
+  ifelse(k==2,P<-Pdist^2*log(Pdist^2),P<- -Pdist) 
   P[which(is.na(P))]<-0
   Q<-cbind(1, matr)
   L<-rbind(cbind(P,Q), cbind(t(Q),matrix(0,k+1,k+1)))

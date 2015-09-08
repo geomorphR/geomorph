@@ -44,6 +44,8 @@ The function quantifies the degree of association between two blocks of shape da
 
 A plot of PLS scores from Block1 versus Block2 is provided for the first set of PLS axes. Thin-plate spline
   deformation grids along these axes are also shown (if data were input as a 3D array).
+
+If the specimens in A1 and A2 are differently ordered, the function will reorder A2 to match A1.
 }
 \examples{
 data(plethShapeFood)

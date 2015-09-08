@@ -157,16 +157,20 @@ morphol.integr<-function(A1,A2,method=c("PLS","RV"),warpgrids=TRUE,iter=999, lab
     if (length(dim(A1))==3  && dim(A1)[2] == 3) {
       plot(XScores[,1],YScores[,1],pch=21,bg="black",main="PLS Plot",xlab = "PLS1 Block 1",ylab = "PLS1 Block 2")
       if(length(label!=0)){text(XScores[,1],YScores[,1],label,adj=c(-.7,-.7))}
+      if(warpgrids==TRUE){
       open3d()
       plot3d(pls1.min, type = "s", col = "gray", main = paste("PLS Block1 negative"),size = 1.25, aspect = FALSE)
       open3d()
       plot3d(pls1.max, type = "s", col = "gray", main = paste("PLS Block1 positive"),size = 1.25, aspect = FALSE)
+      }
     }  
     if (length(dim(A2))==3  && dim(A2)[2] == 3){
+      if(warpgrids==TRUE){
       open3d()
       plot3d(pls2.min, type = "s", col = "gray", main = paste("PLS Block2 negative"),size = 1.25, aspect = FALSE)
       open3d()
       plot3d(pls2.max, type = "s", col = "gray", main = paste("PLS Block2 positive"),size = 1.25, aspect = FALSE)
+      }
     }
     if(verbose==FALSE){ return(list(PLS.corr=integ.obs,pvalue=P.val)) }
     if(verbose==TRUE){ return(list(x.scores=XScores,y.scores=YScores,PLS.corr=integ.obs,pvalue=P.val)) }

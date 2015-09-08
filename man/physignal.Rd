@@ -58,8 +58,7 @@ Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment
 physignal(plethspecies$phy,Y.gpa$coords,method="Kmult",iter=99)
 
 #Test for phylogenetic signal in size
-Csize <- matrix(Y.gpa$Csize, dimnames=list(names(Y.gpa$Csize))) # make matrix Csize with names
-physignal(plethspecies$phy,Csize,method="Kmult",iter=99)
+physignal(plethspecies$phy,Y.gpa$Csize,method="Kmult",iter=99)
 }
 \author{
 Dean Adams

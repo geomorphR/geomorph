@@ -47,8 +47,7 @@
 #' compare.evol.rates(plethspecies$phy,Y.gpa$coords,gp=gp.end,iter=49)
 #' 
 #' #Calculate rates of size
-#' Csize <- matrix(Y.gpa$Csize, dimnames=list(names(Y.gpa$Csize))) # make matrix Csize with names
-#' compare.evol.rates(plethspecies$phy,Csize,gp=gp.end,iter=49)
+#' compare.evol.rates(plethspecies$phy,Y.gpa$Csize,gp=gp.end,iter=49)
 compare.evol.rates<-function(phy,A,gp,ShowPlot=TRUE,iter=999 ){
   if (length(dim(A))==3){ 
       if(is.null(dimnames(A)[[3]])){
@@ -58,6 +57,10 @@ compare.evol.rates<-function(phy,A,gp,ShowPlot=TRUE,iter=999 ){
       if(is.null(rownames(A))){
       stop("Data matrix does not include taxa names as dimnames for rows.")  }
       x<-A }
+  if (is.vector(A)== TRUE){ 
+    if(is.null(names(A))){
+      stop("Data vector does not include taxa names as names.")  }
+    x<-as.matrix(A) }
   if(any(is.na(A))==T){
     stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').")  }
   if(!is.factor(gp)){

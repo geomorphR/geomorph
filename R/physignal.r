@@ -51,20 +51,23 @@
 #' physignal(plethspecies$phy,Y.gpa$coords,method="Kmult",iter=99)
 #' 
 #' #Test for phylogenetic signal in size
-#' Csize <- matrix(Y.gpa$Csize, dimnames=list(names(Y.gpa$Csize))) # make matrix Csize with names
-#' physignal(plethspecies$phy,Csize,method="Kmult",iter=99)
+#' physignal(plethspecies$phy,Y.gpa$Csize,method="Kmult",iter=99)
 physignal<-function(phy,A,iter=999,ShowPlot=TRUE,method=c("Kmult","SSC")){
   method <- match.arg(method)
   if(any(is.na(A))==T){
     stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').")  }
   if (length(dim(A))==3){ 
     if(is.null(dimnames(A)[[3]])){
-      stop("Data matrix does not include taxa names as dimnames for 3rd dimension.")  }
+      stop("Data array does not include taxa names as dimnames for 3rd dimension.")  }
     x<-two.d.array(A)}
   if (length(dim(A))==2){ 
     if(is.null(rownames(A))){
       stop("Data matrix does not include taxa names as dimnames for rows.")  }
     x<-A }
+  if (is.vector(A)== TRUE){ 
+    if(is.null(names(A))){
+      stop("Data vector does not include taxa names as names.")  }
+    x<-as.matrix(A) }
   if (class(phy) != "phylo") 
     stop("tree must be of class 'phylo.'")
   if (!is.binary.tree(phy)) 

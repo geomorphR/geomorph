@@ -11,6 +11,8 @@
 #'   A plot of PLS scores from Block1 versus Block2 is provided for the first set of PLS axes. Thin-plate spline 
 #'   deformation grids along these axes are also shown (if data were input as a 3D array).
 #'   
+#'   If the specimens in A1 and A2 are differently ordered, the function will reorder A2 to match A1.
+#'   
 #' @param A1 A matrix (n x [p x k]) or 3D array (p x k x n) containing GPA-aligned coordinates for the first block
 #' @param A2 A matrix (n x [p x k]) or 3D array (p x k x n) containing GPA-aligned coordinates for the second block 
 #' @param iter Number of iterations for significance testing
