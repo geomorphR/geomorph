@@ -4,8 +4,8 @@
 \alias{plotGMPhyloMorphoSpace}
 \title{Plot phylogenetic tree and specimens in tangent space}
 \usage{
-plotGMPhyloMorphoSpace(phy, A, labels = TRUE, ancStates = TRUE,
-  plot.param = list())
+plotGMPhyloMorphoSpace(phy, A, labels = TRUE, ancStates = TRUE, axis1 = 1,
+  axis2 = 2, axis3 = NULL, plot.param = list())
 }
 \arguments{
 \item{phy}{A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape}
@@ -15,6 +15,12 @@ plotGMPhyloMorphoSpace(phy, A, labels = TRUE, ancStates = TRUE,
 \item{labels}{A logical value indicating whether taxa labels (tips and ancestors) should be included}
 
 \item{ancStates}{A logical value indicating whether ancestral state values should be returned}
+
+\item{axis1}{A value indicating which PC axis should be displayed as the X-axis (default = PC1)}
+
+\item{axis2}{A value indicating which PC axis should be displayed as the Y-axis (default = PC2)}
+
+\item{axis3}{Optional, a value indicating which PC axis should be displayed as the Z-axis (default = PC3)}
 
 \item{plot.param}{A list of plotting parameters for the tips (t.bg, t.pch, t.cex), nodes (n.bg, n.pch, n.cex), branches (l.col, lwd), and taxa labels (txt.cex, txt.adj, txt.col)}
 }
