@@ -42,7 +42,7 @@
 #'
 #' compare.modular.partitions(Y.gpa$coords,land.gps,iter=99)
 #' #Result implies that the skull and mandible are not independent modules
-compare.modular.partitions<-function(A,partition.gp,iter=999){
+compare.modular.partitions<-function(A,partition.gp,ShowPlot=TRUE,iter=999){
   if(any(is.na(A))==T){
     stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').")}
   partition.gp<-as.factor(partition.gp)
@@ -92,7 +92,7 @@ compare.modular.partitions<-function(A,partition.gp,iter=999){
   }
   RV.val[iter+1]=RV.obs
   P.val<-P.val/(iter+1)
-  hist(RV.val,30,freq=TRUE,col="gray",xlab="RV Coefficient")
+  if (ShowPlot==TRUE) {hist(RV.val,30,freq=TRUE,col="gray",xlab="RV Coefficient")}
   arrows(RV.obs,50,RV.obs,5,length=0.1,lwd=2)
   return(list(RV=RV.obs,pvalue=P.val,RV.min=RV.min,RV.min.partitions=partition.min))
 }
