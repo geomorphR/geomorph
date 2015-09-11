@@ -7,7 +7,7 @@
 #' TPS file.  An option is included to allow the user to digitize a scale on each image to convert 
 #' the landmark coordinates from pixels into meaningful units. Landmarks to be digitized can include 
 #' both fixed landmarks and semi-landmarks, the latter of which are to be designated as "sliders" 
-#' for subsequent analysis (see the function \code{\link{define.sliders.2d}}).
+#' for subsequent analysis (see the function \code{\link{define.sliders}}).
 #' 
 #' \subsection{The Digitizing Session}{
 #' Digitizing landmarks from 2D photos requires that a scale bar is placed in the image in order to scale the coordinate data. The 'scale' option requires: a single number (e.g. 10) which means that the scale to be measured in all images is a 10mm scale bar; OR a vector the same length as the filelist containing a number for the scale of each image. If scale=NULL, then the digitized coordinates will not be scaled. This option is NOT recommended.

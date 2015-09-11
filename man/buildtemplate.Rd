@@ -35,11 +35,11 @@ Function constructs a template of fixed landmarks and n "surface sliders", semil
  roughly equidistant set of predetermined number of points, chosen over the mesh automatically using a nearest-neighbor approach.
  The set of fixed and surface slider landmarks are exported as a "template", which is used to extract a set of similarly numbered
  landmarks on every specimen using function \code{\link{digitsurface}}. Some of the "fixed" landmarks can be later designated as
- "curve sliders" using function \code{\link{define.sliders.3d}} if required - see details in \code{\link{digit.fixed}}.  Because template
+ "curve sliders" using function \code{\link{define.sliders}} if required - see details in \code{\link{digit.fixed}}.  Because template
  matching is based on the correspondence of fixed landmark points in the template and the specimen, a minimum of four fixed landmarks must be used.
 
 To ensure a strong match between the scan and the template, it is recommended that a reasonable number of fixed points be used.
- These fixed points can be designated as "curve sliders" later using function \code{\link{define.sliders.3d}},
+ These fixed points can be designated as "curve sliders" later using function \code{\link{define.sliders}},
  see the function \code{\link{digit.fixed}} for details.
  NOTE: Function centers the mesh before digitizing by default (center=TRUE). If one chooses not to center,
  specimen may be difficult to manipulate in rgl window.

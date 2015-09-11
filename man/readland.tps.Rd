@@ -43,7 +43,7 @@ The default is specID="None".
 
 If there are curves defined in the file (i.e., CURVES= fields), the option readcurves should be used.
 When readcurves = TRUE, the coordinate data for the curves will be returned as semilandmarks and will be appended to
-the fixed landmark data. Then the user needs to use \code{\link{define.sliders.2d}} or \code{\link{define.sliders.3d}}
+the fixed landmark data. Then the user needs to use \code{\link{define.sliders}} or \code{\link{define.sliders}}
 to create a matrix designating how the curve points will slide (used by 'curves=' in \code{\link{gpagen}}).
 When readcurves = FALSE, only the landmark data are returned.
 

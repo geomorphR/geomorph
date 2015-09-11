@@ -1,7 +1,8 @@
 CHANGES IN GEOMORPH VERSION 2.1.7
 
   NEW FEATURES
-    o plotGMPhyloMorphoSpace now plots 3D phylomorphospaces and chronophylomorphospaces
+    o new function compare.multi.evol.rates() for comparing rates of evolution among traits
+    o plotGMPhyloMorphoSpace() now plots 3D phylomorphospaces and chronophylomorphospaces
 
   OTHER CHANGES   
     o Updated Imports packages as per new CRAN policies
