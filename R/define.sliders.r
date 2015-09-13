@@ -75,7 +75,7 @@
 define.sliders<-function(landmarks, nsliders, surfsliders=NULL, write.file = TRUE) {
   checkmat <- is.matrix(landmarks)
   if (checkmat==FALSE) { 
-    if(length(dim(Stewartia)) == 3){stop("'landmarks' should be the shape matrix of a single specimen") }
+    if(length(dim(landmarks)) == 3){stop("'landmarks' should be the shape matrix of a single specimen") }
     nsliders <- length(landmarks)
     CV <- matrix(NA, ncol=3, nrow=nsliders-2)
     for (i in 1:(nsliders-2)){
