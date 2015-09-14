@@ -22,8 +22,6 @@ described below}
 \item{verbose}{A logical indicator for verbose (random) output (observed cases always first)}
 
 \item{group.cols}{A vector of colors to use for trajectories, in the order of the levels of the grouping variable. E.g., c("red", "blue, "orange",...)}
-
-\item{data}{An optional value specifying a data frame containing all data (not required)}
 }
 \value{
 If "estimate.traj=TRUE", the function returns a list with the following components:
