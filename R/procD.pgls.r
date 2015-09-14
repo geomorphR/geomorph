@@ -58,11 +58,12 @@
 #' ### Example of D-PGLS for high-dimensional data, using RRPP
 #' procD.pgls(Y.gpa$coords ~ Y.gpa$Csize,plethspecies$phy,iter=49,RRPP=TRUE)
 procD.pgls<-function(f1, phy, iter=999, int.first = FALSE, RRPP=FALSE, verbose=FALSE, ...){
-  pf <- procD.fit(f1,...)
+  if(any(class(f1)=="lm")) pf = procD.fit(f1,weights=f1$weights, contrasts=f1$contrasts, offset=f1$offset) else 
+    pf= procD.fit(f1,...)
   if(int.first == TRUE) ko = TRUE else ko = FALSE
   Terms <- pf$Terms
   k <- length(pf$Terms)
-  Y <- pf$Y
+  Y <- as.matrix(pf$Y)
   if (is.null(dimnames(Y)[[1]])) {
     stop("No species names with Y-data")
   }
@@ -81,29 +82,18 @@ procD.pgls<-function(f1, phy, iter=999, int.first = FALSE, RRPP=FALSE, verbose=F
   eigC.vect = eigC$vectors[,1:(length(lambda))]
   Pcor <- solve(eigC.vect%*% diag(sqrt(lambda)) %*% t(eigC.vect)) 
   PY <- Pcor%*%Y   
-  Xs = mod.mats(pf)
+  Xs <- mod.mats(pf, keep.order=ko)
   anova.parts.obs <- anova.pgls.parts(pf, X=NULL, Pcor, Yalt = "observed", keep.order=ko)
   anova.tab <-anova.parts.obs$table  
   df <- anova.parts.obs$df[1:k]
   dfE <-anova.parts.obs$df[k+1]
-  
-  P <-array(0, c(k, 1, iter+1))
-  P[,,1] <- SS.obs <- anova.parts.obs$F[1:k]
-  for(i in 1:iter){
-    if(RRPP == TRUE) {    
-      SS.ran <- SS.pgls.random(Xs, Pcor,Yalt = "RRPP")
-    } else SS.ran <- SS.pgls.random(Xs, Pcor, Yalt = "resample")
-    SS.r <- SS.ran$SS
-    Yr <- SS.ran$Y
-    SSE.r <- SS.ran$SSE
-    Fs.r <- (SS.r/df)/(SSE.r/dfE)
-    P[,,i+1] <- Fs.r
-  }  
+  if(RRPP == TRUE) P <- SS.pgls.random(Xs,Pcor,Yalt="RRPP", iter=iter) else 
+    P <- SS.pgls.random(Xs, Pcor,Yalt="resample", iter=iter)
   P.val <- Pval.matrix(P)
   Z <- Effect.size.matrix(P)
   anova.tab <- data.frame(anova.tab, Z = c(Z, NA, NA), P.value = c(P.val, NA, NA))
-  if(RRPP == TRUE) anova.title = "\nRandomized Residual Permutation Procedure used\n" 
-    else anova.title = "\nRandomization of Raw Values used\n"  
+  if(RRPP == TRUE) anova.title = "\nRandomized Residual Permutation Procedure used\n" else 
+    anova.title = "\nRandomization of Raw Values used\n"  
   attr(anova.tab, "heading") <- paste("\nType I (Sequential) Sums of Squares and Cross-products\n",anova.title)
   class(anova.tab) <- c("anova", class(anova.tab))
   if(verbose==TRUE)  {

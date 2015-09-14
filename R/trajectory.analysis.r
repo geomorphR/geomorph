@@ -101,34 +101,29 @@
 #' 
 #' trajectory.analysis(motionpaths$trajectories~motionpaths$groups,
 #' estimate.traj=FALSE, traj.pts=5,iter=15, verbose=TRUE)
-trajectory.analysis<-function(f1,data=NULL,estimate.traj=TRUE,traj.pts=NULL,iter=999, verbose=FALSE){
-  form.in <- formula(f1)
-  Y <- eval(form.in[[2]], parent.frame())
-  if(length(dim(Y)) == 3)  Y <- two.d.array(Y) else Y <- as.matrix(Y)
-  form.in <- as.formula(paste(c("Y",form.in[[3]]),collapse="~"))
-  Terms<-terms(form.in)
-  dat<-model.frame(form.in)
-  all.terms<-attr(Terms,"term.labels")
-  k <-length(all.terms)  
-  if(any(is.na(Y))==T) stop("Response data matrix (shape) contains missing values. Estimate these first(see 'estimate.missing').")  
-  
+trajectory.analysis<-function(f1,estimate.traj=TRUE,traj.pts=NULL,iter=999, pca=TRUE,verbose=FALSE, group.cols=NULL){
+  pf= procD.fit(f1)
+  Y <- pf$Y
+  dat <- pf$mf
   if(estimate.traj==TRUE){
-    y<-prcomp(Y)$x
+    anova.parts.obs <- anova.parts(pf, keep.order=ko)
+    anova.tab <-anova.parts.obs$table  
+    Xs <- mod.wmats(pf, keep.order=ko)
+    k <- length(Xs$terms)
+    if(pca==TRUE) y<-prcomp(Y)$x else y <- Y
     if(k<3) stop("Model does not appear to be factorial.  Check model formula (see help file).") 
-    int.term<-grep(":",attr(Terms,"term.labels")[k])
+    int.term<-grep(":", Xs$terms[k])
     if(int.term!=1) stop("Last col of X-matrix does not contain interaction between main effects (see help file).")        
     p<-ncol(y) 
     n1<-length(levels(dat[,k-1]))
     k1<-length(levels(dat[,k]))
-    anova.parts.obs <- anova.parts(form.in, Yalt = "observed", keep.order=TRUE)
-    anova.tab <-anova.parts.obs$table  
-    Xs <- mod.mats(form.in, dat, keep.order=TRUE)
     Plm <-array(, c(k, 1, iter+1))
     SS.obs <-anova.parts.obs$SS[1:k]
     Plm[,,1] <- SS.obs    
-    fac12<-single.factor(form.in)
-    cov.mf = model.frame(dat[-1][which(is.factor(dat[-1])==F)])
-    lsmeans.obs <- ls.means(fac12, cov.mf=cov.mf, y)
+    fac12<-single.factor(formula(f1))
+    covs <- cov.extract(formula(f1))
+    if(ncol(covs) == 0) covs <- NULL else covs <- model.matrix(~covs)
+    lsmeans.obs <- ls.means(fac12, cov.mf=covs, y)
     traj.specs.obs<- aperm(array(t(lsmeans.obs), c(p,k1,n1)), c(2,1,3)) 
     trajsize.obs<-trajsize(traj.specs.obs,n1,k1) 
     trajdir.obs<-trajorient(traj.specs.obs,n1,p); diag(trajdir.obs)<-0 
@@ -138,9 +133,9 @@ trajectory.analysis<-function(f1,data=NULL,estimate.traj=TRUE,traj.pts=NULL,iter
     POrient[,,1] <- trajdir.obs
     PShape[,,1] <- trajshape.obs
     for(i in 1:iter){
-      SS.r <- SS.random(y, Xs, SS.obs, Yalt = "RRPP")
-      Plm[,,i+1] <- SS.r$SS
-      lsmeans.r <- ls.means(fac12, cov.mf=cov.mf, SS.r$Y)
+      SS.r <- SS.traj.random(Xs, Yalt = "RRPP", iter=1)
+      Plm[,,i+1] <- SS.r$SS[,,2]
+      lsmeans.r <- ls.means(fac12, cov.mf=covs, SS.r$Y)
       traj.specs.r<- aperm(array(t(lsmeans.r), c(p,k1,n1)), c(2,1,3)) 
       trajsize.r<-trajsize(traj.specs.r,n1,k1) 
       trajdir.r<-trajorient(traj.specs.r,n1,p); diag(trajdir.r)<-0 
@@ -183,18 +178,19 @@ trajectory.analysis<-function(f1,data=NULL,estimate.traj=TRUE,traj.pts=NULL,iter
                          Direction=list(Obs.dif=trajdir.obs,Z=Z.dir,P = P.val.dir),
                          Shape=list(Obs.dif=trajshape.obs,Z=Z.shape,P = P.val.shape),
                          Random.values=Random.values)
-    trajplot(y,traj.specs.obs)
+    
+    trajplot(y,traj.specs.obs, groups = dat[,k-1], group.cols = group.cols)
     if(k1 == 2) return(results[-4]) else 
         return(results)
   }
   
   if(estimate.traj==FALSE){
-    if(is.null(traj.pts)==TRUE){
-      stop("Number of points in the trajectory not specified.") }
-    if(length(attr(Terms,"term.labels")) > 1) stop("If data are already trajectories, only a single-factor model is currently supported. (See Help file)")
-    X <- model.matrix(Terms)
-    Xs <- mod.mats(form.in,dat)
-    k <- length(Xs$Xs) - 1
+    if(is.null(traj.pts)) stop("Number of points in the trajectory not specified.") 
+    if(length(pf$Terms) > 1) stop("If data are already trajectories, only a single-factor model is currently supported. (See Help file)")
+    form.in = formula(f1)
+    X <- model.matrix(form.in)
+    Xs <- mod.mats(pf)
+    k <- length(Xs$terms) 
     k1<-traj.pts
     y <- Y
     n1<-nrow(y)
@@ -216,7 +212,7 @@ trajectory.analysis<-function(f1,data=NULL,estimate.traj=TRUE,traj.pts=NULL,iter
     size.SS.obs <- Hat.SS.model(Gower.center(size.obs), X)
     shape.SS.obs <- Hat.SS.model(Gower.center(shape.obs), X)
     dir.SS.obs <- Hat.SS.model(Gower.center(dir.obs), X)
-    anova.parts.obs <- anova.parts(form.in,Yalt="observed")
+    anova.parts.obs <- anova.parts(pf,Yalt="observed")
     SS.obs <-anova.parts.obs$SS[1:k]
     anova.tab <-anova.parts.obs$table  
     Plm <- array(,c(k,1,iter+1))
@@ -226,7 +222,7 @@ trajectory.analysis<-function(f1,data=NULL,estimate.traj=TRUE,traj.pts=NULL,iter
     PShape[,,1] <- shape.SS.obs[1:k]
     POrient[,,1] <- dir.SS.obs[1:k]
       perm.index <- 1:nrow(y)
-      SSY <- SSE(lm(y~1))
+      SSY <- SSE(list(lm(y~1)$resdiuals))
       Dy <- as.matrix(dist(y))
       for(i in 1:iter){
         pr <- sample(perm.index)
@@ -267,8 +263,13 @@ trajectory.analysis<-function(f1,data=NULL,estimate.traj=TRUE,traj.pts=NULL,iter
                       ANOVA.shape=shape.tab)
     }
     
-    y.plot<-matrix(t(two.d.array(traj.specs.obs)),ncol=p1,byrow=TRUE)
-    trajplot(y.plot,traj.specs.obs)
+    y.plot<-matrix(t(two.d.array(traj.specs.obs)), ncol=p1,byrow=TRUE)
+    if(pca==T) {
+      y.plot <-prcomp(y.plot)$x
+      traj.specs.obs <- arrayspecs(y.plot, traj.pts, p1)
+    }
+      
+    trajplot(y.plot,traj.specs.obs, groups = as.factor(dat[[2]]))
     if(k1 == 2) return(results[-4]) else return(results)
   }
   results

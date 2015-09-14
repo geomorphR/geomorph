@@ -57,32 +57,23 @@
 #' data(plethodon) 
 #' Y.gpa<-gpagen(plethodon$land)    #GPA-alignment    
 #'
-#' procD.lm(Y.gpa$coords ~ plethodon$species*plethodon$site,iter=99)
+#' procD.lm(Y.gpa$coords ~ plethodon$species*plethodon$site,iter=499)
 #'
 #' ### Regression example
 #' data(ratland)
 #' rat.gpa<-gpagen(ratland)         #GPA-alignment
 #'
-#' procD.lm(rat.gpa$coords ~ rat.gpa$Csize,iter=99)
+#' procD.lm(rat.gpa$coords ~ rat.gpa$Csize,iter=499)
 #' 
 #' ## using RRPP
 #'  procD.lm(rat.gpa$coords ~ rat.gpa$Csize,iter=49,RRPP=TRUE)
-procD.lm <- function(f1, iter = 999, RRPP = FALSE, int.first = FALSE, verbose=FALSE, ...){
+procD.lm<- function(f1, iter = 999, RRPP = FALSE, int.first = FALSE, verbose=FALSE, ...){
   if(any(class(f1)=="lm")) pf = procD.fit(f1,weights=f1$weights, contrasts=f1$contrasts, offset=f1$offset) else 
     pf= procD.fit(f1,...)
-  anova.parts.obs <- anova.parts(pf, Yalt = "observed", keep.order=ko)
+  anova.parts.obs <- anova.parts(pf, keep.order=ko)
   anova.tab <-anova.parts.obs$table  
-  Xs <- mod.mats(pf, keep.order=ko)
-  k <- length(pf$Terms) 
-  P <-array(0, c(k, 1, iter+1))
-  SS.obs <-anova.parts.obs$SS[1:k]
-  P[,,1] <- SS.obs
-  for(i in 1:iter){
-    if(RRPP == TRUE) {
-      SS.r <- SS.random(Xs, Yalt = "RRPP")
-    } else SS.r <- SS.random(Xs, Yalt = "resample")
-    P[,,i+1] <- SS.r$SS
-  }	
+  Xs <- mod.wmats(pf, keep.order=ko)
+  if(RRPP == TRUE) P <- SS.random(Xs,Yalt="RRPP", iter=iter) else P <- SS.random(Xs, Yalt="resample", iter=iter)
   P.val <- Pval.matrix(P)
   Z <- Effect.size.matrix(P)
   anova.tab <- data.frame(anova.tab, Z = c(Z, NA, NA), P.value = c(P.val, NA, NA))
