@@ -543,7 +543,7 @@ mod.resids <- function(Xs, Y, w){
   k <- length(Xs)
   if(is.matrix(Y)) Y <- lapply(as.list(array(,k)),function(Y) as.matrix(Y))
   R <- as.list(array(,k))
-  for(i in 1:k) R[[i]] <- lm.wfit(x=Xs[[i]],y=as.matrix(Y[[i]]),w=w)$residuals
+  for(i in 1:k) R[[i]] <- lm.wfit(x=Xs$Xs[[i]],y=as.matrix(Y[[i]]),w=w)$residuals
   R
 }
 
