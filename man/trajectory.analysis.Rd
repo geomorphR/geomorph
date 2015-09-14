@@ -21,6 +21,8 @@ described below}
 
 \item{verbose}{A logical indicator for verbose (random) output (observed cases always first)}
 
+\item{group.cols}{A vector of colors to use for trajectories, in the order of the levels of the grouping variable. E.g., c("red", "blue, "orange",...)}
+
 \item{data}{An optional value specifying a data frame containing all data (not required)}
 }
 \value{
@@ -81,8 +83,8 @@ If "estimate.traj=FALSE" the trajectories are assembled directly from the set of
 Once the function has performed the analysis, it generates a plot of the trajectories as visualized in the
  space of principal components (PC1 vs. PC2). The first point in each trajectory is displayed as white, the
 last point is black, and any middle points on the trajectories are in gray.  The colors of trajectories follow
- the order in which they are found in the dataset, using R's standard color palette: black, red, green3,
- blue, cyan, magenta, yellow, and gray.
+ the order in which they are found in the dataset as a default, using R's standard color palette: black, red, green3,
+ blue, cyan, magenta, yellow, and gray. However, one can override these colors with group.cols.
 }
 \examples{
 #1: Estimate trajectories from LS means in 2-factor model

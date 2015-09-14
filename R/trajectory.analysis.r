@@ -33,8 +33,8 @@
 #'  Once the function has performed the analysis, it generates a plot of the trajectories as visualized in the 
 #'  space of principal components (PC1 vs. PC2). The first point in each trajectory is displayed as white, the 
 #' last point is black, and any middle points on the trajectories are in gray.  The colors of trajectories follow
-#'  the order in which they are found in the dataset, using R's standard color palette: black, red, green3,
-#'  blue, cyan, magenta, yellow, and gray. 
+#'  the order in which they are found in the dataset as a default, using R's standard color palette: black, red, green3,
+#'  blue, cyan, magenta, yellow, and gray. However, one can override these colors with group.cols.
 #'
 #' @param f1 A formula for the linear model (e.g., y~x1+x2)
 #' @param data An optional value specifying a data frame containing all data (not required)
@@ -43,6 +43,7 @@
 #' @param iter Number of iterations for significance testing
 #' @param traj.pts An optional value specifying the number of points in each trajectory (if estimate.traj=FALSE)
 #' @param verbose A logical indicator for verbose (random) output (observed cases always first)
+#' @param group.cols A vector of colors to use for trajectories, in the order of the levels of the grouping variable. E.g., c("red", "blue, "orange",...)
 #' @param pca A logical indicator if a principal component analysis should be performed on data
 #' @export
 #' @keywords analysis
