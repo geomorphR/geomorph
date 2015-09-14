@@ -92,7 +92,7 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL, angle.type = c(
   if(length(as.formula(f2))==2) f2 <-as.formula(paste(c("Y",f2[[2]]),collapse="~"))
   if(length(as.formula(f2))==3) f2 <-as.formula(paste(c("Y",f2[[3]]),collapse="~"))  
   pf2= procD.fit(f2,...)
-  Y <- as.matrix(pf1$Y)
+  Y <- as.matrix(pf1$Y.prime)
   n <- nrow(Y)
   if(!is.null(pf1$weights)) w <- pf1$weights else w <- rep(1,n)
   k1 <- qr(model.matrix(f1))$rank
@@ -102,13 +102,13 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL, angle.type = c(
   if(k1 == k2) stop("Models have same df")
   dfr <- nrow(Y) - min(k1,k2)
   dff <- nrow(Y) - max(k1,k2)
-  SSEr <- SSE(mod.resids(list(model.matrix(fr)), Y, w))
-  SSEf <- SSE(mod.resids(list(model.matrix(ff)), Y, w))
+  SSEr <- SSE(mod.resids(list(model.matrix(fr)), Y))
+  SSEf <- SSE(mod.resids(list(model.matrix(ff)), Y))
   SSm <- SSEr - SSEf
   Fs <- (SSm/(dfr-dff))/(SSEf/dff)
   ind <- perm.index(n, iter)
   
-  z <- lm.wfit(model.matrix(fr),Y,w)
+  z <- lmfit(model.matrix(fr)[,-1],Y)
   R <- z$residuals
   Yh <- z$fitted
   P <- array(,iter+1)
@@ -126,7 +126,7 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL, angle.type = c(
     for(i in 1:iter){
       Rr <- R[ind[[i]],]
       pseudoY =  Yh + Rr
-      P[i+1] <- SSE(mod.resids(list(model.matrix(fr)), pseudoY, w)) - SSE(mod.resids(list(model.matrix(ff)), pseudoY, w))
+      P[i+1] <- SSE(mod.resids(list(model.matrix(fr)), pseudoY)) - SSE(mod.resids(list(model.matrix(ff)), pseudoY))
     }
     P.val <- pval(P)
     Z.score <- effect.size(P)
@@ -146,7 +146,7 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL, angle.type = c(
     for(i in 1:iter){
       Rr <- R[ind[[i]],]
       pseudoY =  Yh + Rr
-      P[i+1] <- SSE(mod.resids(list(model.matrix(fr)), pseudoY, w)) - SSE(mod.resids(list(model.matrix(ff)), pseudoY, w))
+      P[i+1] <- SSE(mod.resids(list(model.matrix(fr)), pseudoY)) - SSE(mod.resids(list(model.matrix(ff)), pseudoY))
       mr <- ls.means(gr, cov.mf = NULL, pseudoY)
       P.dist[,,i+1] <- as.matrix(dist(mr))  
     }
@@ -178,7 +178,7 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL, angle.type = c(
     for(i in 1: iter){
       Rr <- R[ind[[i]],]
       pseudoY =  Yh + Rr
-      P[i+1] <- SSE(mod.resids(list(model.matrix(fr)), pseudoY, w)) - SSE(mod.resids(list(model.matrix(ff)), pseudoY, w))
+      P[i+1] <- SSE(mod.resids(list(model.matrix(fr)), pseudoY)) - SSE(mod.resids(list(model.matrix(ff)), pseudoY))
       mr <- ls.means(gr, cov, pseudoY)  
       Bslopes.r <- slopes(gr, cov, pseudoY)
       P.mean.dist[,,i+1] <- as.matrix(dist(mr))     

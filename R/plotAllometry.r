@@ -107,27 +107,20 @@ plotAllometry<-function(f1, f2 = NULL, method=c("CAC","RegScore","PredLine"),war
     all.terms <- c(attr(cTerms, "term.labels"), attr(fTerms, "term.labels"))
     f3 <- as.formula(paste(" y ~",paste(all.terms, collapse="+")))
     f4 <- as.formula(paste(" y ~",paste(all.terms, collapse="*")))
-    
-    Xs2 <- mod.mats(f4,dat1=model.frame(f4), keep.order=FALSE)
-    Xs1 <- mod.mats(f3,dat1=model.frame(f3), keep.order=FALSE)
-    k <- length(Xs2$Xs) - 1
+    pf4 <-procD.fit(f4)
+    pf3 <-procD.fit(f3)
+    Xs2 <- mod.mats(pf4, keep.order=FALSE)
+    Xs1 <- mod.mats(pf3, keep.order=FALSE)
+    k <- length(Xs2$terms) 
     X2 <- Xs2$Xs[[k+1]]
     X1 <- Xs1$Xs[[k]]
-    anova.parts.obs2 <- anova.parts(f4, X=Xs2, Yalt="observed")
-    anova.parts.obs1 <- anova.parts(f3, X=Xs1, Yalt="observed")
+    anova.parts.obs2 <- anova.parts(pf4, X=Xs2)
+    anova.parts.obs1 <- anova.parts(pf3, X=Xs1)
     anova.tab2 <-anova.parts.obs2$table 
     anova.tab <-anova.parts.obs1$table 
     SS.obs <- anova.parts.obs2$SS[1:k]
     P <- array(0, c(k, 1, iter+1))
-    P[,,1] <- SS.obs
-    for(i in 1: iter){
-      if(RRPP == TRUE) {
-        SSr <- SS.random(y, Xs2, SS.obs, Yalt = "RRPP")
-      } else {
-        SSr <- SS.random(y, Xs2, SS.obs, Yalt = "resample")
-      }
-      P[,,i+1] <- SSr$SS
-    }
+    if(RRPP == TRUE) P <- SS.random(Xs2,Yalt="RRPP", iter=iter) else P <- SS.random(Xs2, Yalt="resample", iter=iter)
     P.val <- Pval.matrix(P)
     Z <- Effect.size.matrix(P)
     anova.tab2 <- data.frame(anova.tab2, Z = c(Z, NA, NA), P.value = c(P.val, NA, NA))

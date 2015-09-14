@@ -37,7 +37,6 @@
 #'  blue, cyan, magenta, yellow, and gray. However, one can override these colors with group.cols.
 #'
 #' @param f1 A formula for the linear model (e.g., y~x1+x2)
-#' @param data An optional value specifying a data frame containing all data (not required)
 #' @param estimate.traj A logical value indicating whether trajectories are estimated from original data; 
 #'   described below
 #' @param iter Number of iterations for significance testing
@@ -110,11 +109,11 @@ trajectory.analysis<-function(f1,estimate.traj=TRUE,traj.pts=NULL,iter=999, pca=
   if(estimate.traj==TRUE){
     anova.parts.obs <- anova.parts(pf, keep.order=ko)
     anova.tab <-anova.parts.obs$table  
-    Xs <- mod.wmats(pf, keep.order=ko)
-    k <- length(Xs$terms)
+    Xs <- pf$Xs
+    k <- length(pf$Terms)
     if(pca==TRUE) y<-prcomp(Y)$x else y <- Y
-    if(k<3) stop("Model does not appear to be factorial.  Check model formula (see help file).") 
-    int.term<-grep(":", Xs$terms[k])
+    if(k < 3) stop("Model does not appear to be factorial.  Check model formula (see help file).") 
+    int.term<-grep(":", pf$Terms[k])
     if(int.term!=1) stop("Last col of X-matrix does not contain interaction between main effects (see help file).")        
     p<-ncol(y) 
     n1<-length(levels(dat[,k-1]))
@@ -135,7 +134,7 @@ trajectory.analysis<-function(f1,estimate.traj=TRUE,traj.pts=NULL,iter=999, pca=
     POrient[,,1] <- trajdir.obs
     PShape[,,1] <- trajshape.obs
     for(i in 1:iter){
-      SS.r <- SS.traj.random(Xs, Yalt = "RRPP", iter=1)
+      SS.r <- SS.traj.random(pf, Yalt = "RRPP", iter=1)
       Plm[,,i+1] <- SS.r$SS[,,2]
       lsmeans.r <- ls.means(fac12, cov.mf=covs, SS.r$Y)
       traj.specs.r<- aperm(array(t(lsmeans.r), c(p,k1,n1)), c(2,1,3)) 
@@ -191,8 +190,8 @@ trajectory.analysis<-function(f1,estimate.traj=TRUE,traj.pts=NULL,iter=999, pca=
     if(length(pf$Terms) > 1) stop("If data are already trajectories, only a single-factor model is currently supported. (See Help file)")
     form.in = formula(f1)
     X <- model.matrix(form.in)
-    Xs <- mod.mats(pf)
-    k <- length(Xs$terms) 
+    Xs <- pf$Xs
+    k <- length(pf$Terms) 
     k1<-traj.pts
     y <- Y
     n1<-nrow(y)

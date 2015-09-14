@@ -69,12 +69,13 @@
 #' ## using RRPP
 #'  procD.lm(rat.gpa$coords ~ rat.gpa$Csize,iter=49,RRPP=TRUE)
 procD.lm<- function(f1, iter = 999, RRPP = FALSE, int.first = FALSE, verbose=FALSE, ...){
+  if(int.first==TRUE) ko = TRUE else ko = FALSE
   if(any(class(f1)=="lm")) pf = procD.fit(f1,weights=f1$weights, contrasts=f1$contrasts, offset=f1$offset) else 
     pf= procD.fit(f1,...)
   anova.parts.obs <- anova.parts(pf, keep.order=ko)
   anova.tab <-anova.parts.obs$table  
-  Xs <- mod.wmats(pf, keep.order=ko)
-  if(RRPP == TRUE) P <- SS.random(Xs,Yalt="RRPP", iter=iter) else P <- SS.random(Xs, Yalt="resample", iter=iter)
+  Xs <- pf$Xs
+  if(RRPP == TRUE) P <- SS.random(pf,Yalt="RRPP", iter=iter) else P <- SS.random(pf, Yalt="resample", iter=iter)
   P.val <- Pval.matrix(P)
   Z <- Effect.size.matrix(P)
   anova.tab <- data.frame(anova.tab, Z = c(Z, NA, NA), P.value = c(P.val, NA, NA))

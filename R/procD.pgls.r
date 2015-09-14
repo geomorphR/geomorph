@@ -64,7 +64,7 @@ procD.pgls<-function(f1, phy, iter=999, int.first = FALSE, RRPP=FALSE, verbose=F
   if(int.first == TRUE) ko = TRUE else ko = FALSE
   Terms <- pf$Terms
   k <- length(pf$Terms)
-  Y <- as.matrix(pf$Y)
+  Y <- as.matrix(pf$Y.prime)
   if (is.null(dimnames(Y)[[1]])) {
     stop("No species names with Y-data")
   }
@@ -83,13 +83,13 @@ procD.pgls<-function(f1, phy, iter=999, int.first = FALSE, RRPP=FALSE, verbose=F
   eigC.vect = eigC$vectors[,1:(length(lambda))]
   Pcor <- solve(eigC.vect%*% diag(sqrt(lambda)) %*% t(eigC.vect)) 
   PY <- Pcor%*%Y   
-  Xs <- mod.mats(pf, keep.order=ko)
+  Xs <- pf$Xs
   anova.parts.obs <- anova.pgls.parts(pf, X=NULL, Pcor, Yalt = "observed", keep.order=ko)
   anova.tab <-anova.parts.obs$table  
   df <- anova.parts.obs$df[1:k]
   dfE <-anova.parts.obs$df[k+1]
-  if(RRPP == TRUE) P <- SS.pgls.random(Xs,Pcor,Yalt="RRPP", iter=iter) else 
-    P <- SS.pgls.random(Xs, Pcor,Yalt="resample", iter=iter)
+  if(RRPP == TRUE) P <- SS.pgls.random(pf,Pcor,Yalt="RRPP", iter=iter) else 
+    P <- SS.pgls.random(pf, Pcor,Yalt="resample", iter=iter)
   P.val <- Pval.matrix(P)
   Z <- Effect.size.matrix(P)
   anova.tab <- data.frame(anova.tab, Z = c(Z, NA, NA), P.value = c(P.val, NA, NA))
