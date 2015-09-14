@@ -59,7 +59,7 @@
 #   If the sliders form an open curve, then the function assumes the first and last landmarks are DIFFERENT and are fixed (not sliders), e.g. if landmark 1 and 5 are fixed landmarks, and 2, 3 and 4 are semilandmarks, then sliders = c(1,2,3,4,5).
 #' }
 #' 
-#' @param landmarks A matrix containing 2D or 3D landmark coordinates of landmarks and semilandmarks, OR A vector containing a sequence of numbers correspnding to the landmarks in the order they appear along the curve (for AUTO mode)
+#' @param landmarks A matrix containing 2D or 3D landmark coordinates of landmarks and semilandmarks, OR A vector containing a sequence of numbers corresponding to the landmarks in the order they appear along the curve (for AUTO mode)
 #' @param nsliders Number of landmarks to be semilandmarks that slide along curves
 #' @param surfsliders (3D only) If 'landmarks' contains "surface sliders",
 #' e.g. made by \code{\link{buildtemplate}}, these should be given as a vector or use surfsliders = T, and function looks for "surfslide.csv" in working directory.
@@ -75,6 +75,7 @@
 define.sliders<-function(landmarks, nsliders, surfsliders=NULL, write.file = TRUE) {
   checkmat <- is.matrix(landmarks)
   if (checkmat==FALSE) { 
+    if(length(dim(landmarks)) == 3){stop("'landmarks' should be the shape matrix of a single specimen") }
     nsliders <- length(landmarks)
     CV <- matrix(NA, ncol=3, nrow=nsliders-2)
     for (i in 1:(nsliders-2)){
