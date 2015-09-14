@@ -6,7 +6,7 @@
 \usage{
 bilat.symmetry(A, ind = NULL, side = NULL, replicate = NULL,
   object.sym = FALSE, land.pairs = NULL, warpgrids = TRUE, mesh = NULL,
-  verbose = FALSE)
+  verbose = FALSE, ShowPlot = TRUE)
 }
 \arguments{
 \item{A}{An array (p x k x n) containing GPA-aligned coordinates for a set of specimens [for "object.sym=FALSE, A is of dimension (n x k x 2n)]}
@@ -29,6 +29,8 @@ of asymmetry}
 of asymmetry if {warpgrids= TRUE} (see \code{\link{warpRefMesh}}).}
 
 \item{verbose}{A logical value indicating whether the output is basic or verbose (see Value below)}
+
+\item{ShowPlot}{A logical value indicating whether or not the plot should be returned}
 }
 \value{
 Function returns a list with the following components:
