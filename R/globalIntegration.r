@@ -17,6 +17,7 @@
 #' will have an expected slope of zero. 
 #'  
 #' @param A 3D array (p1 x k x n) containing GPA-aligned coordinates 
+#' @param ShowPlot A logical value indicating whether or not the plot should be returned
 #' @export
 #' @keywords analysis
 #' @author Dean Adams
@@ -30,7 +31,7 @@
 #'
 #' globalIntegration(Y.gpa$coords)
 
-globalIntegration<-function(A){
+globalIntegration<-function(A,ShowPlot=TRUE){
   ref<-mshape(A)
   p<-dim(ref)[1]; k<-dim(ref)[2]  
   Pdist<-as.matrix(dist(ref))
@@ -56,8 +57,9 @@ globalIntegration<-function(A){
   start<-which.min(BEval)
   slope<-coef(lm(PWvar~BEval))[2]
   eq<-bquote(ObservedSlope [black] == .(slope))
+  if(ShowPlot==TRUE){ 
   plot(BEval,PWvar,asp=1,main=eq)
   abline(lm(PWvar~BEval),lwd=2,col="black")
-  lines(c(BEval[start],BEval[start]+10),c(PWvar[start],PWvar[start]-10),lty=3,lwd=2,col="red")
+  lines(c(BEval[start],BEval[start]+10),c(PWvar[start],PWvar[start]-10),lty=3,lwd=2,col="red")}
   return(slope)
   }

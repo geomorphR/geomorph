@@ -4,12 +4,14 @@
 \alias{compare.modular.partitions}
 \title{Compare modular signal to alternative landmark subsets}
 \usage{
-compare.modular.partitions(A, partition.gp, iter = 999)
+compare.modular.partitions(A, partition.gp, ShowPlot = TRUE, iter = 999)
 }
 \arguments{
 \item{A}{A 3D array (p x k x n) containing GPA-aligned coordinates for all specimens, or a matrix (n x variables)}
 
 \item{partition.gp}{A list of which landmarks (or variables) belong in which partition (e.g. A,A,A,B,B,B,C,C,C)}
+
+\item{ShowPlot}{A logical value indicating whether or not the plot should be returned}
 
 \item{iter}{Number of iterations for significance testing}
 }

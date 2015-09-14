@@ -40,6 +40,7 @@
 #' @param phy A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape
 #' @param Subset A logical value indicating whether or not the traits are subsets from a single 
 #' landmark configuration (default is TRUE)
+#' @param ShowPlot A logical value indicating whether or not the plot should be returned
 #' @param iter Number of iterations for significance testing
 #' @keywords analysis
 #' @author Dean Adams
@@ -62,7 +63,7 @@
 #' land.gp<-c("A","A","A","A","A","B","B","B","B","B","B")  #mandible and cranium subsets
 #'
 #' compare.multi.evol.rates(Y.gpa$coords,land.gp,plethspecies$phy,iter=99)
-compare.multi.evol.rates<-function(A,gp,phy,Subset=TRUE,iter=999){
+compare.multi.evol.rates<-function(A,gp,phy,Subset=TRUE,ShowPlot=TRUE,iter=999){
   if(any(is.na(A))==T){
     stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').")}
   gp<-as.factor(gp)
@@ -152,8 +153,9 @@ compare.multi.evol.rates<-function(A,gp,phy,Subset=TRUE,iter=999){
   sig.rate<-sig.rate/(iter+1)
   if(ngps>2){  sig.rate.gps<-sig.rate.gps/(iter+1)}
   rate.val[iter+1]=rate.ratio
+  if(ShowPlot==TRUE){ 
   hist(rate.val,30,freq=TRUE,col="gray",xlab="SigmaD ratio")
-  arrows(rate.ratio,50,rate.ratio,5,length=0.1,lwd=2)
+  arrows(rate.ratio,50,rate.ratio,5,length=0.1,lwd=2) }
   if(ngps==2){
     return(list(rates.all = rate.gps, rate.ratio = rate.ratio,pvalue=sig.rate))}
   if(ngps>2){

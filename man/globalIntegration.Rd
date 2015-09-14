@@ -4,10 +4,12 @@
 \alias{globalIntegration}
 \title{Quantify global integration relative to self-similarity}
 \usage{
-globalIntegration(A)
+globalIntegration(A, ShowPlot = TRUE)
 }
 \arguments{
 \item{A}{3D array (p1 x k x n) containing GPA-aligned coordinates}
+
+\item{ShowPlot}{A logical value indicating whether or not the plot should be returned}
 }
 \description{
 Function quantifies the overall level of morphological integration for a set of Procrustes-aligned

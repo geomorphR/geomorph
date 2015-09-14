@@ -38,6 +38,7 @@
 #' of asymmetry
 #' @param mesh A mesh3d object to be warped to represent shape deformation of the directional and fluctuating components
 #' of asymmetry if {warpgrids= TRUE} (see \code{\link{warpRefMesh}}).
+#' @param ShowPlot A logical value indicating whether or not the plot should be returned
 #' @param verbose A logical value indicating whether the output is basic or verbose (see Value below)
 #' @keywords analysis
 #' @export
@@ -64,7 +65,7 @@
 #' data(scallops)
 #' bilat.symmetry(scallops$coorddata,ind=scallops$ind,object.sym=TRUE,land.pairs=scallops$land.pairs)
 bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,land.pairs=NULL,
-      warpgrids = TRUE, mesh=NULL, verbose =FALSE){
+      warpgrids = TRUE, mesh=NULL, verbose =FALSE,ShowPlot=TRUE){
   if (length(dim(A))!=3){
     stop("Data matrix not a 3D array (see 'arrayspecs').")  }
   if(any(is.na(A))==T){
@@ -118,33 +119,35 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
     asymm.component<-array(data=NA,dim=c(p,k,n))     
       dimnames(symm.component)[[3]] <- dimnames(asymm.component)[[3]]<-spec.names
     for (i in 1:n){ asymm.component[,,i]<-(gpa.res$coords[,,i]-symm.component[,,i]) + mn.shape}
-      if(warpgrids == TRUE){
-        if(k==2){  
-          par(mfrow=c(2,2),oma=c(1.5,0,1.5,0))
-          plotAllSpecimens(symm.component)
-          plotAllSpecimens(asymm.component)
-          plotRefToTarget(DA.mns[,,1],DA.mns[,,2],method="TPS",main="Directional Asymmetry")
-          plotRefToTarget(FA.mns[,,1],FA.mns[,,2],method="TPS",main="Fluctuating Asymmetry")
-          mtext("Symmetric Shape Component (left) and Asymmetric Shape Component (right)",outer = TRUE,side=3)
-          mtext("Mean directional (left) and fluctuating (right) asymmetry",side = 1, outer = TRUE)
-          par(mfrow=c(1,1))
+      if(ShowPlot==TRUE){ 
+        if(warpgrids == TRUE){
+          if(k==2){  
+            par(mfrow=c(2,2),oma=c(1.5,0,1.5,0))
+            plotAllSpecimens(symm.component)
+            plotAllSpecimens(asymm.component)
+            plotRefToTarget(DA.mns[,,1],DA.mns[,,2],method="TPS",main="Directional Asymmetry")
+            plotRefToTarget(FA.mns[,,1],FA.mns[,,2],method="TPS",main="Fluctuating Asymmetry")
+            mtext("Symmetric Shape Component (left) and Asymmetric Shape Component (right)",outer = TRUE,side=3)
+            mtext("Mean directional (left) and fluctuating (right) asymmetry",side = 1, outer = TRUE)
+            par(mfrow=c(1,1))
+          }
+          if (k==3){
+            if (is.null(mesh)==TRUE){
+              open3d()
+              plotRefToTarget(DA.mns[,,1],DA.mns[,,2],method="points",main="Directional Asymmetry")
+              open3d()
+              plotRefToTarget(FA.mns[,,1],FA.mns[,,2],method="points",main="Fluctuating Asymmetry")
+              } 
+            if(is.null(mesh)==FALSE){
+              plotRefToTarget(DA.mns[,,1],DA.mns[,,2],mesh,method="surface")
+              title3d(main="Directional Asymmetry")
+              plotRefToTarget(FA.mns[,,1],FA.mns[,,2],mesh,method="surface")
+              title3d(main="Fluctuating Asymmetry")
+              }
+          }
+        layout(1) 
         }
-        if (k==3){
-          if (is.null(mesh)==TRUE){
-            open3d()
-            plotRefToTarget(DA.mns[,,1],DA.mns[,,2],method="points",main="Directional Asymmetry")
-            open3d()
-            plotRefToTarget(FA.mns[,,1],FA.mns[,,2],method="points",main="Fluctuating Asymmetry")
-            } 
-          if(is.null(mesh)==FALSE){
-            plotRefToTarget(DA.mns[,,1],DA.mns[,,2],mesh,method="surface")
-            title3d(main="Directional Asymmetry")
-            plotRefToTarget(FA.mns[,,1],FA.mns[,,2],mesh,method="surface")
-            title3d(main="Fluctuating Asymmetry")
-            }
-        }
-      layout(1) 
-      }
+      }  
     if(verbose==TRUE){
     	class(res.size) <- c("anova", class(res.size))
     	class(res.shape) <- c("anova", class(res.shape))
@@ -203,32 +206,35 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
       dimnames(symm.component)[[3]] <- dimnames(asymm.component)[[3]]<-spec.names
     mn.shape<-mshape(gpa.res$coords)
     for (i in 1:n){ asymm.component[,,i]<-(gpa.res$coords[,,i]-symm.component[,,i]) + mn.shape}
-    if(warpgrids==TRUE){
-        if(k==2){  
-          par(mfrow=c(2,2),oma=c(1.5,0,1.5,0))
-          plotAllSpecimens(symm.component)
-          plotAllSpecimens(asymm.component)
-          plotRefToTarget(DA.mns[,,1],DA.mns[,,2],method="TPS",main="Directional Asymmetry")
-          plotRefToTarget(FA.mns[,,1],FA.mns[,,2],method="TPS",main="Fluctuating Asymmetry")
-          mtext("Symmetric Shape Component (left) and Asymmetric Shape Component (right)",outer = TRUE,side=3)
-          mtext("Mean directional (left) and fluctuating (right) asymmetry",side = 1, outer = TRUE)
-        }
-        if (k==3){
-          if(is.null(mesh)==TRUE){
-            open3d()
-            plotRefToTarget(DA.mns[,,1],DA.mns[,,2],method="points",main="Directional Asymmetry")
-            open3d()
-            plotRefToTarget(FA.mns[,,1],FA.mns[,,2],method="points",main="Fluctuating Asymmetry")
-          } 
-          if(is.null(mesh)==FALSE){
-            plotRefToTarget(DA.mns[,,1],DA.mns[,,2],mesh,method="surface")
-            title3d(main="Directional Asymmetry")
-            plotRefToTarget(FA.mns[,,1],FA.mns[,,2],mesh,method="surface")
-            title3d(main="Fluctuating Asymmetry")
-          }  
-        }
-      layout(1) 
+    if(ShowPlot==TRUE){ 
+        if(warpgrids==TRUE){
+          if(k==2){  
+            par(mfrow=c(2,2),oma=c(1.5,0,1.5,0))
+            plotAllSpecimens(symm.component)
+            plotAllSpecimens(asymm.component)
+            plotRefToTarget(DA.mns[,,1],DA.mns[,,2],method="TPS",main="Directional Asymmetry")
+            plotRefToTarget(FA.mns[,,1],FA.mns[,,2],method="TPS",main="Fluctuating Asymmetry")
+            mtext("Symmetric Shape Component (left) and Asymmetric Shape Component (right)",outer = TRUE,side=3)
+            mtext("Mean directional (left) and fluctuating (right) asymmetry",side = 1, outer = TRUE)
+          }
+          if (k==3){
+            if(is.null(mesh)==TRUE){
+              open3d()
+              plotRefToTarget(DA.mns[,,1],DA.mns[,,2],method="points",main="Directional Asymmetry")
+              open3d()
+              plotRefToTarget(FA.mns[,,1],FA.mns[,,2],method="points",main="Fluctuating Asymmetry")
+            } 
+            if(is.null(mesh)==FALSE){
+              plotRefToTarget(DA.mns[,,1],DA.mns[,,2],mesh,method="surface")
+              title3d(main="Directional Asymmetry")
+              plotRefToTarget(FA.mns[,,1],FA.mns[,,2],mesh,method="surface")
+              title3d(main="Fluctuating Asymmetry")
+            }  
+          }
+        layout(1) 
       } 
+    
+    }
     if(verbose==TRUE){
     	class(res.shape) <- c("anova", class(res.shape))
     	return(list(symm.shape=symm.component,asymm.shape=asymm.component, 

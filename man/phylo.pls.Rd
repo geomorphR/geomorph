@@ -5,7 +5,7 @@
 \title{Quantify phylogenetic morphological integration between two sets of variables}
 \usage{
 phylo.pls(A1, A2, phy, warpgrids = TRUE, iter = 999, label = NULL,
-  verbose = FALSE)
+  verbose = FALSE, ShowPlot = TRUE)
 }
 \arguments{
 \item{A1}{A 2D array (n x [p1 x k1]) or 3D array (p1 x k1 x n) containing landmark coordinates for the first block}
@@ -22,6 +22,8 @@ phylo.pls(A1, A2, phy, warpgrids = TRUE, iter = 999, label = NULL,
 \item{label}{An optional vector indicating labels for each specimen that are to be displayed}
 
 \item{verbose}{A logical value indicating whether the output is basic or verbose (see Value below)}
+
+\item{ShowPlot}{A logical value indicating whether or not the plot should be returned}
 }
 \value{
 Function returns a list with the following components:

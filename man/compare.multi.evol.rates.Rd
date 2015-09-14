@@ -4,7 +4,8 @@
 \alias{compare.multi.evol.rates}
 \title{Comparing rates of shape evolution among traits on phylogenies}
 \usage{
-compare.multi.evol.rates(A, gp, phy, Subset = TRUE, iter = 999)
+compare.multi.evol.rates(A, gp, phy, Subset = TRUE, ShowPlot = TRUE,
+  iter = 999)
 }
 \arguments{
 \item{A}{A matrix (n x [p x k]) or 3D array (p x k x n) containing GPA-aligned coordinates for a set of specimens}
@@ -15,6 +16,8 @@ compare.multi.evol.rates(A, gp, phy, Subset = TRUE, iter = 999)
 
 \item{Subset}{A logical value indicating whether or not the traits are subsets from a single
 landmark configuration (default is TRUE)}
+
+\item{ShowPlot}{A logical value indicating whether or not the plot should be returned}
 
 \item{iter}{Number of iterations for significance testing}
 }
