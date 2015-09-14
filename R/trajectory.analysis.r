@@ -43,6 +43,7 @@
 #' @param iter Number of iterations for significance testing
 #' @param traj.pts An optional value specifying the number of points in each trajectory (if estimate.traj=FALSE)
 #' @param verbose A logical indicator for verbose (random) output (observed cases always first)
+#' @param pca A logical indicator if a principal component analysis should be performed on data
 #' @export
 #' @keywords analysis
 #' @author Dean Adams and Michael Collyer

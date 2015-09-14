@@ -5,7 +5,7 @@
 \title{Procrustes ANOVA/regression for shape data}
 \usage{
 procD.lm(f1, iter = 999, RRPP = FALSE, int.first = FALSE,
-  verbose = FALSE)
+  verbose = FALSE, ...)
 }
 \arguments{
 \item{f1}{A formula for the linear model (e.g., y~x1+x2)}
@@ -17,6 +17,8 @@ procD.lm(f1, iter = 999, RRPP = FALSE, int.first = FALSE,
 \item{int.first}{A logical value to indicate if interactions of first main effects should precede subsequent main effects}
 
 \item{verbose}{A logical value specifying whether additional output should be displayed}
+
+\item{...}{Arguments passed on to procD.fit (typically associated with the lm function)}
 }
 \value{
 Function returns an ANOVA table of statistical results for all factors: df (for each factor), SS, MS,
@@ -63,13 +65,13 @@ The function performs statistical assessment of the terms in the model using Pro
 data(plethodon)
 Y.gpa<-gpagen(plethodon$land)    #GPA-alignment
 
-procD.lm(Y.gpa$coords ~ plethodon$species*plethodon$site,iter=99)
+procD.lm(Y.gpa$coords ~ plethodon$species*plethodon$site,iter=499)
 
 ### Regression example
 data(ratland)
 rat.gpa<-gpagen(ratland)         #GPA-alignment
 
-procD.lm(rat.gpa$coords ~ rat.gpa$Csize,iter=99)
+procD.lm(rat.gpa$coords ~ rat.gpa$Csize,iter=499)
 
 ## using RRPP
  procD.lm(rat.gpa$coords ~ rat.gpa$Csize,iter=49,RRPP=TRUE)

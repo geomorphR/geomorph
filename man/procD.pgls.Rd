@@ -5,7 +5,7 @@
 \title{Phylogenetic ANOVA/regression for shape data}
 \usage{
 procD.pgls(f1, phy, iter = 999, int.first = FALSE, RRPP = FALSE,
-  verbose = FALSE)
+  verbose = FALSE, ...)
 }
 \arguments{
 \item{f1}{A formula for the linear model (e.g., y~x1+x2)}
@@ -19,6 +19,8 @@ procD.pgls(f1, phy, iter = 999, int.first = FALSE, RRPP = FALSE,
 \item{RRPP}{a logical value indicating whether residual randomization should be used for significance testing}
 
 \item{verbose}{A logical value specifying whether additional output should be displayed}
+
+\item{...}{Arguments passed on to procD.fit (typically associated with the lm function)}
 }
 \value{
 Function returns an ANOVA table of statistical results for all factors: df (for each factor), SS, MS,

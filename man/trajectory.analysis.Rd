@@ -4,13 +4,11 @@
 \alias{trajectory.analysis}
 \title{Quantify and compare shape change trajectories}
 \usage{
-trajectory.analysis(f1, data = NULL, estimate.traj = TRUE,
-  traj.pts = NULL, iter = 999, verbose = FALSE)
+trajectory.analysis(f1, estimate.traj = TRUE, traj.pts = NULL, iter = 999,
+  pca = TRUE, verbose = FALSE, group.cols = NULL)
 }
 \arguments{
 \item{f1}{A formula for the linear model (e.g., y~x1+x2)}
-
-\item{data}{An optional value specifying a data frame containing all data (not required)}
 
 \item{estimate.traj}{A logical value indicating whether trajectories are estimated from original data;
 described below}
@@ -19,7 +17,11 @@ described below}
 
 \item{iter}{Number of iterations for significance testing}
 
+\item{pca}{A logical indicator if a principal component analysis should be performed on data}
+
 \item{verbose}{A logical indicator for verbose (random) output (observed cases always first)}
+
+\item{data}{An optional value specifying a data frame containing all data (not required)}
 }
 \value{
 If "estimate.traj=TRUE", the function returns a list with the following components:

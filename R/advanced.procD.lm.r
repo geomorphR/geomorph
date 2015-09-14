@@ -33,6 +33,7 @@
 #' correlations (r), radians (rad) or degrees (deg)
 #' @param iter Number of iterations for significance testing
 #' @param verbose A logical value specifying whether additional output should be displayed (see Value below)
+#' @param ... Arguments passed on to procD.fit (typically associated with the lm function)
 #' @keywords analysis
 #' @export
 #' @author Michael Collyer

@@ -39,6 +39,7 @@
 #' @param RRPP A logical value indicating whether residual randomization should be used for significance testing
 #' @param int.first A logical value to indicate if interactions of first main effects should precede subsequent main effects
 #' @param verbose A logical value specifying whether additional output should be displayed
+#' @param ... Arguments passed on to procD.fit (typically associated with the lm function)
 #' @keywords analysis
 #' @export
 #' @author Dean Adams and Michael Collyer

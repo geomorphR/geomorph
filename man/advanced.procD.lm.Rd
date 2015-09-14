@@ -5,7 +5,7 @@
 \title{Procrustes ANOVA and pairwise tests for shape data, using complex linear models}
 \usage{
 advanced.procD.lm(f1, f2, groups = NULL, slope = NULL, angle.type = c("r",
-  "deg", "rad"), iter = 999, verbose = FALSE)
+  "deg", "rad"), iter = 999, verbose = FALSE, ...)
 }
 \arguments{
 \item{f1}{A formula for a linear model, containing the response matrix (e.g., y ~ x1 + x2)}
@@ -22,6 +22,8 @@ correlations (r), radians (rad) or degrees (deg)}
 \item{iter}{Number of iterations for significance testing}
 
 \item{verbose}{A logical value specifying whether additional output should be displayed (see Value below)}
+
+\item{...}{Arguments passed on to procD.fit (typically associated with the lm function)}
 }
 \value{
 Function returns an ANOVA table of statistical results for model comparison: error df (for each model), SS, MS,
