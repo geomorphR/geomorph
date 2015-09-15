@@ -502,8 +502,8 @@ SS.random <- function(pf, Yalt = c("resample", "RRPP"), iter){ # like anova.part
   if(iter > 0) {for(i in 1:iter){
       Er <- Map(function(x) x[ind[[i]],], E)
       Yr <- as.list(array(,k+1))
-      if(Yalt == "RRPP") for(ii in 1:(k+1)) Yr[[ii]] <- Reduce("+",list(Er[[ii]], Yh[[ii]])) else
-        for(ii in 1:(k+1)) Yr[[ii]] <- Reduce("+",list(Er[[1]], Yh[[1]]))
+      for(ii in 1:(k+1)) Yr[[ii]] <- Reduce("+",list(Er[[ii]], Yh[[ii]]))
+      if(Yalt == "resample")  Yr <- Yr[[1]]
       SSEs.null <- SSE(mod.resids(Xs,Yr))
       SSEs.r <- SSE(mod.resids(Xs[-1],Yr[1:k]))
       P[,,1+i] <- SSEs.null[1:k]-SSEs.r
