@@ -58,6 +58,8 @@
 #'   \item{Shape$Obs.dif}{A matrix of pairwise differences in trajectory shape (if applicable)}
 #'   \item{Shape$Z}{A matrix of pairwise effect sizes for differences in trajectory shape (if applicable)}
 #'   \item{Random.values}{All random values for all RRPP permutations (when {verbose=TRUE})}
+#'   \item{plot.points}{Points for plotting (either observed or PC points)}
+#'   \item{trajectory.points}{Trajectory points for plotting (either observed or PC points; typcially means of plot points)}
 #' @return If "estimate.traj=FALSE", the function returns a list with the following components: 
 #'   \item{MANOVA.location.covariation}{Procrustes ANOVA table}
 #'   \item{ANOVA.Size}{Results of permutational-ANOVA assessing variation in trajectory size}
@@ -247,6 +249,11 @@ trajectory.analysis<-function(f1,estimate.traj=TRUE,traj.pts=NULL,iter=999, pca=
     class(size.tab) <- c("anova", class(size.tab))
     class(dir.tab) <- c("anova", class(dir.tab))
     class(shape.tab) <- c("anova", class(shape.tab))
+    y.plot<-matrix(t(two.d.array(traj.specs.obs)), ncol=p1,byrow=TRUE)
+    if(pca==T) {
+      y.plot <-prcomp(y.plot)$x
+      traj.specs.obs <- arrayspecs(y.plot, traj.pts, p1)
+    }
     if(verbose==TRUE) {
       results <- list(MANOVA.location.covariation = anova.tab, 
                       ANOVA.Size=size.tab,
@@ -255,19 +262,15 @@ trajectory.analysis<-function(f1,estimate.traj=TRUE,traj.pts=NULL,iter=999, pca=
                       random.SS.location=as.vector(Plm), 
                       random.SS.size=as.vector(PSize), 
                       random.SS.dir=as.vector(POrient), 
-                      random.SS.shape=as.vector(PShape))
+                      random.SS.shape=as.vector(PShape),
+                      plot.points=y.plot,
+                      trajectpry.points=plot,traj.specs.obs)
     } else
     {
       results <- list(MANOVA.location.covariation = anova.tab, 
                       ANOVA.Size=size.tab,
                       ANOVA.Dir = dir.tab,
                       ANOVA.shape=shape.tab)
-    }
-    
-    y.plot<-matrix(t(two.d.array(traj.specs.obs)), ncol=p1,byrow=TRUE)
-    if(pca==T) {
-      y.plot <-prcomp(y.plot)$x
-      traj.specs.obs <- arrayspecs(y.plot, traj.pts, p1)
     }
       
     trajplot(y.plot,traj.specs.obs, groups = as.factor(dat[[2]]))

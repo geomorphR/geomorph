@@ -35,6 +35,8 @@ If "estimate.traj=TRUE", the function returns a list with the following componen
   \item{Shape$Obs.dif}{A matrix of pairwise differences in trajectory shape (if applicable)}
   \item{Shape$Z}{A matrix of pairwise effect sizes for differences in trajectory shape (if applicable)}
   \item{Random.values}{All random values for all RRPP permutations (when {verbose=TRUE})}
+  \item{plot.points}{Points for plotting (either observed or PC points)}
+  \item{trajectory.points}{Trajectory points for plotting (either observed or PC points; typcially means of plot points)}
 
 If "estimate.traj=FALSE", the function returns a list with the following components:
   \item{MANOVA.location.covariation}{Procrustes ANOVA table}
