@@ -105,11 +105,11 @@
 #' trajectory.analysis(motionpaths$trajectories~motionpaths$groups,
 #' estimate.traj=FALSE, traj.pts=5,iter=15, verbose=TRUE)
 trajectory.analysis<-function(f1,estimate.traj=TRUE,traj.pts=NULL,iter=999, pca=TRUE,verbose=FALSE, group.cols=NULL){
-  pf= procD.fit(f1)
+  pf= procD.fit(f1, keep.order=FALSE)
   Y <- pf$Y
   dat <- pf$mf
   if(estimate.traj==TRUE){
-    anova.parts.obs <- anova.parts(pf, keep.order=ko)
+    anova.parts.obs <- anova.parts(pf)
     anova.tab <-anova.parts.obs$table  
     Xs <- pf$Xs
     k <- length(pf$Terms)
@@ -215,7 +215,7 @@ trajectory.analysis<-function(f1,estimate.traj=TRUE,traj.pts=NULL,iter=999, pca=
     size.SS.obs <- Hat.SS.model(Gower.center(size.obs), X)
     shape.SS.obs <- Hat.SS.model(Gower.center(shape.obs), X)
     dir.SS.obs <- Hat.SS.model(Gower.center(dir.obs), X)
-    anova.parts.obs <- anova.parts(pf,Yalt="observed")
+    anova.parts.obs <- anova.parts(pf)
     SS.obs <-anova.parts.obs$SS[1:k]
     anova.tab <-anova.parts.obs$table  
     Plm <- array(,c(k,1,iter+1))
