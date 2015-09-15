@@ -455,6 +455,7 @@ procD.fit <- function(f1, keep.order=FALSE,...){
 
 lmfit <- function(x,y){# x matrix, y matrix
   x<-as.matrix(x); y<-as.matrix(y)
+  if(nrow(x) != nrow(y)) stop("Different numbers of observations in x and y")
   f<- x%*%solve(t(x)%*%x)%*%t(x)%*%y
   r <- y-f
   list(fitted=f, residuals=r)
@@ -463,7 +464,7 @@ lmfit <- function(x,y){# x matrix, y matrix
 # residuals extracted from submodels
 mod.resids <- function(Xs, Y){
   k <- length(Xs)
-  if(is.matrix(Y)) Y <- lapply(as.list(array(,k)), function(x) as.matrix(Y))
+  if(length(Y) < k) Y <- lapply(as.list(array(,k)), function(x) as.matrix(Y[[1]]))
   R <- as.list(array(,k))
   for(i in 1:k) {
     x <- as.matrix(Xs[[i]])
@@ -484,9 +485,10 @@ perm.index <-function(n,iter){
 # function for generating random SS for submodels, using resample or RRPP
 SS.random <- function(pf, Yalt = c("resample", "RRPP"), iter){ # like anova.parts, but faster for resampling
   k <- length(pf$Terms)
-  Y <- as.matrix(pf$Y)
+  Y <- as.matrix(pf$Y.prime)
   n <- nrow(Y)
   if(!is.null(pf$weights)) w <- as.vector(pf$weights) else w <-rep(1,n)
+  if(any(w < 0)) stop("Weights cannot be negative")
   Xs <- pf$Xs
   P <-array(, c(k, 1, iter+1))
   E <- Yh <- Yhw <- as.list(array(,k+1))
@@ -494,7 +496,7 @@ SS.random <- function(pf, Yalt = c("resample", "RRPP"), iter){ # like anova.part
     wfit <- lmfit(as.matrix(Xs[[i]]),Y)
     Yhw[[i]] <- as.matrix(wfit$fitted)
     Yh[[i]] <- as.matrix(wfit$fitted/w)
-    E[[i]] <- as.matrix(wfit$residuals)
+    E[[i]] <- as.matrix(wfit$residuals/w)
   }
   SSEs.obs <- SSE(E)
   P[,,1] <- SSEs.obs[1:k] - SSEs.obs[-1]
@@ -502,8 +504,9 @@ SS.random <- function(pf, Yalt = c("resample", "RRPP"), iter){ # like anova.part
   if(iter > 0) {for(i in 1:iter){
       Er <- Map(function(x) x[ind[[i]],], E)
       Yr <- as.list(array(,k+1))
-      for(ii in 1:(k+1)) Yr[[ii]] <- Reduce("+",list(Er[[ii]], Yh[[ii]]))
-      if(Yalt == "resample")  Yr <- Yr[[1]]
+      if(Yalt == "RRPP") for(ii in 1:(k+1)) Yr[[ii]] <- Reduce("+",list(Er[[ii]], Yh[[ii]])) else
+        Yr <- lapply(Yr,function(x) as.matrix(Y[ind[[i]],]))
+      Yr <- lapply(Yr, function(x) as.matrix(x)*w)
       SSEs.null <- SSE(mod.resids(Xs,Yr))
       SSEs.r <- SSE(mod.resids(Xs[-1],Yr[1:k]))
       P[,,1+i] <- SSEs.null[1:k]-SSEs.r
@@ -517,6 +520,7 @@ SS.traj.random <- function(pf, Yalt = c("resample", "RRPP"), iter){ # like anova
   Y <- as.matrix(pf$Y)
   n <- nrow(Y)
   if(!is.null(pf$weights)) w <- as.vector(pf$weights) else w <-rep(1,n)
+  if(any(w < 0)) stop("Weights cannot be negative")
   Xs <- pf$Xs
   P <-array(, c(k, 1, iter+1))
   E <- Yh <- Yhw <- as.list(array(,k+1))
@@ -532,7 +536,9 @@ SS.traj.random <- function(pf, Yalt = c("resample", "RRPP"), iter){ # like anova
   if(iter > 0) {for(i in 1:iter){
     Er <- Map(function(x) x[ind[[i]],], E)
     Yr <- as.list(array(,k+1))
-    if(Yalt == "RRPP") for(ii in 1:(k+1)) Yr[[ii]] <- Reduce("+",list(Er[[ii]], Yh[[ii]])) 
+    if(Yalt == "RRPP") for(ii in 1:(k+1)) Yr[[ii]] <- Reduce("+",list(Er[[ii]], Yh[[ii]])) else
+      Yr <- lapply(Yr,function(x) as.matrix(Y[ind[[i]],]))
+    Yr <- lapply(Yr, function(x) as.matrix(x)*w)
     SSEs.null <- SSE(mod.resids(Xs,Yr))
     SSEs.r <- SSE(mod.resids(Xs[-1],Yr[1:k]))
     P[,,1+i] <- SSEs.null[1:k]-SSEs.r
@@ -548,6 +554,7 @@ SS.pgls.random <- function(pf, Pcor, Yalt = c("resample", "RRPP"), iter){ # like
   Y <- as.matrix(pf$Y)
   n <- nrow(Y)
   if(!is.null(pf$weights)) w <- as.vector(pf$weights) else w <-rep(1,n)
+  if(any(w < 0)) stop("Weights cannot be negative")
   Xs <- pf$Xs
   Pcor=as.matrix(Pcor)
   P <-array(, c(k, 1, iter+1))
@@ -571,12 +578,13 @@ SS.pgls.random <- function(pf, Pcor, Yalt = c("resample", "RRPP"), iter){ # like
       Er <- Map(function(x) x[ind[[i]],], E)
       Yr <- as.list(array(,k+1))
       if(Yalt == "RRPP") for(ii in 1:(k+1)) Yr[[ii]] <- Reduce("+",list(Er[[ii]], Yh[[ii]])) else
-        for(ii in 1:(k+1)) Yr[[ii]] <- Reduce("+",list(Er[[1]], Yh[[1]]))
-        PYr <-lapply(Yr, function(x) Pcor%*%x)
-        SSEs.null <- SSE(mod.resids(PXs,PYr))
-        SSEs.r <- SSE(mod.resids(PXs[-1],PYr[1:k]))
-        P[,,1+i] <- SSEs.null[1:k]-SSEs.r
-      }}
+        Yr <- lapply(Yr,function(x) as.matrix(Y[ind[[i]],]))
+      Yr <- lapply(Yr, function(x) as.matrix(x)*w)
+      PYr <-lapply(Yr, function(x) Pcor%*%x)
+      SSEs.null <- SSE(mod.resids(PXs,PYr))
+      SSEs.r <- SSE(mod.resids(PXs[-1],PYr[1:k]))
+      P[,,1+i] <- SSEs.null[1:k]-SSEs.r
+    }}
     P
 }
 
@@ -586,11 +594,12 @@ anova.parts <- function(pf, X = NULL, keep.order = FALSE, ...){
     Xs <- pf$Xs
     Y <- as.matrix(pf$Y)
     if(!is.null(pf$weights)) w <- pf$weights else w <-rep(1,nrow(Y))
+    if(any(w < 0)) stop("Weights cannot be negative")
     anova.terms <- pf$Terms
     k <- length(pf$Terms)
     df <- sapply(Xs, function(x) qr(x)$rank)
     df <- df[-1] - df[1:k]
-    SSEs.obs <- SSE(mod.resids(Xs, Y))
+    SSEs.obs <- SSE(mod.resids(Xs, list(Y)))
     SS <- SSEs.obs[1:k] -SSEs.obs[-1]
     SSY <- SSEs.obs[[1]]
     MS <- SS/df
@@ -616,12 +625,13 @@ anova.pgls.parts <- function(pf, X = NULL, Pcor, keep.order = FALSE,...){
     Xs <- pf$Xs
     Y <- as.matrix(pf$Y)
     if(!is.null(pf$weights)) w <- pf$weights else w <-rep(1,nrow(Y))
+    if(any(w < 0)) stop("Weights cannot be negative")
     anova.terms <- pf$Terms
     k <- length(pf$terms)
     df <- sapply(Xs, function(x) qr(x)$rank)
     PXs <- lapply(Xs, function(x) Pcor%*%x)
     PY <- Pcor%*%Y
-    SSEs.obs <- SSE(mod.resids(PXs, PY))
+    SSEs.obs <- SSE(mod.resids(PXs, list(PY)))
     SS <- SSEs.obs[1:k] -SSEs.obs[-1]
     SSY <- SSEs.obs[[1]]
     MS <- SS/df[-1]
