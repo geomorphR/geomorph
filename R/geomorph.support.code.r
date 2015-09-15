@@ -433,8 +433,8 @@ procD.fit <- function(f1, keep.order=FALSE,...){
   Terms <- terms(form.in, keep.order=keep.order)
   form.new <- as.formula(paste(c("Y",paste(attr(Terms, "term.labels"), collapse="+")),collapse="~"))
   dots <- list(...)
-  if(is.null(dots$contrasts)) fit <- lm(form.new, x=TRUE, y=TRUE, model=TRUE, weights=dots$weights, offset=dots$offset) else
-    fit <- lm(form.new, contrasts = dots$contrasts, weights=dots$weights, offset=dots$offset, x=TRUE, y=TRUE, model=TRUE)
+  if(is.null(dots$contrasts)) fit <- lm(form.new, x=TRUE, y=TRUE, model=TRUE, weights=dots$weights, offset=dots$offset, data=dots$data) else
+    fit <- lm(form.new, contrasts = dots$contrasts, weights=dots$weights, offset=dots$offset, data=dots$data, x=TRUE, y=TRUE, model=TRUE)
   mf <- model.frame(fit)
   Y <- fit$y
   if(is.matrix(Y)) n <- nrow(Y) else 
@@ -446,7 +446,7 @@ procD.fit <- function(f1, keep.order=FALSE,...){
   k <- length(attr(Terms, "term.labels"))
   Xs <- as.list(array(0,k+1))
   for(i in 1:(k+1)) Xs[[i]] = as.matrix(X.prime[,1:i])
-  list(fit = fit, Y=Y, Y.prime=Y.prime, X=X, X.prime=X.prime, Xs=Xs,Terms=attr(Terms,"term.labels"), mf=mf, call=attr(Terms,"call"))
+  list(fit = coef(fit), Y=Y, Y.prime=Y.prime, X=X, X.prime=X.prime, Xs=Xs,Terms=attr(Terms,"term.labels"), mf=mf, call=formula(f1))
 }
 
 # simplified versions of lm.fit and lm.wfit that are less twitchy
