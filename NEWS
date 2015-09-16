@@ -3,11 +3,11 @@ CHANGES IN GEOMORPH VERSION 2.1.7
   NEW FEATURES
     o New function compare.multi.evol.rates() for comparing rates of evolution among traits
     o plotGMPhyloMorphoSpace() now plots 3D phylomorphospaces and chronophylomorphospaces
-    o Added ShowPlot option to bilat.symmetry(), compare.modular.partitions(), globalIntegration(), 
-      morphol.integr(), and phylo.pls()
+    o Added ShowPlot option to bilat.symmetry(), compare.modular.partitions(), globalIntegration(), morphol.integr(), and phylo.pls()
 
   OTHER CHANGES   
     o Updated Imports packages as per new CRAN policies
+    o Small changes to support functions for gpagen
     o Package ape now full Import for geomorph (no longer ImportsFrom)
     o Enhanced input flexibility for advanced.ProcD.lm(): for single-factor analyses and matrix/variable input
     o Enhanced readland.nts() flexibility with specimen labels; now supports spaces in labels
