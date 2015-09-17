@@ -89,6 +89,7 @@
 advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL, angle.type = c("r", "deg", "rad"), iter=999, verbose = FALSE, ...){
   if(any(class(f1)=="lm")) pf1 = procD.fit(f1,weights=f1$weights, contrasts=f1$contrasts, offset=f1$offset) else 
     pf1= procD.fit(f1,...)
+  Y <- as.matrix(pf1$Y)
   if(length(as.formula(f2))==2) f2 <-as.formula(paste(c("Y",f2[[2]]),collapse="~"))
   if(length(as.formula(f2))==3) f2 <-as.formula(paste(c("Y",f2[[3]]),collapse="~"))  
   pf2= procD.fit(f2,...)
