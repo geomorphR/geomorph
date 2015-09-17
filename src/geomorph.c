@@ -117,13 +117,15 @@ void DoGPA(int *pin, int *kin, int *nin, double *matin, double *res)
   n=*nin;
 
 //Reformat input vector as 3D array
-//  double coords[p][k][n];
   double ***coords;
   MAKE_3ARRAY(coords,p,k,n);
+  double ***coords2;  
+  MAKE_3ARRAY(coords2,p,k,n);  
   for (i=0;i<p;i++){
     for (j=0;j<k;j++){
       for (kk=0;kk<n;kk++){
        coords[i][j][kk]=matin[(kk*p*k)+(j*p)+i];
+       coords2[i][j][kk]=coords[i][j][kk]; 
      }
     }
   }
@@ -167,7 +169,6 @@ void DoGPA(int *pin, int *kin, int *nin, double *matin, double *res)
   int iter, maxiter;
   double Q,Q1,Q2,minChange;
   double ref[p][k],S2[p][k]; 
-//  double DistQ[n][n];
   double **DistQ;
   MAKE_2ARRAY(DistQ,n,n);
 
@@ -250,8 +251,18 @@ void DoGPA(int *pin, int *kin, int *nin, double *matin, double *res)
     }
   }
   Q2=Q2/2;
-  Q=Q1-Q2;
-  Q1=Q2;
+  if(Q1 < Q2){Q=Q1-Q2;}  
+  //new check for 1st iteration. If worse, dump and keep old. 9/2015
+  if (Q2 > Q1){
+    for (i=0;i<p;i++){
+      for (j=0;j<k;j++){
+        for (kk=0;kk<n;kk++){
+          coords[i][j][kk]=coords2[i][j][kk];  
+        }
+      }
+    }
+    Q=0;}
+
 // Rotation iterations
 while (Q>minChange){
   for (j=0;j<p;j++){
@@ -322,6 +333,7 @@ while (Q>minChange){
     }
   }  
   FREE_3ARRAY(coords);
+  FREE_3ARRAY(coords2);  
   FREE_2ARRAY(DistQ);
 } //end GPA
 
@@ -678,12 +690,9 @@ void DoSlide(int *ProcDin, int *pin, int *kin, int *nin, double *matin, double *
          }
        }    
      }   
-//     double Pdist[p][p]
      double L[p+k+1][p+k+1];
      if(ProcD==0){  //Bending Energy Tpart = U%*% (ginv(t(U)%*%L.inv%*%U) %*%t(U) %*%L.inv)
        double **Pdist;
-//       double **L;
-//       MAKE_2ARRAY(L,(p+k+1),(p+k+1));    
        MAKE_2ARRAY(Pdist,p,p);
        for (j=0;j<(p*k);j++){
          for (kk=0;kk<(p*k);kk++){
@@ -744,9 +753,6 @@ void DoSlide(int *ProcDin, int *pin, int *kin, int *nin, double *matin, double *
        double Work2[lwork2];
        char ch1='A';
        F77_CALL(dgesdd)(&ch1,&Lsize,&Lsize,&L[0][0],&Lsize,Dmat2,Umat2,&Lsize,Vtrans2,&Lsize,Work2,&lwork2,iwork2,&info2);
-//       double U2[p+k+1][p+k+1],V2[p+k+1][p+k+1],Lsolve[p+k+1][p+k+1],Ltemp[p+k+1][p+k+1],
-//       			D2[p+k+1][p+k+1], BigLinv[p*k][p*k];  //assemble Lsolve
-//       FREE_2ARRAY(L);
        double **U2, **V2, **Lsolve, **Ltemp, **D2, **BigLinv;
        MAKE_2ARRAY(U2,(p+k+1),(p+k+1));
        MAKE_2ARRAY(V2,(p+k+1),(p+k+1));
@@ -803,11 +809,9 @@ void DoSlide(int *ProcDin, int *pin, int *kin, int *nin, double *matin, double *
        FREE_2ARRAY(Lsolve);
        FREE_2ARRAY(Ltemp);
        FREE_2ARRAY(D2);            
-//       double ULinv[ncolU][p*k], 
        double ULinvU[ncolU][ncolU];       
        double **ULinv; //**ULinvU;   // Tpart for BE = U%*% (ginv(t(U)%*%L.inv%*%U) %*%t(U) %*%L.inv
        MAKE_2ARRAY(ULinv,ncolU,(p*k));
-//       MAKE_2ARRAY(ULinvU,ncolU,ncolU);
        for (j=0;j<ncolU;j++){
          for (kk=0;kk<(p*k);kk++){
            ULinv[j][kk]=0; 
@@ -846,8 +850,6 @@ void DoSlide(int *ProcDin, int *pin, int *kin, int *nin, double *matin, double *
        char ch3='A';
        F77_CALL(dgesdd)(&ch3,&Lsize3,&Lsize3,&ULinvU[0][0],&Lsize3,Dmat3,Umat3,&Lsize3,Vtrans3,&Lsize3,Work3,&lwork3,iwork3,&info3);
        double tol;
-//       double U3[ncolU][ncolU],V3[ncolU][ncolU],ginv[ncolU][ncolU],ginvtemp[ncolU][ncolU],D3[ncolU][ncolU];
-//     FREE_2ARRAY(ULinvU);      			
        double **U3,**V3,**ginv, **ginvtemp,**D3;
        MAKE_2ARRAY(U3,ncolU,ncolU);
        MAKE_2ARRAY(V3,ncolU,ncolU);
@@ -892,7 +894,6 @@ void DoSlide(int *ProcDin, int *pin, int *kin, int *nin, double *matin, double *
        FREE_2ARRAY(V3);
        FREE_2ARRAY(D3);       
        FREE_2ARRAY(ginvtemp); 
-//       double ginvU[ncolU][p*k], ginvULinv[ncolU][p*k];
        double **ginvU,**ginvULinv;
        MAKE_2ARRAY(ginvU,ncolU,(p*k));
        MAKE_2ARRAY(ginvULinv,ncolU,(p*k));
