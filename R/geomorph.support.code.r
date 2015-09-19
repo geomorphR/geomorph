@@ -289,11 +289,7 @@ orp<-function(A){			#DCA: altered from J. Claude 2008
   mat<-matrix(NA,n,k*p)
   for (i in 1:n){mat[i,]<-as.vector(A[,,i])}
   Xp<-(mat%*%(diag(1,p*k)- (Y1%*%t(Y1))))+oo
-  res<-array(t(Xp),dim=c(p,k,n))
-  for (i in 1:n){
-  res[,,i]<-csize(res[,,i])[[2]]
-  }
-  return(res)
+  array(t(Xp),dim=c(p,k,n))
 }
 
 # Trajectory Size: Pathlength Distance
