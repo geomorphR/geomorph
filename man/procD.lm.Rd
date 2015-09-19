@@ -39,7 +39,7 @@ The function quantifies the relative amount of shape variation attributable to o
   The names specified for the independent (x) variables in the formula represent one or more
   vectors containing continuous data or factors. It is assumed that the order of the specimens in the
   shape matrix matches the order of values in the independent variables.  Linear model fits (using the  \code{\link{lm}} function)
-  can also be input in place of a formula.  Arguments for  \code{\link{lm}} can also be passed on via this function.
+  can also be input in place of a formula.  Arguments for \code{\link{lm}} can also be passed on via this function.
 
 The function \code{\link{two.d.array}} can be used to obtain a two-dimensional data matrix from a 3D array of landmark
   coordinates; however this step is no longer necessary, as procD.lm can receive 3D arrays as depedendent variables.

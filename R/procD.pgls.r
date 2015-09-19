@@ -12,7 +12,7 @@
 #'   matrix of dimension (n x [p x k]), or a 3D array (p x n x k).  It is assumed that the landmarks have previously 
 #'   been aligned using Generalized Procrustes Analysis (GPA) [e.g., with \code{\link{gpagen}}].
 #'   Linear model fits (using the  \code{\link{lm}} function)
-#'   can also be input in place of a formula.  Arguments for  \code{\link{lm}} can also be passed on via this function.
+#'   can also be input in place of a formula.  Arguments for \code{\link{lm}} can also be passed on via this function.
 #'   The user must also specify a phylogeny describing the evolutionary relationships among species (of class phylo).
 #'   Note that the specimen labels for both x and y must match the labels on the tips of the phylogeny.
 #'

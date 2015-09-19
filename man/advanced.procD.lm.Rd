@@ -55,7 +55,7 @@ The response matrix 'y' can be in the form of a two-dimensional data
   independent (x) variables in the formula represent one or more
   vectors containing continuous data or factors. It is assumed that the order of the specimens in the
   shape matrix matches the order of values in the independent variables. Linear model fits (using the  \code{\link{lm}} function)
-  can also be input in place of a formula.  Arguments for  \code{\link{lm}} can also be passed on via this function.
+  can also be input in place of a formula.  Arguments for \code{\link{lm}} can also be passed on via this function.
 
 The function performs statistical assessment of the terms in the model using Procrustes distances among
   specimens, rather than explained covariance matrices among variables. With this approach, the sum-of-squared
