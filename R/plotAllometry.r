@@ -78,6 +78,7 @@ plotAllometry<-function(f1, f2 = NULL, method=c("CAC","RegScore","PredLine"),war
                         iter=249,label=NULL, mesh=NULL, logsz = TRUE, RRPP=FALSE, verbose=FALSE){
   A <- eval(f1[[2]], parent.frame())
   size.df <- data.frame(Size = eval(f1[[3]], parent.frame()))
+  Size <- size.df$Size
   if(length(dim(A)) == 3)  y <- two.d.array(A) else y <- as.matrix(A)
   if(dim(model.matrix(~Size, data=size.df))[2] > 2) stop("Only a single variable for size can be used as covariate.  Consider using prcoD.lm for multiple variables")
   n<-nrow(y)
