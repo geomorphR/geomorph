@@ -77,35 +77,35 @@
 plotAllometry<-function(f1, f2 = NULL, method=c("CAC","RegScore","PredLine"),warpgrids=TRUE,
                         iter=249,label=NULL, mesh=NULL, logsz = TRUE, RRPP=FALSE, verbose=FALSE){
   A <- eval(f1[[2]], parent.frame())
-  Size <- eval(f1[[3]], parent.frame())
+  size.df <- data.frame(Size = eval(f1[[3]], parent.frame()))
   if(length(dim(A)) == 3)  y <- two.d.array(A) else y <- as.matrix(A)
-  if(dim(model.matrix(~Size))[2] > 2) stop("Only a single variable for size can be used as covariate.  Consider using prcoD.lm for multiple variables")
+  if(dim(model.matrix(~Size, data=size.df))[2] > 2) stop("Only a single variable for size can be used as covariate.  Consider using prcoD.lm for multiple variables")
   n<-nrow(y)
   if(logsz == TRUE) {
     xlab <- "log(Size)"
     fnew <- as.formula("y~log(Size)")
-    fnew.df <- data.frame(y=y,Size=Size)
+    fnew.df <- data.frame(y=y,Size=size.df)
     print(noquote("Natural log of size is used."))
     } else 
       { 
         xlab <- "Size"
         fnew <- as.formula("y~Size")
         print(noquote("Size has not been log transformed."))
-        fnew.df <- data.frame(y=y,Size=Size)
+        fnew.df <- data.frame(y=y,Size=size.df)
       }                                                                                          
-  pf1<- procD.fit(fnew, data=fnew.df)
+  pf1<- procD.fit(fnew, data=fnew.df, keep.order=FALSE)
   method <- match.arg(method)
 
   if(!is.null(f2)) {
     fac.mf <- model.frame(f2)
     if(dim(fac.mf)[[2]] > 1) stop("Only a single grouping variable can be used")
-    fTerms <- terms(f2, data = fac.mf)
-    cTerms <- terms(fnew, data = )
+    fTerms <- terms(f2)
+    cTerms <- terms(fnew, data = fnew.df)
     all.terms <- c(attr(cTerms, "term.labels"), attr(fTerms, "term.labels"))
     f3 <- as.formula(paste(" y ~",paste(all.terms, collapse="+")))
     f4 <- as.formula(paste(" y ~",paste(all.terms, collapse="*")))
-    pf4 <-procD.fit(f4)
-    pf3 <-procD.fit(f3)
+    pf4 <-procD.fit(f4, data=fnew.df)
+    pf3 <-procD.fit(f3, data=fnew.df)
     Xs2 <- pf4$Xs
     Xs1 <- pf3$Xs
     k <- length(pf4$Terms) 

@@ -339,12 +339,13 @@ trajplot<-function(Data,M, groups, group.cols = NULL, ...){
        xlab="PC I", ylab="PC II",
        main="Two Dimensional View  of Phenotypic Trajectories",asp=1)
   if(!is.null(group.cols)) col.index <- group.cols else col.index <-1:length(levels(groups))
-  if(length(group.cols) != n) {
-    col.temp = as.numeric(groups)
-    col.temp2 = array(,length(col.temp))
-    for(i in 1:max(col.temp)) col.temp2[col.temp==i] = as.character(col.index[i])
-    col.index=as.numeric(col.temp2)
-    }
+  if(length(groups) == n) {
+    gp.index <- levels(groups)
+    col.temp <-array(,length(groups))
+    for(i in 1:length(col.temp)) col.temp[i] = col.index[which(match(gp.index,gp.index[gp.index==groups[i]])==1)]
+    col.index=col.temp
+  }
+    
   points(Data[,1:2],pch=21,bg="gray",cex=.75)
   for (i in 1:n){  	 	
     for (j in 1:(p-1)){		
@@ -430,15 +431,16 @@ identifyPch <- function(x, y = NULL, n = length(x), pch = 19, col="red", ...)
 # lm fit modified for Procrustes residuals
 procD.fit <- function(f1, keep.order=FALSE,...){
   form.in <- formula(f1)
+  dots <- list(...)
+  if(!is.null(dots$data)) dat <- dots$data else dat<-as.data.frame(model.frame(form.in))
   Y <- eval(form.in[[2]], parent.frame())
   if (any(is.na(Y)) == T) stop("Response data matrix (shape) contains missing values. Estimate these first (see 'estimate.missing').")
   if(length(dim(Y)) == 3)  Y <- two.d.array(Y) else Y <- as.matrix(Y)
-  if(nrow(Y) != nrow(model.frame(form.in[-2]))) stop("Different numbers of specimens in dependent and independent variables")
+  if(nrow(Y) != nrow(model.frame(form.in[-2], data=dat))) stop("Different numbers of specimens in dependent and independent variables")
   Terms <- terms(form.in, keep.order=keep.order)
   form.new <- as.formula(paste(c("Y",paste(attr(Terms, "term.labels"), collapse="+")),collapse="~"))
-  dots <- list(...)
-  if(is.null(dots$contrasts)) fit <- lm(form.new, x=TRUE, y=TRUE, model=TRUE, weights=dots$weights, offset=dots$offset, data=dots$data) else
-    fit <- lm(form.new, contrasts = dots$contrasts, weights=dots$weights, offset=dots$offset, data=dots$data, x=TRUE, y=TRUE, model=TRUE)
+  if(is.null(dots$contrasts)) fit <- lm(form.new, x=TRUE, y=TRUE, model=TRUE, weights=dots$weights, offset=dots$offset, data=dat) else
+    fit <- lm(form.new, contrasts = dots$contrasts, weights=dots$weights, offset=dots$offset, data=dat, x=TRUE, y=TRUE, model=TRUE)
   mf <- model.frame(fit)
   Y <- fit$y
   if(is.matrix(Y)) n <- nrow(Y) else 
@@ -518,39 +520,6 @@ SS.random <- function(pf, Yalt = c("resample", "RRPP"), iter){ # like anova.part
    P
 }
 
-# function for generating random SS for submodels, using RRPP for trajectories only
-SS.traj.random <- function(pf, Yalt = c("resample", "RRPP"), iter){ # like anova.parts, but faster for resampling
-  k <- length(pf$Terms)
-  Y <- as.matrix(pf$Y)
-  n <- nrow(Y)
-  if(!is.null(pf$weights)) w <- as.vector(pf$weights) else w <-rep(1,n)
-  if(any(w < 0)) stop("Weights cannot be negative")
-  Xs <- pf$Xs
-  P <-array(, c(k, 1, iter+1))
-  E <- Yh <- Yhw <- as.list(array(,k+1))
-  for(i in 1:(k+1)){
-    wfit <- lmfit(as.matrix(Xs[[i]]),Y)
-    Yhw[[i]] <- as.matrix(wfit$fitted)
-    Yh[[i]] <- as.matrix(wfit$fitted/w)
-    E[[i]] <- as.matrix(wfit$residuals)
-  }
-  SSEs.obs <- SSE(E)
-  P[,,1] <- SSEs.obs[1:k] - SSEs.obs[-1]
-  ind <- perm.index(n,iter)
-  if(iter > 0) {for(i in 1:iter){
-    Er <- Map(function(x) x[ind[[i]],], E)
-    Yr <- as.list(array(,k+1))
-    if(Yalt == "RRPP") for(ii in 1:(k+1)) Yr[[ii]] <- Reduce("+",list(Er[[ii]], Yh[[ii]])) else
-      Yr <- lapply(Yr,function(x) as.matrix(Y[ind[[i]],]))
-    Yr <- lapply(Yr, function(x) as.matrix(x)*w)
-    SSEs.null <- SSE(mod.resids(Xs,Yr))
-    SSEs.r <- SSE(mod.resids(Xs[-1],Yr[1:k]))
-    P[,,1+i] <- SSEs.null[1:k]-SSEs.r
-  }}
-  if(iter > 0) Y=Yr[[k]] else Y=Y
-  list(SS=P, Y=Y)
-}
-
 # function for generating random SS for submodels, using resample or RRPP
 # SS must be from a phylogentically corrected model
 SS.pgls.random <- function(pf, Pcor, Yalt = c("resample", "RRPP"), iter){ # like anova.parts, but faster for resampling
@@ -591,6 +560,72 @@ SS.pgls.random <- function(pf, Pcor, Yalt = c("resample", "RRPP"), iter){ # like
     }}
     P
 }
+
+
+# function for generating random SS for submodels, using RRPP for trajectories only
+random.trajectories <- function(pf, Yalt = c("resample", "RRPP"), iter, pca=TRUE){ # like anova.parts, but faster for resampling
+  k <- length(pf$Terms)
+  Y <- as.matrix(pf$Y)
+  if(pca==TRUE) Y<-prcomp(Y)$x else Y <- Y
+  n <- nrow(Y)
+  p<-ncol(Y) 
+  if(!is.null(pf$weights)) w <- as.vector(pf$weights) else w <-rep(1,n)
+  if(any(w < 0)) stop("Weights cannot be negative")
+  Xs <- pf$Xs
+  dat <- pf$mf
+  Terms <- terms(dat)
+  facs <- dat[which(attr(Terms,"dataClasses")=="factor")]
+  if(ncol(facs) != 2) stop("Model must contain two factors")
+  if(k < 3) stop("Model does not appear to be factorial.  Check model formula (see help file).") 
+  int.term<-grep(":", pf$Terms[k])
+  if(int.term!=1) stop("Last col of X-matrix does not contain interaction between main effects (see help file).")        
+  n1<-length(levels(facs[,1]))
+  k1<-length(levels(facs[,2]))
+  fac12<-single.factor(pf$call)
+  covs <- cov.extract(pf$call)
+  Plm <- PSize <- POrient <-PShape <- as.list(array(,iter+1))
+  E <- Yh <- Yhw <- as.list(array(,k+1))
+  for(i in 1:(k+1)){
+    wfit <- lmfit(as.matrix(Xs[[i]]),Y)
+    Yhw[[i]] <- as.matrix(wfit$fitted)
+    Yh[[i]] <- as.matrix(wfit$fitted/w)
+    E[[i]] <- as.matrix(wfit$residuals)
+  }
+  if(ncol(covs) == 0) covs <- NULL else covs <- model.matrix(~covs)
+  lsmeans.obs <- ls.means(fac12, cov.mf=covs, Y)
+  traj.specs.obs<- aperm(array(t(lsmeans.obs), c(p,k1,n1)), c(2,1,3)) 
+  trajsize.obs<-trajsize(traj.specs.obs,n1,k1) 
+  trajdir.obs<-trajorient(traj.specs.obs,n1,p); diag(trajdir.obs)<-0 
+  trajshape.obs<-trajshape(traj.specs.obs) 
+  SSEs.obs <- SSE(E)
+  Plm[[1]] <- SSEs.obs[1:k] - SSEs.obs[-1]
+  PSize[[1]] <- trajsize.obs
+  POrient[[1]] <- trajdir.obs
+  PShape[[1]] <- trajshape.obs
+  ind <- perm.index(n,iter)
+  if(iter > 0) {for(i in 1:iter){
+    Er <- Map(function(x) x[ind[[i]],], E)
+    Yr <- as.list(array(,k+1))
+    if(Yalt == "RRPP") for(ii in 1:(k+1)) Yr[[ii]] <- Reduce("+",list(Er[[ii]], Yh[[ii]])) else
+      Yr <- lapply(Yr,function(x) as.matrix(Y[ind[[i]],]))
+    Yr <- lapply(Yr, function(x) as.matrix(x)*w)
+    SSEs.null <- SSE(mod.resids(Xs,Yr))
+    SSEs.r <- SSE(mod.resids(Xs[-1],Yr[1:k]))
+    lsmeans.r <- ls.means(fac12, cov.mf=covs, as.matrix(Yr[[k]]))
+    traj.specs.r<- aperm(array(t(lsmeans.r), c(p,k1,n1)), c(2,1,3)) 
+    trajsize.r<-trajsize(traj.specs.r,n1,k1) 
+    trajdir.r<-trajorient(traj.specs.r,n1,p); diag(trajdir.r)<-0 
+    trajshape.r<-trajshape(traj.specs.r) 
+    Plm[[i+1]] <- SSEs.null[1:k]-SSEs.r
+    PSize[[i+1]] <- trajsize.r
+    POrient[[i+1]] <- trajdir.r
+    PShape[[i+1]] <- trajshape.r
+  }}
+  if(iter > 0) Y=Yr[[k]] else Y=Y
+  list(Plm=Plm, PSize=PSize, POrient=POrient,PShape=PShape,Y=Y, 
+       traj.pts = k1, trajectories = traj.specs.obs, groups = facs[,1])
+}
+
 
 # ANOVA table exportable parts, based on osberved SS or SS.random output
 
@@ -689,6 +724,7 @@ ls.means = function(fac, cov.mf=NULL, Y){ # must be single factor; use single.fa
         for(i in 1:ncol(Xcov)) Xcov.mean[,i] = mean(Xcov[,i])
         lsm <- coef(lm(predict(lm(Y~Xcov+fac+0, data.frame(Xcov.mean)))~fac+0))
     }
+    rownames(lsm) <- levels(fac)
     lsm
 }
 

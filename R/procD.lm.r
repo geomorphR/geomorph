@@ -4,14 +4,16 @@
 #'   patterns of shape variation and covariation for a set of Procrustes-aligned coordinates
 #'
 #' The function quantifies the relative amount of shape variation attributable to one or more factors in a 
-#'   linear model and assesses this variation via permutation. Data input is specified by a formula (e.g., 
+#'   linear model and estimates teh probability of this variation ("signifiance") for a null model, via distributions generated 
+#'   from resampling permutations. Data input is specified by a formula (e.g., 
 #'   y~X), where 'y' specifies the response variables (shape data), and 'X' contains one or more independent 
 #'   variables (discrete or continuous). The response matrix 'y' can be either in the form of a two-dimensional data 
 #'   matrix of dimension (n x [p x k]), or a 3D array (p x n x k).  It is assumed that the landmarks have previously 
 #'   been aligned using Generalized Procrustes Analysis (GPA) [e.g., with \code{\link{gpagen}}]. 
 #'   The names specified for the independent (x) variables in the formula represent one or more 
 #'   vectors containing continuous data or factors. It is assumed that the order of the specimens in the 
-#'   shape matrix matches the order of values in the independent variables.
+#'   shape matrix matches the order of values in the independent variables.  Linear model fits (using the  \code{\link{lm}} function)
+#'   can also be input in place of a formula.  Arguments for  \code{\link{lm}} can also be passed on via this function.
 #'   
 #'   The function \code{\link{two.d.array}} can be used to obtain a two-dimensional data matrix from a 3D array of landmark
 #'   coordinates; however this step is no longer necessary, as procD.lm can receive 3D arrays as depedendent variables.
@@ -50,7 +52,7 @@
 #' @references Anderson MJ. and C.J.F. terBraak. 2003. Permutation tests for multi-factorial analysis of variance.
 #'    Journal of Statistical Copmutation and Simulation 73: 85-113.
 #' @references Collyer, M.L., D.J. Sekora, and D.C. Adams. 2015. A method for analysis of phenotypic change for phenotypes described 
-#' by high-dimensional data. Heredity. 113: doi:10.1038/hdy.2014.75.
+#' by high-dimensional data. Heredity. 115:357–365.
 #' @references Goodall, C. R. 1991. Procrustes methods in the statistical analysis of shape. Journal of the 
 #'    Royal Statistical Society B 53:285-339.
 #' @examples
@@ -70,8 +72,9 @@
 #'  procD.lm(rat.gpa$coords ~ rat.gpa$Csize,iter=49,RRPP=TRUE)
 procD.lm<- function(f1, iter = 999, RRPP = FALSE, int.first = FALSE, verbose=FALSE, ...){
   if(int.first==TRUE) ko = TRUE else ko = FALSE
-  if(any(class(f1)=="lm")) pf = procD.fit(f1,weights=f1$weights, contrasts=f1$contrasts, offset=f1$offset) else 
-    pf= procD.fit(f1,...)
+  dat <- as.data.frame(model.frame(f1[-2]))
+  if(any(class(f1)=="lm")) pf = procD.fit(f1,weights=f1$weights, contrasts=f1$contrasts, offset=f1$offset, data=dat) else 
+    pf= procD.fit(f1, data=dat,...)
   anova.parts.obs <- anova.parts(pf, keep.order=ko)
   anova.tab <-anova.parts.obs$table  
   Xs <- pf$Xs

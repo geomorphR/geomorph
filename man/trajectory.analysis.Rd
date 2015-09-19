@@ -5,7 +5,7 @@
 \title{Quantify and compare shape change trajectories}
 \usage{
 trajectory.analysis(f1, estimate.traj = TRUE, traj.pts = NULL, iter = 999,
-  pca = TRUE, verbose = FALSE, group.cols = NULL)
+  pca = TRUE, verbose = FALSE, group.cols = NULL, ...)
 }
 \arguments{
 \item{f1}{A formula for the linear model (e.g., y~x1+x2)}
@@ -22,6 +22,8 @@ described below}
 \item{verbose}{A logical indicator for verbose (random) output (observed cases always first)}
 
 \item{group.cols}{A vector of colors to use for trajectories, in the order of the levels of the grouping variable. E.g., c("red", "blue, "orange",...)}
+
+\item{...}{Arguments passed on to procD.fit (typically associated with the lm function)}
 }
 \value{
 If "estimate.traj=TRUE", the function returns a list with the following components:
@@ -60,10 +62,12 @@ The function quantifies phenotypic shape change trajectories from a set of speci
  trajectories (see Collyer and Adams 2013; Collyer and Adams 2007; Adams and Collyer 2007; Adams and Collyer 2009).
 
 Data input is specified by a formula (e.g., Y~X), where 'Y' specifies the response variables (trajectory data),
- and 'X' contains one or more independent variables (discrete or continuous). The response matrix 'Y' must be
- in the form of a two-dimensional data matrix of dimension (n x [p x k]), rather than a 3D array. The function
+ and 'X' contains one or more independent variables (discrete or continuous). The response matrix 'Y' can be either in the form of a two-dimensional data
+  matrix of dimension (n x [p x k]), or a 3D array (p x n x k).. The function
  \code{\link{two.d.array}} can be used to obtain a two-dimensional data matrix from a 3D array of landmark
- coordinates. It is assumed that the order of the specimens 'Y' matches the order of specimens in 'X'.
+ coordinates. It is assumed that the order of the specimens 'Y' matches the order of specimens in 'X'. Linear model
+ fits (using the  \code{\link{lm}} function) can also be input in place of a formula.  Arguments for  \code{\link{lm}}
+ can also be passed on via this function.
 
 There are two primary modes of analysis through this function. If "estimate.traj=TRUE" the function
  estimates shape trajectories using the least-squares means for groups, based on a two-factor model

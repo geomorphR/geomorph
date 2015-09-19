@@ -10,11 +10,13 @@
 #'  trajectories (see Collyer and Adams 2013; Collyer and Adams 2007; Adams and Collyer 2007; Adams and Collyer 2009). 
 #'
 #'  Data input is specified by a formula (e.g., Y~X), where 'Y' specifies the response variables (trajectory data), 
-#'  and 'X' contains one or more independent variables (discrete or continuous). The response matrix 'Y' must be 
-#'  in the form of a two-dimensional data matrix of dimension (n x [p x k]), rather than a 3D array. The function
+#'  and 'X' contains one or more independent variables (discrete or continuous). The response matrix 'Y' can be either in the form of a two-dimensional data 
+#'   matrix of dimension (n x [p x k]), or a 3D array (p x n x k).. The function
 #'  \code{\link{two.d.array}} can be used to obtain a two-dimensional data matrix from a 3D array of landmark
-#'  coordinates. It is assumed that the order of the specimens 'Y' matches the order of specimens in 'X'. 
-#' 
+#'  coordinates. It is assumed that the order of the specimens 'Y' matches the order of specimens in 'X'. Linear model 
+#'  fits (using the  \code{\link{lm}} function) can also be input in place of a formula.  Arguments for  \code{\link{lm}} 
+#'  can also be passed on via this function.
+#'
 #'  There are two primary modes of analysis through this function. If "estimate.traj=TRUE" the function 
 #'  estimates shape trajectories using the least-squares means for groups, based on a two-factor model
 #'  (e.g., Y~A+B+A:B). Under this implementation, the last factor in 'X' must be the interaction term, and
@@ -44,6 +46,7 @@
 #' @param verbose A logical indicator for verbose (random) output (observed cases always first)
 #' @param group.cols A vector of colors to use for trajectories, in the order of the levels of the grouping variable. E.g., c("red", "blue, "orange",...)
 #' @param pca A logical indicator if a principal component analysis should be performed on data
+#' @param ... Arguments passed on to procD.fit (typically associated with the lm function)
 #' @export
 #' @keywords analysis
 #' @author Dean Adams and Michael Collyer
@@ -104,54 +107,29 @@
 #' 
 #' trajectory.analysis(motionpaths$trajectories~motionpaths$groups,
 #' estimate.traj=FALSE, traj.pts=5,iter=15, verbose=TRUE)
-trajectory.analysis<-function(f1,estimate.traj=TRUE,traj.pts=NULL,iter=999, pca=TRUE,verbose=FALSE, group.cols=NULL){
-  pf= procD.fit(f1, keep.order=FALSE)
+trajectory.analysis<-function(f1,estimate.traj=TRUE,traj.pts=NULL,iter=999, pca=TRUE,verbose=FALSE, group.cols=NULL, ...){
+  pf= procD.fit(f1, keep.order=FALSE, data=as.data.frame(model.frame(f1)))
   Y <- pf$Y
-  dat <- pf$mf
+  k <- length(pf$Terms)
   if(estimate.traj==TRUE){
+    if(pca == TRUE) Y <-prcomp(Y)$x
+    pf= procD.fit(f1, keep.order=FALSE, data=as.data.frame(model.frame(f1)))
     anova.parts.obs <- anova.parts(pf)
     anova.tab <-anova.parts.obs$table  
-    Xs <- pf$Xs
-    k <- length(pf$Terms)
-    if(pca==TRUE) y<-prcomp(Y)$x else y <- Y
-    if(k < 3) stop("Model does not appear to be factorial.  Check model formula (see help file).") 
-    int.term<-grep(":", pf$Terms[k])
-    if(int.term!=1) stop("Last col of X-matrix does not contain interaction between main effects (see help file).")        
-    p<-ncol(y) 
-    n1<-length(levels(dat[,k-1]))
-    k1<-length(levels(dat[,k]))
-    Plm <-array(, c(k, 1, iter+1))
-    SS.obs <-anova.parts.obs$SS[1:k]
-    Plm[,,1] <- SS.obs    
-    fac12<-single.factor(formula(f1))
-    covs <- cov.extract(formula(f1))
-    if(ncol(covs) == 0) covs <- NULL else covs <- model.matrix(~covs)
-    lsmeans.obs <- ls.means(fac12, cov.mf=covs, y)
-    traj.specs.obs<- aperm(array(t(lsmeans.obs), c(p,k1,n1)), c(2,1,3)) 
-    trajsize.obs<-trajsize(traj.specs.obs,n1,k1) 
-    trajdir.obs<-trajorient(traj.specs.obs,n1,p); diag(trajdir.obs)<-0 
+    rt <- random.trajectories(pf, Yalt="RRPP", iter=iter, pca=pca)
+    traj.specs.obs <- rt$trajectories
+    trajsize.obs<-trajsize(traj.specs.obs,length(levels(rt$groups)),rt$traj.pts) 
+    trajdir.obs<-trajorient(traj.specs.obs,length(levels(rt$groups)),ncol(Y)); diag(trajdir.obs)<-0 
     trajshape.obs<-trajshape(traj.specs.obs) 
-    PSize<-POrient<-PShape<-array(,dim=c(n1,n1,iter+1))
-    PSize[,,1] <- trajsize.obs
-    POrient[,,1] <- trajdir.obs
-    PShape[,,1] <- trajshape.obs
-    for(i in 1:iter){
-      SS.r <- SS.traj.random(pf, Yalt = "RRPP", iter=1)
-      Plm[,,i+1] <- SS.r$SS[,,2]
-      lsmeans.r <- ls.means(fac12, cov.mf=covs, SS.r$Y)
-      traj.specs.r<- aperm(array(t(lsmeans.r), c(p,k1,n1)), c(2,1,3)) 
-      trajsize.r<-trajsize(traj.specs.r,n1,k1) 
-      trajdir.r<-trajorient(traj.specs.r,n1,p); diag(trajdir.r)<-0 
-      trajshape.r<-trajshape(traj.specs.r) 
-      PSize[,,i+1] <- trajsize.r
-      POrient[,,i+1] <- trajdir.r
-      PShape[,,i+1] <- trajshape.r
-    }  
-    P.val.lm <- Pval.matrix(Plm)
+    Plm <-simplify2array(rt$Plm)
+    PSize <-simplify2array(rt$PSize)
+    POrient <-simplify2array(rt$POrient)
+    PShape <-simplify2array(rt$PShape)
+    P.val.lm <- apply(Plm,1,pval)
     P.val.size <- Pval.matrix(PSize)
     P.val.dir <- Pval.matrix(POrient)
     P.val.shape <- Pval.matrix(PShape)
-    Z.lm <- Effect.size.matrix(Plm)
+    Z.lm <- apply(Plm,1,effect.size)
     Z.size <- Effect.size.matrix(PSize); diag(Z.size) <- 0
     Z.dir <- Effect.size.matrix(POrient); diag(Z.dir) <- 0
     Z.shape <- Effect.size.matrix(PShape); diag(Z.shape) <- 0 
@@ -159,31 +137,33 @@ trajectory.analysis<-function(f1,estimate.traj=TRUE,traj.pts=NULL,iter=999, pca=
       rownames(P.val.shape) <- colnames(P.val.shape) <- rownames(Z.size) <- colnames(Z.size) <-
       rownames(Z.dir) <- colnames(Z.dir) <- rownames(Z.shape) <- colnames(Z.shape) <-
       rownames(trajsize.obs) <- colnames(trajsize.obs) <- rownames(trajdir.obs) <- colnames(trajdir.obs) <-
-      rownames(trajshape.obs) <- colnames(trajshape.obs) <- levels(dat[,k-1])
+      rownames(trajshape.obs) <- colnames(trajshape.obs) <- levels(rt$groups)
     dimnames(Plm)[[1]] <- dimnames(anova.tab)[[1]][1:k]
     dimnames(PSize)[[1]] <- dimnames(PSize)[[2]] <- 
       dimnames(POrient)[[1]] <- dimnames(POrient)[[2]] <- 
-      dimnames(PShape)[[1]] <- dimnames(PShape)[[2]] <- levels(dat[,k-1])
+      dimnames(PShape)[[1]] <- dimnames(PShape)[[2]] <- levels(rt$groups)
     
     anova.tab <- data.frame(anova.tab, Z = c(Z.lm, NA, NA), P.value = c(P.val.lm, NA, NA))
     anova.title = "\nRandomized Residual Permutation Procedure used\n"
     attr(anova.tab, "heading") <- paste("\nType I (Sequential) Sums of Squares and Cross-products\n",anova.title)
     class(anova.tab) <- c("anova", class(anova.tab))
 
-    if (k1 > 2) Random.values=list(random.SS=Plm,random.size.dif = PSize, random.dir.dif = POrient, random.shape.dif = PShape) else 
+    if (rt$traj.pts > 2) Random.values=list(random.SS=Plm,random.size.dif = PSize, random.dir.dif = POrient, random.shape.dif = PShape) else 
       Random.values=list(random.SS=Plm,random.size.dif = PSize, random.dir.dif = POrient)
     if(verbose==FALSE) results <- list(anova.table = anova.tab, 
          Size=list(Obs.dif=trajsize.obs,Z=Z.size,P = P.val.size),
          Direction=list(Obs.dif=trajdir.obs,Z=Z.dir,P = P.val.dir),
          Shape=list(Obs.dif=trajshape.obs,Z=Z.shape,P = P.val.shape))
+         
     else results <- list(anova.table = anova.tab, 
                          Size=list(Obs.dif=trajsize.obs,Z=Z.size,P = P.val.size),
                          Direction=list(Obs.dif=trajdir.obs,Z=Z.dir,P = P.val.dir),
                          Shape=list(Obs.dif=trajshape.obs,Z=Z.shape,P = P.val.shape),
-                         Random.values=Random.values)
+                         Random.values=Random.values,
+                         plot.points = Y, trajectory.points = rt$trajectories)
     
-    trajplot(y,traj.specs.obs, groups = dat[,k-1], group.cols = group.cols)
-    if(k1 == 2) return(results[-4]) else 
+    trajplot(Y,rt$trajectories, rt$groups, group.cols = group.cols)
+    if(rt$traj.pts == 2) return(results[-4]) else 
         return(results)
   }
   
@@ -191,6 +171,7 @@ trajectory.analysis<-function(f1,estimate.traj=TRUE,traj.pts=NULL,iter=999, pca=
     if(is.null(traj.pts)) stop("Number of points in the trajectory not specified.") 
     if(length(pf$Terms) > 1) stop("If data are already trajectories, only a single-factor model is currently supported. (See Help file)")
     form.in = formula(f1)
+    dat <- model.frame(form.in)
     X <- model.matrix(form.in)
     Xs <- pf$Xs
     k <- length(pf$Terms) 
@@ -264,7 +245,7 @@ trajectory.analysis<-function(f1,estimate.traj=TRUE,traj.pts=NULL,iter=999, pca=
                       random.SS.dir=as.vector(POrient), 
                       random.SS.shape=as.vector(PShape),
                       plot.points=y.plot,
-                      trajectpry.points=plot,traj.specs.obs)
+                      trajectory.points=traj.specs.obs)
     } else
     {
       results <- list(MANOVA.location.covariation = anova.tab, 
@@ -274,7 +255,7 @@ trajectory.analysis<-function(f1,estimate.traj=TRUE,traj.pts=NULL,iter=999, pca=
     }
       
     trajplot(y.plot,traj.specs.obs, groups = as.factor(dat[[2]]))
-    if(k1 == 2) return(results[-4]) else return(results)
+    if(traj.pts == 2) return(results[-4]) else return(results)
   }
   results
 }

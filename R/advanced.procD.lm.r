@@ -10,7 +10,8 @@
 #'   been aligned using Generalized Procrustes Analysis (GPA) [e.g., with \code{\link{gpagen}}]. The names specified for the 
 #'   independent (x) variables in the formula represent one or more 
 #'   vectors containing continuous data or factors. It is assumed that the order of the specimens in the 
-#'   shape matrix matches the order of values in the independent variables.
+#'   shape matrix matches the order of values in the independent variables. Linear model fits (using the  \code{\link{lm}} function)
+#'   can also be input in place of a formula.  Arguments for  \code{\link{lm}} can also be passed on via this function.
 #'
 #'   The function performs statistical assessment of the terms in the model using Procrustes distances among 
 #'   specimens, rather than explained covariance matrices among variables. With this approach, the sum-of-squared 
@@ -54,7 +55,7 @@
 #'   \item{random.slope.dist}{random pairwise distances between slopes from RRPP permutations (when {verbose=TRUE})}
 #'   \item{random.slope.comp}{random pairwise slope direction comparisons (r or angle) from RRPP permutations (when {verbose=TRUE})}
 #' @references Collyer, M.L., D.J. Sekora, and D.C. Adams. 2015. A method for analysis of phenotypic change for phenotypes described 
-#' by high-dimensional data. Heredity. 113: doi:10.1038/hdy.2014.75.
+#' by high-dimensional data. Heredity. 115:357–365.
 #' @examples
 #'data(plethodon)
 #'Y.gpa<-gpagen(plethodon$land)    #GPA-alignment

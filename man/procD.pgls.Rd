@@ -39,6 +39,8 @@ a formula (e.g., y~X), where 'y' specifies the response variables (shape data), 
 independent variables (discrete or continuous). The response matrix 'y' can be either in the form of a two-dimensional data
   matrix of dimension (n x [p x k]), or a 3D array (p x n x k).  It is assumed that the landmarks have previously
   been aligned using Generalized Procrustes Analysis (GPA) [e.g., with \code{\link{gpagen}}].
+  Linear model fits (using the  \code{\link{lm}} function)
+  can also be input in place of a formula.  Arguments for  \code{\link{lm}} can also be passed on via this function.
   The user must also specify a phylogeny describing the evolutionary relationships among species (of class phylo).
   Note that the specimen labels for both x and y must match the labels on the tips of the phylogeny.
 
@@ -79,7 +81,7 @@ Adams, D.C. 2014. A method for assessing phylogenetic least squares models for s
 multivariate data. Evolution. 68:2675-2688.
 
 Collyer, M.L., D.J. Sekora, and D.C. Adams. 2015. A method for analysis of phenotypic change for phenotypes described
-by high-dimensional data. Heredity. 113: doi:10.1038/hdy.2014.75.
+by high-dimensional data. Heredity. 115:357–365.
 }
 \keyword{analysis}
 
