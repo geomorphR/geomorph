@@ -52,7 +52,7 @@
 #' @references Anderson MJ. and C.J.F. terBraak. 2003. Permutation tests for multi-factorial analysis of variance.
 #'    Journal of Statistical Copmutation and Simulation 73: 85-113.
 #' @references Collyer, M.L., D.J. Sekora, and D.C. Adams. 2015. A method for analysis of phenotypic change for phenotypes described 
-#' by high-dimensional data. Heredity. 115:357–365.
+#' by high-dimensional data. Heredity. 115:357-365.
 #' @references Goodall, C. R. 1991. Procrustes methods in the statistical analysis of shape. Journal of the 
 #'    Royal Statistical Society B 53:285-339.
 #' @examples

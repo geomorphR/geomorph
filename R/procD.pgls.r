@@ -51,7 +51,7 @@
 #' @references Adams, D.C. 2014. A method for assessing phylogenetic least squares models for shape and other high-dimensional 
 #' multivariate data. Evolution. 68:2675-2688. 
 #' @references Collyer, M.L., D.J. Sekora, and D.C. Adams. 2015. A method for analysis of phenotypic change for phenotypes described 
-#' by high-dimensional data. Heredity. 115:357–365.
+#' by high-dimensional data. Heredity. 115:357-365.
 #' @examples
 #' ### Example of D-PGLS for high-dimensional data 
 #' data(plethspecies)

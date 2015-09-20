@@ -81,7 +81,7 @@ Adams, D.C. 2014. A method for assessing phylogenetic least squares models for s
 multivariate data. Evolution. 68:2675-2688.
 
 Collyer, M.L., D.J. Sekora, and D.C. Adams. 2015. A method for analysis of phenotypic change for phenotypes described
-by high-dimensional data. Heredity. 115:357–365.
+by high-dimensional data. Heredity. 115:357-365.
 }
 \keyword{analysis}
 

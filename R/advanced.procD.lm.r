@@ -55,7 +55,7 @@
 #'   \item{random.slope.dist}{random pairwise distances between slopes from RRPP permutations (when {verbose=TRUE})}
 #'   \item{random.slope.comp}{random pairwise slope direction comparisons (r or angle) from RRPP permutations (when {verbose=TRUE})}
 #' @references Collyer, M.L., D.J. Sekora, and D.C. Adams. 2015. A method for analysis of phenotypic change for phenotypes described 
-#' by high-dimensional data. Heredity. 115:357–365.
+#' by high-dimensional data. Heredity. 115:357-365.
 #' @examples
 #'data(plethodon)
 #'Y.gpa<-gpagen(plethodon$land)    #GPA-alignment
