@@ -36,6 +36,7 @@
 #'  (only relevant if data for A1 or A2 [or both] were input as 3D array)
 #' @param iter Number of iterations for significance testing
 #' @param label An optional vector indicating labels for each specimen that are to be displayed
+#' @param ShowPlot A logical value indicating whether or not the plot should be returned
 #' @param verbose A logical value indicating whether the output is basic or verbose ({method="PLS"} only) (see Value below)
 #' @export
 #' @keywords analysis
@@ -65,7 +66,8 @@
 #'   ref<-mshape(Y.gpa$coords)   #overall reference
 #'   plotRefToTarget(ref,Y.gpa$coords[,,which.min(res$x.scores)],method="TPS") #Min along PLS1
 #'   plotRefToTarget(ref,Y.gpa$coords[,,which.max(res$x.scores)],method="TPS") #Max along PLS1
-morphol.integr<-function(A1,A2,method=c("PLS","RV"),warpgrids=TRUE,iter=999, label=NULL,verbose=FALSE){
+morphol.integr<-function(A1,A2,method=c("PLS","RV"),warpgrids=TRUE,iter=999, 
+                         label=NULL,verbose=FALSE,ShowPlot=TRUE){
   method <- match.arg(method)
   if(any(is.na(A1))==T){
     stop("Data matrix 1 contains missing values. Estimate these first (see 'estimate.missing').")  }
@@ -127,53 +129,63 @@ morphol.integr<-function(A1,A2,method=c("PLS","RV"),warpgrids=TRUE,iter=999, lab
   P.val<-P.val/(iter+1)
   if(method=="PLS"){
     xsc<-0; ysc<-0
-    if (length(dim(A1))==2 && length(dim(A2))==2){
-      plot(XScores[,1],YScores[,1],pch=21,bg="black",main="PLS Plot",xlab = "PLS1 Block 1",ylab = "PLS1 Block 2")
+    
+    
+    if(ShowPlot==TRUE){ 
+      if (length(dim(A1))==2 && length(dim(A2))==2){
+        plot(XScores[,1],YScores[,1],pch=21,bg="black",main="PLS Plot",xlab = "PLS1 Block 1",ylab = "PLS1 Block 2")
       if(length(label!=0)){text(XScores[,1],YScores[,1],label,adj=c(-.7,-.7))}
-    }
-    if (length(dim(A1))==3){A1.ref<-mshape(A1); xsc<-1
+      }
+      if (length(dim(A1))==3){A1.ref<-mshape(A1); xsc<-1
                             pls1.min<-A1[,,which.min(XScores[,1])];pls1.max<-A1[,,which.max(XScores[,1])]}
-    if (length(dim(A2))==3){A2.ref<-mshape(A2); ysc<-1
+      if (length(dim(A2))==3){A2.ref<-mshape(A2); ysc<-1
                             pls2.min<-A2[,,which.min(XScores[,1])];pls2.max<-A2[,,which.max(XScores[,1])]}
-    if (dim(A1)[2] == 2 ||dim(A2)[2] == 2){
-      if(xsc==1 && ysc==1){layout(matrix(c(4,1,5,1,1,1,1,2,1,1,1,1,1,1,1,3),4,4))}
-      if(xsc==1 && ysc!=1){layout(matrix(c(1,1,1,1,1,1,1,2,1,1,1,1,1,1,1,3),4,4))}
-      if(xsc!=1 && ysc==1){layout(matrix(c(2,1,3,1,1,1,1,1,1,1,1,1,1,1,1,1),4,4))}
-      plot(XScores[,1],YScores[,1],pch=21,bg="black",main="PLS1 Plot: Block 1 (X) vs. Block 2 (Y) ",xlab = "PLS1 Block 1",ylab = "PLS1 Block 2")
-      if(length(label!=0)){text(XScores[,1],YScores[,1],label,adj=c(-.7,-.7))}
-      if(warpgrids==TRUE){
-        if (xsc==1){
-          tps(A1.ref, pls1.min, 20)
-          tps(A1.ref, pls1.max, 20,sz=.7)     
+      if (dim(A1)[2] == 2 ||dim(A2)[2] == 2){
+        if(xsc==1 && ysc==1){layout(matrix(c(4,1,5,1,1,1,1,2,1,1,1,1,1,1,1,3),4,4))}
+        if(xsc==1 && ysc!=1){layout(matrix(c(1,1,1,1,1,1,1,2,1,1,1,1,1,1,1,3),4,4))}
+        if(xsc!=1 && ysc==1){layout(matrix(c(2,1,3,1,1,1,1,1,1,1,1,1,1,1,1,1),4,4))}
+        plot(XScores[,1],YScores[,1],pch=21,bg="black",main="PLS1 Plot: Block 1 (X) vs. Block 2 (Y) ",xlab = "PLS1 Block 1",ylab = "PLS1 Block 2")
+        if(length(label!=0)){text(XScores[,1],YScores[,1],label,adj=c(-.7,-.7))}
+        if(warpgrids==TRUE){
+          if (xsc==1){
+            tps(A1.ref, pls1.min, 20)
+            tps(A1.ref, pls1.max, 20,sz=.7)     
+          }
+          if (ysc==1){
+            tps(A2.ref, pls2.min, 20,sz=.7)
+            tps(A2.ref, pls2.max, 20,sz=.7)
+          }
         }
-        if (ysc==1){
-          tps(A2.ref, pls2.min, 20,sz=.7)
-          tps(A2.ref, pls2.max, 20,sz=.7)
+        layout(1)
+      }
+
+      if (length(dim(A1))==3  && dim(A1)[2] == 3) {
+        plot(XScores[,1],YScores[,1],pch=21,bg="black",main="PLS Plot",xlab = "PLS1 Block 1",ylab = "PLS1 Block 2")
+        if(length(label!=0)){text(XScores[,1],YScores[,1],label,adj=c(-.7,-.7))}
+        if(warpgrids==TRUE){
+        open3d()
+        plot3d(pls1.min, type = "s", col = "gray", main = paste("PLS Block1 negative"),size = 1.25, aspect = FALSE)
+        open3d()
+        plot3d(pls1.max, type = "s", col = "gray", main = paste("PLS Block1 positive"),size = 1.25, aspect = FALSE)
+        }
+      }  
+      if (length(dim(A2))==3  && dim(A2)[2] == 3){
+        if(warpgrids==TRUE){
+        open3d()
+        plot3d(pls2.min, type = "s", col = "gray", main = paste("PLS Block2 negative"),size = 1.25, aspect = FALSE)
+        open3d()
+        plot3d(pls2.max, type = "s", col = "gray", main = paste("PLS Block2 positive"),size = 1.25, aspect = FALSE)
         }
       }
-      layout(1)
     }
-
-    if (length(dim(A1))==3  && dim(A1)[2] == 3) {
-      plot(XScores[,1],YScores[,1],pch=21,bg="black",main="PLS Plot",xlab = "PLS1 Block 1",ylab = "PLS1 Block 2")
-      if(length(label!=0)){text(XScores[,1],YScores[,1],label,adj=c(-.7,-.7))}
-      open3d()
-      plot3d(pls1.min, type = "s", col = "gray", main = paste("PLS Block1 negative"),size = 1.25, aspect = FALSE)
-      open3d()
-      plot3d(pls1.max, type = "s", col = "gray", main = paste("PLS Block1 positive"),size = 1.25, aspect = FALSE)
-    }  
-    if (length(dim(A2))==3  && dim(A2)[2] == 3){
-      open3d()
-      plot3d(pls2.min, type = "s", col = "gray", main = paste("PLS Block2 negative"),size = 1.25, aspect = FALSE)
-      open3d()
-      plot3d(pls2.max, type = "s", col = "gray", main = paste("PLS Block2 positive"),size = 1.25, aspect = FALSE)
-    }
+    
     if(verbose==FALSE){ return(list(PLS.corr=integ.obs,pvalue=P.val)) }
     if(verbose==TRUE){ return(list(x.scores=XScores,y.scores=YScores,PLS.corr=integ.obs,pvalue=P.val)) }
   }
   if(method=="RV"){
-    hist(integ.val,30,freq=TRUE,col="gray",xlab="RV Coefficient")
-    arrows(integ.obs,50,integ.obs,5,length=0.1,lwd=2)
+    if(ShowPlot==TRUE){ 
+      hist(integ.val,30,freq=TRUE,col="gray",xlab="RV Coefficient")
+      arrows(integ.obs,50,integ.obs,5,length=0.1,lwd=2)  }
     return(list(RV=integ.obs,pvalue=P.val))
   }
 }

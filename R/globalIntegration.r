@@ -17,6 +17,7 @@
 #' will have an expected slope of zero. 
 #'  
 #' @param A 3D array (p1 x k x n) containing GPA-aligned coordinates 
+#' @param ShowPlot A logical value indicating whether or not the plot should be returned
 #' @export
 #' @keywords analysis
 #' @author Dean Adams
@@ -30,20 +31,22 @@
 #'
 #' globalIntegration(Y.gpa$coords)
 
-globalIntegration<-function(A){
+globalIntegration<-function(A,ShowPlot=TRUE){
   ref<-mshape(A)
   p<-dim(ref)[1]; k<-dim(ref)[2]  
   Pdist<-as.matrix(dist(ref))
-  if(k==2){P<-Pdist^2*log(Pdist^2)}; if(k==3){P<-Pdist}
+  if(k==2){P<-Pdist^2*log(Pdist^2)}; if(k==3){P<- -Pdist}
   P[which(is.na(P))]<-0
   Q<-cbind(1, ref)
   L<-rbind(cbind(P,Q), cbind(t(Q),matrix(0,k+1,k+1)))
   Linv<-solve(L)
   L.be<-Linv[1:p,1:p]
-  eig.L<-eigen(L.be)
+  eig.L<-eigen(L.be, symmetric = TRUE)
   BE<-eig.L$values[1:(p-3)]; if(k==3){BE<-BE[1:(p-4)]}
-  BEval<-log(eig.L$values[1:(p-3)]); if(k==3){BEval<-BEval[1:(p-4)]}
-  Emat<-eig.L$vectors[,1:(p-3)];if(k==3){Emat<-Emat[,1:(p-4)]}
+  lambda <- zapsmall(eig.L$values)
+  if(any(lambda == 0)){BE = lambda[lambda > 0]}
+  Emat<- eig.L$vectors[,1:(length(BE))]
+  BEval<-log(BE)
   Wmat<-NULL
   for (i in 1:dim(A)[[3]]){ 
     Wvec<-matrix(t(t(A[,,i])%*%Emat),nrow=1)
@@ -54,8 +57,9 @@ globalIntegration<-function(A){
   start<-which.min(BEval)
   slope<-coef(lm(PWvar~BEval))[2]
   eq<-bquote(ObservedSlope [black] == .(slope))
+  if(ShowPlot==TRUE){ 
   plot(BEval,PWvar,asp=1,main=eq)
   abline(lm(PWvar~BEval),lwd=2,col="black")
-  lines(c(BEval[start],BEval[start]+10),c(PWvar[start],PWvar[start]-10),lty=3,lwd=2,col="red")
+  lines(c(BEval[start],BEval[start]+10),c(PWvar[start],PWvar[start]-10),lty=3,lwd=2,col="red")}
   return(slope)
   }

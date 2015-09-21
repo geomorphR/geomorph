@@ -77,57 +77,47 @@
 plotAllometry<-function(f1, f2 = NULL, method=c("CAC","RegScore","PredLine"),warpgrids=TRUE,
                         iter=249,label=NULL, mesh=NULL, logsz = TRUE, RRPP=FALSE, verbose=FALSE){
   A <- eval(f1[[2]], parent.frame())
-  Size <- eval(f1[[3]], parent.frame())
+  size.df <- data.frame(Size = eval(f1[[3]], parent.frame()))
+  Size <- size.df$Size
   if(length(dim(A)) == 3)  y <- two.d.array(A) else y <- as.matrix(A)
-  if(any(is.na(y))==T) stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').")
-  dat <- data.frame(y, Size)
-  cov.mf <- model.frame(~Size, data=dat)
-  if(dim(cov.mf)[[2]] > 1) stop("Only a single variable for size can be used as covariate.  Consider using prcoD.lm for multiple variables")
-  n<-nrow(cov.mf)
-  if(length(cov.mf[[1]]) > n) stop("Only a single variable for size can be used as covariate.  Consider using prcoD.lm for multiple variables")
+  if(dim(model.matrix(~Size, data=size.df))[2] > 2) stop("Only a single variable for size can be used as covariate.  Consider using prcoD.lm for multiple variables")
+  n<-nrow(y)
   if(logsz == TRUE) {
     xlab <- "log(Size)"
     fnew <- as.formula("y~log(Size)")
-    cov.mf <- model.frame(fnew, cov.mf)
+    fnew.df <- data.frame(y=y,Size=size.df)
     print(noquote("Natural log of size is used."))
     } else 
       { 
         xlab <- "Size"
         fnew <- as.formula("y~Size")
-        cov.mf <- model.frame(fnew, data=cov.mf)
         print(noquote("Size has not been log transformed."))
+        fnew.df <- data.frame(y=y,Size=size.df)
       }                                                                                          
+  pf1<- procD.fit(fnew, data=fnew.df, keep.order=FALSE)
   method <- match.arg(method)
 
   if(!is.null(f2)) {
     fac.mf <- model.frame(f2)
     if(dim(fac.mf)[[2]] > 1) stop("Only a single grouping variable can be used")
-    fTerms <- terms(f2, data = fac.mf)
-    cTerms <- terms(fnew, data = cov.mf)
+    fTerms <- terms(f2)
+    cTerms <- terms(fnew, data = fnew.df)
     all.terms <- c(attr(cTerms, "term.labels"), attr(fTerms, "term.labels"))
     f3 <- as.formula(paste(" y ~",paste(all.terms, collapse="+")))
     f4 <- as.formula(paste(" y ~",paste(all.terms, collapse="*")))
-    
-    Xs2 <- mod.mats(f4,dat1=model.frame(f4), keep.order=FALSE)
-    Xs1 <- mod.mats(f3,dat1=model.frame(f3), keep.order=FALSE)
-    k <- length(Xs2$Xs) - 1
-    X2 <- Xs2$Xs[[k+1]]
-    X1 <- Xs1$Xs[[k]]
-    anova.parts.obs2 <- anova.parts(f4, X=Xs2, Yalt="observed")
-    anova.parts.obs1 <- anova.parts(f3, X=Xs1, Yalt="observed")
+    pf4 <-procD.fit(f4, data=fnew.df)
+    pf3 <-procD.fit(f3, data=fnew.df)
+    Xs2 <- pf4$Xs
+    Xs1 <- pf3$Xs
+    k <- length(pf4$Terms) 
+    X2 <- pf4$Xs[[k+1]]
+    X1 <- pf3$Xs[[k]]
+    anova.parts.obs2 <- anova.parts(pf4, X=Xs2)
+    anova.parts.obs1 <- anova.parts(pf3, X=Xs1)
     anova.tab2 <-anova.parts.obs2$table 
     anova.tab <-anova.parts.obs1$table 
-    SS.obs <- anova.parts.obs2$SS[1:k]
     P <- array(0, c(k, 1, iter+1))
-    P[,,1] <- SS.obs
-    for(i in 1: iter){
-      if(RRPP == TRUE) {
-        SSr <- SS.random(y, Xs2, SS.obs, Yalt = "RRPP")
-      } else {
-        SSr <- SS.random(y, Xs2, SS.obs, Yalt = "resample")
-      }
-      P[,,i+1] <- SSr$SS
-    }
+    if(RRPP == TRUE) P <- SS.random(pf4,Yalt="RRPP", iter=iter) else P <- SS.random(pf4, Yalt="resample", iter=iter)
     P.val <- Pval.matrix(P)
     Z <- Effect.size.matrix(P)
     anova.tab2 <- data.frame(anova.tab2, Z = c(Z, NA, NA), P.value = c(P.val, NA, NA))
@@ -135,22 +125,12 @@ plotAllometry<-function(f1, f2 = NULL, method=c("CAC","RegScore","PredLine"),war
       
   } else {
     fac.mf <- NULL 
-    Xs <- mod.mats(fnew,cov.mf, keep.order=FALSE)
-    k <- length(Xs$Xs) - 1
-    X <- Xs$Xs[[k+1]]
-    anova.parts.obs <- anova.parts(fnew, X=Xs, Yalt="observed")
+    Xs <- pf1$Xs
+    k <- length(pf1$Terms) 
+    X <- as.matrix(Xs[[k+1]])
+    anova.parts.obs <- anova.parts(pf1, X=Xs, Yalt="observed")
     anova.tab <-anova.parts.obs$table
-    SS.obs <- anova.parts.obs$SS[1:k]
-    P <- array(0, c(k, 1, iter+1))
-    P[,,1] <- SS.obs
-    for(i in 1: iter){
-      if(RRPP == TRUE) {
-        SSr <- SS.random(y, Xs, SS.obs, Yalt = "RRPP")
-      } else {
-        SSr <- SS.random(y, Xs, SS.obs, Yalt = "resample")
-      }
-      P[,,i+1] <- SSr$SS
-    }
+    if(RRPP == TRUE) P <- SS.random(pf1,Yalt="RRPP", iter=iter) else P <- SS.random(pf1, Yalt="resample", iter=iter)
     P.val <- Pval.matrix(P)
     Z <- Effect.size.matrix(P)
     anova.tab <- data.frame(anova.tab, Z = c(Z, NA, NA), P.value = c(P.val, NA, NA))
@@ -158,7 +138,7 @@ plotAllometry<-function(f1, f2 = NULL, method=c("CAC","RegScore","PredLine"),war
   
   if(is.null(f2)){
     y.mn<-predict(lm(y~1))
-    B<-anova.parts.obs$B
+    B<-as.matrix(pf1$fit)
     yhat<-X%*%B
   }
   if(!is.null(f2)){
@@ -172,7 +152,7 @@ plotAllometry<-function(f1, f2 = NULL, method=c("CAC","RegScore","PredLine"),war
   asp = NULL
   if(anova.tab[1,7]>0.05){ asp <- 1}
   y.cent<-y-y.mn
-  size<-cov.mf[[2]]
+  size<-pf1$mf[[2]]
   a<-(t(y.cent)%*%size)%*%(1/(t(size)%*%size)); a<-a%*%(1/sqrt(t(a)%*%a))
   CAC<-y.cent%*%a  
   resid<-y.cent%*%(diag(dim(y.cent)[2])-a%*%t(a))

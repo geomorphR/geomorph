@@ -5,7 +5,7 @@
 \title{Procrustes ANOVA and pairwise tests for shape data, using complex linear models}
 \usage{
 advanced.procD.lm(f1, f2, groups = NULL, slope = NULL, angle.type = c("r",
-  "deg", "rad"), iter = 999, verbose = FALSE)
+  "deg", "rad"), iter = 999, verbose = FALSE, ...)
 }
 \arguments{
 \item{f1}{A formula for a linear model, containing the response matrix (e.g., y ~ x1 + x2)}
@@ -22,6 +22,8 @@ correlations (r), radians (rad) or degrees (deg)}
 \item{iter}{Number of iterations for significance testing}
 
 \item{verbose}{A logical value specifying whether additional output should be displayed (see Value below)}
+
+\item{...}{Arguments passed on to procD.fit (typically associated with the lm function)}
 }
 \value{
 Function returns an ANOVA table of statistical results for model comparison: error df (for each model), SS, MS,
@@ -52,7 +54,8 @@ The response matrix 'y' can be in the form of a two-dimensional data
   been aligned using Generalized Procrustes Analysis (GPA) [e.g., with \code{\link{gpagen}}]. The names specified for the
   independent (x) variables in the formula represent one or more
   vectors containing continuous data or factors. It is assumed that the order of the specimens in the
-  shape matrix matches the order of values in the independent variables.
+  shape matrix matches the order of values in the independent variables. Linear model fits (using the  \code{\link{lm}} function)
+  can also be input in place of a formula.  Arguments for \code{\link{lm}} can also be passed on via this function.
 
 The function performs statistical assessment of the terms in the model using Procrustes distances among
   specimens, rather than explained covariance matrices among variables. With this approach, the sum-of-squared
@@ -104,7 +107,7 @@ Michael Collyer
 }
 \references{
 Collyer, M.L., D.J. Sekora, and D.C. Adams. 2015. A method for analysis of phenotypic change for phenotypes described
-by high-dimensional data. Heredity. 113: doi:10.1038/hdy.2014.75.
+by high-dimensional data. Heredity. 115:357-365.
 }
 \seealso{
 \code{\link{procD.lm}}

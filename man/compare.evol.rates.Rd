@@ -4,7 +4,7 @@
 \alias{compare.evol.rates}
 \title{Comparing rates of shape evolution on phylogenies}
 \usage{
-compare.evol.rates(phy, A, gp, iter = 999)
+compare.evol.rates(phy, A, gp, ShowPlot = TRUE, iter = 999)
 }
 \arguments{
 \item{phy}{A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape}
@@ -12,6 +12,8 @@ compare.evol.rates(phy, A, gp, iter = 999)
 \item{A}{A matrix (n x [p x k]) or 3D array (p x k x n) containing GPA-aligned coordinates for a set of specimens}
 
 \item{gp}{A factor array designating group membership}
+
+\item{ShowPlot}{A logical value indicating whether or not the plot should be returned}
 
 \item{iter}{Number of iterations for significance testing}
 }
@@ -34,7 +36,8 @@ The function compares rates of morphological evolution for two or more groups of
  for each group is calculated, and a ratio of rates is obtained. If three or more groups of species are used, the ratio of
  the maximum to minimum rate is used as a test statistic (see Adams 2014). Significance testing
  is accomplished by phylogenetic simulation in which tips data are obtained under Brownian motion using a common
- evolutionary rate pattern for all species on the phylogeny (i.e., a common evolutionary rate matrix.
+ evolutionary rate pattern for all species on the phylogeny (i.e., a common evolutionary rate matrix). This procedure is
+ more general, and retains the desirable statistical properties of earlier methods, but for a wider array of data types.
  If three or more groups of species are used, pairwise p-values are also returned. A histogram of evolutionary rate ratios obtained
  via phylogenetic simulation is presented,
  with the observed value designated by an arrow in the plot. The function can be used to obtain a rate for the whole
@@ -54,8 +57,7 @@ Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment
 compare.evol.rates(plethspecies$phy,Y.gpa$coords,gp=gp.end,iter=49)
 
 #Calculate rates of size
-Csize <- matrix(Y.gpa$Csize, dimnames=list(names(Y.gpa$Csize))) # make matrix Csize with names
-compare.evol.rates(plethspecies$phy,Csize,gp=gp.end,iter=49)
+compare.evol.rates(plethspecies$phy,Y.gpa$Csize,gp=gp.end,iter=49)
 }
 \author{
 Dean Adams & Emma Sherratt

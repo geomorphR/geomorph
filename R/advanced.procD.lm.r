@@ -10,7 +10,8 @@
 #'   been aligned using Generalized Procrustes Analysis (GPA) [e.g., with \code{\link{gpagen}}]. The names specified for the 
 #'   independent (x) variables in the formula represent one or more 
 #'   vectors containing continuous data or factors. It is assumed that the order of the specimens in the 
-#'   shape matrix matches the order of values in the independent variables.
+#'   shape matrix matches the order of values in the independent variables. Linear model fits (using the  \code{\link{lm}} function)
+#'   can also be input in place of a formula.  Arguments for \code{\link{lm}} can also be passed on via this function.
 #'
 #'   The function performs statistical assessment of the terms in the model using Procrustes distances among 
 #'   specimens, rather than explained covariance matrices among variables. With this approach, the sum-of-squared 
@@ -33,6 +34,7 @@
 #' correlations (r), radians (rad) or degrees (deg)
 #' @param iter Number of iterations for significance testing
 #' @param verbose A logical value specifying whether additional output should be displayed (see Value below)
+#' @param ... Arguments passed on to procD.fit (typically associated with the lm function)
 #' @keywords analysis
 #' @export
 #' @author Michael Collyer
@@ -53,7 +55,7 @@
 #'   \item{random.slope.dist}{random pairwise distances between slopes from RRPP permutations (when {verbose=TRUE})}
 #'   \item{random.slope.comp}{random pairwise slope direction comparisons (r or angle) from RRPP permutations (when {verbose=TRUE})}
 #' @references Collyer, M.L., D.J. Sekora, and D.C. Adams. 2015. A method for analysis of phenotypic change for phenotypes described 
-#' by high-dimensional data. Heredity. 113: doi:10.1038/hdy.2014.75.
+#' by high-dimensional data. Heredity. 115:357-365.
 #' @examples
 #'data(plethodon)
 #'Y.gpa<-gpagen(plethodon$land)    #GPA-alignment
@@ -85,52 +87,60 @@
 #'~log(CS) + st*sp, 
 #'groups = ~sp, slope = ~log(CS), angle.type = "deg", iter=19)
 
-advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL, angle.type = c("r", "deg", "rad"), iter=999, verbose = FALSE){
-  data=NULL
-  f1 <- as.formula(f1)
-  Y <- eval(f1[[2]], parent.frame())
-  if(length(dim(Y)) == 3)  Y <- two.d.array(Y) else Y <- as.matrix(Y)
-  f1 <- as.formula(paste(c("Y",f1[[3]]),collapse="~"))
-  f2 <- as.formula(f2)
-  k1 <- length(attr(terms(f1), "term.labels"))
-  k2 <- length(attr(terms(f2), "term.labels"))
-  if (any(is.na(Y)) == T) stop("Response data matrix (shape) contains missing values. Estimate these first (see 'estimate.missing').")
+advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL, angle.type = c("r", "deg", "rad"), iter=999, verbose = FALSE, ...){
+  if(any(class(f1)=="lm")) pf1 = procD.fit(f1,weights=f1$weights, contrasts=f1$contrasts, offset=f1$offset) else 
+    pf1= procD.fit(f1,...)
+  Y <- as.matrix(pf1$Y)
+  if(any(class(f2)=="lm")) pf1 = procD.fit(f1,weights=f1$weights, contrasts=f1$contrasts, offset=f1$offset) else 
+    {
+      if(length(as.formula(f2))==2) f2 <-as.formula(paste(c("Y",f2[[2]]),collapse="~"))
+      if(length(as.formula(f2))==3) f2 <-as.formula(paste(c("Y",f2[[3]]),collapse="~"))  
+      pf2= procD.fit(f2,...)
+    }
+      
+  Y.prime <- as.matrix(pf1$Y.prime)
+  Y <- as.matrix(pf1$Y)
+  n <- nrow(Y)
+  if(!is.null(pf1$weights)) w <- pf1$weights else w <- rep(1,n)
+  if(any(w < 0)) stop("Weights cannot be negative")
+  k1 <- qr(model.matrix(f1))$rank
+  k2 <- qr(model.matrix(f2))$rank
   if(k1 > k2) ff <- f1 else ff <- f2
   if(k1 > k2) fr <- f2 else fr <- f1
   if(k1 == k2) stop("Models have same df")
-  full.terms <- terms(ff)
-  red.terms <- terms(fr)
-  dfr <- nrow(Y) - qr(model.matrix(red.terms))$rank
-  dff <- nrow(Y) - qr(model.matrix(full.terms))$rank 
-  SSEr <- SSE(lm(Y ~ model.matrix(red.terms) - 1))
-  SSEf <- SSE(lm(Y ~ model.matrix(full.terms) - 1))  
+  dfr <- nrow(Y) - min(k1,k2)
+  dff <- nrow(Y) - max(k1,k2)
+  SSEr <- SSE(mod.resids(list(model.matrix(fr)*sqrt(w)), list(Y.prime)))
+  SSEf <- SSE(mod.resids(list(model.matrix(ff)*sqrt(w)), list(Y.prime)))
   SSm <- SSEr - SSEf
   Fs <- (SSm/(dfr-dff))/(SSEf/dff)
+  ind <- perm.index(n, iter)
   
-  R <- as.matrix(resid(lm(Y ~ model.matrix(red.terms) - 1)))
+  z <- lmfit(model.matrix(fr)[,-1],Y.prime)
+  R <- z$residuals
+  Yh <- z$fitted
   P <- array(,iter+1)
   P[1] <- SSm
   m <-Bslopes <-pairwise.cond <- NULL
-  if(is.null(groups)==FALSE && is.null(slope)==FALSE) pairwise.cond <- "slopes"
-  if(is.null(groups) == FALSE && is.null(slope)==TRUE) pairwise.cond <-"means"
+  if(!is.null(groups) && !is.null(slope)) pairwise.cond <- "slopes"
+  if(!is.null(groups) && is.null(slope)) pairwise.cond <-"means"
   if(is.null(groups) && is.null(slope)) pairwise.cond <-"none"
-  if(is.null(groups) == TRUE && is.null(slope)==FALSE) {
+  if(is.null(groups) && !is.null(slope)) {
     print("No groups for which to compare means or slopes.  No pairwise tests will be performed")
     pairwise.cond <-"none"
   }
   
   if(pairwise.cond == "none"){
     for(i in 1:iter){
-      Rr <- R[sample(nrow(R)),]
-      pseudoY = predict(lm(Y ~ model.matrix(red.terms) - 1)) + Rr
-      P[i+1] <- SSE(lm(pseudoY ~ model.matrix(red.terms) - 1)) - SSE(lm(pseudoY ~ model.matrix(full.terms) - 1)) 
+      Rr <- R[ind[[i]],]
+      pseudoY =  Yh + Rr
+      P[i+1] <- SSE(mod.resids(list(model.matrix(fr)*sqrt(w)), list(pseudoY*sqrt(w)))) - SSE(mod.resids(list(model.matrix(ff)*sqrt(w)), list(pseudoY*sqrt(w))))
     }
     P.val <- pval(P)
     Z.score <- effect.size(P)
     anova.tab <- data.frame(df = c(dfr,dff), SSE = c(SSEr, SSEf), SS = c(NA, SSm),
                             F = c(NA, Fs), Z = c(NA, Z.score), P = c(NA,P.val))
-    rownames(anova.tab) <- c(paste(attr(red.terms, "term.labels"), collapse="+"),
-                             paste(attr(full.terms, "term.labels"), collapse="+"))
+    rownames(anova.tab) <- c(formula(fr)[-2], formula(ff)[-2])
     attr(anova.tab, "heading") <- "\nANOVA with RRPP\n"
     class(anova.tab) <- c("anova", class(anova.tab))
     if(verbose == TRUE) out = list(anova.table = anova.tab, SS.rand = P) else out = anova.tab
@@ -142,9 +152,9 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL, angle.type = c(
     P.dist <- array(, c(nrow(m), nrow(m),iter+1))
     P.dist[,,1] <- as.matrix(dist(m))
     for(i in 1:iter){
-      Rr <- R[sample(nrow(R)),]
-      pseudoY = predict(lm(Y ~ model.matrix(red.terms) - 1)) + Rr
-      P[i+1] <- SSE(lm(pseudoY ~ model.matrix(red.terms) - 1)) - SSE(lm(pseudoY ~ model.matrix(full.terms) - 1)) 
+      Rr <- R[ind[[i]],]
+      pseudoY =  Yh + Rr
+      P[i+1] <- SSE(mod.resids(list(model.matrix(fr)*sqrt(w)), list(pseudoY*sqrt(w)))) - SSE(mod.resids(list(model.matrix(ff)*sqrt(w)), list(pseudoY*sqrt(w))))
       mr <- ls.means(gr, cov.mf = NULL, pseudoY)
       P.dist[,,i+1] <- as.matrix(dist(mr))  
     }
@@ -153,8 +163,7 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL, angle.type = c(
 
     anova.tab <- data.frame(df = c(dfr,dff), SSE = c(SSEr, SSEf), SS = c(NA, SSm),
                             F = c(NA, Fs), Z = c(NA, Z.score), P = c(NA,P.val))
-    rownames(anova.tab) <- c(paste(attr(red.terms, "term.labels"), collapse="+"),
-                             paste(attr(full.terms, "term.labels"), collapse="+"))
+    rownames(anova.tab) <- c(formula(fr)[-2], formula(ff)[-2])
     attr(anova.tab, "heading") <- "\nANOVA with RRPP\n"
     class(anova.tab) <- c("anova", class(anova.tab))
     Means.dist <- as.matrix(dist(m))
@@ -167,7 +176,7 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL, angle.type = c(
   
   if(pairwise.cond == "slopes") {
     gr <- as.factor(single.factor(groups, keep.order=FALSE))
-    cov <- model.frame(as.formula(slope))
+    cov <- model.matrix(slope)
     m <- ls.means(gr, cov, Y)
     Bslopes <- slopes(gr, cov, Y)
     P.mean.dist <- P.slope.dist <- P.cor <- array(, c(nrow(m), nrow(m),iter+1))
@@ -175,9 +184,9 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL, angle.type = c(
     P.slope.dist[,,1] <- as.matrix(dist(Bslopes))
     P.cor[,,1] <- 1-vec.cor.matrix(Bslopes)
     for(i in 1: iter){
-      Rr <- R[sample(nrow(R)),]
-      pseudoY = predict(lm(Y ~ model.matrix(red.terms) - 1)) + Rr
-      P[i+1] <- SSE(lm(pseudoY ~ model.matrix(red.terms) - 1)) - SSE(lm(pseudoY ~ model.matrix(full.terms) - 1)) 
+      Rr <- R[ind[[i]],]
+      pseudoY =  Yh + Rr
+      P[i+1] <- SSE(mod.resids(list(model.matrix(fr)*sqrt(w)), list(pseudoY*sqrt(w)))) - SSE(mod.resids(list(model.matrix(ff)*sqrt(w)), list(pseudoY*sqrt(w))))
       mr <- ls.means(gr, cov, pseudoY)  
       Bslopes.r <- slopes(gr, cov, pseudoY)
       P.mean.dist[,,i+1] <- as.matrix(dist(mr))     
@@ -188,8 +197,7 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL, angle.type = c(
     Z.score <- effect.size(P)
     anova.tab <- data.frame(df = c(dfr,dff), SSE = c(SSEr, SSEf), SS = c(NA, SSm),
                             F = c(NA, Fs), Z = c(NA, Z.score), P = c(NA,P.val))
-    rownames(anova.tab) <- c(paste(attr(red.terms, "term.labels"), collapse="+"),
-                             paste(attr(full.terms, "term.labels"), collapse="+"))
+    rownames(anova.tab) <- c(formula(fr)[-2], formula(ff)[-2])
     attr(anova.tab, "heading") <- "\nANOVA with RRPP\n"
     class(anova.tab) <- c("anova", class(anova.tab))
     Means.dist <- as.matrix(dist(m))

@@ -29,6 +29,7 @@
 #' @param phy A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape
 #' @param A A matrix (n x [p x k]) or 3D array (p x k x n) containing GPA-aligned coordinates for a set of specimens
 #' @param iter Number of iterations for significance testing
+#' @param ShowPlot A logical value indicating whether or not the plot should be returned
 #' @param method Method for estimating phylogenetic signal (Kmult or SSC)
 #' @keywords analysis
 #' @author Dean Adams
@@ -50,20 +51,23 @@
 #' physignal(plethspecies$phy,Y.gpa$coords,method="Kmult",iter=99)
 #' 
 #' #Test for phylogenetic signal in size
-#' Csize <- matrix(Y.gpa$Csize, dimnames=list(names(Y.gpa$Csize))) # make matrix Csize with names
-#' physignal(plethspecies$phy,Csize,method="Kmult",iter=99)
-physignal<-function(phy,A,iter=999,method=c("Kmult","SSC")){
+#' physignal(plethspecies$phy,Y.gpa$Csize,method="Kmult",iter=99)
+physignal<-function(phy,A,iter=999,ShowPlot=TRUE,method=c("Kmult","SSC")){
   method <- match.arg(method)
   if(any(is.na(A))==T){
     stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').")  }
   if (length(dim(A))==3){ 
     if(is.null(dimnames(A)[[3]])){
-      stop("Data matrix does not include taxa names as dimnames for 3rd dimension.")  }
+      stop("Data array does not include taxa names as dimnames for 3rd dimension.")  }
     x<-two.d.array(A)}
   if (length(dim(A))==2){ 
     if(is.null(rownames(A))){
       stop("Data matrix does not include taxa names as dimnames for rows.")  }
     x<-A }
+  if (is.vector(A)== TRUE){ 
+    if(is.null(names(A))){
+      stop("Data vector does not include taxa names as names.")  }
+    x<-as.matrix(A) }
   if (class(phy) != "phylo") 
     stop("tree must be of class 'phylo.'")
   if (!is.binary.tree(phy)) 
@@ -120,7 +124,7 @@ physignal<-function(phy,A,iter=999,method=c("Kmult","SSC")){
     }   
     P.val <- P.val/(iter + 1)
     K.val[iter + 1] = K.obs
-    if(dim(x)[2]>1) {  plotGMPhyloMorphoSpace(phy,A,ancStates=FALSE) }
+    if(ShowPlot==TRUE && dim(x)[2]>1) {  plotGMPhyloMorphoSpace(phy,A,ancStates=FALSE) }
     return(list(phy.signal=K.obs,pvalue=P.val))     
   }
   if (method=="SSC"){
@@ -155,7 +159,7 @@ physignal<-function(phy,A,iter=999,method=c("Kmult","SSC")){
     }  
     P.val<-P.val/(iter+1)
     SSC.val[iter+1]=SSC.o
-    if(dim(x)[2]>1) {  plotGMPhyloMorphoSpace(phy,A,ancStates=FALSE) }
+    if(ShowPlot==TRUE && dim(x)[2]>1) {plotGMPhyloMorphoSpace(phy,A,ancStates=FALSE)}
     return(list(phy.signal=SSC.o,pvalue=P.val)) 
   }
 }

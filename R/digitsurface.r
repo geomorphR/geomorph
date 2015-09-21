@@ -13,7 +13,7 @@
 #'  matching is based on the correspondence of fixed landmark points in the template and the specimen, a minimum of four fixed landmarks must be used. 
 #' 
 #' Some of the "fixed" landmarks digitized with digitsurface can be later designated as "curve sliders" using function 
-#' \code{\link{define.sliders.3d}} if required (see details in \code{\link{digit.fixed}}).
+#' \code{\link{define.sliders}} if required (see details in \code{\link{digit.fixed}}).
 #'  NOTE: Function centers the mesh before digitizing by default (center=TRUE). If one chooses not to center,
 #'  specimen may be difficult to manipulate in rgl window.
 #' 

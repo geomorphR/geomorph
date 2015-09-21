@@ -5,7 +5,7 @@
 \title{Quantify morphological integration between two modules}
 \usage{
 morphol.integr(A1, A2, method = c("PLS", "RV"), warpgrids = TRUE,
-  iter = 999, label = NULL, verbose = FALSE)
+  iter = 999, label = NULL, verbose = FALSE, ShowPlot = TRUE)
 }
 \arguments{
 \item{A1}{A matrix (n x [p1 x k]) or 3D array (p1 x k x n) containing GPA-aligned coordinates for the first module}
@@ -22,6 +22,8 @@ morphol.integr(A1, A2, method = c("PLS", "RV"), warpgrids = TRUE,
 \item{label}{An optional vector indicating labels for each specimen that are to be displayed}
 
 \item{verbose}{A logical value indicating whether the output is basic or verbose ({method="PLS"} only) (see Value below)}
+
+\item{ShowPlot}{A logical value indicating whether or not the plot should be returned}
 }
 \value{
 Function returns the a list with the following components:

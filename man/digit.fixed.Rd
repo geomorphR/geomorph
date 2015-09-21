@@ -33,7 +33,7 @@ or a mesh3d object as obtained from \code{\link{read.ply}}.
 Function for digitizing "n" three-dimensional landmarks. The landmarks are "fixed" (traditional landmarks). They can be later
  designated as "curve sliders" (semilandmarks, that will "slide" along curves lacking known landmarks
  if required. A sliding semi-landmark ("sliders") will slide between two designated points, along a line tangent to the specified curvature,
- and must be defined as "sliders" using function \code{\link{define.sliders.3d}} or with similar format matrix made outside R.
+ and must be defined as "sliders" using function \code{\link{define.sliders}} or with similar format matrix made outside R.
 
 For 3D "surface sliders" (surface semilandmarks that slide over a surface) the function \code{\link{digitsurface}} should be used instead.
  NOTE: Function centers the mesh before digitizing by default (center=TRUE). If one chooses not to center,

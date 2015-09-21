@@ -5,7 +5,7 @@
 \title{Procrustes ANOVA/regression for shape data}
 \usage{
 procD.lm(f1, iter = 999, RRPP = FALSE, int.first = FALSE,
-  verbose = FALSE)
+  verbose = FALSE, ...)
 }
 \arguments{
 \item{f1}{A formula for the linear model (e.g., y~x1+x2)}
@@ -17,6 +17,8 @@ procD.lm(f1, iter = 999, RRPP = FALSE, int.first = FALSE,
 \item{int.first}{A logical value to indicate if interactions of first main effects should precede subsequent main effects}
 
 \item{verbose}{A logical value specifying whether additional output should be displayed}
+
+\item{...}{Arguments passed on to procD.fit (typically associated with the lm function)}
 }
 \value{
 Function returns an ANOVA table of statistical results for all factors: df (for each factor), SS, MS,
@@ -28,14 +30,16 @@ Function performs Procrustes ANOVA with permutation procedures to assess statist
 }
 \details{
 The function quantifies the relative amount of shape variation attributable to one or more factors in a
-  linear model and assesses this variation via permutation. Data input is specified by a formula (e.g.,
+  linear model and estimates teh probability of this variation ("signifiance") for a null model, via distributions generated
+  from resampling permutations. Data input is specified by a formula (e.g.,
   y~X), where 'y' specifies the response variables (shape data), and 'X' contains one or more independent
   variables (discrete or continuous). The response matrix 'y' can be either in the form of a two-dimensional data
   matrix of dimension (n x [p x k]), or a 3D array (p x n x k).  It is assumed that the landmarks have previously
   been aligned using Generalized Procrustes Analysis (GPA) [e.g., with \code{\link{gpagen}}].
   The names specified for the independent (x) variables in the formula represent one or more
   vectors containing continuous data or factors. It is assumed that the order of the specimens in the
-  shape matrix matches the order of values in the independent variables.
+  shape matrix matches the order of values in the independent variables.  Linear model fits (using the  \code{\link{lm}} function)
+  can also be input in place of a formula.  Arguments for \code{\link{lm}} can also be passed on via this function.
 
 The function \code{\link{two.d.array}} can be used to obtain a two-dimensional data matrix from a 3D array of landmark
   coordinates; however this step is no longer necessary, as procD.lm can receive 3D arrays as depedendent variables.
@@ -63,13 +67,13 @@ The function performs statistical assessment of the terms in the model using Pro
 data(plethodon)
 Y.gpa<-gpagen(plethodon$land)    #GPA-alignment
 
-procD.lm(Y.gpa$coords ~ plethodon$species*plethodon$site,iter=99)
+procD.lm(Y.gpa$coords ~ plethodon$species*plethodon$site,iter=499)
 
 ### Regression example
 data(ratland)
 rat.gpa<-gpagen(ratland)         #GPA-alignment
 
-procD.lm(rat.gpa$coords ~ rat.gpa$Csize,iter=99)
+procD.lm(rat.gpa$coords ~ rat.gpa$Csize,iter=499)
 
 ## using RRPP
  procD.lm(rat.gpa$coords ~ rat.gpa$Csize,iter=49,RRPP=TRUE)
@@ -85,7 +89,7 @@ Anderson MJ. and C.J.F. terBraak. 2003. Permutation tests for multi-factorial an
    Journal of Statistical Copmutation and Simulation 73: 85-113.
 
 Collyer, M.L., D.J. Sekora, and D.C. Adams. 2015. A method for analysis of phenotypic change for phenotypes described
-by high-dimensional data. Heredity. 113: doi:10.1038/hdy.2014.75.
+by high-dimensional data. Heredity. 115:357-365.
 
 Goodall, C. R. 1991. Procrustes methods in the statistical analysis of shape. Journal of the
    Royal Statistical Society B 53:285-339.

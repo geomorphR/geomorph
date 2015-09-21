@@ -4,12 +4,14 @@
 \alias{define.links}
 \title{Define links between landmarks}
 \usage{
-define.links(spec, ptsize = 1)
+define.links(spec, ptsize = 1, links = NULL)
 }
 \arguments{
 \item{spec}{Name of specimen, as an object matrix containing 2D or 3D landmark coordinates}
 
 \item{ptsize}{Numeric Size to plot the landmarks}
+
+\item{links}{Optional An existing links matrix to add on to}
 }
 \value{
 Function returns a matrix of which landmarks will be linkes

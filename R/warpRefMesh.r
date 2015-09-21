@@ -48,14 +48,15 @@ warpRefMesh <- function(mesh, mesh.coord, ref, color=NULL, centered=FALSE){
     if (checkmat==FALSE) { stop("Input must be a p-x-k matrix of landmark coordinates")}
   checkdim <- dim(mesh.coord)[2]
     if (checkdim==2) {stop("Input must be a p-x-k matrix of three-dimensional landmark coordinates") }
+  ref.mesh <- mesh
   coord <- scale(mesh.coord, scale=F)
   sc.mat <- matrix(rep(1,nrow(mesh.vb)), ncol=1) %*% apply(mesh.coord,2,mean)
-  mesh$vb <- mesh.vb - sc.mat
-  ref.mesh <- mesh
-  warp <- tps2d3d(mesh$vb, coord, ref)
-  ref.mesh$vb <- rbind(t(warp), 1)
-    if(is.null(color)==FALSE){ ref.mesh$material <- color }
-    if(is.null(color)==TRUE && is.null(ref.mesh$material)==TRUE) { ref.mesh$material <- "gray" }
+  mesh.vb <- mesh.vb - sc.mat 
+  warp <- tps2d3d(mesh.vb, coord, ref)
+  ref.mesh$vb[1:3,] <- t(warp)
+     if(is.null(color)==FALSE){ ref.mesh$material <- color }
+     if(is.null(color)==TRUE && is.null(ref.mesh$material)==TRUE) { ref.mesh$material <- "gray" }
+  if(!is.null(ref.mesh$normals)){ ref.mesh <- addNormals(ref.mesh)}
   open3d(); shade3d(ref.mesh); title3d(main="Warped Ref Mesh")
   return(ref.mesh)
 }

@@ -9,7 +9,8 @@
 #'  for each group is calculated, and a ratio of rates is obtained. If three or more groups of species are used, the ratio of 
 #'  the maximum to minimum rate is used as a test statistic (see Adams 2014). Significance testing 
 #'  is accomplished by phylogenetic simulation in which tips data are obtained under Brownian motion using a common 
-#'  evolutionary rate pattern for all species on the phylogeny (i.e., a common evolutionary rate matrix.
+#'  evolutionary rate pattern for all species on the phylogeny (i.e., a common evolutionary rate matrix). This procedure is
+#'  more general, and retains the desirable statistical properties of earlier methods, but for a wider array of data types.  
 #'  If three or more groups of species are used, pairwise p-values are also returned. A histogram of evolutionary rate ratios obtained 
 #'  via phylogenetic simulation is presented, 
 #'  with the observed value designated by an arrow in the plot. The function can be used to obtain a rate for the whole
@@ -21,6 +22,7 @@
 #' @param phy A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape
 #' @param A A matrix (n x [p x k]) or 3D array (p x k x n) containing GPA-aligned coordinates for a set of specimens
 #' @param gp A factor array designating group membership
+#' @param ShowPlot A logical value indicating whether or not the plot should be returned
 #' @param iter Number of iterations for significance testing
 #' @keywords analysis
 #' @author Dean Adams & Emma Sherratt
@@ -45,9 +47,8 @@
 #' compare.evol.rates(plethspecies$phy,Y.gpa$coords,gp=gp.end,iter=49)
 #' 
 #' #Calculate rates of size
-#' Csize <- matrix(Y.gpa$Csize, dimnames=list(names(Y.gpa$Csize))) # make matrix Csize with names
-#' compare.evol.rates(plethspecies$phy,Csize,gp=gp.end,iter=49)
-compare.evol.rates<-function(phy,A,gp,iter=999 ){
+#' compare.evol.rates(plethspecies$phy,Y.gpa$Csize,gp=gp.end,iter=49)
+compare.evol.rates<-function(phy,A,gp,ShowPlot=TRUE,iter=999 ){
   if (length(dim(A))==3){ 
       if(is.null(dimnames(A)[[3]])){
       stop("Data matrix does not include taxa names as dimnames for 3rd dimension.")  }
@@ -56,6 +57,10 @@ compare.evol.rates<-function(phy,A,gp,iter=999 ){
       if(is.null(rownames(A))){
       stop("Data matrix does not include taxa names as dimnames for rows.")  }
       x<-A }
+  if (is.vector(A)== TRUE){ 
+    if(is.null(names(A))){
+      stop("Data vector does not include taxa names as names.")  }
+    x<-as.matrix(A) }
   if(any(is.na(A))==T){
     stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').")  }
   if(!is.factor(gp)){
@@ -143,8 +148,11 @@ compare.evol.rates<-function(phy,A,gp,iter=999 ){
       gp.sig.sim[lower.tri(gp.sig.sim)]<-NA
     }
     rate.val[iter+1]=sigmad.obs$ratio
-    hist(rate.val,30,freq=TRUE,col="gray",xlab="SigmaD ratio")
-    arrows(sigmad.obs$ratio,50,sigmad.obs$ratio,5,length=0.1,lwd=2)
+    if(ShowPlot==TRUE){ 
+      hist(rate.val,30,freq=TRUE,col="gray",xlab="SigmaD ratio")
+      arrows(sigmad.obs$ratio,50,sigmad.obs$ratio,5,length=0.1,lwd=2)
+      
+    }
     if (nlevels(gp) > 2) {
       return(list(sigma.d = sigmad.obs$sigma.all, sigmad.all = sigmad.obs$sigma.d.all, 
                   sigmad.ratio = sigmad.obs$ratio, pvalue = sig.sim, pairwise.pvalue = gp.sig.sim))

@@ -28,8 +28,8 @@
 #' newland[c(3,11),,26] <- newland[c(11,3),,2]
 #' Y<- gpagen(newland) # GPA
 #' out <- plotOutliers(Y$coords) # function returns dimnames and address of all specimens ordered
-#' plotRefToTarget(mshape(Y$coords), Y$coords[,,out[1]], method="vector")
-#' plotRefToTarget(mshape(Y$coords), Y$coords[,,out[2]], method="vector")
+#' plotRefToTarget(mshape(Y$coords), Y$coords[,,out[1]], method="vector", label=TRUE)
+#' plotRefToTarget(mshape(Y$coords), Y$coords[,,out[2]], method="vector", label=TRUE)
 #' 
 plotOutliers <- function(A, groups = NULL){
   if (length(dim(A))!=3){

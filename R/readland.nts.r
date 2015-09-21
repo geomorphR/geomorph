@@ -59,11 +59,11 @@ readland.nts<-function(file){
   tmp<-unlist(strsplit(ntsfile[-1],"\\s+"))
   speclab<-NULL; 
   if(r.lab==TRUE){
-    speclab<-tmp[1:n]
-    tmp<-tmp[-(1:length(speclab))]   
+    speclab<-ntsfile[2:(1+n)]
+    tmp <- tmp[c((length(tmp)-(p*k)+1):length(tmp))]
   }
   if(c.lab==TRUE){ tmp<-tmp[-(1:(p*k))] }
-  if(missdata==TRUE){tmp<-sub(missval,NA,tmp)}
+  if(missdata==TRUE){tmp[grep(missval,as.integer(tmp))] <- NA}
   options(warn=-1)
   landdata<-matrix(as.numeric(tmp),ncol=k,byrow=TRUE)
   if(sum(which(is.na(landdata)==TRUE))>0){print("NOTE.  Missing data identified.")}
