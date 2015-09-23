@@ -140,7 +140,7 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL, angle.type = c(
     Z.score <- effect.size(P)
     anova.tab <- data.frame(df = c(dfr,dff), SSE = c(SSEr, SSEf), SS = c(NA, SSm),
                             F = c(NA, Fs), Z = c(NA, Z.score), P = c(NA,P.val))
-    rownames(anova.tab) <- c(formula(fr)[-2], formula(ff)[-2])
+    rownames(anova.tab) <- c(pfr$call[-2], pff$call[-2])
     attr(anova.tab, "heading") <- "\nANOVA with RRPP\n"
     class(anova.tab) <- c("anova", class(anova.tab))
     if(verbose == TRUE) out = list(anova.table = anova.tab, SS.rand = P) else out = anova.tab
@@ -163,7 +163,7 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL, angle.type = c(
 
     anova.tab <- data.frame(df = c(dfr,dff), SSE = c(SSEr, SSEf), SS = c(NA, SSm),
                             F = c(NA, Fs), Z = c(NA, Z.score), P = c(NA,P.val))
-    rownames(anova.tab) <- c(formula(fr)[-2], formula(ff)[-2])
+    rownames(anova.tab) <- c(pfr$call[-2], pff$call[-2])
     attr(anova.tab, "heading") <- "\nANOVA with RRPP\n"
     class(anova.tab) <- c("anova", class(anova.tab))
     Means.dist <- as.matrix(dist(m))
@@ -197,7 +197,7 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL, angle.type = c(
     Z.score <- effect.size(P)
     anova.tab <- data.frame(df = c(dfr,dff), SSE = c(SSEr, SSEf), SS = c(NA, SSm),
                             F = c(NA, Fs), Z = c(NA, Z.score), P = c(NA,P.val))
-    rownames(anova.tab) <- c(formula(fr)[-2], formula(ff)[-2])
+    rownames(anova.tab) <- c(pfr$call[-2], pff$call[-2])
     attr(anova.tab, "heading") <- "\nANOVA with RRPP\n"
     class(anova.tab) <- c("anova", class(anova.tab))
     Means.dist <- as.matrix(dist(m))

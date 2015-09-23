@@ -430,8 +430,12 @@ procD.data.frame <- function(f1){
   Y <- eval(form.in[[2]], parent.frame())
   if(length(dim(Y)) == 3)  Y <- two.d.array(Y) else Y <- as.matrix(Y)
   form.out <- as.formula(paste("Y",form.in[3],sep="~"))
-  if(form.out[[3]] == 1) dat <- data.frame(Y=as.matrix(Y),Int=rep(1,nrow(Y))) else 
-    dat <- as.data.frame(model.frame(form.out))
+  if(form.out[[3]] == 1) {
+    dat <- data.frame(Y=as.matrix(Y),Int=rep(1,nrow(Y))) 
+    } else {
+    dat <- model.frame(form.out, data = model.frame(form.in[-2]))
+    names(dat[[1]]) <- as.character(form.in[[2]])
+  }
   dat
 }
 
@@ -446,6 +450,7 @@ allometry.data.frame <- function(f1){
 # lm fit modified for Procrustes residuals
 procD.fit <- function(f1, keep.order=FALSE,...){
   form.in <- formula(f1)
+  Y <- eval(form.in[[2]], parent.frame())
   if(length(dim(Y)) == 3)  Y <- two.d.array(Y) else Y <- as.matrix(Y)
   dots <- list(...)
   if(!is.null(dots$data)) dat <- dots$data else dat<-as.data.frame(model.frame(terms(form.in)))
