@@ -76,8 +76,9 @@
 #' plotAllometry(Y.gpa$coords ~ Y.gpa$Csize, method="PredLine", iter=9)
 plotAllometry<-function(f1, f2 = NULL, method=c("CAC","RegScore","PredLine"),warpgrids=TRUE,
                         iter=249,label=NULL, mesh=NULL, logsz = TRUE, RRPP=FALSE, verbose=FALSE){
+  form.in <- as.formula(f1)
   A <- eval(form.in[[2]], parent.frame())
-  size.df <- allometry.data.frame(f1)
+  size.df <- allometry.data.frame(form.in)
   Y <- as.matrix(size.df$Y)
   Size <- size.df$Size
   n<-nrow(Y)
