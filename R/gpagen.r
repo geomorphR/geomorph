@@ -27,7 +27,7 @@
 #'   superimposition (see Bookstein 1997; Gunz et al. 2005). Presently, two implementations are possible: 
 #'   1) the locations of semilandmarks can be optimized by minimizing the bending energy between the 
 #'   reference and target specimen (Bookstein 1997), or by minimizing the Procrustes distance between the two 
-#'   (Rohlf 2010).
+#'   (Rohlf 2010).  Note that specimens are NOT automatically reflected to improve the GPA-alignment.
 #'
 #' @param A An array (p x k x n) containing landmark coordinates for a set of specimens
 #' @param Proj A logical value indicating whether or not the aligned Procrustes residuals should be projected 

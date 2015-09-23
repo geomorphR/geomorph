@@ -29,8 +29,6 @@ Function returns a list with the following components:
   \item{pvalue}{The significance level of the observed association}
   \item{Xscores}{PLS scores for the first block of landmarks (when {verbose=TRUE})}
   \item{Yscores}{PLS scores for the second block of landmarks (when {verbose=TRUE})}
-  \item{left.singular.coef}{Left matrix singular value coefficients (loadings) for principal vector (when {verbose=TRUE})}
-  \item{right.singular.coef}{Right matrix singular value coefficients (loadings) for principal vector (when {verbose=TRUE})}
 }
 \description{
 Function performs two-block partial least squares analysis to assess the degree of association between
@@ -38,9 +36,11 @@ to blocks of Procrustes-aligned coordinates (or other variables)
 }
 \details{
 The function quantifies the degree of association between two blocks of shape data as
-  defined by landmark coordinates using partial least squares (see Rohlf and Corti 2000). If geometric morphometric data are used, it is assumed
+  defined by landmark coordinates using partial least squares (see Rohlf and Corti 2000). If geometric morphometric data are
+  used, it is assumed
   that the landmarks have previously been aligned using
-  Generalized Procrustes Analysis (GPA) [e.g., with \code{\link{gpagen}}]. If other variables are used, they must be input as a 2-Dimensional matrix (rows = specimens, columns = variables).
+  Generalized Procrustes Analysis (GPA) [e.g., with \code{\link{gpagen}}]. If other variables are used, they must be input as a
+  2-Dimensional matrix (rows = specimens, columns = variables).
 
 A plot of PLS scores from Block1 versus Block2 is provided for the first set of PLS axes. Thin-plate spline
   deformation grids along these axes are also shown (if data were input as a 3D array).
@@ -53,6 +53,9 @@ Y.gpa<-gpagen(plethShapeFood$land)    #GPA-alignment
 
 #2B-PLS between head shape and food use data
 two.b.pls(Y.gpa$coords,plethShapeFood$food,iter=99)
+
+# To obtain PLS coefficients, x and y scores, and random values
+two.b.pls(Y.gpa$coords,plethShapeFood$food,iter=99, verbose = TRUE)
 }
 \author{
 Dean Adams
