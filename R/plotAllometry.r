@@ -76,37 +76,34 @@
 #' plotAllometry(Y.gpa$coords ~ Y.gpa$Csize, method="PredLine", iter=9)
 plotAllometry<-function(f1, f2 = NULL, method=c("CAC","RegScore","PredLine"),warpgrids=TRUE,
                         iter=249,label=NULL, mesh=NULL, logsz = TRUE, RRPP=FALSE, verbose=FALSE){
-  A <- eval(f1[[2]], parent.frame())
-  size.df <- data.frame(Size = eval(f1[[3]], parent.frame()))
+  A <- eval(form.in[[2]], parent.frame())
+  size.df <- allometry.data.frame(f1)
+  Y <- as.matrix(size.df$Y)
   Size <- size.df$Size
-  if(length(dim(A)) == 3)  y <- two.d.array(A) else y <- as.matrix(A)
-  if(dim(model.matrix(~Size, data=size.df))[2] > 2) stop("Only a single variable for size can be used as covariate.  Consider using prcoD.lm for multiple variables")
-  n<-nrow(y)
+  n<-nrow(Y)
   if(logsz == TRUE) {
     xlab <- "log(Size)"
-    fnew <- as.formula("y~log(Size)")
-    fnew.df <- data.frame(y=y,Size=size.df)
+    fnew <- as.formula("Y~log(Size)")
     print(noquote("Natural log of size is used."))
     } else 
       { 
         xlab <- "Size"
-        fnew <- as.formula("y~Size")
+        fnew <- as.formula("Y~Size")
         print(noquote("Size has not been log transformed."))
-        fnew.df <- data.frame(y=y,Size=size.df)
       }                                                                                          
-  pf1<- procD.fit(fnew, data=fnew.df, keep.order=FALSE)
+  pf1<- procD.fit(fnew, data=size.df, keep.order=FALSE)
   method <- match.arg(method)
 
   if(!is.null(f2)) {
     fac.mf <- model.frame(f2)
     if(dim(fac.mf)[[2]] > 1) stop("Only a single grouping variable can be used")
     fTerms <- terms(f2)
-    cTerms <- terms(fnew, data = fnew.df)
+    cTerms <- terms(fnew, data = size.df)
     all.terms <- c(attr(cTerms, "term.labels"), attr(fTerms, "term.labels"))
-    f3 <- as.formula(paste(" y ~",paste(all.terms, collapse="+")))
-    f4 <- as.formula(paste(" y ~",paste(all.terms, collapse="*")))
-    pf4 <-procD.fit(f4, data=fnew.df)
-    pf3 <-procD.fit(f3, data=fnew.df)
+    f3 <- as.formula(paste(" Y ~",paste(all.terms, collapse="+")))
+    f4 <- as.formula(paste(" Y ~",paste(all.terms, collapse="*")))
+    pf4 <-procD.fit(f4, data=size.df)
+    pf3 <-procD.fit(f3, data=size.df)
     Xs2 <- pf4$Xs
     Xs1 <- pf3$Xs
     k <- length(pf4$Terms) 
@@ -137,27 +134,27 @@ plotAllometry<-function(f1, f2 = NULL, method=c("CAC","RegScore","PredLine"),war
   }
   
   if(is.null(f2)){
-    y.mn<-predict(lm(y~1))
+    y.mn<-predict(lm(Y~1))
     B<-as.matrix(pf1$fit)
     yhat<-X%*%B
   }
   if(!is.null(f2)){
-    y.mn<-predict(lm(y~model.matrix(fac.mf) - 1))
-    B<-coef(lm(y~X1 -1))
-    yhat<-predict(lm(y~X2 - 1))
+    y.mn<-predict(lm(Y~model.matrix(fac.mf) - 1), data = data.frame(model.frame(f2)))
+    B<-coef(lm(Y~X1 -1))
+    yhat<-predict(lm(Y~X2 - 1))
     if(anova.tab2[3,7]>0.05){
-      yhat<-predict(lm(y~X1 - 1))      
+      yhat<-predict(lm(Y~X1 - 1))      
     }
   } 
   asp = NULL
   if(anova.tab[1,7]>0.05){ asp <- 1}
-  y.cent<-y-y.mn
+  y.cent<-Y-y.mn
   size<-pf1$mf[[2]]
   a<-(t(y.cent)%*%size)%*%(1/(t(size)%*%size)); a<-a%*%(1/sqrt(t(a)%*%a))
   CAC<-y.cent%*%a  
   resid<-y.cent%*%(diag(dim(y.cent)[2])-a%*%t(a))
   RSC<-prcomp(resid)$x
-  Reg.proj<-y%*%B[2,]%*%sqrt(solve(t(B[2,])%*%B[2,])) 
+  Reg.proj<-Y%*%B[2,]%*%sqrt(solve(t(B[2,])%*%B[2,])) 
   pred.val<-prcomp(yhat)$x[,1] 
   Ahat<-arrayspecs(yhat,dim(A)[1],dim(A)[2])
   ref<-mshape(A)

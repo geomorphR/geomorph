@@ -424,17 +424,35 @@ identifyPch <- function(x, y = NULL, n = length(x), pch = 19, col="red", ...)
   res
 } 
 
-# lm fit modified for Procrustes residuals
-procD.fit <- function(f1, keep.order=FALSE,...){
+# data frames for shape data and independent variables
+procD.data.frame <- function(f1){
   form.in <- formula(f1)
   Y <- eval(form.in[[2]], parent.frame())
   if(length(dim(Y)) == 3)  Y <- two.d.array(Y) else Y <- as.matrix(Y)
+  form.out <- as.formula(paste("Y",form.in[3],sep="~"))
+  if(form.out[[3]] == 1) dat <- data.frame(Y=as.matrix(Y),Int=rep(1,nrow(Y))) else 
+    dat <- as.data.frame(model.frame(form.out))
+  dat
+}
+
+# allometry data frame coerces covariate = Size
+allometry.data.frame <- function(f1){
+  dat <- procD.data.frame(f1)
+  if(!is.vector(dat[[2]])) stop("First formula must contain only a single size covariate")
+  names(dat)[[2]] <- "Size"
+  dat
+}
+
+# lm fit modified for Procrustes residuals
+procD.fit <- function(f1, keep.order=FALSE,...){
+  form.in <- formula(f1)
+  if(length(dim(Y)) == 3)  Y <- two.d.array(Y) else Y <- as.matrix(Y)
   dots <- list(...)
-  if(!is.null(dots$data)) dat <- dots$data else dat<-as.data.frame(model.frame(as.formula(form.in[-2])))
+  if(!is.null(dots$data)) dat <- dots$data else dat<-as.data.frame(model.frame(terms(form.in)))
   if (any(is.na(Y)) == T) stop("Response data matrix (shape) contains missing values. Estimate these first (see 'estimate.missing').")
   if(nrow(Y) != nrow(model.frame(form.in[-2], data=dat))) stop("Different numbers of specimens in dependent and independent variables")
   Terms <- terms(form.in, keep.order=keep.order)
-  form.new <- as.formula(paste(c("Y",paste(attr(Terms, "term.labels"), collapse="+")),collapse="~"))
+  form.new <- as.formula(paste("Y",form.in[3],sep="~"))
   if(is.null(dots$contrasts)) fit <- lm(form.new, x=TRUE, y=TRUE, model=TRUE, weights=dots$weights, offset=dots$offset, data=dat) else
     fit <- lm(form.new, contrasts = dots$contrasts, weights=dots$weights, offset=dots$offset, data=dat, x=TRUE, y=TRUE, model=TRUE)
   mf <- model.frame(fit)

@@ -108,7 +108,7 @@
 #' trajectory.analysis(motionpaths$trajectories~motionpaths$groups,
 #' estimate.traj=FALSE, traj.pts=5,iter=15, verbose=TRUE)
 trajectory.analysis<-function(f1,estimate.traj=TRUE,traj.pts=NULL,iter=999, pca=TRUE,verbose=FALSE, group.cols=NULL, ...){
-  pf= procD.fit(f1, keep.order=FALSE, data=as.data.frame(model.frame(f1)))
+  pf= procD.fit(f1, keep.order=FALSE, data=procD.data.frame(f1))
   Y <- pf$Y
   k <- length(pf$Terms)
   if(estimate.traj==TRUE){

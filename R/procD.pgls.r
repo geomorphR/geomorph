@@ -61,7 +61,7 @@
 #' ### Example of D-PGLS for high-dimensional data, using RRPP
 #' procD.pgls(Y.gpa$coords ~ Y.gpa$Csize,plethspecies$phy,iter=49,RRPP=TRUE)
 procD.pgls<-function(f1, phy, iter=999, int.first = FALSE, RRPP=FALSE, verbose=FALSE, ...){
-  dat <- as.data.frame(model.frame(f1[-2]))
+  dat <- procD.lm(f1)
   if(any(class(f1)=="lm")) pf = procD.fit(f1,weights=f1$weights, contrasts=f1$contrasts, offset=f1$offset) else 
     pf= procD.fit(f1, data=dat,...)
   if(int.first == TRUE) ko = TRUE else ko = FALSE
