@@ -81,15 +81,12 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
     gpa.res<-gpagen(A,ShowPlot=FALSE)
     shape<-two.d.array(gpa.res$coords)
     f1<-"shape~ind*side"
-    if(!is.null(replicate)){
-      f1<-paste(f1,"ind:side:replicate",sep="+")}
+    if(!is.null(replicate)) f1<-paste(f1,"ind:side:replicate",sep="+")
     f1<-as.formula(f1)
     f1.df<-procD.data.frame(f1)
     pf1<-procD.fit(f1, data=f1.df)
     f2<-"gpa.res$Csize~ind*side"
-    if(!is.null(replicate)){
-      f2<-paste(f2,"ind:side:replicate",sep="+")
-    } 
+    if(!is.null(replicate)) f2<-paste(f2,"ind:side:replicate",sep="+")
     f2<-as.formula(f2)
     f2.df<-procD.data.frame(f2)
     pf2<-procD.fit(f2, data=f2.df)
@@ -184,10 +181,7 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
     gpa.res<-gpagen(A,ShowPlot = FALSE)
     shape<-two.d.array(gpa.res$coords)    
     f1<-"shape~ind*side"
-    if(!is.null(replicate)){
-      f1<-paste(f1,"ind:side:replicate",sep="+")
-      f1.df<-procD.data.frame(f1)
-      }
+    if(!is.null(replicate)) f1<-paste(f1,"ind:side:replicate",sep="+")
     f1<-as.formula(f1)
     f1.df<-procD.data.frame(f1)
     pf1<-procD.fit(f1, data=f1.df)
