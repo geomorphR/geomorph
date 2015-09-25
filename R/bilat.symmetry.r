@@ -71,7 +71,7 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
   if(any(is.na(A))==T){
     stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').")  }
   if(is.null(ind)){stop("Individuals not specified.")}
-  ind<-as.factor(ind)
+  ind<-as.factor(ind, exclude = TRUE)
   n<-dim(A)[3];   k<-dim(A)[2];  p<-dim(A)[1]; shpsp<-k*p-k-k*(k-1)/2-1; nind<-nlevels(ind) 
     spec.names<-dimnames(A)[[3]]
   if(!is.null(replicate)){replicate<-as.factor(replicate); nrep<-nlevels(replicate) }
