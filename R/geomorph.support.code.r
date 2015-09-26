@@ -448,7 +448,7 @@ allometry.data.frame <- function(f1){
   dat
 }
 
-# lm fit modified for Procrustes residuals
+# lm fit modified for Procrustes residuals 
 procD.fit <- function(f1, keep.order=FALSE,...){
   form.in <- formula(f1)
   Y <- eval(form.in[[2]], parent.frame())
