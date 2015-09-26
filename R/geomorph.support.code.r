@@ -448,7 +448,7 @@ allometry.data.frame <- function(f1){
   dat
 }
 
-# lm fit modified for Procrustes residuals
+# lm fit modified for Procrustes residuals 
 procD.fit <- function(f1, keep.order=FALSE,...){
   form.in <- formula(f1)
   Y <- eval(form.in[[2]], parent.frame())
@@ -458,11 +458,12 @@ procD.fit <- function(f1, keep.order=FALSE,...){
   if(!is.null(dots$data)) dat <- dots$data else dat<-as.data.frame(model.frame(terms(form.in)))
   if (any(is.na(Y)) == T) stop("Response data matrix (shape) contains missing values. Estimate these first (see 'estimate.missing').")
   if(nrow(Y) != nrow(model.frame(form.in[-2], data=dat))) stop("Different numbers of specimens in dependent and independent variables")
-  Terms <- terms(form.in, keep.order=keep.order)
+  Terms <- terms(form.in, keep.order=keep.order, data=dat)
   form.new <- as.formula(paste("Y",form.in[3],sep="~"))
   if(is.null(dots$contrasts)) fit <- lm(form.new, x=TRUE, y=TRUE, model=TRUE, weights=dots$weights, offset=dots$offset, data=dat) else
     fit <- lm(form.new, contrasts = dots$contrasts, weights=dots$weights, offset=dots$offset, data=dat, x=TRUE, y=TRUE, model=TRUE)
   mf <- model.frame(fit)
+  Terms <- terms(mf)
   Y <- fit$y
   if(is.matrix(Y)) n <- nrow(Y) else 
     if(is.vector(Y)) n <- length(Y) else
