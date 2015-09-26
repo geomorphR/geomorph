@@ -254,7 +254,8 @@ trajectory.analysis<-function(f1,estimate.traj=TRUE,traj.pts=NULL,iter=999, pca=
                       ANOVA.shape=shape.tab)
     }
       
-    trajplot(y.plot,traj.specs.obs, groups = as.factor(dat[[2]]))
+    trajplot(Data=y.plot,M=traj.specs.obs, 
+             groups = as.factor(dat[[2]]), group.cols=group.cols)
     if(traj.pts == 2) return(results[-4]) else return(results)
   }
   results
