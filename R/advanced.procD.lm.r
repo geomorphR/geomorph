@@ -103,8 +103,8 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL, angle.type = c(
   n <- nrow(Y)
   if(!is.null(pf1$weights)) w <- pf1$weights else w <- rep(1,n)
   if(any(w < 0)) stop("Weights cannot be negative")
-  k1 <- qr(model.matrix(terms(f1[-2])))$rank
-  k2 <- qr(model.matrix(terms(f2[-2])))$rank
+  k1 <- qr(model.matrix(terms(f1[-2])))$rank; if (k1 == 0) k1 = 1
+  k2 <- qr(model.matrix(terms(f2[-2])))$rank; if (k2 == 0) k2 = 1
   if(k1 > k2) pff <- pf1 else pff <- pf2
   if(k1 > k2) pfr <- pf2 else pfr <- pf1
   if(k1 == k2) stop("Models have same df")
