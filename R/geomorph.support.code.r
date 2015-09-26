@@ -453,6 +453,7 @@ procD.fit <- function(f1, keep.order=FALSE,...){
   form.in <- formula(f1)
   Y <- eval(form.in[[2]], parent.frame())
   if(length(dim(Y)) == 3)  Y <- two.d.array(Y) else Y <- as.matrix(Y)
+  form.in <- as.formula(paste("Y",form.in[3], sep="~"))
   dots <- list(...)
   if(!is.null(dots$data)) dat <- dots$data else dat<-as.data.frame(model.frame(terms(form.in)))
   if (any(is.na(Y)) == T) stop("Response data matrix (shape) contains missing values. Estimate these first (see 'estimate.missing').")
@@ -471,7 +472,8 @@ procD.fit <- function(f1, keep.order=FALSE,...){
   Y.prime <- Y*sqrt(w); X.prime <- X*sqrt(w)
   k <- length(attr(Terms, "term.labels"))
   Xs <- as.list(array(0,k+1))
-  for(i in 1:(k+1)) Xs[[i]] = as.matrix(X.prime[,1:i])
+  Xs[[1]] <- matrix(X.prime[,1])
+  if (k > 0) for(i in 1:k) Xs[[i+1]] = model.matrix(Terms[1:i])*sqrt(w)
   list(fit = coef(fit), Y=Y, Y.prime=Y.prime, X=X, X.prime=X.prime, Xs=Xs,Terms=attr(Terms,"term.labels"), mf=mf, call=formula(f1))
 }
 
