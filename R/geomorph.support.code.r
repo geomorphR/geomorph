@@ -474,7 +474,7 @@ procD.fit <- function(f1, keep.order=FALSE,...){
   k <- length(attr(Terms, "term.labels"))
   Xs <- as.list(array(0,k+1))
   Xs[[1]] <- matrix(X.prime[,1])
-  if (k > 0) for(i in 1:k) Xs[[i+1]] = model.matrix(Terms[1:i])*sqrt(w)
+  if (k > 0) for(i in 1:k) Xs[[i+1]] = model.matrix(Terms[1:i], data = mf)*sqrt(w)
   list(fit = coef(fit), Y=Y, Y.prime=Y.prime, X=X, X.prime=X.prime, Xs=Xs,Terms=attr(Terms,"term.labels"), mf=mf, call=formula(f1))
 }
 
