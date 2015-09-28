@@ -1,12 +1,8 @@
-CHANGES IN GEOMORPH VERSION 2.1.8
+CHANGES IN GEOMORPH VERSION 2.1.7-1
 
-  NEW FEATURES
-  
-  OTHER CHANGES
-  
   BUG FIXES
-    o Fixed small change in C-code for gpagen
-  
+    o Fixed error with warpRefToTarget() due to change in tps2d3d()
+    o Fixed error with 3D arrays in f1 of model functions
   
 CHANGES IN GEOMORPH VERSION 2.1.7
 
