@@ -483,10 +483,10 @@ procD.fit <- function(f1, keep.order=FALSE,...){
 # are taken care of in procD.fit (they pass through)
 
 lmfit <- function(x,y){# x matrix, y matrix
-  x<-as.matrix(x); y<-as.matrix(y)
-  if(nrow(x) != nrow(y)) stop("Different numbers of observations in x and y")
-  f<- x%*%solve(t(x)%*%x)%*%t(x)%*%y
-  r <- y-f
+  QRx = qr(x) 
+  Q = qr.Q(QRx) 
+  f = tcrossprod(Q[, 1:QRx$rank])%*% y 
+  r = y-f
   list(fitted=f, residuals=r)
 }
 
@@ -528,9 +528,9 @@ SS.random <- function(pf, Yalt = c("resample", "RRPP"), iter){ # like anova.part
     E[[i]] <- as.matrix(wfit$residuals/w)
   }
   SSEs.obs <- SSE(E)
-  P[,,1] <- SSEs.obs[1:k] - SSEs.obs[-1]
   ind <- perm.index(n,iter)
-  if(iter > 0) {for(i in 1:iter){
+  if(iter > 0) {
+    for(i in 1:(iter+1)){
       Er <- Map(function(x) x[ind[[i]],], E)
       Yr <- as.list(array(,k+1))
       if(Yalt == "RRPP") for(ii in 1:(k+1)) Yr[[ii]] <- Reduce("+",list(Er[[ii]], Yh[[ii]])) else
@@ -538,7 +538,7 @@ SS.random <- function(pf, Yalt = c("resample", "RRPP"), iter){ # like anova.part
       Yr <- lapply(Yr, function(x) as.matrix(x)*w)
       SSEs.null <- SSE(mod.resids(Xs,Yr))
       SSEs.r <- SSE(mod.resids(Xs[-1],Yr[1:k]))
-      P[,,1+i] <- SSEs.null[1:k]-SSEs.r
+      P[,,i] <- SSEs.null[1:k]-SSEs.r
     }}
    P
 }
@@ -568,9 +568,8 @@ SS.pgls.random <- function(pf, Pcor, Yalt = c("resample", "RRPP"), iter){ # like
       E[[i]]<- as.matrix(wfit$residuals)
     }
     SSEs.obs <- SSE(PE)
-    P[,,1] <- SSEs.obs[1:k] - SSEs.obs[-1]
     ind <- perm.index(n, iter)
-    if(iter > 0) {for(i in 1:iter){
+    if(iter > 0) {for(i in 1:(iter+1)){
       Er <- Map(function(x) x[ind[[i]],], E)
       Yr <- as.list(array(,k+1))
       if(Yalt == "RRPP") for(ii in 1:(k+1)) Yr[[ii]] <- Reduce("+",list(Er[[ii]], Yh[[ii]])) else
@@ -579,7 +578,7 @@ SS.pgls.random <- function(pf, Pcor, Yalt = c("resample", "RRPP"), iter){ # like
       PYr <-lapply(Yr, function(x) Pcor%*%x)
       SSEs.null <- SSE(mod.resids(PXs,PYr))
       SSEs.r <- SSE(mod.resids(PXs[-1],PYr[1:k]))
-      P[,,1+i] <- SSEs.null[1:k]-SSEs.r
+      P[,,i] <- SSEs.null[1:k]-SSEs.r
     }}
     P
 }
@@ -626,7 +625,7 @@ random.trajectories <- function(pf, Yalt = c("resample", "RRPP"), iter, pca=TRUE
   POrient[[1]] <- trajdir.obs
   PShape[[1]] <- trajshape.obs
   ind <- perm.index(n,iter)
-  if(iter > 0) {for(i in 1:iter){
+  if(iter > 0) {for(i in 1:(iter+1)){
     Er <- Map(function(x) x[ind[[i]],], E)
     Yr <- as.list(array(,k+1))
     if(Yalt == "RRPP") for(ii in 1:(k+1)) Yr[[ii]] <- Reduce("+",list(Er[[ii]], Yh[[ii]])) else
@@ -639,10 +638,10 @@ random.trajectories <- function(pf, Yalt = c("resample", "RRPP"), iter, pca=TRUE
     trajsize.r<-trajsize(traj.specs.r,n1,k1) 
     trajdir.r<-trajorient(traj.specs.r,n1,p); diag(trajdir.r)<-0 
     trajshape.r<-trajshape(traj.specs.r) 
-    Plm[[i+1]] <- SSEs.null[1:k]-SSEs.r
-    PSize[[i+1]] <- trajsize.r
-    POrient[[i+1]] <- trajdir.r
-    PShape[[i+1]] <- trajshape.r
+    Plm[[i]] <- SSEs.null[1:k]-SSEs.r
+    PSize[[i]] <- trajsize.r
+    POrient[[i]] <- trajdir.r
+    PShape[[i]] <- trajshape.r
   }}
   if(iter > 0) Y=Yr[[k]] else Y=Y
   list(Plm=Plm, PSize=PSize, POrient=POrient,PShape=PShape,Y=Y, 
