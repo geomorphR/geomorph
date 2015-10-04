@@ -746,7 +746,10 @@ ls.means = function(fac, cov.mf=NULL, Y){ # must be single factor; use single.fa
         for(i in 1:ncol(Xcov)) Xcov.mean[,i] = mean(Xcov[,i])
         lsm <- coef(lm(predict(lm(Y~Xcov+fac+0, data.frame(Xcov.mean)))~fac+0))
     }
-    rownames(lsm) <- levels(fac)
+    if(ncol(Y)>1) rownames(lsm) <- levels(fac) else {
+      lsm = matrix(lsm)
+      rownames(lsm) <- levels(fac)
+    }
     lsm
 }
 
