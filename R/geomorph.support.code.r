@@ -528,7 +528,6 @@ SS.random <- function(pf, Yalt = c("resample", "RRPP"), iter){ # like anova.part
     E[[i]] <- as.matrix(wfit$residuals/w)
   }
   SSEs.obs <- SSE(E)
-  P[,,1] <- SSEs.obs[1:k] - SSEs.obs[-1]
   ind <- perm.index(n,iter)
   if(iter > 0) {for(i in 1:iter){
       Er <- Map(function(x) x[ind[[i]],], E)
@@ -538,7 +537,7 @@ SS.random <- function(pf, Yalt = c("resample", "RRPP"), iter){ # like anova.part
       Yr <- lapply(Yr, function(x) as.matrix(x)*w)
       SSEs.null <- SSE(mod.resids(Xs,Yr))
       SSEs.r <- SSE(mod.resids(Xs[-1],Yr[1:k]))
-      P[,,1+i] <- SSEs.null[1:k]-SSEs.r
+      P[,,i] <- SSEs.null[1:k]-SSEs.r
     }}
    P
 }
