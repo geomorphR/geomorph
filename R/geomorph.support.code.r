@@ -483,10 +483,10 @@ procD.fit <- function(f1, keep.order=FALSE,...){
 # are taken care of in procD.fit (they pass through)
 
 lmfit <- function(x,y){# x matrix, y matrix
-  QRx = qr(x) 
-  Q = qr.Q(QRx) 
-  f = tcrossprod(Q[, 1:QRx$rank])%*% y 
-  r = y-f
+  x<-as.matrix(x); y<-as.matrix(y)
+  if(nrow(x) != nrow(y)) stop("Different numbers of observations in x and y")
+  f<- x%*%solve(t(x)%*%x)%*%t(x)%*%y
+  r <- y-f
   list(fitted=f, residuals=r)
 }
 
@@ -508,7 +508,8 @@ SSE <- function(E) sapply(E,function(x) sum(x^2))
 
 perm.index <-function(n,iter){
   set.seed(iter)
-  ind <- Map(function(x) sample(1:n), 1:iter)
+  ind <- c(list(1:n),(Map(function(x) sample(1:n), 1:iter)))
+  ind
 }
 
 # function for generating random SS for submodels, using resample or RRPP
@@ -529,8 +530,7 @@ SS.random <- function(pf, Yalt = c("resample", "RRPP"), iter){ # like anova.part
   }
   SSEs.obs <- SSE(E)
   ind <- perm.index(n,iter)
-  if(iter > 0) {
-    for(i in 1:(iter+1)){
+  if(iter > 0) {for(i in 1:(iter+1)){
       Er <- Map(function(x) x[ind[[i]],], E)
       Yr <- as.list(array(,k+1))
       if(Yalt == "RRPP") for(ii in 1:(k+1)) Yr[[ii]] <- Reduce("+",list(Er[[ii]], Yh[[ii]])) else
@@ -620,10 +620,6 @@ random.trajectories <- function(pf, Yalt = c("resample", "RRPP"), iter, pca=TRUE
   trajdir.obs<-trajorient(traj.specs.obs,n1,p); diag(trajdir.obs)<-0 
   trajshape.obs<-trajshape(traj.specs.obs) 
   SSEs.obs <- SSE(E)
-  Plm[[1]] <- SSEs.obs[1:k] - SSEs.obs[-1]
-  PSize[[1]] <- trajsize.obs
-  POrient[[1]] <- trajdir.obs
-  PShape[[1]] <- trajshape.obs
   ind <- perm.index(n,iter)
   if(iter > 0) {for(i in 1:(iter+1)){
     Er <- Map(function(x) x[ind[[i]],], E)
@@ -746,10 +742,7 @@ ls.means = function(fac, cov.mf=NULL, Y){ # must be single factor; use single.fa
         for(i in 1:ncol(Xcov)) Xcov.mean[,i] = mean(Xcov[,i])
         lsm <- coef(lm(predict(lm(Y~Xcov+fac+0, data.frame(Xcov.mean)))~fac+0))
     }
-    if(ncol(Y)>1) rownames(lsm) <- levels(fac) else {
-      lsm = matrix(lsm)
-      rownames(lsm) <- levels(fac)
-    }
+    rownames(lsm) <- levels(fac)
     lsm
 }
 
