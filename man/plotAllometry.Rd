@@ -5,7 +5,7 @@
 \title{Plot allometric patterns in landmark data}
 \usage{
 plotAllometry(f1, f2 = NULL, method = c("CAC", "RegScore", "PredLine"),
-  warpgrids = TRUE, iter = 249, label = NULL, mesh = NULL,
+  warpgrids = TRUE, iter = 999, label = NULL, mesh = NULL,
   logsz = TRUE, RRPP = FALSE, verbose = FALSE)
 }
 \arguments{

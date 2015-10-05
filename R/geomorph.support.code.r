@@ -530,7 +530,7 @@ SS.random <- function(pf, Yalt = c("resample", "RRPP"), iter){ # like anova.part
   }
   SSEs.obs <- SSE(E)
   ind <- perm.index(n,iter)
-  if(iter > 0) {for(i in 1:iter){
+  if(iter > 0) {for(i in 1:(iter+1)){
       Er <- Map(function(x) x[ind[[i]],], E)
       Yr <- as.list(array(,k+1))
       if(Yalt == "RRPP") for(ii in 1:(k+1)) Yr[[ii]] <- Reduce("+",list(Er[[ii]], Yh[[ii]])) else
@@ -569,7 +569,7 @@ SS.pgls.random <- function(pf, Pcor, Yalt = c("resample", "RRPP"), iter){ # like
     }
     SSEs.obs <- SSE(PE)
     ind <- perm.index(n, iter)
-    if(iter > 0) {for(i in 1:iter){
+    if(iter > 0) {for(i in 1:(iter+1)){
       Er <- Map(function(x) x[ind[[i]],], E)
       Yr <- as.list(array(,k+1))
       if(Yalt == "RRPP") for(ii in 1:(k+1)) Yr[[ii]] <- Reduce("+",list(Er[[ii]], Yh[[ii]])) else
@@ -620,7 +620,7 @@ random.trajectories <- function(pf, Yalt = c("resample", "RRPP"), iter, pca=TRUE
   trajdir.obs<-trajorient(traj.specs.obs,n1,p); diag(trajdir.obs)<-0 
   trajshape.obs<-trajshape(traj.specs.obs) 
   ind <- perm.index(n,iter)
-  if(iter > 0) {for(i in 1:iter){
+  if(iter > 0) {for(i in 1:(iter+1)){
     Er <- Map(function(x) x[ind[[i]],], E)
     Yr <- as.list(array(,k+1))
     if(Yalt == "RRPP") for(ii in 1:(k+1)) Yr[[ii]] <- Reduce("+",list(Er[[ii]], Yh[[ii]])) else
