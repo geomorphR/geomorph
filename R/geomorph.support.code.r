@@ -508,7 +508,8 @@ SSE <- function(E) sapply(E,function(x) sum(x^2))
 
 perm.index <-function(n,iter){
   set.seed(iter)
-  ind <- Map(function(x) sample(1:n), 1:iter)
+  ind <- c(list(1:n),(Map(function(x) sample(1:n), 1:iter)))
+  ind
 }
 
 # function for generating random SS for submodels, using resample or RRPP
@@ -567,7 +568,6 @@ SS.pgls.random <- function(pf, Pcor, Yalt = c("resample", "RRPP"), iter){ # like
       E[[i]]<- as.matrix(wfit$residuals)
     }
     SSEs.obs <- SSE(PE)
-    P[,,1] <- SSEs.obs[1:k] - SSEs.obs[-1]
     ind <- perm.index(n, iter)
     if(iter > 0) {for(i in 1:iter){
       Er <- Map(function(x) x[ind[[i]],], E)
@@ -578,7 +578,7 @@ SS.pgls.random <- function(pf, Pcor, Yalt = c("resample", "RRPP"), iter){ # like
       PYr <-lapply(Yr, function(x) Pcor%*%x)
       SSEs.null <- SSE(mod.resids(PXs,PYr))
       SSEs.r <- SSE(mod.resids(PXs[-1],PYr[1:k]))
-      P[,,1+i] <- SSEs.null[1:k]-SSEs.r
+      P[,,i] <- SSEs.null[1:k]-SSEs.r
     }}
     P
 }
@@ -619,11 +619,6 @@ random.trajectories <- function(pf, Yalt = c("resample", "RRPP"), iter, pca=TRUE
   trajsize.obs<-trajsize(traj.specs.obs,n1,k1) 
   trajdir.obs<-trajorient(traj.specs.obs,n1,p); diag(trajdir.obs)<-0 
   trajshape.obs<-trajshape(traj.specs.obs) 
-  SSEs.obs <- SSE(E)
-  Plm[[1]] <- SSEs.obs[1:k] - SSEs.obs[-1]
-  PSize[[1]] <- trajsize.obs
-  POrient[[1]] <- trajdir.obs
-  PShape[[1]] <- trajshape.obs
   ind <- perm.index(n,iter)
   if(iter > 0) {for(i in 1:iter){
     Er <- Map(function(x) x[ind[[i]],], E)
@@ -638,10 +633,10 @@ random.trajectories <- function(pf, Yalt = c("resample", "RRPP"), iter, pca=TRUE
     trajsize.r<-trajsize(traj.specs.r,n1,k1) 
     trajdir.r<-trajorient(traj.specs.r,n1,p); diag(trajdir.r)<-0 
     trajshape.r<-trajshape(traj.specs.r) 
-    Plm[[i+1]] <- SSEs.null[1:k]-SSEs.r
-    PSize[[i+1]] <- trajsize.r
-    POrient[[i+1]] <- trajdir.r
-    PShape[[i+1]] <- trajshape.r
+    Plm[[i]] <- SSEs.null[1:k]-SSEs.r
+    PSize[[i]] <- trajsize.r
+    POrient[[i]] <- trajdir.r
+    PShape[[i]] <- trajshape.r
   }}
   if(iter > 0) Y=Yr[[k]] else Y=Y
   list(Plm=Plm, PSize=PSize, POrient=POrient,PShape=PShape,Y=Y, 
