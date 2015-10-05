@@ -619,6 +619,7 @@ random.trajectories <- function(pf, Yalt = c("resample", "RRPP"), iter, pca=TRUE
   trajsize.obs<-trajsize(traj.specs.obs,n1,k1) 
   trajdir.obs<-trajorient(traj.specs.obs,n1,p); diag(trajdir.obs)<-0 
   trajshape.obs<-trajshape(traj.specs.obs) 
+  SSEs.obs <- SSE(E)
   ind <- perm.index(n,iter)
   if(iter > 0) {for(i in 1:(iter+1)){
     Er <- Map(function(x) x[ind[[i]],], E)
