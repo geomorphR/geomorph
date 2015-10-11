@@ -151,27 +151,27 @@ tps<-function(matr, matt, n,sz=1.5, pt.bg="black",
 
 tps2d<-function(M, matr, matt)
 {p<-dim(matr)[1]; q<-dim(M)[1]; n1<-p+3
- P<-matrix(NA, p, p)
- for (i in 1:p)
- {for (j in 1:p){
-   r2<-sum((matr[i,]-matr[j,])^2)
-   P[i,j]<- r2*log(r2)}}
- P[which(is.na(P))]<-0
- Q<-cbind(1, matr)
- L<-rbind(cbind(P,Q), cbind(t(Q),matrix(0,3,3)))
- m2<-rbind(matt, matrix(0, 3, 2))
- coefx<-solve(L)%*%m2[,1]
- coefy<-solve(L)%*%m2[,2]
- fx<-function(matr, M, coef)
- {Xn<-numeric(q)
-  for (i in 1:q)
-  {Z<-apply((matr-matrix(M[i,],p,2,byrow=TRUE))^2,1,sum)
-   Xn[i]<-coef[p+1]+coef[p+2]*M[i,1]+coef[p+3]*M[i,2]+sum(coef[1:p]*(Z*log(Z)))}
-  Xn}
- matg<-matrix(NA, q, 2)
- matg[,1]<-fx(matr, M, coefx)
- matg[,2]<-fx(matr, M, coefy)
- matg}
+P<-matrix(NA, p, p)
+for (i in 1:p)
+{for (j in 1:p){
+  r2<-sum((matr[i,]-matr[j,])^2)
+  P[i,j]<- r2*log(r2)}}
+P[which(is.na(P))]<-0
+Q<-cbind(1, matr)
+L<-rbind(cbind(P,Q), cbind(t(Q),matrix(0,3,3)))
+m2<-rbind(matt, matrix(0, 3, 2))
+coefx<-solve(L)%*%m2[,1]
+coefy<-solve(L)%*%m2[,2]
+fx<-function(matr, M, coef)
+{Xn<-numeric(q)
+for (i in 1:q)
+{Z<-apply((matr-matrix(M[i,],p,2,byrow=TRUE))^2,1,sum)
+Xn[i]<-coef[p+1]+coef[p+2]*M[i,1]+coef[p+3]*M[i,2]+sum(coef[1:p]*(Z*log(Z)))}
+Xn}
+matg<-matrix(NA, q, 2)
+matg[,1]<-fx(matr, M, coefx)
+matg[,2]<-fx(matr, M, coefy)
+matg}
 
 tps2d3d<-function(M, matr, matt){		#DCA: altered from J. Claude 2008  
   p<-dim(matr)[1]; k<-dim(matr)[2];q<-dim(M)[1]
@@ -212,8 +212,8 @@ trans<-function(A){scale(A,scale=FALSE)} 		#J. Claude 2008
 
 csize<-function(A)				#J. Claude 2008
 {p<-dim(A)[1]
- size<-sqrt(sum(apply(A,2,var))*(p-1))
- list("centroid_size"=size,"scaled"=A/size)}
+size<-sqrt(sum(apply(A,2,var))*(p-1))
+list("centroid_size"=size,"scaled"=A/size)}
 
 #' Estimate mean shape for a set of aligned specimens
 #'
@@ -245,8 +245,8 @@ pPsup<-function(M1,M2){				#J. Claude 2008# MODIFIED BY DCA: 2/2014
   Delt[k]<-sig*abs(Delt[k]); V[,k]<-sig*V[,k]
   Gam<-U%*%t(V)
   # beta<-sum(Delt)   #commented out: retain size-scaling (DCA)
-#  list(Mp1=beta*Z1%*%Gam,Mp2=Z2,rotation=Gam,scale=beta,
-#       df=sqrt(1-beta^2))}
+  #  list(Mp1=beta*Z1%*%Gam,Mp2=Z2,rotation=Gam,scale=beta,
+  #       df=sqrt(1-beta^2))}
   list(Mp1=Z1%*%Gam,Mp2=Z2,rotation=Gam)}    #simplify output and remove size re-scaling (DCA) 
 
 TransRot<-function(M1,M2){  			#DCA: 4, 2014 translate, rotate one specimen to another
@@ -263,24 +263,24 @@ TransRot<-function(M1,M2){  			#DCA: 4, 2014 translate, rotate one specimen to a
 
 pgpa<-function(A)				#J. Claude 2008	
 {p<-dim(A)[1]; k<-dim(A)[2]; n<-dim(A)[3]  
- temp2<-temp1<-array(NA,dim=c(p,k,n)); Siz<-numeric(n)#; Qm2<-numeric(n)
- for (i in 1:n)
- {Acs<-csize(A[,,i])
-  Siz[i]<-Acs[[1]]
-  temp1[,,i]<-trans(Acs[[2]])}
- Qm1<-dist(t(matrix(temp1,k*p,n)))
- Q<-sum(Qm1); iter<-0
- while (abs(Q)> 0.0001)
- {for(i in 1:n){
-   M<-mshape(temp1[,,-i])
-   temp2[,,i]<-pPsup(temp1[,,i],M)[[1]]}
+temp2<-temp1<-array(NA,dim=c(p,k,n)); Siz<-numeric(n)#; Qm2<-numeric(n)
+for (i in 1:n)
+{Acs<-csize(A[,,i])
+Siz[i]<-Acs[[1]]
+temp1[,,i]<-trans(Acs[[2]])}
+Qm1<-dist(t(matrix(temp1,k*p,n)))
+Q<-sum(Qm1); iter<-0
+while (abs(Q)> 0.0001)
+{for(i in 1:n){
+  M<-mshape(temp1[,,-i])
+  temp2[,,i]<-pPsup(temp1[,,i],M)[[1]]}
   Qm2<-dist(t(matrix(temp2,k*p,n)))
   Q<-sum(Qm1)-sum(Qm2)
   Qm1<-Qm2
   iter=iter+1
   temp1<-temp2}
- list("rotated"=temp2,"it.number"=iter,"Q"=Q,"intereucl.dist"=Qm2,"mshape"=
-   csize(mshape(temp2))[[2]],"cent.size"=Siz)
+list("rotated"=temp2,"it.number"=iter,"Q"=Q,"intereucl.dist"=Qm2,"mshape"=
+       csize(mshape(temp2))[[2]],"cent.size"=Siz)
 }
 
 orp<-function(A){			#DCA: altered from J. Claude 2008		 
@@ -342,7 +342,7 @@ trajplot<-function(Data,M, groups, group.cols = NULL, ...){
     for(i in 1:length(col.temp)) col.temp[i] = col.index[which(match(gp.index,gp.index[gp.index==groups[i]])==1)]
     col.index=col.temp
   }
-    
+  
   points(Data[,1:2],pch=21,bg="gray",cex=.75)
   for (i in 1:n){  	 	
     for (j in 1:(p-1)){		
@@ -433,7 +433,7 @@ procD.data.frame <- function(f1){
   form.out <- as.formula(paste("Y",form.in[3],sep="~"))
   if(form.out[[3]] == 1) {
     dat <- data.frame(Y=as.matrix(Y),Int=rep(1,nrow(Y))) 
-    } else {
+  } else {
     dat <- model.frame(form.out, data = model.frame(form.in[-2]))
     names(dat[[1]]) <- as.character(form.in[[2]])
   }
@@ -531,16 +531,16 @@ SS.random <- function(pf, Yalt = c("resample", "RRPP"), iter){ # like anova.part
   SSEs.obs <- SSE(E)
   ind <- perm.index(n,iter)
   if(iter > 0) {for(i in 1:(iter+1)){
-      Er <- Map(function(x) x[ind[[i]],], E)
-      Yr <- as.list(array(,k+1))
-      if(Yalt == "RRPP") for(ii in 1:(k+1)) Yr[[ii]] <- Reduce("+",list(Er[[ii]], Yh[[ii]])) else
-        Yr <- lapply(Yr,function(x) as.matrix(Y[ind[[i]],]))
-      Yr <- lapply(Yr, function(x) as.matrix(x)*w)
-      SSEs.null <- SSE(mod.resids(Xs,Yr))
-      SSEs.r <- SSE(mod.resids(Xs[-1],Yr[1:k]))
-      P[,,i] <- SSEs.null[1:k]-SSEs.r
-    }}
-   P
+    Er <- Map(function(x) x[ind[[i]],], E)
+    Yr <- as.list(array(,k+1))
+    if(Yalt == "RRPP") for(ii in 1:(k+1)) Yr[[ii]] <- Reduce("+",list(Er[[ii]], Yh[[ii]])) else
+      Yr <- lapply(Yr,function(x) as.matrix(Y[ind[[i]],]))
+    Yr <- lapply(Yr, function(x) as.matrix(x)*w)
+    SSEs.null <- SSE(mod.resids(Xs,Yr))
+    SSEs.r <- SSE(mod.resids(Xs[-1],Yr[1:k]))
+    P[,,i] <- SSEs.null[1:k]-SSEs.r
+  }}
+  P
 }
 
 # function for generating random SS for submodels, using resample or RRPP
@@ -558,29 +558,29 @@ SS.pgls.random <- function(pf, Pcor, Yalt = c("resample", "RRPP"), iter){ # like
   PY <- Pcor%*%Y
   E <- Yh <- Yhw <- PE <- PYh <- PYhw <-as.list(array(,k+1))
   for(i in 1:(k+1)){
-      Pwfit <- lmfit(as.matrix(PXs[[i]]),PY)
-      wfit <- lmfit(as.matrix(Xs[[i]]),Y)
-      PYhw[[i]] <- as.matrix(Pwfit$fitted)
-      PYh[[i]] <- as.matrix(Pwfit$fitted/w)
-      PE[[i]] <- as.matrix(Pwfit$residuals ) 
-      Yhw[[i]] <- as.matrix(wfit$fitted)
-      Yh[[i]] <- as.matrix(wfit$fitted/w)
-      E[[i]]<- as.matrix(wfit$residuals)
-    }
-    SSEs.obs <- SSE(PE)
-    ind <- perm.index(n, iter)
-    if(iter > 0) {for(i in 1:(iter+1)){
-      Er <- Map(function(x) x[ind[[i]],], E)
-      Yr <- as.list(array(,k+1))
-      if(Yalt == "RRPP") for(ii in 1:(k+1)) Yr[[ii]] <- Reduce("+",list(Er[[ii]], Yh[[ii]])) else
-        Yr <- lapply(Yr,function(x) as.matrix(Y[ind[[i]],]))
-      Yr <- lapply(Yr, function(x) as.matrix(x)*w)
-      PYr <-lapply(Yr, function(x) Pcor%*%x)
-      SSEs.null <- SSE(mod.resids(PXs,PYr))
-      SSEs.r <- SSE(mod.resids(PXs[-1],PYr[1:k]))
-      P[,,i] <- SSEs.null[1:k]-SSEs.r
-    }}
-    P
+    Pwfit <- lmfit(as.matrix(PXs[[i]]),PY)
+    wfit <- lmfit(as.matrix(Xs[[i]]),Y)
+    PYhw[[i]] <- as.matrix(Pwfit$fitted)
+    PYh[[i]] <- as.matrix(Pwfit$fitted/w)
+    PE[[i]] <- as.matrix(Pwfit$residuals ) 
+    Yhw[[i]] <- as.matrix(wfit$fitted)
+    Yh[[i]] <- as.matrix(wfit$fitted/w)
+    E[[i]]<- as.matrix(wfit$residuals)
+  }
+  SSEs.obs <- SSE(PE)
+  ind <- perm.index(n, iter)
+  if(iter > 0) {for(i in 1:(iter+1)){
+    Er <- Map(function(x) x[ind[[i]],], E)
+    Yr <- as.list(array(,k+1))
+    if(Yalt == "RRPP") for(ii in 1:(k+1)) Yr[[ii]] <- Reduce("+",list(Er[[ii]], Yh[[ii]])) else
+      Yr <- lapply(Yr,function(x) as.matrix(Y[ind[[i]],]))
+    Yr <- lapply(Yr, function(x) as.matrix(x)*w)
+    PYr <-lapply(Yr, function(x) Pcor%*%x)
+    SSEs.null <- SSE(mod.resids(PXs,PYr))
+    SSEs.r <- SSE(mod.resids(PXs[-1],PYr[1:k]))
+    P[,,i] <- SSEs.null[1:k]-SSEs.r
+  }}
+  P
 }
 
 
@@ -648,77 +648,78 @@ random.trajectories <- function(pf, Yalt = c("resample", "RRPP"), iter, pca=TRUE
 # ANOVA table exportable parts, based on osberved SS or SS.random output
 
 anova.parts <- function(pf, X = NULL, keep.order = FALSE, ...){
-    Xs <- pf$Xs
-    Y <- as.matrix(pf$Y)
-    if(!is.null(pf$weights)) w <- pf$weights else w <-rep(1,nrow(Y))
-    if(any(w < 0)) stop("Weights cannot be negative")
-    anova.terms <- pf$Terms
-    k <- length(pf$Terms)
-    df <- sapply(Xs, function(x) qr(x)$rank)
-    df <- df[-1] - df[1:k]
-    SSEs.obs <- SSE(mod.resids(Xs, list(Y)))
-    SS <- SSEs.obs[1:k] -SSEs.obs[-1]
-    SSY <- SSEs.obs[[1]]
-    MS <- SS/df
-    R2 <- SS/SSY
-    SSE.model <- SSY - sum(SS)
-    dfE <- nrow(Y)-(sum(df)+1)
-    MSE <- SSE.model/dfE
-    Fs <- MS/MSE
-    df <- c(df,dfE,nrow(Y)-1)
-    SS <- c(SS,SSE.model, SSY)
-    MS <- c(MS,MSE,NA)
-    R2 <- c(R2,NA,NA)
-    Fs <- c(Fs,NA,NA)
-    a.tab <- data.frame(df,SS,MS,Rsq=R2,F=Fs)
-    rownames(a.tab) <- c(anova.terms, "Residuals", "Total")
-    
-    list(table = a.tab, B = pf$fit, SS = SS, df = df, R2 = R2, F = Fs, Y = Y)
+  Xs <- pf$Xs
+  Y <- as.matrix(pf$Y)
+  if(!is.null(pf$weights)) w <- pf$weights else w <-rep(1,nrow(Y))
+  if(any(w < 0)) stop("Weights cannot be negative")
+  anova.terms <- pf$Terms
+  k <- length(pf$Terms)
+  df <- sapply(Xs, function(x) qr(x)$rank)
+  df <- df[-1] - df[1:k]
+  SSEs.obs <- SSE(mod.resids(Xs, list(Y)))
+  SS <- SSEs.obs[1:k] -SSEs.obs[-1]
+  SSY <- SSEs.obs[[1]]
+  MS <- SS/df
+  R2 <- SS/SSY
+  SSE.model <- SSY - sum(SS)
+  dfE <- nrow(Y)-(sum(df)+1)
+  MSE <- SSE.model/dfE
+  Fs <- MS/MSE
+  df <- c(df,dfE,nrow(Y)-1)
+  SS <- c(SS,SSE.model, SSY)
+  MS <- c(MS,MSE,NA)
+  R2 <- c(R2,NA,NA)
+  Fs <- c(Fs,NA,NA)
+  a.tab <- data.frame(df,SS,MS,Rsq=R2,F=Fs)
+  rownames(a.tab) <- c(anova.terms, "Residuals", "Total")
+  
+  list(table = a.tab, B = pf$fit, SS = SS, df = df, R2 = R2, F = Fs, Y = Y)
 }
 
 # ANOVA table exportable parts, based on osberved SS or SS.random output
 # with phylogentic correction
 anova.pgls.parts <- function(pf, X = NULL, Pcor, keep.order = FALSE,...){
-    Xs <- pf$Xs
-    Y <- as.matrix(pf$Y)
-    if(!is.null(pf$weights)) w <- pf$weights else w <-rep(1,nrow(Y))
-    if(any(w < 0)) stop("Weights cannot be negative")
-    anova.terms <- pf$Terms
-    k <- length(pf$terms)
-    df <- sapply(Xs, function(x) qr(x)$rank)
-    PXs <- lapply(Xs, function(x) Pcor%*%x)
-    PY <- Pcor%*%Y
-    SSEs.obs <- SSE(mod.resids(PXs, list(PY)))
-    SS <- SSEs.obs[1:k] -SSEs.obs[-1]
-    SSY <- SSEs.obs[[1]]
-    MS <- SS/df[-1]
-    R2 <- SS/SSY
-    SSE.model <- SSY - sum(SS)
-    dfE <- nrow(Y)-(sum(df)+1)
-    MSE <- SSE.model/dfE
-    Fs <- MS/MSE
-    df <- c(df[-1],dfE,nrow(Y)-1)
-    SS <- c(SS,SSE.model, SSY)
-    MS <- c(MS,MSE,NA)
-    R2 <- c(R2,NA,NA)
-    Fs <- c(Fs,NA,NA)
-    a.tab <- data.frame(df,SS,MS,Rsq=R2,F=Fs)
-    rownames(a.tab) <- c(anova.terms, "Residuals", "Total")
-    
-    list(table = a.tab, B = pf$fit, SS = SS, df = df, R2 = R2, F = Fs, Y = Y)
+  Xs <- pf$Xs
+  Y <- as.matrix(pf$Y)
+  if(!is.null(pf$weights)) w <- pf$weights else w <-rep(1,nrow(Y))
+  if(any(w < 0)) stop("Weights cannot be negative")
+  anova.terms <- pf$Terms
+  k <- length(pf$terms)
+  df <- sapply(Xs, function(x) qr(x)$rank)
+  df <- df[-1] - df[1:k]
+  PXs <- lapply(Xs, function(x) Pcor%*%x)
+  PY <- Pcor%*%Y
+  SSEs.obs <- SSE(mod.resids(PXs, list(PY)))
+  SS <- SSEs.obs[1:k] -SSEs.obs[-1]
+  SSY <- SSEs.obs[[1]]
+  MS <- SS/df
+  R2 <- SS/SSY
+  SSE.model <- SSY - sum(SS)
+  dfE <- nrow(Y)-(sum(df)+1)
+  MSE <- SSE.model/dfE
+  Fs <- MS/MSE
+  df <- c(df,dfE,nrow(Y)-1)
+  SS <- c(SS,SSE.model, SSY)
+  MS <- c(MS,MSE,NA)
+  R2 <- c(R2,NA,NA)
+  Fs <- c(Fs,NA,NA)
+  a.tab <- data.frame(df,SS,MS,Rsq=R2,F=Fs)
+  rownames(a.tab) <- c(anova.terms, "Residuals", "Total")
+  
+  list(table = a.tab, B = pf$fit, SS = SS, df = df, R2 = R2, F = Fs, Y = Y)
 }
 
 single.factor <- function(f1, keep.order = FALSE) {# f1 is a factorial (plus) model formula
-    form.in <- formula(f1)
-    if(length(form.in) == 3) form.in <- form.in[-2]
-    Terms <- terms(form.in, keep.order = keep.order)
-    facs <- (model.frame(Terms))
-    for(i in 1:ncol(facs)) if(!is.factor(facs[,i])) facs[,i] <- NA
-    facs <- t(na.omit(t(facs)))
-    g <- dim(facs)[[2]]
-    newfac <- facs[,1]
-    if(g > 1) for(i in 2:g) newfac <-factor(paste(newfac, facs[,i], sep = ":")) 
-    newfac
+  form.in <- formula(f1)
+  if(length(form.in) == 3) form.in <- form.in[-2]
+  Terms <- terms(form.in, keep.order = keep.order)
+  facs <- (model.frame(Terms))
+  for(i in 1:ncol(facs)) if(!is.factor(facs[,i])) facs[,i] <- NA
+  facs <- t(na.omit(t(facs)))
+  g <- dim(facs)[[2]]
+  newfac <- facs[,1]
+  if(g > 1) for(i in 2:g) newfac <-factor(paste(newfac, facs[,i], sep = ":")) 
+  newfac
 }
 
 cov.extract <- function(f1, keep.order = FALSE) {
@@ -733,181 +734,181 @@ cov.extract <- function(f1, keep.order = FALSE) {
 
 
 ls.means = function(fac, cov.mf=NULL, Y){ # must be single factor; use single.factor() if not
-    Y <- as.matrix(Y)
-    fac <- as.factor(fac)
-    if(is.null(cov.mf)){
-        lsm <- coef(lm(Y~fac+0))
-    } else {
-        Xcov <- Xcov.mean <- as.matrix((cov.mf)[,-1])
-        for(i in 1:ncol(Xcov)) Xcov.mean[,i] = mean(Xcov[,i])
-        lsm <- coef(lm(predict(lm(Y~Xcov+fac+0, data.frame(Xcov.mean)))~fac+0))
-    }
-    rownames(lsm) <- levels(fac)
-    lsm
+  Y <- as.matrix(Y)
+  fac <- as.factor(fac)
+  if(is.null(cov.mf)){
+    lsm <- coef(lm(Y~fac+0))
+  } else {
+    Xcov <- Xcov.mean <- as.matrix((cov.mf)[,-1])
+    for(i in 1:ncol(Xcov)) Xcov.mean[,i] = mean(Xcov[,i])
+    lsm <- coef(lm(predict(lm(Y~Xcov+fac+0, data.frame(Xcov.mean)))~fac+0))
+  }
+  rownames(lsm) <- levels(fac)
+  lsm
 }
 
 slopes = function(fac, cov, Y){ # must be single factor; use single.factor() if not
-    Y <- as.matrix(Y)
-    x <- cov[,-1]
-    fit <- lm(Y ~ x*fac)
-    B <- as.matrix(coef(fit))
-    k <- length(levels(fac))
-    Bslopes <- matrix(0,k, ncol(Y))
-    Bslopes[1,] <- B[2,]
-    for(i in 2:k){Bslopes[i,] = B[(k+i),] + B[2,]}
-    if(ncol(Y)==1) Bslopes <- cbind(1, Bslopes)
-    rownames(Bslopes) <- levels(fac)
-    Bslopes
+  Y <- as.matrix(Y)
+  x <- cov[,-1]
+  fit <- lm(Y ~ x*fac)
+  B <- as.matrix(coef(fit))
+  k <- length(levels(fac))
+  Bslopes <- matrix(0,k, ncol(Y))
+  Bslopes[1,] <- B[2,]
+  for(i in 2:k){Bslopes[i,] = B[(k+i),] + B[2,]}
+  if(ncol(Y)==1) Bslopes <- cbind(1, Bslopes)
+  rownames(Bslopes) <- levels(fac)
+  Bslopes
 }
 
 vec.cor.matrix <- function(M) {
-    M= as.matrix(M)
-    w = solve(diag(sqrt(diag(M%*%t(M)))))
-    z = w%*%as.matrix(M)
-    vc = z%*%t(z)
-    options(warn = -1)
-    vc
+  M= as.matrix(M)
+  w = solve(diag(sqrt(diag(M%*%t(M)))))
+  z = w%*%as.matrix(M)
+  vc = z%*%t(z)
+  options(warn = -1)
+  vc
 }
 
 vec.ang.matrix <- function(M, type = c("rad", "deg", "r")){
-    M= as.matrix(M)
-    type= match.arg(type)
-    if(type == "r") {
-        vc = vec.cor.matrix(M)
-    } else {
-        vc = vec.cor.matrix(M)
-        vc = acos(vc)
-        diag(vc) = 0
-    }
-    if(type == "deg") vc = vc*180/pi
-    vc
+  M= as.matrix(M)
+  type= match.arg(type)
+  if(type == "r") {
+    vc = vec.cor.matrix(M)
+  } else {
+    vc = vec.cor.matrix(M)
+    vc = acos(vc)
+    diag(vc) = 0
+  }
+  if(type == "deg") vc = vc*180/pi
+  vc
 }
 
 # PLS calculations for two.b.pls analysis
 
 pls = function(x,y){ # x and y must be vectors or matrices
-    px <- ncol(x)
-    py <- ncol(y)
-    XY.vcv <- var(cbind(x, y))
-    S12 <- XY.vcv[1:px, (px + 1):(px + py)]
-    pls <- svd(S12)
-    U <- pls$u
-    V <- pls$v
-    if(px && py == 1) {
-        XScores <- x
-        YScores <- y
-    }
-    if(px > 1 && py > 1) {
-        XScores <- x %*% U
-        YScores <- y %*% V
-    }
-    if(px == 1 && py > 1){
-        XScores <- x %*% V
-        YScores <- y %*% U
-    }
-    if(px > 1 && py == 1) {
-        XScores <- x %*% U
-        YScores <- y %*% V
-    }
-    
-    r <- cor(XScores[, 1], YScores[, 1])
-    rownames(U) <-colnames(x)
-    rownames(V) <- colnames(y)
-    list(r=r, XScores = matrix(XScores[,1]), YScores = matrix(YScores[,1]), U=U, V=V)
+  px <- ncol(x)
+  py <- ncol(y)
+  XY.vcv <- var(cbind(x, y))
+  S12 <- XY.vcv[1:px, (px + 1):(px + py)]
+  pls <- svd(S12)
+  U <- pls$u
+  V <- pls$v
+  if(px && py == 1) {
+    XScores <- x
+    YScores <- y
+  }
+  if(px > 1 && py > 1) {
+    XScores <- x %*% U
+    YScores <- y %*% V
+  }
+  if(px == 1 && py > 1){
+    XScores <- x %*% V
+    YScores <- y %*% U
+  }
+  if(px > 1 && py == 1) {
+    XScores <- x %*% U
+    YScores <- y %*% V
+  }
+  
+  r <- cor(XScores[, 1], YScores[, 1])
+  rownames(U) <-colnames(x)
+  rownames(V) <- colnames(y)
+  list(r=r, XScores = matrix(XScores[,1]), YScores = matrix(YScores[,1]), U=U, V=V)
 }
 
 
 
 # P-values  (for procD.lm RRPP method)
 pval = function(s){# s = sampling distribution
-    p = length(s)
-    r = rank(s)[1]-1
-    pv = 1-r/p
-    pv
+  p = length(s)
+  r = rank(s)[1]-1
+  pv = 1-r/p
+  pv
 }
 
 #P value matrix  (for procD.lm RRPP method)
 Pval.matrix = function(M){
-    P = matrix(0,dim(M)[1],dim(M)[2])
-    for(i in 1:dim(M)[1]){
-        for(j in 1:dim(M)[2]){
-            y = M[i,j,]
-            p = pval(y)
-            P[i,j]=p
-        }
+  P = matrix(0,dim(M)[1],dim(M)[2])
+  for(i in 1:dim(M)[1]){
+    for(j in 1:dim(M)[2]){
+      y = M[i,j,]
+      p = pval(y)
+      P[i,j]=p
     }
-    if(dim(M)[1] > 1 && dim(M)[2] >1) diag(P)=1
-    rownames(P) = dimnames(M)[[1]]
-    colnames(P) = dimnames(M)[[2]]
-    P
+  }
+  if(dim(M)[1] > 1 && dim(M)[2] >1) diag(P)=1
+  rownames(P) = dimnames(M)[[1]]
+  colnames(P) = dimnames(M)[[2]]
+  P
 }
 
 effect.size <- function(x, center = FALSE) {
-    z = scale(x, center=center)
-    z[1]
+  z = scale(x, center=center)
+  z[1]
 }
 Effect.size.matrix <- function(M, center=F){
-    Z = matrix(0,dim(M)[1],dim(M)[2])
-    for(i in 1:dim(M)[1]){
-        for(j in 1:dim(M)[2]){
-            y = M[i,j,]
-            n = length(y)
-            z = effect.size(y, center=center)*sqrt((n-1)/n)
-            Z[i,j]=z
-        }
+  Z = matrix(0,dim(M)[1],dim(M)[2])
+  for(i in 1:dim(M)[1]){
+    for(j in 1:dim(M)[2]){
+      y = M[i,j,]
+      n = length(y)
+      z = effect.size(y, center=center)*sqrt((n-1)/n)
+      Z[i,j]=z
     }
-    Z
+  }
+  Z
 }
 
 Gower.center <- function(D, calc.dist=FALSE){
-    D <- as.matrix(D)
-    if(calc.dist == TRUE) D = as.matrix(dist(D))
-    n <- nrow(D)
-    A <- -0.5*D^2
-    Id <- diag(1,n)
-    one <- matrix(1,n)
-    G <- (Id-(1/n)*one%*%t(one))%*%A%*%(Id-(1/n)*one%*%t(one))
-    G
+  D <- as.matrix(D)
+  if(calc.dist == TRUE) D = as.matrix(dist(D))
+  n <- nrow(D)
+  A <- -0.5*D^2
+  Id <- diag(1,n)
+  one <- matrix(1,n)
+  G <- (Id-(1/n)*one%*%t(one))%*%A%*%(Id-(1/n)*one%*%t(one))
+  G
 }
 
 Hat.SSE <- function(G, X){
-    I <- diag(1,nrow(G))
-    H <- X%*%solve(t(X)%*%X)%*%t(X)
-    SS <- sum(diag((I-H)%*%G%*%(I-H)))
-    SS
+  I <- diag(1,nrow(G))
+  H <- X%*%solve(t(X)%*%X)%*%t(X)
+  SS <- sum(diag((I-H)%*%G%*%(I-H)))
+  SS
 }
 
 Hat.SS.model <- function(G, X){
-    I <- diag(1,nrow(G))
-    H <- X%*%solve(t(X)%*%X)%*%t(X)
-    SS <- sum(diag(H%*%G%*%H))
-    SS
+  I <- diag(1,nrow(G))
+  H <- X%*%solve(t(X)%*%X)%*%t(X)
+  SS <- sum(diag(H%*%G%*%H))
+  SS
 }
 
 Hat.anova.tab <- function(D, f1, keep.order=TRUE){ # assumes dependent is distance matrix
-    form.in <- formula(f1)
-    Terms <- terms(form.in, keep.order = keep.order)
-    G <- Gower.center(D)
-    n <- nrow(D)
-    I <- diag(1,n)
-    Xn <- matrix(1,n)
-    X <- model.matrix(form.in)
-    SSE <-Hat.SSE(G,X)
-    SSM <-Hat.SS.model(G,X)
-    SST <-Hat.SSE(G,Xn)
-    dfM <- qr(X)$rank - 1
-    dfE <- n - qr(X)$rank
-    dfT <- n -1 
-    MSM <- SSM/dfM
-    MSE <- SSE/dfE
-    Fs <- MSM/MSE
-    R2 <- SSM/SST
-    df <- c(dfM,dfE,dfT)
-    SS <- c(SSM,SSE,SST)
-    MS <- c(MSM,MSE,NA)
-    R2 <- c(R2,NA,NA)
-    Fs <- c(Fs,NA,NA)
-    a.tab <- data.frame(df,SS,MS,Rsq=R2,F=Fs)
-    rownames(a.tab) <- c(attr(Terms, "term.labels"), "Residuals", "Total")
-    a.tab
+  form.in <- formula(f1)
+  Terms <- terms(form.in, keep.order = keep.order)
+  G <- Gower.center(D)
+  n <- nrow(D)
+  I <- diag(1,n)
+  Xn <- matrix(1,n)
+  X <- model.matrix(form.in)
+  SSE <-Hat.SSE(G,X)
+  SSM <-Hat.SS.model(G,X)
+  SST <-Hat.SSE(G,Xn)
+  dfM <- qr(X)$rank - 1
+  dfE <- n - qr(X)$rank
+  dfT <- n -1 
+  MSM <- SSM/dfM
+  MSE <- SSE/dfE
+  Fs <- MSM/MSE
+  R2 <- SSM/SST
+  df <- c(dfM,dfE,dfT)
+  SS <- c(SSM,SSE,SST)
+  MS <- c(MSM,MSE,NA)
+  R2 <- c(R2,NA,NA)
+  Fs <- c(Fs,NA,NA)
+  a.tab <- data.frame(df,SS,MS,Rsq=R2,F=Fs)
+  rownames(a.tab) <- c(attr(Terms, "term.labels"), "Residuals", "Total")
+  a.tab
 }
