@@ -686,18 +686,19 @@ anova.pgls.parts <- function(pf, X = NULL, Pcor, keep.order = FALSE,...){
     anova.terms <- pf$Terms
     k <- length(pf$terms)
     df <- sapply(Xs, function(x) qr(x)$rank)
+    df <- df[-1] - df[1:k]
     PXs <- lapply(Xs, function(x) Pcor%*%x)
     PY <- Pcor%*%Y
     SSEs.obs <- SSE(mod.resids(PXs, list(PY)))
     SS <- SSEs.obs[1:k] -SSEs.obs[-1]
     SSY <- SSEs.obs[[1]]
-    MS <- SS/df[-1]
+    MS <- SS/df
     R2 <- SS/SSY
     SSE.model <- SSY - sum(SS)
     dfE <- nrow(Y)-(sum(df)+1)
     MSE <- SSE.model/dfE
     Fs <- MS/MSE
-    df <- c(df[-1],dfE,nrow(Y)-1)
+    df <- c(df,dfE,nrow(Y)-1)
     SS <- c(SS,SSE.model, SSY)
     MS <- c(MS,MSE,NA)
     R2 <- c(R2,NA,NA)
