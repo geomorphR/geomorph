@@ -71,7 +71,7 @@ Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment
 procD.pgls(Y.gpa$coords ~ Y.gpa$Csize,plethspecies$phy,iter=49)
 
 ### Example of D-PGLS for high-dimensional data, using RRPP
-procD.pgls(Y.gpa$coords ~ Y.gpa$Csize,plethspecies$phy,iter=49,RRPP=TRUE)
+procD.pgls(Y.gpa$coords ~ Y.gpa$Csize,plethspecies$phy,iter=999,RRPP=TRUE)
 }
 \author{
 Dean Adams and Michael Collyer
