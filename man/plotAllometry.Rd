@@ -5,7 +5,7 @@
 \title{Plot allometric patterns in landmark data}
 \usage{
 plotAllometry(f1, f2 = NULL, method = c("CAC", "RegScore", "PredLine"),
-  warpgrids = TRUE, iter = 249, label = NULL, mesh = NULL,
+  warpgrids = TRUE, iter = 999, label = NULL, mesh = NULL,
   logsz = TRUE, RRPP = FALSE, verbose = FALSE)
 }
 \arguments{
@@ -23,7 +23,7 @@ should be displayed (note: if groups are provided no TPS grids are shown)}
 
 \item{label}{An optional vector indicating labels for each specimen that are to be displayed}
 
-\item{mesh}{A mesh3d object to be warped to represent shape deformation of the minimum and maximum size if {warpgrids= TRUE} (see \code{\link{warpRefMesh}}).}
+\item{mesh}{A mesh3d object to be warped to represent shape deformation of the minimum and maximum size if {warpgrids=TRUE} (see \code{\link{warpRefMesh}}).}
 
 \item{logsz}{A logical value indicating whether log(size) is used}
 
@@ -65,7 +65,7 @@ multivariate relationship between size and shape
   }
   For all methods, both centroid size and allometry scores are returned. Optionally, deformation grids can be
   requested, which display the shape of the smallest and largest specimens relative to the average specimen (using
-  'warpgrids=T' or 'warpgrids=F').
+  'warpgrids=TRUE' or 'warpgrids=FALSE').
   Finally, if groups are provided, the above approaches are implemented while
   accounting for within-group patterns of covariation (see references for explanation). In this case,
   the regression is of the form: shape~size+groups (Note: to examine the interaction term use \code{\link{procD.lm}}).
@@ -97,7 +97,7 @@ Adams, D. C., and A. Nistri. 2010. Ontogenetic convergence and evolution of foot
   in European cave salamanders (Family: Plethodontidae). BMC Evol. Biol. 10:1-10.
 
 Drake, A. G., and C. P. Klingenberg. 2008. The pace of morphological change: Historical
-  transformation of skull shape in St Bernard dogs. Proceedings of the Royal Society B, Biological Sciences 275:71'76.
+  transformation of skull shape in St Bernard dogs. Proc. R. Soc. B. 275:71-76.
 
 Mitteroecker, P., P. Gunz, M. Bernhard, K. Schaefer, and F. L. Bookstein. 2004.
   Comparison of cranial ontogenetic trajectories among great apes and humans. J. Hum. Evol. 46:679-698.

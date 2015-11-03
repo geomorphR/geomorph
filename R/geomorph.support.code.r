@@ -9,6 +9,7 @@
 #'  of shape variation and covariation, and provide graphical depictions of shapes and patterns of
 #'  shape variation.
 #' 
+#' 
 #' @import ape
 #' @import rgl
 #' @import stats
@@ -175,7 +176,7 @@ tps2d<-function(M, matr, matt)
 tps2d3d<-function(M, matr, matt){		#DCA: altered from J. Claude 2008  
   p<-dim(matr)[1]; k<-dim(matr)[2];q<-dim(M)[1]
   Pdist<-as.matrix(dist(matr))
-  ifelse(k==2,P<-Pdist^2*log(Pdist^2),P<- -Pdist) 
+  ifelse(k==2,P<-Pdist^2*log(Pdist^2),P<- Pdist) 
   P[which(is.na(P))]<-0
   Q<-cbind(1, matr)
   L<-rbind(cbind(P,Q), cbind(t(Q),matrix(0,k+1,k+1)))
@@ -424,20 +425,45 @@ identifyPch <- function(x, y = NULL, n = length(x), pch = 19, col="red", ...)
   res
 } 
 
-# lm fit modified for Procrustes residuals
+# data frames for shape data and independent variables
+procD.data.frame <- function(f1){
+  form.in <- formula(f1)
+  Y <- eval(form.in[[2]], parent.frame())
+  if(length(dim(Y)) == 3)  Y <- two.d.array(Y) else Y <- as.matrix(Y)
+  form.out <- as.formula(paste("Y",form.in[3],sep="~"))
+  if(form.out[[3]] == 1) {
+    dat <- data.frame(Y=as.matrix(Y),Int=rep(1,nrow(Y))) 
+    } else {
+    dat <- model.frame(form.out, data = model.frame(form.in[-2]))
+    names(dat[[1]]) <- as.character(form.in[[2]])
+  }
+  dat
+}
+
+# allometry data frame coerces covariate = Size
+allometry.data.frame <- function(f1){
+  dat <- procD.data.frame(f1)
+  if(!is.vector(dat[[2]])) stop("First formula must contain only a single size covariate")
+  names(dat)[[2]] <- "Size"
+  dat
+}
+
+# lm fit modified for Procrustes residuals 
 procD.fit <- function(f1, keep.order=FALSE,...){
   form.in <- formula(f1)
-  dots <- list(...)
-  if(!is.null(dots$data)) dat <- dots$data else dat<-as.data.frame(model.frame(form.in))
   Y <- eval(form.in[[2]], parent.frame())
-  if (any(is.na(Y)) == T) stop("Response data matrix (shape) contains missing values. Estimate these first (see 'estimate.missing').")
   if(length(dim(Y)) == 3)  Y <- two.d.array(Y) else Y <- as.matrix(Y)
+  form.in <- as.formula(paste("Y",form.in[3], sep="~"))
+  dots <- list(...)
+  if(!is.null(dots$data)) dat <- dots$data else dat<-as.data.frame(model.frame(terms(form.in)))
+  if (any(is.na(Y)) == T) stop("Response data matrix (shape) contains missing values. Estimate these first (see 'estimate.missing').")
   if(nrow(Y) != nrow(model.frame(form.in[-2], data=dat))) stop("Different numbers of specimens in dependent and independent variables")
-  Terms <- terms(form.in, keep.order=keep.order)
-  form.new <- as.formula(paste(c("Y",paste(attr(Terms, "term.labels"), collapse="+")),collapse="~"))
+  Terms <- terms(form.in, keep.order=keep.order, data=dat)
+  form.new <- as.formula(paste("Y",form.in[3],sep="~"))
   if(is.null(dots$contrasts)) fit <- lm(form.new, x=TRUE, y=TRUE, model=TRUE, weights=dots$weights, offset=dots$offset, data=dat) else
     fit <- lm(form.new, contrasts = dots$contrasts, weights=dots$weights, offset=dots$offset, data=dat, x=TRUE, y=TRUE, model=TRUE)
   mf <- model.frame(fit)
+  Terms <- terms(mf)
   Y <- fit$y
   if(is.matrix(Y)) n <- nrow(Y) else 
     if(is.vector(Y)) n <- length(Y) else
@@ -447,7 +473,8 @@ procD.fit <- function(f1, keep.order=FALSE,...){
   Y.prime <- Y*sqrt(w); X.prime <- X*sqrt(w)
   k <- length(attr(Terms, "term.labels"))
   Xs <- as.list(array(0,k+1))
-  for(i in 1:(k+1)) Xs[[i]] = as.matrix(X.prime[,1:i])
+  Xs[[1]] <- matrix(X.prime[,1])
+  if (k > 0) for(i in 1:k) Xs[[i+1]] = model.matrix(Terms[1:i], data = mf)*sqrt(w)
   list(fit = coef(fit), Y=Y, Y.prime=Y.prime, X=X, X.prime=X.prime, Xs=Xs,Terms=attr(Terms,"term.labels"), mf=mf, call=formula(f1))
 }
 
@@ -481,7 +508,8 @@ SSE <- function(E) sapply(E,function(x) sum(x^2))
 
 perm.index <-function(n,iter){
   set.seed(iter)
-  ind <- Map(function(x) sample(1:n), 1:iter)
+  ind <- c(list(1:n),(Map(function(x) sample(1:n), 1:iter)))
+  ind
 }
 
 # function for generating random SS for submodels, using resample or RRPP
@@ -501,9 +529,8 @@ SS.random <- function(pf, Yalt = c("resample", "RRPP"), iter){ # like anova.part
     E[[i]] <- as.matrix(wfit$residuals/w)
   }
   SSEs.obs <- SSE(E)
-  P[,,1] <- SSEs.obs[1:k] - SSEs.obs[-1]
   ind <- perm.index(n,iter)
-  if(iter > 0) {for(i in 1:iter){
+  if(iter > 0) {for(i in 1:(iter+1)){
       Er <- Map(function(x) x[ind[[i]],], E)
       Yr <- as.list(array(,k+1))
       if(Yalt == "RRPP") for(ii in 1:(k+1)) Yr[[ii]] <- Reduce("+",list(Er[[ii]], Yh[[ii]])) else
@@ -511,7 +538,7 @@ SS.random <- function(pf, Yalt = c("resample", "RRPP"), iter){ # like anova.part
       Yr <- lapply(Yr, function(x) as.matrix(x)*w)
       SSEs.null <- SSE(mod.resids(Xs,Yr))
       SSEs.r <- SSE(mod.resids(Xs[-1],Yr[1:k]))
-      P[,,1+i] <- SSEs.null[1:k]-SSEs.r
+      P[,,i] <- SSEs.null[1:k]-SSEs.r
     }}
    P
 }
@@ -541,9 +568,8 @@ SS.pgls.random <- function(pf, Pcor, Yalt = c("resample", "RRPP"), iter){ # like
       E[[i]]<- as.matrix(wfit$residuals)
     }
     SSEs.obs <- SSE(PE)
-    P[,,1] <- SSEs.obs[1:k] - SSEs.obs[-1]
     ind <- perm.index(n, iter)
-    if(iter > 0) {for(i in 1:iter){
+    if(iter > 0) {for(i in 1:(iter+1)){
       Er <- Map(function(x) x[ind[[i]],], E)
       Yr <- as.list(array(,k+1))
       if(Yalt == "RRPP") for(ii in 1:(k+1)) Yr[[ii]] <- Reduce("+",list(Er[[ii]], Yh[[ii]])) else
@@ -552,7 +578,7 @@ SS.pgls.random <- function(pf, Pcor, Yalt = c("resample", "RRPP"), iter){ # like
       PYr <-lapply(Yr, function(x) Pcor%*%x)
       SSEs.null <- SSE(mod.resids(PXs,PYr))
       SSEs.r <- SSE(mod.resids(PXs[-1],PYr[1:k]))
-      P[,,1+i] <- SSEs.null[1:k]-SSEs.r
+      P[,,i] <- SSEs.null[1:k]-SSEs.r
     }}
     P
 }
@@ -594,12 +620,8 @@ random.trajectories <- function(pf, Yalt = c("resample", "RRPP"), iter, pca=TRUE
   trajdir.obs<-trajorient(traj.specs.obs,n1,p); diag(trajdir.obs)<-0 
   trajshape.obs<-trajshape(traj.specs.obs) 
   SSEs.obs <- SSE(E)
-  Plm[[1]] <- SSEs.obs[1:k] - SSEs.obs[-1]
-  PSize[[1]] <- trajsize.obs
-  POrient[[1]] <- trajdir.obs
-  PShape[[1]] <- trajshape.obs
   ind <- perm.index(n,iter)
-  if(iter > 0) {for(i in 1:iter){
+  if(iter > 0) {for(i in 1:(iter+1)){
     Er <- Map(function(x) x[ind[[i]],], E)
     Yr <- as.list(array(,k+1))
     if(Yalt == "RRPP") for(ii in 1:(k+1)) Yr[[ii]] <- Reduce("+",list(Er[[ii]], Yh[[ii]])) else
@@ -612,10 +634,10 @@ random.trajectories <- function(pf, Yalt = c("resample", "RRPP"), iter, pca=TRUE
     trajsize.r<-trajsize(traj.specs.r,n1,k1) 
     trajdir.r<-trajorient(traj.specs.r,n1,p); diag(trajdir.r)<-0 
     trajshape.r<-trajshape(traj.specs.r) 
-    Plm[[i+1]] <- SSEs.null[1:k]-SSEs.r
-    PSize[[i+1]] <- trajsize.r
-    POrient[[i+1]] <- trajdir.r
-    PShape[[i+1]] <- trajshape.r
+    Plm[[i]] <- SSEs.null[1:k]-SSEs.r
+    PSize[[i]] <- trajsize.r
+    POrient[[i]] <- trajdir.r
+    PShape[[i]] <- trajshape.r
   }}
   if(iter > 0) Y=Yr[[k]] else Y=Y
   list(Plm=Plm, PSize=PSize, POrient=POrient,PShape=PShape,Y=Y, 
@@ -664,18 +686,19 @@ anova.pgls.parts <- function(pf, X = NULL, Pcor, keep.order = FALSE,...){
     anova.terms <- pf$Terms
     k <- length(pf$terms)
     df <- sapply(Xs, function(x) qr(x)$rank)
+    df <- df[-1] - df[1:k]
     PXs <- lapply(Xs, function(x) Pcor%*%x)
     PY <- Pcor%*%Y
     SSEs.obs <- SSE(mod.resids(PXs, list(PY)))
     SS <- SSEs.obs[1:k] -SSEs.obs[-1]
     SSY <- SSEs.obs[[1]]
-    MS <- SS/df[-1]
+    MS <- SS/df
     R2 <- SS/SSY
     SSE.model <- SSY - sum(SS)
     dfE <- nrow(Y)-(sum(df)+1)
     MSE <- SSE.model/dfE
     Fs <- MS/MSE
-    df <- c(df[-1],dfE,nrow(Y)-1)
+    df <- c(df,dfE,nrow(Y)-1)
     SS <- c(SS,SSE.model, SSY)
     MS <- c(MS,MSE,NA)
     R2 <- c(R2,NA,NA)

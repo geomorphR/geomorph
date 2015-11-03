@@ -64,7 +64,7 @@ Generalized Procrustes Analysis (GPA: Gower 1975, Rohlf and Slice 1990) is the p
   superimposition (see Bookstein 1997; Gunz et al. 2005). Presently, two implementations are possible:
   1) the locations of semilandmarks can be optimized by minimizing the bending energy between the
   reference and target specimen (Bookstein 1997), or by minimizing the Procrustes distance between the two
-  (Rohlf 2010).
+  (Rohlf 2010).  Note that specimens are NOT automatically reflected to improve the GPA-alignment.
 }
 \examples{
 #Example 1: fixed points only

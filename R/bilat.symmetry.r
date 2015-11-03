@@ -71,7 +71,7 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
   if(any(is.na(A))==T){
     stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').")  }
   if(is.null(ind)){stop("Individuals not specified.")}
-  ind<-as.factor(ind)
+  ind<-factor(ind)
   n<-dim(A)[3];   k<-dim(A)[2];  p<-dim(A)[1]; shpsp<-k*p-k-k*(k-1)/2-1; nind<-nlevels(ind) 
     spec.names<-dimnames(A)[[3]]
   if(!is.null(replicate)){replicate<-as.factor(replicate); nrep<-nlevels(replicate) }
@@ -81,19 +81,14 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
     gpa.res<-gpagen(A,ShowPlot=FALSE)
     shape<-two.d.array(gpa.res$coords)
     f1<-"shape~ind*side"
-    f1.df<-data.frame(shape=shape,ind=ind,side=side)
-    if(!is.null(replicate)){
-      f1<-paste(f1,"ind:side:replicate",sep="+")
-      f1.df<-data.frame(shape=shape,ind=ind,side=side, replicate=replicate)}
+    if(!is.null(replicate)) f1<-paste(f1,"ind:side:replicate",sep="+")
     f1<-as.formula(f1)
+    f1.df<-procD.data.frame(f1)
     pf1<-procD.fit(f1, data=f1.df)
     f2<-"gpa.res$Csize~ind*side"
-    f2.df<-data.frame(Csize=gpa.res$Csize, side=side, ind=ind)
-    if(!is.null(replicate)){
-      f2<-paste(f2,"ind:side:replicate",sep="+")
-      f2.df<-data.frame(Csize=gpa.res$Csize, side=side, ind=ind, replicate=replicate)
-    } 
+    if(!is.null(replicate)) f2<-paste(f2,"ind:side:replicate",sep="+")
     f2<-as.formula(f2)
+    f2.df<-procD.data.frame(f2)
     pf2<-procD.fit(f2, data=f2.df)
     res.shape<-anova.parts(pf1, keep.order=FALSE,Yalt="observed")$table    
     res.shape<-res.shape[1:(dim(res.shape)[1]-2),1:(dim(res.shape)[2]-2)]
@@ -185,12 +180,10 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
     ind<-rep(ind,2);side<-gl(2,n); if(!is.null(replicate)){replicate<-rep(replicate,2)}
     gpa.res<-gpagen(A,ShowPlot = FALSE)
     shape<-two.d.array(gpa.res$coords)    
-    f1<-"shape~ind*side"; f1.df<-data.frame(shape=shape, ind=ind, side=side)
-    if(!is.null(replicate)){
-      f1<-paste(f1,"ind:side:replicate",sep="+")
-      f1.df<-data.frame(shape=shape, ind=ind, side=side, replicate=replicate)
-      }
+    f1<-"shape~ind*side"
+    if(!is.null(replicate)) f1<-paste(f1,"ind:side:replicate",sep="+")
     f1<-as.formula(f1)
+    f1.df<-procD.data.frame(f1)
     pf1<-procD.fit(f1, data=f1.df)
     res.shape<-anova.parts(pf1, keep.order=FALSE, data=f1.df,Yalt="observed")$table    
     res.shape<-res.shape[1:(dim(res.shape)[1]-2),1:(dim(res.shape)[2]-2)]

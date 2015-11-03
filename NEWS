@@ -1,3 +1,10 @@
+CHANGES IN GEOMORPH VERSION 2.1.7-1
+
+  BUG FIXES
+    o Fixed error with warpRefToTarget() due to change in tps2d3d()
+    o Fixed error with 3D arrays in f1 of model functions
+    o Fixed errors with procD.fit and associated functions (problems included data-framing and correct degrees of freedom)
+  
 CHANGES IN GEOMORPH VERSION 2.1.7
 
   NEW FEATURES

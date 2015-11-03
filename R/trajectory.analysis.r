@@ -108,7 +108,7 @@
 #' trajectory.analysis(motionpaths$trajectories~motionpaths$groups,
 #' estimate.traj=FALSE, traj.pts=5,iter=15, verbose=TRUE)
 trajectory.analysis<-function(f1,estimate.traj=TRUE,traj.pts=NULL,iter=999, pca=TRUE,verbose=FALSE, group.cols=NULL, ...){
-  pf= procD.fit(f1, keep.order=FALSE, data=as.data.frame(model.frame(f1)))
+  pf= procD.fit(f1, keep.order=FALSE, data=procD.data.frame(f1))
   Y <- pf$Y
   k <- length(pf$Terms)
   if(estimate.traj==TRUE){
@@ -254,7 +254,8 @@ trajectory.analysis<-function(f1,estimate.traj=TRUE,traj.pts=NULL,iter=999, pca=
                       ANOVA.shape=shape.tab)
     }
       
-    trajplot(y.plot,traj.specs.obs, groups = as.factor(dat[[2]]))
+    trajplot(Data=y.plot,M=traj.specs.obs, 
+             groups = as.factor(dat[[2]]), group.cols=group.cols)
     if(traj.pts == 2) return(results[-4]) else return(results)
   }
   results

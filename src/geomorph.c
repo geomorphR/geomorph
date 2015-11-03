@@ -125,7 +125,6 @@ void DoGPA(int *pin, int *kin, int *nin, double *matin, double *res)
     for (j=0;j<k;j++){
       for (kk=0;kk<n;kk++){
        coords[i][j][kk]=matin[(kk*p*k)+(j*p)+i];
-       coords2[i][j][kk]=coords[i][j][kk]; 
      }
     }
   }
@@ -162,6 +161,7 @@ void DoGPA(int *pin, int *kin, int *nin, double *matin, double *res)
     for (j=0;j<p;j++){
       for (kk=0;kk<k;kk++){
         coords[j][kk][i]=coords[j][kk][i]/csize;
+        coords2[j][kk][i]=coords[j][kk][i]; 
       }
     }
   }
@@ -251,7 +251,6 @@ void DoGPA(int *pin, int *kin, int *nin, double *matin, double *res)
     }
   }
   Q2=Q2/2;
-  if(Q1 < Q2){Q=Q1-Q2;}  
   //new check for 1st iteration. If worse, dump and keep old. 9/2015
   if (Q2 > Q1){
     for (i=0;i<p;i++){
@@ -262,6 +261,10 @@ void DoGPA(int *pin, int *kin, int *nin, double *matin, double *res)
       }
     }
     Q=0;}
+//  if(Q1 < Q2){
+else{
+    Q=Q1-Q2;
+    Q1=Q2;}
 
 // Rotation iterations
 while (Q>minChange){

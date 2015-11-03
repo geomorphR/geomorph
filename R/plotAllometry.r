@@ -23,7 +23,7 @@
 #'   }
 #'   For all methods, both centroid size and allometry scores are returned. Optionally, deformation grids can be 
 #'   requested, which display the shape of the smallest and largest specimens relative to the average specimen (using 
-#'   'warpgrids=T' or 'warpgrids=F'). 
+#'   'warpgrids=TRUE' or 'warpgrids=FALSE'). 
 #'   Finally, if groups are provided, the above approaches are implemented while 
 #'   accounting for within-group patterns of covariation (see references for explanation). In this case,
 #'   the regression is of the form: shape~size+groups (Note: to examine the interaction term use \code{\link{procD.lm}}).
@@ -39,7 +39,7 @@
 #'  should be displayed (note: if groups are provided no TPS grids are shown)
 #' @param iter Number of iterations for significance testing
 #' @param label An optional vector indicating labels for each specimen that are to be displayed
-#' @param mesh A mesh3d object to be warped to represent shape deformation of the minimum and maximum size if {warpgrids= TRUE} (see \code{\link{warpRefMesh}}).
+#' @param mesh A mesh3d object to be warped to represent shape deformation of the minimum and maximum size if {warpgrids=TRUE} (see \code{\link{warpRefMesh}}).
 #' @param logsz A logical value indicating whether log(size) is used 
 #' @param RRPP A logical value to indicate if a randomized residual permutation procedure (RRPP) should be used for statistical tests
 #' @param verbose A logical value indicating whether the output is basic or verbose (see Value below)
@@ -59,7 +59,7 @@
 #' @references Adams, D. C., and A. Nistri. 2010. Ontogenetic convergence and evolution of foot morphology 
 #'   in European cave salamanders (Family: Plethodontidae). BMC Evol. Biol. 10:1-10.
 #' @references Drake, A. G., and C. P. Klingenberg. 2008. The pace of morphological change: Historical 
-#'   transformation of skull shape in St Bernard dogs. Proceedings of the Royal Society B, Biological Sciences 275:71'76.
+#'   transformation of skull shape in St Bernard dogs. Proc. R. Soc. B. 275:71-76.
 #' @references Mitteroecker, P., P. Gunz, M. Bernhard, K. Schaefer, and F. L. Bookstein. 2004. 
 #'   Comparison of cranial ontogenetic trajectories among great apes and humans. J. Hum. Evol. 46:679-698.
 #' @examples
@@ -75,38 +75,36 @@
 #' #Using predicted allometry curve for plot
 #' plotAllometry(Y.gpa$coords ~ Y.gpa$Csize, method="PredLine", iter=9)
 plotAllometry<-function(f1, f2 = NULL, method=c("CAC","RegScore","PredLine"),warpgrids=TRUE,
-                        iter=249,label=NULL, mesh=NULL, logsz = TRUE, RRPP=FALSE, verbose=FALSE){
-  A <- eval(f1[[2]], parent.frame())
-  size.df <- data.frame(Size = eval(f1[[3]], parent.frame()))
+                        iter=999,label=NULL, mesh=NULL, logsz = TRUE, RRPP=FALSE, verbose=FALSE){
+  form.in <- as.formula(f1)
+  A <- eval(form.in[[2]], parent.frame())
+  size.df <- allometry.data.frame(form.in)
+  Y <- as.matrix(size.df$Y)
   Size <- size.df$Size
-  if(length(dim(A)) == 3)  y <- two.d.array(A) else y <- as.matrix(A)
-  if(dim(model.matrix(~Size, data=size.df))[2] > 2) stop("Only a single variable for size can be used as covariate.  Consider using prcoD.lm for multiple variables")
-  n<-nrow(y)
+  n<-nrow(Y)
   if(logsz == TRUE) {
     xlab <- "log(Size)"
-    fnew <- as.formula("y~log(Size)")
-    fnew.df <- data.frame(y=y,Size=size.df)
+    fnew <- as.formula("Y~log(Size)")
     print(noquote("Natural log of size is used."))
     } else 
       { 
         xlab <- "Size"
-        fnew <- as.formula("y~Size")
+        fnew <- as.formula("Y~Size")
         print(noquote("Size has not been log transformed."))
-        fnew.df <- data.frame(y=y,Size=size.df)
       }                                                                                          
-  pf1<- procD.fit(fnew, data=fnew.df, keep.order=FALSE)
+  pf1<- procD.fit(fnew, data=size.df, keep.order=FALSE)
   method <- match.arg(method)
 
   if(!is.null(f2)) {
     fac.mf <- model.frame(f2)
     if(dim(fac.mf)[[2]] > 1) stop("Only a single grouping variable can be used")
     fTerms <- terms(f2)
-    cTerms <- terms(fnew, data = fnew.df)
+    cTerms <- terms(fnew, data = size.df)
     all.terms <- c(attr(cTerms, "term.labels"), attr(fTerms, "term.labels"))
-    f3 <- as.formula(paste(" y ~",paste(all.terms, collapse="+")))
-    f4 <- as.formula(paste(" y ~",paste(all.terms, collapse="*")))
-    pf4 <-procD.fit(f4, data=fnew.df)
-    pf3 <-procD.fit(f3, data=fnew.df)
+    f3 <- as.formula(paste(" Y ~",paste(all.terms, collapse="+")))
+    f4 <- as.formula(paste(" Y ~",paste(all.terms, collapse="*")))
+    pf4 <-procD.fit(f4, data=size.df)
+    pf3 <-procD.fit(f3, data=size.df)
     Xs2 <- pf4$Xs
     Xs1 <- pf3$Xs
     k <- length(pf4$Terms) 
@@ -137,27 +135,27 @@ plotAllometry<-function(f1, f2 = NULL, method=c("CAC","RegScore","PredLine"),war
   }
   
   if(is.null(f2)){
-    y.mn<-predict(lm(y~1))
+    y.mn<-predict(lm(Y~1))
     B<-as.matrix(pf1$fit)
     yhat<-X%*%B
   }
   if(!is.null(f2)){
-    y.mn<-predict(lm(y~model.matrix(fac.mf) - 1))
-    B<-coef(lm(y~X1 -1))
-    yhat<-predict(lm(y~X2 - 1))
+    y.mn<-predict(lm(Y~model.matrix(fac.mf) - 1), data = data.frame(model.frame(f2)))
+    B<-coef(lm(Y~X1 -1))
+    yhat<-predict(lm(Y~X2 - 1))
     if(anova.tab2[3,7]>0.05){
-      yhat<-predict(lm(y~X1 - 1))      
+      yhat<-predict(lm(Y~X1 - 1))      
     }
   } 
   asp = NULL
   if(anova.tab[1,7]>0.05){ asp <- 1}
-  y.cent<-y-y.mn
+  y.cent<-Y-y.mn
   size<-pf1$mf[[2]]
   a<-(t(y.cent)%*%size)%*%(1/(t(size)%*%size)); a<-a%*%(1/sqrt(t(a)%*%a))
   CAC<-y.cent%*%a  
   resid<-y.cent%*%(diag(dim(y.cent)[2])-a%*%t(a))
   RSC<-prcomp(resid)$x
-  Reg.proj<-y%*%B[2,]%*%sqrt(solve(t(B[2,])%*%B[2,])) 
+  Reg.proj<-Y%*%B[2,]%*%sqrt(solve(t(B[2,])%*%B[2,])) 
   pred.val<-prcomp(yhat)$x[,1] 
   Ahat<-arrayspecs(yhat,dim(A)[1],dim(A)[2])
   ref<-mshape(A)

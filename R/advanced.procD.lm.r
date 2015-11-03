@@ -88,35 +88,35 @@
 #'groups = ~sp, slope = ~log(CS), angle.type = "deg", iter=19)
 
 advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL, angle.type = c("r", "deg", "rad"), iter=999, verbose = FALSE, ...){
+  dat <- procD.data.frame(f1)
   if(any(class(f1)=="lm")) pf1 = procD.fit(f1,weights=f1$weights, contrasts=f1$contrasts, offset=f1$offset) else 
-    pf1= procD.fit(f1,...)
+    pf1= procD.fit(f1, data=dat,...)
   Y <- as.matrix(pf1$Y)
-  if(any(class(f2)=="lm")) pf1 = procD.fit(f1,weights=f1$weights, contrasts=f1$contrasts, offset=f1$offset) else 
-    {
+  if(any(class(f2)=="lm")) pf2 = procD.fit(f2,weights=f1$weights, contrasts=f2$contrasts, offset=f2$offset) else {
       if(length(as.formula(f2))==2) f2 <-as.formula(paste(c("Y",f2[[2]]),collapse="~"))
       if(length(as.formula(f2))==3) f2 <-as.formula(paste(c("Y",f2[[3]]),collapse="~"))  
-      pf2= procD.fit(f2,...)
+      dat2 <- procD.data.frame(f2)
+      pf2= procD.fit(f2, data=dat2,...)
     }
       
   Y.prime <- as.matrix(pf1$Y.prime)
-  Y <- as.matrix(pf1$Y)
   n <- nrow(Y)
   if(!is.null(pf1$weights)) w <- pf1$weights else w <- rep(1,n)
   if(any(w < 0)) stop("Weights cannot be negative")
-  k1 <- qr(model.matrix(f1))$rank
-  k2 <- qr(model.matrix(f2))$rank
-  if(k1 > k2) ff <- f1 else ff <- f2
-  if(k1 > k2) fr <- f2 else fr <- f1
+  k1 <- qr(model.matrix(terms(f1[-2])))$rank; if (k1 == 0) k1 = 1
+  k2 <- qr(model.matrix(terms(f2[-2])))$rank; if (k2 == 0) k2 = 1
+  if(k1 > k2) pff <- pf1 else pff <- pf2
+  if(k1 > k2) pfr <- pf2 else pfr <- pf1
   if(k1 == k2) stop("Models have same df")
   dfr <- nrow(Y) - min(k1,k2)
   dff <- nrow(Y) - max(k1,k2)
-  SSEr <- SSE(mod.resids(list(model.matrix(fr)*sqrt(w)), list(Y.prime)))
-  SSEf <- SSE(mod.resids(list(model.matrix(ff)*sqrt(w)), list(Y.prime)))
+  SSEr <- SSE(mod.resids(list(as.matrix(pfr$X.prime)), list(Y.prime)))
+  SSEf <- SSE(mod.resids(list(as.matrix(pff$X.prime)), list(Y.prime)))
   SSm <- SSEr - SSEf
   Fs <- (SSm/(dfr-dff))/(SSEf/dff)
   ind <- perm.index(n, iter)
   
-  z <- lmfit(model.matrix(fr)[,-1],Y.prime)
+  z <- lmfit(as.matrix(pfr$X.prime),Y.prime)
   R <- z$residuals
   Yh <- z$fitted
   P <- array(,iter+1)
@@ -134,13 +134,13 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL, angle.type = c(
     for(i in 1:iter){
       Rr <- R[ind[[i]],]
       pseudoY =  Yh + Rr
-      P[i+1] <- SSE(mod.resids(list(model.matrix(fr)*sqrt(w)), list(pseudoY*sqrt(w)))) - SSE(mod.resids(list(model.matrix(ff)*sqrt(w)), list(pseudoY*sqrt(w))))
+      P[i+1] <- SSE(mod.resids(list(as.matrix(pfr$X.prime)), list(pseudoY*sqrt(w)))) - SSE(mod.resids(list(as.matrix(pff$X.prime)), list(pseudoY*sqrt(w))))
     }
     P.val <- pval(P)
     Z.score <- effect.size(P)
     anova.tab <- data.frame(df = c(dfr,dff), SSE = c(SSEr, SSEf), SS = c(NA, SSm),
                             F = c(NA, Fs), Z = c(NA, Z.score), P = c(NA,P.val))
-    rownames(anova.tab) <- c(formula(fr)[-2], formula(ff)[-2])
+    rownames(anova.tab) <- c(pfr$call[-2], pff$call[-2])
     attr(anova.tab, "heading") <- "\nANOVA with RRPP\n"
     class(anova.tab) <- c("anova", class(anova.tab))
     if(verbose == TRUE) out = list(anova.table = anova.tab, SS.rand = P) else out = anova.tab
@@ -154,7 +154,7 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL, angle.type = c(
     for(i in 1:iter){
       Rr <- R[ind[[i]],]
       pseudoY =  Yh + Rr
-      P[i+1] <- SSE(mod.resids(list(model.matrix(fr)*sqrt(w)), list(pseudoY*sqrt(w)))) - SSE(mod.resids(list(model.matrix(ff)*sqrt(w)), list(pseudoY*sqrt(w))))
+      P[i+1] <- SSE(mod.resids(list(as.matrix(pfr$X.prime)), list(pseudoY*sqrt(w)))) - SSE(mod.resids(list(as.matrix(pff$X.prime)), list(pseudoY*sqrt(w))))
       mr <- ls.means(gr, cov.mf = NULL, pseudoY)
       P.dist[,,i+1] <- as.matrix(dist(mr))  
     }
@@ -163,7 +163,7 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL, angle.type = c(
 
     anova.tab <- data.frame(df = c(dfr,dff), SSE = c(SSEr, SSEf), SS = c(NA, SSm),
                             F = c(NA, Fs), Z = c(NA, Z.score), P = c(NA,P.val))
-    rownames(anova.tab) <- c(formula(fr)[-2], formula(ff)[-2])
+    rownames(anova.tab) <- c(pfr$call[-2], pff$call[-2])
     attr(anova.tab, "heading") <- "\nANOVA with RRPP\n"
     class(anova.tab) <- c("anova", class(anova.tab))
     Means.dist <- as.matrix(dist(m))
@@ -186,7 +186,7 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL, angle.type = c(
     for(i in 1: iter){
       Rr <- R[ind[[i]],]
       pseudoY =  Yh + Rr
-      P[i+1] <- SSE(mod.resids(list(model.matrix(fr)*sqrt(w)), list(pseudoY*sqrt(w)))) - SSE(mod.resids(list(model.matrix(ff)*sqrt(w)), list(pseudoY*sqrt(w))))
+      P[i+1] <- SSE(mod.resids(list(as.matrix(pfr$X.prime)), list(pseudoY*sqrt(w)))) - SSE(mod.resids(list(as.matrix(pff$X.prime)), list(pseudoY*sqrt(w))))
       mr <- ls.means(gr, cov, pseudoY)  
       Bslopes.r <- slopes(gr, cov, pseudoY)
       P.mean.dist[,,i+1] <- as.matrix(dist(mr))     
@@ -197,7 +197,7 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL, angle.type = c(
     Z.score <- effect.size(P)
     anova.tab <- data.frame(df = c(dfr,dff), SSE = c(SSEr, SSEf), SS = c(NA, SSm),
                             F = c(NA, Fs), Z = c(NA, Z.score), P = c(NA,P.val))
-    rownames(anova.tab) <- c(formula(fr)[-2], formula(ff)[-2])
+    rownames(anova.tab) <- c(pfr$call[-2], pff$call[-2])
     attr(anova.tab, "heading") <- "\nANOVA with RRPP\n"
     class(anova.tab) <- c("anova", class(anova.tab))
     Means.dist <- as.matrix(dist(m))

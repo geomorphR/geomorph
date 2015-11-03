@@ -72,7 +72,7 @@
 #'  procD.lm(rat.gpa$coords ~ rat.gpa$Csize,iter=49,RRPP=TRUE)
 procD.lm<- function(f1, iter = 999, RRPP = FALSE, int.first = FALSE, verbose=FALSE, ...){
   if(int.first==TRUE) ko = TRUE else ko = FALSE
-  dat <- as.data.frame(model.frame(f1[-2]))
+  dat <- procD.data.frame(f1)
   if(any(class(f1)=="lm")) pf = procD.fit(f1,weights=f1$weights, contrasts=f1$contrasts, offset=f1$offset, data=dat) else 
     pf= procD.fit(f1, data=dat,...)
   anova.parts.obs <- anova.parts(pf, keep.order=ko)
