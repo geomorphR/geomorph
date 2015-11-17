@@ -106,8 +106,8 @@ procD.pgls<-function(f1, phy, iter=999, int.first = FALSE, RRPP=FALSE, verbose=F
   Fs <- sapply(1:(iter+1), function(j){
     (P$SS[,,j]/df)/(P$SSEs[,,j]/dfE)
   })
-  if(is.vector(Fs)) P.val <- pval(Fs) else P.val <- Pval.matrix(Fs)
-  if(is.vector(Fs)) Z <- effect.size(Fs) else Z <- Effect.size.matrix(Fs)
+  if(is.vector(Fs)) P.val <- pval(Fs) else P.val <- apply(Fs,1,pval)
+  if(is.vector(Fs)) Z <- effect.size(Fs) else Z <- apply(Fs,1,pval)
   anova.tab <- data.frame(anova.tab, Z = c(Z, NA, NA), P.value = c(P.val, NA, NA))
   if(RRPP == TRUE) anova.title = "\nRandomized Residual Permutation Procedure used\n" else 
     anova.title = "\nRandomization of Raw Values used\n"  
