@@ -553,7 +553,7 @@ SS.pgls.random <- function(pf, Pcor, Yalt = c("resample", "RRPP"), iter){ # like
   if(any(w < 0)) stop("Weights cannot be negative")
   Xs <- pf$Xs
   Pcor=as.matrix(Pcor)
-  P <-array(, c(k, 1, iter+1))
+  P <- SSEfull <- array(, c(k, 1, iter+1))
   PXs <- lapply(Xs, function(x) Pcor%*%x)
   PY <- Pcor%*%Y
   E <- Yh <- Yhw <- PE <- PYh <- PYhw <-as.list(array(,k+1))
@@ -579,8 +579,9 @@ SS.pgls.random <- function(pf, Pcor, Yalt = c("resample", "RRPP"), iter){ # like
       SSEs.null <- SSE(mod.resids(PXs,PYr))
       SSEs.r <- SSE(mod.resids(PXs[-1],PYr[1:k]))
       P[,,i] <- SSEs.null[1:k]-SSEs.r
+      SSEfull[,,i] <- SSEs.r[[k]]
     }}
-    P
+    list(SS=P, SSEs = SSEfull)
 }
 
 

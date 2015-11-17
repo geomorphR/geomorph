@@ -103,8 +103,11 @@ procD.pgls<-function(f1, phy, iter=999, int.first = FALSE, RRPP=FALSE, verbose=F
   dfE <-anova.parts.obs$df[k+1]
   if(RRPP == TRUE) P <- SS.pgls.random(pf,Pcor,Yalt="RRPP", iter=iter) else 
     P <- SS.pgls.random(pf, Pcor,Yalt="resample", iter=iter)
-  P.val <- Pval.matrix(P)
-  Z <- Effect.size.matrix(P)
+  Fs <- sapply(1:(iter+1), function(j){
+    (P$SS[,,j]/df)/(P$SSEs[,,j]/dfE)
+  })
+  P.val <- Pval.matrix(Fs)
+  Z <- Effect.size.matrix(Fs)
   anova.tab <- data.frame(anova.tab, Z = c(Z, NA, NA), P.value = c(P.val, NA, NA))
   if(RRPP == TRUE) anova.title = "\nRandomized Residual Permutation Procedure used\n" else 
     anova.title = "\nRandomization of Raw Values used\n"  
