@@ -121,10 +121,16 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
     PC1<-shape%*%eig.FA$vec[,1]
     FA.mns<-arrayspecs((rbind(shape[which.min(PC1),],shape[which.max(PC1),])),p,k) 
     mn.shape<-mshape(gpa.res$coords)
-    symm.component<-arrayspecs(predict(lm(shape~ind)),p,k)
-    asymm.component<-array(data=NA,dim=c(p,k,n))     
-      dimnames(symm.component)[[3]] <- dimnames(asymm.component)[[3]]<-spec.names
-    for (i in 1:n){ asymm.component[,,i]<-(gpa.res$coords[,,i]-symm.component[,,i]) + mn.shape}
+    
+    symm.cmp<-predict(lm(shape~ind))
+    symm.component<-arrayspecs(rowsum(symm.cmp, ind)/as.vector(table(ind)),p,k)
+      symm<-predict(lm(shape~ind*side))
+      avg.side.symm<-rowsum(symm, paste(ind,side))/as.vector(table(paste(ind,side)))
+    asymm.component<-array(data=NA,dim=c(nlevels(ind),p*k)) 
+    for (i in 1:nlevels(ind)){
+      asymm.component[i,]<-avg.side.symm[2*i,]-avg.side.symm[(2*i)-1,]
+    }
+    asymm.component<-arrayspecs(asymm.component,p,k)
       if(ShowPlot==TRUE){ 
         if(warpgrids == TRUE){
           if(k==2){  
