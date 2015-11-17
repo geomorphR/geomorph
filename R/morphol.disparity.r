@@ -42,7 +42,7 @@ morphol.disparity <- function(A, groups, iter = 999){
   if(m > 1){
     d.obs <- by(y, groups, procvar)
     diff.d.obs <- as.matrix(dist(d.obs))
-    PDisp <- array(, dim = c(m, m))
+    PDisp <- array(0, dim = c(m, m))
     ind <- perm.index(nrow(y),iter)
     for (i in (1:iter+1)){
       y.r <- y[ind[[i]],]
