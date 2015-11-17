@@ -684,7 +684,7 @@ anova.pgls.parts <- function(pf, X = NULL, Pcor, keep.order = FALSE,...){
     if(!is.null(pf$weights)) w <- pf$weights else w <-rep(1,nrow(Y))
     if(any(w < 0)) stop("Weights cannot be negative")
     anova.terms <- pf$Terms
-    k <- length(pf$terms)
+    k <- length(pf$Terms)
     df <- sapply(Xs, function(x) qr(x)$rank)
     df <- df[-1] - df[1:k]
     PXs <- lapply(Xs, function(x) Pcor%*%x)
