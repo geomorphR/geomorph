@@ -584,7 +584,6 @@ SS.pgls.random <- function(pf, Pcor, Yalt = c("resample", "RRPP"), iter){ # like
     list(SS=P, SSEs = SSEfull)
 }
 
-
 # function for generating random SS for submodels, using RRPP for trajectories only
 random.trajectories <- function(pf, Yalt = c("resample", "RRPP"), iter, pca=TRUE){ # like anova.parts, but faster for resampling
   k <- length(pf$Terms)
