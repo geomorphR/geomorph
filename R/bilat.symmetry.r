@@ -131,6 +131,9 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
       asymm.component[i,]<-avg.side.symm[2*i,]-avg.side.symm[(2*i)-1,]
     }
     asymm.component<-arrayspecs(asymm.component,p,k)
+    for(i in 1:nlevels(ind)){
+      asymm.component[,,i]<-asymm.component[,,i]+mn.shape
+    }
       if(ShowPlot==TRUE){ 
         if(warpgrids == TRUE){
           if(k==2){  
@@ -193,7 +196,6 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
     pf1<-procD.fit(f1, data=f1.df)
     res.shape<-anova.parts(pf1, keep.order=FALSE, data=f1.df,Yalt="observed")$table    
     res.shape<-res.shape[1:(dim(res.shape)[1]-2),1:(dim(res.shape)[2]-2)]
-    res.shape[,2]<-res.shape[,2]/2 
     res.shape[,2]<-res.shape[,2]/2 
     res.shape[2,1]<-ifelse(k==2,((2*npairs+nl-2)),((3*npairs+nl-3)))
     res.shape[1,1]<-res.shape[3,1]<-(nind-1)*res.shape[2,1]

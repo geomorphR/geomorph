@@ -5,8 +5,19 @@ Title: Geometric Morphometric Analyses of 2D/3D Landmark Data
 Version: 2.1.7-1
 Author: Dean Adams, Michael Collyer, Emma Sherratt
 Maintainer: Dean Adams <dcadams@iastate.edu>
-Depends: rgl, ape, R(>= 3.1.0)
-Imports: graphics, grDevices, stats, utils, jpeg, geiger, phytools, Matrix
+Depends:
+    rgl,
+    ape,
+    R(>= 3.1.0)
+Imports:
+    graphics,
+    grDevices,
+    stats,
+    utils,
+    jpeg,
+    geiger,
+    phytools,
+    Matrix
 Description: Read, manipulate, and digitize landmark data, generate shape
     variables via Procrustes analysis for points, curves and surfaces, perform
     shape analyses, and provide graphical depictions of shapes and patterns of
@@ -16,3 +27,4 @@ Packaged: 2015-09-22 00:00:00 UTC; Dean
 NeedsCompilation: yes
 Repository: CRAN
 Date/Publication: 2015-09-22 00:00:00
+RoxygenNote: 5.0.1

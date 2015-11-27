@@ -1,7 +1,8 @@
 CHANGES IN GEOMORPH VERSION 2.1.7-1
 
   BUG FIXES
-    o Fixed output estimates of symmetric/asymmetric components so length of output Nspec (and minor change in how asymmetric component calculated)
+    
+    o bilat.symmetry(): Fixed output estimates of symmetric/asymmetric components so length of output Nspec (and minor change in how asymmetric component calculated), removed redundant line of code
     o Fixed error with warpRefToTarget() due to change in tps2d3d()
     o Fixed error with 3D arrays in f1 of model functions
     o Fixed errors with procD.fit and associated functions (problems included data-framing and correct degrees of freedom)
