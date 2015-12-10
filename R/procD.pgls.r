@@ -9,29 +9,37 @@
 #' utilizing covariance matrices and methods based on distance matrices (Adams 2014). Data input is specified by 
 #' a formula (e.g., y~X), where 'y' specifies the response variables (shape data), and 'X' contains one or more 
 #' independent variables (discrete or continuous). The response matrix 'y' can be either in the form of a two-dimensional data 
-#'   matrix of dimension (n x [p x k]), or a 3D array (p x n x k).  It is assumed that the landmarks have previously 
-#'   been aligned using Generalized Procrustes Analysis (GPA) [e.g., with \code{\link{gpagen}}].
-#'   Linear model fits (using the  \code{\link{lm}} function)
-#'   can also be input in place of a formula.  Arguments for \code{\link{lm}} can also be passed on via this function.
-#'   The user must also specify a phylogeny describing the evolutionary relationships among species (of class phylo).
-#'   Note that the specimen labels for both x and y must match the labels on the tips of the phylogeny.
+#' matrix of dimension (n x [p x k]), or a 3D array (p x n x k).  It is assumed that the landmarks have previously 
+#' been aligned using Generalized Procrustes Analysis (GPA) [e.g., with \code{\link{gpagen}}].
+#' Linear model fits (using the  \code{\link{lm}} function)
+#' can also be input in place of a formula.  Arguments for \code{\link{lm}} can also be passed on via this function.
+#' The user must also specify a phylogeny describing the evolutionary relationships among species (of class phylo).
+#' Note that the specimen labels for both X and y must match the labels on the tips of the phylogeny.
 #'
+#'   The function \code{\link{two.d.array}} can be used to obtain a two-dimensional data matrix from a 3D array of landmark
+#'   coordinates; however this step is no longer necessary, as procD.lm can receive 3D arrays as depedendent variables.  It is also 
+#'   recommended that \code{\link{geomorph.data.frame}} is used to create and input a data frame.  This will reduce problems caused
+#'   by conflicts between the global and function environments.  In the absence of a specified data frame, procD.pgls will attempt to 
+#'   coerce input data into a data frame, but success is not guaranteed.
+#'   
 #'   From the phylogeny, a phylogenetic transformation matrix is obtained under a Brownian motion model, and used to 
-#'   transform the x and y variables. Next, the Gower-centered distance matrix is obtained from predicted values from the
-#'   model (y~x), from which sums-of-squares, F-ratios, and R^2 are estimated for each factor in the model (see Adams, 2014). 
-#'   Data are then permuted across the tips of the phylogeny, and estimates of statistical values are obtained for the permuted data,
-#'   which are  compared to the observed value to assess significance. 
+#'   transform the X and y variables. Next, the Gower-centered distance matrix is obtained from predicted values from the
+#'   model (y~X), from which sums-of-squares, F-ratios, and R^2 are estimated for each factor in the model (see Adams, 2014). 
+#'   Data are then permuted across the tips of the phylogeny, and all estimates of statistical values are obtained for the permuted data,
+#'   which are compared to the observed value to assess significance. This approach has been shown to have appropriate type I error
+#'   rates, whereas an alternative procedure for phylogenetic regression of morphometric shape data displays elevated type I error rates
+#'   (see Adams and Collyer 2015). 
 #'   
 #'   Two possible resampling procedures are provided. First, if RRPP=FALSE, 
 #'   the rows of the matrix of shape variables 
 #'   are randomized relative to the design matrix. This is analogous to a 'full' randomization. Second, if RRPP=TRUE,
-#'   a residual randomization permutation procedure is utilized (Collyer et al. 2014). Here, residual shape values from a reduced model are
+#'   a residual randomization permutation procedure is utilized (Collyer et al. 2015). Here, residual shape values from a reduced model are
 #'   obtained, and are randomized with respect to the linear model under consideration. These are then added to 
 #'   predicted values from the remaining effects to obtain pseudo-values from which SS are calculated. NOTE: for
 #'   single-factor designs, the two approaches are identical.  However, when evaluating factorial models it has been
 #'   shown that RRPP attains higher statistical power and thus has greater ability to identify patterns in data should
 #'   they be present (see Anderson and terBraak 2003). Effect-sizes (Z-scores) are computed as standard deviates of the sampling 
-#'   distributions (of F values) generated, which might be more intuitive for P-values than F-values (see Collyer et al. 2014).  In the case  
+#'   distributions (of F values) generated, which might be more intuitive for P-values than F-values (see Collyer et al. 2015).  In the case  
 #'   that multiple factor or factor-covariate interactions are used in the model formula, one can specify whether all main effects should be  
 #'    added to the model first, or interactions should precede subsequent main effects 
 #'   (i.e., Y ~ a + b + c + a:b + ..., or Y ~ a + b + a:b + c + ..., respectively.)
@@ -46,43 +54,40 @@
 #' @keywords analysis
 #' @export
 #' @author Dean Adams and Michael Collyer
-#' @return Function returns an ANOVA table of statistical results for all factors: df (for each factor), SS, MS,
-#' F ratio, Prand, and Rsquare.
+#' @return procD.lm.pgls returns an object of class "procD.lm". The function, summary, is used to obtain and print an analysis of variance table of the results. 
+#' See \code{\link{procD.lm}} for a description of the list of results generated.  Additionally, procD.pgls provides
+#' the phylogenetic correction matrix, Pcor, as well as transformed values (with "P" in their names.).
 #' @references Adams, D.C. 2014. A method for assessing phylogenetic least squares models for shape and other high-dimensional 
 #' multivariate data. Evolution. 68:2675-2688. 
+#' @references Adams, D.C., and M.L. Collyer. 2015. Permutation tests for phylogenetic comparative analyses of high-dimensional 
+#' shape data: what you shuffle matters. Evolution. 69:823-829.
 #' @references Collyer, M.L., D.J. Sekora, and D.C. Adams. 2015. A method for analysis of phenotypic change for phenotypes described 
 #' by high-dimensional data. Heredity. 115:357-365.
 #' @examples
 #' ### Example of D-PGLS for high-dimensional data 
 #' data(plethspecies)
 #' Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment
-#' procD.pgls(Y.gpa$coords ~ Y.gpa$Csize,plethspecies$phy,iter=999)
-#'
-#' ### Example of D-PGLS for high-dimensional data, using RRPP
-#' procD.pgls(Y.gpa$coords ~ Y.gpa$Csize,plethspecies$phy,iter=999,RRPP=TRUE)
-procD.pgls<-function(f1, phy, iter=999, int.first = FALSE, RRPP=FALSE, verbose=FALSE, ...){
-  dat <- procD.data.frame(f1)
-  if(any(class(f1)=="lm")) pf = procD.fit(f1,weights=f1$weights, contrasts=f1$contrasts, offset=f1$offset) else 
-    pf= procD.fit(f1, data=dat,...)
-  if(int.first == TRUE) ko = TRUE else ko = FALSE
-  Terms <- pf$Terms
-  k <- length(pf$Terms)
-  Y <- pf$Y.prime
-  if(is.null(dim(Y))) {
-<<<<<<< HEAD
-    y.names <- names(Y)
-=======
-    y.names <- names(y)
->>>>>>> b69f37d0e3c9c665d7703cb4fd8a605c7d7297a5
-    Y <- matrix(Y) 
-    rownames(Y) <- y.names
-  } else {
-    y.names <- dimnames(Y)[[1]]
-    Y <- as.matrix(Y)
-  }
-  if (is.null(dimnames(Y)[[1]])) {
-    stop("No species names with Y-data")
-  } 
+#' gdf <- geomorph.data.frame(Y.gpa, phy = plethspecies$phy)
+#' procD.pgls(coords ~ Csize, phy = phy, data = gdf, iter = 999) # randomize raw values
+#' procD.pgls(coords ~ Csize, phy = phy, data = gdf, iter = 999, RRPP = TRUE) # randomize residuals
+#' 
+#' ### Extracting objects
+#' pleth.pgls <- procD.pgls(coords ~ Csize, phy = phy, data = gdf, iter = 999, RRPP = TRUE)
+#' summary(pleth.pgls)
+#' plot(pleth.pgls)
+#' pleth.pgls$Pcor # the phylogenetic transformation (correction) matrix
+procD.pgls<-function(f1, phy, iter=999, int.first = FALSE, 
+                         RRPP=FALSE, data=NULL, ...){
+  if(int.first==TRUE) ko = TRUE else ko = FALSE
+  pfit <- procD.fit(f1, data=data, keep.order=ko)
+  Terms <- pfit$Terms
+  k <- length(pfit$term.labels) 
+  Y <- as.matrix(pfit$wY)
+  phy.name <- deparse(substitute(phy))
+  phy.match <- match(names(data), phy.name)
+  if(length(na.omit(phy.match)) > 1) stop("More than one object of class phylo in data frame")
+  phy.match <- which(!is.na(phy.match))
+  if(all(is.na(phy.match))) phy <- phy else phy <- data[[phy.match]]
   N<-length(phy$tip.label)
   if(length(match(rownames(Y), phy$tip.label))!=N) 
     stop("Data matrix missing some taxa present on the tree.")
@@ -96,25 +101,39 @@ procD.pgls<-function(f1, phy, iter=999, int.first = FALSE, RRPP=FALSE, verbose=F
     lambda = lambda[lambda > 0]
   }
   eigC.vect = eigC$vectors[,1:(length(lambda))]
-  Pcor <- solve(eigC.vect%*% diag(sqrt(lambda)) %*% t(eigC.vect)) 
-  dimnames(Pcor) <-dimnames(C)
-  Pcor<-Pcor[y.names,y.names]  
-  PY <- Pcor%*%Y   
-  Xs <- pf$Xs
-  anova.parts.obs <- anova.pgls.parts(pf, X=NULL, Pcor, Yalt = "observed", keep.order=ko)
-  anova.tab <-anova.parts.obs$table  
-  df <- anova.parts.obs$df[1:k]
-  dfE <-anova.parts.obs$df[k+1]
-  if(RRPP == TRUE) P <- SS.pgls.random(pf,Pcor,Yalt="RRPP", iter=iter) else 
-    P <- SS.pgls.random(pf, Pcor,Yalt="resample", iter=iter)
-  P.val <- Pval.matrix(P)
-  Z <- Effect.size.matrix(P)
-  anova.tab <- data.frame(anova.tab, Z = c(Z, NA, NA), P.value = c(P.val, NA, NA))
-  if(RRPP == TRUE) anova.title = "\nRandomized Residual Permutation Procedure used\n" else 
-    anova.title = "\nRandomization of Raw Values used\n"  
-  attr(anova.tab, "heading") <- paste("\nType I (Sequential) Sums of Squares and Cross-products\n",anova.title)
-  class(anova.tab) <- c("anova", class(anova.tab))
-  if(verbose==TRUE)  {
-    list(anova.table = anova.tab, call=match.call(), SS.rand = P, phylo.transform.matrix = Pcor)
-  } else anova.tab
+  Pcor <- qr.solve(eigC.vect%*% diag(sqrt(lambda)) %*% t(eigC.vect)) 
+  dimnames(Pcor) <- dimnames(C)
+  if(RRPP == TRUE) SSr <- Fpgls.iter(pfit, Yalt="RRPP", Pcor, iter=iter) else 
+    SSr <- Fpgls.iter(pfit, Yalt="resample", Pcor, iter=iter)
+  anova.parts.obs <- anova.parts(pfit, SSr$SS)
+  anova.tab <-anova.parts.obs$anova.table 
+  P <- SSr$Fs
+  if(is.matrix(P)){
+    P.val <- apply(P,1,pval)
+    Z <- apply(P,1,effect.size) 
+    rownames(P) <- pfit$term.labels
+    colnames(P) <- c("obs", paste("iter", 1:iter, sep=":"))
+  } else {
+    P.val <- pval(P)
+    Z <- effect.size(P) 
+    names(P) <-c("obs", paste("iter", 1:iter, sep=":"))
+  }
+  tab <- data.frame(anova.tab, Z = c(Z, NA, NA), Pr = c(P.val, NA, NA))
+  colnames(tab)[1] <- "Df"
+  colnames(tab)[ncol(tab)] <- "Pr(>F)"
+  class(tab) <- c("anova", class(tab))
+  pfit <- procD.fit(f1, data=data, keep.order=ko, pca=FALSE)
+  out = list(aov.table = tab, call = match.call(),
+             coefficients=pfit$coefficients, wCoefficients=pfit$wCoefficients,
+             Y=pfit$Y, wY=pfit$wY, X=pfit$X, Xs=pfit$Xs, wX=pfit$wX, wXs=pfit$wXs,
+             Pcor=Pcor, PY = Pcor%*%pfit$Y, PX = Pcor%*%pfit$X, PwY = Pcor%*%pfit$wY, 
+             PwX = Pcor%*%pfit$wX,
+             QRs = pfit$QRs, wQRs=pfit$wQRs, fitted=pfit$fitted[[k+1]], wFitted=pfit$wFitted[[k+1]],
+             residuals = pfit$residuals[[k+1]], wResiduals=pfit$wResiduals[[k+1]],
+             weights = pfit$w, Terms = pfit$Terms, term.labels = pfit$term.labels,
+             SS = anova.parts.obs$SS, df = anova.parts.obs$df, R2 = anova.parts.obs$R2[1:k], 
+             F = anova.parts.obs$Fs[1:k], permutations = iter+1,
+             random.SS = P, perm.method = ifelse(RRPP==TRUE,"RRPP", "Raw"))
+  class(out) <- "procD.lm"
+  out
 }
