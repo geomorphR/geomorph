@@ -4,31 +4,32 @@
 \alias{two.b.pls}
 \title{Two-block partial least squares analysis for shape data}
 \usage{
-two.b.pls(A1, A2, warpgrids = TRUE, iter = 999, verbose = FALSE,
-  label = NULL, ShowPlot = TRUE)
+two.b.pls(A1, A2, iter = 999)
 }
 \arguments{
 \item{A1}{A matrix (n x [p x k]) or 3D array (p x k x n) containing GPA-aligned coordinates for the first block}
 
 \item{A2}{A matrix (n x [p x k]) or 3D array (p x k x n) containing GPA-aligned coordinates for the second block}
 
-\item{warpgrids}{A logical value indicating whether deformation grids for shapes along PC1 should be displayed
-(only relevant if data for A1 or A2 [or both] were input as 3D array)}
-
 \item{iter}{Number of iterations for significance testing}
-
-\item{verbose}{A logical value indicating whether the output is basic or verbose (see Value below)}
-
-\item{label}{An optional vector indicating labels for each specimen that are to be displayed}
-
-\item{ShowPlot}{A logical value indicating whether or not a plot of Procrustes residuals should be displayed}
 }
 \value{
-Function returns a list with the following components:
-  \item{value}{The estimate of association between block}
-  \item{pvalue}{The significance level of the observed association}
-  \item{Xscores}{PLS scores for the first block of landmarks (when {verbose=TRUE})}
-  \item{Yscores}{PLS scores for the second block of landmarks (when {verbose=TRUE})}
+Object of class "pls" that returns a list of the following:
+  \item{r.pls}{The correlation coefficient between scores of projected values on the first
+  singular vectors of left (x) and right (y) blocks of landmarks (or other variables)}
+  \item{P.value}{The empirically calculated P-value from the resampling procedure.}
+  \item{left.pls.vectors}{The singular vectors of the left (x) block}
+  \item{right.pls.vectors}{The singular vectors of the right (y) block}
+  \item{random.r}{The correlation coefficients found in each random permutation of the
+  resampling procedure.}
+  \item{XScores}{Values of left (x) block projected onto singular vectors.}
+  \item{YScores}{Values of right (y) block projected onto singular vectors.}
+  \item{A1}{Input values for the left block.}
+  \item{A2}{Input values for the right block.}
+  \item{A1.matrix}{Left block (matrix) found from A1.}
+  \item{A2.matrix}{Right block (matrix) found from A2.}
+  \item{permutations}{The number of random permutations used in the resampling procedure.}
+  \item{call}{The match call.}
 }
 \description{
 Function performs two-block partial least squares analysis to assess the degree of association between
@@ -42,7 +43,7 @@ The function quantifies the degree of association between two blocks of shape da
   Generalized Procrustes Analysis (GPA) [e.g., with \code{\link{gpagen}}]. If other variables are used, they must be input as a
   2-Dimensional matrix (rows = specimens, columns = variables).
 
-A plot of PLS scores from Block1 versus Block2 is provided for the first set of PLS axes. Thin-plate spline
+A plot of PLS scores from Block1 versus Block2 can be performed for the first set of PLS axes. Thin-plate spline
   deformation grids along these axes are also shown (if data were input as a 3D array).
 
 If the specimens in A1 and A2 are differently ordered, the function will reorder A2 to match A1.
@@ -52,13 +53,12 @@ data(plethShapeFood)
 Y.gpa<-gpagen(plethShapeFood$land)    #GPA-alignment
 
 #2B-PLS between head shape and food use data
-two.b.pls(Y.gpa$coords,plethShapeFood$food,iter=99)
-
-# To obtain PLS coefficients, x and y scores, and random values
-two.b.pls(Y.gpa$coords,plethShapeFood$food,iter=99, verbose = TRUE)
+PLS <-two.b.pls(Y.gpa$coords,plethShapeFood$food,iter=999)
+summary(PLS)
+plot(PLS)
 }
 \author{
-Dean Adams
+Dean Adams and Michael Collyer
 }
 \references{
 Rohlf, F.J., and M. Corti. 2000. The use of partial least-squares to study covariation in shape.

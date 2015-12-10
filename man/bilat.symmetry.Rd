@@ -5,8 +5,8 @@
 \title{Analysis of bilateral symmetry}
 \usage{
 bilat.symmetry(A, ind = NULL, side = NULL, replicate = NULL,
-  object.sym = FALSE, land.pairs = NULL, warpgrids = TRUE, mesh = NULL,
-  verbose = FALSE, ShowPlot = TRUE)
+  object.sym = FALSE, land.pairs = NULL, data = NULL, iter = 999,
+  RRPP = TRUE)
 }
 \arguments{
 \item{A}{An array (p x k x n) containing GPA-aligned coordinates for a set of specimens [for "object.sym=FALSE, A is of dimension (n x k x 2n)]}
@@ -22,22 +22,39 @@ label (replicates also receive the same label).}
 
 \item{land.pairs}{An optional matrix (for object symmetry) containing numbers for matched pairs of landmarks across the line of symmetry}
 
-\item{warpgrids}{A logical value indicating whether deformation grids for directional and fluctuating components
-of asymmetry}
+\item{data}{A data frame for the function environment, see \code{\link{geomorph.data.frame}}. It is imperative
+that the variables "ind", "side", and "replicate" in the data frame match these names exactly (as shown in examples below).}
 
-\item{mesh}{A mesh3d object to be warped to represent shape deformation of the directional and fluctuating components
-of asymmetry if {warpgrids= TRUE} (see \code{\link{warpRefMesh}}).}
+\item{iter}{Number of iterations for significance testing}
 
-\item{verbose}{A logical value indicating whether the output is basic or verbose (see Value below)}
+\item{shape.anova}{An analysis of variance table for the shape data}
 
-\item{ShowPlot}{A logical value indicating whether or not the plot should be returned}
+\item{size.anova}{An analysis of variance table for the shape data (when object.sym=FALSE)}
+
+\item{symm.component}{The symmetric component of shape variation}
+
+\item{asym.component}{The asymmetric component of shape variation}
+
+\item{DA.component}{The directional asymmetry component, found as the mean shape for each side}
+
+\item{FA.compnent}{The fluctuating asymmetry component for each specimen, found as the specimen-specific side deviation adjusted for the mean
+directional asymmetry in the dataset}
+
+\item{data.type}{A value indicating whether the analysis was performed as Object or Matching symmetry}
+
+\item{permutations}{The number of random permutations used.}
+
+\item{random.shape.SS}{A matrix of random outcomes for SS from the Shape analysis.}
+
+\item{random.size.SS}{A matrix of random outcomes for SS from the Cntroid Size analysis.}
+
+\item{perm.method}{A value indicating whether "Raw" values were shuffled or "RRPP" performed.}
+
+\item{call}{The matched call}
 }
 \value{
-Function returns a list with the following components:
-  \item{ANOVA.shape}{Procrustes ANOVA table assessing patterns of shape asymmetry}
-  \item{ANOVA.size}{Procrustes ANOVA table assessing patterns of shape asymmetry (when {object.sym=FALSE})}
-  \item{symm.shape}{The symmetric component of shape variation of the aligned specimens ({when verbose=TRUE})}
-  \item{asymm.shape}{The asymmetric component of shape variation of the aligned specimens ({when verbose=TRUE})}
+bilat.symmetry returns an object of class "bilat.symmetry". The function, summary, is used to obtain and print an analysis of
+variance table of the results. An object of class "bilat.symmetry" is a list containing the following
 }
 \description{
 Function performs an analysis of directional and fluctuating asymmetry for bilaterally symmetric objects
@@ -46,8 +63,8 @@ Function performs an analysis of directional and fluctuating asymmetry for bilat
 The function quantifies components of shape variation for a set of specimens as described by their patterns of symmetry
  and asymmetry. Here, shape variation is decomposed into variation among individuals, variation among sides (directional
  asymmetry), and variation due to an individual x side interaction (fluctuating symmetry). These components are then
- statistically evaluated using Procrustes ANOVA and Goodall's F tests (i.e. an isotropic model of shape variation). Methods for both
- matching symmetry and object symmetry can be implemented. Matching symmetry is when each object contains mirrored
+ statistically evaluated using Procrustes ANOVA. Statistical assessment of model effects for shape variation is accomplished using permutation procedures.
+ Methods for both matching symmetry and object symmetry can be implemented. Matching symmetry is when each object contains mirrored
  pairs of structures (e.g., right and left hands) while object symmetry is when a single object is symmetric
  about a midline (e.g., right and left sides of human faces). Analytical and computational details concerning the
  analysis of symmetry in geometric morphometrics can be found in Mardia et al. 2000; Klingenberg et al. 2002.
@@ -67,21 +84,37 @@ Analyses of object symmetry is implemented when {object.sym=TRUE}. Here, a 3D ar
  landmark correspondence. The user must supply a list of landmark pairs. A vector containing information on individuals
  must also be supplied. Replicates of each specimen may also be included in the dataset, and when specified will be
  used as measurement error.
+
+Compared to older versions of geomorph, some results can be expected to be slightly different.  Starting with geomorph 3.0,
+ results use only type I sums of squares (SS) with either full ranomization of raw shape values or RRPP (prefered with nested terms)
+ for analysis of variance (ANOVA).  Older versions used a combination of parametric and non-parametric results, as well as a combinaton
+ of type I and type III SS.  While analytical conclusions should be consistent (i.e., "significance" of effects is the same), these
+ updates maintain consistency in analytical philosophy.
 }
 \examples{
 #Example of matching symmetry
 
 data(mosquito)
-bilat.symmetry(mosquito$wingshape,ind=mosquito$ind,side=mosquito$side,
-replicate=mosquito$replicate,object.sym=FALSE)
+gdf <- geomorph.data.frame(wingshape = mosquito$wingshape, ind=mosquito$ind, side=mosquito$side,
+replicate=mosquito$replicate)
+mosquito.sym <- bilat.symmetry(A = wingshape, ind = ind, side = side,
+replicate = replicate, object.sym = FALSE, RRPP = TRUE, iter = 999, data = gdf)
+summary(mosquito.sym)
+plot(mosquito.sym, warpgrids = TRUE)
+mosquito.sym$shape.anova # extract just the anova table on shape
 
 #Example of object symmetry
 
 data(scallops)
-bilat.symmetry(scallops$coorddata,ind=scallops$ind,object.sym=TRUE,land.pairs=scallops$land.pairs)
+gdf <- geomorph.data.frame(shape = scallops$coorddata, ind=scallops$ind)
+scallop.sym <- bilat.symmetry(A = shape, ind = ind, object.sym = TRUE,
+land.pairs=scallops$land.pairs, data = gdf, RRPP = TRUE, iter = 999)
+summary(scallop.sym)
+plot(scallop.sym, warpgrids = TRUE, mesh = NULL)
+scallop.sym$data.type # recall the symmetry type
 }
 \author{
-Dean Adams & Emma Sherratt
+Dean Adams and Michael Collyer
 }
 \references{
 Klingenberg, C.P. and G.S. McIntyre. 1998. Quantitative genetics of geometric shape in the mouse mandible. Evolution. 55:2342-2352.

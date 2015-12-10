@@ -4,36 +4,48 @@
 \alias{gpagen}
 \title{Generalized Procrustes analysis of points, curves, and surfaces}
 \usage{
-gpagen(A, Proj = TRUE, ProcD = TRUE, PrinAxes = TRUE, ShowPlot = TRUE,
-  curves = NULL, surfaces = NULL, ...)
+gpagen(A, curves = NULL, surfaces = NULL, PrinAxes = TRUE,
+  max.iter = NULL, ProcD = TRUE, Proj = TRUE)
 }
 \arguments{
 \item{A}{An array (p x k x n) containing landmark coordinates for a set of specimens}
-
-\item{Proj}{A logical value indicating whether or not the aligned Procrustes residuals should be projected
-into tangent space}
-
-\item{ProcD}{A logical value indicating whether or not Procrustes distance should be used as the criterion
-for optimizing the positions of semilandmarks}
-
-\item{PrinAxes}{A logical value indicating whether or not to align the shape data by principal axes}
-
-\item{ShowPlot}{A logical value indicating whether or not a plot of Procrustes residuals should be displayed (calls \code{\link{plotAllSpecimens}})}
 
 \item{curves}{An optional matrix defining which landmarks should be treated as semilandmarks on boundary
 curves, and which landmarks specify the tangent directions for their sliding}
 
 \item{surfaces}{An optional vector defining which landmarks should be treated as semilandmarks on surfaces}
 
+\item{PrinAxes}{A logical value indicating whether or not to align the shape data by principal axes}
+
+\item{max.iter}{The maximum number of GPA iterations to perform before superimposition is halted.  The final
+number of iterations could be larger than this, if curves or surface semilandmarks are involved.}
+
+\item{ProcD}{A logical value indicating whether or not Procrustes distance should be used as the criterion
+for optimizing the positions of semilandmarks}
+
+\item{Proj}{A logical value indicating whether or not the aligned Procrustes residuals should be projected
+into tangent space}
+
 \item{...}{Options to be passed to \code{\link{plotAllSpecimens}}}
 }
 \value{
-Function returns a list with the following components:
+An object of class gpagen returns a list with the following components:
   \item{coords}{A (p x k x n) array of aligned Procrustes coordinates, where p is the number of landmark
     points, k is the number of landmark dimensions (2 or 3), and n is the number of specimens. The third
     dimension of this array contains names for each specimen if specified in the original input array}
   \item{Csize}{A vector of centroid sizes for each specimen, containing the names for each specimen if
     specified in the original input array}
+ \item{iter} {The number of GPA iterations until convergence was found (or GPA halted)}
+ \item{points.VCV} {Varaiance-covariance matrix among landmark coordinates}
+ \item{points.var} {Varaiances of landmark points}
+ \item{consnsus} {The consensus (mean) configuration}
+ \item{p} {Number of landmarks}
+ \item{k} {Number of landmark dimensions}
+ \item{nsliders} {Number of semilandmarks}
+ \item{data} {Data frame with an n x (pk) matrix of Procrustes residuals and centroid size}
+ \item{Q} {Final convergence criterion value}
+ \item{slide.emthod} {Method used to slide semilandmarks}
+ \item{call} {The match call}
 }
 \description{
 A general function to perform Procrustes analysis of two- or three-dimensional landmark data that
@@ -69,25 +81,33 @@ Generalized Procrustes Analysis (GPA: Gower 1975, Rohlf and Slice 1990) is the p
 \examples{
 #Example 1: fixed points only
 data(plethodon)
-gpagen(plethodon$land,PrinAxes=FALSE)
-gpagen(plethodon$land,pointscale=2)
+Y.gpa <- gpagen(plethodon$land,PrinAxes=FALSE)
+summary(Y.gpa)
+plot(Y.gpa)
 
 #Example 2: points and semilandmarks on curves
 data(hummingbirds)
 
 #Using Procrustes Distance for sliding
-gpagen(hummingbirds$land,curves=hummingbirds$curvepts)
+Y.gpa <- gpagen(hummingbirds$land,curves=hummingbirds$curvepts)
+summary(Y.gpa)
+plot(Y.gpa)
 
 #Using bending energy for sliding
-gpagen(hummingbirds$land,curves=hummingbirds$curvepts,ProcD=FALSE)
+Y.gpa <- gpagen(hummingbirds$land,curves=hummingbirds$curvepts,ProcD=FALSE)
+summary(Y.gpa)
+plot(Y.gpa)
 
 #Example 3: points, curves and surfaces
 data(scallops)
+
 #Using Procrustes Distance for sliding
-gpagen(A=scallops$coorddata, curves=scallops$curvslide, surfaces=scallops$surfslide)
+Y.gpa <- gpagen(A=scallops$coorddata, curves=scallops$curvslide, surfaces=scallops$surfslide)
+summary(Y.gpa)
+plot(Y.gpa)
 }
 \author{
-Dean Adams
+Dean Adams and Michael Collyer
 }
 \references{
 Adams, D. C., F. J. Rohlf, and D. E. Slice. 2004. Geometric morphometrics: ten years of

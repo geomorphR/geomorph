@@ -5,7 +5,7 @@
 \title{Procrustes ANOVA and pairwise tests for shape data, using complex linear models}
 \usage{
 advanced.procD.lm(f1, f2, groups = NULL, slope = NULL, angle.type = c("r",
-  "deg", "rad"), iter = 999, verbose = FALSE, ...)
+  "deg", "rad"), iter = 999, data = NULL, ...)
 }
 \arguments{
 \item{f1}{A formula for a linear model, containing the response matrix (e.g., y ~ x1 + x2)}
@@ -21,29 +21,18 @@ correlations (r), radians (rad) or degrees (deg)}
 
 \item{iter}{Number of iterations for significance testing}
 
-\item{verbose}{A logical value specifying whether additional output should be displayed (see Value below)}
+\item{data}{A data frame for the function environment; see \code{\link{geomorph.data.frame}}.  If variables
+are transformed in formulae, they should also be transformed in the geomorph data frame.  (See examples.)}
 
 \item{...}{Arguments passed on to procD.fit (typically associated with the lm function)}
 }
 \value{
 Function returns an ANOVA table of statistical results for model comparison: error df (for each model), SS, MS,
-F ratio, Z, and Prand.  The following may also be returned.
-  \item{Means.dist}{Pairwise distance between means, if applicable}
-  \item{LS.Means.dist}{Pairwise distance between LS means, if applicable}
-  \item{Prob.Means.dist}{P-values for pairwise distances between means}
-  \item{Slopes.dist}{Pairwise distance between slope vectors (difference in amount of shape change), if applicable}
-  \item{Prob.Slopes.dist}{P-values for pairwise distances between slopes}
-  \item{Slopes.correlation}{Pairwise vector correlations between slope vectors, if applicable}
-  \item{Prob.Slopes.cor}{P-values for pairwise correlations between slope vectors (high correlation less significant)}
-  \item{Slopes.angle}{Angles between between slope vectors, if applicable}
-  \item{Prob.Slopes.angle}{P-values for pairwise angles between slope vectors}
-  \item{SS.rand}{Random SS from RRPP permutations (when {verbose=TRUE})}
-  \item{random.mean.dist}{random pairwise distances between means from RRPP permutations (when {verbose=TRUE})}
-  \item{random.slope.dist}{random pairwise distances between slopes from RRPP permutations (when {verbose=TRUE})}
-  \item{random.slope.comp}{random pairwise slope direction comparisons (r or angle) from RRPP permutations (when {verbose=TRUE})}
+F ratio, Z, and Prand.  A list of essentially the same components as \code{\link{procD.lm}} is also returned, and additionally
+LS means or slopes, pairwise differences comparisons of these, effect sizes, and P-values may also be returned.
 }
 \description{
-The function quantifies the relative amount of shape variation explained by  a suite of factors
+The function quantifies the relative amount of shape variation explained by a suite of factors
 and covariates in a "full" model, after accounting for variation in a "reduced" model. Inputs are
 formulae for full and reduced models (order is not important), plus indication if means or slopes
 are to be comapred among groups, with appropriate formulae to define how they should be compared.
@@ -62,8 +51,7 @@ The function performs statistical assessment of the terms in the model using Pro
   Procrustes distances are used as a measure of SS (see Goodall 1991). The SS betwen models is evaluated through
   permutation. In morphometrics this approach is known as a Procrustes ANOVA (Goodall 1991), which is equivalent
   to distance-based anova designs (Anderson 2001). Unlike \code{\link{procD.lm}}, this function is strictly for comparison
-  of two nested models. The function will readily accept non-nested models, but the results will not be meaningful.
-  (Use of \code{\link{procD.lm}} will be more suitable in most cases.)
+  of two nested models. (Use of \code{\link{procD.lm}} will be more suitable in most cases.)
   A residual randomization permutation procedure (RRPP) is utilized
   for reduced model residuals to evalute the SS between models (Collyer et al. 2015).  Effect-sizes (Z-scores) are
   computed as standard deviates of the SS sampling
@@ -74,33 +62,37 @@ Pairwise tests are only performed if formulae are provided to compute such resul
 \examples{
 data(plethodon)
 Y.gpa<-gpagen(plethodon$land)    #GPA-alignment
-Y<-two.d.array(Y.gpa$coords)
-CS <- Y.gpa$Csize
-sp<- plethodon$species
-st<- plethodon$site
+gdf <- geomorph.data.frame(Y.gpa, logcs = log(Y.gpa$Csize), species = plethodon$species, site = plethodon$site)
 
 # Example of a nested model comparison (as with ANOVA with RRPP)
-advanced.procD.lm(Y ~ log(CS) + sp, ~ log(CS)*sp*st, iter=19)
+advanced.procD.lm(coords ~ logcs + species,
+~ logcs*species*site, iter=999, data = gdf)
 
-# Example of a test of a factor interaction, plus pairwise comparisons (replaces pairwiseD.test)
-advanced.procD.lm(Y ~ st*sp, ~st + sp, groups = ~st*sp, iter=19)
+# Example of a test of a factor interaction, plus pairwise comparisons
+advanced.procD.lm(coords ~ site*species, ~site + species, groups = ~site*species,
+   iter=999, data = gdf)
 
 # Example of a test of a factor interaction, plus pairwise comparisons,
-# accounting for a common allomtry  (replaces pairwiseD.test)
-advanced.procD.lm(Y ~ log(CS) + st*sp,
-~log(CS) + st + sp,
-groups = ~st*sp, slope = ~log(CS), iter=19)
+# accounting for a common allomtry
+advanced.procD.lm(coords ~ Csize + site*species,
+~Csize + site + species,
+groups = ~site*species, slope = ~Csize, iter = 999, data = gdf)
 
 # Example of a test of homogeneity of slopes, plus pairwise slopes comparisons
-# (replaces pairwise.slope.test)
-advanced.procD.lm(Y ~ log(CS)*st*sp,
-~log(CS) + st*sp,
-groups = ~st*sp, slope = ~log(CS), angle.type = "deg", iter=19)
+advanced.procD.lm(coords ~ logcs,
+~logcs + site*species,
+groups = ~site*species,
+slope = ~logcs, angle.type = "deg", iter = 999, data = gdf)
 
-# Example of partial pairwise comparisons, given greater model complexity
-advanced.procD.lm(Y ~ log(CS)*st*sp,
-~log(CS) + st*sp,
-groups = ~sp, slope = ~log(CS), angle.type = "deg", iter=19)
+# Example of partial pairwise comparisons, given greater model complexity.
+# Plus, working with class advanced.procD.lm objects.
+aov.pleth <- advanced.procD.lm(coords ~ logcs*site*species,
+~logcs + site*species,
+groups = ~species, slope = ~logcs, angle.type = "deg", iter = 999, data = gdf)
+
+summary(aov.pleth) # ANOVA plus pairwise tsts
+plot(aov.pleth) # diagnostic plots
+aov.pleth$slopes # extract the slope vectors
 }
 \author{
 Michael Collyer

@@ -35,8 +35,8 @@
 #' @param ProcD A logical value indicating whether or not Procrustes distance should be used as the criterion
 #'   for optimizing the positions of semilandmarks
 #' @param PrinAxes A logical value indicating whether or not to align the shape data by principal axes 
-#' @max.iter Maximum iterations to use for GPA. Final number of iterations might be larger if sliding
-#' semilandmarks is involved.
+#' @param max.iter The maximum number of GPA iterations to perform before superimposition is halted.  The final
+#' number of iterations could be larger than this, if curves or surface semilandmarks are involved.
 #' @param curves An optional matrix defining which landmarks should be treated as semilandmarks on boundary 
 #'   curves, and which landmarks specify the tangent directions for their sliding
 #' @param surfaces An optional vector defining which landmarks should be treated as semilandmarks on surfaces
@@ -112,7 +112,7 @@
 #' Y.gpa <- gpagen(A=scallops$coorddata, curves=scallops$curvslide, surfaces=scallops$surfslide)
 #' summary(Y.gpa)
 #' plot(Y.gpa) 
-#' @useDynLib geomorph
+
 gpagen = function(A, curves=NULL, surfaces=NULL, PrinAxes = TRUE, 
                       max.iter = NULL, ProcD=TRUE, Proj = TRUE){
   n <- dim(A)[[3]]; p <- dim(A)[[1]]; k <- dim(A)[[2]]

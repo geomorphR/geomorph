@@ -32,14 +32,14 @@
 #' @keywords analysis
 #' @author Dean Adams
 #' @return Objects of class "CR" from modularity.test return a list of the following:
-#'    \item{CR}{Covariance ratio: The estimate of the observed modular signal.
-#'    (For more than two partitions, this is the mean CR of pairwise CRs.)}
-#'    \item{CInterval}{The 95% confidence intervals of the CR based on bootstrapping.}
-#'    \item{P.value}{The empirically calculated P-value from the resampling procedure.}
-#'    \item{CR.mat}{For more than two partitions, the pairwise CRs among partitions.}
-#'    \item{random.CR}{The CR calculated in each of the random permutations of the resampling procedure.}
-#'    \item{permutations}{The number of random permutations used in the resampling procdure.}
-#'    \item{call}{The match call.}
+#'    \item CR Covariance ratio: The estimate of the observed modular signal.
+#'    (For more than two partitions, this is the mean CR of pairwise CRs.)
+#'    \item CInterval The 95% confidence intervals of the CR based on bootstrapping.
+#'    \item P.value The empirically calculated P-value from the resampling procedure.
+#'    \item CR.mat For more than two partitions, the pairwise CRs among partitions.
+#'    \item random.CR The CR calculated in each of the random permutations of the resampling procedure.
+#'    \item permutations The number of random permutations used in the resampling procdure.
+#'    \item call The match call.
 #' @references Adams, D.C. 2016.Evaluating modularity in morphometric data: Challenges with the RV coefficient and a 
 #' new test measure. Methods in Ecology and Evolution. (Accepted). 
 #' @examples

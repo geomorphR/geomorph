@@ -4,8 +4,8 @@
 \alias{procD.lm}
 \title{Procrustes ANOVA/regression for shape data}
 \usage{
-procD.lm(f1, iter = 999, RRPP = FALSE, int.first = FALSE,
-  verbose = FALSE, ...)
+procD.lm(f1, iter = 999, RRPP = FALSE, int.first = FALSE, data = NULL,
+  ...)
 }
 \arguments{
 \item{f1}{A formula for the linear model (e.g., y~x1+x2)}
@@ -16,13 +16,55 @@ procD.lm(f1, iter = 999, RRPP = FALSE, int.first = FALSE,
 
 \item{int.first}{A logical value to indicate if interactions of first main effects should precede subsequent main effects}
 
-\item{verbose}{A logical value specifying whether additional output should be displayed}
+\item{data}{A data frame for the function environment, see \code{\link{geomorph.data.frame}}}
 
 \item{...}{Arguments passed on to procD.fit (typically associated with the lm function)}
+
+\item{aov.table}{An analysis of variance table; the same as the summary}
+
+\item{call}{The matched call}
+
+\item{call}{A vector or matrix of linear model coefficients.  "wCoefficients" are weighted
+coefficients, if weights are used}
+
+\item{Y}{The response data, in matrix form.  "wY" is the matrix of weighted responses,
+if weights are used.}
+
+\item{X}{The model matrix. "wX" is the matrix of weighted model parameters, if weights are used.}
+
+\item{Xs}{The model matrix for each possible submodel. "wXs" are each submodel weighted, if weights are used.}
+
+\item{QRs}{The QR decompositions of all submodels. "wQRs" are QR decompositions on weighted X matrices.}
+
+\item{fitted}{The fitted values. "wFitted" are the fitted values after weighting.}
+
+\item{residuals}{The residuals (observed responses - fitted responses).  "wResiduals" are the residuals
+from a weighted fit.}
+
+\item{weights}{The weights used in weighted least-squares fitting.  If no weights are used, a
+NULL is returned.}
+
+\item{Terms}{The results of the \code{\link{terms}} function applied to the model frame}
+
+\item{term.labels}{The terms used in constructing the aov.table.}
+
+\item{SS}{The sums of squares for each term, model residuals, and the total.}
+
+\item{df}{The degrees of freedom for each SS.}
+
+\item{R2}{The coefficient of determination for each model term.}
+
+\item{F}{The F values for each model term.}
+
+\item{permutations}{The number of random permutations (including observed) used.}
+
+\item{random.SS}{A matrix or vector of random SS found via the resampling procedure used.}
+
+\item{perm.method}{A value indicating whether "Raw" values were shuffled or "RRPP" performed.}
 }
 \value{
-Function returns an ANOVA table of statistical results for all factors: df (for each factor), SS, MS,
-Rsquare, F ratio, Z-score, and Prand.  If verbose=TRUE, random SS are provided.
+procD.lm returns an object of class "procD.lm". The function, summary, is used to obtain and print an analysis of variance table of the results.
+An object of class "procD.lm" is a list containing the following
 }
 \description{
 Function performs Procrustes ANOVA with permutation procedures to assess statistical hypotheses describing
@@ -30,34 +72,38 @@ Function performs Procrustes ANOVA with permutation procedures to assess statist
 }
 \details{
 The function quantifies the relative amount of shape variation attributable to one or more factors in a
-  linear model and estimates teh probability of this variation ("signifiance") for a null model, via distributions generated
+  linear model and estimates the probability of this variation ("signifiance") for a null model, via distributions generated
   from resampling permutations. Data input is specified by a formula (e.g.,
   y~X), where 'y' specifies the response variables (shape data), and 'X' contains one or more independent
   variables (discrete or continuous). The response matrix 'y' can be either in the form of a two-dimensional data
-  matrix of dimension (n x [p x k]), or a 3D array (p x n x k).  It is assumed that the landmarks have previously
-  been aligned using Generalized Procrustes Analysis (GPA) [e.g., with \code{\link{gpagen}}].
+  matrix of dimension (n x [p x k]), or a 3D array (p x n x k).  It is assumed that  -if the data based
+  on landmark coordinates - the landmarks have previously been aligned using Generalized Procrustes Analysis (GPA)
+  [e.g., with \code{\link{gpagen}}].
   The names specified for the independent (x) variables in the formula represent one or more
   vectors containing continuous data or factors. It is assumed that the order of the specimens in the
   shape matrix matches the order of values in the independent variables.  Linear model fits (using the  \code{\link{lm}} function)
   can also be input in place of a formula.  Arguments for \code{\link{lm}} can also be passed on via this function.
 
 The function \code{\link{two.d.array}} can be used to obtain a two-dimensional data matrix from a 3D array of landmark
-  coordinates; however this step is no longer necessary, as procD.lm can receive 3D arrays as depedendent variables.
+  coordinates; however this step is no longer necessary, as procD.lm can receive 3D arrays as depedendent variables.  It is also
+  recommended that \code{\link{geomorph.data.frame}} is used to create and input a data frame.  This will reduce problems caused
+  by conflicts between the global and function environments.  In the absence of a specified data frame, procD.lm will attempt to
+  coerce input data into a data frame, but success is not guaranteed.
 
 The function performs statistical assessment of the terms in the model using Procrustes distances among
   specimens, rather than explained covariance matrices among variables. With this approach, the sum-of-squared
   Procrustes distances are used as a measure of SS (see Goodall 1991). The observed SS are evaluated through
   permutation. In morphometrics this approach is known as a Procrustes ANOVA (Goodall 1991), which is equivalent
   to distance-based anova designs (Anderson 2001). Two possible resampling procedures are provided. First, if RRPP=FALSE,
-  the rows of the matrix of shape variables
-  are randomized relative to the design matrix. This is analogous to a 'full' randomization. Second, if RRPP=TRUE,
-  a residual randomization permutation procedure is utilized (Collyer et al. 2014). Here, residual shape values from a reduced model are
+  the rows of the matrix of shape variables are randomized relative to the design matrix.
+  This is analogous to a 'full' randomization. Second, if RRPP=TRUE, a residual randomization permutation procedure is utilized
+  (Collyer et al. 2015). Here, residual shape values from a reduced model are
   obtained, and are randomized with respect to the linear model under consideration. These are then added to
   predicted values from the remaining effects to obtain pseudo-values from which SS are calculated. NOTE: for
   single-factor designs, the two approaches are identical.  However, when evaluating factorial models it has been
   shown that RRPP attains higher statistical power and thus has greater ability to identify patterns in data should
   they be present (see Anderson and terBraak 2003). Effect-sizes (Z-scores) are computed as standard deviates of the SS sampling
-  distributions generated, which might be more intuitive for P-values than F-values (see Collyer et al. 2014).  In the case that multiple
+  distributions generated, which might be more intuitive for P-values than F-values (see Collyer et al. 2015).  In the case that multiple
   factor or factor-covariate interactions are used in the model formula, one can specify whether all main effects should be added to the
   model first, or interactions should precede subsequent main effects
   (i.e., Y ~ a + b + c + a:b + ..., or Y ~ a + b + a:b + c + ..., respectively.)
@@ -65,18 +111,29 @@ The function performs statistical assessment of the terms in the model using Pro
 \examples{
 ### MANOVA example for Goodall's F test (multivariate shape vs. factors)
 data(plethodon)
-Y.gpa<-gpagen(plethodon$land)    #GPA-alignment
+Y.gpa <- gpagen(plethodon$land)    #GPA-alignment
+gdf <- geomorph.data.frame(shape = Y.gpa$coords,
+site = plethodon$site, species = plethodon$species) # geomorph data frame
 
-procD.lm(Y.gpa$coords ~ plethodon$species*plethodon$site,iter=499)
+procD.lm(shape ~ species * site, data = gdf, iter = 999) # randomize raw values
+procD.lm(shape ~ species * site, data = gdf, iter = 999, RRPP = TRUE) # randomize residuals
 
 ### Regression example
 data(ratland)
 rat.gpa<-gpagen(ratland)         #GPA-alignment
+gdf <- geomorph.data.frame(rat.gpa) # geomorph data frame is easy without additional input
 
-procD.lm(rat.gpa$coords ~ rat.gpa$Csize,iter=499)
+procD.lm(coords ~ Csize, data = gdf, iter = 999) # randomize raw values
+procD.lm(coords ~ Csize, data = gdf, iter = 999, RRPP = TRUE) # randomize raw values
+# Outcomes should be exactly the same
 
-## using RRPP
- procD.lm(rat.gpa$coords ~ rat.gpa$Csize,iter=49,RRPP=TRUE)
+### Extracting objects and plotting residuals
+rat.anova <- procD.lm(coords ~ Csize, data = gdf, iter = 999, RRPP = TRUE)
+summary(rat.anova)
+plot(rat.anova) # diagnostic plots
+plot(rat.anova, outliers = TRUE) # diagnostic plots, including plotOutliers
+attributes(rat.anova)
+rat.anova$fitted # just the fitted values
 }
 \author{
 Dean Adams and Michael Collyer
@@ -94,5 +151,6 @@ by high-dimensional data. Heredity. 115:357-365.
 Goodall, C. R. 1991. Procrustes methods in the statistical analysis of shape. Journal of the
    Royal Statistical Society B 53:285-339.
 }
-\keyword{analysis}
+\keyword{RRPP}
+\keyword{analysis,}
 
