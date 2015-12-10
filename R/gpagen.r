@@ -35,20 +35,32 @@
 #' @param ProcD A logical value indicating whether or not Procrustes distance should be used as the criterion
 #'   for optimizing the positions of semilandmarks
 #' @param PrinAxes A logical value indicating whether or not to align the shape data by principal axes 
+#' @max.iter Maximum iterations to use for GPA. Final number of iterations might be larger if sliding
+#' semilandmarks is involved.
 #' @param curves An optional matrix defining which landmarks should be treated as semilandmarks on boundary 
 #'   curves, and which landmarks specify the tangent directions for their sliding
 #' @param surfaces An optional vector defining which landmarks should be treated as semilandmarks on surfaces
-#' @param ShowPlot A logical value indicating whether or not a plot of Procrustes residuals should be displayed (calls \code{\link{plotAllSpecimens}})
 #' @param ... Options to be passed to \code{\link{plotAllSpecimens}}
 #' @keywords analysis
 #' @export
-#' @author Dean Adams
-#' @return Function returns a list with the following components: 
+#' @author Dean Adams and Michael Collyer
+#' @return An object of class gpagen returns a list with the following components: 
 #'   \item{coords}{A (p x k x n) array of aligned Procrustes coordinates, where p is the number of landmark 
 #'     points, k is the number of landmark dimensions (2 or 3), and n is the number of specimens. The third 
 #'     dimension of this array contains names for each specimen if specified in the original input array}
 #'   \item{Csize}{A vector of centroid sizes for each specimen, containing the names for each specimen if 
 #'     specified in the original input array}
+#'  \item{iter} {The number of GPA iterations until convergence was found (or GPA halted)}
+#'  \item{points.VCV} {Varaiance-covariance matrix among landmark coordinates}
+#'  \item{points.var} {Varaiances of landmark points}
+#'  \item{consnsus} {The consensus (mean) configuration}
+#'  \item{p} {Number of landmarks}
+#'  \item{k} {Number of landmark dimensions}
+#'  \item{nsliders} {Number of semilandmarks}
+#'  \item{data} {Data frame with an n x (pk) matrix of Procrustes residuals and centroid size}
+#'  \item{Q} {Final convergence criterion value}
+#'  \item{slide.emthod} {Method used to slide semilandmarks}
+#'  \item{call} {The match call}
 #' @references  Adams, D. C., F. J. Rohlf, and D. E. Slice. 2004. Geometric morphometrics: ten years of 
 #'    progress following the 'revolution'. It. J. Zool. 71:5-16.
 #' @references Adams, D. C., F. J. Rohlf, and D. E. Slice. 2013. A field comes of age: Geometric 
@@ -76,60 +88,94 @@
 #' @examples
 #' #Example 1: fixed points only
 #' data(plethodon) 
-#' gpagen(plethodon$land,PrinAxes=FALSE)
-#' gpagen(plethodon$land,pointscale=2)
+#' Y.gpa <- gpagen(plethodon$land,PrinAxes=FALSE)
+#' summary(Y.gpa)
+#' plot(Y.gpa)
 #' 
 #' #Example 2: points and semilandmarks on curves
 #' data(hummingbirds)
 #'
 #' #Using Procrustes Distance for sliding
-#' gpagen(hummingbirds$land,curves=hummingbirds$curvepts)   
+#' Y.gpa <- gpagen(hummingbirds$land,curves=hummingbirds$curvepts)   
+#' summary(Y.gpa)
+#' plot(Y.gpa)
 #' 
 #' #Using bending energy for sliding
-#' gpagen(hummingbirds$land,curves=hummingbirds$curvepts,ProcD=FALSE)   
-#'
+#' Y.gpa <- gpagen(hummingbirds$land,curves=hummingbirds$curvepts,ProcD=FALSE)   
+#' summary(Y.gpa)
+#' plot(Y.gpa)
+#' 
 #' #Example 3: points, curves and surfaces
 #' data(scallops)
+#' 
 #' #Using Procrustes Distance for sliding
-#' gpagen(A=scallops$coorddata, curves=scallops$curvslide, surfaces=scallops$surfslide) 
+#' Y.gpa <- gpagen(A=scallops$coorddata, curves=scallops$curvslide, surfaces=scallops$surfslide)
+#' summary(Y.gpa)
+#' plot(Y.gpa) 
 #' @useDynLib geomorph
-gpagen<-function(A, Proj=TRUE,ProcD=TRUE,PrinAxes=TRUE,ShowPlot=TRUE,curves=NULL,surfaces=NULL,
-                 ...){
-  if (length(dim(A))!=3){
-    stop("Data matrix not a 3D array (see 'arrayspecs').")  }
-  if(any(is.na(A))==T){
-    stop("Data matrix contains missing values. Estimate these first(see 'estimate.missing').")  }
-  n<-dim(A)[3];   k<-dim(A)[2];  p<-dim(A)[1]
-  nsurf<-0; ncurve<-0
-  slided<-ifelse(ProcD==T,1,0)
-  if(!is.null(curves)){ncurve<-nrow(curves) }
-  if(!is.null(surfaces)){nsurf<-nrow(surfaces) }
-  specs.size<-NULL
-  for (i in 1:n)
-  {specs.size[i]<-csize(A[,,i])[[1]]}
-  if (is.null(curves) && is.null(surfaces)){  
-    temp<-.C("DoGPA", as.integer(p),as.integer(k),as.integer(n),as.double(A),double(p*k*n),PACKAGE = "geomorph")[[5]]
-    temp<-arrayspecs(matrix(temp,ncol=k,byrow=T),p,k)
+gpagen = function(A, curves=NULL, surfaces=NULL, PrinAxes = TRUE, 
+                      max.iter = NULL, ProcD=TRUE, Proj = TRUE){
+  n <- dim(A)[[3]]; p <- dim(A)[[1]]; k <- dim(A)[[2]]
+  if(!is.array(A)) stop("Coordinates must be an array")
+  if(length(dim(A)) != 3) stop("Coordinates array does not have proper dimensions")
+  Y <- lapply(1:n, function(j) A[,,j])
+  if(!is.logical(ProcD)) prD <- TRUE else prD <- ProcD
+  if(is.null(max.iter)) max.it <- 5 else max.it <- as.numeric(max.iter)
+  if(is.numeric(max.it) & max.it > 50) {
+    warning("GPA might be halted ahead of maximum iterations, 
+            as the number chosen is exceedingly large")
+    max.it = 10
   }
-  else{ 
-    temp<-.C("DoGPA1", as.integer(p),as.integer(k),as.integer(n),as.double(A),double(p*k*n),PACKAGE = "geomorph")[[5]]
-    temp<-arrayspecs(matrix(temp,ncol=k,byrow=T),p,k)
-    ref.gpa<-mshape(temp)	
-    new.gpa<-.C("DoSlide", as.integer(slided), as.integer(p),as.integer(k),as.integer(n),
-                as.double(temp),as.double(ref.gpa), double(p*k*n),as.integer(ncurve),as.integer(curves),as.integer(nsurf),
-                as.integer(surfaces),PACKAGE = "geomorph" )[[7]]
-    new.gpa<-arrayspecs(matrix(new.gpa,ncol=k,byrow=T),p,k)
-    temp<-.C("DoGPA1", as.integer(p),as.integer(k),as.integer(n),as.double(new.gpa),double(p*k*n),PACKAGE = "geomorph")[[5]]
-    temp<-arrayspecs(matrix(temp,ncol=k,byrow=T),p,k)
+  if(is.na(max.it)) max.it <- 5
+  if(max.it < 0) max.it <- 5
+  if(!is.null(curves)) {
+    curves <- as.matrix(curves) 
+    if(ncol(curves) != 3) stop("curves must be a matrix of three columns")
+  } else curves <- NULL
+  if(!is.null(surfaces)) surf <- as.vector(surfaces) else surf <- NULL
+  if(!is.null(curves) || !is.null(surf)) gpa <- pGpa.wSliders(Y, curves = curves, surf=surf,
+                                           PrinAxes = PrinAxes, max.iter=max.it, 
+                                           ProcD=prD) else
+    gpa <- pGpa(Y, PrinAxes = PrinAxes, max.iter=max.it)
+  coords <- gpa$coords
+  if (Proj == TRUE) {
+    coords <- orp(coords)
+    M <- Reduce("+",coords)/n
   }
-  if(Proj==TRUE){temp<-orp(temp)  }
-  dimnames(temp)[[3]]<-dimnames(A)[[3]]
-  names(specs.size)<-dimnames(A)[[3]]
-  if(PrinAxes==TRUE){
-    ref<-mshape(temp); rot <- prcomp(ref)$rotation
-    for(i in 1:k) if(sign(rot[i,i])!=1) rot[1:k,i] = -rot[1:k,i]
-    for(i in 1:dim(temp)[[3]]){temp[,,i]<-temp[,,i] %*% rot }
-  }
-  if(ShowPlot==TRUE){ plotAllSpecimens(temp,...)}
-  return(list(coords=temp,Csize=specs.size))
+  Csize <- gpa$CS
+  iter <- gpa$iter
+  M <- gpa$consensus
+  pt.VCV <- var(two.d.array(simplify2array(coords)))
+  pt.var <- Reduce("+",Map(function(y) y^2/n, coords))
+  colnames(pt.var) <- if(k==3) c("Var.X", "Var.Y", "Var.Z") else 
+    c("Var.X", "Var.Y") 
+  pt.names <- if(k==3) paste(c("X","Y","Z"), sort(rep(1:p,k)), sep=".") else
+    paste(c("X","Y"), sort(rep(1:p,k)), sep=".")
+  rownames(pt.VCV) <- colnames(pt.VCV) <- pt.names
+  colnames(M) <- if(k==3) c("X", "Y", "Z") else c("X", "Y")
+  coords <- simplify2array(coords)
+  dimnames(coords)<- dimnames(A)
+  two.d.coords = two.d.array(coords)
+  colnames(two.d.coords) <- pt.names
+  names(Csize) <- dimnames(A)[[3]]
+  if(!is.null(curves) || !is.null(surf)) {
+    nsliders <- nrow(curves)
+    nsurf <- length(surf)
+    if(ProcD == TRUE) smeth <- "ProcD" else smeth <- "BE"
+    } else {
+        nsliders <- 0
+        smeth <- NULL
+    }
+  
+  out <- list(coords=coords, Csize=Csize, 
+              iter=iter, 
+              points.VCV = pt.VCV, points.var = pt.var, 
+              consensus = M, p=p,k=k, 
+              nsliders=nsliders,
+              data = data.frame(coords = two.d.coords, Csize = Csize),
+              Q = gpa$Q, slide.method = smeth, call= match.call())
+  class(out) <- "gpagen"
+  out
 }
+
+
