@@ -69,7 +69,11 @@ procD.pgls<-function(f1, phy, iter=999, int.first = FALSE, RRPP=FALSE, verbose=F
   k <- length(pf$Terms)
   Y <- pf$Y.prime
   if(is.null(dim(Y))) {
+<<<<<<< HEAD
     y.names <- names(Y)
+=======
+    y.names <- names(y)
+>>>>>>> b69f37d0e3c9c665d7703cb4fd8a605c7d7297a5
     Y <- matrix(Y) 
     rownames(Y) <- y.names
   } else {
