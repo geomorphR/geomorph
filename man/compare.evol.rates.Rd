@@ -14,19 +14,14 @@ compare.evol.rates(A, phy, gp, iter = 999)
 \item{gp}{A factor array designating group membership}
 
 \item{iter}{Number of iterations for significance testing}
-
-\item{sigma.d.ratio}{The ratio of maximum to minimum evolutionary rates.}
-
-\item{P.value}{The significance level of the observed ratio.}
-
-\item{sigma.d.gp}{The phylogenetic evolutionary rate for each group of species on the phylogeny.}
-
-\item{random.sigma}{the sigma values found in random permutations of the resampling procedure.}
-
-\item{permutations}{The number of random permutations used.}
 }
 \value{
-Function returns a list with the following components:
+An object of class "evolrate" returns a list with the following components:
+  \item{sigma.d.ratio}{The ratio of maximum to minimum evolutionary rates.}
+  \item{P.value}{The significance level of the observed ratio.}
+  \item{sigma.d.gp}{The phylogenetic evolutionary rate for each group of species on the phylogeny.}
+  \item{random.sigma}{The sigma values found in random permutations of the resampling procedure.}
+  \item{permutations}{The number of random permutations used.}
 }
 \description{
 Function calculates rates of shape evolution for two or more groups of species on a phylogeny from a set of Procrustes-aligned specimens

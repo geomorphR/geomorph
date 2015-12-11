@@ -26,35 +26,22 @@ label (replicates also receive the same label).}
 that the variables "ind", "side", and "replicate" in the data frame match these names exactly (as shown in examples below).}
 
 \item{iter}{Number of iterations for significance testing}
-
-\item{shape.anova}{An analysis of variance table for the shape data}
-
-\item{size.anova}{An analysis of variance table for the shape data (when object.sym=FALSE)}
-
-\item{symm.component}{The symmetric component of shape variation}
-
-\item{asym.component}{The asymmetric component of shape variation}
-
-\item{DA.component}{The directional asymmetry component, found as the mean shape for each side}
-
-\item{FA.compnent}{The fluctuating asymmetry component for each specimen, found as the specimen-specific side deviation adjusted for the mean
-directional asymmetry in the dataset}
-
-\item{data.type}{A value indicating whether the analysis was performed as Object or Matching symmetry}
-
-\item{permutations}{The number of random permutations used.}
-
-\item{random.shape.SS}{A matrix of random outcomes for SS from the Shape analysis.}
-
-\item{random.size.SS}{A matrix of random outcomes for SS from the Cntroid Size analysis.}
-
-\item{perm.method}{A value indicating whether "Raw" values were shuffled or "RRPP" performed.}
-
-\item{call}{The matched call}
 }
 \value{
-bilat.symmetry returns an object of class "bilat.symmetry". The function, summary, is used to obtain and print an analysis of
-variance table of the results. An object of class "bilat.symmetry" is a list containing the following
+An object of class "bilat.symmetry" returns a list of the following
+\item{shape.anova}{An analysis of variance table for the shape data.}
+\item{size.anova}{An analysis of variance table for the shape data (when object.sym=FALSE).}
+\item{symm.component}{The symmetric component of shape variation.}
+\item{asym.component}{The asymmetric component of shape variation.}
+\item{DA.component}{The directional asymmetry component, found as the mean shape for each side.}
+\item{FA.compnent}{The fluctuating asymmetry component for each specimen, found as the specimen-specific side deviation adjusted for the mean
+ directional asymmetry in the dataset.}
+\item{data.type}{A value indicating whether the analysis was performed as Object or Matching symmetry.}
+\item{permutations}{The number of random permutations used.}
+\item{random.shape.SS}{A matrix of random outcomes for SS from the Shape analysis.}
+\item{random.size.SS}{A matrix of random outcomes for SS from the Cntroid Size analysis.}
+\item{perm.method}{A value indicating whether "Raw" values were shuffled or "RRPP" performed.}
+\item{call}{The matched call.}
 }
 \description{
 Function performs an analysis of directional and fluctuating asymmetry for bilaterally symmetric objects

@@ -24,12 +24,12 @@
 #' @keywords analysis
 #' @author Dean Adams & Emma Sherratt
 #' @export
-#' @return Function returns a list with the following components: 
-#'   @param sigma.d.ratio The ratio of maximum to minimum evolutionary rates.
-#'   @param P.value The significance level of the observed ratio.
-#'   @param sigma.d.gp The phylogenetic evolutionary rate for each group of species on the phylogeny.
-#'   @param random.sigma the sigma values found in random permutations of the resampling procedure.
-#'   @param permutations The number of random permutations used.
+#' @return An object of class "evolrate" returns a list with the following components: 
+#'   \item{sigma.d.ratio}{The ratio of maximum to minimum evolutionary rates.}
+#'   \item{P.value}{The significance level of the observed ratio.}
+#'   \item{sigma.d.gp}{The phylogenetic evolutionary rate for each group of species on the phylogeny.}
+#'   \item{random.sigma}{The sigma values found in random permutations of the resampling procedure.}
+#'   \item{permutations}{The number of random permutations used.}
 #'   
 #' @references Adams, D.C. 2014. Quantifying and comparing phylogenetic evolutionary rates for 
 #'  shape and other high-dimensional phenotypic data. Syst. Biol. 63:166-177.
