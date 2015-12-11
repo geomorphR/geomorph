@@ -20,13 +20,17 @@ landmark configuration (default is TRUE)}
 \item{ShowPlot}{A logical value indicating whether or not the plot should be returned}
 
 \item{iter}{Number of iterations for significance testing}
+
+\item{rates.all}{The phylogenetic evolutionary rates for each trait .}
+
+\item{rate.ratio}{The ratio of maximum to minimum evolutionary rates .}
+
+\item{pvalue}{The significance level of the observed rate ratio .}
+
+\item{pvalue.gps}{Matrix of pairwise significance levels comparing each pair of rates .}
 }
 \value{
 Function returns a list with the following components:
-  \item{rates.all}{The phylogenetic evolutionary rates for each trait}
-  \item{rate.ratio}{The ratio of maximum to minimum evolutionary rates}
-  \item{pvalue}{The significance level of the observed rate ratio}
-  \item{pvalue.gps}{Matrix of pairwise significance levels comparing each pair of rates}
 }
 \description{
 Function calculates rates of shape evolution for two or more multi-dimensional traits on a

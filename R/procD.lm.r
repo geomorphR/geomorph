@@ -49,31 +49,30 @@
 #' @keywords analysis, RRPP
 #' @export
 #' @author Dean Adams and Michael Collyer
-#' @return procD.lm returns an object of class "procD.lm". The function, summary, is used to obtain and print an analysis of variance table of the results. 
-#' An object of class "procD.lm" is a list containing the following
-#' @param aov.table An analysis of variance table; the same as the summary
-#' @param call The matched call
-#' @param call A vector or matrix of linear model coefficients.  "wCoefficients" are weighted 
-#' coefficients, if weights are used
-#' @param Y The response data, in matrix form.  "wY" is the matrix of weighted responses,
-#' if weights are used.
-#' @param X The model matrix. "wX" is the matrix of weighted model parameters, if weights are used.
-#' @param Xs The model matrix for each possible submodel. "wXs" are each submodel weighted, if weights are used.
-#' @param QRs The QR decompositions of all submodels. "wQRs" are QR decompositions on weighted X matrices.
-#' @param fitted The fitted values. "wFitted" are the fitted values after weighting.
-#' @param residuals The residuals (observed responses - fitted responses).  "wResiduals" are the residuals
-#' from a weighted fit.
-#' @param weights The weights used in weighted least-squares fitting.  If no weights are used, a 
-#' NULL is returned.  
-#' @param Terms The results of the \code{\link{terms}} function applied to the model frame
-#' @param term.labels The terms used in constructing the aov.table.
-#' @param SS The sums of squares for each term, model residuals, and the total.
-#' @param df The degrees of freedom for each SS.
-#' @param R2 The coefficient of determination for each model term.
-#' @param F The F values for each model term.
-#' @param permutations The number of random permutations (including observed) used.
-#' @param random.SS A matrix or vector of random SS found via the resampling procedure used.
-#' @param perm.method A value indicating whether "Raw" values were shuffled or "RRPP" performed.
+#' @return An object of class "procD.lm" is a list containing the following
+#' \item{aov.table}{An analysis of variance table; the same as the summary.}
+#' \item{call}{The matched call.}
+#' \item{coefficients}{A vector or matrix of linear model coefficients.  "wCoefficients" are weighted 
+#' coefficients, if weights are used.}
+#' \item{Y}{The response data, in matrix form.  "wY" is the matrix of weighted responses,
+#' if weights are used.}
+#' \item{X}{The model matrix. "wX" is the matrix of weighted model parameters, if weights are used.}
+#' \item{Xs}{The model matrix for each possible submodel. "wXs" are each submodel weighted, if weights are used.}
+#' \item{QRs}{The QR decompositions of all submodels. "wQRs" are QR decompositions on weighted X matrices.}
+#' \item{fitted}{The fitted values. "wFitted" are the fitted values after weighting.}
+#' \item{residuals}{The residuals (observed responses - fitted responses).  "wResiduals" are the residuals
+#' from a weighted fit.}
+#' \item{weights}{The weights used in weighted least-squares fitting.  If no weights are used, a 
+#' NULL is returned.}
+#' \item{Terms}{The results of the \code{\link{terms}} function applied to the model frame.}
+#' \item{term.labels}{The terms used in constructing the aov.table.}
+#' \item{SS}{The sums of squares for each term, model residuals, and the total.}
+#' \item{df}{The degrees of freedom for each SS.}
+#' \item{R2}{The coefficient of determination for each model term.}
+#' \item{F}{The F values for each model term.}
+#' \item{permutations}{The number of random permutations (including observed) used.}
+#' \item{random.SS}{A matrix or vector of random SS found via the resampling procedure used.}
+#' \item{perm.method}{A value indicating whether "Raw" values were shuffled or "RRPP" performed.}
 #' 
 #' @references Anderson MJ. 2001. A new method for non-parametric multivariate analysis of variance. 
 #'    Austral Ecology 26: 32-46.

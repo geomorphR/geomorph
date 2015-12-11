@@ -30,23 +30,23 @@
 #' @keywords analysis
 #' @author Dean Adams
 #' @return Objects of class "pls" from integration.test return a list of the following:
-#'   \item{r.pls}{The estimate of morphological integration: PLS.corr}
-#'   \item{r.pls.mat}{The pairwise r.pls, if the number of paritions is greater than 2}
-#'   \item{P.value}{The empirically calculated P-value from the resampling procedure.}
-#'   \item{left.pls.vectors}{The singular vectors of the left (x) block (for 2 modules only)}
-#'   \item{right.pls.vectors}{The singular vectors of the right (y) block (for 2 modules only)}
-#'   \item{random.r}{The correlation coefficients found in each random permutation of the 
-#'   resampling procedure.}
-#'   \item{XScores}{Values of left (x) block projected onto singular vectors 
-#'   (for 2 modules only).}
-#'   \item{YScores}{Values of right (y) block projected onto singular vectors 
-#'   (for 2 modules only).}
-#'   \item{A1}{Input values for the left block (for 2 modules only).}
-#'   \item{A2}{Input values for the right block (for 2 modules only).}
-#'   \item{A1.matrix}{Left block (matrix) found from A1 (for 2 modules only).}
-#'   \item{A2.matrix}{Right block (matrix) found from A2 (for 2 modules only).}
-#'   \item{permutations}{The number of random permutations used in the resampling procedure.}
-#'   \item{call}{The match call.}
+#'    @param r.pls The estimate of morphological integration: PLS.corr.
+#'    @param r.pls.mat The pairwise r.pls, if the number of paritions is greater than 2.
+#'    @param P.value The empirically calculated P-value from the resampling procedure..
+#'    @param left.pls.vectors The singular vectors of the left (x) block (for 2 modules only).
+#'    @param right.pls.vectors The singular vectors of the right (y) block (for 2 modules only).
+#'    @param random.r The correlation coefficients found in each random permutation of the 
+#'   resampling procedure..
+#'    @param XScores Values of left (x) block projected onto singular vectors 
+#'   (for 2 modules only)..
+#'    @param YScores Values of right (y) block projected onto singular vectors 
+#'   (for 2 modules only)..
+#'    @param A1 Input values for the left block (for 2 modules only)..
+#'    @param A2 Input values for the right block (for 2 modules only)..
+#'    @param A1.matrix Left block (matrix) found from A1 (for 2 modules only)..
+#'    @param A2.matrix Right block (matrix) found from A2 (for 2 modules only)..
+#'    @param permutations The number of random permutations used in the resampling procedure..
+#'    @param call The match call..
 #' @references  Bookstein, F. L., P. Gunz, P. Mitteroecker, H. Prossinger, K. Schaefer, and H. Seidler. 
 #'   2003. Cranial integration in Homo: singular warps analysis of the midsagittal plane in ontogeny and 
 #'   evolution. J. Hum. Evol. 44:167-187.

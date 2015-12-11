@@ -1,14 +1,14 @@
 #' Evaluate the degree of modular signal in morphometric datasets
 #'
 #' Function quantifies the degree of modularity between two or more hypothesized modules of Procrustes-aligned 
-#'   landmark coordinates and compares this to patterns found by randomly assigning landmarks into subsets
+#' landmark coordinates and compares this to patterns found by randomly assigning landmarks into subsets
 #'
 #' The function quantifies the degree of modularity in two or more hypothesized modules of shape data as 
 #' defined by landmark coordinates, and compares this to what is expected under the null hypothesis of random assignment
 #' of variables to partitions (i.e., neither modular nor integrated structure). 
 #' Input may be either a 2D matrix of phenotypic values, or a 3D array of aligned Procrustes coordinates. It 
-#' is assumed that the landmarks have previously been aligned using Generalized Procrustes Analysis (GPA) [e.g., 
-#' with \code{\link{gpagen}}]. The degree of modularity is quantified using the CR coefficient (Adams 2016). If more than 
+#' is assumed that the landmarks have previously been aligned using Generalized Procrustes Analysis (GPA); e.g., 
+#' with \code{\link{gpagen}}. The degree of modularity is quantified using the CR coefficient (Adams 2016). If more than 
 #' two modules are defined, the average pairwise CR coefficient is utilized. The CR coefficient for the observed modular 
 #' hypothesis is then compared to a distribution of values obtained by randomly assigning landmarks into subsets, with the 
 #' restriction that the number of landmarks in each subset is identical to that observed in each of the original partitions. 
@@ -19,27 +19,26 @@
 #' resampling is presented, with the observed value designated by an arrow in the plot. For landmark data, the CR coefficient 
 #' found from the average CR across a 90 degree rotation of the data is used as the test statistic (see Adams 2016). For all
 #' data, the CR coefficient and its 95% confidence intervals (based on bootstrapping) are returned.
-#'
-#'   Landmark groups can be defined using \code{\link{define.modules}}, or made by hand (see example below).
-#'   To use this method with other data (i.e., a set of length measurements), the input A should be a matrix 
-#'   of n rows of specimens and variables arranged in columns. 
-#'   In this case, the partition.gp input should have each variable assigned to a partition. 
+#' 
+#' Landmark groups can be defined using \code{\link{define.modules}}, or made by hand (see example below).
+#' To use this method with other data (i.e., a set of length measurements), the input A should be a matrix 
+#' of n rows of specimens and variables arranged in columns. 
+#' In this case, the partition.gp input should have each variable assigned to a partition. 
 #'   
 #' @param A A 3D array (p x k x n) containing GPA-aligned coordinates for all specimens, or a matrix (n x variables)
 #' @param partition.gp A list of which landmarks (or variables) belong in which partition (e.g. A,A,A,B,B,B,C,C,C)
 #' @param iter Number of iterations for significance testing
-#' @export
 #' @keywords analysis
+#' @export
 #' @author Dean Adams
-#' @return Objects of class "CR" from modularity.test return a list of the following:
-#'    \item CR Covariance ratio: The estimate of the observed modular signal.
-#'    (For more than two partitions, this is the mean CR of pairwise CRs.)
-#'    \item CInterval The 95% confidence intervals of the CR based on bootstrapping.
-#'    \item P.value The empirically calculated P-value from the resampling procedure.
-#'    \item CR.mat For more than two partitions, the pairwise CRs among partitions.
-#'    \item random.CR The CR calculated in each of the random permutations of the resampling procedure.
-#'    \item permutations The number of random permutations used in the resampling procdure.
-#'    \item call The match call.
+#' @return An object of class "CR" is a list containing the following
+#' \item{CR}{Covariance ratio: The estimate of the observed modular signal.}
+#' \item{CInterval}{The bootstrapped 95 percent confidence intervals of the CR.}
+#' \item{P.value}{The empirically calculated P-value from the resampling procedure.}
+#'    \item{CR.mat}{For more than two partitions, the pairwise CRs among partitions.}
+#'    \item{random.CR}{The CR calculated in each of the random permutations of the resampling procedure.}
+#'    \item{permutations}{The number of random permutations used in the resampling procdure.}
+#'    \item{call}{The match call.}
 #' @references Adams, D.C. 2016.Evaluating modularity in morphometric data: Challenges with the RV coefficient and a 
 #' new test measure. Methods in Ecology and Evolution. (Accepted). 
 #' @examples
@@ -52,7 +51,8 @@
 #' summary(MT)
 #' plot(MT)
 #' MT$CInterval # extracting just the 95% CI
-#' #Result implies that the skull and mandible are not independent modules
+#' # Result implies that the skull and mandible are not independent modules
+
 modularity.test<-function(A,partition.gp,iter=999){
   if(any(is.na(A))==T){
     stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').")  }

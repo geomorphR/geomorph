@@ -46,10 +46,10 @@
 #' @author Dean Adams
 #' @export
 #' @return Function returns a list with the following components: 
-#'   \item{rates.all}{The phylogenetic evolutionary rates for each trait}
-#'   \item{rate.ratio}{The ratio of maximum to minimum evolutionary rates}
-#'   \item{pvalue}{The significance level of the observed rate ratio}
-#'   \item{pvalue.gps}{Matrix of pairwise significance levels comparing each pair of rates}
+#'   @param rates.all The phylogenetic evolutionary rates for each trait .
+#'   @param rate.ratio The ratio of maximum to minimum evolutionary rates .
+#'   @param pvalue The significance level of the observed rate ratio .
+#'   @param pvalue.gps Matrix of pairwise significance levels comparing each pair of rates .
 #'   
 #' @references Adams, D.C. 2014. Quantifying and comparing phylogenetic evolutionary rates for 
 #'  shape and other high-dimensional phenotypic data. Syst. Biol. 63:166-177.

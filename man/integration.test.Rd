@@ -14,26 +14,40 @@ integration.test(A, A2 = NULL, partition.gp = NULL, iter = 999)
 \item{partition.gp}{A list of which landmarks (or variables) belong in which partition (e.g. A,A,A,B,B,B,C,C,C) (required when only 1 dataset provided)}
 
 \item{iter}{Number of iterations for significance testing}
+
+\item{r.pls}{The estimate of morphological integration: PLS.corr.}
+
+\item{r.pls.mat}{The pairwise r.pls, if the number of paritions is greater than 2.}
+
+\item{P.value}{The empirically calculated P-value from the resampling procedure..}
+
+\item{left.pls.vectors}{The singular vectors of the left (x) block (for 2 modules only).}
+
+\item{right.pls.vectors}{The singular vectors of the right (y) block (for 2 modules only).}
+
+\item{random.r}{The correlation coefficients found in each random permutation of the
+resampling procedure..}
+
+\item{XScores}{Values of left (x) block projected onto singular vectors
+(for 2 modules only)..}
+
+\item{YScores}{Values of right (y) block projected onto singular vectors
+(for 2 modules only)..}
+
+\item{A1}{Input values for the left block (for 2 modules only)..}
+
+\item{A2}{Input values for the right block (for 2 modules only)..}
+
+\item{A1.matrix}{Left block (matrix) found from A1 (for 2 modules only)..}
+
+\item{A2.matrix}{Right block (matrix) found from A2 (for 2 modules only)..}
+
+\item{permutations}{The number of random permutations used in the resampling procedure..}
+
+\item{call}{The match call..}
 }
 \value{
 Objects of class "pls" from integration.test return a list of the following:
-  \item{r.pls}{The estimate of morphological integration: PLS.corr}
-  \item{r.pls.mat}{The pairwise r.pls, if the number of paritions is greater than 2}
-  \item{P.value}{The empirically calculated P-value from the resampling procedure.}
-  \item{left.pls.vectors}{The singular vectors of the left (x) block (for 2 modules only)}
-  \item{right.pls.vectors}{The singular vectors of the right (y) block (for 2 modules only)}
-  \item{random.r}{The correlation coefficients found in each random permutation of the
-  resampling procedure.}
-  \item{XScores}{Values of left (x) block projected onto singular vectors
-  (for 2 modules only).}
-  \item{YScores}{Values of right (y) block projected onto singular vectors
-  (for 2 modules only).}
-  \item{A1}{Input values for the left block (for 2 modules only).}
-  \item{A2}{Input values for the right block (for 2 modules only).}
-  \item{A1.matrix}{Left block (matrix) found from A1 (for 2 modules only).}
-  \item{A2.matrix}{Right block (matrix) found from A2 (for 2 modules only).}
-  \item{permutations}{The number of random permutations used in the resampling procedure.}
-  \item{call}{The match call.}
 }
 \description{
 Function quantifies the degree of morphological integration between modules of Procrustes-aligned

@@ -30,22 +30,22 @@ into tangent space}
 }
 \value{
 An object of class gpagen returns a list with the following components:
-  \item{coords}{A (p x k x n) array of aligned Procrustes coordinates, where p is the number of landmark
+ \item{coords}{A (p x k x n) array of aligned Procrustes coordinates, where p is the number of landmark
     points, k is the number of landmark dimensions (2 or 3), and n is the number of specimens. The third
-    dimension of this array contains names for each specimen if specified in the original input array}
-  \item{Csize}{A vector of centroid sizes for each specimen, containing the names for each specimen if
-    specified in the original input array}
- \item{iter} {The number of GPA iterations until convergence was found (or GPA halted)}
- \item{points.VCV} {Varaiance-covariance matrix among landmark coordinates}
- \item{points.var} {Varaiances of landmark points}
- \item{consnsus} {The consensus (mean) configuration}
- \item{p} {Number of landmarks}
- \item{k} {Number of landmark dimensions}
- \item{nsliders} {Number of semilandmarks}
- \item{data} {Data frame with an n x (pk) matrix of Procrustes residuals and centroid size}
- \item{Q} {Final convergence criterion value}
- \item{slide.emthod} {Method used to slide semilandmarks}
- \item{call} {The match call}
+    dimension of this array contains names for each specimen if specified in the original input array.}
+ \item{Csize}{A vector of centroid sizes for each specimen, containing the names for each specimen if
+    specified in the original input array.}
+ \item{iter}{The number of GPA iterations until convergence was found (or GPA halted).}
+ \item{points.VCV}{Varaiance-covariance matrix among landmark coordinates.}
+ \item{points.var}{Varaiances of landmark points.}
+ \item{consnsus}{The consensus (mean) configuration.}
+ \item{p}{Number of landmarks.}
+ \item{k}{Number of landmark dimensions.}
+ \item{nsliders}{Number of semilandmarks.}
+ \item{data}{Data frame with an n x (pk) matrix of Procrustes residuals and centroid size.}
+ \item{Q}{Final convergence criterion value.}
+ \item{slide.method}{Method used to slide semilandmarks.}
+ \item{call}{The match call.}
 }
 \description{
 A general function to perform Procrustes analysis of two- or three-dimensional landmark data that
@@ -77,31 +77,41 @@ Generalized Procrustes Analysis (GPA: Gower 1975, Rohlf and Slice 1990) is the p
   1) the locations of semilandmarks can be optimized by minimizing the bending energy between the
   reference and target specimen (Bookstein 1997), or by minimizing the Procrustes distance between the two
   (Rohlf 2010).  Note that specimens are NOT automatically reflected to improve the GPA-alignment.
+
+\subsection{Notes for geomorph 3.0}{
+Compared to older versions of geomorph, users might notice subtle differences in Procrustes residuals when using
+semilandmarks (curves or surfaces).  This difference is a result of using recursive updates of the
+consensus configuration with the sliding algorithms (minimized bending energy or Procrustes distances).
+(Previous versions used a single consensus through the sliding algorithms.)  Shape differences using the recursive
+updates of the consensus configuration should be highly correlated with shape differences using a single consensus
+during the sliding algorithm, but rotational "flutter" can be expected.  This should have no qualitative effect on
+inferential analyses using Procrusts residuals.
+}
 }
 \examples{
-#Example 1: fixed points only
+# Example 1: fixed points only
 data(plethodon)
 Y.gpa <- gpagen(plethodon$land,PrinAxes=FALSE)
 summary(Y.gpa)
 plot(Y.gpa)
 
-#Example 2: points and semilandmarks on curves
+# Example 2: points and semilandmarks on curves
 data(hummingbirds)
 
-#Using Procrustes Distance for sliding
+# Using Procrustes Distance for sliding
 Y.gpa <- gpagen(hummingbirds$land,curves=hummingbirds$curvepts)
 summary(Y.gpa)
 plot(Y.gpa)
 
-#Using bending energy for sliding
+# Using bending energy for sliding
 Y.gpa <- gpagen(hummingbirds$land,curves=hummingbirds$curvepts,ProcD=FALSE)
 summary(Y.gpa)
 plot(Y.gpa)
 
-#Example 3: points, curves and surfaces
+# Example 3: points, curves and surfaces
 data(scallops)
 
-#Using Procrustes Distance for sliding
+# Using Procrustes Distance for sliding
 Y.gpa <- gpagen(A=scallops$coorddata, curves=scallops$curvslide, surfaces=scallops$surfslide)
 summary(Y.gpa)
 plot(Y.gpa)
