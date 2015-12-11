@@ -78,6 +78,9 @@ Generalized Procrustes Analysis (GPA: Gower 1975, Rohlf and Slice 1990) is the p
   reference and target specimen (Bookstein 1997), or by minimizing the Procrustes distance between the two
   (Rohlf 2010).  Note that specimens are NOT automatically reflected to improve the GPA-alignment.
 
+The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{gpagen}}.
+  The generic function, \code{\link{plot}}, calls \code{\link{plotAllSpecimens}}.
+
 \subsection{Notes for geomorph 3.0}{
 Compared to older versions of geomorph, users might notice subtle differences in Procrustes residuals when using
 semilandmarks (curves or surfaces).  This difference is a result of using recursive updates of the

@@ -39,6 +39,9 @@ It is assumed that the landmarks have previously been aligned
 This function can also be used with univariate data (i.e. centroid size) if imported as matrix with rownames
 giving the taxa names. In this case, the estimate of phylogenetic signal is identical to that found using the
 standard kappa statistic (Blomberg et al. 2003).
+
+The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{physignal}}.
+ The generic function, \code{\link{plot}}, produces a histogram of random K statistics, associated with the resampling procedure.
 }
 \examples{
 data(plethspecies)

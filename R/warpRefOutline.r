@@ -17,7 +17,7 @@
 #' }
 #' The returned outline object is for use in geomorph
 #' functions where shape deformations are plotted (\code{\link{plotTangentSpace}}, 
-#' \code{\link{plotAllometry}}, \code{\link{bilat.symmetry}}, and \code{\link{plotRefToTarget}}). 
+#' \code{\link{two.b.pls}}, \code{\link{bilat.symmetry}}, and \code{\link{plotRefToTarget}}). 
 #' 
 #' @param file A .txt or .csv file of the outline point coordinates, or a .TPS file with OUTLINES= or CURVES= elements
 #' @param coord A p x k matrix of 2D fixed landmark coordinates

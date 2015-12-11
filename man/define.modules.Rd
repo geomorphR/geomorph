@@ -13,7 +13,7 @@ define.modules(spec, nmodules)
 }
 \value{
 Function returns a vector of which landmarks belong in which module (e.g. 1,1,1,2,2,3,3,3,2) to be used
-with \code{\link{compare.modular.partitions}} option 'landgroups'.
+with \code{\link{modularity.test}} or \code{\link{integration.test}}.
 }
 \description{
 An interactive function to define which landmarks should be assigned to each module (landmark partition).
@@ -21,7 +21,7 @@ An interactive function to define which landmarks should be assigned to each mod
 \details{
 Function takes a matrix of digitized landmark coordinates (e.g. from \code{\link{mshape}}) and allows the user to assign
 landmarks to each module. The output is a list of which
-landmarks belong in which partition, to be used by \code{\link{compare.modular.partitions}}.
+landmarks belong in which partition, to be used by \code{\link{modularity.test}} or \code{\link{integration.test}}.
 
 \subsection{Selection in 2D}{
 Choosing which landmarks will be included in each module involves landmark selection using a mouse in
@@ -43,7 +43,7 @@ to this module. Repeat until all landmarks are assigned to modules.
 Emma Sherratt
 }
 \seealso{
-\code{\link{compare.modular.partitions}}
+\code{\link{modularity.test}} and \code{\link{integration.test}}
 }
 \keyword{utilities}
 

@@ -12,9 +12,12 @@
 #' using permutation, where data for one block are permuted across the tips of the phylogeny, 
 #' an estimate of the covariation between sets of variables, and compared to the observed value. 
 #' 
-#'   A plot of PLS scores from Block1 versus Block2 is provided for the first set of PLS axes. Thin-plate spline 
-#'   deformation grids along these axes are also shown (if data were input as a 3D array).
-#' 
+#'  The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{phylo.pls}}.
+#'  The generic function, \code{\link{plot}}, produces a two-block.pls plot.  This function calls \code{\link{plot.pls}}, which has two additional
+#'  arguments (with defaults): label = NULL, warpgrids = TRUE.  These arguments allow one to include a vector to label points and a logical statement to
+#'  include warpgrids, respectively.  Warpgrids can only be included for 3D arrays of Procrustes resdiuals. The plot is a plot of PLS scores from 
+#'  Block1 versus Block2 performed for the first set of PLS axes. 
+#'  
 #' @param A1 A 2D array (n x [p1 x k1]) or 3D array (p1 x k1 x n) containing landmark coordinates for the first block
 #' @param A2 A 2D array (n x [p2 x k2]) or 3D array (p2 x k2 x n) containing landmark coordinates for the second block 
 #' @param phy A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape
@@ -35,6 +38,8 @@
 #' @references  Adams, D.C. and R. Felice. 2014. Assessing phylogenetic morphological 
 #' integration and trait covariation in morphometric data using evolutionary covariance 
 #' matrices. PLOS ONE. 9(4):e94335.
+#' @seealso \code{\link{integration.test}}, \code{\link{modularity.test}}, \code{\link{phylo.integration}}, and 
+#' \code{\link{two.b.pls}}
 #' @examples
 #' 
 #' data(plethspecies)

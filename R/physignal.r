@@ -16,7 +16,10 @@
 #' This function can also be used with univariate data (i.e. centroid size) if imported as matrix with rownames
 #' giving the taxa names. In this case, the estimate of phylogenetic signal is identical to that found using the 
 #' standard kappa statistic (Blomberg et al. 2003).
-#'
+#' 
+#'  The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{physignal}}.
+#'  The generic function, \code{\link{plot}}, produces a histogram of random K statistics, associated with the resampling procedure.
+#'  
 #' @param phy A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape
 #' @param A A matrix (n x [p x k]) or 3D array (p x k x n) containing GPA-aligned coordinates for a set of specimens
 #' @param iter Number of iterations for significance testing

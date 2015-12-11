@@ -35,7 +35,7 @@ specimen - do this by eye, or use \code{\link{findMeanSpec}} }
 }
 The returned outline object is for use in geomorph
 functions where shape deformations are plotted (\code{\link{plotTangentSpace}},
-\code{\link{plotAllometry}}, \code{\link{bilat.symmetry}}, and \code{\link{plotRefToTarget}}).
+\code{\link{two.b.pls}}, \code{\link{bilat.symmetry}}, and \code{\link{plotRefToTarget}}).
 }
 \author{
 Emma Sherratt

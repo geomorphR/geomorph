@@ -32,35 +32,37 @@
 #'  for analysis of variance (ANOVA).  Older versions used a combination of parametric and non-parametric results, as well as a combinaton
 #'  of type I and type III SS.  While analytical conclusions should be consistent (i.e., "significance" of effects is the same), these
 #'  updates maintain consistency in analytical philosophy.
+#'  
+#'  The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{bilat.symmetry}}.
 #'
 #' @param A An array (p x k x n) containing GPA-aligned coordinates for a set of specimens [for "object.sym=FALSE, A is of dimension (n x k x 2n)]
 #' @param ind A vector containing labels for each individual. For matching symmetry, the matched pairs receive the same 
 #' label (replicates also receive the same label).
 #' @param side An optional vector (for matching symmetry) designating which object belongs to which 'side-group'
-#' @param replicate An optional vector designating which objects belong to which group of replicates
+#' @param replicate An optional vector designating which objects belong to which group of replicates.
 #' @param object.sym A logical value specifying whether the analysis should proceed based on object symmetry {=TRUE} or matching symmetry {=FALSE}
 #' @param land.pairs An optional matrix (for object symmetry) containing numbers for matched pairs of landmarks across the line of symmetry 
 #' @param data A data frame for the function environment, see \code{\link{geomorph.data.frame}}. It is imperative
 #' that the variables "ind", "side", and "replicate" in the data frame match these names exactly (as shown in examples below).  
-#' @param iter Number of iterations for significance testing
+#' @param iter Number of iterations for significance testing.
+#' @param RRPP A logical value indicating whether residual randomization should be used for significance testing.
 #' @keywords analysis
 #' @export
 #' @author Dean Adams and Michael Collyer
-#' @return bilat.symmetry returns an object of class "bilat.symmetry". The function, summary, is used to obtain and print an analysis of 
-#' variance table of the results. An object of class "bilat.symmetry" is a list containing the following
-#' @param shape.anova An analysis of variance table for the shape data
-#' @param size.anova An analysis of variance table for the shape data (when object.sym=FALSE)
-#' @param symm.component The symmetric component of shape variation
-#' @param asym.component The asymmetric component of shape variation
-#' @param DA.component The directional asymmetry component, found as the mean shape for each side
-#' @param FA.compnent The fluctuating asymmetry component for each specimen, found as the specimen-specific side deviation adjusted for the mean
-#'  directional asymmetry in the dataset
-#' @param data.type A value indicating whether the analysis was performed as Object or Matching symmetry
-#' @param permutations The number of random permutations used.
-#' @param random.shape.SS A matrix of random outcomes for SS from the Shape analysis.
-#' @param random.size.SS A matrix of random outcomes for SS from the Cntroid Size analysis.
-#' @param perm.method A value indicating whether "Raw" values were shuffled or "RRPP" performed.
-#' @param call The matched call
+#' @return An object of class "bilat.symmetry" returns a list of the following
+#' \item{shape.anova}{An analysis of variance table for the shape data.}
+#' \item{size.anova}{An analysis of variance table for the shape data (when object.sym=FALSE).}
+#' \item{symm.component}{The symmetric component of shape variation.}
+#' \item{asym.component}{The asymmetric component of shape variation.}
+#' \item{DA.component}{The directional asymmetry component, found as the mean shape for each side.}
+#' \item{FA.compnent}{The fluctuating asymmetry component for each specimen, found as the specimen-specific side deviation adjusted for the mean
+#'  directional asymmetry in the dataset.}
+#' \item{data.type}{A value indicating whether the analysis was performed as Object or Matching symmetry.}
+#' \item{permutations}{The number of random permutations used.}
+#' \item{random.shape.SS}{A matrix of random outcomes for SS from the Shape analysis.}
+#' \item{random.size.SS}{A matrix of random outcomes for SS from the Cntroid Size analysis.}
+#' \item{perm.method}{A value indicating whether "Raw" values were shuffled or "RRPP" performed.}
+#' \item{call}{The matched call.}
 #' 
 #' @references Klingenberg, C.P. and G.S. McIntyre. 1998. Quantitative genetics of geometric shape in the mouse mandible. Evolution. 55:2342-2352.
 #' @references Mardia, K.V., F.L. Bookstein, and I.J. Moreton. 2000. Statistical assessment of bilateral symmetry of shapes. Biometrika. 87:285-300.

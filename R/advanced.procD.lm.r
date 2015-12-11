@@ -25,8 +25,11 @@
 #'   distributions generated, which might be more intuitive for P-values than F-values (see Collyer et al. 2015).  
 #'   
 #'   Pairwise tests are only performed if formulae are provided to compute such results.
+#'   The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{advanced.procD.lm}}.
+#'   The generic function, \code{\link{plot}}, produces diagnostic plots for Procrustes residuals of the linear fit.
+#'
 #' @param f1 A formula for a linear model, containing the response matrix (e.g., y ~ x1 + x2)
-#' @param f2 A formula for another linear model (e.g., ~ x1 + x2 + x3 + a*b) (f1 and f2 should be nested)
+#' @param f2 A formula for another linear model (e.g., ~ x1 + x2 + x3 + a*b). f1 and f2 should be nested.
 #' @param groups A formula for grouping factors (e.g., ~ a, or ~ a*b)
 #' @param slope A formula with one covariate (e.g., ~ x3)
 #' @param angle.type A value specifying whether differences between slopes should be represented by vector
@@ -48,7 +51,8 @@
 #' @examples
 #'data(plethodon)
 #'Y.gpa<-gpagen(plethodon$land)    #GPA-alignment
-#'gdf <- geomorph.data.frame(Y.gpa, logcs = log(Y.gpa$Csize), species = plethodon$species, site = plethodon$site)
+#'gdf <- geomorph.data.frame(Y.gpa, logcs = log(Y.gpa$Csize), 
+#'species = plethodon$species, site = plethodon$site)
 #'
 #'# Example of a nested model comparison (as with ANOVA with RRPP)
 #'advanced.procD.lm(coords ~ logcs + species, 
@@ -56,25 +60,25 @@
 #'
 #'# Example of a test of a factor interaction, plus pairwise comparisons 
 #'advanced.procD.lm(coords ~ site*species, ~site + species, groups = ~site*species, 
-#'    iter=999, data = gdf)
+#'    iter=199, data = gdf)
 #'
 #'# Example of a test of a factor interaction, plus pairwise comparisons, 
 #'# accounting for a common allomtry  
 #'advanced.procD.lm(coords ~ Csize + site*species, 
 #'~Csize + site + species, 
-#'groups = ~site*species, slope = ~Csize, iter = 999, data = gdf)
+#'groups = ~site*species, slope = ~Csize, iter = 199, data = gdf)
 #'
 #'# Example of a test of homogeneity of slopes, plus pairwise slopes comparisons
 #'advanced.procD.lm(coords ~ logcs, 
 #'~logcs + site*species, 
 #'groups = ~site*species, 
-#'slope = ~logcs, angle.type = "deg", iter = 999, data = gdf)
+#'slope = ~logcs, angle.type = "deg", iter = 199, data = gdf)
 #'
 #'# Example of partial pairwise comparisons, given greater model complexity.
 #'# Plus, working with class advanced.procD.lm objects.
 #'aov.pleth <- advanced.procD.lm(coords ~ logcs*site*species, 
 #'~logcs + site*species, 
-#'groups = ~species, slope = ~logcs, angle.type = "deg", iter = 999, data = gdf)
+#'groups = ~species, slope = ~logcs, angle.type = "deg", iter = 199, data = gdf)
 #'
 #'summary(aov.pleth) # ANOVA plus pairwise tsts
 #'plot(aov.pleth) # diagnostic plots
@@ -87,12 +91,12 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
   if(!is.null(pfit1$weights)) w <- pfit1$weights else w <- rep(1,n)
   if(any(w < 0)) stop("Weights cannot be negative")
   n <- nrow(Y)
-  data <- geomorph.data.frame(data, Y=Y)
+  data2 <- geomorph.data.frame(data, Y=Y)
   if(any(class(f2)=="lm")) pfit2 = procD.fit(f2) else {
       if(length(as.formula(f2))==2) f2 <-as.formula(paste(c("Y",f2[[2]]),collapse="~"))
       if(length(as.formula(f2))==3) f2 <-as.formula(paste(c("Y",f2[[3]]),collapse="~"))  
-      pfit2= procD.fit(f2, data=data)
-    }
+      pfit2= procD.fit(f2, data=data2)
+  }
   k1 <- pfit1$QRs[[length(pfit1$QRs)]]$rank
   k2 <- pfit2$QRs[[length(pfit2$QRs)]]$rank
   if(k1 > k2) pfitf <- pfit1 else pfitf <- pfit2
@@ -195,10 +199,10 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
   
   if(pairwise.cond == "none"){
     out <- list(anova.table = anova.table, 
-                coefficients=pfitf$coefficients, wCoefficients=pfitf$wCoefficients,
-                Y=pfitf$Y, wY=pfitf$wY, X=pfitf$X, Xs=pfitf$Xs, wX=pfitf$wX, wXs=pfitf$wXs,
-                QRs = pfitf$QRs, wQRs=pfitf$wQRs, fitted=pfitf$fitted[[kf]], wFitted=pfitf$wFitted[[kf]],
-                residuals = pfitf$residuals[[kf]], wResiduals=pfitf$wResiduals[[kf]],
+                coefficients=pfitf$coefficients,
+                Y=pfitf$Y, X=pfitf$X,
+                QR = pfitf$QRs[[kf]], fitted=pfitf$fitted[[kf]],
+                residuals = pfitf$residuals[[kf]],
                 weights = w, data = dat2, random.SS = P,
                 Terms = pfitf$Terms, term.labels = pfitf$term.labels, permutations = iter+1,
                 call= match.call()
@@ -207,10 +211,10 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
   if(pairwise.cond == "means"){
     out <- list(anova.table = anova.table, LS.means = lsms[[1]], 
                LS.means.dist = Means.dist, Z.means.dist = Z.Means.dist, P.means.dist = P.Means.dist, 
-               coefficients=pfitf$coefficients, wCoefficients=pfitf$wCoefficients,
-               Y=pfitf$Y, wY=pfitf$wY, X=pfitf$X, Xs=pfitf$Xs, wX=pfitf$wX, wXs=pfitf$wXs,
-               QRs = pfitf$QRs, wQRs=pfitf$wQRs, fitted=pfitf$fitted[[kf]], wFitted=pfitf$wFitted[[kf]],
-               residuals = pfitf$residuals[[kf]], wResiduals=pfitf$wResiduals[[kf]],
+               coefficients=pfitf$coefficients, 
+               Y=pfitf$Y, X=pfitf$X, 
+               QR = pfitf$QR[[kf]], fitted=pfitf$fitted[[kf]], 
+               residuals = pfitf$residuals[[kf]], 
                weights = w, data = dat2, random.SS = P, random.means.dist = P.dist,
                Terms = pfitf$Terms, term.labels = pfitf$term.labels, permutations = iter+1,
                call= match.call()
@@ -223,11 +227,11 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
       Z.slopes.dist = Z.slopes.dist,
       slopes.cor = P.cor[[1]], P.slopes.cor = P.val.cor, Z.slopes.cor = Z.cor,
       random.slopes = g.slopes, random.slopes.dist = P.slopes.dist, random.slopes.cor = P.cor,
-      coefficients=pfitf$coefficients, wCoefficients=pfitf$wCoefficients,
-      Y=pfitf$Y, wY=pfitf$wY, X=pfitf$X, Xs=pfitf$Xs, wX=pfitf$wX, wXs=pfitf$wXs,
-      QRs = pfitf$QRs, wQRs=pfitf$wQRs, fitted=pfitf$fitted[[kf]], wFitted=pfitf$wFitted[[kf]],
-      residuals = pfitf$residuals[[kf]], wResiduals=pfitf$wResiduals[[kf]],
-      weights = w, data = dat2, random.SS = P, random.slopes.dist = P.slopes.dist,
+      coefficients=pfitf$coefficients, 
+      Y=pfitf$Y, X=pfitf$X, 
+      QR = pfitf$QR[[kf]], fitted=pfitf$fitted[[kf]], 
+      residuals = pfitf$residuals[[kf]], 
+      weights = w, data = dat2, random.SS = P, 
       Terms = pfitf$Terms, term.labels = pfitf$term.labels, permutations = iter+1,
       call= match.call()
       )
@@ -237,17 +241,17 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
       Z.slopes.dist = Z.slopes.dist,
       slopes.angles = angles.obs, P.angles = P.val.cor, Z.angles = Z.cor,
       random.slopes = g.slopes, random.slopes.dist = P.slopes.dist, random.angles = random.angles,
-      coefficients=pfitf$coefficients, wCoefficients=pfitf$wCoefficients,
-      Y=pfitf$Y, wY=pfitf$wY, X=pfitf$X, Xs=pfitf$Xs, wX=pfitf$wX, wXs=pfitf$wXs,
-      QRs = pfitf$QRs, wQRs=pfitf$wQRs, fitted=pfitf$fitted[[kf]], wFitted=pfitf$wFitted[[kf]],
-      residuals = pfitf$residuals[[kf]], wResiduals=pfitf$wResiduals[[kf]],
-      weights = w, data = dat, random.SS = P, random.slopes.dist = P.slopes.dist,
+      coefficients=pfitf$coefficients, 
+      Y=pfitf$Y, X=pfitf$X, 
+      QR = pfitf$QR[[kf]], fitted=pfitf$fitted[[kf]], 
+      residuals = pfitf$residuals[[kf]], 
+      weights = w, data = dat2, random.SS = P, 
       Terms = pfitf$Terms, term.labels = pfitf$term.labels, permutations = iter+1,
       call= match.call()
       )
     }
   }
-class(out) <- c("advanced.procD.lm", "prcoD.lm")
+class(out) <- "advanced.procD.lm"
 out
 }
   

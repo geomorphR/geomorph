@@ -8,13 +8,15 @@
 #'   used, it is assumed 
 #'   that the landmarks have previously been aligned using 
 #'   Generalized Procrustes Analysis (GPA) [e.g., with \code{\link{gpagen}}]. If other variables are used, they must be input as a 
-#'   2-Dimensional matrix (rows = specimens, columns = variables).
+#'   2-Dimensional matrix (rows = specimens, columns = variables).  It is also assumed that the separate inputs
+#'   have specimens (observations) in teh same order.
 #'   
-#'   A plot of PLS scores from Block1 versus Block2 can be performed for the first set of PLS axes. Thin-plate spline 
-#'   deformation grids along these axes are also shown (if data were input as a 3D array).
-#'   
-#'   If the specimens in A1 and A2 are differently ordered, the function will reorder A2 to match A1.
-#'   
+#'  The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{modularity.test}}.
+#'  The generic function, \code{\link{plot}}, produces a two-block.pls plot.  This function calls \code{\link{plot.pls}}, which has two additional
+#'  arguments (with defaults): label = NULL, warpgrids = TRUE.  These arguments allow one to include a vector to label points and a logical statement to
+#'  include warpgrids, respectively.  Warpgrids can only be included for 3D arrays of Procrustes resdiuals. The plot is a plot of PLS scores from 
+#'  Block1 versus Block2 performed for the first set of PLS axes. 
+#'  
 #' @param A1 A matrix (n x [p x k]) or 3D array (p x k x n) containing GPA-aligned coordinates for the first block
 #' @param A2 A matrix (n x [p x k]) or 3D array (p x k x n) containing GPA-aligned coordinates for the second block 
 #' @param iter Number of iterations for significance testing
@@ -38,6 +40,8 @@
 #'   \item{permutations}{The number of random permutations used in the resampling procedure.}
 #'   \item{call}{The match call.}
 #'   
+#' @seealso \code{\link{integration.test}}, \code{\link{modularity.test}}, \code{\link{phylo.pls}}, and 
+#' \code{\link{phylo.integration}}
 #' @references  Rohlf, F.J., and M. Corti. 2000. The use of partial least-squares to study covariation in shape. 
 #' Systematic Biology 49: 740-753.
 #' @examples

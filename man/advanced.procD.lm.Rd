@@ -10,7 +10,7 @@ advanced.procD.lm(f1, f2, groups = NULL, slope = NULL, angle.type = c("r",
 \arguments{
 \item{f1}{A formula for a linear model, containing the response matrix (e.g., y ~ x1 + x2)}
 
-\item{f2}{A formula for another linear model (e.g., ~ x1 + x2 + x3 + a*b) (f1 and f2 should be nested)}
+\item{f2}{A formula for another linear model (e.g., ~ x1 + x2 + x3 + a*b). f1 and f2 should be nested.}
 
 \item{groups}{A formula for grouping factors (e.g., ~ a, or ~ a*b)}
 
@@ -58,11 +58,14 @@ The function performs statistical assessment of the terms in the model using Pro
   distributions generated, which might be more intuitive for P-values than F-values (see Collyer et al. 2015).
 
 Pairwise tests are only performed if formulae are provided to compute such results.
+  The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{advanced.procD.lm}}.
+  The generic function, \code{\link{plot}}, produces diagnostic plots for Procrustes residuals of the linear fit.
 }
 \examples{
 data(plethodon)
 Y.gpa<-gpagen(plethodon$land)    #GPA-alignment
-gdf <- geomorph.data.frame(Y.gpa, logcs = log(Y.gpa$Csize), species = plethodon$species, site = plethodon$site)
+gdf <- geomorph.data.frame(Y.gpa, logcs = log(Y.gpa$Csize),
+species = plethodon$species, site = plethodon$site)
 
 # Example of a nested model comparison (as with ANOVA with RRPP)
 advanced.procD.lm(coords ~ logcs + species,
@@ -70,25 +73,25 @@ advanced.procD.lm(coords ~ logcs + species,
 
 # Example of a test of a factor interaction, plus pairwise comparisons
 advanced.procD.lm(coords ~ site*species, ~site + species, groups = ~site*species,
-   iter=999, data = gdf)
+   iter=199, data = gdf)
 
 # Example of a test of a factor interaction, plus pairwise comparisons,
 # accounting for a common allomtry
 advanced.procD.lm(coords ~ Csize + site*species,
 ~Csize + site + species,
-groups = ~site*species, slope = ~Csize, iter = 999, data = gdf)
+groups = ~site*species, slope = ~Csize, iter = 199, data = gdf)
 
 # Example of a test of homogeneity of slopes, plus pairwise slopes comparisons
 advanced.procD.lm(coords ~ logcs,
 ~logcs + site*species,
 groups = ~site*species,
-slope = ~logcs, angle.type = "deg", iter = 999, data = gdf)
+slope = ~logcs, angle.type = "deg", iter = 199, data = gdf)
 
 # Example of partial pairwise comparisons, given greater model complexity.
 # Plus, working with class advanced.procD.lm objects.
 aov.pleth <- advanced.procD.lm(coords ~ logcs*site*species,
 ~logcs + site*species,
-groups = ~species, slope = ~logcs, angle.type = "deg", iter = 999, data = gdf)
+groups = ~species, slope = ~logcs, angle.type = "deg", iter = 199, data = gdf)
 
 summary(aov.pleth) # ANOVA plus pairwise tsts
 plot(aov.pleth) # diagnostic plots

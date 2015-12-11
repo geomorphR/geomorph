@@ -49,6 +49,12 @@ Landmark groups can be defined using \code{\link{define.modules}}, or made by ha
 To use this method with other data (i.e., a set of length measurements), the input A should be a matrix
 of n rows of specimens and variables arranged in columns.
 In this case, the partition.gp input should have each variable assigned to a partition.
+
+The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{modularity.test}}.
+ The generic function, \code{\link{plot}}, produces a two-block.pls plot.  This function calls \code{\link{plot.pls}}, which has two additional
+ arguments (with defaults): label = NULL, warpgrids = TRUE.  These arguments allow one to include a vector to label points and a logical statement to
+ include warpgrids, respectively.  Warpgrids can only be included for 3D arrays of Procrustes resdiuals. The plot is a plot of PLS scores from
+ Block1 versus Block2 performed for the first set of PLS axes.
 }
 \examples{
 data(plethodon)
@@ -68,6 +74,10 @@ Dean Adams
 \references{
 Adams, D.C. 2016.Evaluating modularity in morphometric data: Challenges with the RV coefficient and a
 new test measure. Methods in Ecology and Evolution. (Accepted).
+}
+\seealso{
+\code{\link{two.b.pls}}, \code{\link{integration.test}}, \code{\link{phylo.pls}}, and
+\code{\link{phylo.integration}}
 }
 \keyword{analysis}
 

@@ -44,19 +44,22 @@
 #'    added to the model first, or interactions should precede subsequent main effects 
 #'   (i.e., Y ~ a + b + c + a:b + ..., or Y ~ a + b + a:b + c + ..., respectively.)
 #'
+#'   The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{procD.pgls}}.
+#'   The generic function, \code{\link{plot}}, produces diagnostic plots for Procrustes residuals of the linear fit.
+#'   
 #' @param f1 A formula for the linear model (e.g., y~x1+x2)
 #' @param phy A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape
 #' @param iter Number of iterations for significance testing
 #' @param int.first A logical value to indicate if interactions of first main effects should precede subsequent main effects
-#' @param verbose A logical value specifying whether additional output should be displayed
 #' @param RRPP a logical value indicating whether residual randomization should be used for significance testing
+#' @param data A data frame for the function environment, see \code{\link{geomorph.data.frame}} 
 #' @param ... Arguments passed on to procD.fit (typically associated with the lm function)
 #' @keywords analysis
 #' @export
 #' @author Dean Adams and Michael Collyer
-#' @return procD.lm.pgls returns an object of class "procD.lm". The function, summary, is used to obtain and print an analysis of variance table of the results. 
+#' @return procD.lm.pgls returns an object of class "procD.lm".  
 #' See \code{\link{procD.lm}} for a description of the list of results generated.  Additionally, procD.pgls provides
-#' the phylogenetic correction matrix, Pcor, as well as transformed values (with "P" in their names.).
+#' the phylogenetic correction matrix, Pcor.
 #' @references Adams, D.C. 2014. A method for assessing phylogenetic least squares models for shape and other high-dimensional 
 #' multivariate data. Evolution. 68:2675-2688. 
 #' @references Adams, D.C., and M.L. Collyer. 2015. Permutation tests for phylogenetic comparative analyses of high-dimensional 
@@ -124,12 +127,11 @@ procD.pgls<-function(f1, phy, iter=999, int.first = FALSE,
   class(tab) <- c("anova", class(tab))
   pfit <- procD.fit(f1, data=data, keep.order=ko, pca=FALSE)
   out = list(aov.table = tab, call = match.call(),
-             coefficients=pfit$coefficients, wCoefficients=pfit$wCoefficients,
-             Y=pfit$Y, wY=pfit$wY, X=pfit$X, Xs=pfit$Xs, wX=pfit$wX, wXs=pfit$wXs,
-             Pcor=Pcor, PY = Pcor%*%pfit$Y, PX = Pcor%*%pfit$X, PwY = Pcor%*%pfit$wY, 
-             PwX = Pcor%*%pfit$wX,
-             QRs = pfit$QRs, wQRs=pfit$wQRs, fitted=pfit$fitted[[k+1]], wFitted=pfit$wFitted[[k+1]],
-             residuals = pfit$residuals[[k+1]], wResiduals=pfit$wResiduals[[k+1]],
+             coefficients=pfit$coefficients, 
+             Y=pfit$Y,  X=pfit$X, 
+             Pcor=Pcor, 
+             QR = pfit$QRs[[k+1]], fitted=pfit$fitted[[k+1]], 
+             residuals = pfit$residuals[[k+1]], 
              weights = pfit$w, Terms = pfit$Terms, term.labels = pfit$term.labels,
              SS = anova.parts.obs$SS, df = anova.parts.obs$df, R2 = anova.parts.obs$R2[1:k], 
              F = anova.parts.obs$Fs[1:k], permutations = iter+1,

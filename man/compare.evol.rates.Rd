@@ -14,19 +14,14 @@ compare.evol.rates(A, phy, gp, iter = 999)
 \item{gp}{A factor array designating group membership}
 
 \item{iter}{Number of iterations for significance testing}
-
-\item{sigma.d.ratio}{The ratio of maximum to minimum evolutionary rates.}
-
-\item{P.value}{The significance level of the observed ratio.}
-
-\item{sigma.d.gp}{The phylogenetic evolutionary rate for each group of species on the phylogeny.}
-
-\item{random.sigma}{the sigma values found in random permutations of the resampling procedure.}
-
-\item{permutations}{The number of random permutations used.}
 }
 \value{
-Function returns a list with the following components:
+An object of class "evolrate" returns a list with the following components:
+  \item{sigma.d.ratio}{The ratio of maximum to minimum evolutionary rates.}
+  \item{P.value}{The significance level of the observed ratio.}
+  \item{sigma.d.gp}{The phylogenetic evolutionary rate for each group of species on the phylogeny.}
+  \item{random.sigma}{The sigma values found in random permutations of the resampling procedure.}
+  \item{permutations}{The number of random permutations used.}
 }
 \description{
 Function calculates rates of shape evolution for two or more groups of species on a phylogeny from a set of Procrustes-aligned specimens
@@ -46,6 +41,10 @@ The function compares rates of morphological evolution for two or more groups of
 
 This function can be used with univariate data (i.e. centroid size) if imported as matrix with rownames
  giving the taxa names.
+
+The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{compare.evol.rates}}.
+ The generic function, \code{\link{plot}}, produces a histogram of random rate-ratios associated with
+ the resampling procedure.
 }
 \examples{
 data(plethspecies)

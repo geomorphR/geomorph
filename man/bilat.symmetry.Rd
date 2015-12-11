@@ -16,7 +16,7 @@ label (replicates also receive the same label).}
 
 \item{side}{An optional vector (for matching symmetry) designating which object belongs to which 'side-group'}
 
-\item{replicate}{An optional vector designating which objects belong to which group of replicates}
+\item{replicate}{An optional vector designating which objects belong to which group of replicates.}
 
 \item{object.sym}{A logical value specifying whether the analysis should proceed based on object symmetry {=TRUE} or matching symmetry {=FALSE}}
 
@@ -25,36 +25,25 @@ label (replicates also receive the same label).}
 \item{data}{A data frame for the function environment, see \code{\link{geomorph.data.frame}}. It is imperative
 that the variables "ind", "side", and "replicate" in the data frame match these names exactly (as shown in examples below).}
 
-\item{iter}{Number of iterations for significance testing}
+\item{iter}{Number of iterations for significance testing.}
 
-\item{shape.anova}{An analysis of variance table for the shape data}
-
-\item{size.anova}{An analysis of variance table for the shape data (when object.sym=FALSE)}
-
-\item{symm.component}{The symmetric component of shape variation}
-
-\item{asym.component}{The asymmetric component of shape variation}
-
-\item{DA.component}{The directional asymmetry component, found as the mean shape for each side}
-
-\item{FA.compnent}{The fluctuating asymmetry component for each specimen, found as the specimen-specific side deviation adjusted for the mean
-directional asymmetry in the dataset}
-
-\item{data.type}{A value indicating whether the analysis was performed as Object or Matching symmetry}
-
-\item{permutations}{The number of random permutations used.}
-
-\item{random.shape.SS}{A matrix of random outcomes for SS from the Shape analysis.}
-
-\item{random.size.SS}{A matrix of random outcomes for SS from the Cntroid Size analysis.}
-
-\item{perm.method}{A value indicating whether "Raw" values were shuffled or "RRPP" performed.}
-
-\item{call}{The matched call}
+\item{RRPP}{A logical value indicating whether residual randomization should be used for significance testing.}
 }
 \value{
-bilat.symmetry returns an object of class "bilat.symmetry". The function, summary, is used to obtain and print an analysis of
-variance table of the results. An object of class "bilat.symmetry" is a list containing the following
+An object of class "bilat.symmetry" returns a list of the following
+\item{shape.anova}{An analysis of variance table for the shape data.}
+\item{size.anova}{An analysis of variance table for the shape data (when object.sym=FALSE).}
+\item{symm.component}{The symmetric component of shape variation.}
+\item{asym.component}{The asymmetric component of shape variation.}
+\item{DA.component}{The directional asymmetry component, found as the mean shape for each side.}
+\item{FA.compnent}{The fluctuating asymmetry component for each specimen, found as the specimen-specific side deviation adjusted for the mean
+ directional asymmetry in the dataset.}
+\item{data.type}{A value indicating whether the analysis was performed as Object or Matching symmetry.}
+\item{permutations}{The number of random permutations used.}
+\item{random.shape.SS}{A matrix of random outcomes for SS from the Shape analysis.}
+\item{random.size.SS}{A matrix of random outcomes for SS from the Cntroid Size analysis.}
+\item{perm.method}{A value indicating whether "Raw" values were shuffled or "RRPP" performed.}
+\item{call}{The matched call.}
 }
 \description{
 Function performs an analysis of directional and fluctuating asymmetry for bilaterally symmetric objects
@@ -90,6 +79,8 @@ Compared to older versions of geomorph, some results can be expected to be sligh
  for analysis of variance (ANOVA).  Older versions used a combination of parametric and non-parametric results, as well as a combinaton
  of type I and type III SS.  While analytical conclusions should be consistent (i.e., "significance" of effects is the same), these
  updates maintain consistency in analytical philosophy.
+
+The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{bilat.symmetry}}.
 }
 \examples{
 #Example of matching symmetry

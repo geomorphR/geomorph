@@ -28,6 +28,9 @@
 #'   1) the locations of semilandmarks can be optimized by minimizing the bending energy between the 
 #'   reference and target specimen (Bookstein 1997), or by minimizing the Procrustes distance between the two 
 #'   (Rohlf 2010).  Note that specimens are NOT automatically reflected to improve the GPA-alignment.
+#'   
+#'   The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{gpagen}}.
+#'   The generic function, \code{\link{plot}}, calls \code{\link{plotAllSpecimens}}.
 #'
 #'  \subsection{Notes for geomorph 3.0}{ 
 #' Compared to older versions of geomorph, users might notice subtle differences in Procrustes residuals when using
@@ -38,6 +41,7 @@
 #' during the sliding algorithm, but rotational "flutter" can be expected.  This should have no qualitative effect on 
 #' inferential analyses using Procrusts residuals. 
 #' }
+
 #' @param A An array (p x k x n) containing landmark coordinates for a set of specimens
 #' @param Proj A logical value indicating whether or not the aligned Procrustes residuals should be projected 
 #'   into tangent space 

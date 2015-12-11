@@ -40,6 +40,8 @@
 #'   model first, or interactions should precede subsequent main effects 
 #'   (i.e., Y ~ a + b + c + a:b + ..., or Y ~ a + b + a:b + c + ..., respectively.)
 #'
+#'   The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{procD.lm}}.
+#'   The generic function, \code{\link{plot}}, produces diagnostic plots for Procrustes residuals of the linear fit.
 #' @param f1 A formula for the linear model (e.g., y~x1+x2)
 #' @param iter Number of iterations for significance testing
 #' @param RRPP A logical value indicating whether residual randomization should be used for significance testing
@@ -52,19 +54,15 @@
 #' @return An object of class "procD.lm" is a list containing the following
 #' \item{aov.table}{An analysis of variance table; the same as the summary.}
 #' \item{call}{The matched call.}
-#' \item{coefficients}{A vector or matrix of linear model coefficients.  "wCoefficients" are weighted 
-#' coefficients, if weights are used.}
-#' \item{Y}{The response data, in matrix form.  "wY" is the matrix of weighted responses,
-#' if weights are used.}
-#' \item{X}{The model matrix. "wX" is the matrix of weighted model parameters, if weights are used.}
-#' \item{Xs}{The model matrix for each possible submodel. "wXs" are each submodel weighted, if weights are used.}
-#' \item{QRs}{The QR decompositions of all submodels. "wQRs" are QR decompositions on weighted X matrices.}
-#' \item{fitted}{The fitted values. "wFitted" are the fitted values after weighting.}
-#' \item{residuals}{The residuals (observed responses - fitted responses).  "wResiduals" are the residuals
-#' from a weighted fit.}
-#' \item{weights}{The weights used in weighted least-squares fitting.  If no weights are used, a 
+#' \item{coefficients}{A vector or matrix of linear model coefficients.}
+#' \item{Y}{The response data, in matrix form.}
+#' \item{X}{The model matrix.}
+#' \item{QR}{The QR decompositions of the model matrix.}
+#' \item{fitted}{The fitted values.}
+#' \item{residuals}{The residuals (observed responses - fitted responses).}
+#' \item{weights}{The weights used in weighted least-squares fitting.  If no weights are used, 
 #' NULL is returned.}
-#' \item{Terms}{The results of the \code{\link{terms}} function applied to the model frame.}
+#' \item{Terms}{The results of the \code{\link{terms}} function applied to the model matrix}
 #' \item{term.labels}{The terms used in constructing the aov.table.}
 #' \item{SS}{The sums of squares for each term, model residuals, and the total.}
 #' \item{df}{The degrees of freedom for each SS.}
@@ -82,6 +80,8 @@
 #' by high-dimensional data. Heredity. 115:357-365.
 #' @references Goodall, C. R. 1991. Procrustes methods in the statistical analysis of shape. Journal of the 
 #'    Royal Statistical Society B 53:285-339.
+#' @seealso \code{\link{advanced.procD.lm}} and \code{\link{procD.pgls}} within geomorph;
+#' \code{\link[stats]{lm}} for more on linear model fits
 #' @examples
 #' ### MANOVA example for Goodall's F test (multivariate shape vs. factors)
 #' data(plethodon) 
@@ -132,10 +132,10 @@ procD.lm<- function(f1, iter = 999, RRPP = FALSE,
   class(tab) <- c("anova", class(tab))
   pfit <- procD.fit(f1, data=data, keep.order=ko, pca=FALSE)
   out <- list(aov.table = tab, call = match.call(),
-              coefficients=pfit$coefficients, wCoefficients=pfit$wCoefficients,
-              Y=pfit$Y, wY=pfit$wY, X=pfit$X, Xs=pfit$Xs, wX=pfit$wX, wXs=pfit$wXs,
-              QRs = pfit$QRs, wQRs=pfit$wQRs, fitted=pfit$fitted[[k+1]], wFitted=pfit$wFitted[[k+1]],
-              residuals = pfit$residuals[[k+1]], wResiduals=pfit$wResiduals[[k+1]],
+              coefficients=pfit$coefficients, 
+              Y=pfit$Y,  X=pfit$X, 
+              QR = pfit$QRs[[k+1]], fitted=pfit$fitted[[k+1]],
+              residuals = pfit$residuals[[k+1]], 
               weights = pfit$w, Terms = pfit$Terms, term.labels = pfit$term.labels,
               SS = anova.parts.obs$SS, df = anova.parts.obs$df, 
               R2 = anova.parts.obs$R2[1:k], F = anova.parts.obs$Fs[1:k], permutations = iter+1,

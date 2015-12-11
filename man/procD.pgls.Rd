@@ -18,14 +18,14 @@ procD.pgls(f1, phy, iter = 999, int.first = FALSE, RRPP = FALSE,
 
 \item{RRPP}{a logical value indicating whether residual randomization should be used for significance testing}
 
-\item{...}{Arguments passed on to procD.fit (typically associated with the lm function)}
+\item{data}{A data frame for the function environment, see \code{\link{geomorph.data.frame}}}
 
-\item{verbose}{A logical value specifying whether additional output should be displayed}
+\item{...}{Arguments passed on to procD.fit (typically associated with the lm function)}
 }
 \value{
-procD.lm.pgls returns an object of class "procD.lm". The function, summary, is used to obtain and print an analysis of variance table of the results.
+procD.lm.pgls returns an object of class "procD.lm".
 See \code{\link{procD.lm}} for a description of the list of results generated.  Additionally, procD.pgls provides
-the phylogenetic correction matrix, Pcor, as well as transformed values (with "P" in their names.).
+the phylogenetic correction matrix, Pcor.
 }
 \description{
 Function performs Procrustes ANOVA in a phylogenetic framework and uses  permutation procedures to assess
@@ -72,6 +72,9 @@ Two possible resampling procedures are provided. First, if RRPP=FALSE,
   that multiple factor or factor-covariate interactions are used in the model formula, one can specify whether all main effects should be
    added to the model first, or interactions should precede subsequent main effects
   (i.e., Y ~ a + b + c + a:b + ..., or Y ~ a + b + a:b + c + ..., respectively.)
+
+The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{procD.pgls}}.
+  The generic function, \code{\link{plot}}, produces diagnostic plots for Procrustes residuals of the linear fit.
 }
 \examples{
 ### Example of D-PGLS for high-dimensional data
