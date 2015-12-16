@@ -46,7 +46,7 @@
 #' \code{\link{two.b.pls}}
 #' @examples
 #' 
-#' data(plethspecies)
+#' data(plethspecies) 
 #' Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment
 #' land.gps<-c("A","A","A","A","A","B","B","B","B","B","B") 
 #' 

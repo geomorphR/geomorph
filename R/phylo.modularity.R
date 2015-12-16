@@ -50,7 +50,7 @@
 #' 
 #' MT <- phylo.modularity(Y.gpa$coords,partition.gp=land.gps,phy=plethspecies$phy,iter=999)
 #' summary(MT) # Test summary
-#' plot(MT) # PLS plot
+#' plot(MT) # PLS plot 
 phylo.modularity<-function(A,partition.gp,phy,iter=999){
   if(any(is.na(A))==T){
     stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').")  }

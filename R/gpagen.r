@@ -189,5 +189,3 @@ gpagen = function(A, curves=NULL, surfaces=NULL, PrinAxes = TRUE,
   class(out) <- "gpagen"
   out
 }
-
-
