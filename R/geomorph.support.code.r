@@ -1383,7 +1383,7 @@ boot.CR <- function(x,gps, iter){
 # description still needed
 #
 #
-CR.phylo<-function(x,invC,D.mat,gps){
+CR.phylo<-function(x,invC,gps){
   gp.names <- levels(gps)
   g<-factor(as.numeric(gps))
   ngps<-nlevels(g)

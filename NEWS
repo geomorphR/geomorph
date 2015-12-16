@@ -1,6 +1,19 @@
 CHANGES IN GEOMORPH VERSION 3.0.0
 
-CHANGES IN GEOMORPH VERSION 2.1.8
+  NEW FEATURES
+    o New functions: modularity.test(), integration.test(), phylo.modularity(), phylo.integration()
+    o Major overhaul of underlying support code for analytics
+    o Removed internal C-code fro gpagen
+    o Removed verbose option for functions: all output provided in lists
+    o Removed automatic plots for most analytical functions: now call 'plot(res)'
+    o Added 'summary' option to many analytical functions
+
+  OTHER CHANGES
+    o compare.modular.partitions(), morphol.integr(), and phylo.pls() deprecated
+  
+  BUG FIXES
+
+CHANGES IN GEOMORPH VERSION 2.1.7-1
 
   NEW FEATURES
   

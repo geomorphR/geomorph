@@ -116,8 +116,8 @@ data(scallops)
 
 # Using Procrustes Distance for sliding
 Y.gpa <- gpagen(A=scallops$coorddata, curves=scallops$curvslide, surfaces=scallops$surfslide)
-summary(Y.gpa)
-plot(Y.gpa) 
+# NOTE can summarize as: summary(Y.gpa)
+# NOTE can plot as: plot(Y.gpa) 
 }
 \author{
 Dean Adams and Michael Collyer

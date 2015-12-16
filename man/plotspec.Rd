@@ -33,10 +33,10 @@ Therefore use this function with {centered=TRUE}. Data collected outside geomorp
 the coordinate matrix ({digitspec}).
 }
 \examples{
-data(scallopPLY)
-ply <- scallopPLY$ply
-digitdat <- scallopPLY$coords
-plotspec(spec=ply,digitspec=digitdat,fixed=16, centered =TRUE)
+# data(scallopPLY)
+# ply <- scallopPLY$ply
+# digitdat <- scallopPLY$coords
+# plotspec(spec=ply,digitspec=digitdat,fixed=16, centered =TRUE)
 }
 \author{
 Erik Otarola-Castillo & Emma Sherratt
