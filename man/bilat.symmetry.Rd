@@ -28,6 +28,7 @@ that the variables "ind", "side", and "replicate" in the data frame match these 
 \item{iter}{Number of iterations for significance testing.}
 
 \item{RRPP}{A logical value indicating whether residual randomization should be used for significance testing.}
+
 }
 \value{
 An object of class "bilat.symmetry" returns a list of the following
