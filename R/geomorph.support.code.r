@@ -4,7 +4,7 @@
 #' @title Geometric morphometric analyses for 2D/3D data
 #' @author Dean C. Adams, Michael Collyer, & Emma Sherratt
 #'
-#' Functions in this package allow one to read, manipulate, and digitize landmark data; generate shape
+#' @description Functions in this package allow one to read, manipulate, and digitize landmark data; generate shape
 #'  variables via Procrustes analysis for points, curves and surface data, perform statistical analyses
 #'  of shape variation and covariation, and provide graphical depictions of shapes and patterns of
 #'  shape variation.
@@ -1201,9 +1201,9 @@ vec.ang.matrix <- function(M, type = c("rad", "deg", "r")){
   vc
 }
 
-# description still needed
-#
-#
+# pls
+# performs PLS analysis
+# Used in two.b.pls, integration.test, apply.pls
 pls <- function(x,y, RV=FALSE, verbose = FALSE){
   x <- as.matrix(x); y <- as.matrix(y)
   px <- ncol(x); py <- ncol(y); pmin <- min(px,py)
@@ -1229,9 +1229,9 @@ pls <- function(x,y, RV=FALSE, verbose = FALSE){
   out
 }
 
-# description still needed
-#
-#
+# quick.pls
+# a streamlines pls code
+# used in: apply.pls
 quick.pls <- function(x,y, px, py, pmin) {# no RV; no verbose output
   # assume parameters already found
   S <-var(cbind(x,y))
@@ -1243,9 +1243,9 @@ quick.pls <- function(x,y, px, py, pmin) {# no RV; no verbose output
   cor(XScores[,1],YScores[,1])
 }
 
-# description still needed
-#
-#
+# apply.pls 
+# run permutations of pls analysis
+# used in: two.b.pls, integration.test
 apply.pls <- function(x,y, RV=FALSE, iter){
   x <- as.matrix(x); y <- as.matrix(y)
   px <- ncol(x); py <- ncol(y)
@@ -1257,9 +1257,9 @@ apply.pls <- function(x,y, RV=FALSE, iter){
   if(RV == TRUE) RV.rand else r.rand
 }
 
-# description still needed
-#
-#
+# pls.multi
+# obtain average of pairwise PLS analyses for 3+modules
+# used in: apply.plsmulti, integration.test
 plsmulti<-function(x,gps){
   gp.names <- levels(gps)
   g<-factor(as.numeric(gps))
@@ -1281,9 +1281,9 @@ plsmulti<-function(x,gps){
   list(r.pls = pls.obs, r.pls.mat=pls.mat)
 }
 
-# description still needed
-#
-#
+# quick.plsmulti
+# a streamlined plsmulti
+# used in apply.plsmulti
 quick.plsmulti <- function(x,gps){
   gp.names <- levels(gps)
   g<-factor(as.numeric(gps))
@@ -1301,9 +1301,9 @@ quick.plsmulti <- function(x,gps){
   mean(pls.gp) 
 }
 
-# description still needed
-#
-#
+# apply.plsmulti
+# permutation for multipls
+# used in: integration.test
 apply.plsmulti <- function(x,gps, iter){
   ngps<-nlevels(gps)
   S <-var(x)
@@ -1315,9 +1315,9 @@ apply.plsmulti <- function(x,gps, iter){
   r.rand
 }
 
-# description still needed
-#
-#
+# CR
+# Function to estimate CR coefficient
+# used in: modularity.test, apply.CR
 CR<-function(x,gps){
   gp.names <- levels(gps)
   g<-factor(as.numeric(gps))
@@ -1339,9 +1339,9 @@ CR<-function(x,gps){
   list(CR = CR.obs, CR.mat=CR.mat)
 }
 
-# description still needed
-#
-#
+# quick.CR
+# streamlined CR
+# used in: apply.CR, boot.CR
 quick.CR <-function(x,gps){ # no CR.mat made
   gp.names <- levels(gps)
   g<-factor(as.numeric(gps))
@@ -1358,9 +1358,9 @@ quick.CR <-function(x,gps){ # no CR.mat made
   mean(CR.gp)
 }
 
-# description still needed
-#
-#
+# apply.CR
+# permutation for CR
+# used in: modularity.test
 apply.CR <- function(x,gps, iter){
   CR.obs <- CR(x,gps)$CR
   ind <- perm.index(length(gps), iter)
@@ -1369,9 +1369,9 @@ apply.CR <- function(x,gps, iter){
   CR.rand
 }
 
-# description still needed
-#
-#
+# boot.CR
+# Bootstrap for CR
+# used in: modularity.test
 boot.CR <- function(x,gps, iter){
   x<-as.matrix(x)
   boot <- boot.index(nrow(x)-1, iter)
@@ -1380,10 +1380,10 @@ boot.CR <- function(x,gps, iter){
   CR.boot
 }
 
-# description still needed
-#
-#
-CR.phylo<-function(x,invC,D.mat,gps){
+# CR.phylo
+# phylogenetic CR analysis
+# used in: phylo.modularity
+CR.phylo<-function(x,invC,gps){
   gp.names <- levels(gps)
   g<-factor(as.numeric(gps))
   ngps<-nlevels(g)
@@ -1406,9 +1406,9 @@ CR.phylo<-function(x,invC,D.mat,gps){
   list(CR = CR.obs, CR.mat=CR.mat)
 }
 
-# description still needed
-#
-#
+# quick.CR.phylo
+# streamlined phylo CR
+# used in: apply.phylo.CR
 quick.CR.phylo <- function(x,invC,gps){
   x <- as.matrix(x); invC <- as.matrix(invC)
   gp.names <- levels(gps)
@@ -1429,9 +1429,9 @@ quick.CR.phylo <- function(x,invC,gps){
   mean(CR.gp) 
 }
 
-# description still needed
-#
-#
+# apply.phylo.CR
+# permutation for phylo.CR
+# used in: phylo.modularity
 apply.phylo.CR <- function(x,invC,gps, iter){
   ind <- perm.index(length(gps), iter)
   x.r<-lapply(1:(iter+1), function(j) x[,ind[[j]]])
@@ -1439,9 +1439,9 @@ apply.phylo.CR <- function(x,invC,gps, iter){
   CR.rand
 }
 
-# description still needed
-#
-#
+# boot.phylo.CR
+# bootstrap for phylo.CR
+# phylo.modularity 
 boot.phylo.CR <- function(x,invC,gps, iter){
   x<-as.matrix(x)
   boot <- boot.index(nrow(x)-1, iter)
@@ -1451,9 +1451,9 @@ boot.phylo.CR <- function(x,invC,gps, iter){
   CR.boot
 }
 
-# description still needed
-#
-#
+# phylo.mat 
+# estimate BM phylo.cov.matrix and transform from phylogeny
+# used in: compare.evol.rates, compare.multi.evol.rates, phylo.integration, phylo.modularity, physignal
 phylo.mat<-function(x,phy){
   C<-vcv.phylo(phy,anc.nodes=FALSE) 
   C<-C[rownames(x),rownames(x)] 
@@ -1469,9 +1469,9 @@ phylo.mat<-function(x,phy){
   list(invC = invC, D.mat = D.mat,C = C)
 }
 
-# description still needed
-#
-#
+# pls.phylo
+# phylogenetic pls
+# used in: phylo.integration, apply.pls.phylo
 pls.phylo <- function(x,y, invC,D.mat, verbose = FALSE){
   x <- as.matrix(x); y <- as.matrix(y)
   px <- ncol(x); py <- ncol(y); pmin <- min(px,py)
@@ -1497,9 +1497,9 @@ pls.phylo <- function(x,y, invC,D.mat, verbose = FALSE){
   out
 }
 
-# description still needed
-#
-#
+# apply.pls.phylo
+# permutation for phylo.pls
+# used in: phylo.integration
 apply.pls.phylo <- function(x,y,invC,D.mat, iter){
   ind <- perm.index(nrow(x), iter)
   y.rand <-lapply(1:(iter+1), function(j) y[ind[[j]],])
@@ -1507,9 +1507,9 @@ apply.pls.phylo <- function(x,y,invC,D.mat, iter){
   r.rand
 }
 
-# description still needed
-#
-#
+# plsmulti.phylo
+# average pairwise phylo.pls
+# used in: phylo.integration, apply.plsmulti.phylo
 plsmulti.phylo<-function(x,gps, invC, D.mat){
   gp.names <- levels(gps)
   g<-factor(as.numeric(gps))
@@ -1534,9 +1534,9 @@ plsmulti.phylo<-function(x,gps, invC, D.mat){
   list(r.pls = pls.obs, r.pls.mat=pls.mat)
 }
 
-# description still needed
-#
-#
+# apply.plsmulti.phylo
+# permutations for plsmulti.phylo
+# used in: phylo.integration
 apply.plsmulti.phylo <- function(x,gps, invC,D.mat, iter){
   gps<-factor(gps)
   ind <- perm.index(nrow(x), iter)
@@ -1547,9 +1547,9 @@ apply.plsmulti.phylo <- function(x,gps, invC,D.mat, iter){
 }
 
 
-# description still needed
-#
-#
+# sigma.d
+# multivariate evolutionary rate
+# used in: compare.evol.rates
 sigma.d<-function(x,invC,D.mat,gp){
   N<-nrow(x);p<-ncol(x)
   g<-factor(as.numeric(gp))
@@ -1578,9 +1578,9 @@ sigma.d<-function(x,invC,D.mat,gp){
        sigma.d.gp = sigma.d.gp, sigma.d.gp.ratio = rate.mat,R = R)  
 }
 
-# description still needed
-#
-#
+# sigma.d.multi
+# multiple trait multivariate evolutionary rates
+# used in: compare.multi.evol.rates
 sigma.d.multi<-function(x,invC,D.mat,gps,Subset){
   sig.calc<-function(x.i,invC.i,D.mat.i,Subset){
     N<-nrow(x.i);p<-ncol(x.i)

@@ -89,7 +89,7 @@ data(mosquito)
 gdf <- geomorph.data.frame(wingshape = mosquito$wingshape, ind=mosquito$ind, side=mosquito$side,
 replicate=mosquito$replicate)
 mosquito.sym <- bilat.symmetry(A = wingshape, ind = ind, side = side,
-replicate = replicate, object.sym = FALSE, RRPP = TRUE, iter = 999, data = gdf)
+replicate = replicate, object.sym = FALSE, RRPP = TRUE, iter = 499, data = gdf)
 summary(mosquito.sym)
 plot(mosquito.sym, warpgrids = TRUE)
 mosquito.sym$shape.anova # extract just the anova table on shape
@@ -99,10 +99,10 @@ mosquito.sym$shape.anova # extract just the anova table on shape
 data(scallops)
 gdf <- geomorph.data.frame(shape = scallops$coorddata, ind=scallops$ind)
 scallop.sym <- bilat.symmetry(A = shape, ind = ind, object.sym = TRUE,
-land.pairs=scallops$land.pairs, data = gdf, RRPP = TRUE, iter = 999)
+land.pairs=scallops$land.pairs, data = gdf, RRPP = TRUE, iter = 499)
 summary(scallop.sym)
-plot(scallop.sym, warpgrids = TRUE, mesh = NULL)
-scallop.sym$data.type # recall the symmetry type
+# NOTE one can also: plot(scallop.sym, warpgrids = TRUE, mesh = NULL)
+# NOTE one can also: scallop.sym$data.type # recall the symmetry type
 }
 \author{
 Dean Adams and Michael Collyer

@@ -492,6 +492,7 @@ print.CR <- function (x, ...) {
   invisible(x)
 }
 
+
 #' Print/Summary Function for geomorph
 #' 
 #' @param object print/summary object
@@ -521,6 +522,50 @@ plot.CR <- function(x, ...){
   arrows(CR.obs,50,CR.obs,5,length=0.1,lwd=2)
 }
 
+
+#' Print/Summary Function for geomorph
+#' 
+#' @param x print/summary object
+#' @param ... other arguments passed to print/summary
+#' @export
+#' @author Dean Adams
+print.CR.phylo <- function (x, ...) {
+  cat("\nCall:\n")
+  cat(deparse(x$call), "\n\n")
+  cat(paste("\nCR:", round(x$CR, nchar(x$permutations))))
+  cat(paste("\n\nP-value:", round(x$P.value, nchar(x$permutations))))
+  cat(paste("\n\nBased on", x$permutations, "random permutations"))
+  invisible(x)
+}
+
+#' Print/Summary Function for geomorph
+#' 
+#' @param object print/summary object
+#' @param ... other arguments passed to print/summary
+#' @export
+#' @author Dean Adams
+summary.CR.phylo <- function(object, ...) {
+  x <- object
+  print.CR.phylo(x, ...)
+}
+
+#' Plot Function for geomorph
+#' 
+#' @param x plot object
+#' @param ... other arguments passed to plot
+#' @export
+#' @author Dean Adams
+plot.CR.phylo <- function(x, ...){
+  CR.val <- x$random.CR
+  CR.obs <- x$CR
+  p <- x$P.value
+  ndec <- nchar(p)-2
+  CR.obs <- round(CR.obs, ndec)
+  main.txt <- paste("Observed CR =",CR.obs,";", "P-value =", p)
+  hist(CR.val,30,freq=TRUE,col="gray",xlab="CR Coefficient",xlim=c(0,max(c(2,CR.val))),
+       main=main.txt, cex.main=0.8)
+  arrows(CR.obs,50,CR.obs,5,length=0.1,lwd=2)
+}
 
 ## physignal
 

@@ -22,10 +22,10 @@
 #' @seealso \code{\link{warpRefMesh}}
 #' @seealso \code{\link{read.ply}}
 #' @examples
-#' data(scallopPLY)
-#' ply <- scallopPLY$ply
-#' digitdat <- scallopPLY$coords
-#' plotspec(spec=ply,digitspec=digitdat,fixed=16, centered =TRUE)
+#' # data(scallopPLY)
+#' # ply <- scallopPLY$ply
+#' # digitdat <- scallopPLY$coords
+#' # plotspec(spec=ply,digitspec=digitdat,fixed=16, centered =TRUE)
 #' @author Erik Otarola-Castillo & Emma Sherratt
 plotspec <- function (spec, digitspec, fixed=NULL, ptsize = 1, centered = FALSE, ...) 
 {

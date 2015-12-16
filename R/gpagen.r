@@ -123,8 +123,8 @@
 #' 
 #' # Using Procrustes Distance for sliding
 #' Y.gpa <- gpagen(A=scallops$coorddata, curves=scallops$curvslide, surfaces=scallops$surfslide)
-#' summary(Y.gpa)
-#' plot(Y.gpa) 
+#' # NOTE can summarize as: summary(Y.gpa)
+#' # NOTE can plot as: plot(Y.gpa) 
 gpagen = function(A, curves=NULL, surfaces=NULL, PrinAxes = TRUE, 
                       max.iter = NULL, ProcD=TRUE, Proj = TRUE){
   n <- dim(A)[[3]]; p <- dim(A)[[1]]; k <- dim(A)[[2]]
