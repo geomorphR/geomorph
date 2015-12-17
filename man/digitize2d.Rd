@@ -4,7 +4,8 @@
 \alias{digitize2d}
 \title{Digitize 2D landmarks.}
 \usage{
-digitize2d(filelist, nlandmarks, scale = NULL, tpsfile, verbose = TRUE)
+digitize2d(filelist, nlandmarks, scale = NULL, tpsfile, MultScale = FALSE,
+  verbose = TRUE)
 }
 \arguments{
 \item{filelist}{A list of names of jpeg images to be digitized.}
@@ -14,6 +15,8 @@ digitize2d(filelist, nlandmarks, scale = NULL, tpsfile, verbose = TRUE)
 \item{scale}{An vector containing the length of the scale to be placed on each image.}
 
 \item{tpsfile}{The name of a TPS file to be created or read}
+
+\item{MultScale}{A logical option indicating if the coordinates should be pre-multiplied by scale}
 
 \item{verbose}{logical. User decides whether to digitize in verbose or silent format (see details), default is verbose}
 }
@@ -57,7 +60,10 @@ To digitize a missing landmark, simply click on any location in the image. Then,
  
 If verbose = FALSE the digitizing of landmarks is continuous and uninterrupted. Here the user will not be prompted to approve each landmark selection. 
  
-  At the end of digitizing, the landmark coordinates are written to a TPS file. The x,y values are unscaled if a vector of scales is included, and the scale is returned on line SCALE= after each specimen x,y data.
+  At the end of digitizing, the landmark coordinates are written to a TPS file. By default, the 
+  x,y values are unscaled if a vector of scales is included, and the scale is returned on line 
+  SCALE= after each specimen x,y data.  Optionally, one may have the coordinates pre-multiplied by
+  scale by using the option MultScale=TRUE.
   }
 }
 \author{

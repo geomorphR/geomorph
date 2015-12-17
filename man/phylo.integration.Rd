@@ -54,7 +54,7 @@ The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\li
 }
 \examples{
 
-data(plethspecies)
+data(plethspecies) 
 Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment
 land.gps<-c("A","A","A","A","A","B","B","B","B","B","B") 
 

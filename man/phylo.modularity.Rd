@@ -56,7 +56,7 @@ land.gps<-c("A","A","A","A","A","B","B","B","B","B","B")
 
 MT <- phylo.modularity(Y.gpa$coords,partition.gp=land.gps,phy=plethspecies$phy,iter=999)
 summary(MT) # Test summary
-plot(MT) # PLS plot
+plot(MT) # PLS plot 
 }
 \author{
 Dean Adams
