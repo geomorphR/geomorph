@@ -20,6 +20,11 @@
 #'  The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{physignal}}.
 #'  The generic function, \code{\link{plot}}, produces a histogram of random K statistics, associated with the resampling procedure.
 #'  
+#'  \subsection{Notes for geomorph 3.0}{ 
+#' Compared to older versions of geomorph, users should note that the function physignal no longer contains
+#' multiple methods. Only Kmult is used. Thus, for older scripts method="" should be removed from the function call.
+#' }
+#' 
 #' @param phy A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape
 #' @param A A matrix (n x [p x k]) or 3D array (p x k x n) containing GPA-aligned coordinates for a set of specimens
 #' @param iter Number of iterations for significance testing
