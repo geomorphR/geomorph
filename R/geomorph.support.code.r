@@ -768,16 +768,16 @@ simplify2data.frame <- function(g, n) { # g = geomorph.data.frame class object
 # used in all 'procD.lm' functions
 procD.fit <- function(f1, keep.order=FALSE, pca=TRUE, data=NULL,...){
   form.in <- formula(f1)
-  if(any(class(f1)=="lm")) {
-    weights <- f1$weights
-    contrasts <- f1$contrasts
-    offset <-f1$offset
-    data <- model.frame(f1)
+  if(any(class(form.in)=="lm")) {
+    weights <- form.in$weights
+    contrasts <- form.in$contrasts
+    offset <-form.in$offset
+    data <- model.frame(form.in)
     Y <- as.matrix(data[1])
   } else {
     if(!is.null(data)) {
       dat <- data 
-    Y <- dat[which(!is.na(match(names(dat),as.character(form.in[[2]]))))][[1]]
+    Y <- dat[[match(as.character(form.in[[2]]), names(dat))]]
     } else {
       Y <- eval(form.in[[2]], parent.frame())
       dat <- model.frame(form.in[-2])
@@ -1772,3 +1772,33 @@ Hat.anova.tab <- function(D, f1, keep.order=TRUE){ # assumes dependent is distan
   a.tab
 }
 
+### older support functions retained for a few older functions
+### including estimate.missing and digitsurface
+
+
+pPsup<-function(M1,M2){				#J. Claude 2008# MODIFIED BY DCA: 2/2014
+  k<-ncol(M1)
+  Z1<-trans(csize(M1)[[2]])
+  Z2<-trans(csize(M2)[[2]])
+  sv<-svd(t(Z2)%*%Z1)
+  U<-sv$v; V<-sv$u; Delt<-sv$d
+  sig<-sign(det(t(Z2)%*%Z1))
+  Delt[k]<-sig*abs(Delt[k]); V[,k]<-sig*V[,k]
+  Gam<-U%*%t(V)
+  # beta<-sum(Delt)   #commented out: retain size-scaling (DCA)
+  #  list(Mp1=beta*Z1%*%Gam,Mp2=Z2,rotation=Gam,scale=beta,
+  #       df=sqrt(1-beta^2))}
+  list(Mp1=Z1%*%Gam,Mp2=Z2,rotation=Gam)}    #simplify output and remove size re-scaling (DCA) 
+
+trans<-function(A){scale(A,scale=FALSE)} 		#J. Claude 2008
+
+TransRot<-function(M1,M2){  			#DCA: 4, 2014 translate, rotate one specimen to another
+  k<-ncol(M1)
+  Z1<-trans(M1)
+  Z2<-trans(M2)
+  sv<-svd(t(Z2)%*%Z1)
+  U<-sv$v; V<-sv$u; Delt<-sv$d
+  sig<-sign(det(t(Z2)%*%Z1))
+  Delt[k]<-sig*abs(Delt[k]); V[,k]<-sig*V[,k]
+  Gam<-U%*%t(V)
+  list(Mp1=Z1%*%Gam,Mp2=Z2,rotation=Gam)}    

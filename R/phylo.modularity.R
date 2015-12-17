@@ -76,7 +76,7 @@ phylo.modularity<-function(A,partition.gp,phy,iter=999){
   invC<-phy.parts$invC; D.mat<-phy.parts$D.mat
   
   if (length(dim(A))==2){
-    CR.obs<-CR.phylo(x,invC,D.mat,gps)
+    CR.obs<-CR.phylo(x,invC,gps)
     if(ngps > 2) CR.mat <- CR.obs$CR.mat else CR.mat <- NULL
     CR.obs <- CR.obs$CR
     CR.rand <- apply.phylo.CR(x,invC, gps, iter=iter)
@@ -98,7 +98,7 @@ phylo.modularity<-function(A,partition.gp,phy,iter=999){
     rotatedCRs <-sapply(1:length(rot.mat), function(j) {
       r <- rot.mat[[j]]
       rotA <- t(mapply(function(a) matrix(t(a%*%r)), Alist))
-      CR.phylo(rotA,invC,D.mat,gps)$CR
+      CR.phylo(rotA,invC,gps)$CR
     })
     avgCR <- mean(rotatedCRs)
     # Angle interpolation (must determine if CR is ascending or descending)

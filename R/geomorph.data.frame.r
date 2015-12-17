@@ -25,8 +25,10 @@
 geomorph.data.frame <- function(...) {
   dots <- list(...)
   list.check0 <- sapply(1:length(dots), function(j) any(is.geomorph.data.frame(dots[[j]])))
+  list.check00 <- sapply(1:length(dots), function(j) any(is.data.frame(dots[[j]])))
   dots0 <- unlist(dots[list.check0], recursive=FALSE)
-  dots.updated <- dots[!list.check0]
+  dots00 <- unlist(dots[list.check00], recursive=FALSE)
+  dots.updated <- dots[!list.check0 & !list.check00]
   if(length(dots.updated) > 0) {
     list.check1 <- sapply(1:length(dots.updated), function(j) is.gpagen(dots.updated[[j]]))
     dots1 <- dots.updated[list.check1]
@@ -51,7 +53,7 @@ geomorph.data.frame <- function(...) {
   }
   if(length(dots3) == 0) dots3 <- NULL
   if(length(dots4) == 0) dots4 <- NULL
-  dots <- c(dots0,dots2, dots3,dots4)
+  dots <- c(dots0,dots00,dots2, dots3,dots4)
   N <- length(dots)
   dots.ns <- array(NA,N)
   for(i in 1:N){
@@ -70,7 +72,7 @@ geomorph.data.frame <- function(...) {
   }
   if(any(is.na(dots.ns))) stop("Some input is either dimensionless or inappropriate for data frames")
   if(length(unique(dots.ns)) > 1) stop("Inputs have different numbers of observations")
-  class(dots) <- c("geomorph.data.frame",class(dots))
+  class(dots) <- c("geomorph.data.frame")
   dots
 }
 
