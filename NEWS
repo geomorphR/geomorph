@@ -12,6 +12,7 @@ CHANGES IN GEOMORPH VERSION 3.0.0
   OTHER CHANGES
     o compare.modular.partitions(), morphol.integr(), phylo.pls(), and plotAllometry() deprecated
     o Removed method="" parameter from physignal(). Only Kmult used
+    o Added option to pre-multiply coordinates by scale in digitize2d
   
   BUG FIXES
 
