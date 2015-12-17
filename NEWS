@@ -1,7 +1,8 @@
 CHANGES IN GEOMORPH VERSION 3.0.0
 
   NEW FEATURES
-    o New functions: modularity.test(), integration.test(), phylo.modularity(), phylo.integration()
+    o New functions: modularity.test(), integration.test(), phylo.modularity(), 
+        phylo.integration(), procD.allometry()
     o Major overhaul of underlying support code for analytics
     o Removed internal C-code fro gpagen
     o Removed verbose option for functions: all output provided in lists
@@ -9,7 +10,8 @@ CHANGES IN GEOMORPH VERSION 3.0.0
     o Added 'summary' option to many analytical functions
 
   OTHER CHANGES
-    o compare.modular.partitions(), morphol.integr(), and phylo.pls() deprecated
+    o compare.modular.partitions(), morphol.integr(), phylo.pls(), and plotAllometry() deprecated
+    o Removed method="" parameter from physignal(). Only Kmult used
   
   BUG FIXES
 
