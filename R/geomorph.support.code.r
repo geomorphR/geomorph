@@ -322,7 +322,7 @@ pGpa <- function(Y, PrinAxes = FALSE, Proj = FALSE, max.iter = 5){
   Yc <- Map(function(y) center.scale(y), Y)
   CS <- sapply(Yc,"[[","CS")
   Ya <- lapply(Yc,"[[","coords")
-  M <- Reduce("+",Ya)/n
+  M <- Ya[[1]]
   Ya <- apply.pPsup(M, Ya)
   M <- Reduce("+",Ya)/n
   Q <- ss <- n*(1-sum(M^2))
@@ -949,7 +949,7 @@ Fpgls.iter = function(pfit,Pcor,iter, Yalt="RRPP"){
            Xr, Xf,Yr[[j]])})
   SSEs <- Map(function(y) sum(.lm.fit(Xf[[k-1]],y[[k-1]])$residuals^2), Yr)
   Fs <- mapply(function(s1,s2) (s1/df)/(s2/(n-k)), SS, SSEs)
-  list(SS=simplify2array(SS), Fs=Fs)
+  list(SS=simplify2array(SS), SSE = SSEs[[1]], Fs=Fs)
 }
 
 # anova.parts
@@ -971,6 +971,35 @@ anova.parts <- function(pfit, SS){ # SS from SS.iter
   Fs <- MS/MSE
   df <- c(df,dfE,nrow(Y)-1)
   SS <- c(SS,SSE.model, SSY)
+  MS <- c(MS,MSE,NA)
+  R2 <- c(R2,NA,NA)
+  Fs <- c(Fs,NA,NA)
+  anova.tab <- data.frame(df,SS,MS,Rsq=R2,F=Fs)
+  rownames(anova.tab) <- c(anova.terms, "Residuals", "Total")
+  out <- list(anova.table = anova.tab, anova.terms = anova.terms,
+              SS = SS, df = df, R2 = R2[1:k], F = Fs[1:k])
+  out
+}
+
+# anova.parts.pgls
+# makes an ANOVA table based on SS from Fpgls.iter
+# used in nearly only in procD.pgls
+anova.parts.pgls <- function(pfit, Fpgls){ # Fpgls from Fpgls.iter
+  Y <- pfit$wY
+  k <- length(pfit$term.labels)
+  dfe <-sapply(pfit$wQRs, function(x) x$rank)
+  df <- dfe[2:(k+1)] - dfe[1:k]
+  SSE <- Fpgls$SSE
+  if(k==1) SS <- Fpgls$SS[1] else SS <- Fpgls$SS[,1]
+  anova.terms <- pfit$term.labels
+  SSY <- sum(SS)+SSE
+  MS <- SS/df
+  R2 <- SS/SSY
+  dfE <- nrow(Y)-(sum(df)+1)
+  MSE <- SSE/dfE
+  Fs <- MS/MSE
+  df <- c(df,dfE,nrow(Y)-1)
+  SS <- c(SS,SSE, SSY)
   MS <- c(MS,MSE,NA)
   R2 <- c(R2,NA,NA)
   Fs <- c(Fs,NA,NA)

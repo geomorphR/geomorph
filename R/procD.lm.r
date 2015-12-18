@@ -132,7 +132,7 @@ procD.lm<- function(f1, iter = 999, RRPP = FALSE,
   class(tab) <- c("anova", class(tab))
   pfit <- procD.fit(f1, data=data, keep.order=ko, pca=FALSE)
   out <- list(aov.table = tab, call = match.call(),
-              coefficients=pfit$coefficients, 
+              coefficients=pfit$coefficients[[k+1]], 
               Y=pfit$Y,  X=pfit$X, 
               QR = pfit$QRs[[k+1]], fitted=pfit$fitted[[k+1]],
               residuals = pfit$residuals[[k+1]], 

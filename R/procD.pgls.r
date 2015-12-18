@@ -108,7 +108,7 @@ procD.pgls<-function(f1, phy, iter=999, int.first = FALSE,
   dimnames(Pcor) <- dimnames(C)
   if(RRPP == TRUE) SSr <- Fpgls.iter(pfit, Yalt="RRPP", Pcor, iter=iter) else 
     SSr <- Fpgls.iter(pfit, Yalt="resample", Pcor, iter=iter)
-  anova.parts.obs <- anova.parts(pfit, SSr$SS)
+  anova.parts.obs <- anova.parts.pgls(pfit, SSr)
   anova.tab <-anova.parts.obs$anova.table 
   P <- SSr$Fs
   if(is.matrix(P)){
