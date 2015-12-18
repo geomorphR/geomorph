@@ -36,7 +36,7 @@
 #'   The generic function, \code{\link{plot}}, produces plots of allometric curves, using one of  three methods input (see below).
 #'   If diagnostic plots on model residuals are desired, \code{\link{procD.lm}} should be used with the resulting model formula.  
 #'   This, along with the data frame resulting from analysis with \code{\link{procD.allometry}} can be used directly in \code{\link{procD.lm}},
-#'   which might be useful for extracting ANOVAcomponents (as \code{\link{procD.allometry}} 
+#'   which might be useful for extracting ANOVA components (as \code{\link{procD.allometry}} 
 #'   is far more basic than \code{\link{procD.lm}}, in terms of output).
 #'   
 #' \subsection{Notes for geomorph 3.0 and making allometry plots}{ 
@@ -103,7 +103,7 @@
 #' \item{size}{A vector of size scores.}
 #' \item{logsz}{A logical value to indicate if size values were log=transformed for analysis.}
 #' \item{A}{Prucstes (aligned) residuals.}
-#' \item{Ahat}{Aredicted Procrustes residuals(if input coordinates are in a 3D array).}
+#' \item{Ahat}{Predicted Procrustes residuals(if input coordinates are in a 3D array).}
 #' \item{p}{landmark number}
 #' \item{k}{landmark number}
 #' 
