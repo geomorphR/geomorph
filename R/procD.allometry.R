@@ -33,11 +33,41 @@
 #'   will attempt to coerce input data into a data frame, but success is not guaranteed.
 #'
 #'   The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{procD.allometry}}.
-#'   The generic function, \code{\link{plot}}, produces plots of allometric curves, using one of the three methods input (see Arguments).
+#'   The generic function, \code{\link{plot}}, produces plots of allometric curves, using one of  three methods input (see below).
 #'   If diagnostic plots on model residuals are desired, \code{\link{procD.lm}} should be used with the resulting model formula.  
 #'   This, along with the data frame resulting from analysis with \code{\link{procD.allometry}} can be used directly in \code{\link{procD.lm}},
 #'   which might be useful for extracting ANOVAcomponents (as \code{\link{procD.allometry}} 
 #'   is far more basic than \code{\link{procD.lm}}, in terms of output).
+#'   
+#' \subsection{Notes for geomorph 3.0 and making allometry plots}{ 
+#' Former versions of geomorph had a "plotAllometry" function that performed ANOVA and produced
+#' plots of allometry curves.  In geomorph 3.0, the \code{\link{plot}} function is used with 
+#' \code{\link{procD.allometry}} objects to produce such plots.  The following arguments can be used in 
+#' \code{\link{plot}} to achieve desired results.
+#' \itemize{
+#' \item{method = ("CAC, "RegScore, "PredLine").  Choose the desired plot method.}
+#' \item{warpgrids: default = TRUE.  Logical value to indicate whether warpgrids should be plotted.} 
+#' (Only workds with 3D array data)
+#' \item{label: can be logical to label points (1:n) - e.g., label = TRUE - or a vector indicating
+#' text to use as labels.}
+#' \item{mesh: A mesh3d object to be warped to represent shape deformation of the minimum and maximum size 
+#' if {warpgrids=TRUE} (see \code{\link{warpRefMesh}}).}
+#' }
+#' Use ?\code{\link{plot.prcD.allometry}} to understand the arguments used.  The following are brief 
+#' descriptions of the different plotting methods using \code{\link{plot}}, with references.
+#'\itemize{
+#' \item {If "method=CAC" (the default) the function calculates the 
+#'   common allometric component of the shape data, which is an estimate of the average allometric trend 
+#'   within groups (Mitteroecker et al. 2004). The function also calculates the residual shape component (RSC) for 
+#'   the data.}
+#'   \item {If "method=RegScore" the function calculates shape scores 
+#'   from the regression of shape on size, and plots these versus size (Drake and Klingenberg 2008). 
+#'   For a single group, these shape scores are mathematically identical to the CAC (Adams et al. 2013).}
+#'   \item {If "method=PredLine" the function calculates predicted values from a regression of shape on size, and 
+#'   plots the first principal component of the predicted values versus size as a stylized graphic of the 
+#'   allometric trend (Adams and Nistri 2010). }
+#'   }
+#'   }
 #'   
 #' @param f1 A formula for the relationship of shape and size; e.g., Y ~ X.
 #' @param f2 An optional right-hand formula for the inclusion of groups; e.g., ~ groups.
@@ -60,7 +90,7 @@
 #' \item{call}{The matched call.}
 #' \item{formula}{The resulting formula, which can be used in follow-up analyses.  Irrespective of input, shape = Y
 #' in the formula, and the variable used for size is called "size".}
-#' \iterm{CAC}{The 
+#' \item{CAC}{The 
 #'   common allometric component of the shape data, which is an estimate of the average allometric trend 
 #'   within groups (Mitteroecker et al. 2004). The function also calculates the residual shape component (RSC) for 
 #'   the data.}
@@ -89,14 +119,26 @@
 #' @seealso \code{\link{procD.lm}} and \code{\link{advanced.procD.lm}} within geomorph;
 #' \code{\link[stats]{lm}} for more on linear model fits
 #' @examples
-#' ### MANOVA example for Goodall's F test (multivariate shape vs. factors)
+#' # Simple allometry
 #' data(plethodon) 
 #' Y.gpa <- gpagen(plethodon$land)    #GPA-alignment  
 #' gdf <- geomorph.data.frame(Y.gpa, site = plethodon$site, species = plethodon$species) # geomorph data frame
 #' plethAllometry <- procD.allometry(coords~Csize, f2 = NULL, f3=NULL, logsz = TRUE, data=gdf, iter=499)
+#' summary(plethAllometry)
+#' plot(plethAllometry, method = "PredLine")
+#' plot(plethAllometry, method = "RegScore")
 #' 
-#' plethAllometry <- procD.allometry(coords~Csize, ~species*site, logsz = TRUE, data=gdf, iter=499)
-#'
+#' # Group Allometries
+#' plethAllometry <- procD.allometry(coords~Csize, ~species*site, 
+#' logsz = TRUE, data=gdf, iter=499, RRPP=TRUE)
+#' summary(plethAllometry)
+#' plot(plethAllometry, method = "PredLine")
+#' 
+#' # Using procD.lm to perform diagnostic residual plots
+#' plethANOVA <- procD.lm(plethAllometry$formula, 
+#' data = plethAllometry$data, iter = 499, RRPP=TRUE)
+#' summary(plethANOVA) # Same ANOVA
+#' plot(plethANOVA) # diagnostic plot instead of allometry plot
 procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
                            iter = 999, alpha = 0.05, RRPP = FALSE, data=NULL, ...){
   pfit <- procD.fit(f1, data=data)
