@@ -59,7 +59,7 @@ estimate.missing<-function(A,method=c("TPS","Reg")){
   if(method=="TPS"){
     A2<-A
     spec.NA<-which(rowSums(is.na(two.d.array(A)))>0)
-    Y.gpa<-gpagen(A[,,-spec.NA],ShowPlot = FALSE,PrinAxes=FALSE)
+    Y.gpa<-gpagen(A[,,-spec.NA],PrinAxes=FALSE)
     p<-dim(Y.gpa$coords)[1]; k<-dim(Y.gpa$coords)[2]; n<-dim(Y.gpa$coords)[3]    
     ref<-mshape(arrayspecs(two.d.array(Y.gpa$coords)*Y.gpa$Csize,p,k))
     for (i in 1:length(spec.NA)){
@@ -75,7 +75,7 @@ estimate.missing<-function(A,method=c("TPS","Reg")){
     A2<-A
     complete<-A[,,-spec.NA]
     incomplete<-A[,,spec.NA]
-    Y.gpa<-gpagen(complete,ShowPlot = FALSE, PrinAxes=FALSE)
+    Y.gpa<-gpagen(complete, PrinAxes=FALSE)
     ref<-mshape(arrayspecs(two.d.array(Y.gpa$coords)*Y.gpa$Csize,p,k))
     complete<-arrayspecs(two.d.array(Y.gpa$coords)*Y.gpa$Csize,p,k)
     if(length(dim(incomplete))>2){

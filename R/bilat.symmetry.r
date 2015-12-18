@@ -96,9 +96,8 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
       data = NULL, iter=999,RRPP=TRUE){
   if(!is.null(data)) {
     A.name <- deparse(substitute(A))
-    A.name.match <- match(names(data), A.name)
+    A.name.match <- match(A.name, names(data))
     if(all(is.na(A.name.match))) stop("Coordinates are not part of the data frame provided")
-    A.name.match <- which(!is.na(A.name.match))
     A <- data[[A.name.match]]
   }
   if (length(dim(A))!=3){
@@ -183,9 +182,9 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
   }
 # build shape components for output
   if(object.sym==FALSE){
-    X.ind <- model.matrix(~ind + 0, data = dat.shape)
+    X.ind <- model.matrix(~ind + 0, data = as.data.frame(dat.shape[-1]))
     symm.component <- arrayspecs(coef(.lm.fit(X.ind, Y)),p,k)
-    X.side <- model.matrix(~(side:ind) + 0, data = dat.shape)
+    X.side <- model.matrix(~(side:ind) + 0, data = as.data.frame(dat.shape[-1]))
     avg.side.symm <- coef(.lm.fit(X.side, Y))
     n.ind <- nlevels(ind)
     n.side <- nlevels(side)
@@ -198,7 +197,7 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
 
   }
   if(object.sym==TRUE){
-    X.ind <- model.matrix(~ind + 0, data = dat.shape)
+    X.ind <- model.matrix(~ind + 0, data = as.data.frame(dat.shape[-1]))
     symm.component <- arrayspecs(coef(.lm.fit(X.ind, Y)),p,k)
     mn.shape<-gpa.res$consensus
     n.ind <- nlevels(ind)
@@ -206,9 +205,9 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
     {mn.shape + gpa.res$coords[,,j] - symm.component[,,j]}))
 #    dimnames(asymm.component)[[3]] <- dimnames(symm.component)[[3]] <- spec.names
   }
-  X.side <- model.matrix(~side + 0, data = dat.shape)
+  X.side <- model.matrix(~side + 0, data = as.data.frame(dat.shape[-1]))
   DA.mns <- arrayspecs(coef(.lm.fit(X.side, Y)),p,k)
-  X.ind.side <- model.matrix(~(side:ind) + 0, data = dat.shape)
+  X.ind.side <- model.matrix(~(side:ind) + 0, data = as.data.frame(dat.shape[-1]))
   ind.mns <- coef(.lm.fit(X.ind.side, Y))
   mn.DA <- DA.mns[,,1] - DA.mns[,,2]
   n.ind <- nlevels(ind)

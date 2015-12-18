@@ -176,7 +176,7 @@ procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
           collapse="+")))
     form.type <- "g"
   } else if(is.null(form2) & !is.null(form3)) {
-    if(!logzs) formfull <-as.formula(c("~",paste(unique(
+    if(!logsz) formfull <-as.formula(c("~",paste(unique(
       c(c("size", attr(o.Terms, "term.labels"), paste("size", attr(o.Terms, "term.labels"), sep=":")))),
       collapse="+"))) else
         formfull <-as.formula(c("~",paste(unique(
@@ -231,10 +231,10 @@ procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
     warning("Warpgrids will be unavailble for plots, as input data are not an array")
     Ahat <- NULL
     A <- NULL
-    ref <- NULL} else
-    {Ahat <- arrayspecs(yhat, lm.dim[[1]], lm.dim[[2]])
-    A <- arrayspecs(Y, lm.dim[[1]], lm.dim[[2]])
-    ref<-mshape(A)}
+    ref <- NULL} else{
+      Ahat <- arrayspecs(yhat, lm.dim[[1]], lm.dim[[2]])
+      A <- arrayspecs(Y, lm.dim[[1]], lm.dim[[2]])
+      ref<-mshape(A)}
     
   out <- list(HOS.test = HOS, aov.table =anovafull, call = match.call(),
               alpha = alpha, perm.method = perm.method, permutations=iter+1,

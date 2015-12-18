@@ -91,11 +91,9 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
   if(!is.null(pfit1$weights)) w <- pfit1$weights else w <- rep(1,n)
   if(any(w < 0)) stop("Weights cannot be negative")
   n <- nrow(Y)
-  y.name <- match(as.character(f1[[2]]), names(data))
-  data2 <- geomorph.data.frame(data[-y.name], Y=Y)
+  data2 <- geomorph.data.frame(Y=Y, data)
   if(any(class(f2)=="lm")) pfit2 = procD.fit(f2) else {
       f2 <- update(f2, Y ~.) 
-      mf
       pfit2= procD.fit(f2, data=data2)
   }
   k1 <- pfit1$QRs[[length(pfit1$QRs)]]$rank
