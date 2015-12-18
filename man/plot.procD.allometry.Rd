@@ -10,14 +10,15 @@
 \arguments{
 \item{x}{plot object}
 
-\item{method}{Method for estimating allometric shape components; see \link{code{procD.allometry}} for details}
+\item{method}{Method for estimating allometric shape components; see \code{\link{procD.allometry}} for details}
 
 \item{warpgrids}{A logical value indicating whether deformation grids for small and large shapes 
 should be displayed (note: if groups are provided no TPS grids are shown)}
 
 \item{label}{An optional vector indicating labels for each specimen that are to be displayed}
 
-\item{mesh}{A mesh3d object to be warped to represent shape deformation of the minimum and maximum size if {warpgrids=TRUE} (see \code{\link{warpRefMesh}}).}
+\item{mesh}{A mesh3d object to be warped to represent shape deformation of the minimum and maximum size 
+if {warpgrids=TRUE} (see \code{\link{warpRefMesh}}).}
 
 \item{...}{other arguments passed to plot}
 }

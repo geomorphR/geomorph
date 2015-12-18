@@ -265,11 +265,12 @@ summary.procD.allometry <- function(object, ...) {
 #' Plot Function for geomorph
 #' 
 #' @param x plot object
-#' @param method Method for estimating allometric shape components; see \link{code{procD.allometry}} for details
+#' @param method Method for estimating allometric shape components; see \code{\link{procD.allometry}} for details
 #' @param warpgrids A logical value indicating whether deformation grids for small and large shapes 
 #'  should be displayed (note: if groups are provided no TPS grids are shown)
 #' @param label An optional vector indicating labels for each specimen that are to be displayed
-#' @param mesh A mesh3d object to be warped to represent shape deformation of the minimum and maximum size if {warpgrids=TRUE} (see \code{\link{warpRefMesh}}).
+#' @param mesh A mesh3d object to be warped to represent shape deformation of the minimum and maximum size 
+#' if {warpgrids=TRUE} (see \code{\link{warpRefMesh}}).
 #' @param ... other arguments passed to plot
 #' @export
 #' @author Michael Collyer

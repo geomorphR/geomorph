@@ -30,9 +30,9 @@ procD.allometry(f1, f2 = NULL, f3 = NULL, logsz = TRUE, iter = 999,
 An object of class "procD.allometry" is a list containing the following:
 \item{HOS.test}{ANOVA for a homogeneity of slopes test (if groups are provided).}
 \item{aov.table}{An analysis of variance table, based on inputs and the homogenetiy of slopes test.}
-\item{alpha} The significance level criterion for the homogeneity of slopes test.
-\item{perm.method} A value indicating whether "RRPP" or randomization of "raw" vales was used.
-\item{permutations} The number of random permutations used in the resampling procedure.
+\item{alpha}{The significance level criterion for the homogeneity of slopes test.}
+\item{perm.method}{A value indicating whether "RRPP" or randomization of "raw" vales was used.}
+\item{permutations}{The number of random permutations used in the resampling procedure.}
 \item{call}{The matched call.}
 \item{formula}{The resulting formula, which can be used in follow-up analyses.  Irrespective of input, shape = Y
 in the formula, and the variable used for size is called "size".}
@@ -48,10 +48,10 @@ in the formula, and the variable used for size is called "size".}
 \item{gps}{A vector of group names.}
 \item{size}{A vector of size scores.}
 \item{logsz}{A logical value to indicate if size values were log=transformed for analysis.}
-\item{A} Prucstes (aligned) residuals.
+\item{A}{Prucstes (aligned) residuals.}
 \item{Ahat}{Aredicted Procrustes residuals(if input coordinates are in a 3D array).}
 \item{p}{landmark number}
-\item{k}[landmark number]
+\item{k}{landmark number}
 }
 \description{
 Function performs Procrustes ANOVA with permutation procedures to assess statistical hypotheses describing 
@@ -108,7 +108,7 @@ text to use as labels.}
 \item{mesh: A mesh3d object to be warped to represent shape deformation of the minimum and maximum size 
 if {warpgrids=TRUE} (see \code{\link{warpRefMesh}}).}
 }
-Use ?\code{\link{plot.prcD.allometry}} to understand the arguments used.  The following are brief 
+Use ?\code{\link{plot.procD.allometry}} to understand the arguments used.  The following are brief 
 descriptions of the different plotting methods using \code{\link{plot}}, with references.
 \itemize{
 \item {If "method=CAC" (the default) the function calculates the 
@@ -128,8 +128,10 @@ descriptions of the different plotting methods using \code{\link{plot}}, with re
 # Simple allometry
 data(plethodon) 
 Y.gpa <- gpagen(plethodon$land)    #GPA-alignment  
-gdf <- geomorph.data.frame(Y.gpa, site = plethodon$site, species = plethodon$species) # geomorph data frame
-plethAllometry <- procD.allometry(coords~Csize, f2 = NULL, f3=NULL, logsz = TRUE, data=gdf, iter=499)
+gdf <- geomorph.data.frame(Y.gpa, site = plethodon$site, 
+species = plethodon$species) # geomorph data frame
+plethAllometry <- procD.allometry(coords~Csize, f2 = NULL, f3=NULL, 
+logsz = TRUE, data=gdf, iter=499)
 summary(plethAllometry)
 plot(plethAllometry, method = "PredLine")
 plot(plethAllometry, method = "RegScore")

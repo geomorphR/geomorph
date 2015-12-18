@@ -53,7 +53,7 @@
 #' \item{mesh: A mesh3d object to be warped to represent shape deformation of the minimum and maximum size 
 #' if {warpgrids=TRUE} (see \code{\link{warpRefMesh}}).}
 #' }
-#' Use ?\code{\link{plot.prcD.allometry}} to understand the arguments used.  The following are brief 
+#' Use ?\code{\link{plot.procD.allometry}} to understand the arguments used.  The following are brief 
 #' descriptions of the different plotting methods using \code{\link{plot}}, with references.
 #'\itemize{
 #' \item {If "method=CAC" (the default) the function calculates the 
@@ -84,9 +84,9 @@
 #' @return An object of class "procD.allometry" is a list containing the following:
 #' \item{HOS.test}{ANOVA for a homogeneity of slopes test (if groups are provided).}
 #' \item{aov.table}{An analysis of variance table, based on inputs and the homogenetiy of slopes test.}
-#' \item{alpha} The significance level criterion for the homogeneity of slopes test.
-#' \item{perm.method} A value indicating whether "RRPP" or randomization of "raw" vales was used.
-#' \item{permutations} The number of random permutations used in the resampling procedure.
+#' \item{alpha}{The significance level criterion for the homogeneity of slopes test.}
+#' \item{perm.method}{A value indicating whether "RRPP" or randomization of "raw" vales was used.}
+#' \item{permutations}{The number of random permutations used in the resampling procedure.}
 #' \item{call}{The matched call.}
 #' \item{formula}{The resulting formula, which can be used in follow-up analyses.  Irrespective of input, shape = Y
 #' in the formula, and the variable used for size is called "size".}
@@ -102,11 +102,10 @@
 #' \item{gps}{A vector of group names.}
 #' \item{size}{A vector of size scores.}
 #' \item{logsz}{A logical value to indicate if size values were log=transformed for analysis.}
-#' \item{A} Prucstes (aligned) residuals.
+#' \item{A}{Prucstes (aligned) residuals.}
 #' \item{Ahat}{Aredicted Procrustes residuals(if input coordinates are in a 3D array).}
 #' \item{p}{landmark number}
-#' \item{k}[landmark number]
-#' 
+#' \item{k}{landmark number}
 #' 
 #' @references Anderson MJ. 2001. A new method for non-parametric multivariate analysis of variance. 
 #'    Austral Ecology 26: 32-46.
@@ -122,8 +121,10 @@
 #' # Simple allometry
 #' data(plethodon) 
 #' Y.gpa <- gpagen(plethodon$land)    #GPA-alignment  
-#' gdf <- geomorph.data.frame(Y.gpa, site = plethodon$site, species = plethodon$species) # geomorph data frame
-#' plethAllometry <- procD.allometry(coords~Csize, f2 = NULL, f3=NULL, logsz = TRUE, data=gdf, iter=499)
+#' gdf <- geomorph.data.frame(Y.gpa, site = plethodon$site, 
+#' species = plethodon$species) # geomorph data frame
+#' plethAllometry <- procD.allometry(coords~Csize, f2 = NULL, f3=NULL, 
+#' logsz = TRUE, data=gdf, iter=499)
 #' summary(plethAllometry)
 #' plot(plethAllometry, method = "PredLine")
 #' plot(plethAllometry, method = "RegScore")
@@ -165,13 +166,11 @@ procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
       dat <- data.frame(dat, dat.g)
       g.Terms <- terms(dat.g)
       if(any(attr(g.Terms, "dataClasses") == "numeric")) stop("groups formula (f2) must contain only factors")
-      form2 <- f2
       if(ncol(dat.g) > 1) gps <- factor(apply(dat.g, 1,function(x) paste(x, collapse=":"))) else 
         gps <- as.factor(unlist(dat.g))
     }  else {
       dat.g <- NULL
       g.Terms <- NULL
-      form2 <- NULL
       gps <- NULL
     }
   
@@ -180,36 +179,34 @@ procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
       dat.o <- model.frame(f3, data=dat2) 
       dat <- data.frame(dat, dat.o)
       o.Terms <- terms(dat.o)
-      form3 <- f3
     }  else {
       dat.o <- NULL
       o.Terms <- NULL
-      form3 <- NULL
     }
   }
 
-    if(!is.null(form2) & !is.null(form3)) {
+    if(!is.null(f2) & !is.null(f3)) {
       if(!logsz){
-        form4 <- update(form3, ~. + size + gps)
-        form5 <- update(form3, ~. + size * gps)
+        form4 <- update(f3, ~. + size + gps)
+        form5 <- update(f3, ~. + size * gps)
       }
       if(logsz){
-        form4 <- update(form3, ~. + log(size) + gps)
-        form5 <- update(form3, ~. + log(size) * gps)
+        form4 <- update(f3, ~. + log(size) + gps)
+        form5 <- update(f3, ~. + log(size) * gps)
       }
     }
-      if(!is.null(form2) & is.null(form3)) {
+      if(!is.null(f2) & is.null(f3)) {
         form4 <- form1
         form5 <- update(form1, ~.  * gps)
       }
   
-  if(!is.null(form2) & !is.null(form3)) {
+  if(!is.null(f2) & !is.null(f3)) {
     formfull <-as.formula(c("~",paste(unique(
       c(c("size", attr(g.Terms, "term.labels"), paste("size", attr(g.Terms, "term.labels"), sep=":")),
         c("size", attr(o.Terms, "term.labels"), paste("size", attr(o.Terms, "term.labels"), sep=":")))),
       collapse="+")))
     form.type <- "go"
-  } else if(!is.null(form2) & is.null(form3)) {
+  } else if(!is.null(f2) & is.null(f3)) {
     if(!logsz) formfull <-as.formula(c("~",paste(unique(
       c(c("size", attr(g.Terms, "term.labels"), paste("size", attr(g.Terms, "term.labels"), sep=":")))),
       collapse="+"))) else
@@ -217,7 +214,7 @@ procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
           c(c("log(size)", attr(g.Terms, "term.labels"), paste("log(size)", attr(g.Terms, "term.labels"), sep=":")))),
           collapse="+")))
     form.type <- "g"
-  } else if(is.null(form2) & !is.null(form3)) {
+  } else if(is.null(f2) & !is.null(f3)) {
     if(!logsz) formfull <-as.formula(c("~",paste(unique(
       c(c("size", attr(o.Terms, "term.labels"), paste("size", attr(o.Terms, "term.labels"), sep=":")))),
       collapse="+"))) else
@@ -229,7 +226,7 @@ procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
     formfull <- form1
     form.type <- NULL}
   
-  if(!is.null(form2)){
+  if(!is.null(f2)){
     form4 <- update(form4, Y ~.)
     form5 <- update(form5, Y ~.)
     datHOS <- data.frame(dat, size=size)
@@ -277,7 +274,7 @@ procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
       Ahat <- arrayspecs(yhat, lm.dim[[1]], lm.dim[[2]])
       A <- arrayspecs(Y, lm.dim[[1]], lm.dim[[2]])
       ref<-mshape(A)}
-    
+  if(is.null(f2)) gps <- NULL
   out <- list(HOS.test = HOS, aov.table =anovafull, call = match.call(),
               alpha = alpha, perm.method = perm.method, permutations=iter+1,
               formula = formfull, data=dat,
