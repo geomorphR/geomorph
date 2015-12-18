@@ -206,6 +206,143 @@ plot.advanced.procD.lm <- function(x, outliers = FALSE, ...) {
   plot.procD.lm(x,...)
 }
 
+
+## procD.allometry
+
+# Two print options
+
+printAllometry.HOS <- function(x){
+  cat("\nCall:\n")
+  cat(deparse(x$call), "\n\n")
+  cat("\nHomogeneity of Slopes Test\n")
+  print(x$HOS.test)
+  if(x$HOS.test[2,7] > x$alpha) cat(paste("\nThe null hypothesis of parallel slopes is supported
+  based on a signficance criteron of alpha =", x$alpha,"\n")) 
+  if(x$HOS.test[2,7] <= x$alpha) cat(paste("\nThe null hypothesis of parallel slopes is rejected
+  based on a signficance criteron of alpha =", x$alpha,"\n"))
+  cat("\nBased on the results of this test, the following ANOVA table is most appropriate\n")
+  cat("\nType I (Sequential) Sums of Squares and Cross-products\n")
+  if(x$perm.method == "RRPP") cat ("Randomized Residual Permutation Procedure Used\n") else
+    cat("Randomization of Raw Values used\n")
+  cat(paste(x$permutations, "Permutations"))
+  cat("\n\n")
+  print(x$aov.table)
+}
+
+printAllometry.noHOS <- function(x){
+  cat("\nCall:\n")
+  cat(deparse(x$call), "\n\n")
+  cat("\nType I (Sequential) Sums of Squares and Cross-products\n")
+  if(x$perm.method == "RRPP") cat ("Randomized Residual Permutation Procedure Used\n") else
+    cat("Randomization of Raw Values used\n")
+  cat(paste(x$permutations, "Permutations"))
+  cat("\n\n")
+  print(x$aov.table)
+}
+
+#' Print/Summary Function for geomorph
+#' 
+#' @param x print/summary object
+#' @param ... other arguments passed to print/summary
+#' @export
+#' @author Michael Collyer
+print.procD.allometry <- function (x, ...) {
+  if(!is.null(x$HOS.test)) printAllometry.HOS(x) else printAllometry.noHOS(x)
+  invisible(x)
+}
+
+#' Print/Summary Function for geomorph
+#' 
+#' @param object print/summary object
+#' @param ... other arguments passed to print/summary
+#' @export
+#' @author Michael Collyer
+summary.procD.allometry <- function(object, ...) {
+  x <- object
+  print.procD.allometry(x,...)
+}
+
+#' Plot Function for geomorph
+#' 
+#' @param x plot object
+#' @param method Method for estimating allometric shape components; see \link{code{procD.allometry}} for details
+#' @param warpgrids A logical value indicating whether deformation grids for small and large shapes 
+#'  should be displayed (note: if groups are provided no TPS grids are shown)
+#' @param label An optional vector indicating labels for each specimen that are to be displayed
+#' @param mesh A mesh3d object to be warped to represent shape deformation of the minimum and maximum size if {warpgrids=TRUE} (see \code{\link{warpRefMesh}}).
+#' @param ... other arguments passed to plot
+#' @export
+#' @author Michael Collyer
+plot.procD.allometry <- function(x, method=c("CAC","RegScore","PredLine"),warpgrids=TRUE,
+                                 label=NULL, mesh=NULL, ...) {
+  method <- match.arg(method)
+  if(x$logsz) xlab <- "log(Size)" else xlab <- "Size"
+  if(x$logsz) size <- log(x$size) else size <- x$size
+  if(!is.null(x$gps)) pt.cols <- as.numeric(x$gps) else pt.cols <- rep(1, length(size))
+  if(method == "CAC"){
+    layout(matrix(c(3,1,1,1,1,1,1,1,4,2,2,2,2,2,2,2,2,2),3,6))   
+    plot(size,x$CAC,xlab=xlab, ylab="CAC",pch=21,bg="black",cex=1.25)
+    if(!is.null(x$gps)){points(size,x$CAC,pch=21,bg=pt.cols,cex=1.25)}
+    if (length(label!=0)) {
+      if(isTRUE(label)){text(size,x$CAC,seq(1, n),adj=c(-0.7,-0.7)) }
+      else{text(size,x$CAC,label,adj=c(-0.1,-0.1))}
+    }
+    plot(x$CAC,x$RSC[,1], xlab="CAC",ylab="RSC 1", pch=21,bg="black",cex=1.25)
+    if(!is.null(x$gps)){points(x$CAC,x$RSC[,1],pch=21,bg=pt.cols,cex=1.25)}
+    if (!is.null(label)) {
+      if(!is.null(label)){text(x$CAC,x$RSC,seq(1, n),adj=c(-0.7,-0.7)) }
+      else{text(x$CAC,x$RSC,label,adj=c(-0.1,-0.1))}
+    }
+  }
+  if(method=="PredLine"){
+    layout(matrix(c(2,1,1,1,1,1,1,1,3),3,3))   
+    plot(size,x$pred.val,xlab=xlab, ylab="Shape (Predicted)",pch=21,bg="black",cex=1.25)
+    if(!is.null(gps)){points(size,x$pred.val,pch=21,bg=pt.cols,cex=1.25)}
+    if (length(label!=0)) {
+      if(isTRUE(label)){text(size,x$pred.val,seq(1, n),adj=c(-0.7,-0.7)) }
+      else{text(size,x$pred.val,label,adj=c(-0.1,-0.1))}
+    }
+  }
+  if(method=="RegScore"){
+    layout(matrix(c(2,1,1,1,1,1,1,1,3),3,3))   
+    plot(size,x$Reg.proj,xlab=xlab, ylab="Shape (Regression Score)",pch=21,bg="black",cex=1.25)
+    if(!is.null(gps)){points(size,x$Reg.proj,pch=21,bg=pt.cols,cex=1.25)}
+    if (length(label!=0)) {
+      if(isTRUE(label)){text(size,x$Reg.proj,seq(1, n),adj=c(-0.7,-0.7)) }
+      else{text(size,x$Reg.proj,label,adj=c(-0.1,-0.1))}
+    }
+  } 
+  if(method=="CAC") y <- x$CAC else if (method=="RegScore") y <- x$Reg.proj else
+    y <- x$pred.val
+  
+  if(is.null(gps)){
+    if(warpgrids==T && x$k==2){
+      arrows(min(size), (0.7 * max(y)), min(size), 0, length = 0.1,lwd = 2)
+      arrows(max(size), (0.7 * min(y)), max(size), 0, length = 0.1,lwd = 2)
+    }
+  }
+  if(warpgrids==T && x$k==3){
+    if(is.null(mesh)){
+      open3d()
+      plot3d(Ahat[,,which.min(size)],type="s",col="gray",main="Shape at minimum size",size=1.25,aspect=FALSE)
+      open3d()
+      plot3d(Ahat[,,which.max(size)],type="s",col="gray",main="Shape at maximum size",size=1.25,aspect=FALSE)
+      if(!is.null(mesh)){
+        plotRefToTarget(ref, Ahat[,,which.min(size)], mesh, method = "surface")
+        title3d(main="Shape at minimum size")
+        plotRefToTarget(ref, Ahat[,,which.max(size)], mesh, method = "surface")
+        title3d(main="Shape at maximum size")
+      }}
+  }
+  if(warpgrids==TRUE && x$k==2){
+    tps(x$ref,x$Ahat[,,which.min(size)],20)
+    tps(x$ref,x$Ahat[,,which.max(size)],20)
+  }
+  layout(1) 
+}
+
+
+
 ## morphol.disparity
 
 #' Print/Summary Function for geomorph
@@ -461,6 +598,7 @@ plotBilatSymmetry <- function(b, warpgrids = TRUE, mesh= NULL){
     } 
   }
 }
+
 #' Plot Function for geomorph
 #' 
 #' @param x plot object
