@@ -107,14 +107,14 @@
 #' \item{p}{landmark number}
 #' \item{k}{landmark number}
 #' 
-#' @references Anderson MJ. 2001. A new method for non-parametric multivariate analysis of variance. 
-#'    Austral Ecology 26: 32-46.
-#' @references Anderson MJ. and C.J.F. terBraak. 2003. Permutation tests for multi-factorial analysis of variance.
-#'    Journal of Statistical Copmutation and Simulation 73: 85-113.
-#' @references Collyer, M.L., D.J. Sekora, and D.C. Adams. 2015. A method for analysis of phenotypic change for phenotypes described 
-#' by high-dimensional data. Heredity. 115:357-365.
-#' @references Goodall, C. R. 1991. Procrustes methods in the statistical analysis of shape. Journal of the 
-#'    Royal Statistical Society B 53:285-339.
+#' @references Adams, D.C., F.J. Rohlf, and D.E. Slice. 2013. A field comes of age: geometric morphometrics 
+#'   in the 21st century. Hystrix. 24:7-14. 
+#' @references Adams, D. C., and A. Nistri. 2010. Ontogenetic convergence and evolution of foot morphology 
+#'   in European cave salamanders (Family: Plethodontidae). BMC Evol. Biol. 10:1-10.
+#' @references Drake, A. G., and C. P. Klingenberg. 2008. The pace of morphological change: Historical 
+#'   transformation of skull shape in St Bernard dogs. Proc. R. Soc. B. 275:71-76.
+#' @references Mitteroecker, P., P. Gunz, M. Bernhard, K. Schaefer, and F. L. Bookstein. 2004. 
+#'   Comparison of cranial ontogenetic trajectories among great apes and humans. J. Hum. Evol. 46:679-698.
 #' @seealso \code{\link{procD.lm}} and \code{\link{advanced.procD.lm}} within geomorph;
 #' \code{\link[stats]{lm}} for more on linear model fits
 #' @examples
