@@ -87,9 +87,8 @@ procD.pgls<-function(f1, phy, iter=999, int.first = FALSE,
   k <- length(pfit$term.labels) 
   Y <- as.matrix(pfit$wY)
   phy.name <- deparse(substitute(phy))
-  phy.match <- match(names(data), phy.name)
-  if(length(na.omit(phy.match)) > 1) stop("More than one object of class phylo in data frame")
-  phy.match <- which(!is.na(phy.match))
+  phy.match <- match(phy.name, names(data))
+  if(length(phy.match) > 1) stop("More than one object of class phylo in data frame")
   if(all(is.na(phy.match))) phy <- phy else phy <- data[[phy.match]]
   N<-length(phy$tip.label)
   if(length(match(rownames(Y), phy$tip.label))!=N) 

@@ -768,11 +768,11 @@ simplify2data.frame <- function(g, n) { # g = geomorph.data.frame class object
 # used in all 'procD.lm' functions
 procD.fit <- function(f1, keep.order=FALSE, pca=TRUE, data=NULL,...){
   form.in <- formula(f1)
-  if(any(class(form.in)=="lm")) {
-    weights <- form.in$weights
-    contrasts <- form.in$contrasts
-    offset <-form.in$offset
-    data <- model.frame(form.in)
+  if(any(class(f1)=="lm")) {
+    weights <- f1$weights
+    contrasts <- f1$contrasts
+    offset <-f1$offset
+    data <- model.frame(f1)
     Y <- as.matrix(data[1])
   } else {
     if(!is.null(data)) {
@@ -1140,7 +1140,7 @@ ls.means = function(pfit, Y=NULL, g=NULL, data=NULL) {
   if(is.null(covs)){
     lsm <- .lm.fit(model.matrix(~fac+0),Y)$coefficients
   } else if(ncol(as.matrix(covs)) == 1){
-    covs <- as.vector(covs[[1]])
+    covs <- as.vector(covs)
     fit <- .lm.fit(model.matrix(~covs+fac+0),Y)
     X <- cbind(mean(covs),model.matrix(~fac+0))
     lsm <- .lm.fit(model.matrix(~fac+0),X%*%coef(fit))$coefficients
@@ -1640,6 +1640,135 @@ sigma.d.multi<-function(x,invC,D.mat,gps,Subset){
   for(i in 1:length(rate.mat)) rate.mat[[i]] <- sigma.d.rat[i]
   list(sigma.d.ratio = sigma.d.ratio, rate.global = rate.global, 
        rate.gps = rate.gps, sigma.d.gp.ratio = rate.mat,R = R)  
+}
+
+# trajset.int
+# set-up trajectories from a model with an interaction
+# used in: trajectory.analysis
+trajset.int <- function(y, tp,tn) { # assume data in order of variables within points
+  pt.list <- sort(rep(1:tn,tp))
+  lapply(1:tn, function(j){
+    y[which(pt.list == j),]
+  })
+}
+
+# trajset.int
+# set-up trajectories from a model without an interaction: assumes data are trajectories
+# used in: trajectory.analysis
+trajset.gps <- function(y, traj.pts) { # assume data in order of variables within points
+  lapply(1:nrow(y), function(j) {
+    matrix(y[j,], traj.pts, , byrow=T)
+  })
+}
+
+# trajsize
+# find path distance of trajectory
+# used in: trajectory.analysis
+trajsize <- function(y) {
+  k <- nrow(y[[1]])
+  tpairs <- cbind(1:(k-1),2:k)
+  sapply(1:length(y), function(j) {
+    d <- as.matrix(dist(y[[j]]))
+  sum(d[tpairs])
+  })
+}
+
+# trajorient
+# sfind trajectory correlations from first PCs
+# used in: trajectory.analysis
+trajorient <- function(y, tn) {
+  m <- t(sapply(1:tn, function(j){
+    x <- y[[j]]
+    La.svd(t(x))$u
+  }))
+  vec.cor.matrix(m)
+}
+
+# trajshape
+# find shape differences among trajectories
+# used in: trajectory.analysis
+trajshape <- function(y){
+  M <- Reduce("+",y)/length(y)
+  z <- apply.pPsup(M, y)
+  z <- t(sapply(z, function(x) as.vector(t(x))))
+  as.matrix(dist(z))
+}
+
+# traj.w.int
+# full PTA stats for trajectories from a model with an interaction
+# used in: trajectory.analysis
+traj.w.int <- function(ff, fr, data=NULL, iter){
+  pfitf <- procD.fit(ff, data = data, pca=FALSE)
+  pfitr <- procD.fit(fr, data = data, pca=FALSE)
+  ex.terms <- length(pfitf$term.labels) - 3
+  Y <- pfitf$wY
+  Yh <- pfitr$fitted[[length(pfitr$fitted)]]
+  E <-  pfitr$residuals[[length(pfitr$residuals)]]
+  n <- nrow(Y)
+  tp <- nlevels(data[[match(attr(terms(ff),"term.labels")[[ex.terms+2]], names(data))]])
+  group.levels <- levels(data[[match(attr(terms(ff),"term.labels")[[ex.terms+1]], names(data))]])
+  tn <- length(group.levels)
+  p <- ncol(Y)
+  ind <- perm.index(n, iter)
+  Yr <- Map(function(x) Yh + E[x,], ind)
+  if(sum(pfitf$weights) != n) Yr <- Map(function(y) y*sqrt(fitf$weights), Yr)
+  means <- apply.ls.means(pfitf, Yr)
+  trajs <- lapply(means, function(x) trajset.int(x, tp, tn))
+  PD <- lapply(trajs, trajsize) # path distances
+  MD <- lapply(PD, function(x) as.matrix(dist(x)))
+  Tcor <- lapply(trajs, function(x) trajorient(x,tn)) # trajectory correlations
+  Tang <- lapply(Tcor, acos) # trajectory angles
+  SD <- lapply(trajs, trajshape) # trajectory shape differences
+  
+  list(means = means, trajectories = trajs, 
+       PD = path.dists,
+       MD=MD, Tcor=Tcor, Tang=Tang, SD=SD,
+       P.MD = Pval.matrix(simplify2array(MD)),
+       P.angle = Pval.matrix(simplify2array(Tang)),
+       P.SD = Pval.matrix(simplify2array(SD)),
+       Z.MD = Effect.size.matrix(simplify2array(MD)),
+       Z.angle = Effect.size.matrix(simplify2array(Tang)),
+       Z.SD = Effect.size.matrix(simplify2array(SD)))
+}
+
+# traj.by.groups
+# full PTA stats for trajectories from a model without an interaction; assume data are trajectories
+# used in: trajectory.analysis
+traj.by.groups <- function(ff, fr, traj.pts, data=NULL, iter){
+  pfitf <- procD.fit(ff, data = data, pca=FALSE)
+  pfitr <- procD.fit(fr, data = data, pca=FALSE)
+  ex.terms <- length(pfitf$term.labels) - 1
+  Y <- pfitf$wY
+  Yh <- pfitr$fitted[[length(pfitr$fitted)]]
+  E <-  pfitr$residuals[[length(pfitr$residuals)]]
+  n <- nrow(Y)
+  tp <- traj.pts
+  p <- ncol(y)/traj.pts
+  if(p != floor(p)) stop("The number of variables divided by the number of trajectory points is not an integer")
+  gps <- data[[match(attr(terms(ff),"term.labels")[[ex.terms+1]], names(data))]]
+  group.levels <- levels(gps)
+  tn <- length(group.levels)
+  ind <- perm.index(n, iter)
+  Yr <- Map(function(x) Yh + E[x,], ind)
+  if(sum(pfitf$weights) != n) Yr <- Map(function(y) y*sqrt(fitf$weights), Yr)
+  means <- apply.ls.means(pfitf, Yr)
+  trajs <- lapply(means, function(x) trajset.gps(x,traj.pts))
+  PD <- lapply(trajs, trajsize) # path distances
+  MD <- lapply(PD, function(x) as.matrix(dist(x)))
+  Tcor <- lapply(trajs, function(x) trajorient(x,tn)) # trajectory correlations
+  Tang <- lapply(Tcor, acos) # trajectory angles
+  SD <- lapply(trajs, trajshape) # trajectory shape differences
+  
+  list(means = means, trajectories = trajs, 
+       PD = path.dists,
+       MD=MD, Tcor=Tcor, Tang=Tang, SD=SD,
+       P.MD = Pval.matrix(simplify2array(MD)),
+       P.angle = Pval.matrix(simplify2array(Tang)),
+       P.SD = Pval.matrix(simplify2array(SD)),
+       Z.MD = Effect.size.matrix(simplify2array(MD)),
+       Z.angle = Effect.size.matrix(simplify2array(Tang)),
+       Z.SD = Effect.size.matrix(simplify2array(SD)))
+  )
 }
 
 #####-----------------------------------------------------------------------------------

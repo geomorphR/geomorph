@@ -823,6 +823,102 @@ plot.evolrate <- function(x, ...){
 }
 
 
+## trajectory.analysis
+
+#' Print/Summary Function for geomorph
+#' 
+#' @param x print/summary object
+#' @param ... other arguments passed to print/summary
+#' @export
+#' @author Michael Collyer
+print.trajectory.analysis <- function(x, 
+                angle.type = c("r", "rad", "deg"), ...) {
+  angle.type = match.arg(angle.type)
+  cat(deparse(x$call), "\n\n")
+  cat("\nType I (Sequential) Sums of Squares and Cross-products\n")
+  cat ("Randomized Residual Permutation Procedure Used\n") 
+  cat(paste(x$permutations, "Permutations"))
+  cat("\n\n")
+  print(x$aov.table)
+  cat("\n\n")
+  cat("Pairwise statistical results:")
+  cat("\n\n*** Path Distances\n")
+  cat("\nObserved Path Distances\n")
+  print(x$path.distances)
+  cat("\nPairwise Absolute Differences Between Path Distances\n")
+  print(x$magnitude.diff)
+  cat("\nEffect Sizes\n")
+  print(x$Z.magnitude.diff)
+  cat("\nP-Values\n")
+  print(x$P.magnitude.diff)
+  if(angle.type == "r"){
+    cat("\n*** Principal Vector Correlations\n")
+    cat("\nPairwise Correlations\n")
+    print(x$trajectory.cor)
+    cat("\nEffect Sizes\n")
+    print(x$Z.angle)
+    cat("\nP-Values\n")
+    print(x$P.angle)
+  } else if(angle.type == "rad"){
+    cat("\n*** Principal Vector Angles")
+    cat("\nPairwise Angles (in radians)\n")
+    print(x$trajectory.angle.rad)
+    cat("\nEffect Sizes\n")
+    print(x$Z.angle)
+    cat("\nP-Values\n")
+    print(x$P.angle)
+  } else {
+    cat("\n*** Principal Vector Angles\n")
+    cat("\nPairwise Angles (in degrees)\n")
+    print(x$trajectory.angle.deg)
+    cat("\nEffect Sizes\n")
+    print(x$Z.angle)
+    cat("\nP-Values\n")
+    print(x$P.angle)
+  }
+  tr1 <- x$random.trajectories[[1]][[1]]
+  tp <- nrow(tr1)
+  if(tp > 2){
+    cat("\n*** Trajectory Shape Differences")
+    cat("\nPairwise Shaep Differences (Procrustes Distance)\n")
+    print(x$trajectory.shape.dist)
+    cat("\nEffect Sizes\n")
+    print(x$Z.shape.diff)
+    cat("\nP-Values\n")
+    print(x$P.shape.diff)
+  }
+  invisible(x)
+}
+
+#' Print/Summary Function for geomorph
+#' 
+#' @param object print/summary object
+#' @param ... other arguments passed to print/summary
+#' @export
+#' @author Michael Collyer
+summary.evolrate1 <- function(object, ...) {
+  x <- object
+  print.evolrate1(x, ...)
+}
+
+#' Plot Function for geomorph
+#' 
+#' @param x plot object
+#' @param ... other arguments passed to plot
+#' @export
+#' @author Michael Collyer
+plot.evolrate <- function(x, ...){
+  Rate.val <- x$random.sigma
+  Rate.obs <- x$random.sigma[1]
+  p <- x$P.value
+  ndec <- nchar(x$permutations)
+  Rate.obs <- round(Rate.obs, ndec)
+  p <- round(p, ndec)
+  main.txt <- paste("Observed Rate Ratio =",Rate.obs,";", "P-value =", p)
+  hist(Rate.val,30,freq=TRUE,col="gray",xlab="Rate Ratios",xlim=c(0,max(c(2,Rate.val))),
+       main=main.txt, cex.main=0.8)
+  arrows(Rate.obs,50,Rate.obs,5,length=0.1,lwd=2)
+}
 
 
 
