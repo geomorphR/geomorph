@@ -36,6 +36,9 @@ If "estimate.traj=TRUE", the function returns a list with the following componen
   \item{P.magnitude.diff}{P-values corresponding to trajectory magnitude differences.}
   \item{P.angle.diff}{P-values corresponding to angular differences in trajectories.}
   \item{P.shape.diff}{P-values corresponding to trajectory shape differences.}
+  \item{Z.magnitude.diff}{Effect size of observed trajectory magnitude differences.}
+  \item{Z.angle.diff}{Effect size of observed angular differences in trajectories.}
+  \item{Z.shape.diff}{Effect size of observed trajectory shape differences.}
   \item{call}{The matched call.}
   \item{permutations}{The numer of random permutations used in the RRPP applied to the ANOVA 
   and trajectory statistics.}

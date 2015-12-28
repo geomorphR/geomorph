@@ -1768,7 +1768,7 @@ traj.by.groups <- function(ff, fr, traj.pts, data=NULL, iter){
        Z.MD = Effect.size.matrix(simplify2array(MD)),
        Z.angle = Effect.size.matrix(simplify2array(Tang)),
        Z.SD = Effect.size.matrix(simplify2array(SD)))
-  )
+
 }
 
 #####-----------------------------------------------------------------------------------

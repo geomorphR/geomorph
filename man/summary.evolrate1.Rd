@@ -5,16 +5,26 @@
 \title{Print/Summary Function for geomorph}
 \usage{
 \method{summary}{evolrate1}(object, ...)
+
+\method{summary}{evolrate1}(object, ...)
 }
 \arguments{
+\item{object}{print/summary object}
+
+\item{...}{other arguments passed to print/summary}
+
 \item{object}{print/summary object}
 
 \item{...}{other arguments passed to print/summary}
 }
 \description{
 Print/Summary Function for geomorph
+
+Print/Summary Function for geomorph
 }
 \author{
+Michael Collyer
+
 Michael Collyer
 }
 
