@@ -21,14 +21,16 @@ trajectory.analysis(f1, f2 = NULL, iter = 999, traj.pts = NULL,
 \item{...}{Arguments passed on to procD.fit (typically associated with the lm function)}
 }
 \value{
-If "estimate.traj=TRUE", the function returns a list with the following components: 
+An object of class "trajectory.analysis" returns a list of the follwing:
   \item{aov.table}{Procrustes ANOVA table.}
   \item{means}{The observed least squares means based on the linear model.}
   \item{pc.means}{The observed least squares means rotated to their principal components.}
   \item{pc.data}{The observed data rotated to the principal components calculated from the 
-  covariance matrix among means.}
+  covariance matrix among means.  In the case that trajectories are input as data, pc.data is a matrix of
+   the trajectories rotated to align with principal axes in the data space.}
   \item{pc.trajectories}{The observed trajectories rotated to the principal components calculated from the 
-  covariance matrix among means.}
+  covariance matrix among means.  In the case that trajectories are input as data, pc.trajectories is a list of the
+  the rows of pc.data as separate matrices.}
   \item{random.means}{A list of matrices of means calculated in the random permutations.}
   \item{random.trajectories}{A list of all random means reconfigured as trajectories. The observed
   case is the first random set.}
@@ -48,7 +50,7 @@ If "estimate.traj=TRUE", the function returns a list with the following componen
   \item{groups}{Factor representing group names for subsequent plotting.}
   \item{permutations}{The numer of random permutations used in the RRPP applied to the ANOVA 
   and trajectory statistics.}
-  \item{trajectory.type}{A value of 1 is trajectories were provided or 2 if they were estimated.}
+  \item{trajectory.type}{A value of 1 if trajectories were provided or 2 if they were estimated.}
 }
 \description{
 Function estimates attributes of shape change trajectories or motion trajectories for a set of 
@@ -76,7 +78,7 @@ Data input is specified by a two formulae (e.g., Y ~ X), where 'Y' specifies the
  to define the number of points in the trajectory.  It is also assumed that the data are structured as variables within points.  
  For example, y11 y21 y31 y12 y22 y32 y13 y23 y33 y14 y24 y34 would be columns of a matrix, Y, describing a 4-point trajectory
  in a data space defined by three variables.  This is the proper arrangment; the folowwing is an improper arrangement: 
- y11 y12 y13 y14 y21 y22 y23 y24 y31 y32 y33 y34, as it group points within variables.  This approach is typical when comparing
+ y11 y12 y13 y14 y21 y22 y23 y24 y31 y32 y33 y34, as it groups points within variables.  This approach is typical when comparing
  motion paths (see Adams and Cerney 2007).
  
  If f1 is a two-factor factorial model, e.g., Y ~ A*B, it is assumed that the first factor defines groups, th second factor
@@ -86,13 +88,13 @@ Data input is specified by a two formulae (e.g., Y ~ X), where 'Y' specifies the
  If one wishes to include other variables in the linear model, they should be indicated in the second formula, f2.
  This formula can be simply a right-hand formula, e.g., ~ x1 + x2 + x3 +...  Variables in this formula will typically
  be covariates that one wishes to include to account for extraneous sources of shape variation.  An analysis
- of variance (ANOVA) will be performed with type I sums of squares (SS) and a randomized residual permutation porcedure (RRPP).
+ of variance (ANOVA) will be performed with type I sums of squares (SS) and a randomized residual permutation procedure (RRPP).
  The variables in f2 will be added prior to the trajectory defining variables in f1.
 
 Once the function has performed the analysis, a plot can be generated of the trajectories as visualized in the 
  space of principal components (PC1 vs. PC2). The first point in each trajectory is displayed as white, the 
  last point is black, and any middle points on the trajectories are in gray.  The colors of trajectories follow
- the order in which they are found in the dataset as a default, using R's standard color palette: black, red, green3,
+ the order in which they are found in the dataset as a default, using R's standard color palette: black, red, green,
  blue, cyan, magenta, yellow, and gray. However, one can override these colors with group.cols in plots using
  \code{\link{plot}}.  
  
@@ -138,10 +140,11 @@ attributes(TA) # list of extractable parts
 TA <- trajectory.analysis(f1 = coords ~ species*site, f2 = ~ Csize, data=gdf, iter=499)
 summary(TA, angle.type = "deg")
 plot(TA)
+plot(TA, group.cols = c("dark red", "dark blue"))
 
 # Motion paths represented by 5 time points per motion 
 
-library(motionpaths)
+data(motionpaths)
 
 gdf <- geomorph.data.frame(trajectories = motionpaths$trajectories,
 groups = motionpaths$groups)
@@ -149,6 +152,7 @@ TA <- trajectory.analysis(f1 = trajectories ~ groups,
 traj.pts = 5, data=gdf, iter=499)
 summary(TA)
 plot(TA)
+plot(TA, group.cols = c("dark red", "dark blue", "dark green", "yellow"))
 }
 \author{
 Dean Adams and Michael Collyer

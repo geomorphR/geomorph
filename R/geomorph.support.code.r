@@ -1676,10 +1676,10 @@ trajsize <- function(y) {
 # trajorient
 # sfind trajectory correlations from first PCs
 # used in: trajectory.analysis
-trajorient <- function(y, tn) {
+trajorient <- function(y, tn, p) {
   m <- t(sapply(1:tn, function(j){
     x <- y[[j]]
-    La.svd(t(x))$u
+    La.svd(center.scale(x)$coords, 0, 1)$vt
   }))
   vec.cor.matrix(m)
 }
@@ -1746,7 +1746,7 @@ traj.by.groups <- function(ff, fr, traj.pts, data=NULL, iter){
   tp <- traj.pts
   p <- ncol(Y)/traj.pts
   if(p != floor(p)) stop("The number of variables divided by the number of trajectory points is not an integer")
-  gps <- data[[match(attr(terms(ff),"term.labels")[[ex.terms+1]], names(data))]]
+  gps <- data[[match((pfitf$term.labels)[ex.terms+1], names(data))]]
   group.levels <- levels(gps)
   tn <- length(group.levels)
   ind <- perm.index(n, iter)

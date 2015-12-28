@@ -438,7 +438,7 @@ plotPLS <- function(p, label = NULL, warpgrids=TRUE){
     par(mar = c(1, 1, 1, 1) + 0.1)
     split.screen(matrix(c(0.22, 1, 0.22, 1, 0.19, 0.39, 0, 
                           0.19, 0.8, 1, 0, 0.19, 0, 0.19, 0.19, 0.39, 0, 0.19, 
-                          0.8, 1), byrow = T, ncol = 4))
+                          0.8, 1), byrow = TRUE, ncol = 4))
     screen(1)
     plot(XScores[, 1], YScores[, 1], pch = 21, bg = "black", 
          main = "PLS1 Plot: Block 1 (X) vs. Block 2 (Y) ", 
@@ -884,7 +884,7 @@ print.trajectory.analysis <- function(x,
   tp <- nrow(tr1)
   if(tp > 2){
     cat("\n*** Trajectory Shape Differences")
-    cat("\nPairwise Shaep Differences (Procrustes Distance)\n")
+    cat("\nPairwise Shape Differences (Procrustes Distance)\n")
     print(x$trajectory.shape.dist)
     cat("\nEffect Sizes\n")
     print(x$Z.shape.diff)
@@ -909,27 +909,24 @@ summary.trajectory.analysis <- function(object,
   print.trajectory.analysis(x, angle.type=angle.type, ...)
 }
 
-# general plotting function for phenotypic trajectories
-trajplot<-function(Data, M, TM, groups, group.cols = NULL, ...){ # TM = trajectories from means
+# general plotting functions for phenotypic trajectories
+trajplot.w.int<-function(Data, M, TM, groups, group.cols = NULL, ...){ # TM = trajectories from means
   n <- length(TM); tp<-dim(TM[[1]])[1]; p<-dim(TM[[1]])[2]
   pmax <- max(Data[,1]); pmin <- min(Data[,1])
   plot(Data[,1:2],type="n",
        xlim = c(2*pmin, pmax),
        xlab="PC I", ylab="PC II",
        main="Two Dimensional View  of Phenotypic Trajectories",asp=1)
-  if(!is.null(group.cols)) col.index <- group.cols else col.index <-1:length(levels(groups))
-  if(length(groups) == n) {
-    gp.index <- levels(groups)
-    col.temp <-array(,length(groups))
-    for(i in 1:length(col.temp)) col.temp[i] = col.index[which(match(gp.index,gp.index[gp.index==groups[i]])==1)]
-    col.index=col.temp
-  }
+  
+  if(is.null(group.cols)) gp.cols <- 1:n else gp.cols <- group.cols
+  if(length(gp.cols) != nlevels(groups)) 
+      stop("group.cols is not logical with respect to group levels") 
   
   points(Data[,1:2],pch=21,bg="gray",cex=.75)
   # Sequence lines
   for(i in 1:n){
     y <- TM[[i]]
-    for(ii in 1:(tp-1)) points(y[ii:(ii+1),1:2],  type="l", lwd=1.5, col=col.index[i])
+    for(ii in 1:(tp-1)) points(y[ii:(ii+1),1:2],  type="l", lwd=1.5, col=gp.cols[i])
   }
   # Sequence points
   points(M[,1:2], pch=21, bg="gray50", cex=1.5)
@@ -940,9 +937,45 @@ trajplot<-function(Data, M, TM, groups, group.cols = NULL, ...){ # TM = trajecto
       points(y[k,1], y[k,2], pch=21, cex=1.5, bg="black")
   }
 
-  legend("topleft", levels(groups), lwd=2, col=levels(as.factor(col.index)))
+  legend("topleft", levels(groups), lwd=2, col=levels(as.factor(gp.cols)))
 }
 
+trajplot.by.groups<-function(Data, TM, groups, group.cols = NULL, ...) {
+  n <- length(TM); tp <- nrow(TM[[1]]); p <- ncol(TM[[1]])
+  Data2 <- t(matrix(matrix(t(Data)),p,))
+  pmax <- max(Data[,1]); pmin <- min(Data2[,1])
+  plot(Data2[,1:2], type="n",
+       xlim = c(2*pmin, pmax),
+       xlab="PC I", ylab="PC II",
+       main="Two Dimensional View  of Phenotypic Trajectories",asp=1)
+  if(is.null(group.cols)) gp.cols <- as.numeric(groups) else gp.cols <- group.cols
+  if(length(gp.cols) != length(groups)) {
+    if(length(gp.cols) != nlevels(groups)) 
+      stop("group.cols is not logical with respect to either groups or group levels") else
+      {
+         new.gp.cols <-array(,n)
+         for(i in 1:n) new.gp.cols[i] <- gp.cols[match(groups[i], levels(groups))]
+      } 
+    gp.cols <- new.gp.cols
+  }
+  
+  point.seq <- function(x, p, tp, pt.col){
+    for(i in 1:(tp-1)){
+      y <- matrix(x[1:(2*p)],2,, byrow=TRUE)
+      points(y, type="l", col=pt.col)
+      x <- x[-(1:p)]
+    }
+  }
+  for(i in 1:nrow(Data)) point.seq(Data[i,], p=p, tp=tp, pt.col = gp.cols[i])
+  points(Data2, pch = 21, bg = "gray")
+  for(i in 1:length(TM)){
+    y <- TM[[i]]
+    points(y[1,1], y[1,2], pch=21, bg = "white")
+    points(y[nrow(y),1], y[nrow(y),2], pch=21, bg = "black")
+  }
+  legend("topleft", levels(groups), lwd=2, col=levels(as.factor(gp.cols)))
+}
+  
 #' Plot Function for geomorph
 #' 
 #' @param x plot object
@@ -950,8 +983,13 @@ trajplot<-function(Data, M, TM, groups, group.cols = NULL, ...){ # TM = trajecto
 #' @param ... other arguments passed to plot
 #' @export
 #' @author Michael Collyer
-plot.trajectory.analysis <- function(x, ...){
-  trajplot(Data=x$pc.data, M =x$pc.means,
+plot.trajectory.analysis <- function(x, group.cols = NULL, ...){
+  if(x$trajectory.type == 2)
+  trajplot.w.int(Data=x$pc.data, M =x$pc.means,
+           TM = x$pc.trajectories, groups = x$groups, 
+           group.cols=group.cols)
+  if(x$trajectory.type == 1)
+    trajplot.by.groups(Data=x$pc.data, 
            TM = x$pc.trajectories, groups = x$groups, 
            group.cols=group.cols)
 }
