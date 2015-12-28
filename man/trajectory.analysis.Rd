@@ -24,6 +24,11 @@ trajectory.analysis(f1, f2 = NULL, iter = 999, traj.pts = NULL,
 If "estimate.traj=TRUE", the function returns a list with the following components: 
   \item{aov.table}{Procrustes ANOVA table.}
   \item{means}{The observed least squares means based on the linear model.}
+  \item{pc.means}{The observed least squares means rotated to their principal components.}
+  \item{pc.data}{The observed data rotated to the principal components calculated from the 
+  covariance matrix among means.}
+  \item{pc.trajectories}{The observed trajectories rotated to the principal components calculated from the 
+  covariance matrix among means.}
   \item{random.means}{A list of matrices of means calculated in the random permutations.}
   \item{random.trajectories}{A list of all random means reconfigured as trajectories. The observed
   case is the first random set.}
@@ -40,6 +45,7 @@ If "estimate.traj=TRUE", the function returns a list with the following componen
   \item{Z.angle.diff}{Effect size of observed angular differences in trajectories.}
   \item{Z.shape.diff}{Effect size of observed trajectory shape differences.}
   \item{call}{The matched call.}
+  \item{groups}{Factor representing group names for subsequent plotting.}
   \item{permutations}{The numer of random permutations used in the RRPP applied to the ANOVA 
   and trajectory statistics.}
   \item{trajectory.type}{A value of 1 is trajectories were provided or 2 if they were estimated.}
@@ -84,13 +90,11 @@ Data input is specified by a two formulae (e.g., Y ~ X), where 'Y' specifies the
  The variables in f2 will be added prior to the trajectory defining variables in f1.
 
 Once the function has performed the analysis, a plot can be generated of the trajectories as visualized in the 
- original data or the space of principal components (PC1 vs. PC2). The first point in each trajectory is displayed as white, the 
+ space of principal components (PC1 vs. PC2). The first point in each trajectory is displayed as white, the 
  last point is black, and any middle points on the trajectories are in gray.  The colors of trajectories follow
  the order in which they are found in the dataset as a default, using R's standard color palette: black, red, green3,
  blue, cyan, magenta, yellow, and gray. However, one can override these colors with group.cols in plots using
- \code{\link{plot}}.  An additional plot argument (with default) is pca = TRUE, which uses the first two PCs
- for the trajectpry plot.  Changing this argument to FALSE means that the first two variables will be plotted, which is
- not ideal unless there is actually only two variables.  
+ \code{\link{plot}}.  
  
  The function, \code{\link{summary}} can be used to provide an ANOVA summary plus pairwise statistics of a
  sn object of class "trajectory.analysis".  The argument, angle.type = c("r", "rad", "deg") can be used to
@@ -108,30 +112,43 @@ by providing pairwise statistics and P-values.
 }
 }
 \examples{
-#1: Estimate trajectories from LS means in 2-factor model
+# Estimate trajectories from LS means in 2-factor model
+
 data(plethodon) 
 Y.gpa <- gpagen(plethodon$land)   
 gdf <- geomorph.data.frame(Y.gpa, species = plethodon$species, site = plethodon$site)
 
 TA <- trajectory.analysis(coords ~ species*site, data=gdf, iter=499)
 summary(TA, angle.type = "deg")
-plot(TA, pca = TRUE)
+plot(TA)
 
-# Retaining random values (first sets are always observed)
-tra <- trajectory.analysis(Y.gpa~plethodon$species*plethodon$site,iter=15, verbose = TRUE)
-tra$anova.table
-tra$Random.values
+# Change order of groups
+site <- as.factor(plethodon$site)
+levels(site) <- c("Symp", "Allo")
+gdf <- geomorph.data.frame(Y.gpa, species = plethodon$species, site = site)
 
-#2: Compare motion trajectories
-data(motionpaths) 
+TA <- trajectory.analysis(coords ~ species*site, data=gdf, iter=499)
+summary(TA, angle.type = "deg")
+plot(TA)
 
-#Motion paths represented by 5 time points per motion 
+attributes(TA) # list of extractable parts
 
-trajectory.analysis(motionpaths$trajectories~motionpaths$groups,
-estimate.traj=FALSE, traj.pts=5,iter=15)
+# Add Centroid size as a covariate
 
-trajectory.analysis(motionpaths$trajectories~motionpaths$groups,
-estimate.traj=FALSE, traj.pts=5,iter=15, verbose=TRUE)
+TA <- trajectory.analysis(f1 = coords ~ species*site, f2 = ~ Csize, data=gdf, iter=499)
+summary(TA, angle.type = "deg")
+plot(TA)
+
+# Motion paths represented by 5 time points per motion 
+
+library(motionpaths)
+
+gdf <- geomorph.data.frame(trajectories = motionpaths$trajectories,
+groups = motionpaths$groups)
+TA <- trajectory.analysis(f1 = trajectories ~ groups, 
+traj.pts = 5, data=gdf, iter=499)
+summary(TA)
+plot(TA)
 }
 \author{
 Dean Adams and Michael Collyer

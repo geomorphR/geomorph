@@ -841,7 +841,7 @@ print.trajectory.analysis <- function(x,
   cat("\n\n")
   print(x$aov.table)
   cat("\n\n")
-  cat("Pairwise statistical results:")
+  cat("Pairwise statistical results:\n")
   cat("\n\n*** Path Distances\n")
   cat("\nObserved Path Distances\n")
   print(x$path.distances)
@@ -851,6 +851,7 @@ print.trajectory.analysis <- function(x,
   print(x$Z.magnitude.diff)
   cat("\nP-Values\n")
   print(x$P.magnitude.diff)
+  cat("\n")
   if(angle.type == "r"){
     cat("\n*** Principal Vector Correlations\n")
     cat("\nPairwise Correlations\n")
@@ -859,6 +860,7 @@ print.trajectory.analysis <- function(x,
     print(x$Z.angle)
     cat("\nP-Values\n")
     print(x$P.angle)
+    cat("\n")
   } else if(angle.type == "rad"){
     cat("\n*** Principal Vector Angles")
     cat("\nPairwise Angles (in radians)\n")
@@ -867,6 +869,7 @@ print.trajectory.analysis <- function(x,
     print(x$Z.angle)
     cat("\nP-Values\n")
     print(x$P.angle)
+    cat("\n")
   } else {
     cat("\n*** Principal Vector Angles\n")
     cat("\nPairwise Angles (in degrees)\n")
@@ -875,6 +878,7 @@ print.trajectory.analysis <- function(x,
     print(x$Z.angle)
     cat("\nP-Values\n")
     print(x$P.angle)
+    cat("\n")
   }
   tr1 <- x$random.trajectories[[1]][[1]]
   tp <- nrow(tr1)
@@ -893,20 +897,63 @@ print.trajectory.analysis <- function(x,
 #' Print/Summary Function for geomorph
 #' 
 #' @param object print/summary object
+#' @param angle.type Choice between vector correlation or vector angles, in radians or degrees
+#' for summarizing results ("r", "rad", "deg", respectively)
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
-summary.evolrate1 <- function(object, ...) {
+summary.trajectory.analysis <- function(object,
+                  angle.type = c("r", "rad", "deg"), ...) {
   x <- object
-  print.trajectory.analysis(x, ...)
+  angle.type <- match.arg(angle.type)
+  print.trajectory.analysis(x, angle.type=angle.type, ...)
+}
+
+# general plotting function for phenotypic trajectories
+trajplot<-function(Data, M, TM, groups, group.cols = NULL, ...){ # TM = trajectories from means
+  n <- length(TM); tp<-dim(TM[[1]])[1]; p<-dim(TM[[1]])[2]
+  pmax <- max(Data[,1]); pmin <- min(Data[,1])
+  plot(Data[,1:2],type="n",
+       xlim = c(2*pmin, pmax),
+       xlab="PC I", ylab="PC II",
+       main="Two Dimensional View  of Phenotypic Trajectories",asp=1)
+  if(!is.null(group.cols)) col.index <- group.cols else col.index <-1:length(levels(groups))
+  if(length(groups) == n) {
+    gp.index <- levels(groups)
+    col.temp <-array(,length(groups))
+    for(i in 1:length(col.temp)) col.temp[i] = col.index[which(match(gp.index,gp.index[gp.index==groups[i]])==1)]
+    col.index=col.temp
+  }
+  
+  points(Data[,1:2],pch=21,bg="gray",cex=.75)
+  # Sequence lines
+  for(i in 1:n){
+    y <- TM[[i]]
+    for(ii in 1:(tp-1)) points(y[ii:(ii+1),1:2],  type="l", lwd=1.5, col=col.index[i])
+  }
+  # Sequence points
+  points(M[,1:2], pch=21, bg="gray50", cex=1.5)
+  for(i in 1:n){
+    y <- TM[[i]]
+    k <- nrow(y)
+      points(y[1,1], y[1,2], pch=21, cex=1.5, bg="white")
+      points(y[k,1], y[k,2], pch=21, cex=1.5, bg="black")
+  }
+
+  legend("topleft", levels(groups), lwd=2, col=levels(as.factor(col.index)))
 }
 
 #' Plot Function for geomorph
 #' 
 #' @param x plot object
+#' @param group.cols An optional vector of colors for group levels
 #' @param ... other arguments passed to plot
 #' @export
 #' @author Michael Collyer
-
+plot.trajectory.analysis <- function(x, ...){
+  trajplot(Data=x$pc.data, M =x$pc.means,
+           TM = x$pc.trajectories, groups = x$groups, 
+           group.cols=group.cols)
+}
 
 

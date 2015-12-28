@@ -1721,14 +1721,15 @@ traj.w.int <- function(ff, fr, data=NULL, iter){
   SD <- lapply(trajs, trajshape) # trajectory shape differences
   
   list(means = means, trajectories = trajs, 
-       PD = path.dists,
+       PD = PD,
        MD=MD, Tcor=Tcor, Tang=Tang, SD=SD,
        P.MD = Pval.matrix(simplify2array(MD)),
        P.angle = Pval.matrix(simplify2array(Tang)),
        P.SD = Pval.matrix(simplify2array(SD)),
        Z.MD = Effect.size.matrix(simplify2array(MD)),
        Z.angle = Effect.size.matrix(simplify2array(Tang)),
-       Z.SD = Effect.size.matrix(simplify2array(SD)))
+       Z.SD = Effect.size.matrix(simplify2array(SD)),
+       ngroups = tn, npoints = tp)
 }
 
 # traj.by.groups
@@ -1743,7 +1744,7 @@ traj.by.groups <- function(ff, fr, traj.pts, data=NULL, iter){
   E <-  pfitr$residuals[[length(pfitr$residuals)]]
   n <- nrow(Y)
   tp <- traj.pts
-  p <- ncol(y)/traj.pts
+  p <- ncol(Y)/traj.pts
   if(p != floor(p)) stop("The number of variables divided by the number of trajectory points is not an integer")
   gps <- data[[match(attr(terms(ff),"term.labels")[[ex.terms+1]], names(data))]]
   group.levels <- levels(gps)
@@ -1760,15 +1761,15 @@ traj.by.groups <- function(ff, fr, traj.pts, data=NULL, iter){
   SD <- lapply(trajs, trajshape) # trajectory shape differences
   
   list(means = means, trajectories = trajs, 
-       PD = path.dists,
+       PD = PD,
        MD=MD, Tcor=Tcor, Tang=Tang, SD=SD,
        P.MD = Pval.matrix(simplify2array(MD)),
        P.angle = Pval.matrix(simplify2array(Tang)),
        P.SD = Pval.matrix(simplify2array(SD)),
        Z.MD = Effect.size.matrix(simplify2array(MD)),
        Z.angle = Effect.size.matrix(simplify2array(Tang)),
-       Z.SD = Effect.size.matrix(simplify2array(SD)))
-
+       Z.SD = Effect.size.matrix(simplify2array(SD)),
+       ngroups = tn, npoints = tp)
 }
 
 #####-----------------------------------------------------------------------------------

@@ -38,13 +38,11 @@
 #'  The variables in f2 will be added prior to the trajectory defining variables in f1.
 #'
 #'  Once the function has performed the analysis, a plot can be generated of the trajectories as visualized in the 
-#'  original data or the space of principal components (PC1 vs. PC2). The first point in each trajectory is displayed as white, the 
+#'  space of principal components (PC1 vs. PC2). The first point in each trajectory is displayed as white, the 
 #'  last point is black, and any middle points on the trajectories are in gray.  The colors of trajectories follow
 #'  the order in which they are found in the dataset as a default, using R's standard color palette: black, red, green3,
 #'  blue, cyan, magenta, yellow, and gray. However, one can override these colors with group.cols in plots using
-#'  \code{\link{plot}}.  An additional plot argument (with default) is pca = TRUE, which uses the first two PCs
-#'  for the trajectpry plot.  Changing this argument to FALSE means that the first two variables will be plotted, which is
-#'  not ideal unless there is actually only two variables.  
+#'  \code{\link{plot}}.  
 #'  
 #'  The function, \code{\link{summary}} can be used to provide an ANOVA summary plus pairwise statistics of a
 #'  sn object of class "trajectory.analysis".  The argument, angle.type = c("r", "rad", "deg") can be used to
@@ -73,6 +71,11 @@
 #' @return If "estimate.traj=TRUE", the function returns a list with the following components: 
 #'   \item{aov.table}{Procrustes ANOVA table.}
 #'   \item{means}{The observed least squares means based on the linear model.}
+#'   \item{pc.means}{The observed least squares means rotated to their principal components.}
+#'   \item{pc.data}{The observed data rotated to the principal components calculated from the 
+#'   covariance matrix among means.}
+#'   \item{pc.trajectories}{The observed trajectories rotated to the principal components calculated from the 
+#'   covariance matrix among means.}
 #'   \item{random.means}{A list of matrices of means calculated in the random permutations.}
 #'   \item{random.trajectories}{A list of all random means reconfigured as trajectories. The observed
 #'   case is the first random set.}
@@ -89,6 +92,7 @@
 #'   \item{Z.angle.diff}{Effect size of observed angular differences in trajectories.}
 #'   \item{Z.shape.diff}{Effect size of observed trajectory shape differences.}
 #'   \item{call}{The matched call.}
+#'   \item{groups}{Factor representing group names for subsequent plotting.}
 #'   \item{permutations}{The numer of random permutations used in the RRPP applied to the ANOVA 
 #'   and trajectory statistics.}
 #'   \item{trajectory.type}{A value of 1 is trajectories were provided or 2 if they were estimated.}
@@ -105,30 +109,43 @@
 #' @references Collyer, M. L., and D. C. Adams. 2007. Analysis of two-state multivariate phenotypic change 
 #'   in ecological studies. Ecology 88:683-692.
 #' @examples
-#' #1: Estimate trajectories from LS means in 2-factor model
+#' # Estimate trajectories from LS means in 2-factor model
+#' 
 #' data(plethodon) 
 #' Y.gpa <- gpagen(plethodon$land)   
 #' gdf <- geomorph.data.frame(Y.gpa, species = plethodon$species, site = plethodon$site)
 #'
 #' TA <- trajectory.analysis(coords ~ species*site, data=gdf, iter=499)
 #' summary(TA, angle.type = "deg")
-#' plot(TA, pca = TRUE)
+#' plot(TA)
 #' 
-#' # Retaining random values (first sets are always observed)
-#' tra <- trajectory.analysis(Y.gpa~plethodon$species*plethodon$site,iter=15, verbose = TRUE)
-#' tra$anova.table
-#' tra$Random.values
-#'
-#' #2: Compare motion trajectories
-#' data(motionpaths) 
-#'
-#' #Motion paths represented by 5 time points per motion 
-#'
-#' trajectory.analysis(motionpaths$trajectories~motionpaths$groups,
-#' estimate.traj=FALSE, traj.pts=5,iter=15)
+#' # Change order of groups
+#' site <- as.factor(plethodon$site)
+#' levels(site) <- c("Symp", "Allo")
+#' gdf <- geomorph.data.frame(Y.gpa, species = plethodon$species, site = site)
 #' 
-#' trajectory.analysis(motionpaths$trajectories~motionpaths$groups,
-#' estimate.traj=FALSE, traj.pts=5,iter=15, verbose=TRUE)
+#' TA <- trajectory.analysis(coords ~ species*site, data=gdf, iter=499)
+#' summary(TA, angle.type = "deg")
+#' plot(TA)
+#' 
+#' attributes(TA) # list of extractable parts
+#'
+#' # Add Centroid size as a covariate
+#' 
+#' TA <- trajectory.analysis(f1 = coords ~ species*site, f2 = ~ Csize, data=gdf, iter=499)
+#' summary(TA, angle.type = "deg")
+#' plot(TA)
+#' 
+#' # Motion paths represented by 5 time points per motion 
+#'
+#' library(motionpaths)
+#' 
+#' gdf <- geomorph.data.frame(trajectories = motionpaths$trajectories,
+#' groups = motionpaths$groups)
+#' TA <- trajectory.analysis(f1 = trajectories ~ groups, 
+#' traj.pts = 5, data=gdf, iter=499)
+#' summary(TA)
+#' plot(TA)
 trajectory.analysis <- function(f1, f2=NULL, iter=999, traj.pts = NULL, data = NULL){
   pfit1 <- procD.fit(f1, data=data, pca=FALSE)
   Terms <- pfit1$Terms
@@ -162,25 +179,37 @@ trajectory.analysis <- function(f1, f2=NULL, iter=999, traj.pts = NULL, data = N
     gp.names <- levels(pfit1$data[[length(pfit1$data)-1]]) 
   PD <- pta$PD[[1]]; names(PD) <- gp.names
   MD <- pta$MD[[1]]; Tcor <- pta$Tcor[[1]]; Tang <- pta$Tang[[1]]; SD <- pta$SD[[1]]
+  diag(Tcor) <- 1; diag(Tang) <- 0; diag(SD) <- 0
   rownames(MD) <- rownames(Tcor) <- rownames(Tang) <- rownames(SD) <- colnames(MD) <-
     colnames(Tcor) <- colnames(Tang) <- colnames(SD) <- gp.names
-  P.MD= pta$P.MD
-  P.angle = pta$P.angle
-  P.SD = pta$P.SD
-  Z.MD= pta$Z.MD
-  Z.angle = pta$Z.angle
-  Z.SD = pta$Z.SD
-  rownames(P.MD) <- rownames(P.angle) <- rownames(P.SD) <- colnames(P.MD) <-
-    colnames(P.angle) <- colnames(P.SD) <- gp.names
+  P.MD <- pta$P.MD
+  P.angle <- pta$P.angle
+  P.SD <- pta$P.SD
+  Z.MD <- pta$Z.MD
+  Z.angle <- pta$Z.angle
+  Z.SD <- pta$Z.SD
+  means <- pta$means[[1]]
+  pca.means <- prcomp(means)
+  pc.means <- pca.means$x
+  pc.data <- center(Y)%*%pca.means$rotation
+  ngroups <- pta$ngroups
+  npoints <- pta$npoints
+  if(length(datClasses) == 1) pc.trajectories = trajset.gps(pc.means, traj.pts) else
+    pc.trajectories = trajset.int(pc.means, npoints, ngroups)
+  rownames(P.MD) <- rownames(P.angle) <- rownames(P.SD) <- 
+    rownames(Z.MD) <- rownames(Z.angle) <- rownames(Z.SD) <-
+    colnames(P.MD) <- colnames(P.angle) <- colnames(P.SD) <- 
+    colnames(Z.MD) <- colnames(Z.angle) <- colnames(Z.SD) <- gp.names
   out <- list(aov.table = pda$aov.table, 
-              means = pta$means[[1]], 
+              means = means, pc.means =pc.means, pc.data = pc.data,
+              pc.trajectories = pc.trajectories,
               random.means = pta$means,
               random.trajectories = pta$trajectories,
               path.distances = PD, 
               magnitude.diff = MD,
               trajectory.cor = Tcor,
               trajectory.angle.rad = Tang,
-              trajectory.angle.deg = Tang[[1]]*180/pi,
+              trajectory.angle.deg = Tang*180/pi,
               trajectory.shape.dist = SD,
               P.magnitude.diff = P.MD,
               P.angle = P.angle,
@@ -189,6 +218,7 @@ trajectory.analysis <- function(f1, f2=NULL, iter=999, traj.pts = NULL, data = N
               Z.angle = Z.angle,
               Z.shape.diff = Z.SD,              
               call = match.call(),
+              groups = pfit1$data[,(ncol(Y)+1)],
               permutations = iter+1,
               trajectory.type = length(datClasses)
               )
