@@ -80,16 +80,16 @@ estimate.missing<-function(A,method=c("TPS","Reg")){
     complete<-arrayspecs(two.d.array(Y.gpa$coords)*Y.gpa$Csize,p,k)
     if(length(dim(incomplete))>2){
       for (i in 1:dim(incomplete)[3]){
-        missing<-which(is.na(incomplete[,1,i])== T)
-        lndmk<-which(is.na(incomplete[,1,i])!= T)
-        tmp<-TransRot(incomplete[-missing,,i],ref[-missing,])[[1]]
+        missing<-which(is.na(incomplete[,1,i])== TRUE)
+        lndmk<-which(is.na(incomplete[,1,i])!= TRUE)
+        tmp <- apply.pPsup(center(ref[-missing,]), list(center(incomplete[-missing,,i])))[[1]]
         incomplete[lndmk,,i]<-tmp
       }      
     }
     if(length(dim(incomplete))==2){
       missing<-which(is.na(incomplete[,1])== T)
       lndmk<-which(is.na(incomplete[,1])!= T)
-      tmp<-TransRot(incomplete[-missing,],ref[-missing,])[[1]]
+      tmp <- apply.pPsup(center(ref[-missing,]), list(center(incomplete[-missing,])))[[1]]
       incomplete[lndmk,]<-tmp
     }
     A2[,,-spec.NA]<-complete

@@ -1688,6 +1688,7 @@ trajorient <- function(y, tn, p) {
 # find shape differences among trajectories
 # used in: trajectory.analysis
 trajshape <- function(y){
+  y <- Map(function(x) center.scale(x)$coords, y)
   M <- Reduce("+",y)/length(y)
   z <- apply.pPsup(M, y)
   z <- t(sapply(z, function(x) as.vector(t(x))))
@@ -1711,7 +1712,7 @@ traj.w.int <- function(ff, fr, data=NULL, iter){
   p <- ncol(Y)
   ind <- perm.index(n, iter)
   Yr <- Map(function(x) Yh + E[x,], ind)
-  if(sum(pfitf$weights) != n) Yr <- Map(function(y) y*sqrt(fitf$weights), Yr)
+  if(sum(pfitf$weights) != n) Yr <- Map(function(y) y*sqrt(pfitf$weights), Yr)
   means <- apply.ls.means(pfitf, Yr)
   trajs <- lapply(means, function(x) trajset.int(x, tp, tn))
   PD <- lapply(trajs, trajsize) # path distances
@@ -1751,7 +1752,7 @@ traj.by.groups <- function(ff, fr, traj.pts, data=NULL, iter){
   tn <- length(group.levels)
   ind <- perm.index(n, iter)
   Yr <- Map(function(x) Yh + E[x,], ind)
-  if(sum(pfitf$weights) != n) Yr <- Map(function(y) y*sqrt(fitf$weights), Yr)
+  if(sum(pfitf$weights) != n) Yr <- Map(function(y) y*sqrt(pfitf$weights), Yr)
   means <- apply.ls.means(pfitf, Yr)
   trajs <- lapply(means, function(x) trajset.gps(x,traj.pts))
   PD <- lapply(trajs, trajsize) # path distances
@@ -1877,87 +1878,3 @@ identifyPch <- function(x, y = NULL, n = length(x), pch = 19, col="red", ...)
   }
   res
 } 
-
-Gower.center <- function(D, calc.dist=FALSE){
-  D <- as.matrix(D)
-  if(calc.dist == TRUE) D = as.matrix(dist(D))
-  n <- nrow(D)
-  A <- -0.5*D^2
-  Id <- diag(1,n)
-  one <- matrix(1,n)
-  G <- (Id-(1/n)*one%*%t(one))%*%A%*%(Id-(1/n)*one%*%t(one))
-  G
-}
-
-Hat.SSE <- function(G, X){
-  I <- diag(1,nrow(G))
-  H <- X%*%solve(t(X)%*%X)%*%t(X)
-  SS <- sum(diag((I-H)%*%G%*%(I-H)))
-  SS
-}
-
-Hat.SS.model <- function(G, X){
-  I <- diag(1,nrow(G))
-  H <- X%*%solve(t(X)%*%X)%*%t(X)
-  SS <- sum(diag(H%*%G%*%H))
-  SS
-}
-
-Hat.anova.tab <- function(D, f1, keep.order=TRUE){ # assumes dependent is distance matrix
-  form.in <- formula(f1)
-  Terms <- terms(form.in, keep.order = keep.order)
-  G <- Gower.center(D)
-  n <- nrow(D)
-  I <- diag(1,n)
-  Xn <- matrix(1,n)
-  X <- model.matrix(form.in)
-  SSE <-Hat.SSE(G,X)
-  SSM <-Hat.SS.model(G,X)
-  SST <-Hat.SSE(G,Xn)
-  dfM <- qr(X)$rank - 1
-  dfE <- n - qr(X)$rank
-  dfT <- n -1 
-  MSM <- SSM/dfM
-  MSE <- SSE/dfE
-  Fs <- MSM/MSE
-  R2 <- SSM/SST
-  df <- c(dfM,dfE,dfT)
-  SS <- c(SSM,SSE,SST)
-  MS <- c(MSM,MSE,NA)
-  R2 <- c(R2,NA,NA)
-  Fs <- c(Fs,NA,NA)
-  a.tab <- data.frame(df,SS,MS,Rsq=R2,F=Fs)
-  rownames(a.tab) <- c(attr(Terms, "term.labels"), "Residuals", "Total")
-  a.tab
-}
-
-### older support functions retained for a few older functions
-### including estimate.missing and digitsurface
-
-
-pPsup<-function(M1,M2){				#J. Claude 2008# MODIFIED BY DCA: 2/2014
-  k<-ncol(M1)
-  Z1<-trans(csize(M1)[[2]])
-  Z2<-trans(csize(M2)[[2]])
-  sv<-svd(t(Z2)%*%Z1)
-  U<-sv$v; V<-sv$u; Delt<-sv$d
-  sig<-sign(det(t(Z2)%*%Z1))
-  Delt[k]<-sig*abs(Delt[k]); V[,k]<-sig*V[,k]
-  Gam<-U%*%t(V)
-  # beta<-sum(Delt)   #commented out: retain size-scaling (DCA)
-  #  list(Mp1=beta*Z1%*%Gam,Mp2=Z2,rotation=Gam,scale=beta,
-  #       df=sqrt(1-beta^2))}
-  list(Mp1=Z1%*%Gam,Mp2=Z2,rotation=Gam)}    #simplify output and remove size re-scaling (DCA) 
-
-trans<-function(A){scale(A,scale=FALSE)} 		#J. Claude 2008
-
-TransRot<-function(M1,M2){  			#DCA: 4, 2014 translate, rotate one specimen to another
-  k<-ncol(M1)
-  Z1<-trans(M1)
-  Z2<-trans(M2)
-  sv<-svd(t(Z2)%*%Z1)
-  U<-sv$v; V<-sv$u; Delt<-sv$d
-  sig<-sign(det(t(Z2)%*%Z1))
-  Delt[k]<-sig*abs(Delt[k]); V[,k]<-sig*V[,k]
-  Gam<-U%*%t(V)
-  list(Mp1=Z1%*%Gam,Mp2=Z2,rotation=Gam)}    

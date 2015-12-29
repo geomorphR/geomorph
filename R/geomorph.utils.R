@@ -828,6 +828,8 @@ plot.evolrate <- function(x, ...){
 #' Print/Summary Function for geomorph
 #' 
 #' @param x print/summary object
+#' @param angle.type Choice between vector correlation or vector angles, in radians or degrees
+#' for summarizing results ("r", "rad", "deg", respectively)
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
@@ -910,8 +912,10 @@ summary.trajectory.analysis <- function(object,
 }
 
 # general plotting functions for phenotypic trajectories
-trajplot.w.int<-function(Data, M, TM, groups, group.cols = NULL, ...){ # TM = trajectories from means
+trajplot.w.int<-function(Data, M, TM, groups, group.cols = NULL, 
+pattern = c("white", "gray", "black"), pt.scale = 1, ...){ # TM = trajectories from means
   n <- length(TM); tp<-dim(TM[[1]])[1]; p<-dim(TM[[1]])[2]
+  if(length(pattern) != 3) stop("Point sequence color pattern must conatin three values")
   pmax <- max(Data[,1]); pmin <- min(Data[,1])
   plot(Data[,1:2],type="n",
        xlim = c(2*pmin, pmax),
@@ -922,33 +926,35 @@ trajplot.w.int<-function(Data, M, TM, groups, group.cols = NULL, ...){ # TM = tr
   if(length(gp.cols) != nlevels(groups)) 
       stop("group.cols is not logical with respect to group levels") 
   
-  points(Data[,1:2],pch=21,bg="gray",cex=.75)
+  points(Data[,1:2],pch=21,bg=pattern[2],cex=.75*pt.scale)
   # Sequence lines
   for(i in 1:n){
     y <- TM[[i]]
-    for(ii in 1:(tp-1)) points(y[ii:(ii+1),1:2],  type="l", lwd=1.5, col=gp.cols[i])
+    for(ii in 1:(tp-1)) points(y[ii:(ii+1),1:2],  type="l", lwd=1.5*pt.scale, col=gp.cols[i])
   }
   # Sequence points
-  points(M[,1:2], pch=21, bg="gray50", cex=1.5)
+  points(M[,1:2], pch=21, bg=pattern[2], cex=1.5*pt.scale)
   for(i in 1:n){
     y <- TM[[i]]
     k <- nrow(y)
-      points(y[1,1], y[1,2], pch=21, cex=1.5, bg="white")
-      points(y[k,1], y[k,2], pch=21, cex=1.5, bg="black")
+      points(y[1,1], y[1,2], pch=21, cex=1.5*pt.scale, bg=pattern[1])
+      points(y[k,1], y[k,2], pch=21, cex=1.5*pt.scale, bg=pattern[3])
   }
 
   legend("topleft", levels(groups), lwd=2, col=levels(as.factor(gp.cols)))
 }
 
-trajplot.by.groups<-function(Data, TM, groups, group.cols = NULL, ...) {
+trajplot.by.groups<-function(Data, TM, groups, group.cols = NULL, 
+            pattern = c("white", "gray", "black"), pt.scale = 1, ...) {
   n <- length(TM); tp <- nrow(TM[[1]]); p <- ncol(TM[[1]])
+  if(length(pattern) != 3) stop("Point sequence color pattern must conatin three values")
   Data2 <- t(matrix(matrix(t(Data)),p,))
   pmax <- max(Data[,1]); pmin <- min(Data2[,1])
   plot(Data2[,1:2], type="n",
        xlim = c(2*pmin, pmax),
        xlab="PC I", ylab="PC II",
        main="Two Dimensional View  of Phenotypic Trajectories",asp=1)
-  if(is.null(group.cols)) gp.cols <- as.numeric(groups) else gp.cols <- group.cols
+  if(is.null(group.cols)) gp.cols <- gp.index <- as.numeric(groups) else gp.cols <- group.cols
   if(length(gp.cols) != length(groups)) {
     if(length(gp.cols) != nlevels(groups)) 
       stop("group.cols is not logical with respect to either groups or group levels") else
@@ -956,42 +962,48 @@ trajplot.by.groups<-function(Data, TM, groups, group.cols = NULL, ...) {
          new.gp.cols <-array(,n)
          for(i in 1:n) new.gp.cols[i] <- gp.cols[match(groups[i], levels(groups))]
       } 
+    gp.index <- gp.cols
     gp.cols <- new.gp.cols
   }
   
-  point.seq <- function(x, p, tp, pt.col){
+  point.seq <- function(x, p, tp, pt.col, pt.scale){
     for(i in 1:(tp-1)){
       y <- matrix(x[1:(2*p)],2,, byrow=TRUE)
-      points(y, type="l", col=pt.col)
+      points(y, type="l", col=pt.col, lwd=1*pt.scale)
       x <- x[-(1:p)]
     }
   }
-  for(i in 1:nrow(Data)) point.seq(Data[i,], p=p, tp=tp, pt.col = gp.cols[i])
-  points(Data2, pch = 21, bg = "gray")
+  for(i in 1:nrow(Data)) point.seq(Data[i,], p=p, tp=tp, pt.col = gp.cols[i], pt.scale=pt.scale)
+  points(Data2, pch = 21, bg = pattern[2], cex = 1*pt.scale)
   for(i in 1:length(TM)){
     y <- TM[[i]]
-    points(y[1,1], y[1,2], pch=21, bg = "white")
-    points(y[nrow(y),1], y[nrow(y),2], pch=21, bg = "black")
+    points(y[1,1], y[1,2], pch=21, bg = pattern[1], cex=1*pt.scale)
+    points(y[nrow(y),1], y[nrow(y),2], pch=21, bg = pattern[3], cex=1*pt.scale)
   }
-  legend("topleft", levels(groups), lwd=2, col=levels(as.factor(gp.cols)))
+  legend("topleft", levels(groups), lwd=2, col=gp.index)
 }
   
 #' Plot Function for geomorph
 #' 
 #' @param x plot object
 #' @param group.cols An optional vector of colors for group levels
+#' @param pt.seq.pattern The sequence of colors for starting, middle, and end points of 
+#' trajectories, respectivly.  E.g., c("green", "gray", "red") for gray points
+#' but initial points with green color and end points with red color.
+#' @param pt.scale An optional value to magnify or reduce points (1 = no change)
 #' @param ... other arguments passed to plot
 #' @export
 #' @author Michael Collyer
-plot.trajectory.analysis <- function(x, group.cols = NULL, ...){
+plot.trajectory.analysis <- function(x, group.cols = NULL, 
+            pt.seq.pattern  = c("white", "gray", "black"), pt.scale = 1,...){
   if(x$trajectory.type == 2)
   trajplot.w.int(Data=x$pc.data, M =x$pc.means,
            TM = x$pc.trajectories, groups = x$groups, 
-           group.cols=group.cols)
+           group.cols=group.cols, pattern = pt.seq.pattern, pt.scale=pt.scale)
   if(x$trajectory.type == 1)
     trajplot.by.groups(Data=x$pc.data, 
            TM = x$pc.trajectories, groups = x$groups, 
-           group.cols=group.cols)
+           group.cols=group.cols, pattern = pt.seq.pattern, pt.scale=pt.scale)
 }
 
 

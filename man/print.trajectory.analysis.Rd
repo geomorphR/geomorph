@@ -9,6 +9,9 @@
 \arguments{
 \item{x}{print/summary object}
 
+\item{angle.type}{Choice between vector correlation or vector angles, in radians or degrees
+for summarizing results ("r", "rad", "deg", respectively)}
+
 \item{...}{other arguments passed to print/summary}
 }
 \description{

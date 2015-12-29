@@ -41,8 +41,12 @@
 #'  space of principal components (PC1 vs. PC2). The first point in each trajectory is displayed as white, the 
 #'  last point is black, and any middle points on the trajectories are in gray.  The colors of trajectories follow
 #'  the order in which they are found in the dataset as a default, using R's standard color palette: black, red, green,
-#'  blue, cyan, magenta, yellow, and gray. However, one can override these colors with group.cols in plots using
-#'  \code{\link{plot}}.  
+#'  blue, cyan, magenta, yellow, and gray. However, one can override these colors with the argument, "group.cols" in plots 
+#'  using the function, \code{\link{plot}}.  This will change the trajectory line colors.  
+#'  One can also override default initial-middle-end point colors with the argument, "pt.seq.pattern".  The default is
+#'  c("white", "gray", "black") for gray points, but with white initial points and black end points.  If changed, the 
+#'  pt.seq.pattern argument must be a vector with three color values.
+#'  One can also uniformly vary the size of points with the argument, "pt.scale".
 #'  
 #'  The function, \code{\link{summary}} can be used to provide an ANOVA summary plus pairwise statistics of a
 #'  sn object of class "trajectory.analysis".  The argument, angle.type = c("r", "rad", "deg") can be used to
@@ -117,7 +121,7 @@
 #' Y.gpa <- gpagen(plethodon$land)   
 #' gdf <- geomorph.data.frame(Y.gpa, species = plethodon$species, site = plethodon$site)
 #'
-#' TA <- trajectory.analysis(coords ~ species*site, data=gdf, iter=499)
+#' TA <- trajectory.analysis(coords ~ species*site, data=gdf, iter=199)
 #' summary(TA, angle.type = "deg")
 #' plot(TA)
 #' 
@@ -126,7 +130,7 @@
 #' levels(site) <- c("Symp", "Allo")
 #' gdf <- geomorph.data.frame(Y.gpa, species = plethodon$species, site = site)
 #' 
-#' TA <- trajectory.analysis(coords ~ species*site, data=gdf, iter=499)
+#' TA <- trajectory.analysis(coords ~ species*site, data=gdf, iter=199)
 #' summary(TA, angle.type = "deg")
 #' plot(TA)
 #' 
@@ -134,12 +138,15 @@
 #'
 #' # Add Centroid size as a covariate
 #' 
-#' TA <- trajectory.analysis(f1 = coords ~ species*site, f2 = ~ Csize, data=gdf, iter=499)
+#' TA <- trajectory.analysis(f1 = coords ~ species*site, f2 = ~ Csize, data=gdf, iter=199)
 #' summary(TA, angle.type = "deg")
 #' plot(TA)
 #' 
 #' # Change trajectory colors in plot
 #' plot(TA, group.cols = c("dark red", "dark blue"))
+#' 
+#' # Change size of points and lines
+#' plot(TA, group.cols = c("dark red", "dark blue"), pt.scale=1.5)
 #' 
 #' # Motion paths represented by 5 time points per motion 
 #'
@@ -148,10 +155,12 @@
 #' gdf <- geomorph.data.frame(trajectories = motionpaths$trajectories,
 #' groups = motionpaths$groups)
 #' TA <- trajectory.analysis(f1 = trajectories ~ groups, 
-#' traj.pts = 5, data=gdf, iter=499)
+#' traj.pts = 5, data=gdf, iter=199)
 #' summary(TA)
 #' plot(TA)
-#' plot(TA, group.cols = c("dark red", "dark blue", "dark green", "yellow"))
+#' plot(TA, group.cols = c("dark red", "dark blue", "dark green", "yellow"), pt.scale = 1.3)
+#' plot(TA, group.cols = c("dark red", "dark blue", "dark green", "yellow"), 
+#' pt.seq.pattern = c("green", "gray30", "red"), pt.scale = 1.3)
 trajectory.analysis <- function(f1, f2=NULL, iter=999, traj.pts = NULL, data = NULL){
   pfit1 <- procD.fit(f1, data=data, pca=FALSE)
   Terms <- pfit1$Terms
