@@ -1688,6 +1688,7 @@ trajorient <- function(y, tn, p) {
 # find shape differences among trajectories
 # used in: trajectory.analysis
 trajshape <- function(y){
+  y <- Map(function(x) center.scale(x)$coords, y)
   M <- Reduce("+",y)/length(y)
   z <- apply.pPsup(M, y)
   z <- t(sapply(z, function(x) as.vector(t(x))))
@@ -1711,7 +1712,7 @@ traj.w.int <- function(ff, fr, data=NULL, iter){
   p <- ncol(Y)
   ind <- perm.index(n, iter)
   Yr <- Map(function(x) Yh + E[x,], ind)
-  if(sum(pfitf$weights) != n) Yr <- Map(function(y) y*sqrt(fitf$weights), Yr)
+  if(sum(pfitf$weights) != n) Yr <- Map(function(y) y*sqrt(pfitf$weights), Yr)
   means <- apply.ls.means(pfitf, Yr)
   trajs <- lapply(means, function(x) trajset.int(x, tp, tn))
   PD <- lapply(trajs, trajsize) # path distances
@@ -1751,7 +1752,7 @@ traj.by.groups <- function(ff, fr, traj.pts, data=NULL, iter){
   tn <- length(group.levels)
   ind <- perm.index(n, iter)
   Yr <- Map(function(x) Yh + E[x,], ind)
-  if(sum(pfitf$weights) != n) Yr <- Map(function(y) y*sqrt(fitf$weights), Yr)
+  if(sum(pfitf$weights) != n) Yr <- Map(function(y) y*sqrt(pfitf$weights), Yr)
   means <- apply.ls.means(pfitf, Yr)
   trajs <- lapply(means, function(x) trajset.gps(x,traj.pts))
   PD <- lapply(trajs, trajsize) # path distances

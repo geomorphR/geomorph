@@ -4,14 +4,21 @@
 \alias{plot.trajectory.analysis}
 \title{Plot Function for geomorph}
 \usage{
-\method{plot}{trajectory.analysis}(x, ...)
+\method{plot}{trajectory.analysis}(x, group.cols = NULL,
+  pt.seq.pattern = c("white", "gray", "black"), pt.scale = 1, ...)
 }
 \arguments{
 \item{x}{plot object}
 
-\item{...}{other arguments passed to plot}
-
 \item{group.cols}{An optional vector of colors for group levels}
+
+\item{pt.seq.pattern}{The sequence of colors for starting, middle, and end points of 
+trajectories, respectivly.  E.g., c("green", "gray", "red") for gray points
+but initial points with green color and end points with red color.}
+
+\item{pt.scale}{An optional value to magnify or reduce points (1 = no change)}
+
+\item{...}{other arguments passed to plot}
 }
 \description{
 Plot Function for geomorph
