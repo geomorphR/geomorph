@@ -16,7 +16,6 @@
 #' @import utils
 #' @import graphics
 #' @import grDevices
-#' @import stats
 #' @importFrom geiger sim.char
 #' @importFrom jpeg readJPEG
 #' @importFrom phytools fastAnc

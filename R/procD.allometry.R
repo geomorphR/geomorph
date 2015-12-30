@@ -17,7 +17,7 @@
 #'   There are three formulae that need to be input (see Arguments). The first must contain variables for shape and size,
 #'   e.g., Y ~ X, where Y (dependent variable) is shape and X (independent variable) is size.  The other two formulae
 #'   are optional to indicate (1) groups for separate allometric curves and (2) additonal model variables to consider in
-#'   the ANOVA.  The groups input must be a single or multiple factors; e.g., ~ group, or ~ a*b.
+#'   the ANOVA.  The groups input must be a single factor or multiple factors; e.g., ~ group, or ~ a*b.
 #'   The resulting ANOVA uses sequential (Type I) sums of squares and cross-products with variables in this order:
 #'   size, groups (if provided), size*groups (if warranted), other variables (if provided).  If a factor for groups is provided,
 #'   ANOVA for a "homogeneity of slopes" test will also be performed.
@@ -72,7 +72,7 @@
 #' @param f1 A formula for the relationship of shape and size; e.g., Y ~ X.
 #' @param f2 An optional right-hand formula for the inclusion of groups; e.g., ~ groups.
 #' @param f3 A optional right-hand formula for the inclusion of additional variables; e.g., ~ a + b + c + ...
-#' @param logsz A logical argument to indicate if the avriable for size should be log-transformed.
+#' @param logsz A logical argument to indicate if the variable for size should be log-transformed.
 #' @param iter Number of iterations for significance testing
 #' @param seed An optional argument for setting the seed for random permutations of the resampling procedure.  
 #' If left NULL (the default), the exact same P-values will be found for repeated runs of the analysis (with the same number of iterations).
@@ -106,10 +106,10 @@
 #' \item{gps}{A vector of group names.}
 #' \item{size}{A vector of size scores.}
 #' \item{logsz}{A logical value to indicate if size values were log=transformed for analysis.}
-#' \item{A}{Prucstes (aligned) residuals.}
+#' \item{A}{Procrustes (aligned) residuals.}
 #' \item{Ahat}{Predicted Procrustes residuals(if input coordinates are in a 3D array).}
 #' \item{p}{landmark number}
-#' \item{k}{landmark number}
+#' \item{k}{landmark dimensions}
 #' 
 #' @references Adams, D.C., F.J. Rohlf, and D.E. Slice. 2013. A field comes of age: geometric morphometrics 
 #'   in the 21st century. Hystrix. 24:7-14. 

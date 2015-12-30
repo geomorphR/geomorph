@@ -14,7 +14,7 @@ procD.allometry(f1, f2 = NULL, f3 = NULL, logsz = TRUE, iter = 999,
 
 \item{f3}{A optional right-hand formula for the inclusion of additional variables; e.g., ~ a + b + c + ...}
 
-\item{logsz}{A logical argument to indicate if the avriable for size should be log-transformed.}
+\item{logsz}{A logical argument to indicate if the variable for size should be log-transformed.}
 
 \item{iter}{Number of iterations for significance testing}
 
@@ -53,10 +53,10 @@ in the formula, and the variable used for size is called "size".}
 \item{gps}{A vector of group names.}
 \item{size}{A vector of size scores.}
 \item{logsz}{A logical value to indicate if size values were log=transformed for analysis.}
-\item{A}{Prucstes (aligned) residuals.}
+\item{A}{Procrustes (aligned) residuals.}
 \item{Ahat}{Predicted Procrustes residuals(if input coordinates are in a 3D array).}
 \item{p}{landmark number}
-\item{k}{landmark number}
+\item{k}{landmark dimensions}
 }
 \description{
 Function performs Procrustes ANOVA with permutation procedures to assess statistical hypotheses describing 
@@ -77,7 +77,7 @@ via distributions generated from resampling permutations. Data input is specifie
   There are three formulae that need to be input (see Arguments). The first must contain variables for shape and size,
   e.g., Y ~ X, where Y (dependent variable) is shape and X (independent variable) is size.  The other two formulae
   are optional to indicate (1) groups for separate allometric curves and (2) additonal model variables to consider in
-  the ANOVA.  The groups input must be a single or multiple factors; e.g., ~ group, or ~ a*b.
+  the ANOVA.  The groups input must be a single factor or multiple factors; e.g., ~ group, or ~ a*b.
   The resulting ANOVA uses sequential (Type I) sums of squares and cross-products with variables in this order:
   size, groups (if provided), size*groups (if warranted), other variables (if provided).  If a factor for groups is provided,
   ANOVA for a "homogeneity of slopes" test will also be performed.
