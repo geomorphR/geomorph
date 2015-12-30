@@ -37,3 +37,15 @@ phylo.pls <- function(){
   ## use phylo.integration
 }
 
+#' Deprecated functions in geomorph
+#'
+#' The following function has been deprecated in geomorph
+#'
+#' This function has been deprecated. Below shows the original function and the replacement function.
+#' 
+#' plotAllometry now deprecated: use \code{\link{procD.allometry}} instead
+#' @export
+plotAllometry <- function(){
+  .Deprecated("procD.allometry")
+  ## use procD.allometry
+}
