@@ -1117,7 +1117,7 @@ ls.means = function(pfit, Y=NULL, g=NULL, data=NULL) {
   n <- nrow(Y)
   if(is.null(data)) dat <- pfit$data else dat <- data
   if(!is.null(g)) {
-    if(ncol(as.matrix(g)) > 1){
+    if(is.data.frame(g)){
       fac.check <- sapply(g, is.factor)
       facs <- g[,fac.check]
     } else if(is.factor(g)) facs <- g else stop("groups input neither a factor nor factors")
@@ -1158,7 +1158,7 @@ slopes = function(pfit, Y=NULL, g = NULL, slope=NULL, data = NULL){
   if(is.null(Y)) Y <- pfit$wY
   if(is.null(data)) dat <- pfit$data else dat <- data
   if(!is.null(g)) {
-    if(ncol(as.matrix(g)) > 1){
+    if(is.data.frame(g)){
       fac.check <- sapply(g, is.factor)
       facs <- g[,fac.check]
     } else if(is.factor(g)) facs <- g else stop("groups input neither a factor nor factors")
