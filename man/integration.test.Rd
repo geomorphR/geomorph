@@ -4,7 +4,8 @@
 \alias{integration.test}
 \title{Quantify morphological integration between modules}
 \usage{
-integration.test(A, A2 = NULL, partition.gp = NULL, iter = 999)
+integration.test(A, A2 = NULL, partition.gp = NULL, iter = 999,
+  seed = NULL)
 }
 \arguments{
 \item{A}{A 3D array (p x k x n) containing GPA-aligned coordinates for all specimens, or a matrix (n x variables)}
@@ -14,6 +15,11 @@ integration.test(A, A2 = NULL, partition.gp = NULL, iter = 999)
 \item{partition.gp}{A list of which landmarks (or variables) belong in which partition (e.g. A,A,A,B,B,B,C,C,C) (required when only 1 dataset provided)}
 
 \item{iter}{Number of iterations for significance testing}
+
+\item{seed}{An optional argument for setting the seed for random permutations of the resampling procedure.
+If left NULL (the default), the exact same P-values will be found for repeated runs of the analysis (with the same number of iterations).
+If seed = "random", a random seed will be used, and P-values will vary.  One can also specify an integer for specific seed values,
+which might be of interest for advanced users.}
 }
 \value{
 Objects of class "pls" from integration.test return a list of the following:

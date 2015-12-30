@@ -5,7 +5,7 @@
 \title{Procrustes ANOVA and pairwise tests for shape data, using complex linear models}
 \usage{
 advanced.procD.lm(f1, f2, groups = NULL, slope = NULL, angle.type = c("r",
-  "deg", "rad"), iter = 999, data = NULL, ...)
+  "deg", "rad"), iter = 999, seed = NULL, data = NULL, ...)
 }
 \arguments{
 \item{f1}{A formula for a linear model, containing the response matrix (e.g., y ~ x1 + x2)}
@@ -20,6 +20,11 @@ advanced.procD.lm(f1, f2, groups = NULL, slope = NULL, angle.type = c("r",
 correlations (r), radians (rad) or degrees (deg)}
 
 \item{iter}{Number of iterations for significance testing}
+
+\item{seed}{An optional argument for setting the seed for random permutations of the resampling procedure.
+If left NULL (the default), the exact same P-values will be found for repeated runs of the analysis (with the same number of iterations).
+If seed = "random", a random seed will be used, and P-values will vary.  One can also specify an integer for specific seed values,
+which might be of interest for advanced users.}
 
 \item{data}{A data frame for the function environment; see \code{\link{geomorph.data.frame}}.  If variables
 are transformed in formulae, they should also be transformed in the geomorph data frame.  (See examples.)}

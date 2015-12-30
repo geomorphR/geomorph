@@ -4,8 +4,8 @@
 \alias{procD.pgls}
 \title{Phylogenetic ANOVA/regression for shape data}
 \usage{
-procD.pgls(f1, phy, iter = 999, int.first = FALSE, RRPP = FALSE,
-  data = NULL, ...)
+procD.pgls(f1, phy, iter = 999, seed = NULL, int.first = FALSE,
+  RRPP = FALSE, data = NULL, ...)
 }
 \arguments{
 \item{f1}{A formula for the linear model (e.g., y~x1+x2)}
@@ -13,6 +13,11 @@ procD.pgls(f1, phy, iter = 999, int.first = FALSE, RRPP = FALSE,
 \item{phy}{A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape}
 
 \item{iter}{Number of iterations for significance testing}
+
+\item{seed}{An optional argument for setting the seed for random permutations of the resampling procedure.
+If left NULL (the default), the exact same P-values will be found for repeated runs of the analysis (with the same number of iterations).
+If seed = "random", a random seed will be used, and P-values will vary.  One can also specify an integer for specific seed values,
+which might be of interest for advanced users.}
 
 \item{int.first}{A logical value to indicate if interactions of first main effects should precede subsequent main effects}
 

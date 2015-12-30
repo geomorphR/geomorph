@@ -4,8 +4,8 @@
 \alias{trajectory.analysis}
 \title{Quantify and compare shape change trajectories}
 \usage{
-trajectory.analysis(f1, f2 = NULL, iter = 999, traj.pts = NULL,
-  data = NULL)
+trajectory.analysis(f1, f2 = NULL, iter = 999, seed = NULL,
+  traj.pts = NULL, data = NULL)
 }
 \arguments{
 \item{f1}{A formula for the linear model, for trajectories (e.g., Y ~ A or Y ~ A * B)}
@@ -13,6 +13,11 @@ trajectory.analysis(f1, f2 = NULL, iter = 999, traj.pts = NULL,
 \item{f2}{A formula for additional covariates  (e.g.,  ~ x1 + x2)}
 
 \item{iter}{Number of iterations for significance testing}
+
+\item{seed}{An optional argument for setting the seed for random permutations of the resampling procedure.
+If left NULL (the default), the exact same P-values will be found for repeated runs of the analysis (with the same number of iterations).
+If seed = "random", a random seed will be used, and P-values will vary.  One can also specify an integer for specific seed values,
+which might be of interest for advanced users.}
 
 \item{traj.pts}{An optional value specifying the number of points in each trajectory (if f1 contains a single factor)}
 
