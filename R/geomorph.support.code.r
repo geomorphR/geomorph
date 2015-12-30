@@ -8,6 +8,8 @@
 #'  variables via Procrustes analysis for points, curves and surface data, perform statistical analyses
 #'  of shape variation and covariation, and provide graphical depictions of shapes and patterns of
 #'  shape variation.
+#'  
+#' @section geomorph functions:
 #' 
 #' 
 #' @import ape

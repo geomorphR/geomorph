@@ -11,6 +11,9 @@ Functions in this package allow one to read, manipulate, and digitize landmark d
  of shape variation and covariation, and provide graphical depictions of shapes and patterns of
  shape variation.
 }
+\section{geomorph functions}{
+
+}
 \author{
 Dean C. Adams, Michael Collyer, & Emma Sherratt
 }
