@@ -96,7 +96,7 @@ integration.test<-function(A, A2=NULL,partition.gp=NULL,iter=999, seed=NULL){
       x<-x[,which(gps==levels(gps)[1])]
     }
   }
-  if(seed=="random") seed = sample(1:iter, 1)
+  if(!is.null(seed) && seed=="random") seed = sample(1:iter, 1)
   if(!is.null(A2)){
     A.new<-A; A2.new<-A2
     if(any(is.na(A2))==T){
