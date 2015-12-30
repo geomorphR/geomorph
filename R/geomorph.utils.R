@@ -864,7 +864,7 @@ print.trajectory.analysis <- function(x,
     print(x$P.angle)
     cat("\n")
   } else if(angle.type == "rad"){
-    cat("\n*** Principal Vector Angles")
+    cat("\n*** Principal Vector Angles\n")
     cat("\nPairwise Angles (in radians)\n")
     print(x$trajectory.angle.rad)
     cat("\nEffect Sizes\n")
@@ -885,7 +885,7 @@ print.trajectory.analysis <- function(x,
   tr1 <- x$random.trajectories[[1]][[1]]
   tp <- nrow(tr1)
   if(tp > 2){
-    cat("\n*** Trajectory Shape Differences")
+    cat("\n*** Trajectory Shape Differences\n")
     cat("\nPairwise Shape Differences (Procrustes Distance)\n")
     print(x$trajectory.shape.dist)
     cat("\nEffect Sizes\n")

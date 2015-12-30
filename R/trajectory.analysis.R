@@ -1,10 +1,10 @@
 #'  Quantify and compare shape change trajectories
 #'
-#'  Function estimates attributes of shape change trajectories or motion trajectories for a set of 
+#'  Function estimates attributes of shape change trajectories or "motion" trajectories for a set of 
 #'  Procrustes-aligned specimens and compares them statistically
 #'
 #'  The function quantifies phenotypic shape change trajectories from a set of specimens, and assesses variation 
-#'  in these parameters via permutation. A shape change trajectory is defined by a sequence 
+#'  in attributes of the trajectories via permutation. A shape change trajectory is defined by a sequence 
 #'  of shapes in tangent space. These trajectories can be quantified for various attributes (their size, orientation, 
 #'  and shape), and comparisons of these attribute enable the statistical comparison of shape change 
 #'  trajectories (see Collyer and Adams 2013; Collyer and Adams 2007; Adams and Collyer 2007; Adams and Collyer 2009). 
@@ -27,9 +27,9 @@
 #'  y11 y12 y13 y14 y21 y22 y23 y24 y31 y32 y33 y34, as it groups points within variables.  This approach is typical when comparing
 #'  motion paths (see Adams and Cerney 2007).
 #'  
-#'  If f1 is a two-factor factorial model, e.g., Y ~ A*B, it is assumed that the first factor defines groups, th second factor
+#'  If f1 is a two-factor factorial model, e.g., Y ~ A*B, it is assumed that the first factor defines groups, the second factor
 #'  defines trajectory points, and that trajectories are to be estimated from the linear model.  In this case, the preceding example
-#'  would have a Y matrix comprised only of y1, y2, and y3, but the factor B would contain levels to define the four points (se Examples).
+#'  would have a Y matrix comprised only of y1, y2, and y3, but the factor B would contain levels to define the four points (see Examples).
 #'  
 #'  If one wishes to include other variables in the linear model, they should be indicated in the second formula, f2.
 #'  This formula can be simply a right-hand formula, e.g., ~ x1 + x2 + x3 +...  Variables in this formula will typically
@@ -46,10 +46,10 @@
 #'  One can also override default initial-middle-end point colors with the argument, "pt.seq.pattern".  The default is
 #'  c("white", "gray", "black") for gray points, but with white initial points and black end points.  If changed, the 
 #'  pt.seq.pattern argument must be a vector with three color values.
-#'  One can also uniformly vary the size of points with the argument, "pt.scale".
+#'  One can also uniformly vary the size of points with the argument, "pt.scale".  Examples are provided below.
 #'  
 #'  The function, \code{\link{summary}} can be used to provide an ANOVA summary plus pairwise statistics of a
-#'  sn object of class "trajectory.analysis".  The argument, angle.type = c("r", "rad", "deg") can be used to
+#'  an object of class "trajectory.analysis".  The argument, angle.type = c("r", "rad", "deg") can be used to
 #'  toggle between vector correlations, vector angles in radians, or vector angles in degrees, respectively.
 #'  
 #' \subsection{Notes for geomorph 3.0}{ 
@@ -63,7 +63,8 @@
 #' by providing pairwise statistics and P-values.
 #' }
 #'
-#' @param f1 A formula for the linear model, for trajectories (e.g., Y ~ A or Y ~ A * B)
+#' @param f1 A formula for the linear model, for trajectories (e.g., Y ~ A or Y ~ A * B).
+#' The right hand side of this formula can contain only one or two factors.
 #' @param f2 A formula for additional covariates  (e.g.,  ~ x1 + x2)
 #' @param iter Number of iterations for significance testing
 #' @param seed An optional argument for setting the seed for random permutations of the resampling procedure.  
@@ -72,7 +73,7 @@
 #' which might be of interest for advanced users.
 #' @param traj.pts An optional value specifying the number of points in each trajectory (if f1 contains a single factor)
 #' @param data A data frame for the function environment, see \code{\link{geomorph.data.frame}} 
-#' @param ... Arguments passed on to procD.fit (typically associated with the lm function)
+#' @param ... Arguments passed on to procD.fit (typically associated with the \code{\link{lm}} function)
 #' @export
 #' @keywords analysis
 #' @author Dean Adams and Michael Collyer
@@ -98,9 +99,9 @@
 #'   \item{P.magnitude.diff}{P-values corresponding to trajectory magnitude differences.}
 #'   \item{P.angle.diff}{P-values corresponding to angular differences in trajectories.}
 #'   \item{P.shape.diff}{P-values corresponding to trajectory shape differences.}
-#'   \item{Z.magnitude.diff}{Effect size of observed trajectory magnitude differences.}
-#'   \item{Z.angle.diff}{Effect size of observed angular differences in trajectories.}
-#'   \item{Z.shape.diff}{Effect size of observed trajectory shape differences.}
+#'   \item{Z.magnitude.diff}{Effect sizes of observed trajectory magnitude differences.}
+#'   \item{Z.angle.diff}{Effect sizes of observed angular differences in trajectories.}
+#'   \item{Z.shape.diff}{Effect sizes of observed trajectory shape differences.}
 #'   \item{call}{The matched call.}
 #'   \item{groups}{Factor representing group names for subsequent plotting.}
 #'   \item{permutations}{The numer of random permutations used in the RRPP applied to the ANOVA 
@@ -130,6 +131,7 @@
 #' plot(TA)
 #' 
 #' # Change order of groups
+#' 
 #' site <- as.factor(plethodon$site)
 #' levels(site) <- c("Symp", "Allo")
 #' gdf <- geomorph.data.frame(Y.gpa, species = plethodon$species, site = site)

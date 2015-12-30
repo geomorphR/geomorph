@@ -14,7 +14,7 @@ A list similar to a data frame to facilitate analysis of shape data.
 }
 \details{
 This function produces a list that can be used like a data frame in other analytical functions.
-The purpose is similar to the function, \code{\link{data.frame}}, but without the constraint that 
+The purpose is similar to the function, \code{\link[base]{data.frame}}, but without the constraint that 
 data must conform to an n (observations) x p (variables) matrix.  Rather, the list produced is 
 constained only by n.  List objects can be Procrustes residuals (coordinates) arrays, matrices, variables,
 distance matrices, and phylogenetic trees.  Results from \code{\link{gpagen}} can be directly
