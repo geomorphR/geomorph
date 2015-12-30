@@ -146,7 +146,7 @@
 #' plot(plethANOVA) # diagnostic plot instead of allometry plot
 procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
                    iter = 999, seed=NULL, alpha = 0.05, RRPP = FALSE, data=NULL, ...){
-  pfit <- procD.fit(f1, data=data)
+  pfit <- procD.fit(f1, data=data, pca=FALSE)
   dat <- pfit$data
   Y <- pfit$Y
   if(!is.null(seed) && seed=="random") seed = sample(1:iter, 1)
@@ -234,7 +234,7 @@ procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
   if(!is.null(f2)){
     form4 <- update(form4, Y ~.)
     form5 <- update(form5, Y ~.)
-    datHOS <- data.frame(dat, size=size)
+    datHOS <- data.frame(dat, size=size, gps=gps)
     HOS <- advanced.procD.lm(form4, form5, data=datHOS, iter=iter, seed=seed)$anova.table
     rownames(HOS) = c("Common Allometry", "Group Allometries")
     hos.pval <- HOS[2,7]
@@ -255,7 +255,7 @@ procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
   } else HOS <- NULL
   
   formfull <- update(formfull, Y~.)
-  fitf <- procD.fit(formfull, data=dat)
+  fitf <- procD.fit(formfull, data=dat, pca=FALSE)
   anovafull <- procD.lm(formfull, data=dat, iter=iter, seed=seed, RRPP=RRPP)$aov.table
   if(RRPP) perm.method = "RRPP" else perm.method = "raw"
   
