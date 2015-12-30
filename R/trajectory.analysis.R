@@ -191,9 +191,10 @@ trajectory.analysis <- function(f1, f2=NULL, iter=999, seed=NULL, traj.pts = NUL
     red.terms <- full.terms[-length(full.terms)]
     fr <- as.formula(paste("Y~", paste(red.terms, collapse = "+"), sep=""))
   }
-  pda <- procD.lm(ff, data=data, iter=iter, RRPP = TRUE)
-  if(length(datClasses) == 1) pta <- traj.by.groups(ff, fr, traj.pts, data=data, iter=iter) else
-    pta <- traj.w.int(ff, fr, data=data, iter=iter)
+  if(seed=="random") seed = sample(1:iter, 1)
+  pda <- procD.lm(ff, data=data, iter=iter, RRPP = TRUE, seed=seed)
+  if(length(datClasses) == 1) pta <- traj.by.groups(ff, fr, traj.pts, data=data, iter=iter, seed=seed) else
+    pta <- traj.w.int(ff, fr, data=data, iter=iter, seed=seed)
   if(length(datClasses) == 1) gp.names <- levels(pfit1$data[[length(pfit1$data)]]) else
     gp.names <- levels(pfit1$data[[length(pfit1$data)-1]]) 
   PD <- pta$PD[[1]]; names(PD) <- gp.names

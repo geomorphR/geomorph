@@ -4,7 +4,8 @@
 \alias{phylo.integration}
 \title{Quantify phylogenetic morphological integration between two or more sets of variables under Brownian motion}
 \usage{
-phylo.integration(A, A2 = NULL, phy, partition.gp = NULL, iter = 999)
+phylo.integration(A, A2 = NULL, phy, partition.gp = NULL, iter = 999,
+  seed = NULL)
 }
 \arguments{
 \item{A}{A 2D array (n x [p1 x k1]) or 3D array (p1 x k1 x n) containing landmark coordinates for the first block}
@@ -16,6 +17,11 @@ phylo.integration(A, A2 = NULL, phy, partition.gp = NULL, iter = 999)
 \item{partition.gp}{A list of which landmarks (or variables) belong in which partition (e.g. A,A,A,B,B,B,C,C,C) (required when only 1 dataset provided)}
 
 \item{iter}{Number of iterations for significance testing}
+
+\item{seed}{An optional argument for setting the seed for random permutations of the resampling procedure.
+If left NULL (the default), the exact same P-values will be found for repeated runs of the analysis (with the same number of iterations).
+If seed = "random", a random seed will be used, and P-values will vary.  One can also specify an integer for specific seed values,
+which might be of interest for advanced users.}
 }
 \value{
 Function returns a list with the following components: 

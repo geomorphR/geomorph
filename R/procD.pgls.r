@@ -109,8 +109,8 @@ procD.pgls<-function(f1, phy, iter=999, seed=NULL, int.first = FALSE,
   eigC.vect = eigC$vectors[,1:(length(lambda))]
   Pcor <- qr.solve(eigC.vect%*% diag(sqrt(lambda)) %*% t(eigC.vect)) 
   dimnames(Pcor) <- dimnames(C)
-  if(RRPP == TRUE) SSr <- Fpgls.iter(pfit, Yalt="RRPP", Pcor, iter=iter) else 
-    SSr <- Fpgls.iter(pfit, Yalt="resample", Pcor, iter=iter)
+  if(RRPP == TRUE) SSr <- Fpgls.iter(pfit, Yalt="RRPP", Pcor, iter=iter, seed=seed) else 
+    SSr <- Fpgls.iter(pfit, Yalt="resample", Pcor, iter=iter, seed=seed)
   anova.parts.obs <- anova.parts.pgls(pfit, SSr)
   anova.tab <-anova.parts.obs$anova.table 
   P <- SSr$Fs

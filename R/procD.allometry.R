@@ -149,6 +149,7 @@ procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
   pfit <- procD.fit(f1, data=data)
   dat <- pfit$data
   Y <- pfit$Y
+  if(seed=="random") seed = sample(1:iter, 1)
   if((ncol(dat) - ncol(Y)) != 1) stop("Only a single covariate for size is permitted") 
   dat <- data.frame(Y=Y, size = dat[,ncol(dat)])
   size <- dat$size
@@ -234,7 +235,7 @@ procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
     form4 <- update(form4, Y ~.)
     form5 <- update(form5, Y ~.)
     datHOS <- data.frame(dat, size=size)
-    HOS <- advanced.procD.lm(form4, form5, data=datHOS, iter=iter)$anova.table
+    HOS <- advanced.procD.lm(form4, form5, data=datHOS, iter=iter, seed=seed)$anova.table
     rownames(HOS) = c("Common Allometry", "Group Allometries")
     hos.pval <- HOS[2,7]
     if(hos.pval > alpha){
@@ -255,7 +256,7 @@ procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
   
   formfull <- update(formfull, Y~.)
   fitf <- procD.fit(formfull, data=dat)
-  anovafull <- procD.lm(formfull, data=dat, iter=iter, RRPP=RRPP)$aov.table
+  anovafull <- procD.lm(formfull, data=dat, iter=iter, seed=seed, RRPP=RRPP)$aov.table
   if(RRPP) perm.method = "RRPP" else perm.method = "raw"
   
   # Plot set-up

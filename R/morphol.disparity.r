@@ -93,7 +93,7 @@ morphol.disparity <- function(f1, groups = NULL, iter = 999, seed = NULL, data =
     warning("No factor in formula from which to define groups.")
     out = (noquote(paste("Procrustes variance =",round(pv, 8))))
   } else{
-      ind <- perm.index(nrow(R),iter)
+      ind <- perm.index(nrow(R),iter, seed=seed)
       P <- lapply(1:(iter+1), function(j){
         r <- R[ind[[j]],]
         pvr <- sapply(1:nlevels(gps), function(j){

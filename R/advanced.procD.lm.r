@@ -92,6 +92,7 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
                             angle.type = c("r", "deg", "rad"), iter=999, 
                             seed = NULL, data=NULL, ...){
   pfit1 <- procD.fit(f1, data=data)
+  if(seed=="random") seed = sample(1:iter, 1)
   Y <- as.matrix(pfit1$Y)
   if(!is.null(pfit1$weights)) w <- pfit1$weights else w <- rep(1,n)
   if(any(w < 0)) stop("Weights cannot be negative")
@@ -121,7 +122,7 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
   Fs <- (SSm/(dfr-dff))/(SSEf/dff)
   Qrf <- pfitf$wQRs[[kf]]
   Qrr <- pfitr$wQRs[[kr]]
-  ind <- perm.index(n, iter)
+  ind <- perm.index(n, iter, seed=seed)
   if(!is.null(groups) && !is.null(slope)) pairwise.cond <- "slopes"
   if(!is.null(groups) && is.null(slope)) pairwise.cond <-"means"
   if(is.null(groups) && is.null(slope)) pairwise.cond <-"none"

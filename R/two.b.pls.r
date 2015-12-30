@@ -67,7 +67,7 @@ two.b.pls <- function (A1, A2,  iter = 999, seed = NULL){
   if (length(dim(A2)) == 3) y <- two.d.array(A2) else y <- as.matrix(A2)
   if (nrow(x) != nrow(y)) stop("Data matrices have different numbers of specimens.")
   n <- nrow(x)
-  pls.rand <- apply.pls(x, y, RV=FALSE, iter=iter)
+  pls.rand <- apply.pls(x, y, RV=FALSE, iter=iter, seed=seed)
   pls.obs <- pls(x, y, RV=FALSE, verbose=TRUE)
   p.val <- pval(pls.rand)
   XScores <- pls.obs$XScores

@@ -75,6 +75,7 @@ modularity.test<-function(A,partition.gp,iter=999, seed=NULL){
   if (length(dim(A))==2){ x<-A
            if(length(partition.gp)!=ncol(x)){stop("Not all variables are assigned to a partition.")}
            gps<-as.factor(partition.gp)  }
+  if(seed=="random") seed = sample(1:iter, 1)
   ngps<-nlevels(gps)
   if (length(dim(A))==2){
     CR.obs<-CR(x,gps)
@@ -114,11 +115,11 @@ modularity.test<-function(A,partition.gp,iter=999, seed=NULL){
               optRot <- matrix(c(cos(optAngle*pi/180),
                sin(optAngle*pi/180),0,-sin(optAngle*pi/180),cos(optAngle*pi/180), 0,0,0,1),ncol=3)
     x <- t(mapply(function(a) matrix(t(a%*%optRot)), Alist))
-    CR.rand <- apply.CR(x, gps, iter=iter)
+    CR.rand <- apply.CR(x, gps, iter=iter, seed=seed)
     CR.rand[1] <- CR.obs <- avgCR
     if(ngps > 2) CR.mat <- CR(x,gps)$CR.mat else CR.mat <- NULL
     p.val <- 1-pval(CR.rand)  #b/c smaller values more significant
-    CR.boot<- boot.CR(x, gps, iter=iter)
+    CR.boot<- boot.CR(x, gps, iter=iter, seed=seed)
     CR.CI<-quantile(CR.boot, c(.025, .975))
   }
   

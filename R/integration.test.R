@@ -96,6 +96,7 @@ integration.test<-function(A, A2=NULL,partition.gp=NULL,iter=999, seed=NULL){
       x<-x[,which(gps==levels(gps)[1])]
     }
   }
+  if(seed=="random") seed = sample(1:iter, 1)
   if(!is.null(A2)){
     A.new<-A; A2.new<-A2
     if(any(is.na(A2))==T){
@@ -107,7 +108,7 @@ integration.test<-function(A, A2=NULL,partition.gp=NULL,iter=999, seed=NULL){
     ngps=2; n<-dim(x)[2]
   }
   if(ngps==2){
-    pls.rand <- apply.pls(x, y, iter=iter)
+    pls.rand <- apply.pls(x, y, iter=iter, seed=seed)
     pls.obs <- pls(x, y, verbose=TRUE)
     p.val <- pval(pls.rand)
     XScores <- pls.obs$XScores
@@ -115,7 +116,7 @@ integration.test<-function(A, A2=NULL,partition.gp=NULL,iter=999, seed=NULL){
   }
   if(ngps>2){
     pls.obs <- plsmulti(x, gps)  
-    pls.rand <- apply.plsmulti(x, gps, iter=iter)
+    pls.rand <- apply.plsmulti(x, gps, iter=iter, seed=seed)
     p.val <- pval(pls.rand)
   }  
   ####OUTPUT

@@ -4,13 +4,18 @@
 \alias{procD.lm}
 \title{Procrustes ANOVA/regression for shape data}
 \usage{
-procD.lm(f1, iter = 999, RRPP = FALSE, int.first = FALSE, data = NULL,
-  ...)
+procD.lm(f1, iter = 999, seed = NULL, RRPP = FALSE, int.first = FALSE,
+  data = NULL, ...)
 }
 \arguments{
 \item{f1}{A formula for the linear model (e.g., y~x1+x2)}
 
 \item{iter}{Number of iterations for significance testing}
+
+\item{seed}{An optional argument for setting the seed for random permutations of the resampling procedure.
+If left NULL (the default), the exact same P-values will be found for repeated runs of the analysis (with the same number of iterations).
+If seed = "random", a random seed will be used, and P-values will vary.  One can also specify an integer for specific seed values,
+which might be of interest for advanced users.}
 
 \item{RRPP}{A logical value indicating whether residual randomization should be used for significance testing}
 

@@ -117,7 +117,8 @@ procD.lm<- function(f1, iter = 999, seed=NULL, RRPP = FALSE,
   if(int.first==TRUE) ko = TRUE else ko = FALSE
   pfit <- procD.fit(f1, data=data, keep.order=ko)
   k <- length(pfit$term.labels)
-  if(RRPP == TRUE) P <- SS.iter(pfit,Yalt="RRPP", iter=iter) else P <- SS.iter(pfit, Yalt="resample", iter=iter)
+  if(RRPP == TRUE) P <- SS.iter(pfit,Yalt="RRPP", iter=iter, seed=seed) else 
+    P <- SS.iter(pfit, Yalt="resample", iter=iter, seed=seed)
   anova.parts.obs <- anova.parts(pfit, P)
   anova.tab <-anova.parts.obs$anova.table 
   if(is.matrix(P)){

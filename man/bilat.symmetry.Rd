@@ -6,7 +6,7 @@
 \usage{
 bilat.symmetry(A, ind = NULL, side = NULL, replicate = NULL,
   object.sym = FALSE, land.pairs = NULL, data = NULL, iter = 999,
-  RRPP = TRUE)
+  seed = NULL, RRPP = TRUE)
 }
 \arguments{
 \item{A}{An array (p x k x n) containing GPA-aligned coordinates for a set of specimens [for "object.sym=FALSE, A is of dimension (n x k x 2n)]}
@@ -26,6 +26,11 @@ label (replicates also receive the same label).}
 that the variables "ind", "side", and "replicate" in the data frame match these names exactly (as shown in examples below).}
 
 \item{iter}{Number of iterations for significance testing.}
+
+\item{seed}{An optional argument for setting the seed for random permutations of the resampling procedure.
+If left NULL (the default), the exact same P-values will be found for repeated runs of the analysis (with the same number of iterations).
+  If seed = "random", a random seed will be used, and P-values will vary.  One can also specify an integer for specific seed values,
+which might be of interest for advanced users.}
 
 \item{RRPP}{A logical value indicating whether residual randomization should be used for significance testing.}
 }

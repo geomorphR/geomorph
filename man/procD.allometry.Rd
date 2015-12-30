@@ -5,7 +5,7 @@
 \title{Procrustes ANOVA/regression, specifically for shape-size covariation (allometry)}
 \usage{
 procD.allometry(f1, f2 = NULL, f3 = NULL, logsz = TRUE, iter = 999,
-  alpha = 0.05, RRPP = FALSE, data = NULL, ...)
+  seed = NULL, alpha = 0.05, RRPP = FALSE, data = NULL, ...)
 }
 \arguments{
 \item{f1}{A formula for the relationship of shape and size; e.g., Y ~ X.}
@@ -17,6 +17,11 @@ procD.allometry(f1, f2 = NULL, f3 = NULL, logsz = TRUE, iter = 999,
 \item{logsz}{A logical argument to indicate if the avriable for size should be log-transformed.}
 
 \item{iter}{Number of iterations for significance testing}
+
+\item{seed}{An optional argument for setting the seed for random permutations of the resampling procedure.
+If left NULL (the default), the exact same P-values will be found for repeated runs of the analysis (with the same number of iterations).
+If seed = "random", a random seed will be used, and P-values will vary.  One can also specify an integer for specific seed values,
+which might be of interest for advanced users.}
 
 \item{alpha}{The significance level for the homegeneity of slopes test}
 

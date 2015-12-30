@@ -4,7 +4,7 @@
 \alias{two.b.pls}
 \title{Two-block partial least squares analysis for shape data}
 \usage{
-two.b.pls(A1, A2, iter = 999)
+two.b.pls(A1, A2, iter = 999, seed = NULL)
 }
 \arguments{
 \item{A1}{A matrix (n x [p x k]) or 3D array (p x k x n) containing GPA-aligned coordinates for the first block}
@@ -12,6 +12,11 @@ two.b.pls(A1, A2, iter = 999)
 \item{A2}{A matrix (n x [p x k]) or 3D array (p x k x n) containing GPA-aligned coordinates for the second block}
 
 \item{iter}{Number of iterations for significance testing}
+
+\item{seed}{An optional argument for setting the seed for random permutations of the resampling procedure.
+If left NULL (the default), the exact same P-values will be found for repeated runs of the analysis (with the same number of iterations).
+If seed = "random", a random seed will be used, and P-values will vary.  One can also specify an integer for specific seed values,
+which might be of interest for advanced users.}
 }
 \value{
 Object of class "pls" that returns a list of the following:

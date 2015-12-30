@@ -101,7 +101,7 @@ physignal<-function(A,phy,iter=999, seed=NULL){
     return(K.stat)
   }
   K.obs<-Kmult(x,invC,D.mat)
-  ind <- perm.index(nrow(x), iter)
+  ind <- perm.index(nrow(x), iter, seed=seed)
   x.rand <-lapply(1:(iter+1), function(j) x[ind[[j]],])
   K.rand <- sapply(1:(iter+1), function(j) Kmult(as.matrix(x.rand[[j]]), invC,D.mat))
   p.val <- pval(K.rand)

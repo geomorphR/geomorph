@@ -63,7 +63,7 @@ phylo.integration <-function(A, A2=NULL, phy, partition.gp=NULL,iter=999, seed=N
     stop("Data matrix 1 contains missing values. Estimate these first(see 'estimate.missing').")  } 
   if (!is.phylo(phy))
     stop("phy must be of class 'phylo.'") 
-  
+  if(seed=="random") seed = sample(1:iter, 1)
   if(!is.null(partition.gp)){
     partition.gp<-as.factor(partition.gp)
     if (length(dim(A))==3){ x<-two.d.array(A)
@@ -123,14 +123,14 @@ phylo.integration <-function(A, A2=NULL, phy, partition.gp=NULL,iter=999, seed=N
 #Analysis  
   if(ngps==2){
     pls.obs <- pls.phylo(x, y, invC,D.mat,verbose=TRUE)
-    pls.rand <- apply.pls.phylo(x, y,invC,D.mat, iter=iter)
+    pls.rand <- apply.pls.phylo(x, y,invC,D.mat, iter=iter, seed=seed)
     p.val <- pval(pls.rand)
     XScores <- pls.obs$XScores
     YScores <- pls.obs$YScores
   }
   if(ngps>2){
     pls.obs <- plsmulti.phylo(x, gps, invC,D.mat)  
-    pls.rand <- apply.plsmulti.phylo(x, gps, invC,D.mat, iter=iter)
+    pls.rand <- apply.plsmulti.phylo(x, gps, invC,D.mat, iter=iter, seed=seed)
     p.val <- pval(pls.rand)
   } 
   ####OUTPUT
