@@ -97,10 +97,10 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
   if(!is.null(pfit1$weights)) w <- pfit1$weights else w <- rep(1,n)
   if(any(w < 0)) stop("Weights cannot be negative")
   n <- nrow(Y)
-  data2 <- geomorph.data.frame(Y=Y, data)
+  if(!is.null(data)) data2 <- geomorph.data.frame(Y=Y, data) 
   if(any(class(f2)=="lm")) pfit2 = procD.fit(f2) else {
       f2 <- update(f2, Y ~.) 
-      pfit2= procD.fit(f2, data=data2)
+      if(!is.null(data)) pfit2= procD.fit(f2, data=data2) else pfit2= procD.fit(f2)
   }
   k1 <- pfit1$QRs[[length(pfit1$QRs)]]$rank
   k2 <- pfit2$QRs[[length(pfit2$QRs)]]$rank
@@ -132,7 +132,8 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
   }
   data.types <- lapply(data, class)
   keep = sapply(data.types, function(x) x != "array" & x != "phylo")
-  dat2 <- as.data.frame(data[keep])
+  if(!is.null(data)) dat2 <- as.data.frame(data[keep]) else dat2 <- pfitf$data
+    
   if(!is.null(groups)){
     g.match <- match(names(dat2), attr(terms(groups), "term.labels"))
     if(!all(is.na(g.match))) gps <- dat2[,which(!is.na(g.match))] else
