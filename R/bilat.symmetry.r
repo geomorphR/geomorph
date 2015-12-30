@@ -146,7 +146,7 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
   }
   pfitSh <- procD.fit(form.shape, data = dat.shape, keep.order = TRUE)
   kSh <- length(pfitSh$term.labels)
-  if(seed=="random") seed = sample(1:iter, 1)
+  if(!is.null(seed) && seed=="random") seed = sample(1:iter, 1)
   if(RRPP == TRUE) PSh <- SS.iter(pfitSh,Yalt="RRPP", iter=iter, seed=seed) else 
     PSh <- SS.iter(pfitSh, Yalt="resample", iter=iter, seed=seed)
   anova.parts.Sh <- anova.parts.symmetry(pfitSh, PSh, object.sym)

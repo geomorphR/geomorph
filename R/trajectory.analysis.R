@@ -191,7 +191,7 @@ trajectory.analysis <- function(f1, f2=NULL, iter=999, seed=NULL, traj.pts = NUL
     red.terms <- full.terms[-length(full.terms)]
     fr <- as.formula(paste("Y~", paste(red.terms, collapse = "+"), sep=""))
   }
-  if(seed=="random") seed = sample(1:iter, 1)
+  if(!is.null(seed) && seed=="random") seed = sample(1:iter, 1)
   pda <- procD.lm(ff, data=data, iter=iter, RRPP = TRUE, seed=seed)
   if(length(datClasses) == 1) pta <- traj.by.groups(ff, fr, traj.pts, data=data, iter=iter, seed=seed) else
     pta <- traj.w.int(ff, fr, data=data, iter=iter, seed=seed)

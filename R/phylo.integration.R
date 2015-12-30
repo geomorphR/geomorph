@@ -63,7 +63,7 @@ phylo.integration <-function(A, A2=NULL, phy, partition.gp=NULL,iter=999, seed=N
     stop("Data matrix 1 contains missing values. Estimate these first(see 'estimate.missing').")  } 
   if (!is.phylo(phy))
     stop("phy must be of class 'phylo.'") 
-  if(seed=="random") seed = sample(1:iter, 1)
+  if(!is.null(seed) && seed=="random") seed = sample(1:iter, 1)
   if(!is.null(partition.gp)){
     partition.gp<-as.factor(partition.gp)
     if (length(dim(A))==3){ x<-two.d.array(A)

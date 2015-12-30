@@ -149,7 +149,7 @@ procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
   pfit <- procD.fit(f1, data=data)
   dat <- pfit$data
   Y <- pfit$Y
-  if(seed=="random") seed = sample(1:iter, 1)
+  if(!is.null(seed) && seed=="random") seed = sample(1:iter, 1)
   if((ncol(dat) - ncol(Y)) != 1) stop("Only a single covariate for size is permitted") 
   dat <- data.frame(Y=Y, size = dat[,ncol(dat)])
   size <- dat$size

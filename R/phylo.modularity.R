@@ -78,7 +78,7 @@ phylo.modularity<-function(A,partition.gp,phy,iter=999, seed=NULL){
     stop("Tree contains some taxa not present in present in the data matrix")  
   phy.parts<-phylo.mat(x,phy)
   invC<-phy.parts$invC; D.mat<-phy.parts$D.mat
-  if(seed=="random") seed = sample(1:iter, 1)
+  if(!is.null(seed) && seed=="random") seed = sample(1:iter, 1)
   if (length(dim(A))==2){
     CR.obs<-CR.phylo(x,invC,gps)
     if(ngps > 2) CR.mat <- CR.obs$CR.mat else CR.mat <- NULL
