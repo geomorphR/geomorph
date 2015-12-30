@@ -322,7 +322,7 @@ pGpa <- function(Y, PrinAxes = FALSE, Proj = FALSE, max.iter = 5){
   Yc <- Map(function(y) center.scale(y), Y)
   CS <- sapply(Yc,"[[","CS")
   Ya <- lapply(Yc,"[[","coords")
-  M <- Ya[[1]]
+  M <- Reduce("+",Ya)/n
   Ya <- apply.pPsup(M, Ya)
   M <- Reduce("+",Ya)/n
   Q <- ss <- n*(1-sum(M^2))
@@ -654,7 +654,7 @@ pGpa.wSliders <- function(Y, curves, surf, ProcD = TRUE, PrinAxes = FALSE, Proj 
   list(coords= Ya, CS=CS, iter=iter, iter.s=NULL, consensus=M, Q=Q, nsliders=NULL)
 }
 
-# description still needed
+# tps
 #
 #
 tps<-function(matr, matt, n,sz=1.5, pt.bg="black",
@@ -675,7 +675,7 @@ tps<-function(matr, matt, n,sz=1.5, pt.bg="black",
   if(refpts==FALSE) points(matt,pch=21,bg=pt.bg,cex=sz) else points(matr,pch=21,bg=pt.bg,cex=sz)
 }
 
-# description still needed
+# tps2d
 #
 #
 tps2d<-function(M, matr, matt)
@@ -702,7 +702,7 @@ matg[,1]<-fx(matr, M, coefx)
 matg[,2]<-fx(matr, M, coefy)
 matg}
 
-# description still needed
+# tps2d3d
 #
 #
 tps2d3d<-function(M, matr, matt){		#DCA: altered from J. Claude 2008  
@@ -734,7 +734,7 @@ tps2d3d<-function(M, matr, matt){		#DCA: altered from J. Claude 2008
 
 # pcoa
 # acquires principal coordimates from distance matrices
-# used in all functions with 'procD.lm" via porcD.fit
+# used in all functions with 'procD.lm" via procD.fit
 pcoa <- function(D){
   options(warn=-1)
   if(class(D) != "dist") stop("function only works with distance matrices")
@@ -743,23 +743,6 @@ pcoa <- function(D){
   p <- length(cmd$eig[zapsmall(cmd$eig) > 0])
   Yp <- cmd$points[,1:p]
   Yp
-}
-
-# description still needed
-#
-#
-simplify2data.frame <- function(g, n) { # g = geomorph.data.frame class object
-  newdf <- list(ind=rep(1,n))
-  df.names <- names(g)
-  for(i in 1:length(df.names)) {
-    if(is.array(g[[i]])) newdf[[i+1]] <- two.d.array(g[[i]])
-    if(is.matrix(g[[i]])) newdf[[i+1]] <- g[[i]]
-    if(is.vector(g[[i]])) newdf[[i+1]] <- g[[i]]
-    if(is.factor(g[[i]])) newdf[[i+1]] <- g[[i]]
-  }
-  newdf <- newdf[-1]
-  names(newdf) <- df.names
-  as.data.frame(newdf)
 }
 
 # procD.fit
@@ -874,8 +857,9 @@ procD.fit <- function(f1, keep.order=FALSE, pca=TRUE, data=NULL,...){
 # perm.index
 # creates a permutation index for resampling
 # used in all functions with a resampling procedure
-perm.index <-function(n,iter){
-  set.seed(iter)
+perm.index <-function(n, iter, seed=NULL){
+  if(!is.null(seed)) seed=iter
+  set.seed(seed)
   ind <- c(list(1:n),(Map(function(x) sample(1:n), 1:iter)))
   ind
 }
@@ -883,8 +867,9 @@ perm.index <-function(n,iter){
 # boot.index
 # creates a bootstrap index for resampling
 # used in modularity test functions
-boot.index <-function(n,iter){
-  set.seed(iter)
+boot.index <-function(n, iter, seed=NULL){
+  if(!is.null(seed)) seed=iter
+  set.seed(seed)
   ind <- c(list(1:n),(Map(function(x) sample(1:n, replace = TRUE), 1:iter)))
   ind
 }
