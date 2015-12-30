@@ -34,6 +34,10 @@
 #' @param A A 3D array (p x k x n) containing GPA-aligned coordinates for all specimens, or a matrix (n x variables)
 #' @param partition.gp A list of which landmarks (or variables) belong in which partition (e.g. A,A,A,B,B,B,C,C,C)
 #' @param iter Number of iterations for significance testing
+#' @param seed An optional argument for setting the seed for random permutations of the resampling procedure.  
+#' If left NULL (the default), the exact same P-values will be found for repeated runs of the analysis (with the same number of iterations).
+#' If seed = "random", a random seed will be used, and P-values will vary.  One can also specify an integer for specific seed values,
+#' which might be of interest for advanced users.
 #' @keywords analysis
 #' @export
 #' @author Dean Adams
@@ -61,7 +65,7 @@
 #' MT$CInterval # extracting just the 95% CI
 #' # Result implies that the skull and mandible are not independent modules
 
-modularity.test<-function(A,partition.gp,iter=999){
+modularity.test<-function(A,partition.gp,iter=999, seed=NULL){
   if(any(is.na(A))==T){
     stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').")  }
   if (length(dim(A))==3){ x<-two.d.array(A)

@@ -20,6 +20,10 @@
 #' @param A1 A matrix (n x [p x k]) or 3D array (p x k x n) containing GPA-aligned coordinates for the first block
 #' @param A2 A matrix (n x [p x k]) or 3D array (p x k x n) containing GPA-aligned coordinates for the second block 
 #' @param iter Number of iterations for significance testing
+#' @param seed An optional argument for setting the seed for random permutations of the resampling procedure.  
+#' If left NULL (the default), the exact same P-values will be found for repeated runs of the analysis (with the same number of iterations).
+#' If seed = "random", a random seed will be used, and P-values will vary.  One can also specify an integer for specific seed values,
+#' which might be of interest for advanced users.
 #' @export
 #' @keywords analysis
 #' @author Dean Adams and Michael Collyer
@@ -53,7 +57,7 @@
 #' summary(PLS)
 #' plot(PLS)
 
-two.b.pls <- function (A1, A2,  iter = 999){
+two.b.pls <- function (A1, A2,  iter = 999, seed = NULL){
     if (any(is.na(A1)) == T) 
       stop("Data matrix 1 contains missing values. Estimate these first (see 'estimate.missing').")
     if (any(is.na(A2)) == T) 
@@ -63,7 +67,6 @@ two.b.pls <- function (A1, A2,  iter = 999){
   if (length(dim(A2)) == 3) y <- two.d.array(A2) else y <- as.matrix(A2)
   if (nrow(x) != nrow(y)) stop("Data matrices have different numbers of specimens.")
   n <- nrow(x)
-  ind <- perm.index(n, iter)
   pls.rand <- apply.pls(x, y, RV=FALSE, iter=iter)
   pls.obs <- pls(x, y, RV=FALSE, verbose=TRUE)
   p.val <- pval(pls.rand)

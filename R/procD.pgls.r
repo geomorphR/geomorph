@@ -50,6 +50,10 @@
 #' @param f1 A formula for the linear model (e.g., y~x1+x2)
 #' @param phy A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape
 #' @param iter Number of iterations for significance testing
+#' @param seed An optional argument for setting the seed for random permutations of the resampling procedure.  
+#' If left NULL (the default), the exact same P-values will be found for repeated runs of the analysis (with the same number of iterations).
+#' If seed = "random", a random seed will be used, and P-values will vary.  One can also specify an integer for specific seed values,
+#' which might be of interest for advanced users.
 #' @param int.first A logical value to indicate if interactions of first main effects should precede subsequent main effects
 #' @param RRPP a logical value indicating whether residual randomization should be used for significance testing
 #' @param data A data frame for the function environment, see \code{\link{geomorph.data.frame}} 
@@ -79,7 +83,7 @@
 #' summary(pleth.pgls)
 #' plot(pleth.pgls)
 #' pleth.pgls$Pcor # the phylogenetic transformation (correction) matrix
-procD.pgls<-function(f1, phy, iter=999, int.first = FALSE, 
+procD.pgls<-function(f1, phy, iter=999, seed=NULL, int.first = FALSE, 
                          RRPP=FALSE, data=NULL, ...){
   if(int.first==TRUE) ko = TRUE else ko = FALSE
   pfit <- procD.fit(f1, data=data, keep.order=ko)

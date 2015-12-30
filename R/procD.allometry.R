@@ -74,6 +74,10 @@
 #' @param f3 A optional right-hand formula for the inclusion of additional variables; e.g., ~ a + b + c + ...
 #' @param logsz A logical argument to indicate if the avriable for size should be log-transformed.
 #' @param iter Number of iterations for significance testing
+#' @param seed An optional argument for setting the seed for random permutations of the resampling procedure.  
+#' If left NULL (the default), the exact same P-values will be found for repeated runs of the analysis (with the same number of iterations).
+#' If seed = "random", a random seed will be used, and P-values will vary.  One can also specify an integer for specific seed values,
+#' which might be of interest for advanced users.
 #' @param alpha The significance level for the homegeneity of slopes test
 #' @param RRPP A logical value indicating whether residual randomization should be used for significance testing
 #' @param data A data frame for the function environment, see \code{\link{geomorph.data.frame}} 
@@ -141,7 +145,7 @@
 #' summary(plethANOVA) # Same ANOVA
 #' plot(plethANOVA) # diagnostic plot instead of allometry plot
 procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
-                           iter = 999, alpha = 0.05, RRPP = FALSE, data=NULL, ...){
+                   iter = 999, seed=NULL, alpha = 0.05, RRPP = FALSE, data=NULL, ...){
   pfit <- procD.fit(f1, data=data)
   dat <- pfit$data
   Y <- pfit$Y

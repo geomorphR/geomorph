@@ -32,6 +32,10 @@
 #' @param A2 An optional 3D array (p x k x n) containing GPA-aligned coordinates for all specimens, or a matrix (n x variables) for a second partition
 #' @param partition.gp A list of which landmarks (or variables) belong in which partition (e.g. A,A,A,B,B,B,C,C,C) (required when only 1 dataset provided)
 #' @param iter Number of iterations for significance testing
+#' @param seed An optional argument for setting the seed for random permutations of the resampling procedure.  
+#' If left NULL (the default), the exact same P-values will be found for repeated runs of the analysis (with the same number of iterations).
+#' If seed = "random", a random seed will be used, and P-values will vary.  One can also specify an integer for specific seed values,
+#' which might be of interest for advanced users.
 #' @export
 #' @keywords analysis
 #' @author Dean Adams
@@ -69,7 +73,7 @@
 #' plot(IT) # PLS plot
 #' IT$left.pls.vectors # extracting just the left (first block) singular vectors
 
-integration.test<-function(A, A2=NULL,partition.gp=NULL,iter=999){
+integration.test<-function(A, A2=NULL,partition.gp=NULL,iter=999, seed=NULL){
   if(any(is.na(A))==T){
     stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').")  }
   if(!is.null(partition.gp)){
@@ -103,7 +107,6 @@ integration.test<-function(A, A2=NULL,partition.gp=NULL,iter=999){
     ngps=2; n<-dim(x)[2]
   }
   if(ngps==2){
-    ind <- perm.index(n, iter)
     pls.rand <- apply.pls(x, y, iter=iter)
     pls.obs <- pls(x, y, verbose=TRUE)
     p.val <- pval(pls.rand)
@@ -112,7 +115,6 @@ integration.test<-function(A, A2=NULL,partition.gp=NULL,iter=999){
   }
   if(ngps>2){
     pls.obs <- plsmulti(x, gps)  
-    ind <- perm.index(n, iter)
     pls.rand <- apply.plsmulti(x, gps, iter=iter)
     p.val <- pval(pls.rand)
   }  

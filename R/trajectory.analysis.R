@@ -66,6 +66,10 @@
 #' @param f1 A formula for the linear model, for trajectories (e.g., Y ~ A or Y ~ A * B)
 #' @param f2 A formula for additional covariates  (e.g.,  ~ x1 + x2)
 #' @param iter Number of iterations for significance testing
+#' @param seed An optional argument for setting the seed for random permutations of the resampling procedure.  
+#' If left NULL (the default), the exact same P-values will be found for repeated runs of the analysis (with the same number of iterations).
+#' If seed = "random", a random seed will be used, and P-values will vary.  One can also specify an integer for specific seed values,
+#' which might be of interest for advanced users.
 #' @param traj.pts An optional value specifying the number of points in each trajectory (if f1 contains a single factor)
 #' @param data A data frame for the function environment, see \code{\link{geomorph.data.frame}} 
 #' @param ... Arguments passed on to procD.fit (typically associated with the lm function)
@@ -161,7 +165,7 @@
 #' plot(TA, group.cols = c("dark red", "dark blue", "dark green", "yellow"), pt.scale = 1.3)
 #' plot(TA, group.cols = c("dark red", "dark blue", "dark green", "yellow"), 
 #' pt.seq.pattern = c("green", "gray30", "red"), pt.scale = 1.3)
-trajectory.analysis <- function(f1, f2=NULL, iter=999, traj.pts = NULL, data = NULL){
+trajectory.analysis <- function(f1, f2=NULL, iter=999, seed=NULL, traj.pts = NULL, data = NULL){
   pfit1 <- procD.fit(f1, data=data, pca=FALSE)
   Terms <- pfit1$Terms
   dat <- pfit1$data

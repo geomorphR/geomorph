@@ -31,6 +31,10 @@
 #' @param phy A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape
 #' @param partition.gp A list of which landmarks (or variables) belong in which partition (e.g. A,A,A,B,B,B,C,C,C) (required when only 1 dataset provided)
 #' @param iter Number of iterations for significance testing
+#' @param seed An optional argument for setting the seed for random permutations of the resampling procedure.  
+#' If left NULL (the default), the exact same P-values will be found for repeated runs of the analysis (with the same number of iterations).
+#' If seed = "random", a random seed will be used, and P-values will vary.  One can also specify an integer for specific seed values,
+#' which might be of interest for advanced users.
 #' @export
 #' @keywords analysis
 #' @author Dean Adams
@@ -54,7 +58,7 @@
 #' summary(IT) # Test summary
 #' plot(IT) # PLS plot
 #' 
-phylo.integration <-function(A, A2=NULL, phy, partition.gp=NULL,iter=999){ 
+phylo.integration <-function(A, A2=NULL, phy, partition.gp=NULL,iter=999, seed=NULL){ 
   if(any(is.na(A))==T){
     stop("Data matrix 1 contains missing values. Estimate these first(see 'estimate.missing').")  } 
   if (!is.phylo(phy))

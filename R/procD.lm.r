@@ -44,6 +44,10 @@
 #'   The generic function, \code{\link{plot}}, produces diagnostic plots for Procrustes residuals of the linear fit.
 #' @param f1 A formula for the linear model (e.g., y~x1+x2)
 #' @param iter Number of iterations for significance testing
+#' @param seed An optional argument for setting the seed for random permutations of the resampling procedure.  
+#' If left NULL (the default), the exact same P-values will be found for repeated runs of the analysis (with the same number of iterations).
+#' If seed = "random", a random seed will be used, and P-values will vary.  One can also specify an integer for specific seed values,
+#' which might be of interest for advanced users.
 #' @param RRPP A logical value indicating whether residual randomization should be used for significance testing
 #' @param int.first A logical value to indicate if interactions of first main effects should precede subsequent main effects
 #' @param data A data frame for the function environment, see \code{\link{geomorph.data.frame}} 
@@ -108,7 +112,7 @@
 #' plot(rat.anova, outliers = TRUE) # diagnostic plots, including plotOutliers
 #' attributes(rat.anova)
 #' rat.anova$fitted # just the fitted values
-procD.lm<- function(f1, iter = 999, RRPP = FALSE, 
+procD.lm<- function(f1, iter = 999, seed=NULL, RRPP = FALSE, 
                         int.first = FALSE,  data=NULL, ...){
   if(int.first==TRUE) ko = TRUE else ko = FALSE
   pfit <- procD.fit(f1, data=data, keep.order=ko)

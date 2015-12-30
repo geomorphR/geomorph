@@ -26,6 +26,10 @@
 #' @param partition.gp A list of which landmarks (or variables) belong in which partition (e.g. A,A,A,B,B,B,C,C,C)
 #' @param phy A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape
 #' @param iter Number of iterations for significance testing
+#' @param seed An optional argument for setting the seed for random permutations of the resampling procedure.  
+#' If left NULL (the default), the exact same P-values will be found for repeated runs of the analysis (with the same number of iterations).
+#' If seed = "random", a random seed will be used, and P-values will vary.  One can also specify an integer for specific seed values,
+#' which might be of interest for advanced users.
 #' @export
 #' @keywords analysis
 #' @author Dean Adams
@@ -51,7 +55,7 @@
 #' MT <- phylo.modularity(Y.gpa$coords,partition.gp=land.gps,phy=plethspecies$phy,iter=999)
 #' summary(MT) # Test summary
 #' plot(MT) # PLS plot 
-phylo.modularity<-function(A,partition.gp,phy,iter=999){
+phylo.modularity<-function(A,partition.gp,phy,iter=999, seed=NULL){
   if(any(is.na(A))==T){
     stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').")  }
   if (class(phy) != "phylo")

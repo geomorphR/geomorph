@@ -858,7 +858,9 @@ procD.fit <- function(f1, keep.order=FALSE, pca=TRUE, data=NULL,...){
 # creates a permutation index for resampling
 # used in all functions with a resampling procedure
 perm.index <-function(n, iter, seed=NULL){
-  if(!is.null(seed)) seed=iter
+  if(is.null(seed)) seed = iter else
+    if(seed == "random") seed = sample(1:iter,1) else
+      if(!is.numeric(seed)) seed = iter
   set.seed(seed)
   ind <- c(list(1:n),(Map(function(x) sample(1:n), 1:iter)))
   ind
@@ -868,7 +870,9 @@ perm.index <-function(n, iter, seed=NULL){
 # creates a bootstrap index for resampling
 # used in modularity test functions
 boot.index <-function(n, iter, seed=NULL){
-  if(!is.null(seed)) seed=iter
+  if(is.null(seed)) seed = iter else
+    if(seed == "random") seed = sample(1:iter,1) else
+      if(!is.numeric(seed)) seed = iter
   set.seed(seed)
   ind <- c(list(1:n),(Map(function(x) sample(1:n, replace = TRUE), 1:iter)))
   ind
@@ -877,7 +881,7 @@ boot.index <-function(n, iter, seed=NULL){
 # SS.iter
 # calculates SS in random iterations of a resmapling procedure
 # used in nearly all 'procD.lm' functions, unless pgls in used
-SS.iter = function(pfit,iter, Yalt="RRPP"){
+SS.iter = function(pfit,iter, seed = NULL, Yalt="RRPP"){
   Y <- as.matrix(pfit$Y)
   k <- length(pfit$QRs)
   n <- nrow(Y)
@@ -886,7 +890,7 @@ SS.iter = function(pfit,iter, Yalt="RRPP"){
   w<- pfit$weights
   Xr <- lapply(pfit$wXs[1:(k-1)], function(x) as.matrix(x))
   Xf <- lapply(pfit$wXs[2:k], function(x) as.matrix(x))
-  ind = perm.index(n,iter)
+  ind = perm.index(n,iter, seed=seed)
   if(Yalt=="RRPP") {
     if(sum(w)==n) {
       Yr = Map(function(x) (Map(function(y,e) e[x,]+y, Yh[1:(k-1)], E[1:(k-1)])),ind)
@@ -909,7 +913,7 @@ SS.iter = function(pfit,iter, Yalt="RRPP"){
 # calculates F values in random iterations of a resmapling procedure, with pgls involved
 # used in the 'procD.lm' functions where pgls in used
 
-Fpgls.iter = function(pfit,Pcor,iter, Yalt="RRPP"){
+Fpgls.iter = function(pfit,Pcor,iter, seed=NULL, Yalt="RRPP"){
   Y <- as.matrix(pfit$Y)
   k <- length(pfit$QRs)
   n <- nrow(Y)
@@ -923,7 +927,7 @@ Fpgls.iter = function(pfit,Pcor,iter, Yalt="RRPP"){
   PwXs <- lapply(pfit$wXs, function(x) crossprod(Pcor,as.matrix(x)))
   Xr <- lapply(PwXs[1:(k-1)], function(x) as.matrix(x))
   Xf <- lapply(PwXs[2:k], function(x) as.matrix(x))
-  ind = perm.index(n,iter)
+  ind = perm.index(n,iter, seed=seed)
   if(Yalt=="RRPP") {
     Yr = Map(function(x) (Map(function(y,e) crossprod(Pcor,as.matrix(e[x,]+y)*sqrt(w)), Yh[1:(k-1)], E[1:(k-1)])),ind) 
   } else {
@@ -1260,11 +1264,11 @@ quick.pls <- function(x,y, px, py, pmin) {# no RV; no verbose output
 # apply.pls 
 # run permutations of pls analysis
 # used in: two.b.pls, integration.test
-apply.pls <- function(x,y, RV=FALSE, iter){
+apply.pls <- function(x,y, RV=FALSE, iter, seed = NULL){
   x <- as.matrix(x); y <- as.matrix(y)
   px <- ncol(x); py <- ncol(y)
   pmin <- min(px,py)
-  ind <- perm.index(nrow(x), iter)
+  ind <- perm.index(nrow(x), iter, seed=seed)
   y.rand <-lapply(1:(iter+1), function(j) y[ind[[j]],])
   if(RV == TRUE) RV.rand <- sapply(1:(iter+1), function(j) pls(x,y.rand[[j]], RV=TRUE, verbose = TRUE)$RV) else
     r.rand <- sapply(1:(iter+1), function(j) quick.pls(x,y.rand[[j]], px,py,pmin))
@@ -1318,11 +1322,11 @@ quick.plsmulti <- function(x,gps){
 # apply.plsmulti
 # permutation for multipls
 # used in: integration.test
-apply.plsmulti <- function(x,gps, iter){
+apply.plsmulti <- function(x,gps, iter, seed = NULL){
   ngps<-nlevels(gps)
   S <-var(x)
   r.obs <- plsmulti(x,gps)$r.pls
-  ind <- perm.index(nrow(x), iter)
+  ind <- perm.index(nrow(x), iter, seed=seed)
   x.r<-lapply(1:(iter+1), function(j) x[ind[[j]],which(gps==levels(gps)[1])]) #shuffle 1st block
   r.rand<-sapply(1:(iter+1), function(j) quick.plsmulti(cbind(x.r[[j]],
                                                             x[,which(gps!=levels(gps)[1])]),gps)) 
@@ -1375,9 +1379,9 @@ quick.CR <-function(x,gps){ # no CR.mat made
 # apply.CR
 # permutation for CR
 # used in: modularity.test
-apply.CR <- function(x,gps, iter){
+apply.CR <- function(x,gps, iter, seed = NULL){
   CR.obs <- CR(x,gps)$CR
-  ind <- perm.index(length(gps), iter)
+  ind <- perm.index(length(gps), iter, seed=seed)
   x.r<-lapply(1:(iter+1), function(j) x[,ind[[j]]])
   CR.rand<-sapply(1:(iter+1), function(j) quick.CR(x.r[[j]],gps)) 
   CR.rand
@@ -1386,9 +1390,9 @@ apply.CR <- function(x,gps, iter){
 # boot.CR
 # Bootstrap for CR
 # used in: modularity.test
-boot.CR <- function(x,gps, iter){
+boot.CR <- function(x,gps, iter, seed = NULL){
   x<-as.matrix(x)
-  boot <- boot.index(nrow(x)-1, iter)
+  boot <- boot.index(nrow(x)-1, iter, seed=seed)
   x.r<-lapply(1:(iter+1), function(j) x[boot[[j]],])
   CR.boot<-sapply(1:(iter+1), function(j) quick.CR(x.r[[j]],gps)) 
   CR.boot
@@ -1446,8 +1450,8 @@ quick.CR.phylo <- function(x,invC,gps){
 # apply.phylo.CR
 # permutation for phylo.CR
 # used in: phylo.modularity
-apply.phylo.CR <- function(x,invC,gps, iter){
-  ind <- perm.index(length(gps), iter)
+apply.phylo.CR <- function(x,invC,gps, iter, seed=NULL){
+  ind <- perm.index(length(gps), iter, seed=seed)
   x.r<-lapply(1:(iter+1), function(j) x[,ind[[j]]])
   CR.rand<-sapply(1:(iter+1), function(j) quick.CR.phylo(x.r[[j]],invC=invC,gps=gps)) 
   CR.rand
@@ -1456,9 +1460,9 @@ apply.phylo.CR <- function(x,invC,gps, iter){
 # boot.phylo.CR
 # bootstrap for phylo.CR
 # phylo.modularity 
-boot.phylo.CR <- function(x,invC,gps, iter){
+boot.phylo.CR <- function(x,invC,gps, iter, seed = NULL){
   x<-as.matrix(x)
-  boot <- boot.index(nrow(x)-1, iter)
+  boot <- boot.index(nrow(x)-1, iter, seed=seed)
   x.r<-lapply(1:(iter+1), function(j) x[boot[[j]],])
   invC.r <- lapply(1:(iter+1), function(j) invC[boot[[j]],boot[[j]]])
   CR.boot<-sapply(1:(iter+1), function(j) quick.CR.phylo(x=x.r[[j]],invC=invC.r[[j]],gps=gps)) 
@@ -1514,8 +1518,8 @@ pls.phylo <- function(x,y, invC,D.mat, verbose = FALSE){
 # apply.pls.phylo
 # permutation for phylo.pls
 # used in: phylo.integration
-apply.pls.phylo <- function(x,y,invC,D.mat, iter){
-  ind <- perm.index(nrow(x), iter)
+apply.pls.phylo <- function(x,y,invC,D.mat, iter, seed = NULL){
+  ind <- perm.index(nrow(x), iter, seed=seed)
   y.rand <-lapply(1:(iter+1), function(j) y[ind[[j]],])
   r.rand <- sapply(1:(iter+1), function(j) pls.phylo(x,y.rand[[j]], invC,D.mat, verbose = FALSE))
   r.rand
@@ -1551,9 +1555,9 @@ plsmulti.phylo<-function(x,gps, invC, D.mat){
 # apply.plsmulti.phylo
 # permutations for plsmulti.phylo
 # used in: phylo.integration
-apply.plsmulti.phylo <- function(x,gps, invC,D.mat, iter){
+apply.plsmulti.phylo <- function(x,gps, invC,D.mat, iter, seed= NULL){
   gps<-factor(gps)
-  ind <- perm.index(nrow(x), iter)
+  ind <- perm.index(nrow(x), iter, seed=seed)
   x.r<-lapply(1:(iter+1), function(j) x[ind[[j]],which(gps==levels(gps)[1])]) #shuffle 1st block
   r.rand <- sapply(1:(iter+1), function(j) plsmulti.phylo(cbind(x.r[[j]],x[,which(gps!=levels(gps)[1])]), 
                                                               gps, invC,D.mat)$r.pls)
@@ -1683,7 +1687,7 @@ trajshape <- function(y){
 # traj.w.int
 # full PTA stats for trajectories from a model with an interaction
 # used in: trajectory.analysis
-traj.w.int <- function(ff, fr, data=NULL, iter){
+traj.w.int <- function(ff, fr, data=NULL, iter, seed= NULL){
   pfitf <- procD.fit(ff, data = data, pca=FALSE)
   pfitr <- procD.fit(fr, data = data, pca=FALSE)
   ex.terms <- length(pfitf$term.labels) - 3
@@ -1695,7 +1699,7 @@ traj.w.int <- function(ff, fr, data=NULL, iter){
   group.levels <- levels(data[[match(attr(terms(ff),"term.labels")[[ex.terms+1]], names(data))]])
   tn <- length(group.levels)
   p <- ncol(Y)
-  ind <- perm.index(n, iter)
+  ind <- perm.index(n, iter, seed=seed)
   Yr <- Map(function(x) Yh + E[x,], ind)
   if(sum(pfitf$weights) != n) Yr <- Map(function(y) y*sqrt(pfitf$weights), Yr)
   means <- apply.ls.means(pfitf, Yr)
@@ -1721,7 +1725,7 @@ traj.w.int <- function(ff, fr, data=NULL, iter){
 # traj.by.groups
 # full PTA stats for trajectories from a model without an interaction; assume data are trajectories
 # used in: trajectory.analysis
-traj.by.groups <- function(ff, fr, traj.pts, data=NULL, iter){
+traj.by.groups <- function(ff, fr, traj.pts, data=NULL, iter, seed= NULL){
   pfitf <- procD.fit(ff, data = data, pca=FALSE)
   pfitr <- procD.fit(fr, data = data, pca=FALSE)
   ex.terms <- length(pfitf$term.labels) - 1
@@ -1735,7 +1739,7 @@ traj.by.groups <- function(ff, fr, traj.pts, data=NULL, iter){
   gps <- data[[match((pfitf$term.labels)[ex.terms+1], names(data))]]
   group.levels <- levels(gps)
   tn <- length(group.levels)
-  ind <- perm.index(n, iter)
+  ind <- perm.index(n, iter, seed=seed)
   Yr <- Map(function(x) Yh + E[x,], ind)
   if(sum(pfitf$weights) != n) Yr <- Map(function(y) y*sqrt(pfitf$weights), Yr)
   means <- apply.ls.means(pfitf, Yr)

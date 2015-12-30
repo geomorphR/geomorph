@@ -35,6 +35,10 @@
 #' @param angle.type A value specifying whether differences between slopes should be represented by vector
 #' correlations (r), radians (rad) or degrees (deg)
 #' @param iter Number of iterations for significance testing
+#' @param seed An optional argument for setting the seed for random permutations of the resampling procedure.  
+#' If left NULL (the default), the exact same P-values will be found for repeated runs of the analysis (with the same number of iterations).
+#' If seed = "random", a random seed will be used, and P-values will vary.  One can also specify an integer for specific seed values,
+#' which might be of interest for advanced users.
 #' @param data A data frame for the function environment; see \code{\link{geomorph.data.frame}}.  If variables
 #' are transformed in formulae, they should also be transformed in the geomorph data frame.  (See examples.)
 #' @param ... Arguments passed on to procD.fit (typically associated with the lm function)
@@ -85,7 +89,8 @@
 #'aov.pleth$slopes # extract the slope vectors
 
 advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL, 
-                                angle.type = c("r", "deg", "rad"), iter=999, data=NULL, ...){
+                            angle.type = c("r", "deg", "rad"), iter=999, 
+                            seed = NULL, data=NULL, ...){
   pfit1 <- procD.fit(f1, data=data)
   Y <- as.matrix(pfit1$Y)
   if(!is.null(pfit1$weights)) w <- pfit1$weights else w <- rep(1,n)

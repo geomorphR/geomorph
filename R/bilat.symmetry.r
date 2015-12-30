@@ -47,6 +47,10 @@
 #' @param data A data frame for the function environment, see \code{\link{geomorph.data.frame}}. It is imperative
 #' that the variables "ind", "side", and "replicate" in the data frame match these names exactly (as shown in examples below).  
 #' @param iter Number of iterations for significance testing.
+#' @param seed An optional argument for setting the seed for random permutations of the resampling procedure.  
+#' If left NULL (the default), the exact same P-values will be found for repeated runs of the analysis (with the same number of iterations).
+#'   If seed = "random", a random seed will be used, and P-values will vary.  One can also specify an integer for specific seed values,
+#' which might be of interest for advanced users.
 #' @param RRPP A logical value indicating whether residual randomization should be used for significance testing.
 #' @keywords analysis
 #' @export
@@ -93,7 +97,7 @@
 #' # NOTE one can also: scallop.sym$data.type # recall the symmetry type
 
 bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,land.pairs=NULL,
-      data = NULL, iter=999,RRPP=TRUE){
+      data = NULL, iter = 999, seed = NULL, RRPP = TRUE){
   if(!is.null(data)) {
     A.name <- deparse(substitute(A))
     A.name.match <- match(A.name, names(data))
