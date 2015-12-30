@@ -103,7 +103,7 @@ modularity.test<-function(A,partition.gp,iter=999, seed=NULL){
       CR(rotA,gps)$CR
     })
     avgCR <- mean(rotatedCRs)
-    # Angle interpolation (must determine if CR is ascending ro descending)
+    # Angle interpolation (must determine if CR is ascending or descending)
     if(avgCR <= rotatedCRs[1]) avgCR.int <- which(as.numeric(avgCR >= rotatedCRs)==1)[1] else
         avgCR.int <-which(as.numeric(avgCR <= rotatedCRs)==1)[1] 
     avgCR.int <- c(avgCR.int -1,avgCR.int) # sequence for interval with mean CR

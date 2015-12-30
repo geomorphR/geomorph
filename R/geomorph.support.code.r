@@ -9,7 +9,7 @@
 #'  of shape variation and covariation, and provide graphical depictions of shapes and patterns of
 #'  shape variation.
 #'  
-#' @section geomorph functions:
+#' @section 
 #' 
 #' 
 #' @import ape

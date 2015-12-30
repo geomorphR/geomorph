@@ -25,6 +25,8 @@ If seed = "random", a random seed will be used, and P-values will vary.  One can
 which might be of interest for advanced users.}
 
 \item{data}{A data frame for the function environment, see \code{\link{geomorph.data.frame}}}
+
+\item{...}{Arguments passed on to procD.fit (typically associated with the lm function)}
 }
 \value{
 Objects of class "morphol.disparity" return a list with the following components 
