@@ -3,15 +3,12 @@
 #' @aliases geomorph
 #' @title Geometric morphometric analyses for 2D/3D data
 #' @author Dean C. Adams, Michael Collyer, & Emma Sherratt
-#'
+#' 
 #' @description Functions in this package allow one to read, manipulate, and digitize landmark data; generate shape
 #'  variables via Procrustes analysis for points, curves and surface data, perform statistical analyses
 #'  of shape variation and covariation, and provide graphical depictions of shapes and patterns of
 #'  shape variation.
 #'  
-#' @section 
-#' 
-#' 
 #' @import ape
 #' @import rgl
 #' @import stats
@@ -22,6 +19,9 @@
 #' @importFrom jpeg readJPEG
 #' @importFrom phytools fastAnc
 #' @importFrom Matrix nearPD
+#' 
+#' @section geomorph TOC:
+#' geomorph-package
 NULL
 
 #' Landmark data from Plethodon salamander heads
