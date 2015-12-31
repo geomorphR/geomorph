@@ -954,7 +954,7 @@ trajplot.by.groups<-function(Data, TM, groups, group.cols = NULL,
        xlim = c(2*pmin, pmax),
        xlab="PC I", ylab="PC II",
        main="Two Dimensional View  of Phenotypic Trajectories",asp=1)
-  if(is.null(group.cols)) gp.cols <- gp.index <- as.numeric(groups) else gp.cols <- group.cols
+  if(is.null(group.cols)) gp.cols <- as.numeric(groups) else gp.cols <- group.cols
   if(length(gp.cols) != length(groups)) {
     if(length(gp.cols) != nlevels(groups)) 
       stop("group.cols is not logical with respect to either groups or group levels") else
@@ -962,10 +962,9 @@ trajplot.by.groups<-function(Data, TM, groups, group.cols = NULL,
          new.gp.cols <-array(,n)
          for(i in 1:n) new.gp.cols[i] <- gp.cols[match(groups[i], levels(groups))]
       } 
-    gp.index <- gp.cols
     gp.cols <- new.gp.cols
   }
-  
+  gp.index <- unique(gp.cols)
   point.seq <- function(x, p, tp, pt.col, pt.scale){
     for(i in 1:(tp-1)){
       y <- matrix(x[1:(2*p)],2,, byrow=TRUE)
@@ -982,7 +981,7 @@ trajplot.by.groups<-function(Data, TM, groups, group.cols = NULL,
   }
   legend("topleft", levels(groups), lwd=2, col=gp.index)
 }
-  
+
 #' Plot Function for geomorph
 #' 
 #' @param x plot object
