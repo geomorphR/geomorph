@@ -68,8 +68,8 @@ Y.gpa<-gpagen(plethodon$land)    #GPA-alignment
 land.gps<-c("A","A","A","A","A","B","B","B","B","B","B","B") 
 
 MT <- modularity.test(Y.gpa$coords,land.gps,iter=999)
-summary(MT)
-plot(MT)
+summary(MT) # Test summary
+plot(MT) # Histogram of CR sampling distribution 
 MT$CInterval # extracting just the 95\% CI
 # Result implies that the skull and mandible are not independent modules
 }

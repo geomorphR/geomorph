@@ -60,8 +60,8 @@
 #' land.gps<-c("A","A","A","A","A","B","B","B","B","B","B","B") 
 #'
 #' MT <- modularity.test(Y.gpa$coords,land.gps,iter=999)
-#' summary(MT)
-#' plot(MT)
+#' summary(MT) # Test summary
+#' plot(MT) # Histogram of CR sampling distribution 
 #' MT$CInterval # extracting just the 95% CI
 #' # Result implies that the skull and mandible are not independent modules
 
@@ -81,9 +81,9 @@ modularity.test<-function(A,partition.gp,iter=999, seed=NULL){
     CR.obs<-CR(x,gps)
     if(ngps > 2) CR.mat <- CR.obs$CR.mat else CR.mat <- NULL
     CR.obs <- CR.obs$CR
-    CR.rand <- apply.CR(x, gps, iter=iter)
+    CR.rand <- apply.CR(x, gps, iter=iter, seed=seed)
     p.val <- 1-pval(CR.rand)  #b/c smaller values more significant
-    CR.boot<- boot.CR(x, gps, iter=iter)
+    CR.boot<- boot.CR(x, gps, iter=iter, seed=seed)
     CR.CI<-quantile(CR.boot, c(.025, .975))
   }
   if (length(dim(A))==3){

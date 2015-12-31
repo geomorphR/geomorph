@@ -1393,7 +1393,7 @@ apply.CR <- function(x,gps, iter, seed = NULL){
 # used in: modularity.test
 boot.CR <- function(x,gps, iter, seed = NULL){
   x<-as.matrix(x)
-  boot <- boot.index(nrow(x)-1, iter, seed=seed)
+  boot <- boot.index(nrow(x), iter, seed=seed)
   x.r<-lapply(1:(iter+1), function(j) x[boot[[j]],])
   CR.boot<-sapply(1:(iter+1), function(j) quick.CR(x.r[[j]],gps)) 
   CR.boot
@@ -1463,7 +1463,7 @@ apply.phylo.CR <- function(x,invC,gps, iter, seed=NULL){
 # phylo.modularity 
 boot.phylo.CR <- function(x,invC,gps, iter, seed = NULL){
   x<-as.matrix(x)
-  boot <- boot.index(nrow(x)-1, iter, seed=seed)
+  boot <- boot.index(nrow(x), iter, seed=seed)
   x.r<-lapply(1:(iter+1), function(j) x[boot[[j]],])
   invC.r <- lapply(1:(iter+1), function(j) invC[boot[[j]],boot[[j]]])
   CR.boot<-sapply(1:(iter+1), function(j) quick.CR.phylo(x=x.r[[j]],invC=invC.r[[j]],gps=gps)) 
