@@ -99,7 +99,7 @@ procD.pgls<-function(f1, phy, iter=999, seed=NULL, int.first = FALSE,
     stop("Data matrix missing some taxa present on the tree.")
   if(length(match(phy$tip.label,rownames(Y)))!=N) 
     stop("Tree missing some taxa in the data matrix.")
-  C<-vcv.phylo(phy)
+  C < -vcv.phylo(phy)
   eigC <- eigen(C)
   lambda <- zapsmall(eigC$values)
   if(any(lambda == 0)){
@@ -107,7 +107,7 @@ procD.pgls<-function(f1, phy, iter=999, seed=NULL, int.first = FALSE,
     lambda = lambda[lambda > 0]
   }
   eigC.vect = eigC$vectors[,1:(length(lambda))]
-  Pcor <- qr.solve(eigC.vect%*% diag(sqrt(lambda)) %*% t(eigC.vect)) 
+  Pcor <- fast.solve(eigC.vect%*% diag(sqrt(lambda)) %*% t(eigC.vect)) 
   dimnames(Pcor) <- dimnames(C)
   if(RRPP == TRUE) SSr <- Fpgls.iter(pfit, Yalt="RRPP", Pcor, iter=iter, seed=seed) else 
     SSr <- Fpgls.iter(pfit, Yalt="resample", Pcor, iter=iter, seed=seed)
