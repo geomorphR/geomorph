@@ -3,6 +3,7 @@ CHANGES IN GEOMORPH VERSION 3.0.0
   NEW FEATURES
     o New functions: modularity.test(), integration.test(), phylo.modularity(), 
         phylo.integration(), procD.allometry()
+    o Seed option added for most analytical functions
     o Major overhaul of underlying support code for analytics
     o Output from analytical functions provided in lists
     o Added 'summary' option to most analytical functions
