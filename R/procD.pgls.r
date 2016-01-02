@@ -99,7 +99,7 @@ procD.pgls<-function(f1, phy, iter=999, seed=NULL, int.first = FALSE,
     stop("Data matrix missing some taxa present on the tree.")
   if(length(match(phy$tip.label,rownames(Y)))!=N) 
     stop("Tree missing some taxa in the data matrix.")
-  C < -vcv.phylo(phy)
+  C <- vcv.phylo(phy)
   eigC <- eigen(C)
   lambda <- zapsmall(eigC$values)
   if(any(lambda == 0)){
