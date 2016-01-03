@@ -37,7 +37,24 @@
 #'pupfishANOVA <- nested.update(pupfishANOVA, ~sex/pop)
 #'summary(pupfishANOVA)
 #'
-
+#' # One needs to be careful using this function!
+#' 
+#'gdf <- geomorph.data.frame(coords = pupfish$coords, pop=pupfish$Pop, sex = pupfish$Sex, 
+#'CS = pupfish$CS)
+#'pupfishANOVA <- procD.lm(coords ~ CS * sex/pop, iter=499, RRPP=TRUE, data=gdf)
+#'summary(pupfishANOVA)
+#'
+#' # This will not work: pupfishANOVA <- nested.update(pupfishANOVA, ~sex/pop) 
+#' # The updated terms must be included as part of the original terms
+#' 
+#'pupfishANOVA <- procD.lm(coords ~ CS + CS*sex + sex/pop, iter=499, RRPP=TRUE, data=gdf)
+#'summary(pupfishANOVA)
+#'
+#'# Now the format will allow an update
+#'
+#'pupfishANOVA <- nested.update(pupfishANOVA, ~sex/pop) 
+#'
+#'summary(pupfishANOVA)
 nested.update <- function(P, f1){
   Terms <- terms(f1)
   term.lbls <- attr(Terms, "term.labels")
