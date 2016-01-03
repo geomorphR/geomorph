@@ -110,11 +110,13 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
   dat <- pfitf$data
   kr <- length(pfitr$residuals)
   kf <- length(pfitf$residuals)
+  dfr <- pfitr$QRs[[length(pfitr$QRs)]]$rank
+  dff <- pfitf$QRs[[length(pfitf$QRs)]]$rank
   k.total <- kr+kf-2
   k.unique <- length(unique(c(pfitf$term.labels, pfitr$term.labels)))
   if(k.unique == k.total) stop("Models are not nested")
-  dfr <- nrow(pfitr$wResiduals[[kr]]) - kr
-  dff <- nrow(pfitf$wResiduals[[kf]]) - kf
+  dfr <- nrow(pfitr$wResiduals[[kr]]) - dfr
+  dff <- nrow(pfitf$wResiduals[[kf]]) - dff
   SSEr <- sum(pfitr$wResiduals[[kr]]^2)
   SSEf <- sum(pfitf$wResiduals[[kf]]^2)
   SSY <- sum(qr.resid(pfitf$wQRs[[1]], pfitf$wY)^2)
