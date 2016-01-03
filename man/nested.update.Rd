@@ -13,7 +13,7 @@ nested.update(P, f1)
 }
 \description{
 This function is used to update \code{\link{procD.lm}} objects for fixed effects with 
-with nested random effects (nested design).
+nested random effects (nested design).
 }
 \details{
 This functions a helper function when linear models have nested (hierarchical) structure.  It is used on
@@ -24,12 +24,15 @@ Z-scores, and P-values based on F values adjusted to be MS fixed/MS random (nest
 generating random values for each iteration previously used in the \code{\link{procD.lm}} object.
 
 This function can be used recursively for multiple updates, when multiple nested effects are used.  The function can
-currently only handle single factrs nestd within other single factors.
+currently only handle single factors nestd within other single factors.
 
 Function returns the same list as \code{\link{procD.lm}} but with random F values appended.  The 
 ANOVA table is updated in terms of F-values, Z-scores, and P-values,
 }
 \examples{
+
+# This example is intended as a demonstration; it is not intended to suggest
+# that populatons should normally be nested within gender.
 
 data(pupfish)
 gdf <- geomorph.data.frame(coords = pupfish$coords, pop=pupfish$Pop, sex = pupfish$Sex)
