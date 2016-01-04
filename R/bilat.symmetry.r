@@ -32,7 +32,8 @@
 #'  results use only type I sums of squares (SS) with either full ranomization of raw shape values or RRPP (prefered with nested terms)
 #'  for analysis of variance (ANOVA).  Older versions used a combination of parametric and non-parametric results, as well as a combinaton
 #'  of type I and type III SS.  While analytical conclusions should be consistent (i.e., "significance" of effects is the same), these
-#'  updates maintain consistency in analytical philosophy.
+#'  updates maintain consistency in analytical philosophy.  This change will require longer computation time for large datasets, but the trade-off
+#'  allows users to have more flexibility and eliminates combining disparate analytical philosophies.
 #'  }
 #'  
 #'  The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{bilat.symmetry}}.
