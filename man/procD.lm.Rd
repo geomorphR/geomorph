@@ -136,8 +136,8 @@ Goodall, C. R. 1991. Procrustes methods in the statistical analysis of shape. Jo
    Royal Statistical Society B 53:285-339.
 }
 \seealso{
-\code{\link{advanced.procD.lm}} and \code{\link{procD.pgls}} within geomorph;
-\code{\link[stats]{lm}} for more on linear model fits
+\code{\link{advanced.procD.lm}}, \code{\link{procD.pgls}}, and 
+\code{\link{nested.update}} within geomorph; \code{\link[stats]{lm}} for more on linear model fits
 }
 \keyword{RRPP}
 \keyword{analysis,}

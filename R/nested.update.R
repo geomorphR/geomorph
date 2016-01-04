@@ -3,7 +3,7 @@
 #' This function is used to update \code{\link{procD.lm}} objects for fixed effects with 
 #' nested random effects (nested design).
 #'
-#' This functions a helper function when linear models have nested (hierarchical) structure.  It is used on
+#' This functions serves as a helper function when linear models have nested (hierarchical) structure.  It is used on
 #' \code{\link{procD.lm}} objects that were formerly evaluated with type I sums of squares (SS), as is typical
 #' with models with only fixed effects.  Using a formula for nested effects, this function identifies the fixed and random
 #' SS in the random outcomes used to generate the \code{\link{procD.lm}} object, and updates the F-values,

@@ -84,8 +84,8 @@
 #' by high-dimensional data. Heredity. 115:357-365.
 #' @references Goodall, C. R. 1991. Procrustes methods in the statistical analysis of shape. Journal of the 
 #'    Royal Statistical Society B 53:285-339.
-#' @seealso \code{\link{advanced.procD.lm}} and \code{\link{procD.pgls}} within geomorph;
-#' \code{\link[stats]{lm}} for more on linear model fits
+#' @seealso \code{\link{advanced.procD.lm}}, \code{\link{procD.pgls}}, and 
+#' \code{\link{nested.update}} within geomorph; \code{\link[stats]{lm}} for more on linear model fits
 #' @examples
 #' ### MANOVA example for Goodall's F test (multivariate shape vs. factors)
 #' data(plethodon) 
