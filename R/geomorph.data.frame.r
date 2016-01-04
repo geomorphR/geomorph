@@ -41,11 +41,11 @@ if(length(dots1) > 0){
   dots2 <- unlist(dots2, recursive = FALSE)
   dots2.names <- rep(c("coords", "Csize"), length(dots1))
   names(dots2) <- dots2.names
+  dots.updated <- dots.updated[!list.check1]
 } else {
   dots2 <- NULL
 }
 if(length(dots.updated) > 0){
-  dots.updated[!list.check1]
   list.check2 <- sapply(1:length(dots.updated), function(j) is.phylo(dots.updated[[j]]))
   dots3 <- dots.updated[list.check2]
   dots4 <- dots.updated[!list.check2]
