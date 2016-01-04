@@ -49,7 +49,8 @@ The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\li
  The generic function, \code{\link{plot}}, produces a histogram of random K statistics, associated with the resampling procedure.
  
  \subsection{Notes for geomorph 3.0}{ 
-Compared to older versions of geomorph, users should note that the function physignal no longer contains
+Compared to older versions of geomorph, the order of input variables has changed, so that it is consistent with other functions
+in the program. Additionally, users should note that the function physignal no longer contains
 multiple methods. Only Kmult is used. Thus, for older scripts method="" should be removed from the function call.
 }
 }

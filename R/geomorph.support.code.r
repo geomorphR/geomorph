@@ -1484,7 +1484,7 @@ phylo.mat<-function(x,phy){
     lambda = lambda[lambda > 0]
   }
   eigC.vect = eigC$vectors[,1:(length(lambda))]
-  D.mat <- qr.solve(eigC.vect*sqrt(lambda),eigC.vect) 
+  D.mat <- fast.solve(eigC.vect%*% diag(sqrt(lambda)) %*% t(eigC.vect)) 
   list(invC = invC, D.mat = D.mat,C = C)
 }
 

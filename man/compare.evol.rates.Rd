@@ -45,6 +45,10 @@ The function compares rates of morphological evolution for two or more groups of
  The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{compare.evol.rates}}.
  The generic function, \code{\link{plot}}, produces a histogram of random rate-ratios associated with
  the resampling procedure.
+
+\subsection{Notes for geomorph 3.0}{ 
+Compared to older versions of geomorph, the order of input variables has changed, so that it is consistent with other functions
+in the program.  Additionally, for 3 or more groups, the pairwise p-values are found in the output object.}
 }
 \examples{
 data(plethspecies) 
