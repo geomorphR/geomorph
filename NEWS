@@ -2,13 +2,14 @@ CHANGES IN GEOMORPH VERSION 3.0.0
 
   NEW FEATURES
     o New functions: modularity.test(), integration.test(), phylo.modularity(), 
-        phylo.integration(), procD.allometry()
+        phylo.integration(), procD.allometry(), nested.update()
     o Seed option added for most analytical functions
     o Major overhaul of underlying support code for analytics
     o Output from analytical functions provided in lists
     o Added 'summary' option to most analytical functions
     o Plotting for most analytical functions as 'plot(res)' if res is output from function
     o Diagnostic plots for anova/regression added
+    o Nested ANOVA via nested.update of procD.lm objects
 
 
   OTHER CHANGES
