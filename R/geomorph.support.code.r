@@ -858,13 +858,14 @@ procD.fit <- function(f1, keep.order=FALSE, pca=TRUE, data=NULL,...){
 # perm.index
 # creates a permutation index for resampling
 # used in all functions with a resampling procedure
+
 perm.index <-function(n, iter, seed=NULL){
   if(is.null(seed)) seed = iter else
     if(seed == "random") seed = sample(1:iter,1) else
       if(!is.numeric(seed)) seed = iter
-  set.seed(seed)
-  ind <- c(list(1:n),(Map(function(x) sample(1:n), 1:iter)))
-  ind
+      set.seed(seed)
+      ind <- c(list(1:n),(Map(function(x) sample.int(n,n), 1:iter)))
+      ind
 }
 
 # boot.index
@@ -875,7 +876,7 @@ boot.index <-function(n, iter, seed=NULL){
     if(seed == "random") seed = sample(1:iter,1) else
       if(!is.numeric(seed)) seed = iter
   set.seed(seed)
-  ind <- c(list(1:n),(Map(function(x) sample(1:n, replace = TRUE), 1:iter)))
+  ind <- c(list(1:n),(Map(function(x) sample.int(n, n, replace = TRUE), 1:iter)))
   ind
 }
 
