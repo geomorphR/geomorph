@@ -263,7 +263,7 @@ procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
   yhat <- fitf$wFitted[[length(fitf$wFitted)]]
   B <- fitf$wCoefficients[[length(fitf$wCoefficients)]]
   y.cent <- fitf$wResiduals[[length(fitf$wResiduals)]]
-  if(logsz) sz <- log(size)
+  if(logsz) sz <- log(size) else sz = size
   a<-(t(y.cent)%*%sz)%*%(1/(t(sz)%*%sz)); a<-a%*%(1/sqrt(t(a)%*%a))
   CAC<-y.cent%*%a  
   resid<-y.cent%*%(diag(dim(y.cent)[2])-a%*%t(a))
