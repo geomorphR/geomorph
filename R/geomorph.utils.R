@@ -942,7 +942,7 @@ pattern = c("white", "gray", "black"), pt.scale = 1, ...){ # TM = trajectories f
       points(y[k,1], y[k,2], pch=21, cex=1.5*pt.scale, bg=pattern[3])
   }
 
-  legend("topleft", levels(groups), lwd=2, col=levels(as.factor(gp.cols)))
+  legend("topleft", levels(groups), lwd=2, col=gp.cols)
 }
 
 trajplot.by.groups<-function(Data, TM, groups, group.cols = NULL, 
