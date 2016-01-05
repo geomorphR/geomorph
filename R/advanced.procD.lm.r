@@ -97,7 +97,8 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
   if(!is.null(pfit1$weights)) w <- pfit1$weights else w <- rep(1,n)
   if(any(w < 0)) stop("Weights cannot be negative")
   n <- nrow(Y)
-  if(!is.null(data)) data2 <- geomorph.data.frame(Y=Y, data) 
+  if(!is.null(data)) data2 <- geomorph.data.frame(Y=Y, data) else
+    data2 <- geomorph.data.frame(Y=Y, pfit$data[,-(1:ncol(Y))])
   if(any(class(f2)=="lm")) pfit2 = procD.fit(f2) else {
       f2 <- update(f2, Y ~.) 
       if(!is.null(data)) pfit2= procD.fit(f2, data=data2) else pfit2= procD.fit(f2)

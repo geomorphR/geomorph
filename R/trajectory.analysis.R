@@ -177,7 +177,8 @@ trajectory.analysis <- function(f1, f2=NULL, iter=999, seed=NULL, traj.pts = NUL
   if(length(datClasses) == 2 & ncol(attr(Terms, "factors")) != 3) stop("Two factors provided but no interaction is indicated in forst formula")
   if(length(datClasses) == 1 & is.null(traj.pts)) stop("If data are trajectories, the number of trajectory points must be defined")
   Y <- as.matrix(pfit1$Y)
-  data <- geomorph.data.frame(data, Y=Y)
+  if(!is.null(data)) data <- geomorph.data.frame(data, Y=Y) else 
+    data <- geomorph.data.frame(dat[,-(1:ncol(Y))], Y=Y)
   f1 <- update(f1, Y~.)
   if(!is.null(f2)) {
     f2 <- update(f2, Y~.)
