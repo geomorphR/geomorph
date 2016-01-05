@@ -34,8 +34,10 @@ The function compares rates of morphological evolution for two or more groups of
  for each group is calculated, and a ratio of rates is obtained. If three or more groups of species are used, the ratio of 
  the maximum to minimum rate is used as a test statistic (see Adams 2014). Significance testing 
  is accomplished by phylogenetic simulation in which tips data are obtained under Brownian motion using a common 
- evolutionary rate pattern for all species on the phylogeny (i.e., a common evolutionary rate matrix). This procedure is
- more general, and retains the desirable statistical properties of earlier methods, but for a wider array of data types.  
+ evolutionary rate pattern for all species on the phylogeny. Specifically, the common evolutionary rate matrix for all
+ species is used, with the multi-dimensional rate used along the diagonal elements (see Denton and Adams 2015). This procedure is
+ more general than the original simulation procedure, and retains the desirable statistical properties of earlier methods, 
+ and under a wider array of data types.  
  If three or more groups of species are used, pairwise p-values are also calculated. The function can be used to obtain a 
  rate for the whole dataset of species by using a dummy group factor assigning all species to one group.
  
@@ -66,6 +68,10 @@ Dean Adams & Emma Sherratt
 \references{
 Adams, D.C. 2014. Quantifying and comparing phylogenetic evolutionary rates for 
  shape and other high-dimensional phenotypic data. Syst. Biol. 63:166-177.
+
+Denton, J.S.S., and D.C. Adams. 2015. A new phylogenetic test for comparing 
+multiple high-dimensional evolutionary rates suggests interplay of evolutionary rates and 
+modularity in lanternfishes (Myctophiformes; Myctophidae). Evolution. 69:2425-2440.
 }
 \keyword{analysis}
 
