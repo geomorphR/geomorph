@@ -9,8 +9,10 @@
 #'  for each group is calculated, and a ratio of rates is obtained. If three or more groups of species are used, the ratio of 
 #'  the maximum to minimum rate is used as a test statistic (see Adams 2014). Significance testing 
 #'  is accomplished by phylogenetic simulation in which tips data are obtained under Brownian motion using a common 
-#'  evolutionary rate pattern for all species on the phylogeny (i.e., a common evolutionary rate matrix). This procedure is
-#'  more general, and retains the desirable statistical properties of earlier methods, but for a wider array of data types.  
+#'  evolutionary rate pattern for all species on the phylogeny. Specifically, the common evolutionary rate matrix for all
+#'  species is used, with the multi-dimensional rate used along the diagonal elements (see Denton and Adams 2015). This procedure is
+#'  more general than the original simulation procedure, and retains the desirable statistical properties of earlier methods, 
+#'  and under a wider array of data types.  
 #'  If three or more groups of species are used, pairwise p-values are also calculated. The function can be used to obtain a 
 #'  rate for the whole dataset of species by using a dummy group factor assigning all species to one group.
 #'  
@@ -40,6 +42,9 @@
 #'   
 #' @references Adams, D.C. 2014. Quantifying and comparing phylogenetic evolutionary rates for 
 #'  shape and other high-dimensional phenotypic data. Syst. Biol. 63:166-177.
+#' @references Denton, J.S.S., and D.C. Adams. 2015. A new phylogenetic test for comparing 
+#' multiple high-dimensional evolutionary rates suggests interplay of evolutionary rates and 
+#' modularity in lanternfishes (Myctophiformes; Myctophidae). Evolution. 69:2425-2440.
 #' @examples
 #' data(plethspecies) 
 #' Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment    
@@ -77,12 +82,17 @@ compare.evol.rates<-function(A,phy,gp,iter=999 ){
     stop("Data matrix missing some taxa present on the tree.")
   if(length(match(phy$tip.label,rownames(x)))!=N) 
     stop("Tree missing some taxa in the data matrix.")
-  p<-ncol(x)      
+  pc.x<-prcomp(x)
+    p <- length(pc.x$sdev[zapsmall(pc.x$sdev) > 0])
+    x<-pc.x$x[,1:p]
   gp<-gp[rownames(x)]
   phy.parts<-phylo.mat(x,phy)
   invC<-phy.parts$invC; D.mat<-phy.parts$D.mat;C = phy.parts$C
   sigma.obs<-sigma.d(x,invC,D.mat,gp)
-  x.sim<-sim.char(phy=phy,par=sigma.obs$R,nsim=iter,model="BM") 
+  rate.mat<-sigma.obs$R
+  diag(rate.mat)<-sigma.obs$sigma.d.all
+  rate.mat<-matrix(nearPD(rate.mat,corr=FALSE)$mat,nrow=p,ncol=p)
+  x.sim<-sim.char(phy=phy,par=rate.mat,nsim=iter,model="BM") 
   sigma.rand <- sapply(1:(iter), function(j) sigma.d(as.matrix(x.sim[,,j]),invC,D.mat,gp))
   random.sigma<-c(sigma.obs$sigma.d.ratio,as.vector(unlist(sigma.rand[1,])))
   if(nlevels(gp)>1){
