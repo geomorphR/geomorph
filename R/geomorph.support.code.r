@@ -1173,9 +1173,15 @@ slopes = function(pfit, Y=NULL, g = NULL, slope=NULL, data = NULL){
   if(ncol(covs) == 0) stop("No covariate for which to compare slopes")
   B <- qr.coef(qr(model.matrix(~fac*covs)), Y)
   fac.p <- qr(model.matrix(~fac))$rank
-  Bslopes <- as.matrix(B[-(1:fac.p),])
-  Bslopes[2:nrow(Bslopes),] <- Bslopes[2:nrow(Bslopes),] + Bslopes[1,]
-  if(ncol(Y)==1) Bslopes <- cbind(1, Bslopes)
+  if(is.matrix(B)) {
+    Bslopes <- as.matrix(B[-(1:fac.p),])
+    Badjust <- rbind(0,t(sapply(2:fac.p, function(x) matrix(Bslopes[1,]))))
+    Bslopes <- Bslopes + Badjust} else {
+      Bslopes <- B[-(1:fac.p)]
+      Badjust <- c(0,rep(Bslopes[1],(fac.p-1)))
+      Bslopes <- matrix(Bslopes + Badjust)
+    }
+  if(ncol(Bslopes)==1) Bslopes <- cbind(1, Bslopes)
   rownames(Bslopes) <- levels(fac)
   Bslopes
 }
