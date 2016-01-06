@@ -9,11 +9,11 @@ nested.update(P, f1)
 \arguments{
 \item{P}{A \code{\link{procD.lm}} object}
 
-\item{f1}{A right-hand or full formula for one factor nested within another; e.g., ~ A/B or ~ A + B%in%A}
+\item{f1}{A right-hand or full formula for one factor nested within another; e.g., ~ A/B}
 }
 \description{
 This function is used to update \code{\link{procD.lm}} objects for fixed effects with 
-nested random effects (nested design).
+nested random effects (nested design)
 }
 \details{
 This functions serves as a helper function when linear models have nested (hierarchical) structure.  It is used on

@@ -1,7 +1,7 @@
 #' Update procD.lm objects with nested effects
 #' 
 #' This function is used to update \code{\link{procD.lm}} objects for fixed effects with 
-#' nested random effects (nested design).
+#' nested random effects (nested design)
 #'
 #' This functions serves as a helper function when linear models have nested (hierarchical) structure.  It is used on
 #' \code{\link{procD.lm}} objects that were formerly evaluated with type I sums of squares (SS), as is typical
@@ -17,7 +17,7 @@
 #' ANOVA table is updated in terms of F-values, Z-scores, and P-values,
 #' 
 #' @param P A \code{\link{procD.lm}} object
-#' @param f1 A right-hand or full formula for one factor nested within another; e.g., ~ A/B or ~ A + B%in%A
+#' @param f1 A right-hand or full formula for one factor nested within another; e.g., ~ A/B 
 #' @export
 #' @author Michael Collyer
 #' @seealso \code{\link{procD.lm}}
@@ -61,7 +61,7 @@ nested.update <- function(P, f1){
   k <- length(term.lbls)
   if(k != 2) stop("Formula is not correct.  Should be of form ~ A/B or ~ A + B%in%A")
   if(length(strsplit(term.lbls[2], ":")[[1]]) != 2) 
-    stop("Formula is not correct.  Should be of form ~ A/B or B%in%A")
+    stop("Formula is not correct.  Should be of form ~ A/B or ~ A + B%in%A")
   AT <- P$aov.table
   fixedrow = which(rownames(AT) == term.lbls[1])
   randomrow = which(rownames(AT) == term.lbls[2])
