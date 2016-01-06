@@ -145,7 +145,7 @@
 #' summary(plethANOVA) # Same ANOVA
 #' plot(plethANOVA) # diagnostic plot instead of allometry plot
 procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
-                   iter = 999, seed=NULL, alpha = 0.05, RRPP = FALSE, data=NULL, ...){
+                   iter = 999, seed=NULL, alpha = 0.05, RRPP = TRUE, data=NULL, ...){
   pfit <- procD.fit(f1, data=data, pca=FALSE)
   dat <- pfit$data
   Y <- pfit$Y

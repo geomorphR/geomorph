@@ -45,8 +45,8 @@ An object of class "bilat.symmetry" returns a list of the following
  directional asymmetry in the dataset.}
 \item{data.type}{A value indicating whether the analysis was performed as Object or Matching symmetry.}
 \item{permutations}{The number of random permutations used.}
-\item{random.shape.SS}{A matrix of random outcomes for SS from the Shape analysis.}
-\item{random.size.SS}{A matrix of random outcomes for SS from the Cntroid Size analysis.}
+\item{random.shape.F}{A matrix of random F-values from the Shape analysis.}
+\item{random.size.F}{A matrix of random F-values from the Centroid Size analysis.}
 \item{perm.method}{A value indicating whether "Raw" values were shuffled or "RRPP" performed.}
 \item{call}{The matched call.}
 }
@@ -88,10 +88,10 @@ Analyses of object symmetry is implemented when {object.sym=TRUE}. Here, a 3D ar
  allows users to have more flexibility and eliminates combining disparate analytical philosophies. 
  
  Note also that significance of terms in the 
- model are found by comparing SS for each term to those obtained via permutation. As such, df and F-ratios are not strictly necessary, but are 
- reported as is standard for anova tables. Additionally, users will notice that the df reported are based on the number of observations rather than 
- a combination of objects X coordinates X dimensions, as is sometimes found in morphometric studies of symmetry. However, this change has no effect 
- on hypothesis testing, as tests of significance are based entirely on SS. 
+ model are found by comparing F-values for each term to those obtained via permutation.  F-ratios and df are not strictly necessary (a ratio of SS would suffice), 
+ but they are reported as is standard for anova tables. Additionally, users will notice that the df reported are based on the number of observations rather than 
+ a combination of objects * coordinates * dimensions, as is sometimes found in morphometric studies of symmetry. However, this change has no effect 
+ on hypothesis testing, as only SS vary among permutations (df, coordinates, and dimensions are constants). 
  }
  
  The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{bilat.symmetry}}.

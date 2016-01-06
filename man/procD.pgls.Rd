@@ -5,7 +5,7 @@
 \title{Phylogenetic ANOVA/regression for shape data}
 \usage{
 procD.pgls(f1, phy, iter = 999, seed = NULL, int.first = FALSE,
-  RRPP = FALSE, data = NULL, ...)
+  RRPP = TRUE, data = NULL, ...)
 }
 \arguments{
 \item{f1}{A formula for the linear model (e.g., y~x1+x2)}

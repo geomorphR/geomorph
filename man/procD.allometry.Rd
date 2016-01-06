@@ -5,7 +5,7 @@
 \title{Procrustes ANOVA/regression, specifically for shape-size covariation (allometry)}
 \usage{
 procD.allometry(f1, f2 = NULL, f3 = NULL, logsz = TRUE, iter = 999,
-  seed = NULL, alpha = 0.05, RRPP = FALSE, data = NULL, ...)
+  seed = NULL, alpha = 0.05, RRPP = TRUE, data = NULL, ...)
 }
 \arguments{
 \item{f1}{A formula for the relationship of shape and size; e.g., Y ~ X.}

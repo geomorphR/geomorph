@@ -84,7 +84,7 @@
 #' plot(pleth.pgls)
 #' pleth.pgls$Pcor # the phylogenetic transformation (correction) matrix
 procD.pgls<-function(f1, phy, iter=999, seed=NULL, int.first = FALSE, 
-                         RRPP=FALSE, data=NULL, ...){
+                         RRPP=TRUE, data=NULL, ...){
   if(int.first==TRUE) ko = TRUE else ko = FALSE
   pfit <- procD.fit(f1, data=data, keep.order=ko)
   Terms <- pfit$Terms

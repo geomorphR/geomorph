@@ -112,7 +112,7 @@
 #' plot(rat.anova, outliers = TRUE) # diagnostic plots, including plotOutliers
 #' attributes(rat.anova)
 #' rat.anova$fitted # just the fitted values
-procD.lm<- function(f1, iter = 999, seed=NULL, RRPP = FALSE, 
+procD.lm<- function(f1, iter = 999, seed=NULL, RRPP = TRUE, 
                         int.first = FALSE,  data=NULL, ...){
   if(int.first==TRUE) ko = TRUE else ko = FALSE
   pfit <- procD.fit(f1, data=data, keep.order=ko)

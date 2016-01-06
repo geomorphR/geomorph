@@ -4,7 +4,7 @@
 \alias{procD.lm}
 \title{Procrustes ANOVA/regression for shape data}
 \usage{
-procD.lm(f1, iter = 999, seed = NULL, RRPP = FALSE, int.first = FALSE,
+procD.lm(f1, iter = 999, seed = NULL, RRPP = TRUE, int.first = FALSE,
   data = NULL, ...)
 }
 \arguments{
