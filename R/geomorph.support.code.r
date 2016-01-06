@@ -1033,21 +1033,29 @@ anova.parts.symmetry <- function(pfit, SS,object.sym){ # SS from SS.iter
   k <- length(pfit$term.labels)
   dfe <-sapply(pfit$wQRs, function(x) x$rank)
   df <- dfe[2:(k+1)] - dfe[1:k]
-  if(k==1) SS <- SS[1] else SS <- SS[,1]
   anova.terms <- pfit$term.labels
+  MS <- SS/df
   SSY <- sum(qr.resid(qr(pfit$wX[,1]),pfit$wY)^2)
   if(object.sym==TRUE){
     SS<-SS/2;SSY<-SSY/2
   }
   MS <- SS/df
   R2 <- SS/SSY
-  Fs <- array(NA,k)
-  Fs[1]<-MS[1]/MS[3]; Fs[2]<-MS[2]/MS[3]
-  if(k==4) Fs[3]<-MS[3]/MS[4] else Fs[3]=NA  
-  anova.tab <- data.frame(df,SS,MS,Rsq=R2,F=Fs)
+  F1 <- MS[1,]/MS[3,]
+  F2 <- MS[2,]/MS[3,]
+  if(k==4) F3 <- MS[3,]/MS[4,] else F3 <- NULL
+  Fs <- rbind(F1,F2,F3, NA)
+  rownames(Fs) <- rownames(MS) <- rownames(SS) <- rownames(R2) <- anova.terms
+  Ps <- apply(Fs,1,pval)
+  if(k==4) Ps[4] <- NA else Ps[3] <-NA
+  Zs <- apply(Fs,1,effect.size)
+  if(k==4) Zs[4] <- NA else Zs[3] <-NA
+  anova.tab <- data.frame(df = df,SS = SS[,1],MS = MS[,1],Rsq=R2[,1],
+                          F=Fs[,1], Z=Zs, Pr = Ps)
   rownames(anova.tab) <- anova.terms
   out <- list(anova.table = anova.tab, anova.terms = anova.terms,
-              SS = SS, df = df, R2 = R2[1:k], F = Fs[1:k])
+              SS = SS[,1], df = df, R2 = R2[1:k,1], F = Fs[1:(k-1),1],
+              random.Fs = Fs)
   out
 }
 

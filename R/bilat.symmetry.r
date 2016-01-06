@@ -36,10 +36,10 @@
 #'  allows users to have more flexibility and eliminates combining disparate analytical philosophies. 
 #'  
 #'  Note also that significance of terms in the 
-#'  model are found by comparing SS for each term to those obtained via permutation. As such, df and F-ratios are not strictly necessary, but are 
-#'  reported as is standard for anova tables. Additionally, users will notice that the df reported are based on the number of observations rather than 
-#'  a combination of objects X coordinates X dimensions, as is sometimes found in morphometric studies of symmetry. However, this change has no effect 
-#'  on hypothesis testing, as tests of significance are based entirely on SS. 
+#'  model are found by comparing F-values for each term to those obtained via permutation.  F-ratios and df are not strictly necessary (a ratio of SS would suffice), 
+#'  but they are reported as is standard for anova tables. Additionally, users will notice that the df reported are based on the number of observations rather than 
+#'  a combination of objects * coordinates * dimensions, as is sometimes found in morphometric studies of symmetry. However, this change has no effect 
+#'  on hypothesis testing, as only SS vary among permutations (df, coordinates, and dimensions are constants). 
 #'  }
 #'  
 #'  The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{bilat.symmetry}}.
@@ -72,8 +72,8 @@
 #'  directional asymmetry in the dataset.}
 #' \item{data.type}{A value indicating whether the analysis was performed as Object or Matching symmetry.}
 #' \item{permutations}{The number of random permutations used.}
-#' \item{random.shape.SS}{A matrix of random outcomes for SS from the Shape analysis.}
-#' \item{random.size.SS}{A matrix of random outcomes for SS from the Cntroid Size analysis.}
+#' \item{random.shape.F}{A matrix of random F-values from the Shape analysis.}
+#' \item{random.size.F}{A matrix of random F-values from the Centroid Size analysis.}
 #' \item{perm.method}{A value indicating whether "Raw" values were shuffled or "RRPP" performed.}
 #' \item{call}{The matched call.}
 #' 
@@ -157,17 +157,11 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
   if(RRPP == TRUE) PSh <- SS.iter(pfitSh,Yalt="RRPP", iter=iter, seed=seed) else 
     PSh <- SS.iter(pfitSh, Yalt="resample", iter=iter, seed=seed)
   anova.parts.Sh <- anova.parts.symmetry(pfitSh, PSh, object.sym)
-  anova.tab <-anova.parts.Sh$anova.table 
-     if(is.matrix(PSh)){
-       P.val <- apply(PSh,1,pval)
-       rownames(PSh) <- pfitSh$term.labels
-       colnames(PSh) <- c("obs", paste("iter", 1:iter, sep=":"))
-     } else {
-       P.val <- pval(PSh)
-       names(PSh) <-c("obs", paste("iter", 1:iter, sep=":"))
-     }
-  P.val[kSh] = NA; if(kSh==3) P.val[3] = NA  #b/c nested
-  anovaSh <- data.frame(anova.tab, Pr = c(P.val))
+  anovaSh <-anova.parts.Sh$anova.table 
+  Sh.random.Fs <-anova.parts.Sh$random.Fs
+  if(is.matrix(Sh.random.Fs))
+    colnames(Sh.random.Fs) <- c("obs", paste("iter", 1:iter, sep=":")) else
+      names(Sh.random.Fs) <-c("obs", paste("iter", 1:iter, sep=":"))
   
   if(object.sym==FALSE){  
     size <- gpa.res$Csize
@@ -182,17 +176,11 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
     if(RRPP == TRUE) PSz <- SS.iter(pfitSz,Yalt="RRPP", iter=iter, seed=seed) else 
       PSz <- SS.iter(pfitSz, Yalt="resample", iter=iter, seed=seed)
     anova.parts.Sz <- anova.parts.symmetry(pfitSz, PSz,object.sym)
-    anova.tab.Sz <-anova.parts.Sz$anova.table 
-    if(is.matrix(PSz)){
-      P.val.Sz <- apply(PSz,1,pval)
-      rownames(PSz) <- pfitSz$term.labels
-      colnames(PSz) <- c("obs", paste("iter", 1:iter, sep=":"))
-    } else {
-      P.val.Sz <- pval(PSz)
-      names(PSz) <-c("obs", paste("iter", 1:iter, sep=":"))
-    }
-    P.val.Sz[kSh]=NA; if(kSh==3) P.val.Sz[3]=NA     #b/c nested
-    anovaSz <- data.frame(anova.tab.Sz, Pr = c(P.val.Sz))
+    anovaSz <-anova.parts.Sz$anova.table 
+    Sz.random.Fs <-anova.parts.Sz$random.Fs
+    if(is.matrix(Sz.random.Fs))
+      colnames(Sz.random.Fs) <- c("obs", paste("iter", 1:iter, sep=":")) else
+      names(Sz.random.Fs) <-c("obs", paste("iter", 1:iter, sep=":"))
   }
 # build shape components for output
   if(object.sym==FALSE){
@@ -244,7 +232,7 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
               data.type = ifelse(object.sym==TRUE,"Object", "Matching"),
               FA.mns = FA.component, DA.mns = DA.mns,
               permutations = iter+1,
-              random.shape.SS = PSh, random.size.SS = PSz,
+              random.shape.F = Sh.random.Fs, random.size.F = Sz.random.Fs,
               perm.method = ifelse(RRPP==TRUE,"RRPP", "Raw"),
               call=match.call()) }
   if(object.sym==TRUE){
@@ -253,7 +241,7 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
               data.type = ifelse(object.sym==TRUE,"Object", "Matching"),
               FA.mns = FA.component, DA.mns = DA.mns,
               permutations = iter+1,
-              random.shape.SS = PSh, random.size.SS = NULL,
+              random.shape.F = Sh.random.Fs, random.size.F = NULL,
               perm.method = ifelse(RRPP==TRUE,"RRPP", "Raw"),
               call=match.call()) }
   class(out) <- "bilat.symmetry"
