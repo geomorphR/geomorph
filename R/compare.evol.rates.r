@@ -82,16 +82,14 @@ compare.evol.rates<-function(A,phy,gp,iter=999 ){
     stop("Data matrix missing some taxa present on the tree.")
   if(length(match(phy$tip.label,rownames(x)))!=N) 
     stop("Tree missing some taxa in the data matrix.")
-  pc.x<-prcomp(x)
-    p <- length(pc.x$sdev[zapsmall(pc.x$sdev) > 0])
-    x<-pc.x$x[,1:p]
+  p<-ncol(x)
   gp<-gp[rownames(x)]
   phy.parts<-phylo.mat(x,phy)
   invC<-phy.parts$invC; D.mat<-phy.parts$D.mat;C = phy.parts$C
   sigma.obs<-sigma.d(x,invC,D.mat,gp)
   rate.mat<-sigma.obs$R
   diag(rate.mat)<-sigma.obs$sigma.d.all
-  rate.mat<-matrix(nearPD(rate.mat,corr=FALSE)$mat,nrow=p,ncol=p)
+  rate.mat<-matrix(nearPD(rate.mat,corr=FALSE)$mat,nrow=ncol(rate.mat),ncol=ncol(rate.mat))
   x.sim<-sim.char(phy=phy,par=rate.mat,nsim=iter,model="BM") 
   sigma.rand <- sapply(1:(iter), function(j) sigma.d(as.matrix(x.sim[,,j]),invC,D.mat,gp))
   random.sigma<-c(sigma.obs$sigma.d.ratio,as.vector(unlist(sigma.rand[1,])))
