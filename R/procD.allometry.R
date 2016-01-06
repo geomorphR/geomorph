@@ -162,9 +162,12 @@ procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
   }
   
   if(!is.null(f2) || !is.null(f3)){
-    data.types <- lapply(data, class)
-    keep = sapply(data.types, function(x) x != "array" & x != "phylo")
-    dat2 <- as.data.frame(data[keep])
+    if(!is.null(data) {
+      data.types <- lapply(data, class)
+      keep = sapply(data.types, function(x) x != "array" & x != "phylo")
+      dat2 <- as.data.frame(data[keep])
+      } else dat2 <- NULL
+      
     if(!is.null(f2)) {
       if(length(f2) > 2) f2 <- f2[-2]
       dat.g <- model.frame(f2, data=dat2) 
@@ -270,7 +273,10 @@ procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
   RSC<-prcomp(resid)$x
   Reg.proj<-Y%*%B[2,]%*%sqrt(solve(t(B[2,])%*%B[2,])) 
   pred.val<-prcomp(yhat)$x[,1] 
-  lm.dim <- dim(data[[match(as.character(f1[[2]]), names(data))]])
+  if(!isnull(data)) lm.dim <- dim(data[[match(as.character(f1[[2]]), names(data))]]) else {
+    Z <- eval(f1[[2]], parent.frame())
+    lm.dim <- dim(Z)
+  }
   Ahat <- arrayspecs(yhat, lm.dim[[1]], lm.dim[[2]])
   A <- arrayspecs(Y, lm.dim[[1]], lm.dim[[2]])
   ref<-mshape(A)
