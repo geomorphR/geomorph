@@ -107,17 +107,12 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
   k2 <- pfit2$QRs[[length(pfit2$QRs)]]$rank
   if(k1 > k2) pfitf <- pfit1 else pfitf <- pfit2
   if(k1 > k2) pfitr <- pfit2 else pfitr <- pfit1
-  if(k1 == k2) stop("Models have same df")
+  if(k1 == k2) pfitf <- pfit1 else pfitf <- pfit2
   dat <- pfitf$data
-  kr <- length(pfitr$residuals)
-  kf <- length(pfitf$residuals)
-  dfr <- pfitr$QRs[[length(pfitr$QRs)]]$rank
-  dff <- pfitf$QRs[[length(pfitf$QRs)]]$rank
-  k.total <- kr+kf-2
-  k.unique <- length(unique(c(pfitf$term.labels, pfitr$term.labels)))
-  if(k.unique == k.total) stop("Models are not nested")
-  dfr <- nrow(pfitr$wResiduals[[kr]]) - dfr
-  dff <- nrow(pfitf$wResiduals[[kf]]) - dff
+  kr <- pfitr$QRs[[length(pfitr$QRs)]]$rank
+  kf <- pfitf$QRs[[length(pfitf$QRs)]]$rank
+  dfr <- nrow(pfitr$wResiduals[[kr]]) - kr
+  dff <- nrow(pfitf$wResiduals[[kf]]) - kf
   SSEr <- sum(pfitr$wResiduals[[kr]]^2)
   SSEf <- sum(pfitf$wResiduals[[kf]]^2)
   SSY <- sum(qr.resid(pfitf$wQRs[[1]], pfitf$wY)^2)

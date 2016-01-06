@@ -17,7 +17,7 @@
 #' ANOVA table is updated in terms of F-values, Z-scores, and P-values,
 #' 
 #' @param P A \code{\link{procD.lm}} object
-#' @param f1 A right-hand or full formula for one factor nested within another; e.g., ~ A/B 
+#' @param f1 A right-hand or full formula for one factor nested within another; e.g., ~ A/B or ~ A + B%in%A
 #' @export
 #' @author Michael Collyer
 #' @seealso \code{\link{procD.lm}}
@@ -59,7 +59,7 @@ nested.update <- function(P, f1){
   Terms <- terms(f1)
   term.lbls <- attr(Terms, "term.labels")
   k <- length(term.lbls)
-  if(k != 2) stop("Formula is not correct.  Should be of form ~ A/B or B%in%A")
+  if(k != 2) stop("Formula is not correct.  Should be of form ~ A/B or ~ A + B%in%A")
   if(length(strsplit(term.lbls[2], ":")[[1]]) != 2) 
     stop("Formula is not correct.  Should be of form ~ A/B or B%in%A")
   AT <- P$aov.table
