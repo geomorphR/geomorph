@@ -893,22 +893,33 @@ SS.iter = function(pfit,iter, seed = NULL, Yalt="RRPP"){
   Xr <- lapply(pfit$wXs[1:(k-1)], function(x) as.matrix(x))
   Xf <- lapply(pfit$wXs[2:k], function(x) as.matrix(x))
   ind = perm.index(n,iter, seed=seed)
-  if(Yalt=="RRPP") {
-    if(sum(w)==n) {
-      Yr = Map(function(x) (Map(function(y,e) e[x,]+y, Yh[1:(k-1)], E[1:(k-1)])),ind)
-    } else {
-      Yr = Map(function(x) (Map(function(y,e) (e[x,]+y)*sqrt(w), Yh[1:(k-1)], E[1:(k-1)])),ind) 
-    }} else {
+  SS <- NULL
+  jj <- iter+1
+  if(jj > 100) j <- 1:100 else j <- 1:jj
+  while(jj > 0){
+    ind.j <- ind[j]
+    if(Yalt=="RRPP") {
       if(sum(w)==n) {
-        Yr = Map(function(x) Map(function(y) y[x,], lapply(1:(k-1),function(.) Y)),ind)
+        Yr = Map(function(x) (Map(function(y,e) e[x,]+y, Yh[1:(k-1)], E[1:(k-1)])),ind.j)
       } else {
-        Yr = Map(function(x) Map(function(y) (y[x,])*sqrt(w), lapply(1:(k-1),function(.) Y)),ind)
+        Yr = Map(function(x) (Map(function(y,e) (e[x,]+y)*sqrt(w), Yh[1:(k-1)], E[1:(k-1)])),ind.j) 
+      }} else {
+        if(sum(w)==n) {
+          Yr = Map(function(x) Map(function(y) y[x,], lapply(1:(k-1),function(.) Y)),ind.j)
+        } else {
+          Yr = Map(function(x) Map(function(y) (y[x,])*sqrt(w), lapply(1:(k-1),function(.) Y)),ind.j)
+        }
       }
-    }
-  SS <- sapply(1:(iter+1), function(j){
-    mapply(function(x1,x2,y) sum(.lm.fit(x1,y)$residuals^2 - .lm.fit(x2,y)$residuals^2), 
-           Xr, Xf,Yr[[j]])})
-  SS
+    
+    SS.temp <- lapply(1:length(j), function(j){
+      mapply(function(x1,x2,y) sum(.lm.fit(x1,y)$residuals^2 - .lm.fit(x2,y)$residuals^2), 
+             Xr, Xf,Yr[[j]])})
+    SS <- c(SS, SS.temp)
+    jj <- jj-length(j)
+    if(jj > 100) kk <- 1:100 else kk <- 1:jj
+    j <- j[length(j)] +kk
+  }
+  simplify2array(SS)
 }
 
 # Fpgls.iter
@@ -930,17 +941,30 @@ Fpgls.iter = function(pfit,Pcor,iter, seed=NULL, Yalt="RRPP"){
   Xr <- lapply(PwXs[1:(k-1)], function(x) as.matrix(x))
   Xf <- lapply(PwXs[2:k], function(x) as.matrix(x))
   ind = perm.index(n,iter, seed=seed)
-  if(Yalt=="RRPP") {
-    Yr = Map(function(x) (Map(function(y,e) crossprod(Pcor,as.matrix(e[x,]+y)*sqrt(w)), Yh[1:(k-1)], E[1:(k-1)])),ind) 
-  } else {
-    Yr = Map(function(x) Map(function(y) crossprod(Pcor,as.matrix((y[x,])*sqrt(w))), lapply(1:(k-1),function(.) Y)),ind)
+  SS <- SSEs <-Fs <- NULL
+  jj <- iter+1
+  if(jj > 100) j <- 1:100 else j <- 1:jj
+  while(jj > 0){
+    ind.j <- ind[j]
+    if(Yalt=="RRPP") {
+      Yr = Map(function(x) (Map(function(y,e) crossprod(Pcor,as.matrix(e[x,]+y)*sqrt(w)), Yh[1:(k-1)], E[1:(k-1)])),ind.j) 
+    } else {
+      Yr = Map(function(x) Map(function(y) crossprod(Pcor,as.matrix((y[x,])*sqrt(w))), lapply(1:(k-1),function(.) Y)),ind.j)
+    }
+    SS.temp <- lapply(1:length(j), function(j){
+      mapply(function(x1,x2,y) sum(.lm.fit(x1,y)$residuals^2 - .lm.fit(x2,y)$residuals^2), 
+             Xr, Xf,Yr[[j]])})
+    SSEs.temp <- Map(function(y) sum(.lm.fit(Xf[[k-1]],y[[k-1]])$residuals^2), Yr)
+    Fs.temp <- Map(function(s1,s2) (s1/df)/(s2/(n-k)), SS.temp, SSEs.temp)
+    SS <- c(SS,SS.temp)
+    SSEs <- c(SSEs,SSEs.temp)
+    Fs <- c(Fs,Fs.temp)
+    jj <- jj-length(j)
+    if(jj > 200) kk <- 1:200 else kk <- 1:jj
+    j <- j[length(j)] +kk
   }
-  SS <- lapply(1:(iter+1), function(j){
-    mapply(function(x1,x2,y) sum(.lm.fit(x1,y)$residuals^2 - .lm.fit(x2,y)$residuals^2), 
-           Xr, Xf,Yr[[j]])})
-  SSEs <- Map(function(y) sum(.lm.fit(Xf[[k-1]],y[[k-1]])$residuals^2), Yr)
-  Fs <- mapply(function(s1,s2) (s1/df)/(s2/(n-k)), SS, SSEs)
-  list(SS=simplify2array(SS), SSE = SSEs[[1]], Fs=Fs)
+  
+  list(SS=simplify2array(SS), SSE = SSEs[[1]], Fs=simplify2array(Fs))
 }
 
 # anova.parts
