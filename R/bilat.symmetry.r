@@ -33,7 +33,13 @@
 #'  for analysis of variance (ANOVA).  Older versions used a combination of parametric and non-parametric results, as well as a combinaton
 #'  of type I and type III SS.  While analytical conclusions should be consistent (i.e., "significance" of effects is the same), these
 #'  updates maintain consistency in analytical philosophy.  This change will require longer computation time for large datasets, but the trade-off
-#'  allows users to have more flexibility and eliminates combining disparate analytical philosophies.
+#'  allows users to have more flexibility and eliminates combining disparate analytical philosophies. 
+#'  
+#'  Note also that significance of terms in the 
+#'  model are found by comparing SS for each term to those obtained via permutation. As such, df and F-ratios are not strictly necessary, but are 
+#'  reported as is standard for anova tables. Additionally, users will notice that the df reported are based on the number of observations rather than 
+#'  a combination of objects X coordinates X dimensions, as is sometimes found in morphometric studies of symmetry. However, this change has no effect 
+#'  on hypothesis testing, as tests of significance are based entirely on SS. 
 #'  }
 #'  
 #'  The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{bilat.symmetry}}.
