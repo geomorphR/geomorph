@@ -271,13 +271,9 @@ procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
   Reg.proj<-Y%*%B[2,]%*%sqrt(solve(t(B[2,])%*%B[2,])) 
   pred.val<-prcomp(yhat)$x[,1] 
   lm.dim <- dim(data[[match(as.character(f1[[2]]), names(data))]])
-  if(length(lm.dim) < 3) {
-    Ahat <- NULL
-    A <- NULL
-    ref <- NULL} else{
-      Ahat <- arrayspecs(yhat, lm.dim[[1]], lm.dim[[2]])
-      A <- arrayspecs(Y, lm.dim[[1]], lm.dim[[2]])
-      ref<-mshape(A)}
+  Ahat <- arrayspecs(yhat, lm.dim[[1]], lm.dim[[2]])
+  A <- arrayspecs(Y, lm.dim[[1]], lm.dim[[2]])
+  ref<-mshape(A)
   if(is.null(f2)) gps <- NULL
   out <- list(HOS.test = HOS, aov.table =anovafull, call = match.call(),
               alpha = alpha, perm.method = perm.method, permutations=iter+1,
