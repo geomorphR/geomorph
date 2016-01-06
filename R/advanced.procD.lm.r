@@ -2,7 +2,8 @@
 #'
 #' The function quantifies the relative amount of shape variation explained by a suite of factors
 #' and covariates in a "full" model, after accounting for variation in a "reduced" model. Inputs are 
-#' formulae for full and reduced models (order is not important), plus indication if means or slopes 
+#' formulae for full and reduced models (order is not important, but it is better to list the model 
+#' with the most terms first or use a geomorph data frame), plus indication if means or slopes 
 #' are to be comapred among groups, with appropriate formulae to define how they should be compared.
 #' 
 #'   The response matrix 'y' can be in the form of a two-dimensional data 
@@ -98,7 +99,7 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
   if(any(w < 0)) stop("Weights cannot be negative")
   n <- nrow(Y)
   if(!is.null(data)) data2 <- geomorph.data.frame(Y=Y, data) else
-    data2 <- geomorph.data.frame(Y=Y, pfit$data[,-(1:ncol(Y))])
+    data2 <- geomorph.data.frame(Y=Y, pfit1$data[,-(1:ncol(Y))])
   if(any(class(f2)=="lm")) pfit2 = procD.fit(f2) else {
       f2 <- update(f2, Y ~.) 
       if(!is.null(data)) pfit2= procD.fit(f2, data=data2) else pfit2= procD.fit(f2)
