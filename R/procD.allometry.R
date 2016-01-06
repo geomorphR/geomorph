@@ -248,7 +248,7 @@ procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
       }
       if(form.type == "g") {
         if(!logsz) rhs.formfull <- paste(c("size", attr(g.Terms, "term.labels")),  collapse="+") else
-          if(!logsz) rhs.formfull <- paste(c("log(size)", attr(g.Terms, "term.labels")),  collapse="+")
+          rhs.formfull <- paste(c("log(size)", attr(g.Terms, "term.labels")),  collapse="+")
         formfull <- as.formula(c("Y ~", rhs.formfull))
       }
     } 
