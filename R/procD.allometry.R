@@ -162,7 +162,7 @@ procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
   }
   
   if(!is.null(f2) || !is.null(f3)){
-    if(!is.null(data) {
+    if(!is.null(data)) {
       data.types <- lapply(data, class)
       keep = sapply(data.types, function(x) x != "array" & x != "phylo")
       dat2 <- as.data.frame(data[keep])
@@ -273,7 +273,7 @@ procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
   RSC<-prcomp(resid)$x
   Reg.proj<-Y%*%B[2,]%*%sqrt(solve(t(B[2,])%*%B[2,])) 
   pred.val<-prcomp(yhat)$x[,1] 
-  if(!isnull(data)) lm.dim <- dim(data[[match(as.character(f1[[2]]), names(data))]]) else {
+  if(!is.null(data)) lm.dim <- dim(data[[match(as.character(f1[[2]]), names(data))]]) else {
     Z <- eval(f1[[2]], parent.frame())
     lm.dim <- dim(Z)
   }
