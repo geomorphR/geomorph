@@ -105,7 +105,7 @@ morphol.disparity <- function(f1, groups = NULL, iter = 999, seed = NULL, data =
         names(pvr)<-levels(gps)
         as.matrix(dist(pvr))
       } )
-      names(P) <- c("obs", 1:iter)
+      if(iter > 0) names(P) <- c("obs", 1:iter)
       p.val <- Pval.matrix(simplify2array(P))
       pvd <- P[[1]]
       out <- list(Procrustes.var = pv, PV.dist = pvd, PV.dist.Pval = p.val,
