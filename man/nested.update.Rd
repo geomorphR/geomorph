@@ -9,7 +9,7 @@ nested.update(P, f1)
 \arguments{
 \item{P}{A \code{\link{procD.lm}} object}
 
-\item{f1}{A right-hand or full formula for one factor nested within another; e.g., ~ A/B}
+\item{f1}{A right-hand or full formula for one factor nested within another; e.g., ~ A/B or ~ A + B%in%A}
 }
 \description{
 This function is used to update \code{\link{procD.lm}} objects for fixed effects with 
@@ -45,7 +45,7 @@ summary(pupfishANOVA)
 
 # One needs to be careful using this function!
 
-gdf <- geomorph.data.frame(coords = pupfish$coords, pop=pupfish$Pop, sex = pupfish$Sex, 
+gdf <- geomorph.data.frame(coords = pupfish$coords, pop = pupfish$Pop, sex = pupfish$Sex, 
 CS = pupfish$CS)
 pupfishANOVA <- procD.lm(coords ~ CS * sex/pop, iter=999, RRPP=TRUE, data=gdf)
 summary(pupfishANOVA)

@@ -39,7 +39,8 @@ LS means or slopes, pairwise differences comparisons of these, effect sizes, and
 \description{
 The function quantifies the relative amount of shape variation explained by a suite of factors
 and covariates in a "full" model, after accounting for variation in a "reduced" model. Inputs are 
-formulae for full and reduced models (order is not important), plus indication if means or slopes 
+formulae for full and reduced models (order is not important, but it is better to list the model 
+with the most terms first or use a geomorph data frame), plus indication if means or slopes 
 are to be comapred among groups, with appropriate formulae to define how they should be compared.
 }
 \details{

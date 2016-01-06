@@ -81,7 +81,7 @@ Adams, D.C. 2016.Evaluating modularity in morphometric data: Challenges with the
 new test measure. Methods in Ecology and Evolution. (Accepted).
 }
 \seealso{
-\code{\link{two.b.pls}}, \code{\link{integration.test}}, \code{\link{phylo.pls}}, and 
+\code{\link{two.b.pls}}, \code{\link{integration.test}}, \code{\link{phylo.modularity}}, and 
 \code{\link{phylo.integration}}
 }
 \keyword{analysis}

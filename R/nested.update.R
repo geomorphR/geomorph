@@ -39,7 +39,7 @@
 #'
 #' # One needs to be careful using this function!
 #' 
-#'gdf <- geomorph.data.frame(coords = pupfish$coords, pop=pupfish$Pop, sex = pupfish$Sex, 
+#'gdf <- geomorph.data.frame(coords = pupfish$coords, pop = pupfish$Pop, sex = pupfish$Sex, 
 #'CS = pupfish$CS)
 #'pupfishANOVA <- procD.lm(coords ~ CS * sex/pop, iter=999, RRPP=TRUE, data=gdf)
 #'summary(pupfishANOVA)

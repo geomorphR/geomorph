@@ -60,9 +60,9 @@ The function quantifies components of shape variation for a set of specimens as 
  statistically evaluated using Procrustes ANOVA. Statistical assessment of model effects for shape variation is accomplished using permutation procedures. 
  Methods for both matching symmetry and object symmetry can be implemented. Matching symmetry is when each object contains mirrored 
  pairs of structures (e.g., right and left hands) while object symmetry is when a single object is symmetric 
- about a midline (e.g., right and left sides of human faces). Analytical and computational details concerning the 
- analysis of symmetry in geometric morphometrics can be found in Mardia et al. 2000; Klingenberg et al. 2002.
-
+ about a midline (e.g., right and left sides of human faces). Details on general approaches for the study of symmetry in geometric 
+ morphometrics may be found in: Mardia et al. 2000; Klingenberg et al. 2002.
+ 
 Analyses of symmetry for matched pairs of objects is implemented when {object.sym=FALSE}. Here, a 3D array [p x k x 2n] 
  contains the landmark coordinates for all pairs of structures (2 structures for each of n specimens). Because the two sets of 
  structures are on opposite sides, they represent mirror images, and one set must be reflected prior to the analysis to 
@@ -85,7 +85,13 @@ Analyses of object symmetry is implemented when {object.sym=TRUE}. Here, a 3D ar
  for analysis of variance (ANOVA).  Older versions used a combination of parametric and non-parametric results, as well as a combinaton
  of type I and type III SS.  While analytical conclusions should be consistent (i.e., "significance" of effects is the same), these
  updates maintain consistency in analytical philosophy.  This change will require longer computation time for large datasets, but the trade-off
- allows users to have more flexibility and eliminates combining disparate analytical philosophies.
+ allows users to have more flexibility and eliminates combining disparate analytical philosophies. 
+ 
+ Note also that significance of terms in the 
+ model are found by comparing SS for each term to those obtained via permutation. As such, df and F-ratios are not strictly necessary, but are 
+ reported as is standard for anova tables. Additionally, users will notice that the df reported are based on the number of observations rather than 
+ a combination of objects X coordinates X dimensions, as is sometimes found in morphometric studies of symmetry. However, this change has no effect 
+ on hypothesis testing, as tests of significance are based entirely on SS. 
  }
  
  The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{bilat.symmetry}}.
