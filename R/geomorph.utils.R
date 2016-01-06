@@ -315,12 +315,12 @@ plot.procD.allometry <- function(x, method=c("CAC","RegScore","PredLine"),warpgr
     y <- x$pred.val
   
   if(is.null(x$gps)){
-    if(warpgrids==T && x$k==2){
+    if(warpgrids==TRUE){
       arrows(min(size), (0.7 * max(y)), min(size), 0, length = 0.1,lwd = 2)
       arrows(max(size), (0.7 * min(y)), max(size), 0, length = 0.1,lwd = 2)
     }
   }
-  if(warpgrids==T && x$k==3){
+  if(warpgrids==TRUE && x$k==3){
     if(is.null(mesh)){
       open3d()
       plot3d(x$Ahat[,,which.min(size)],type="s",col="gray",main="Shape at minimum size",size=1.25,aspect=FALSE)
