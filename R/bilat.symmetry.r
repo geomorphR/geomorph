@@ -8,9 +8,9 @@
 #'  statistically evaluated using Procrustes ANOVA. Statistical assessment of model effects for shape variation is accomplished using permutation procedures. 
 #'  Methods for both matching symmetry and object symmetry can be implemented. Matching symmetry is when each object contains mirrored 
 #'  pairs of structures (e.g., right and left hands) while object symmetry is when a single object is symmetric 
-#'  about a midline (e.g., right and left sides of human faces). Analytical and computational details concerning the 
-#'  analysis of symmetry in geometric morphometrics can be found in Mardia et al. 2000; Klingenberg et al. 2002.
-#'
+#'  about a midline (e.g., right and left sides of human faces). Details on general approaches for the study of symmetry in geometric 
+#'  morphometrics may be found in: Mardia et al. 2000; Klingenberg et al. 2002.
+#'  
 #' Analyses of symmetry for matched pairs of objects is implemented when {object.sym=FALSE}. Here, a 3D array [p x k x 2n] 
 #'  contains the landmark coordinates for all pairs of structures (2 structures for each of n specimens). Because the two sets of 
 #'  structures are on opposite sides, they represent mirror images, and one set must be reflected prior to the analysis to 
