@@ -272,7 +272,6 @@ procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
   pred.val<-prcomp(yhat)$x[,1] 
   lm.dim <- dim(data[[match(as.character(f1[[2]]), names(data))]])
   if(length(lm.dim) < 3) {
-    warning("Warpgrids will be unavailble for plots, as input data are not an array")
     Ahat <- NULL
     A <- NULL
     ref <- NULL} else{
