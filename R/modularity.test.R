@@ -51,7 +51,7 @@
 #'    \item{call}{The match call.}
 #' @references Adams, D.C. 2016.Evaluating modularity in morphometric data: Challenges with the RV coefficient and a 
 #' new test measure. Methods in Ecology and Evolution. (Accepted). 
-#' @seealso \code{\link{two.b.pls}}, \code{\link{integration.test}}, \code{\link{phylo.pls}}, and 
+#' @seealso \code{\link{two.b.pls}}, \code{\link{integration.test}}, \code{\link{phylo.modularity}}, and 
 #' \code{\link{phylo.integration}}
 #' @examples
 #' data(plethodon) 
@@ -83,6 +83,7 @@ modularity.test<-function(A,partition.gp,iter=999, seed=NULL){
     CR.obs <- CR.obs$CR
     CR.rand <- apply.CR(x, gps, iter=iter, seed=seed)
     p.val <- 1-pval(CR.rand)  #b/c smaller values more significant
+    if (p.val==0){p.val<-1/(iter+1)}
     CR.boot<- boot.CR(x, gps, iter=iter, seed=seed)
     CR.CI<-quantile(CR.boot, c(.025, .975))
   }
@@ -119,6 +120,7 @@ modularity.test<-function(A,partition.gp,iter=999, seed=NULL){
     CR.rand[1] <- CR.obs <- avgCR
     if(ngps > 2) CR.mat <- CR(x,gps)$CR.mat else CR.mat <- NULL
     p.val <- 1-pval(CR.rand)  #b/c smaller values more significant
+      if (p.val==0){p.val<-1/(iter+1)}
     CR.boot<- boot.CR(x, gps, iter=iter, seed=seed)
     CR.CI<-quantile(CR.boot, c(.025, .975))
   }
