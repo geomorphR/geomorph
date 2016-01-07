@@ -99,7 +99,7 @@ Y.gpa <- gpagen(plethodon$land)    #GPA-alignment
 gdf <- geomorph.data.frame(shape = Y.gpa$coords, 
 site = plethodon$site, species = plethodon$species) # geomorph data frame
 
-procD.lm(shape ~ species * site, data = gdf, iter = 999) # randomize raw values
+procD.lm(shape ~ species * site, data = gdf, iter = 999, RRPP = FALSE) # randomize raw values
 procD.lm(shape ~ species * site, data = gdf, iter = 999, RRPP = TRUE) # randomize residuals
 
 ### Regression example
@@ -107,7 +107,7 @@ data(ratland)
 rat.gpa<-gpagen(ratland)         #GPA-alignment
 gdf <- geomorph.data.frame(rat.gpa) # geomorph data frame is easy without additional input
 
-procD.lm(coords ~ Csize, data = gdf, iter = 999) # randomize raw values
+procD.lm(coords ~ Csize, data = gdf, iter = 999, RRPP = FALSE) # randomize raw values
 procD.lm(coords ~ Csize, data = gdf, iter = 999, RRPP = TRUE) # randomize raw values
 # Outcomes should be exactly the same
 
