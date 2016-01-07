@@ -2,7 +2,7 @@ CHANGES IN GEOMORPH VERSION 3.0.0
 
   NEW FEATURES
     o New functions: modularity.test(), integration.test(), phylo.modularity(), 
-        phylo.integration(), procD.allometry(), nested.update()
+        phylo.integration(), procD.allometry(), nested.update(), geomorph.data.frame()
     o Seed option added for most analytical functions
     o Major overhaul of underlying support code for analytics
     o Output from analytical functions provided in lists
@@ -17,7 +17,7 @@ CHANGES IN GEOMORPH VERSION 3.0.0
     o Removed internal C-code for gpagen
     o Removed automatic plots for most analytical functions
     o Removed method="" parameter from physignal(). Only Kmult used
-    o Removed verbose option for functions: all output provided in lists
+    o Removed verbose option for most functions: all output provided in lists
     o Added option to pre-multiply coordinates by scale in digitize2d
   
   BUG FIXES

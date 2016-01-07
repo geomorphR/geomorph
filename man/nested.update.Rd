@@ -31,11 +31,21 @@ ANOVA table is updated in terms of F-values, Z-scores, and P-values,
 }
 \examples{
 
+<<<<<<< HEAD
 data(larvalTails)
 Y.gpa <- gpagen(larvalTails$landmarks)
 gdf <- geomorph.data.frame(Y.gpa, Treatment = larvalTails$Treatment, Family = larvalTails$Family)
 tailANOVA <- procD.lm(coords ~ Treatment/Family, iter=499, RRPP=TRUE, data=gdf)
 summary(tailANOVA)
+=======
+# This example is intended as a demonstration; it is not intended to suggest
+# that populatons should normally be nested within gender.
+
+data(pupfish)
+gdf <- geomorph.data.frame(coords = pupfish$coords, pop=pupfish$Pop, sex = pupfish$Sex)
+pupfishANOVA <- procD.lm(coords ~ sex/pop, iter=499, RRPP=TRUE, data=gdf)
+summary(pupfishANOVA)
+>>>>>>> b7da9d825d5a16fdc3f9050c70cb0b76ab72b18d
 
 # Update for nested effects
 tailANOVA <- nested.update(tailANOVA, ~ Treatment/Family)
@@ -43,14 +53,26 @@ summary(tailANOVA)
 
 # One needs to be careful using this function!
 
+<<<<<<< HEAD
 tailANOVA <- procD.lm(coords ~ CS * Treatment/Family, iter=199, RRPP=TRUE, data=gdf)
 summary(tailANOVA)
+=======
+gdf <- geomorph.data.frame(coords = pupfish$coords, pop = pupfish$Pop, sex = pupfish$Sex, 
+CS = pupfish$CS)
+pupfishANOVA <- procD.lm(coords ~ CS * sex/pop, iter=499, RRPP=TRUE, data=gdf)
+summary(pupfishANOVA)
+>>>>>>> b7da9d825d5a16fdc3f9050c70cb0b76ab72b18d
 
 # This will not work: tailANOVA <- nested.update(tailANOVA, ~ Treatment/Family) 
 # The updated terms must be included as part of the original terms
 
+<<<<<<< HEAD
 tailANOVA <- procD.lm(coords ~ Csize + Treatment/Family, iter=199, RRPP=TRUE, data=gdf)
 summary(tailANOVA)
+=======
+pupfishANOVA <- procD.lm(coords ~ CS + CS*sex + sex/pop, iter=499, RRPP=TRUE, data=gdf)
+summary(pupfishANOVA)
+>>>>>>> b7da9d825d5a16fdc3f9050c70cb0b76ab72b18d
 
 # Now the format will allow an update
 

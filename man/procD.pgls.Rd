@@ -86,7 +86,7 @@ The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\li
 data(plethspecies)
 Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment
 gdf <- geomorph.data.frame(Y.gpa, phy = plethspecies$phy)
-procD.pgls(coords ~ Csize, phy = phy, data = gdf, iter = 999) # randomize raw values
+procD.pgls(coords ~ Csize, phy = phy, data = gdf, iter = 999, RRPP = FALSE) # randomize raw values
 procD.pgls(coords ~ Csize, phy = phy, data = gdf, iter = 999, RRPP = TRUE) # randomize residuals
 
 ### Extracting objects
