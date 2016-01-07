@@ -25,36 +25,32 @@
 #' by high-dimensional data. Heredity. 115:357-365.
 #' @examples
 #' 
-#' # This example is intended as a demonstration; it is not intended to suggest
-#' # that populatons should normally be nested within gender.
-#' 
-#'data(pupfish)
-#'gdf <- geomorph.data.frame(coords = pupfish$coords, pop=pupfish$Pop, sex = pupfish$Sex)
-#'pupfishANOVA <- procD.lm(coords ~ sex/pop, iter=999, RRPP=TRUE, data=gdf)
-#'summary(pupfishANOVA)
+#'data(larvalTails)
+#'Y.gpa <- gpagen(larvalTails$landmarks)
+#'gdf <- geomorph.data.frame(Y.gpa, Treatment = larvalTails$Treatment, Family = larvalTails$Family)
+#'tailANOVA <- procD.lm(coords ~ Treatment/Family, iter=499, RRPP=TRUE, data=gdf)
+#'summary(tailANOVA)
 #'
 #'# Update for nested effects
-#'pupfishANOVA <- nested.update(pupfishANOVA, ~sex/pop)
-#'summary(pupfishANOVA)
+#'tailANOVA <- nested.update(tailANOVA, ~ Treatment/Family)
+#'summary(tailANOVA)
 #'
 #' # One needs to be careful using this function!
 #' 
-#'gdf <- geomorph.data.frame(coords = pupfish$coords, pop = pupfish$Pop, sex = pupfish$Sex, 
-#'CS = pupfish$CS)
-#'pupfishANOVA <- procD.lm(coords ~ CS * sex/pop, iter=999, RRPP=TRUE, data=gdf)
-#'summary(pupfishANOVA)
+#'tailANOVA <- procD.lm(coords ~ CS * Treatment/Family, iter=199, RRPP=TRUE, data=gdf)
+#'summary(tailANOVA)
 #'
-#' # This will not work: pupfishANOVA <- nested.update(pupfishANOVA, ~sex/pop) 
+#' # This will not work: tailANOVA <- nested.update(tailANOVA, ~ Treatment/Family) 
 #' # The updated terms must be included as part of the original terms
 #' 
-#'pupfishANOVA <- procD.lm(coords ~ CS + CS*sex + sex/pop, iter=999, RRPP=TRUE, data=gdf)
-#'summary(pupfishANOVA)
+#'tailANOVA <- procD.lm(coords ~ Csize + Treatment/Family, iter=199, RRPP=TRUE, data=gdf)
+#'summary(tailANOVA)
 #'
 #'# Now the format will allow an update
 #'
-#'pupfishANOVA <- nested.update(pupfishANOVA, ~sex/pop) 
+#'tailANOVA <- nested.update(tailANOVA, ~ Treatment/Family) 
 #'
-#'summary(pupfishANOVA)
+#'summary(tailANOVA)
 nested.update <- function(P, f1){
   Terms <- terms(f1)
   term.lbls <- attr(Terms, "term.labels")
