@@ -37,7 +37,7 @@
 #'
 #' # One needs to be careful using this function!
 #' 
-#'tailANOVA <- procD.lm(coords ~ CS * Treatment/Family, iter=199, RRPP=TRUE, data=gdf)
+#'tailANOVA <- procD.lm(coords ~ Csize * Treatment/Family, iter=199, RRPP=TRUE, data=gdf)
 #'
 #' # This will not work: tailANOVA <- nested.update(tailANOVA, ~ Treatment/Family) 
 #' # The updated terms must be included as part of the original terms
