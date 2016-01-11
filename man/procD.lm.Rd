@@ -66,7 +66,7 @@ The function quantifies the relative amount of shape variation attributable to o
   can also be input in place of a formula.  Arguments for \code{\link{lm}} can also be passed on via this function.
   
   The function \code{\link{two.d.array}} can be used to obtain a two-dimensional data matrix from a 3D array of landmark
-  coordinates; however this step is no longer necessary, as procD.lm can receive 3D arrays as depedendent variables.  It is also 
+  coordinates; however this step is no longer necessary, as procD.lm can receive 3D arrays as dependent variables.  It is also 
   recommended that \code{\link{geomorph.data.frame}} is used to create and input a data frame.  This will reduce problems caused
   by conflicts between the global and function environments.  In the absence of a specified data frame, procD.lm will attempt to 
   coerce input data into a data frame, but success is not guaranteed.

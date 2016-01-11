@@ -4,7 +4,7 @@
 #' and covariates in a "full" model, after accounting for variation in a "reduced" model. Inputs are 
 #' formulae for full and reduced models (order is not important, but it is better to list the model 
 #' with the most terms first or use a geomorph data frame), plus indication if means or slopes 
-#' are to be comapred among groups, with appropriate formulae to define how they should be compared.
+#' are to be compared among groups, with appropriate formulae to define how they should be compared.
 #' 
 #'   The response matrix 'y' can be in the form of a two-dimensional data 
 #'   matrix of dimension (n x [p x k]) or a 3D array (p x k x n). It is assumed that the landmarks have previously 
