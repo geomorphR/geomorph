@@ -775,8 +775,8 @@ procD.fit <- function(f1, keep.order=FALSE, pca=TRUE, data=NULL,...){
     Y <- as.matrix(data[1])
   } else {
     if(!is.null(data)) {
-      dat <- data 
-    Y <- dat[[match(as.character(form.in[[2]]), names(dat))]]
+      dat <- data
+      Y <- eval(form.in[[2]], envir = data)
     } else {
       Y <- eval(form.in[[2]], parent.frame())
       dat <- model.frame(form.in[-2])
