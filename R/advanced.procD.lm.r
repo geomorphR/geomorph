@@ -159,9 +159,18 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
   }
   
   if(pairwise.cond == "means") {
-      Yr <- lapply(1:(iter+1), function(j) (pfitr$residuals[[kr]][ind[[j]],] + pfitr$fitted[[kr]])*w)
-      P <- sapply(1:(iter+1), function(j) sum(qr.resid(Qrr,Yr[[j]])^2)-sum(qr.resid(Qrf,Yr[[j]])^2))
-      lsms <- apply.ls.means(pfitf, Yr, g = gps, data = dat2)  
+    P <- lsms <- NULL
+    jj <- iter+1
+    if(jj > 100) j <- 1:100 else j <- 1:jj
+    while(jj > 0){
+      ind.j <- ind[j]
+      Yr <- lapply(1:length(j), function(j) (pfitr$residuals[[kr]][ind.j[[j]],] + pfitr$fitted[[kr]])*w)
+      P <- c(P, sapply(1:length(j), function(j) sum(qr.resid(Qrr,Yr[[j]])^2)-sum(qr.resid(Qrf,Yr[[j]])^2)))
+      lsms <- c(lsms, apply.ls.means(pfitf, Yr, g = gps, data = dat2)) 
+      jj <- jj-length(j)
+      if(jj > 100) kk <- 1:100 else kk <- 1:jj
+      j <- j[length(j)] +kk
+    }
       P.dist <- lapply(1:length(lsms), function(j){as.matrix(dist(lsms[[j]]))})
       P.val <- pval(P) 
       Z.score <- effect.size(P)
