@@ -1656,6 +1656,7 @@ sigma.d<-function(x,invC,D.mat,gp){
 # used in: compare.multi.evol.rates
 sigma.d.multi<-function(x,invC,D.mat,gps,Subset){
   sig.calc<-function(x.i,invC.i,D.mat.i,Subset){
+    x.i<-as.matrix(x.i)
     N<-nrow(x.i);p<-ncol(x.i)
     ones<-matrix(1,N,1) 
     a.obs<-colSums(invC)%*%x.i/sum(invC)  
