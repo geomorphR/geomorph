@@ -417,7 +417,7 @@ summary.pls <- function(object, ...) {
 plotPLS <- function(p, label = NULL, warpgrids=TRUE){
   A1 <- p$A1; A2 <- p$A2
   XScores <- p$XScores; YScores <- p$YScores
-  pc <- prcomp(cbind(Xscores, YScores))$x[,1]
+  pc <- prcomp(cbind(XScores, YScores))$x[,1]
   px <- lm.fit(model.matrix(~pc),XScores)$fitted
   py <- lm.fit(model.matrix(~pc),XScores)$fitted
   pxmax <- max(px); pxmin <- min(px)
