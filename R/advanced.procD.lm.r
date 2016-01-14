@@ -21,7 +21,7 @@
 #'   to distance-based anova designs (Anderson 2001). Unlike \code{\link{procD.lm}}, this function is strictly for comparison
 #'   of two nested models. (Use of \code{\link{procD.lm}} will be more suitable in most cases.)  
 #'   A residual randomization permutation procedure (RRPP) is utilized 
-#'   for reduced model residuals to evalute the SS between models (Collyer et al. 2015).  Effect-sizes (Z-scores) are 
+#'   for reduced model residuals to evaluate the SS between models (Collyer et al. 2015).  Effect-sizes (Z-scores) are 
 #'   computed as standard deviates of the SS sampling 
 #'   distributions generated, which might be more intuitive for P-values than F-values (see Collyer et al. 2015).  
 #'   

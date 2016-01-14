@@ -1449,6 +1449,7 @@ quick.CR <-function(x,gps){ # no CR.mat made
 # apply.CR
 # permutation for CR
 # used in: modularity.test
+
 apply.CR <- function(x,gps, iter, seed = NULL){
   CR.obs <- CR(x,gps)$CR
   ind <- perm.index(length(gps), iter, seed=seed)
@@ -1463,6 +1464,7 @@ apply.CR <- function(x,gps, iter, seed = NULL){
     if(jj > 100) kk <- 1:100 else kk <- 1:jj
     j <- j[length(j)] +kk
   }
+
   CR.rand
 }
 
@@ -1722,6 +1724,7 @@ sigma.d<-function(x,invC,D.mat,gp){
 # used in: compare.multi.evol.rates
 sigma.d.multi<-function(x,invC,D.mat,gps,Subset){
   sig.calc<-function(x.i,invC.i,D.mat.i,Subset){
+    x.i<-as.matrix(x.i)
     N<-nrow(x.i);p<-ncol(x.i)
     ones<-matrix(1,N,1) 
     a.obs<-colSums(invC)%*%x.i/sum(invC)  
