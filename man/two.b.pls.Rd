@@ -53,7 +53,13 @@ The function quantifies the degree of association between two blocks of shape da
  The generic function, \code{\link{plot}}, produces a two-block.pls plot.  This function calls \code{\link{plot.pls}}, which has two additional
  arguments (with defaults): label = NULL, warpgrids = TRUE.  These arguments allow one to include a vector to label points and a logical statement to
  include warpgrids, respectively.  Warpgrids can only be included for 3D arrays of Procrustes resdiuals. The plot is a plot of PLS scores from 
- Block1 versus Block2 performed for the first set of PLS axes.
+ Block1 versus Block2 performed for the first set of PLS axes. 
+ 
+ \subsection{Notes for geomorph 3.0}{ 
+There is a slight change in two.b.pls plots with geomorph 3.0.  Rather than use the shapes of specimens that matched minimum and maximum PLS
+scores, major-axis regression is used and the extreme fitted values are used to generate deformation grids.  This ensures that shape deformations
+are exactly along the major axis of shape covariation.  This axis is also shown as a best-fit line in the plot.
+}
 }
 \examples{
 data(plethShapeFood) 
