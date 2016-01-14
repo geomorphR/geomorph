@@ -1324,9 +1324,18 @@ apply.pls <- function(x,y, RV=FALSE, iter, seed = NULL){
   px <- ncol(x); py <- ncol(y)
   pmin <- min(px,py)
   ind <- perm.index(nrow(x), iter, seed=seed)
-  y.rand <-lapply(1:(iter+1), function(j) y[ind[[j]],])
-  if(RV == TRUE) RV.rand <- sapply(1:(iter+1), function(j) pls(x,y.rand[[j]], RV=TRUE, verbose = TRUE)$RV) else
-    r.rand <- sapply(1:(iter+1), function(j) quick.pls(x,y.rand[[j]], px,py,pmin))
+  RV.rand <- r.rand <- NULL
+  jj <- iter+1
+  if(jj > 100) j <- 1:100 else j <- 1:jj
+  while(jj > 0){
+    ind.j <- ind[j]
+    y.rand <-lapply(1:length(j), function(j) y[ind.j[[j]],])
+    if(RV == TRUE) RV.rand <- c(RV.rand,sapply(1:length(j), function(i) pls(x,y.rand[[i]], RV=TRUE, verbose = TRUE)$RV)) else
+      r.rand <- c(r.rand, sapply(1:length(j), function(i) quick.pls(x,y.rand[[i]], px,py,pmin)))
+    jj <- jj-length(j)
+    if(jj > 100) kk <- 1:100 else kk <- 1:jj
+    j <- j[length(j)] +kk
+  }
   if(RV == TRUE) RV.rand else r.rand
 }
 
@@ -1334,7 +1343,6 @@ apply.pls <- function(x,y, RV=FALSE, iter, seed = NULL){
 # obtain average of pairwise PLS analyses for 3+modules
 # used in: apply.plsmulti, integration.test
 plsmulti<-function(x,gps){
-  gp.names <- levels(gps)
   g<-factor(as.numeric(gps))
   ngps<-nlevels(g)
   S<-var(x)
@@ -1358,7 +1366,6 @@ plsmulti<-function(x,gps){
 # a streamlined plsmulti
 # used in apply.plsmulti
 quick.plsmulti <- function(x,gps){
-  gp.names <- levels(gps)
   g<-factor(as.numeric(gps))
   ngps<-nlevels(g)
   S<-var(x)
@@ -1378,13 +1385,23 @@ quick.plsmulti <- function(x,gps){
 # permutation for multipls
 # used in: integration.test
 apply.plsmulti <- function(x,gps, iter, seed = NULL){
-  ngps<-nlevels(gps)
+  g <- as.factor(gps)
+  ngps<-nlevels(g)
   S <-var(x)
   r.obs <- plsmulti(x,gps)$r.pls
   ind <- perm.index(nrow(x), iter, seed=seed)
-  x.r<-lapply(1:(iter+1), function(j) x[ind[[j]],which(gps==levels(gps)[1])]) #shuffle 1st block
-  r.rand<-sapply(1:(iter+1), function(j) quick.plsmulti(cbind(x.r[[j]],
-                                                            x[,which(gps!=levels(gps)[1])]),gps)) 
+  jj <- iter+1
+  if(jj > 100) j <- 1:100 else j <- 1:jj
+  r.rand <- NULL
+  while(jj > 0){
+    ind.j <- ind[j]
+    x.r<-lapply(1:length(j), function(i) x[ind.j[[i]],which(g==levels(g)[1])]) 
+    r.rand<-c(r.rand, sapply(1:length(j), function(i) quick.plsmulti(cbind(x.r[[i]],
+                x[,which(g!=levels(g)[1])]), gps=g))) 
+    jj <- jj-length(j)
+    if(jj > 100) kk <- 1:100 else kk <- 1:jj
+    j <- j[length(j)] +kk
+  }
   r.rand
 }
 
@@ -1392,7 +1409,6 @@ apply.plsmulti <- function(x,gps, iter, seed = NULL){
 # Function to estimate CR coefficient
 # used in: modularity.test, apply.CR
 CR<-function(x,gps){
-  gp.names <- levels(gps)
   g<-factor(as.numeric(gps))
   ngps<-nlevels(g)
   S<-var(x)
@@ -1416,7 +1432,6 @@ CR<-function(x,gps){
 # streamlined CR
 # used in: apply.CR, boot.CR
 quick.CR <-function(x,gps){ # no CR.mat made
-  gp.names <- levels(gps)
   g<-factor(as.numeric(gps))
   ngps<-nlevels(g)
   S<-var(x)
@@ -1437,8 +1452,17 @@ quick.CR <-function(x,gps){ # no CR.mat made
 apply.CR <- function(x,gps, iter, seed = NULL){
   CR.obs <- CR(x,gps)$CR
   ind <- perm.index(length(gps), iter, seed=seed)
-  x.r<-lapply(1:(iter+1), function(j) x[,ind[[j]]])
-  CR.rand<-sapply(1:(iter+1), function(j) quick.CR(x.r[[j]],gps)) 
+  jj <- iter+1
+  if(jj > 100) j <- 1:100 else j <- 1:jj
+  CR.rand <- NULL
+  while(jj > 0){
+    ind.j <- ind[j]
+    x.r<-lapply(1:length(j), function(i) x[,ind.j[[i]]])
+    CR.rand<-c(CR.rand, sapply(1:length(j), function(i) quick.CR(x.r[[i]],gps))) 
+    jj <- jj-length(j)
+    if(jj > 100) kk <- 1:100 else kk <- 1:jj
+    j <- j[length(j)] +kk
+  }
   CR.rand
 }
 
@@ -1448,8 +1472,17 @@ apply.CR <- function(x,gps, iter, seed = NULL){
 boot.CR <- function(x,gps, iter, seed = NULL){
   x<-as.matrix(x)
   boot <- boot.index(nrow(x), iter, seed=seed)
-  x.r<-lapply(1:(iter+1), function(j) x[boot[[j]],])
-  CR.boot<-sapply(1:(iter+1), function(j) quick.CR(x.r[[j]],gps)) 
+  jj <- iter+1
+  if(jj > 100) j <- 1:100 else j <- 1:jj
+  CR.boot <- NULL
+  while(jj > 0){
+    boot.j <- boot[j]
+    x.r<-lapply(1:length(j), function(i) x[boot.j[[i]],])
+    CR.boot<-c(CR.boot, sapply(1:length(j), function(i) quick.CR(x.r[[i]],gps))) 
+    jj <- jj-length(j)
+    if(jj > 100) kk <- 1:100 else kk <- 1:jj
+    j <- j[length(j)] +kk
+  }
   CR.boot
 }
 
@@ -1457,7 +1490,6 @@ boot.CR <- function(x,gps, iter, seed = NULL){
 # phylogenetic CR analysis
 # used in: phylo.modularity
 CR.phylo<-function(x,invC,gps){
-  gp.names <- levels(gps)
   g<-factor(as.numeric(gps))
   ngps<-nlevels(g)
   one<-matrix(1,nrow(x),1)  
@@ -1484,7 +1516,6 @@ CR.phylo<-function(x,invC,gps){
 # used in: apply.phylo.CR
 quick.CR.phylo <- function(x,invC,gps){
   x <- as.matrix(x); invC <- as.matrix(invC)
-  gp.names <- levels(gps)
   g<-factor(as.numeric(gps))
   ngps<-nlevels(g)
   one<-matrix(1,nrow(x),1)  
@@ -1507,8 +1538,17 @@ quick.CR.phylo <- function(x,invC,gps){
 # used in: phylo.modularity
 apply.phylo.CR <- function(x,invC,gps, iter, seed=NULL){
   ind <- perm.index(length(gps), iter, seed=seed)
-  x.r<-lapply(1:(iter+1), function(j) x[,ind[[j]]])
-  CR.rand<-sapply(1:(iter+1), function(j) quick.CR.phylo(x.r[[j]],invC=invC,gps=gps)) 
+  jj <- iter+1
+  if(jj > 100) j <- 1:100 else j <- 1:jj
+  CR.rand <- NULL
+  while(jj > 0){
+    ind.j <- ind[j]
+    x.r<-lapply(1:length(j), function(i) x[,ind.j[[i]]])
+    CR.rand<-c(CR.rand, sapply(1:length(j), function(i) quick.CR.phylo(x.r[[i]],invC=invC,gps=gps))) 
+    jj <- jj-length(j)
+    if(jj > 100) kk <- 1:100 else kk <- 1:jj
+    j <- j[length(j)] +kk
+  }
   CR.rand
 }
 
@@ -1518,9 +1558,18 @@ apply.phylo.CR <- function(x,invC,gps, iter, seed=NULL){
 boot.phylo.CR <- function(x,invC,gps, iter, seed = NULL){
   x<-as.matrix(x)
   boot <- boot.index(nrow(x), iter, seed=seed)
-  x.r<-lapply(1:(iter+1), function(j) x[boot[[j]],])
-  invC.r <- lapply(1:(iter+1), function(j) invC[boot[[j]],boot[[j]]])
-  CR.boot<-sapply(1:(iter+1), function(j) quick.CR.phylo(x=x.r[[j]],invC=invC.r[[j]],gps=gps)) 
+  jj <- iter+1
+  if(jj > 100) j <- 1:100 else j <- 1:jj
+  CR.boot <- NULL
+  while(jj > 0){
+    boot.j <- boot[j]
+    x.r<-lapply(1:length(j), function(i) x[boot.j[[i]],])
+    invC.r <- lapply(1:length(j), function(i) invC[boot.j[[i]],boot.j[[i]]])
+    CR.boot<-c(CR.boot, sapply(1:length(j), function(i) quick.CR.phylo(x=x.r[[i]],invC=invC.r[[i]],gps=gps))) 
+    jj <- jj-length(j)
+    if(jj > 100) kk <- 1:100 else kk <- 1:jj
+    j <- j[length(j)] +kk
+  }
   CR.boot
 }
 
@@ -1575,8 +1624,17 @@ pls.phylo <- function(x,y, invC,D.mat, verbose = FALSE){
 # used in: phylo.integration
 apply.pls.phylo <- function(x,y,invC,D.mat, iter, seed = NULL){
   ind <- perm.index(nrow(x), iter, seed=seed)
-  y.rand <-lapply(1:(iter+1), function(j) y[ind[[j]],])
-  r.rand <- sapply(1:(iter+1), function(j) pls.phylo(x,y.rand[[j]], invC,D.mat, verbose = FALSE))
+  jj <- iter+1
+  if(jj > 100) j <- 1:100 else j <- 1:jj
+  r.rand <- NULL
+  while(jj > 0){
+    ind.j <- ind[j]
+    y.rand <-lapply(1:length(j), function(i) y[ind.j[[i]],])
+    r.rand <- c(r.rand, sapply(1:length(j), function(i) pls.phylo(x,y.rand[[i]], invC,D.mat, verbose = FALSE)))
+    jj <- jj-length(j)
+    if(jj > 100) kk <- 1:100 else kk <- 1:jj
+    j <- j[length(j)] +kk
+  }
   r.rand
 }
 
@@ -1584,7 +1642,6 @@ apply.pls.phylo <- function(x,y,invC,D.mat, iter, seed = NULL){
 # average pairwise phylo.pls
 # used in: phylo.integration, apply.plsmulti.phylo
 plsmulti.phylo<-function(x,gps, invC, D.mat){
-  gp.names <- levels(gps)
   g<-factor(as.numeric(gps))
   ngps<-nlevels(g)
   one<-matrix(1,nrow(x),1)  
@@ -1613,9 +1670,18 @@ plsmulti.phylo<-function(x,gps, invC, D.mat){
 apply.plsmulti.phylo <- function(x,gps, invC,D.mat, iter, seed= NULL){
   gps<-factor(gps)
   ind <- perm.index(nrow(x), iter, seed=seed)
-  x.r<-lapply(1:(iter+1), function(j) x[ind[[j]],which(gps==levels(gps)[1])]) #shuffle 1st block
-  r.rand <- sapply(1:(iter+1), function(j) plsmulti.phylo(cbind(x.r[[j]],x[,which(gps!=levels(gps)[1])]), 
-                                                              gps, invC,D.mat)$r.pls)
+  jj <- iter+1
+  if(jj > 100) j <- 1:100 else j <- 1:jj
+  r.rand <- NULL
+  while(jj > 0){
+    ind.j <- ind[j]
+    x.r <-lapply(1:length(j), function(i) x[ind.j[[j]],which(gps==levels(gps)[1])])
+    r.rand <- c(r.rand, sapply(1:length(j), function(i) plsmulti.phylo(cbind(x.r[[i]],x[,which(gps!=levels(gps)[1])]), 
+                           gps, invC,D.mat)$r.pls))
+                jj <- jj-length(j)
+                if(jj > 100) kk <- 1:100 else kk <- 1:jj
+                j <- j[length(j)] +kk
+  }
   r.rand
 }
 
