@@ -1434,11 +1434,15 @@ quick.CR <-function(x,gps){ # no CR.mat made
 # apply.CR
 # permutation for CR
 # used in: modularity.test
-apply.CR <- function(x,gps, iter, seed = NULL){
-  CR.obs <- CR(x,gps)$CR
-  ind <- perm.index(length(gps), iter, seed=seed)
-  x.r<-lapply(1:(iter+1), function(j) x[,ind[[j]]])
-  CR.rand<-sapply(1:(iter+1), function(j) quick.CR(x.r[[j]],gps)) 
+apply.CR <- function(x,gps,p,k, iter, seed = NULL){
+  if(is.null(seed)) seed = iter else
+    if(seed == "random") seed = sample(1:iter,1) else
+      if(!is.numeric(seed)) seed = iter
+      set.seed(seed)
+  gps.r<-lapply(1:(iter+1), function(j) sample(gps) )
+  gps.r[[1]]<-gps
+  if(k>0) gps.r<-Map(function(x) rep(x,k,each = k, length=p*k),gps.r ) 
+  CR.rand<-sapply(1:(iter+1), function(j) quick.CR(x,gps.r[[j]]))     
   CR.rand
 }
 
