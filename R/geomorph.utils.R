@@ -458,6 +458,7 @@ plotPLS <- function(p, label = NULL, warpgrids=TRUE){
     plot(XScores[, 1], YScores[, 1], pch = 21, bg = "black", 
          main = "PLS1 Plot: Block 1 (X) vs. Block 2 (Y) ", 
          xlab = "PLS1 Block 1", ylab = "PLS1 Block 2")
+    abline(lm(py~px), col="red")
     if (length(label != 0)) {
       text(XScores[, 1], YScores[, 1], label, adj = c(-0.7, 
                                                       -0.7))    

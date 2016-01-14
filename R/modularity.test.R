@@ -68,12 +68,11 @@
 modularity.test<-function(A,partition.gp,iter=999, seed=NULL){
   if(any(is.na(A))==T){
     stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').")  }
-  partition.gp<-as.factor(partition.gp)
   if (length(dim(A))==3){ x<-two.d.array(A)
            p<-dim(A)[1]; k<-dim(A)[2];n<-dim(A)[3]
            if(length(partition.gp)!=p){stop("Not all landmarks are assigned to a partition.")}
            gps<-as.factor(rep(partition.gp,k,each = k, length=p*k))  }
-  if (length(dim(A))==2){ x<-A; k<-0; p<-ncol(x)
+  if (length(dim(A))==2){ x<-A
            if(length(partition.gp)!=ncol(x)){stop("Not all variables are assigned to a partition.")}
            gps<-as.factor(partition.gp)  }
   if(!is.null(seed) && seed=="random") seed = sample(1:iter, 1)
@@ -82,7 +81,7 @@ modularity.test<-function(A,partition.gp,iter=999, seed=NULL){
     CR.obs<-CR(x,gps)
     if(ngps > 2) CR.mat <- CR.obs$CR.mat else CR.mat <- NULL
     CR.obs <- CR.obs$CR
-    CR.rand <- apply.CR(x, partition.gp,p,k, iter=iter, seed=seed)
+    CR.rand <- apply.CR(x, gps, iter=iter, seed=seed)
     p.val <- 1-pval(CR.rand)  #b/c smaller values more significant 
     if (p.val==0){p.val<-1/(iter+1)}
     CR.boot<- boot.CR(x, gps, iter=iter, seed=seed)
@@ -117,7 +116,7 @@ modularity.test<-function(A,partition.gp,iter=999, seed=NULL){
               optRot <- matrix(c(cos(optAngle*pi/180),
                sin(optAngle*pi/180),0,-sin(optAngle*pi/180),cos(optAngle*pi/180), 0,0,0,1),ncol=3)
     x <- t(mapply(function(a) matrix(t(a%*%optRot)), Alist))
-    CR.rand <- apply.CR(x, partition.gp,p,k, iter=iter, seed=seed)
+    CR.rand <- apply.CR(x, gps, iter=iter, seed=seed)
     CR.rand[1] <- CR.obs <- avgCR
     if(ngps > 2) CR.mat <- CR(x,gps)$CR.mat else CR.mat <- NULL
     p.val <- pval(1/CR.rand)  #b/c smaller values more significant
