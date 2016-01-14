@@ -29,8 +29,8 @@
 #'  
 #'   \subsection{Notes for geomorph 3.0}{ 
 #'  Compared to older versions of geomorph, some results can be expected to be slightly different.  Starting with geomorph 3.0,
-#'  results use only type I sums of squares (SS) with either full randomization of raw shape values or RRPP (preferred with nested terms)
-#'  for analysis of variance (ANOVA).  Older versions used a combination of parametric and non-parametric results, as well as a combination
+#'  results use only type I sums of squares (SS) with either full ranomization of raw shape values or RRPP (prefered with nested terms)
+#'  for analysis of variance (ANOVA).  Older versions used a combination of parametric and non-parametric results, as well as a combinaton
 #'  of type I and type III SS.  While analytical conclusions should be consistent (i.e., "significance" of effects is the same), these
 #'  updates maintain consistency in analytical philosophy.  This change will require longer computation time for large datasets, but the trade-off
 #'  allows users to have more flexibility and eliminates combining disparate analytical philosophies. 

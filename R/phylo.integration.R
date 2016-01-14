@@ -46,7 +46,7 @@
 #' @references  Adams, D.C. and R. Felice. 2014. Assessing phylogenetic morphological 
 #' integration and trait covariation in morphometric data using evolutionary covariance 
 #' matrices. PLOS ONE. 9(4):e94335.
-#' @seealso \code{\link{integration.test}}, \code{\link{modularity.test}}, \code{\link{phylo.modularity}}, and 
+#' @seealso \code{\link{integration.test}}, \code{\link{modularity.test}}, \code{\link{phylo.pls}}, and 
 #' \code{\link{two.b.pls}}
 #' @examples
 #' 
