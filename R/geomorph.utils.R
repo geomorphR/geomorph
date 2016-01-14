@@ -417,9 +417,11 @@ summary.pls <- function(object, ...) {
 plotPLS <- function(p, label = NULL, warpgrids=TRUE){
   A1 <- p$A1; A2 <- p$A2
   XScores <- p$XScores; YScores <- p$YScores
+  if(is.matrix(XScores)) XScores <- XScores[,1]
+  if(is.matrix(YScores)) YScores <- YScores[,1]
   pc <- prcomp(cbind(XScores, YScores))$x[,1]
-  px <- lm.fit(model.matrix(~pc),XScores)$fitted
-  py <- lm.fit(model.matrix(~pc),XScores)$fitted
+  px <- predict(lm(XScores~pc))
+  py <- predict(lm(YScores~pc))
   pxmax <- max(px); pxmin <- min(px)
   pymax <- max(py); pymin <- min(py)
   
@@ -455,7 +457,7 @@ plotPLS <- function(p, label = NULL, warpgrids=TRUE){
                           0.19, 0.8, 1, 0, 0.19, 0, 0.19, 0.19, 0.39, 0, 0.19, 
                           0.8, 1), byrow = TRUE, ncol = 4))
     screen(1)
-    plot(XScores[, 1], YScores[, 1], pch = 21, bg = "black", 
+    plot(XScores, YScores, pch = 21, bg = "black", 
          main = "PLS1 Plot: Block 1 (X) vs. Block 2 (Y) ", 
          xlab = "PLS1 Block 1", ylab = "PLS1 Block 2")
     abline(lm(py~px), col="red")
