@@ -23,7 +23,7 @@ Function returns a mesh3d object, which is a list of class mesh3d (see rgl for d
 }
 \description{
 A function to take a 3D mesh and use thin-plate spline method to warp the file
-into the estimated mean shape for a set of aligned specimens.
+into the estimated mean shape for a set of aligned specimens
  
 Function takes a 3D mesh (class mesh3d or shape3d, e.g. from \code{\link{read.ply}}) and its digitized landmark coordinates 
 and uses the thin-plate spline method (Bookstein 1989) to warp the mesh into the shape 
