@@ -16,12 +16,12 @@
 #'
 #'   The function performs statistical assessment of the terms in the model using Procrustes distances among 
 #'   specimens, rather than explained covariance matrices among variables. With this approach, the sum-of-squared 
-#'   Procrustes distances are used as a measure of SS (see Goodall 1991). The SS betwen models is evaluated through 
+#'   Procrustes distances are used as a measure of SS (see Goodall 1991). The SS between models is evaluated through 
 #'   permutation. In morphometrics this approach is known as a Procrustes ANOVA (Goodall 1991), which is equivalent
 #'   to distance-based anova designs (Anderson 2001). Unlike \code{\link{procD.lm}}, this function is strictly for comparison
 #'   of two nested models. (Use of \code{\link{procD.lm}} will be more suitable in most cases.)  
 #'   A residual randomization permutation procedure (RRPP) is utilized 
-#'   for reduced model residuals to evalute the SS between models (Collyer et al. 2015).  Effect-sizes (Z-scores) are 
+#'   for reduced model residuals to evaluate the SS between models (Collyer et al. 2015).  Effect-sizes (Z-scores) are 
 #'   computed as standard deviates of the SS sampling 
 #'   distributions generated, which might be more intuitive for P-values than F-values (see Collyer et al. 2015).  
 #'   
@@ -68,7 +68,7 @@
 #'    iter=199, data = gdf)
 #'
 #'# Example of a test of a factor interaction, plus pairwise comparisons, 
-#'# accounting for a common allomtry  
+#'# accounting for a common allometry  
 #'advanced.procD.lm(coords ~ Csize + site*species, 
 #'~Csize + site + species, 
 #'groups = ~site*species, slope = ~Csize, iter = 199, data = gdf)
@@ -85,7 +85,7 @@
 #'~logcs + site*species, 
 #'groups = ~species, slope = ~logcs, angle.type = "deg", iter = 199, data = gdf)
 #'
-#'summary(aov.pleth) # ANOVA plus pairwise tsts
+#'summary(aov.pleth) # ANOVA plus pairwise tests
 #'plot(aov.pleth) # diagnostic plots
 #'aov.pleth$slopes # extract the slope vectors
 

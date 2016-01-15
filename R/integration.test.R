@@ -25,7 +25,7 @@
 #'  The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{modularity.test}}.
 #'  The generic function, \code{\link{plot}}, produces a two-block.pls plot.  This function calls \code{\link{plot.pls}}, which has two additional
 #'  arguments (with defaults): label = NULL, warpgrids = TRUE.  These arguments allow one to include a vector to label points and a logical statement to
-#'  include warpgrids, respectively.  Warpgrids can only be included for 3D arrays of Procrustes resdiuals. The plot is a plot of PLS scores from 
+#'  include warpgrids, respectively.  Warpgrids can only be included for 3D arrays of Procrustes residuals. The plot is a plot of PLS scores from 
 #'  Block1 versus Block2 performed for the first set of PLS axes. 
 #'  
 #' @param A A 3D array (p x k x n) containing GPA-aligned coordinates for all specimens, or a matrix (n x variables)
@@ -41,8 +41,8 @@
 #' @author Dean Adams
 #' @return Objects of class "pls" from integration.test return a list of the following:
 #'  \item{r.pls}{The estimate of morphological integration: PLS.corr. The mean of pairwise
-#'  PLS correlations between parititions is used when there are more than two partitions.}
-#'    \item{r.pls.mat}{The pairwise r.pls, if the number of paritions is greater than 2.}
+#'  PLS correlations between partitions is used when there are more than two partitions.}
+#'    \item{r.pls.mat}{The pairwise r.pls, if the number of partitions is greater than 2.}
 #'    \item{P.value}{The empirically calculated P-value from the resampling procedure.}
 #'    \item{left.pls.vectors}{The singular vectors of the left (x) block (for 2 modules only).}
 #'    \item{right.pls.vectors}{The singular vectors of the right (y) block (for 2 modules only).}

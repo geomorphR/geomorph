@@ -14,7 +14,7 @@
 #' in morphological disparity among groups.  These differences are  statistically evaluated through permutation, 
 #' where the vectors of residuals are randomized among groups. The function can be used to obtain disparity for the whole
 #' dataset by using "a dummy group factor "~ 1" as the right-hand portion of the formula, in which case only Procrustes 
-#' variance is returned.  Additionally, if the right-hand portion of the forumla only contains (continuous) covariates, 
+#' variance is returned.  Additionally, if the right-hand portion of the formula only contains (continuous) covariates, 
 #' e.g., "~ Csize", Procrustes variance will be calculated for the whole data set or groups, after accounting for the
 #' linear regression described.  Finally, different factors can be indicated in the formula and for groups, if one wishes to 
 #' compare morphological disparities for groups comprising only a portion of or collapsing of the groups in a more complex model 
@@ -40,9 +40,9 @@
 #' @return Objects of class "morphol.disparity" return a list with the following components 
 #' (if groups are specified): 
 #'   \item{Procrustes.var}{Observed Procrustes variances.}
-#'   \item{PV.dist}{Observed pairwise asolute differences (distances) 
+#'   \item{PV.dist}{Observed pairwise absolute differences (distances) 
 #'   among group Procrustes variances.}
-#'   \item{PV.dist.Pval}{P-values assocaitd with pairwise differencs.}
+#'   \item{PV.dist.Pval}{P-values associated with pairwise differences.}
 #'   \item{random.PV.dist}{Pairwise distance matrices produced in the resampling procedure.}
 #'   \item{permutations}{Number of random permutations in resampling procedure.}
 #'   \item{call}{The match call}
