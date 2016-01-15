@@ -66,7 +66,7 @@
 #' plot(MT) # Histogram of CR sampling distribution 
 #' # Result implies modularity present
 
-modularity.test<-function(A,partition.gp,iter=999, CI=TRUE,seed=NULL){
+modularity.test<-function(A,partition.gp,iter=999, CI=FALSE,seed=NULL){
   if(any(is.na(A))==T){
     stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').")  }
   if (length(dim(A))==3){ x<-two.d.array(A)
