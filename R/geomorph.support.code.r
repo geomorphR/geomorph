@@ -1507,8 +1507,9 @@ boot.CR <- function(x,gps, iter, seed = NULL){
 # phylogenetic CR analysis
 # used in: phylo.modularity
 CR.phylo<-function(x,invC,gps){
-  g<-factor(as.numeric(gps))
-  ngps<-nlevels(g)
+  g <- gps
+  ngps <- length(unique(g))
+  gps.combo <- combn(ngps, 2)
   one<-matrix(1,nrow(x),1)  
   a<-colSums(invC %*% x)*sum(invC)^-1  
   R<- t(x-one%*%a)%*%invC%*%(x-one%*%a)*(nrow(x)-1)^-1 
@@ -1533,8 +1534,9 @@ CR.phylo<-function(x,invC,gps){
 # used in: apply.phylo.CR
 quick.CR.phylo <- function(x,invC,gps){
   x <- as.matrix(x); invC <- as.matrix(invC)
-  g<-factor(as.numeric(gps))
-  ngps<-nlevels(g)
+  g <- gps
+  ngps <- length(unique(g))
+  gps.combo <- combn(ngps, 2)
   one<-matrix(1,nrow(x),1)  
   a<-colSums(invC %*% x)*sum(invC)^-1  
   R<- t(x-one%*%a)%*%invC%*%(x-one%*%a)*(nrow(x)-1)^-1 
@@ -1553,15 +1555,14 @@ quick.CR.phylo <- function(x,invC,gps){
 # apply.phylo.CR
 # permutation for phylo.CR
 # used in: phylo.modularity
-apply.phylo.CR <- function(x,invC,gps, iter, seed=NULL){
-  ind <- perm.index(length(gps), iter, seed=seed)
+apply.phylo.CR <- function(x,invC,gps, k, iter, seed=NULL){
+  ind <- perm.CR.index(g=gps,k, iter, seed=seed)
   jj <- iter+1
   if(jj > 100) j <- 1:100 else j <- 1:jj
   CR.rand <- NULL
   while(jj > 0){
     ind.j <- ind[j]
-    x.r<-lapply(1:length(j), function(i) x[,ind.j[[i]]])
-    CR.rand<-c(CR.rand, sapply(1:length(j), function(i) quick.CR.phylo(x.r[[i]],invC=invC,gps=gps))) 
+    CR.rand<-c(CR.rand, sapply(1:length(j), function(i) quick.CR.phylo(x,invC=invC,gps=ind.j[[i]]))) 
     jj <- jj-length(j)
     if(jj > 100) kk <- 1:100 else kk <- 1:jj
     j <- j[length(j)] +kk

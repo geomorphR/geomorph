@@ -90,7 +90,7 @@ modularity.test<-function(A,partition.gp,iter=999, seed=NULL){
     CR.CI<-quantile(CR.boot, c(.025, .975))
   }
   if (length(dim(A))==3){
-    angle <- seq(0,89)
+    angle <- seq(0,89,0.05)
     if(k==2){
       rot.mat<-lapply(1:(length(angle)), function(i) matrix(c(cos(angle[i]*pi/180),
               sin(angle[i]*pi/180),-sin(angle[i]*pi/180),cos(angle[i]*pi/180)),ncol=2))      
@@ -106,13 +106,8 @@ modularity.test<-function(A,partition.gp,iter=999, seed=NULL){
       CR(rotA, gps=gps.obs)$CR
     })
     avgCR <- mean(rotatedCRs)
-    
-    # Angle interpolation (must determine if CR is ascending or descending)
-    if(avgCR <= rotatedCRs[1]) avgCR.int <- which(as.numeric(avgCR >= rotatedCRs)==1)[1] else
-        avgCR.int <-which(as.numeric(avgCR <= rotatedCRs)==1)[1] 
-    avgCR.int <- c(avgCR.int -1,avgCR.int) # sequence for interval with mean CR
-    CR.int <-rotatedCRs[avgCR.int]
-    optAngle <- avgCR.int[1] + abs(avgCR-CR.int[1])/abs(CR.int[1]-CR.int[2]) # optimal angle
+    angCheck <- abs(rotatedCRs-avgCR)
+    optAngle <- angle[angCheck==min(angCheck)]
     # Optimal rotation 
     if(k==2) optRot <- matrix(c(cos(optAngle*pi/180),
              sin(optAngle*pi/180),-sin(optAngle*pi/180),cos(optAngle*pi/180)),ncol=2) else

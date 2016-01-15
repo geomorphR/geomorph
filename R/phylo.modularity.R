@@ -63,10 +63,12 @@ phylo.modularity<-function(A,partition.gp,phy,iter=999, seed=NULL){
   if (length(dim(A))==3){ x<-two.d.array(A)
            p<-dim(A)[1]; k<-dim(A)[2];n<-dim(A)[3]
            if(length(partition.gp)!=p){stop("Not all landmarks are assigned to a partition.")}
-           gps<-as.factor(rep(partition.gp,k,each = k, length=p*k))  }
-  if (length(dim(A))==2){ x<-A
+           }
+  if (length(dim(A))==2){ x<-A; k <-1
            if(length(partition.gp)!=ncol(x)){stop("Not all variables are assigned to a partition.")}
-           gps<-as.factor(partition.gp)  }
+           }
+  gps<-factor(as.numeric(as.factor(partition.gp)))
+  gps.obs <- as.factor(rep(gps,k,each = k, length=p*k))
   ngps<-nlevels(gps)
   Nspec<-num.taxa.X<-nrow(x)
   namesX<-rownames(x)
@@ -80,17 +82,17 @@ phylo.modularity<-function(A,partition.gp,phy,iter=999, seed=NULL){
   invC<-phy.parts$invC; D.mat<-phy.parts$D.mat
   if(!is.null(seed) && seed=="random") seed = sample(1:iter, 1)
   if (length(dim(A))==2){
-    CR.obs<-CR.phylo(x,invC,gps)
+    CR.obs<-CR.phylo(x,invC,gps.obs)
     if(ngps > 2) CR.mat <- CR.obs$CR.mat else CR.mat <- NULL
     CR.obs <- CR.obs$CR
-    CR.rand <- apply.phylo.CR(x,invC, gps, iter=iter, seed=seed)
+    CR.rand <- apply.phylo.CR(x,invC, gps, k, iter=iter, seed=seed)
     p.val <- 1-pval(CR.rand)  #b/c smaller values more significant
     if (p.val==0){p.val<-1/(iter+1)}
     CR.boot<- boot.phylo.CR(x, invC=invC, gps=gps, iter=iter, seed=seed)
     CR.CI<-quantile(CR.boot, c(.025, .975))
   }
   if (length(dim(A))==3){
-    angle <- seq(0,89)
+    angle <- seq(0,89,.05)
     if(k==2){
       rot.mat<-lapply(1:(length(angle)), function(i) matrix(c(cos(angle[i]*pi/180),
               sin(angle[i]*pi/180),-sin(angle[i]*pi/180),cos(angle[i]*pi/180)),ncol=2))      
@@ -106,19 +108,15 @@ phylo.modularity<-function(A,partition.gp,phy,iter=999, seed=NULL){
       CR.phylo(rotA,invC,gps)$CR
     })
     avgCR <- mean(rotatedCRs)
-    # Angle interpolation (must determine if CR is ascending or descending)
-    if(avgCR <= rotatedCRs[1]) avgCR.int <- which(as.numeric(avgCR >= rotatedCRs)==1)[1] else
-        avgCR.int <-which(as.numeric(avgCR <= rotatedCRs)==1)[1] 
-    avgCR.int <- c(avgCR.int -1,avgCR.int) # sequence for interval with mean CR
-    CR.int <-rotatedCRs[avgCR.int]
-    optAngle <- avgCR.int[1] + abs(avgCR-CR.int[1])/abs(CR.int[1]-CR.int[2]) # optimal angle
+    angCheck <- abs(rotatedCRs-avgCR)
+    optAngle <- angle[angCheck==min(angCheck)]
     # Optimal rotation 
     if(k==2) optRot <- matrix(c(cos(optAngle*pi/180),
              sin(optAngle*pi/180),-sin(optAngle*pi/180),cos(optAngle*pi/180)),ncol=2) else
               optRot <- matrix(c(cos(optAngle*pi/180),
                sin(optAngle*pi/180),0,-sin(optAngle*pi/180),cos(optAngle*pi/180), 0,0,0,1),ncol=3)
     x <- t(mapply(function(a) matrix(t(a%*%optRot)), Alist))
-    CR.rand <- apply.phylo.CR(x, invC,gps, iter=iter, seed=seed)
+    CR.rand <- apply.phylo.CR(x, invC, gps, k, iter=iter, seed=seed)
     CR.rand[1] <- CR.obs <- avgCR
     if(ngps > 2) CR.mat <- CR(x,gps)$CR.mat else CR.mat <- NULL
     p.val <- pval(1/CR.rand)  #b/c smaller values more significant
