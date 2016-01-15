@@ -92,7 +92,7 @@ phylo.modularity<-function(A,partition.gp,phy,iter=999, seed=NULL){
     CR.CI<-quantile(CR.boot, c(.025, .975))
   }
   if (length(dim(A))==3){
-    angle <- seq(0,89,.05)
+    angle <- seq(0,89.95,.05)
     if(k==2){
       rot.mat<-lapply(1:(length(angle)), function(i) matrix(c(cos(angle[i]*pi/180),
               sin(angle[i]*pi/180),-sin(angle[i]*pi/180),cos(angle[i]*pi/180)),ncol=2))      
