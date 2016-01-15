@@ -23,7 +23,7 @@
 #'  The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{phylo.integration}}.
 #'  The generic function, \code{\link{plot}}, produces a two-block.pls plot.  This function calls \code{\link{plot.pls}}, which has two additional
 #'  arguments (with defaults): label = NULL, warpgrids = TRUE.  These arguments allow one to include a vector to label points and a logical statement to
-#'  include warpgrids, respectively.  Warpgrids can only be included for 3D arrays of Procrustes resdiuals. The plot is a plot of PLS scores from 
+#'  include warpgrids, respectively.  Warpgrids can only be included for 3D arrays of Procrustes residuals. The plot is a plot of PLS scores from 
 #'  Block1 versus Block2 performed for the first set of PLS axes. 
 #'  
 #' @param A A 2D array (n x [p1 x k1]) or 3D array (p1 x k1 x n) containing landmark coordinates for the first block

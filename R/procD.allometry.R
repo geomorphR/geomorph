@@ -6,7 +6,7 @@
 #'   curves.
 #'
 #' The function quantifies the relative amount of shape variation attributable to covariation with organism size (allometry)
-#' plus other factors in a linear model, plus estimates the probability of this variation ("signifiance") for a null model, 
+#' plus other factors in a linear model, plus estimates the probability of this variation ("significance") for a null model, 
 #' via distributions generated from resampling permutations. Data input is specified by formulae (e.g., 
 #'   Y ~ X), where 'Y' specifies the response variables (shape data), and 'X' contains one or more independent 
 #'   variables (discrete or continuous). The response matrix 'Y' can be either in the form of a two-dimensional data 
@@ -16,7 +16,7 @@
 #'   
 #'   There are three formulae that need to be input (see Arguments). The first must contain variables for shape and size,
 #'   e.g., Y ~ X, where Y (dependent variable) is shape and X (independent variable) is size.  The other two formulae
-#'   are optional to indicate (1) groups for separate allometric curves and (2) additonal model variables to consider in
+#'   are optional to indicate (1) groups for separate allometric curves and (2) additional model variables to consider in
 #'   the ANOVA.  The groups input must be a single factor or multiple factors; e.g., ~ group, or ~ a*b.
 #'   The resulting ANOVA uses sequential (Type I) sums of squares and cross-products with variables in this order:
 #'   size, groups (if provided), size*groups (if warranted), other variables (if provided).  If a factor for groups is provided,
