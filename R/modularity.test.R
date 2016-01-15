@@ -18,7 +18,8 @@
 #' result is consistent with the identification of significant modular structure in the data. A histogram of coefficients obtained via 
 #' resampling is presented, with the observed value designated by an arrow in the plot. For landmark data, the CR coefficient 
 #' found from the average CR across a 90 degree rotation of the data is used as the test statistic (see Adams 2016). For all
-#' data, the CR coefficient and its 95% confidence intervals (based on bootstrapping) are returned.
+#' data, the CR coefficient is returned, and (optionally)  its 95% confidence intervals (based on bootstrapping) may be requested. NOTE that 
+#' for landmark data, estimation of the CI can take some time to compute.
 #' 
 #' Landmark groups can be defined using \code{\link{define.modules}}, or made by hand (see example below).
 #' To use this method with other data (i.e., a set of length measurements), the input A should be a matrix 
@@ -33,6 +34,7 @@
 #'  
 #' @param A A 3D array (p x k x n) containing GPA-aligned coordinates for all specimens, or a matrix (n x variables)
 #' @param partition.gp A list of which landmarks (or variables) belong in which partition (e.g. A,A,A,B,B,B,C,C,C)
+#' @param CI An optional parameter indicating whether bootstrapping should be used for estimating confidence intervals
 #' @param iter Number of iterations for significance testing
 #' @param seed An optional argument for setting the seed for random permutations of the resampling procedure.  
 #' If left NULL (the default), the exact same P-values will be found for repeated runs of the analysis (with the same number of iterations).
@@ -59,13 +61,12 @@
 #'  #landmarks on the body and operculum
 #' land.gps<-rep('a',56); land.gps[39:48]<-'b'
 #'
-#' MT <- modularity.test(Y.gpa$coords,land.gps,iter=999)
+#' MT <- modularity.test(Y.gpa$coords,land.gps,CI=FALSE,iter=999)
 #' summary(MT) # Test summary
 #' plot(MT) # Histogram of CR sampling distribution 
-#' MT$CInterval # extracting just the 95% CI
 #' # Result implies modularity present
 
-modularity.test<-function(A,partition.gp,iter=999, seed=NULL){
+modularity.test<-function(A,partition.gp,iter=999, CI=TRUE,seed=NULL){
   if(any(is.na(A))==T){
     stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').")  }
   if (length(dim(A))==3){ x<-two.d.array(A)
@@ -86,8 +87,14 @@ modularity.test<-function(A,partition.gp,iter=999, seed=NULL){
     CR.rand <- apply.CR(x, gps, k=k, iter=iter, seed=seed)
     p.val <- 1-pval(CR.rand)  #b/c smaller values more significant 
     if (p.val==0){p.val<-1/(iter+1)}
-    CR.boot<- boot.CR(x, gps, k,iter=iter, seed=seed)
-    CR.CI<-quantile(CR.boot, c(.025, .975))
+    if(CI=="TRUE"){
+      CR.boot<- boot.CR(x, gps, k,iter=iter, seed=seed)
+      CR.CI<-quantile(CR.boot, c(.025, .975)) 
+    }
+    if(CI=="FALSE"){
+      CR.CI<-c("NULL", "NULL")
+    }
+
   }
   if (length(dim(A))==3){
     angle <- seq(0,89.95,0.05)
@@ -118,8 +125,13 @@ modularity.test<-function(A,partition.gp,iter=999, seed=NULL){
     CR.rand[1] <- CR.obs <- avgCR
     if(ngps > 2) CR.mat <- CR(x,gps.obs)$CR.mat else CR.mat <- NULL
     p.val <- pval(1/CR.rand)  #b/c smaller values more significant
-    CR.boot<- boot.CR(x, gps.obs,k, iter=iter, seed=seed)
-    CR.CI<-quantile(CR.boot, c(.025, .975))
+    if(CI=="TRUE"){
+      CR.boot<- boot.CR(x, gps.obs,k, iter=iter, seed=seed)
+      CR.CI<-quantile(CR.boot, c(.025, .975))
+    }
+    if(CI=="FALSE"){
+      CR.CI<-c("NULL", "NULL")
+    }
   }
   
   out <- list(CR=CR.obs, CInterval=CR.CI, P.value=p.val,
