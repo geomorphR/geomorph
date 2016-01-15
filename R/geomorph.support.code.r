@@ -1495,7 +1495,8 @@ boot.CR <- function(x,gps, iter, seed = NULL){
       sin(angle[i]*pi/180),-sin(angle[i]*pi/180),cos(angle[i]*pi/180)),ncol=2))      
   }
   if(k==3){
-    rsin(angle[i]*pi/180),0,-sin(angle[i]*pi/180),cos(angle[i]*pi/180), 0,0,0,1),ncol=3))      
+    rot.mat<-lapply(1:(length(angle)), function(i) matrix(c(cos(angle[i]*pi/180),
+        sin(angle[i]*pi/180),0,-sin(angle[i]*pi/180),cos(angle[i]*pi/180), 0,0,0,1),ncol=3))      
   }
   jj <- iter+1
   if(jj > 100) j <- 1:100 else j <- 1:jj
