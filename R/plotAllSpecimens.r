@@ -11,9 +11,14 @@
 #'
 #' @param A An array (p x k x n) containing GPA-aligned coordinates for a set of specimens
 #' @param mean A logical value indicating whether the mean shape should be included in the plot
-#' @param links An optional matrix defining for links between landmarks
-#' @param pointscale An optional value defining the size of the points for all specimens
-#' @param meansize An optional value defining the size of the points representing the average specimen
+#' @param links An optional matrix defining for links between landmarks (only if mean=TRUE)
+#' @param pt.bg An optional value defining the background color of points (single value or vector of values)
+#' @param pt.cex An optional value defining the the size of the points (single value or vector of values)
+#' @param mean.bg An optional value defining the background color of the points for all specimens
+#' @param mean.cex An optional value defining the size of the points representing the average specimen
+#' @param link.col An optional value defining color of links (single value or vector of values)
+#' @param link.lwd An optional value defining line weight of links (single value or vector of values)
+#' @param link.lty An optional value defining line type of links (single value or vector of values)
 #' @export
 #' @keywords visualization
 #' @author Dean Adams
@@ -22,7 +27,14 @@
 #' Y.gpa<-gpagen(plethodon$land)    #GPA-alignment
 #'
 #' plotAllSpecimens(Y.gpa$coords,links=plethodon$links)
-plotAllSpecimens<-function(A,mean=TRUE,links=NULL,pointscale=1,meansize=2){
+plotAllSpecimens<-function(A,mean=TRUE,links=NULL,
+                           pt.bg="gray",
+                           pt.cex=1,
+                           mean.bg="black",
+                           mean.cex=2,
+                           link.col="black",
+                           link.lwd = 2,
+                           link.lty = 1){
   if (length(dim(A))!=3){
     stop("Data matrix not a 3D array (see 'arrayspecs').")  }
   if(any(is.na(A))==T){
@@ -32,14 +44,18 @@ plotAllSpecimens<-function(A,mean=TRUE,links=NULL,pointscale=1,meansize=2){
     mn<-mshape(A)
   }
   if(k==2){
-    plot(A[,1,],A[,2,],asp=1, pch=21,bg="gray",cex=pointscale*1, ...) 
+    plot(A[,1,],A[,2,],asp=1, pch=21,bg=pt.bg,cex=pt.cex*1,xlab="x",ylab="y") 
     if(mean==TRUE){ 
-      points(mn,pch=21,bg="black",cex=meansize) 
       if(is.null(links)==FALSE){
+        linkcol <- rep(link.col,nrow(links))[1:nrow(links)]
+        linklwd <- rep(link.lwd,nrow(links))[1:nrow(links)]
+        linklty <- rep(link.lty,nrow(links))[1:nrow(links)]
         for (i in 1:nrow(links)){
-          segments(mn[links[i,1],1],mn[links[i,1],2],mn[links[i,2],1],mn[links[i,2],2],lwd=2)
+          segments(mn[links[i,1],1],mn[links[i,1],2],mn[links[i,2],1],mn[links[i,2],2],
+                   col=linkcol[i],lty=linklty[i],lwd=linklwd[i])
         }
       }
+      points(mn,pch=21,bg=mean.bg,cex=mean.cex)
     }
   }
   if(k==3){
@@ -47,14 +63,18 @@ plotAllSpecimens<-function(A,mean=TRUE,links=NULL,pointscale=1,meansize=2){
     for (i in 1:dim(A)[[3]]){
       A3d<-rbind(A3d,A[,,i])
     }
-    plot3d(A3d,type="s",col="gray",xlab="x",ylab="y",zlab="z",size=pointscale*1.5,aspect=FALSE)
+    plot3d(A3d,type="s",col=pt.bg,xlab="x",ylab="y",zlab="z",size=pt.cex*1.5,aspect=FALSE)
     if(mean==TRUE){ 
-      points3d(mn,color="black",size=meansize*2)
       if(is.null(links)==FALSE){
+        linkcol <- rep(link.col,nrow(links))[1:nrow(links)]
+        linklwd <- rep(link.lwd,nrow(links))[1:nrow(links)]
+        linklty <- rep(link.lty,nrow(links))[1:nrow(links)]
         for (i in 1:nrow(links)){
-          segments3d(rbind(mn[links[i,1],],mn[links[i,2],]),lwd=3)
+          segments3d(rbind(mn[links[i,1],],mn[links[i,2],]),
+                     col=linkcol[i],lty=linklty[i],lwd=linklwd[i])
         }
       }
+      points3d(mn,color=mean.bg,size=mean.cex*2)
     }
   }
 }

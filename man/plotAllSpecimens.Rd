@@ -4,19 +4,30 @@
 \alias{plotAllSpecimens}
 \title{Plot landmark coordinates for all specimens}
 \usage{
-plotAllSpecimens(A, mean = TRUE, links = NULL, pointscale = 1,
-  meansize = 2)
+plotAllSpecimens(A, mean = TRUE, links = NULL, pt.bg = "gray",
+  pt.cex = 1, mean.bg = "black", mean.cex = 2, link.col = "black",
+  link.lwd = 2, link.lty = 1)
 }
 \arguments{
 \item{A}{An array (p x k x n) containing GPA-aligned coordinates for a set of specimens}
 
 \item{mean}{A logical value indicating whether the mean shape should be included in the plot}
 
-\item{links}{An optional matrix defining for links between landmarks}
+\item{links}{An optional matrix defining for links between landmarks (only if mean=TRUE)}
 
-\item{pointscale}{An optional value defining the size of the points for all specimens}
+\item{pt.bg}{An optional value defining the background color of points (single value or vector of values)}
 
-\item{meansize}{An optional value defining the size of the points representing the average specimen}
+\item{pt.cex}{An optional value defining the the size of the points (single value or vector of values)}
+
+\item{mean.bg}{An optional value defining the background color of the points for all specimens}
+
+\item{mean.cex}{An optional value defining the size of the points representing the average specimen}
+
+\item{link.col}{An optional value defining color of links (single value or vector of values)}
+
+\item{link.lwd}{An optional value defining line weight of links (single value or vector of values)}
+
+\item{link.lty}{An optional value defining line type of links (single value or vector of values)}
 }
 \description{
 Function plots landmark coordinates for a set of specimens
