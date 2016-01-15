@@ -54,16 +54,16 @@
 #' @seealso \code{\link{two.b.pls}}, \code{\link{integration.test}}, \code{\link{phylo.modularity}}, and 
 #' \code{\link{phylo.integration}}
 #' @examples
-#' data(plethodon) 
-#' Y.gpa<-gpagen(plethodon$land)    #GPA-alignment    
-#'  #landmarks on the skull and mandible assigned to partitions
-#' land.gps<-c("A","A","A","A","A","B","B","B","B","B","B","B") 
+#' data(pupfish) 
+#' Y.gpa<-gpagen(pupfish$coords)    #GPA-alignment    
+#'  #landmarks on the body and operculum
+#' land.gps<-rep('a',56); land.gps[39:48]<-'b'
 #'
 #' MT <- modularity.test(Y.gpa$coords,land.gps,iter=999)
 #' summary(MT) # Test summary
 #' plot(MT) # Histogram of CR sampling distribution 
 #' MT$CInterval # extracting just the 95% CI
-#' # Result implies that the skull and mandible are not independent modules
+#' # Result implies modularity present
 
 modularity.test<-function(A,partition.gp,iter=999, seed=NULL){
   if(any(is.na(A))==T){

@@ -62,16 +62,16 @@ The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\li
  Block1 versus Block2 performed for the first set of PLS axes.
 }
 \examples{
-data(plethodon) 
-Y.gpa<-gpagen(plethodon$land)    #GPA-alignment    
- #landmarks on the skull and mandible assigned to partitions
-land.gps<-c("A","A","A","A","A","B","B","B","B","B","B","B") 
+data(pupfish) 
+Y.gpa<-gpagen(pupfish$coords)    #GPA-alignment    
+ #landmarks on the body and operculum
+land.gps<-rep('a',56); land.gps[39:48]<-'b'
 
 MT <- modularity.test(Y.gpa$coords,land.gps,iter=999)
 summary(MT) # Test summary
 plot(MT) # Histogram of CR sampling distribution 
 MT$CInterval # extracting just the 95\% CI
-# Result implies that the skull and mandible are not independent modules
+# Result implies modularity present
 }
 \author{
 Dean Adams
