@@ -19,7 +19,8 @@ Function returns an outline object
 \description{
 A function to take an outline (defined by many points) and use thin-plate spline method to warp the outline
 into the estimated mean shape for a set of aligned specimens.
- 
+}
+\details{
 Function takes an outline (defined by many points) with a set of fixed landmark coordinates and uses the thin-plate spline method (Bookstein 1989) 
 to warp the outline into the shape defined by a second set of landmark coordinates, usually those of the 
 mean shape for a set of aligned specimens. It is highly recommended that the mean shape is used as the 

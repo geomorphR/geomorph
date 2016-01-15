@@ -1,7 +1,7 @@
 #' Calculate semilandmarks along a curve
 #'
 #' A function to calculate equidistant two-dimensional and three-dimensional semilandmarks along a curve. These landmarks will be treated as "sliders" in Generalized Procrustes analysis \code{\link{gpagen}}. This type of semilandmark "slides" along curves lacking known landmarks (see Bookstein 1997 for algorithm details). Each sliding semilandmark ("sliders") will slide between two designated points, along a line tangent to the specified curvature, as specified by \code{\link{define.sliders}}. 
-#' 
+#'
 #' The function is based upon tpsDig2 'resample curve by length' for 2D data by James Rohlf.
 #' The start of the curve is a fixed landmark on the curve that is equivalent (homologous) in each specimen in the sample (and will be treated as a fixed point during Procrustes Superimpoistion using \code{\link{gpagen}}). Then nPoints are calculated along the curve at equidistant points from the start to the end. 
 #' 

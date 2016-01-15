@@ -124,7 +124,8 @@ NULL
 #' @author Michael Collyer
 #' @keywords datasets
 #' @description Landmark data from Cyprindon pecosensis body shapes, with indication of Sex and 
-#' Population from which fish were sampled (Marsh or Sinkhole).  These data were previously aligned 
+#' Population from which fish were sampled (Marsh or Sinkhole).  
+#' @details These data were previously aligned 
 #' with GPA.  Centroid size (CS) is also provided.
 #' @references Collyer, M.L., D.J. Sekora, and D.C. Adams. 2015. A method for analysis of phenotypic 
 #' change for phenotypes described by high-dimensional data. Heredity. 113: doi:10.1038/hdy.2014.75.
@@ -136,7 +137,8 @@ NULL
 #' @docType data
 #' @author Michael Collyer
 #' @keywords datasets
-#' @description Landmark data from tails of larval Salamanders exposed to different treatments of herbicides.  
+#' @description Landmark data from tails of larval Salamanders exposed to different treatments of herbicides. 
+#' @details  
 #' Data set includes tail landmarks (landmarks), index for identifying semilandmarks (sliders), and vectors 
 #' for variables including herbicide treatment (Treatment) and Family (Family).  The latter variable indicates
 #' the egg masses (clutches) sampled in the wild from which individual eggs were randomly assigned to treatment.  

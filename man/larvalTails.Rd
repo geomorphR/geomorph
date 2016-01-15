@@ -5,7 +5,9 @@
 \alias{larvalTails}
 \title{tail-shapes of larval salamanders}
 \description{
-Landmark data from tails of larval Salamanders exposed to different treatments of herbicides.  
+Landmark data from tails of larval Salamanders exposed to different treatments of herbicides.
+}
+\details{
 Data set includes tail landmarks (landmarks), index for identifying semilandmarks (sliders), and vectors 
 for variables including herbicide treatment (Treatment) and Family (Family).  The latter variable indicates
 the egg masses (clutches) sampled in the wild from which individual eggs were randomly assigned to treatment.  
