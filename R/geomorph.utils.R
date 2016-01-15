@@ -11,7 +11,7 @@
 #' @keywords utilities
 print.gpagen <- function (x, ...) {
   cat("\nCall:\n")
-  cat(deparse(x$call), "\n\n")
+  cat(deparse(x$call), fill=TRUE, "\n\n")
   cat("\nGeneralized Procrustes Analysis\n")
   cat("with Partial Procrustes Superimposition\n\n")
   cat(paste(x$p-x$nsliders, "fixed landmarks\n"))
@@ -63,7 +63,7 @@ plot.gpagen <- function(x, ...){
 #' @keywords utilities
 print.procD.lm <- function (x, ...) {
   cat("\nCall:\n")
-  cat(deparse(x$call), "\n\n")
+  cat(deparse(x$call), fill=TRUE, "\n\n")
   cat("\nType I (Sequential) Sums of Squares and Cross-products\n")
   if(x$perm.method == "RRPP") cat ("Randomized Residual Permutation Procedure Used\n") else
     cat("Randomization of Raw Values used\n")
@@ -171,7 +171,7 @@ plot.procD.lm <- function(x, outliers=FALSE, ...){
 #' @keywords utilities
 print.advanced.procD.lm <- function (x, ...) {
   cat("\nCall:\n")
-  cat(deparse(x$call), "\n\n")
+  cat(deparse(x$call), fill=TRUE, "\n\n")
   cat("\nRandomized Residual Permutation Procedure Used\n")
   cat(paste(x$permutations, "Permutations"))
   cat("\nANOVA Table")
@@ -226,7 +226,7 @@ plot.advanced.procD.lm <- function(x, outliers = FALSE, ...) {
 
 printAllometry.HOS <- function(x){
   cat("\nCall:\n")
-  cat(deparse(x$call), "\n\n")
+  cat(deparse(x$call), fill=TRUE, "\n\n")
   cat("\nHomogeneity of Slopes Test\n")
   print(x$HOS.test)
   if(x$HOS.test[2,7] > x$alpha) cat(paste("\nThe null hypothesis of parallel slopes is supported
@@ -244,7 +244,7 @@ printAllometry.HOS <- function(x){
 
 printAllometry.noHOS <- function(x){
   cat("\nCall:\n")
-  cat(deparse(x$call), "\n\n")
+  cat(deparse(x$call), fill=TRUE, "\n\n")
   cat("\nType I (Sequential) Sums of Squares and Cross-products\n")
   if(x$perm.method == "RRPP") cat ("Randomized Residual Permutation Procedure Used\n") else
     cat("Randomization of Raw Values used\n")
@@ -369,7 +369,7 @@ plot.procD.allometry <- function(x, method=c("CAC","RegScore","PredLine"),warpgr
 #' @keywords utilities
 print.morphol.disparity <- function (x, ...) {
   cat("\nCall:\n")
-  cat(deparse(x$call), "\n\n")
+  cat(deparse(x$call), fill=TRUE, "\n\n")
   cat("\nRandomized Residual Permutation Procedure Used\n")
   cat(paste(x$permutations, "Permutations\n"))
   cat("\nProcrustes variances for defined groups\n")
@@ -408,7 +408,7 @@ summary.morphol.disparity <- function(object, ...) {
 #' @keywords utilities
 print.pls <- function (x, ...) {
   cat("\nCall:\n")
-  cat(deparse(x$call), "\n\n")
+  cat(deparse(x$call), fill=TRUE, "\n\n")
   if(x$method=="RV") {
     cat(paste("\nRV:", round(x$RV, nchar(x$permutations)-1)))
     cat(paste("\n\nP-value:", round(x$P.value, nchar(x$permutations)-1)))
@@ -552,7 +552,7 @@ plot.pls <- function(x, label = NULL, warpgrids=TRUE, ...){
 #' @keywords utilities
 print.bilat.symmetry <- function (x, ...) {
   cat("\nCall:\n")
-  cat(deparse(x$call), "\n\n")
+  cat(deparse(x$call), fill=TRUE, "\n\n")
   cat(paste("Symmetry (data) type:", x$data.type), "\n")
   cat("\nType I (Sequential) Sums of Squares and Cross-products\n")
   if(x$perm.method == "RRPP") cat ("Randomized Residual Permutation Procedure Used\n") else
@@ -665,7 +665,7 @@ plot.bilat.symmetry <- function(x, warpgrids = TRUE, mesh= NULL, ...){
 #' @keywords utilities
 print.CR <- function (x, ...) {
   cat("\nCall:\n")
-  cat(deparse(x$call), "\n\n")
+  cat(deparse(x$call), fill=TRUE, "\n\n")
   cat(paste("\nCR:", round(x$CR, nchar(x$permutations))))
   cat(paste("\n\nP-value:", round(x$P.value, nchar(x$permutations))))
   cat(paste("\n\nBased on", x$permutations, "random permutations"))
@@ -716,7 +716,7 @@ plot.CR <- function(x, ...){
 #' @keywords utilities
 print.CR.phylo <- function (x, ...) {
   cat("\nCall:\n")
-  cat(deparse(x$call), "\n\n")
+  cat(deparse(x$call), fill=TRUE, "\n\n")
   cat(paste("\nCR:", round(x$CR, nchar(x$permutations))))
   cat(paste("\n\nP-value:", round(x$P.value, nchar(x$permutations))))
   cat(paste("\n\nBased on", x$permutations, "random permutations"))
@@ -766,7 +766,7 @@ plot.CR.phylo <- function(x, ...){
 #' @keywords utilities
 print.physignal <- function(x, ...){
   cat("\nCall:\n")
-  cat(deparse(x$call), "\n\n")
+  cat(deparse(x$call), fill=TRUE, "\n\n")
   cat(paste("\nObserved Phylogenetic Signal (K):", round(x$phy.signal, nchar(x$permutations))))
   cat(paste("\n\nP-value:", round(x$pvalue, nchar(x$permutations))))
   cat(paste("\n\nBased on", x$permutations, "random permutations"))
@@ -899,7 +899,7 @@ plot.evolrate <- function(x, ...){
 print.trajectory.analysis <- function(x, 
                 angle.type = c("r", "rad", "deg"), ...) {
   angle.type = match.arg(angle.type)
-  cat(deparse(x$call), "\n\n")
+  cat(deparse(x$call), fill=TRUE, "\n\n")
   cat("\nType I (Sequential) Sums of Squares and Cross-products\n")
   cat ("Randomized Residual Permutation Procedure Used\n") 
   cat(paste(x$permutations, "Permutations"))
