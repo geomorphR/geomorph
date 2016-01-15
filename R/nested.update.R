@@ -29,7 +29,7 @@
 #'data(larvalTails)
 #'Y.gpa <- gpagen(larvalTails$landmarks)
 #'gdf <- geomorph.data.frame(Y.gpa, Treatment = larvalTails$Treatment, Family = larvalTails$Family)
-#'tailANOVA <- procD.lm(coords ~ Treatment/Family, iter=199, RRPP=TRUE, data=gdf)
+#'tailANOVA <- procD.lm(coords ~ Treatment/Family, iter=99, RRPP=TRUE, data=gdf)
 #'summary(tailANOVA)
 #'
 #'# Update for nested effects
@@ -43,7 +43,7 @@
 #' # This will not work: tailANOVA <- nested.update(tailANOVA, ~ Treatment/Family) 
 #' # The updated terms must be included as part of the original terms
 #' 
-#'tailANOVA <- procD.lm(coords ~ Csize + Treatment/Family, iter=199, RRPP=TRUE, data=gdf)
+#'tailANOVA <- procD.lm(coords ~ Csize + Treatment/Family, iter=99, RRPP=TRUE, data=gdf)
 #'summary(tailANOVA)
 #'
 #'# Now the format will allow an update

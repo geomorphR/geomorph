@@ -61,7 +61,7 @@
 #'  #landmarks on the body and operculum
 #' land.gps<-rep('a',56); land.gps[39:48]<-'b'
 #'
-#' MT <- modularity.test(Y.gpa$coords,land.gps,CI=FALSE,iter=999)
+#' MT <- modularity.test(Y.gpa$coords,land.gps,CI=FALSE,iter=499)
 #' summary(MT) # Test summary
 #' plot(MT) # Histogram of CR sampling distribution 
 #' # Result implies modularity present
