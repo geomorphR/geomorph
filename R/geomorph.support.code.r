@@ -1486,37 +1486,45 @@ apply.CR <- function(x,g,k, iter, seed = NULL){# g = partition.gp
 # boot.CR
 # Bootstrap for CR
 # used in: modularity.test
-boot.CR <- function(x,gps, iter, seed = NULL){
+boot.CR <- function(x,gps, k,iter, seed = NULL){
   x<-as.matrix(x)
   boot <- boot.index(nrow(x), iter, seed=seed)
-  angle <- seq(0,88,2)
-  if(k==2){
-    rot.mat<-lapply(1:(length(angle)), function(i) matrix(c(cos(angle[i]*pi/180),
-      sin(angle[i]*pi/180),-sin(angle[i]*pi/180),cos(angle[i]*pi/180)),ncol=2))      
+  if(k==1){
+    x.r<-lapply(1:(iter+1), function(j) x[boot[[j]],])
+    CR.boot<-sapply(1:(iter+1), function(j) quick.CR(x.r[[j]],gps)) 
   }
-  if(k==3){
-    rot.mat<-lapply(1:(length(angle)), function(i) matrix(c(cos(angle[i]*pi/180),
-        sin(angle[i]*pi/180),0,-sin(angle[i]*pi/180),cos(angle[i]*pi/180), 0,0,0,1),ncol=3))      
+  
+  if(k>1){  #for GM data
+    angle <- seq(-44,44,2)
+    if(k==2){
+      rot.mat<-lapply(1:(length(angle)), function(i) matrix(c(cos(angle[i]*pi/180),
+                                                              sin(angle[i]*pi/180),-sin(angle[i]*pi/180),cos(angle[i]*pi/180)),ncol=2))      
+    }
+    if(k==3){
+      rot.mat<-lapply(1:(length(angle)), function(i) matrix(c(cos(angle[i]*pi/180),
+                                                              sin(angle[i]*pi/180),0,-sin(angle[i]*pi/180),cos(angle[i]*pi/180), 0,0,0,1),ncol=3))      
+    }
+    jj <- iter+1
+    if(jj > 100) j <- 1:100 else j <- 1:jj
+    CR.boot <- NULL
+    while(jj > 0){
+      boot.j <- boot[j]
+      x.r<-lapply(1:length(j), function(i) x[boot.j[[i]],])
+      Alist.r <-lapply(1:length(x.r), function(i) { y <- x.r[[i]]; arrayspecs(y, ncol(y)/k,k)})
+      CR.boot <- lapply(1:length(Alist.r), function(i){
+        A <- Alist.r[[i]]
+        A <- lapply(1:dim(A)[[3]], function(ii) A[,,ii])
+        B <- Map(function(r) t(mapply(function(a) matrix(t(a%*%r)), A)), rot.mat)
+        CRs <- Map(function(x) quick.CR(x,gps), B)
+        Reduce("+", CRs)/length(CRs)
+      })
+      jj <- jj-length(j)
+      if(jj > 100) kk <- 1:100 else kk <- 1:jj
+      j <- j[length(j)] +kk
+    }
+    CR.boot<-unlist(simplify2array(CR.boot)  )    
   }
-  jj <- iter+1
-  if(jj > 100) j <- 1:100 else j <- 1:jj
-  CR.boot <- NULL
-  while(jj > 0){
-    boot.j <- boot[j]
-    x.r<-lapply(1:length(j), function(i) x[boot.j[[i]],])
-    Alist.r <-lapply(1:length(x.r), function(i) { y <- x.r[[i]]; arrayspecs(y, ncol(y)/k,k)})
-    CR.boot <- lapply(1:length(Alist.r), function(i){
-      A <- Alist.r[[i]]
-      A <- lapply(1:dim(A)[[3]], function(ii) A[,,ii])
-      B <- Map(function(r) t(mapply(function(a) matrix(t(a%*%r)), A)), rot.mat)
-      CRs <- Map(function(x) quick.CR(x,gps), B)
-      Reduce("+", CRs)/length(CRs)
-    })
-    jj <- jj-length(j)
-    if(jj > 100) kk <- 1:100 else kk <- 1:jj
-    j <- j[length(j)] +kk
-  }
-  simplify2array(CR.boot)
+  CR.boot
 }
 
 # CR.phylo

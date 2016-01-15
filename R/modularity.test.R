@@ -86,7 +86,7 @@ modularity.test<-function(A,partition.gp,iter=999, seed=NULL){
     CR.rand <- apply.CR(x, gps, k=k, iter=iter, seed=seed)
     p.val <- 1-pval(CR.rand)  #b/c smaller values more significant 
     if (p.val==0){p.val<-1/(iter+1)}
-    CR.boot<- boot.CR(x, gps, iter=iter, seed=seed)
+    CR.boot<- boot.CR(x, gps, k,iter=iter, seed=seed)
     CR.CI<-quantile(CR.boot, c(.025, .975))
   }
   if (length(dim(A))==3){
@@ -118,8 +118,8 @@ modularity.test<-function(A,partition.gp,iter=999, seed=NULL){
     CR.rand[1] <- CR.obs <- avgCR
     if(ngps > 2) CR.mat <- CR(x,gps.obs)$CR.mat else CR.mat <- NULL
     p.val <- pval(1/CR.rand)  #b/c smaller values more significant
-    CR.boot<- boot.CR(x, gps.obs, iter=iter, seed=seed)
-    sCR.CI<-quantile(CR.boot, c(.025, .975))
+    CR.boot<- boot.CR(x, gps.obs,k, iter=iter, seed=seed)
+    CR.CI<-quantile(CR.boot, c(.025, .975))
   }
   
   out <- list(CR=CR.obs, CInterval=CR.CI, P.value=p.val,
