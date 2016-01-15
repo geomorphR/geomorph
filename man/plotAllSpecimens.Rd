@@ -4,9 +4,10 @@
 \alias{plotAllSpecimens}
 \title{Plot landmark coordinates for all specimens}
 \usage{
-plotAllSpecimens(A, mean = TRUE, links = NULL, pt.bg = "gray",
-  pt.cex = 1, mean.bg = "black", mean.cex = 2, link.col = "black",
-  link.lwd = 2, link.lty = 1)
+plotAllSpecimens(A, mean = TRUE, links = NULL, label = FALSE,
+  pt.bg = "gray", pt.cex = 1, mean.bg = "black", mean.cex = 2,
+  link.col = "black", link.lwd = 2, link.lty = 1, txt.adj = 0.5,
+  txt.pos = 1, txt.cex = 0.8, txt.col = "black")
 }
 \arguments{
 \item{A}{An array (p x k x n) containing GPA-aligned coordinates for a set of specimens}
@@ -14,6 +15,8 @@ plotAllSpecimens(A, mean = TRUE, links = NULL, pt.bg = "gray",
 \item{mean}{A logical value indicating whether the mean shape should be included in the plot}
 
 \item{links}{An optional matrix defining for links between landmarks (only if mean=TRUE)}
+
+\item{label}{A logical value indicating whether landmark numbers will be plotted (only if mean=TRUE)}
 
 \item{pt.bg}{An optional value defining the background color of points (single value or vector of values)}
 
@@ -28,6 +31,14 @@ plotAllSpecimens(A, mean = TRUE, links = NULL, pt.bg = "gray",
 \item{link.lwd}{An optional value defining line weight of links (single value or vector of values)}
 
 \item{link.lty}{An optional value defining line type of links (single value or vector of values)}
+
+\item{txt.adj}{The adjustment value of the landmark label (one or two values, as in base R \code{\link{text}})}
+
+\item{txt.pos}{The position of the landmark label (single numerical value, as in base R \code{\link{text}})}
+
+\item{txt.cex}{The size of the landmark label text (single numerical value, as in base R \code{\link{text}})}
+
+\item{txt.col}{The color of the landmark label text (single numerical value, as in base R \code{\link{text}})}
 }
 \description{
 Function plots landmark coordinates for a set of specimens

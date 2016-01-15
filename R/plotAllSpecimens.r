@@ -12,6 +12,7 @@
 #' @param A An array (p x k x n) containing GPA-aligned coordinates for a set of specimens
 #' @param mean A logical value indicating whether the mean shape should be included in the plot
 #' @param links An optional matrix defining for links between landmarks (only if mean=TRUE)
+#' @param label A logical value indicating whether landmark numbers will be plotted (only if mean=TRUE)
 #' @param pt.bg An optional value defining the background color of points (single value or vector of values)
 #' @param pt.cex An optional value defining the the size of the points (single value or vector of values)
 #' @param mean.bg An optional value defining the background color of the points for all specimens
@@ -19,6 +20,10 @@
 #' @param link.col An optional value defining color of links (single value or vector of values)
 #' @param link.lwd An optional value defining line weight of links (single value or vector of values)
 #' @param link.lty An optional value defining line type of links (single value or vector of values)
+#' @param txt.adj The adjustment value of the landmark label (one or two values, as in base R \code{\link{text}}) 
+#' @param txt.pos The position of the landmark label (single numerical value, as in base R \code{\link{text}}) 
+#' @param txt.cex The size of the landmark label text (single numerical value, as in base R \code{\link{text}})
+#' @param txt.col The color of the landmark label text (single numerical value, as in base R \code{\link{text}})
 #' @export
 #' @keywords visualization
 #' @author Dean Adams
@@ -27,14 +32,18 @@
 #' Y.gpa<-gpagen(plethodon$land)    #GPA-alignment
 #'
 #' plotAllSpecimens(Y.gpa$coords,links=plethodon$links)
-plotAllSpecimens<-function(A,mean=TRUE,links=NULL,
+plotAllSpecimens<-function(A,mean=TRUE,links=NULL,label=FALSE,
                            pt.bg="gray",
                            pt.cex=1,
                            mean.bg="black",
                            mean.cex=2,
                            link.col="black",
                            link.lwd = 2,
-                           link.lty = 1){
+                           link.lty = 1,
+                           txt.adj = 0.5,
+                           txt.pos = 1, 
+                           txt.cex = 0.8,
+                           txt.col = "black"){
   if (length(dim(A))!=3){
     stop("Data matrix not a 3D array (see 'arrayspecs').")  }
   if(any(is.na(A))==T){
@@ -56,6 +65,8 @@ plotAllSpecimens<-function(A,mean=TRUE,links=NULL,
         }
       }
       points(mn,pch=21,bg=mean.bg,cex=mean.cex)
+      if(label == TRUE){text(mn, label=paste(1:dim(mn)[1]),adj=(txt.adj+mean.cex),
+                             pos=txt.pos,cex=txt.cex,col=txt.col)}
     }
   }
   if(k==3){
@@ -75,6 +86,8 @@ plotAllSpecimens<-function(A,mean=TRUE,links=NULL,
         }
       }
       points3d(mn,color=mean.bg,size=mean.cex*2)
+      if(label == TRUE){text3d(mn, texts = paste(1:dim(mn)[1]), adj=(txt.adj+mean.cex),
+                               pos=txt.pos,cex=txt.cex,col=txt.col)}
     }
   }
 }
