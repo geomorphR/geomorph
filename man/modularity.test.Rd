@@ -4,7 +4,7 @@
 \alias{modularity.test}
 \title{Evaluate the degree of modular signal in morphometric datasets}
 \usage{
-modularity.test(A, partition.gp, iter = 999, CI = TRUE, seed = NULL)
+modularity.test(A, partition.gp, iter = 999, CI = FALSE, seed = NULL)
 }
 \arguments{
 \item{A}{A 3D array (p x k x n) containing GPA-aligned coordinates for all specimens, or a matrix (n x variables)}

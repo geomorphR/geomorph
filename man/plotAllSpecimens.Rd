@@ -5,9 +5,7 @@
 \title{Plot landmark coordinates for all specimens}
 \usage{
 plotAllSpecimens(A, mean = TRUE, links = NULL, label = FALSE,
-  pt.bg = "gray", pt.cex = 1, mean.bg = "black", mean.cex = 2,
-  link.col = "black", link.lwd = 2, link.lty = 1, txt.adj = 0.5,
-  txt.pos = 1, txt.cex = 0.8, txt.col = "black")
+  plot.param = list())
 }
 \arguments{
 \item{A}{An array (p x k x n) containing GPA-aligned coordinates for a set of specimens}
@@ -18,27 +16,7 @@ plotAllSpecimens(A, mean = TRUE, links = NULL, label = FALSE,
 
 \item{label}{A logical value indicating whether landmark numbers will be plotted (only if mean=TRUE)}
 
-\item{pt.bg}{An optional value defining the background color of points (single value or vector of values)}
-
-\item{pt.cex}{An optional value defining the the size of the points (single value or vector of values)}
-
-\item{mean.bg}{An optional value defining the background color of the points for all specimens}
-
-\item{mean.cex}{An optional value defining the size of the points representing the average specimen}
-
-\item{link.col}{An optional value defining color of links (single value or vector of values)}
-
-\item{link.lwd}{An optional value defining line weight of links (single value or vector of values)}
-
-\item{link.lty}{An optional value defining line type of links (single value or vector of values)}
-
-\item{txt.adj}{The adjustment value of the landmark label (one or two values, as in base R \code{\link{text}})}
-
-\item{txt.pos}{The position of the landmark label (single numerical value, as in base R \code{\link{text}})}
-
-\item{txt.cex}{The size of the landmark label text (single numerical value, as in base R \code{\link{text}})}
-
-\item{txt.col}{The color of the landmark label text (single numerical value, as in base R \code{\link{text}})}
+\item{plot.param}{A list of plotting parameters for the points (pt.bg, pt.cex), mean (mean.bg, mean.cex), links (link.col, link.lwd, link.lty) and landmark labels (txt.cex, txt.adj, txt.pos, txt.col)}
 }
 \description{
 Function plots landmark coordinates for a set of specimens
@@ -49,7 +27,7 @@ The function creates a plot of the landmark coordinates for all specimens. This 
  Additionally, if a matrix of links is provided, the landmarks of the mean shape will be connected by lines.  
  The link matrix is an m x 2 matrix, where m is the desired number of links. Each row of the link matrix 
  designates the two landmarks to be connected by that link. The function will plot either two- or 
- three-dimensional data.
+ three-dimensional data (e.g. see \code{\link{define.links}}).
 }
 \examples{
 data(plethodon) 
