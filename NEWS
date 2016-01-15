@@ -19,6 +19,7 @@ CHANGES IN GEOMORPH VERSION 3.0.0
     o Removed method="" parameter from physignal(). Only Kmult used
     o Removed verbose option for most functions: all output provided in lists
     o Added option to pre-multiply coordinates by scale in digitize2d
+    o Added plotting options to plotAllSpecimens
   
   BUG FIXES
 
