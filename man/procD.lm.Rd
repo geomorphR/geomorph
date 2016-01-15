@@ -53,7 +53,7 @@ Function performs Procrustes ANOVA with permutation procedures to assess statist
 }
 \details{
 The function quantifies the relative amount of shape variation attributable to one or more factors in a 
-  linear model and estimates the probability of this variation ("signifiance") for a null model, via distributions generated 
+  linear model and estimates the probability of this variation ("significance") for a null model, via distributions generated 
   from resampling permutations. Data input is specified by a formula (e.g., 
   y~X), where 'y' specifies the response variables (shape data), and 'X' contains one or more independent 
   variables (discrete or continuous). The response matrix 'y' can be either in the form of a two-dimensional data 
@@ -127,7 +127,7 @@ Anderson MJ. 2001. A new method for non-parametric multivariate analysis of vari
    Austral Ecology 26: 32-46.
 
 Anderson MJ. and C.J.F. terBraak. 2003. Permutation tests for multi-factorial analysis of variance.
-   Journal of Statistical Copmutation and Simulation 73: 85-113.
+   Journal of Statistical Computation and Simulation 73: 85-113.
 
 Collyer, M.L., D.J. Sekora, and D.C. Adams. 2015. A method for analysis of phenotypic change for phenotypes described 
 by high-dimensional data. Heredity. 115:357-365.

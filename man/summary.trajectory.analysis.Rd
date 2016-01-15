@@ -4,8 +4,7 @@
 \alias{summary.trajectory.analysis}
 \title{Print/Summary Function for geomorph}
 \usage{
-\method{summary}{trajectory.analysis}(object, angle.type = c("r", "rad",
-  "deg"), ...)
+summary.trajectory.analysis(object, angle.type = c("r", "rad", "deg"), ...)
 }
 \arguments{
 \item{object}{print/summary object}

@@ -27,7 +27,7 @@ which might be of interest for advanced users.}
 \item{...}{Arguments passed on to procD.fit (typically associated with the \code{\link{lm}} function)}
 }
 \value{
-An object of class "trajectory.analysis" returns a list of the follwing:
+An object of class "trajectory.analysis" returns a list of the following:
   \item{aov.table}{Procrustes ANOVA table.}
   \item{means}{The observed least squares means based on the linear model.}
   \item{pc.means}{The observed least squares means rotated to their principal components.}
@@ -54,7 +54,7 @@ An object of class "trajectory.analysis" returns a list of the follwing:
   \item{Z.shape.diff}{Effect sizes of observed trajectory shape differences.}
   \item{call}{The matched call.}
   \item{groups}{Factor representing group names for subsequent plotting.}
-  \item{permutations}{The numer of random permutations used in the RRPP applied to the ANOVA 
+  \item{permutations}{The number of random permutations used in the RRPP applied to the ANOVA 
   and trajectory statistics.}
   \item{trajectory.type}{A value of 1 if trajectories were provided or 2 if they were estimated.}
 }
@@ -83,7 +83,7 @@ Data input is specified by a two formulae (e.g., Y ~ X), where 'Y' specifies the
  and that the data in Y comprise trajectories.  In this case, the traj.pts = NULL argument must be changed to a numeric value 
  to define the number of points in the trajectory.  It is also assumed that the data are structured as variables within points.  
  For example, y11 y21 y31 y12 y22 y32 y13 y23 y33 y14 y24 y34 would be columns of a matrix, Y, describing a 4-point trajectory
- in a data space defined by three variables.  This is the proper arrangment; the folowwing is an improper arrangement: 
+ in a data space defined by three variables.  This is the proper arrangement; the following is an improper arrangement: 
  y11 y12 y13 y14 y21 y22 y23 y24 y31 y32 y33 y34, as it groups points within variables.  This approach is typical when comparing
  motion paths (see Adams and Cerney 2007).
  
@@ -116,10 +116,10 @@ Once the function has performed the analysis, a plot can be generated of the tra
 Previous versions of geomorph had two separate analytical approaches based on whether trajectories were estimated or
 provided (as might be the case with motion trajectories; see Adams and Cerney 2007).  Starting with geomorph 3.0, 
 commensurate analytical approaches are used.  This involves converting 1 x vp vectors for trajectpries, were p is the 
-number of trajectory points and v is the number of variables in the data space, into p x v matrices, analagous to the
-procedure for estimating trajectories.  Thus, rather than providing separate ANOVAs for size, oreintation, and shape
+number of trajectory points and v is the number of variables in the data space, into p x v matrices, analogous to the
+procedure for estimating trajectories.  Thus, rather than providing separate ANOVAs for size, orientation, and shape
 of trajectories, a general ANOVA is provided with pairwise statistics for the same attribute differences.  This change
-does not compromise any interpretations made with previous versions of geomoprh, but enhances inferential capacity
+does not compromise any interpretations made with previous versions of geomorph, but enhances inferential capacity
 by providing pairwise statistics and P-values.
 }
 }

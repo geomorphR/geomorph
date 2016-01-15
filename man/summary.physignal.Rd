@@ -4,7 +4,7 @@
 \alias{summary.physignal}
 \title{Print/Summary Function for geomorph}
 \usage{
-\method{summary}{physignal}(object, ...)
+summary.physignal(object, ...)
 }
 \arguments{
 \item{object}{print/summary object}

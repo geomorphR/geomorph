@@ -27,7 +27,7 @@ Objects of class "CR" from modularity.test return a list of the following:
    \item{P.value}{The empirically calculated P-value from the resampling procedure.}
    \item{CR.mat}{For more than two partitions, the pairwise CRs among partitions.}
    \item{random.CR}{The CR calculated in each of the random permutations of the resampling procedure.}
-   \item{permutations}{The number of random permutations used in the resampling procdure.}
+   \item{permutations}{The number of random permutations used in the resampling procedure.}
    \item{call}{The match call.}
 }
 \description{
@@ -37,7 +37,7 @@ Function quantifies the degree of modularity between two or more hypothesized mo
 \details{
 The function quantifies the degree of phylogenetic modularity in two or more hypothesized modules of shape data as 
 defined by landmark coordinates, under a Brownian motion model of evolution. The degree of modularity 
-is characterized by the covaraince ratio covariance ratio (CR: see Adams 2016). The phylogenetic version of the approach 
+is characterized by the covariance ratio covariance ratio (CR: see Adams 2016). The phylogenetic version of the approach 
 procedure utilizes the evolutionary covariance matrix among traits found under a Brownian
 motion model of evolution as the basis of the analysis. This is the same matrix used to evaluate patterns of phylogenetic 
 morphological integration as described in Adams and Felice (2014).
