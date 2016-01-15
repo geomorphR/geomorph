@@ -1489,18 +1489,33 @@ apply.CR <- function(x,g,k, iter, seed = NULL){# g = partition.gp
 boot.CR <- function(x,gps, iter, seed = NULL){
   x<-as.matrix(x)
   boot <- boot.index(nrow(x), iter, seed=seed)
+  angle <- seq(0,88,2)
+  if(k==2){
+    rot.mat<-lapply(1:(length(angle)), function(i) matrix(c(cos(angle[i]*pi/180),
+      sin(angle[i]*pi/180),-sin(angle[i]*pi/180),cos(angle[i]*pi/180)),ncol=2))      
+  }
+  if(k==3){
+    rsin(angle[i]*pi/180),0,-sin(angle[i]*pi/180),cos(angle[i]*pi/180), 0,0,0,1),ncol=3))      
+  }
   jj <- iter+1
   if(jj > 100) j <- 1:100 else j <- 1:jj
   CR.boot <- NULL
   while(jj > 0){
     boot.j <- boot[j]
     x.r<-lapply(1:length(j), function(i) x[boot.j[[i]],])
-    CR.boot<-c(CR.boot, sapply(1:length(j), function(i) quick.CR(x.r[[i]],gps))) 
+    Alist.r <-lapply(1:length(x.r), function(i) { y <- x.r[[i]]; arrayspecs(y, ncol(y)/k,k)})
+    CR.boot <- lapply(1:length(Alist.r), function(i){
+      A <- Alist.r[[i]]
+      A <- lapply(1:dim(A)[[3]], function(ii) A[,,ii])
+      B <- Map(function(r) t(mapply(function(a) matrix(t(a%*%r)), A)), rot.mat)
+      CRs <- Map(function(x) quick.CR(x,gps), B)
+      Reduce("+", CRs)/length(CRs)
+    })
     jj <- jj-length(j)
     if(jj > 100) kk <- 1:100 else kk <- 1:jj
     j <- j[length(j)] +kk
   }
-  CR.boot
+  simplify2array(CR.boot)
 }
 
 # CR.phylo
