@@ -47,12 +47,12 @@ The function quantifies the degree of association between two blocks of shape da
   that the landmarks have previously been aligned using 
   Generalized Procrustes Analysis (GPA) [e.g., with \code{\link{gpagen}}]. If other variables are used, they must be input as a 
   2-Dimensional matrix (rows = specimens, columns = variables).  It is also assumed that the separate inputs
-  have specimens (observations) in teh same order.
+  have specimens (observations) in the same order.
   
  The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{modularity.test}}.
  The generic function, \code{\link{plot}}, produces a two-block.pls plot.  This function calls \code{\link{plot.pls}}, which has two additional
  arguments (with defaults): label = NULL, warpgrids = TRUE.  These arguments allow one to include a vector to label points and a logical statement to
- include warpgrids, respectively.  Warpgrids can only be included for 3D arrays of Procrustes resdiuals. The plot is a plot of PLS scores from 
+ include warpgrids, respectively.  Warpgrids can only be included for 3D arrays of Procrustes residuals. The plot is a plot of PLS scores from 
  Block1 versus Block2 performed for the first set of PLS axes. 
  
  \subsection{Notes for geomorph 3.0}{ 

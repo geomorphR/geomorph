@@ -53,7 +53,6 @@
 #' @param curves An optional matrix defining which landmarks should be treated as semilandmarks on boundary 
 #'   curves, and which landmarks specify the tangent directions for their sliding
 #' @param surfaces An optional vector defining which landmarks should be treated as semilandmarks on surfaces
-#' @param ... Options to be passed to \code{\link{plotAllSpecimens}}
 #' @keywords analysis
 #' @export
 #' @author Dean Adams and Michael Collyer

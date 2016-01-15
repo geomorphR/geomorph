@@ -24,7 +24,7 @@ Z-scores, and P-values based on F values adjusted to be MS fixed/MS random (nest
 generating random values for each iteration previously used in the \code{\link{procD.lm}} object.
 
 This function can be used recursively for multiple updates, when multiple nested effects are used.  The function can
-currently only handle single factors nestd within other single factors.
+currently only handle single factors nested within other single factors.
 
 Function returns the same list as \code{\link{procD.lm}} but with random F values appended.  The 
 ANOVA table is updated in terms of F-values, Z-scores, and P-values,

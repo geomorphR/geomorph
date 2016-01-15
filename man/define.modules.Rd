@@ -35,7 +35,7 @@ landmarks for module 2. Repeat until all modules are defined.
 Choosing which landmarks will be included in each module involves landmark selection using a mouse in 
 the rgl plot window. The user is prompted to select one or more landmarks. To do so, use the RIGHT mouse button 
 (or command + LEFT button for Mac users), draw a rectangle around landmarks to select.
-Selected landmarks will be coloured yellow. Then type into the console a letter (e.g. 1, 2, 3...) to assign selected landmark(s) 
+Selected landmarks will be colored yellow. Then type into the console a letter (e.g. 1, 2, 3...) to assign selected landmark(s) 
 to this module. Repeat until all landmarks are assigned to modules.
 }
 }

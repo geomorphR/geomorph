@@ -25,8 +25,6 @@ for optimizing the positions of semilandmarks}
 
 \item{Proj}{A logical value indicating whether or not the aligned Procrustes residuals should be projected 
 into tangent space}
-
-\item{...}{Options to be passed to \code{\link{plotAllSpecimens}}}
 }
 \value{
 An object of class gpagen returns a list with the following components:
@@ -36,8 +34,8 @@ An object of class gpagen returns a list with the following components:
  \item{Csize}{A vector of centroid sizes for each specimen, containing the names for each specimen if 
     specified in the original input array.}
  \item{iter}{The number of GPA iterations until convergence was found (or GPA halted).}
- \item{points.VCV}{Varaiance-covariance matrix among landmark coordinates.}
- \item{points.var}{Varaiances of landmark points.}
+ \item{points.VCV}{Variance-covariance matrix among landmark coordinates.}
+ \item{points.var}{Variances of landmark points.}
  \item{consnsus}{The consensus (mean) configuration.}
  \item{p}{Number of landmarks.}
  \item{k}{Number of landmark dimensions.}
@@ -88,7 +86,7 @@ consensus configuration with the sliding algorithms (minimized bending energy or
 (Previous versions used a single consensus through the sliding algorithms.)  Shape differences using the recursive 
 updates of the consensus configuration should be highly correlated with shape differences using a single consensus 
 during the sliding algorithm, but rotational "flutter" can be expected.  This should have no qualitative effect on 
-inferential analyses using Procrusts residuals. 
+inferential analyses using Procrustes residuals. 
 }
 }
 \examples{
