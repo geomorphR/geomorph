@@ -1,4 +1,4 @@
-#' Creates a mesh3d object warped to the mean shape.
+#' Creates a mesh3d object warped to the mean shape
 #' 
 #' A function to take a 3D mesh and use thin-plate spline method to warp the file
 #' into the estimated mean shape for a set of aligned specimens

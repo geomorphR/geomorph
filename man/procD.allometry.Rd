@@ -173,6 +173,5 @@ Mitteroecker, P., P. Gunz, M. Bernhard, K. Schaefer, and F. L. Bookstein. 2004.
 \code{\link{procD.lm}} and \code{\link{advanced.procD.lm}} within geomorph;
 \code{\link[stats]{lm}} for more on linear model fits
 }
-\keyword{RRPP}
-\keyword{analysis,}
+\keyword{analysis}
 

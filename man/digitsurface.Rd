@@ -2,7 +2,7 @@
 % Please edit documentation in R/digitsurface.r
 \name{digitsurface}
 \alias{digitsurface}
-\title{Digitize 3D fixed landmarks and surface semilandmarks.}
+\title{Digitize 3D fixed landmarks and surface semilandmarks}
 \usage{
 digitsurface(spec, fixed, ptsize = 1, center = TRUE)
 }

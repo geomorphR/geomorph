@@ -1,4 +1,4 @@
-#' Digitize 2D landmarks.
+#' Digitize 2D landmarks on .jpg files
 #'
 #' An interactive function to digitize two-dimensional(2D) landmarks from .jpg files.
 #'

@@ -17,4 +17,5 @@ Print/Summary Function for geomorph
 \author{
 Dean Adams
 }
+\keyword{utilities}
 

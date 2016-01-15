@@ -1,4 +1,4 @@
-#' Digitize 3D fixed landmarks and surface semilandmarks.
+#' Digitize 3D fixed landmarks and surface semilandmarks
 #' 
 #' An interactive function to digitize three-dimensional (3D) landmarks on a surface lacking known landmarks.
 #' Input for the function is either a matrix of vertex coordinates defining a 3D surface object

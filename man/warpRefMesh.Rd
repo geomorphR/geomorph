@@ -2,7 +2,7 @@
 % Please edit documentation in R/warpRefMesh.r
 \name{warpRefMesh}
 \alias{warpRefMesh}
-\title{Creates a mesh3d object warped to the mean shape.}
+\title{Creates a mesh3d object warped to the mean shape}
 \usage{
 warpRefMesh(mesh, mesh.coord, ref, color = NULL, centered = FALSE)
 }

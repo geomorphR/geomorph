@@ -3,7 +3,7 @@
 \docType{data}
 \name{pupfish}
 \alias{pupfish}
-\title{landmarks on pupfish}
+\title{Landmarks on pupfish}
 \description{
 Landmark data from Cyprindon pecosensis body shapes, with indication of Sex and 
 Population from which fish were sampled (Marsh or Sinkhole).

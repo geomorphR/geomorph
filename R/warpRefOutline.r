@@ -1,4 +1,4 @@
-#' Creates a 2D outline warped to the mean shape.
+#' Creates a 2D outline warped to the mean shape
 #' 
 #' A function to take an outline (defined by many points) and use thin-plate spline method to warp the outline
 #' into the estimated mean shape for a set of aligned specimens.

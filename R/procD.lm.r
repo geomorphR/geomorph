@@ -52,7 +52,7 @@
 #' @param int.first A logical value to indicate if interactions of first main effects should precede subsequent main effects
 #' @param data A data frame for the function environment, see \code{\link{geomorph.data.frame}} 
 #' @param ... Arguments passed on to procD.fit (typically associated with the lm function)
-#' @keywords analysis, RRPP
+#' @keywords analysis
 #' @export
 #' @author Dean Adams and Michael Collyer
 #' @return An object of class "procD.lm" is a list containing the following

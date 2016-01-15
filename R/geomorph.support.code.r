@@ -109,7 +109,7 @@ NULL
 #' @keywords datasets
 NULL
 
-#' landmarks on mosquito wings
+#' Landmarks on mosquito wings
 #'
 #' @name mosquito
 #' @docType data
@@ -117,7 +117,7 @@ NULL
 #' @keywords datasets
 NULL
 
-#' landmarks on pupfish
+#' Landmarks on pupfish
 #'
 #' @name pupfish
 #' @docType data
@@ -131,7 +131,7 @@ NULL
 #' change for phenotypes described by high-dimensional data. Heredity. 113: doi:10.1038/hdy.2014.75.
 NULL
 
-#' tail-shapes of larval salamanders
+#' Tail-shapes of larval salamanders
 #'
 #' @name larvalTails
 #' @docType data

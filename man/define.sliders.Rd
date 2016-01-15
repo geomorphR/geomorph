@@ -2,7 +2,7 @@
 % Please edit documentation in R/define.sliders.r
 \name{define.sliders}
 \alias{define.sliders}
-\title{Select points to "slide" along curves.}
+\title{Select points to "slide" along curves}
 \usage{
 define.sliders(landmarks, nsliders, surfsliders = NULL, write.file = TRUE)
 }

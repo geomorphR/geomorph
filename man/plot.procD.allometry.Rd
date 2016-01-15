@@ -28,4 +28,6 @@ Plot Function for geomorph
 \author{
 Michael Collyer
 }
+\keyword{utilities}
+\keyword{visualization}
 

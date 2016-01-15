@@ -2,7 +2,7 @@
 % Please edit documentation in R/plotspec.r
 \name{plotspec}
 \alias{plotspec}
-\title{Plot 3D specimen, fixed landmarks and surface semilandmarks.}
+\title{Plot 3D specimen, fixed landmarks and surface semilandmarks}
 \usage{
 plotspec(spec, digitspec, fixed = NULL, ptsize = 1, centered = FALSE, ...)
 }

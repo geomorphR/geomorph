@@ -97,5 +97,6 @@ Michael Collyer & Emma Sherratt
 \seealso{
 \code{\link{plotRefToTarget}}
 }
+\keyword{utilities}
 \keyword{visualization}
 

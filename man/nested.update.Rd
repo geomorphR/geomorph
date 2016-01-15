@@ -67,4 +67,5 @@ by high-dimensional data. Heredity. 115:357-365.
 \seealso{
 \code{\link{procD.lm}}
 }
+\keyword{utilities}
 

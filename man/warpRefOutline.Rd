@@ -2,7 +2,7 @@
 % Please edit documentation in R/warpRefOutline.r
 \name{warpRefOutline}
 \alias{warpRefOutline}
-\title{Creates a 2D outline warped to the mean shape.}
+\title{Creates a 2D outline warped to the mean shape}
 \usage{
 warpRefOutline(file, coord, ref)
 }

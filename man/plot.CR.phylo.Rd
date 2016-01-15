@@ -17,4 +17,6 @@ Plot Function for geomorph
 \author{
 Dean Adams
 }
+\keyword{utilities}
+\keyword{visualization}
 

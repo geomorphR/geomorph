@@ -2,7 +2,7 @@
 % Please edit documentation in R/digitize2d.r
 \name{digitize2d}
 \alias{digitize2d}
-\title{Digitize 2D landmarks.}
+\title{Digitize 2D landmarks on .jpg files}
 \usage{
 digitize2d(filelist, nlandmarks, scale = NULL, tpsfile, MultScale = FALSE,
   verbose = TRUE)

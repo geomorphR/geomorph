@@ -8,6 +8,7 @@
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
+#' @keywords utilities
 print.gpagen <- function (x, ...) {
   cat("\nCall:\n")
   cat(deparse(x$call), "\n\n")
@@ -32,6 +33,7 @@ print.gpagen <- function (x, ...) {
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
+#' @keywords utilities
 summary.gpagen <- function(object, ...) {
   x <- object
   print.gpagen(x, ...)
@@ -43,6 +45,8 @@ summary.gpagen <- function(object, ...) {
 #' @param ... other arguments passed to plot
 #' @export
 #' @author Michael Collyer
+#' @keywords utilities
+#' @keywords visualization
 plot.gpagen <- function(x, ...){
   plotAllSpecimens(x$coords)
 }
@@ -56,6 +60,7 @@ plot.gpagen <- function(x, ...){
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
+#' @keywords utilities
 print.procD.lm <- function (x, ...) {
   cat("\nCall:\n")
   cat(deparse(x$call), "\n\n")
@@ -75,6 +80,7 @@ print.procD.lm <- function (x, ...) {
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
+#' @keywords utilities
 summary.procD.lm <- function(object, ...) {
   x <- object
   print.procD.lm(x, ...)
@@ -114,6 +120,8 @@ plot.QQ <- function(r){
 #' @param ... other arguments passed to plot
 #' @export
 #' @author Michael Collyer
+#' @keywords utilities
+#' @keywords visualization
 plot.procD.lm <- function(x, outliers=FALSE, ...){
   r <- x$residuals
   f <- x$fitted
@@ -160,6 +168,7 @@ plot.procD.lm <- function(x, outliers=FALSE, ...){
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
+#' @keywords utilities
 print.advanced.procD.lm <- function (x, ...) {
   cat("\nCall:\n")
   cat(deparse(x$call), "\n\n")
@@ -191,6 +200,7 @@ print.advanced.procD.lm <- function (x, ...) {
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
+#' @keywords utilities
 summary.advanced.procD.lm <- function(object, ...) {
   x <- object
   print.advanced.procD.lm(x, ...)
@@ -203,6 +213,8 @@ summary.advanced.procD.lm <- function(object, ...) {
 #' @param ... other arguments passed to plot
 #' @export
 #' @author Michael Collyer
+#' @keywords utilities
+#' @keywords visualization
 plot.advanced.procD.lm <- function(x, outliers = FALSE, ...) {
   plot.procD.lm(x,...)
 }
@@ -247,6 +259,7 @@ printAllometry.noHOS <- function(x){
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
+#' @keywords utilities
 print.procD.allometry <- function (x, ...) {
   if(!is.null(x$HOS.test)) printAllometry.HOS(x) else printAllometry.noHOS(x)
   invisible(x)
@@ -258,6 +271,7 @@ print.procD.allometry <- function (x, ...) {
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
+#' @keywords utilities
 summary.procD.allometry <- function(object, ...) {
   x <- object
   print.procD.allometry(x,...)
@@ -275,6 +289,8 @@ summary.procD.allometry <- function(object, ...) {
 #' @param ... other arguments passed to plot
 #' @export
 #' @author Michael Collyer
+#' @keywords utilities
+#' @keywords visualization
 plot.procD.allometry <- function(x, method=c("CAC","RegScore","PredLine"),warpgrids=TRUE,
                                  label=NULL, mesh=NULL, ...) {
   method <- match.arg(method)
@@ -350,6 +366,7 @@ plot.procD.allometry <- function(x, method=c("CAC","RegScore","PredLine"),warpgr
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
+#' @keywords utilities
 print.morphol.disparity <- function (x, ...) {
   cat("\nCall:\n")
   cat(deparse(x$call), "\n\n")
@@ -373,6 +390,7 @@ print.morphol.disparity <- function (x, ...) {
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
+#' @keywords utilities
 summary.morphol.disparity <- function(object, ...) {
   x <- object
   print.morphol.disparity(x, ...)
@@ -387,6 +405,7 @@ summary.morphol.disparity <- function(object, ...) {
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
+#' @keywords utilities
 print.pls <- function (x, ...) {
   cat("\nCall:\n")
   cat(deparse(x$call), "\n\n")
@@ -409,6 +428,7 @@ print.pls <- function (x, ...) {
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
+#' @keywords utilities
 summary.pls <- function(object, ...) {
   x<- object
   print.pls(x, ...)
@@ -514,6 +534,8 @@ plotPLS <- function(p, label = NULL, warpgrids=TRUE){
 #' @param ... other arguments passed to plot
 #' @export
 #' @author Michael Collyer
+#' @keywords utilities
+#' @keywords visualization
 plot.pls <- function(x, label = NULL, warpgrids=TRUE, ...){
   plotPLS(x, label=label, warpgrids=warpgrids)
 }
@@ -527,6 +549,7 @@ plot.pls <- function(x, label = NULL, warpgrids=TRUE, ...){
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
+#' @keywords utilities
 print.bilat.symmetry <- function (x, ...) {
   cat("\nCall:\n")
   cat(deparse(x$call), "\n\n")
@@ -551,6 +574,7 @@ print.bilat.symmetry <- function (x, ...) {
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
+#' @keywords utilities
 summary.bilat.symmetry <- function(object, ...) {
   x <- object
   print.bilat.symmetry(x, ...)
@@ -623,6 +647,8 @@ plotBilatSymmetry <- function(b, warpgrids = TRUE, mesh= NULL){
 #' @param ... other arguments passed to plot
 #' @export
 #' @author Michael Collyer
+#' @keywords utilities
+#' @keywords visualization
 plot.bilat.symmetry <- function(x, warpgrids = TRUE, mesh= NULL, ...){
   plotBilatSymmetry(x, warpgrids = warpgrids, mesh = mesh)
 }
@@ -636,6 +662,7 @@ plot.bilat.symmetry <- function(x, warpgrids = TRUE, mesh= NULL, ...){
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
+#' @keywords utilities
 print.CR <- function (x, ...) {
   cat("\nCall:\n")
   cat(deparse(x$call), "\n\n")
@@ -653,6 +680,7 @@ print.CR <- function (x, ...) {
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
+#' @keywords utilities
 summary.CR <- function(object, ...) {
   x <- object
   print.CR(x, ...)
@@ -664,6 +692,8 @@ summary.CR <- function(object, ...) {
 #' @param ... other arguments passed to plot
 #' @export
 #' @author Michael Collyer
+#' @keywords utilities
+#' @keywords visualization
 plot.CR <- function(x, ...){
   CR.val <- x$random.CR
   CR.obs <- x$CR
@@ -683,6 +713,7 @@ plot.CR <- function(x, ...){
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Dean Adams
+#' @keywords utilities
 print.CR.phylo <- function (x, ...) {
   cat("\nCall:\n")
   cat(deparse(x$call), "\n\n")
@@ -698,6 +729,7 @@ print.CR.phylo <- function (x, ...) {
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Dean Adams
+#' @keywords utilities
 summary.CR.phylo <- function(object, ...) {
   x <- object
   print.CR.phylo(x, ...)
@@ -709,6 +741,8 @@ summary.CR.phylo <- function(object, ...) {
 #' @param ... other arguments passed to plot
 #' @export
 #' @author Dean Adams
+#' @keywords utilities
+#' @keywords visualization
 plot.CR.phylo <- function(x, ...){
   CR.val <- x$random.CR
   CR.obs <- x$CR
@@ -729,6 +763,7 @@ plot.CR.phylo <- function(x, ...){
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
+#' @keywords utilities
 print.physignal <- function(x, ...){
   cat("\nCall:\n")
   cat(deparse(x$call), "\n\n")
@@ -744,6 +779,7 @@ print.physignal <- function(x, ...){
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
+#' @keywords utilities
 summary.physignal <- function(object, ...) {
   x <- object
   print.physignal(x, ...)
@@ -755,6 +791,8 @@ summary.physignal <- function(object, ...) {
 #' @param ... other arguments passed to plot
 #' @export
 #' @author Michael Collyer
+#' @keywords utilities
+#' @keywords visualization
 plot.physignal <- function(x, ...){
   K.val <- x$random.K
   K.obs <- x$phy.signal
@@ -776,6 +814,7 @@ plot.physignal <- function(x, ...){
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
+#' @keywords utilities
 print.evolrate <- function (x, ...) {
   cat("\nCall:\n")
   cat(paste("\n\nObserved Rate Ratio:", round(x$sigma.d.ratio, nchar(x$permutations))))
@@ -791,6 +830,7 @@ print.evolrate <- function (x, ...) {
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
+#' @keywords utilities
 summary.evolrate <- function(object, ...) {
   x <- object
   print.evolrate(x, ...)
@@ -804,6 +844,7 @@ summary.evolrate <- function(object, ...) {
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
+#' @keywords utilities
 print.evolrate1 <- function (x, ...) {
   cat("\nCall:\n")
   cat(paste("\n\nOne group only. Observed Rate:", x$sigma.d.all))
@@ -816,6 +857,7 @@ print.evolrate1 <- function (x, ...) {
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
+#' @keywords utilities
 summary.evolrate1 <- function(object, ...) {
   x <- object
   print.evolrate1(x, ...)
@@ -827,6 +869,8 @@ summary.evolrate1 <- function(object, ...) {
 #' @param ... other arguments passed to plot
 #' @export
 #' @author Michael Collyer
+#' @keywords utilities
+#' @keywords visualization
 plot.evolrate <- function(x, ...){
   Rate.val <- x$random.sigma
   Rate.obs <- x$random.sigma[1]
@@ -851,6 +895,7 @@ plot.evolrate <- function(x, ...){
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
+#' @keywords utilities
 print.trajectory.analysis <- function(x, 
                 angle.type = c("r", "rad", "deg"), ...) {
   angle.type = match.arg(angle.type)
@@ -922,6 +967,7 @@ print.trajectory.analysis <- function(x,
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
+#' @keywords utilities
 summary.trajectory.analysis <- function(object,
                   angle.type = c("r", "rad", "deg"), ...) {
   x <- object
@@ -1011,6 +1057,8 @@ trajplot.by.groups<-function(Data, TM, groups, group.cols = NULL,
 #' @param ... other arguments passed to plot
 #' @export
 #' @author Michael Collyer
+#' @keywords utilities
+#' @keywords visualization
 plot.trajectory.analysis <- function(x, group.cols = NULL, 
             pt.seq.pattern  = c("white", "gray", "black"), pt.scale = 1,...){
   if(x$trajectory.type == 2)

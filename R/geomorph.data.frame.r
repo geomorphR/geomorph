@@ -11,6 +11,7 @@
 #' @param ... a list of objects to include in the data frame.
 #' @export
 #' @author Michael Collyer
+#' @keywords utilities
 #' @examples
 #' data(plethodon) 
 #' Y.gpa <- gpagen(plethodon$land,PrinAxes=FALSE)

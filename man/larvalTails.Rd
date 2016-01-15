@@ -3,7 +3,7 @@
 \docType{data}
 \name{larvalTails}
 \alias{larvalTails}
-\title{tail-shapes of larval salamanders}
+\title{Tail-shapes of larval salamanders}
 \description{
 Landmark data from tails of larval Salamanders exposed to different treatments of herbicides.
 }

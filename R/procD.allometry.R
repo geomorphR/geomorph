@@ -82,7 +82,7 @@
 #' @param RRPP A logical value indicating whether residual randomization should be used for significance testing
 #' @param data A data frame for the function environment, see \code{\link{geomorph.data.frame}} 
 #' @param ... Arguments passed on to procD.fit (typically associated with the lm function)
-#' @keywords analysis, RRPP
+#' @keywords analysis
 #' @export
 #' @author Michael Collyer
 #' @return An object of class "procD.allometry" is a list containing the following:

@@ -1,4 +1,4 @@
-#' Plot 3D specimen, fixed landmarks and surface semilandmarks.
+#' Plot 3D specimen, fixed landmarks and surface semilandmarks
 #'
 #' A function to plot three-dimensional (3D) specimen along with its landmarks.
 #' 
