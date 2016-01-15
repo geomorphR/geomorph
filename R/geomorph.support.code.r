@@ -883,6 +883,22 @@ perm.index <-function(n, iter, seed=NULL){
       ind
 }
 
+# perm.CR.index
+# creates a permutation index for resampling, shuffling landmarks
+# used in all functions utilizing CR (mdoularity)
+
+perm.CR.index <- function(g, k, iter, seed=NULL){ # g is numeric partititon.gp
+  if(is.null(seed)) seed = iter else
+    if(seed == "random") seed = sample(1:iter,1) else
+      if(!is.numeric(seed)) seed = iter
+      set.seed(seed)
+      p <- length(g)
+        ind <- c(list(1:p),(Map(function(x) sample.int(p,p), 1:iter)))
+        ind <- Map(function(x) g[x], ind)
+        ind <- Map(function(x) as.factor(rep(x,k,each = k, length=p*k)), ind)
+        ind
+}
+
 # boot.index
 # creates a bootstrap index for resampling
 # used in modularity test functions
@@ -1409,8 +1425,8 @@ apply.plsmulti <- function(x,gps, iter, seed = NULL){
 # Function to estimate CR coefficient
 # used in: modularity.test, apply.CR
 CR<-function(x,gps){
-  g<-factor(as.numeric(gps))
-  ngps<-nlevels(g)
+  g <- gps
+  ngps <- length(unique(g))
   S<-var(x)
   diag(S)<-0
   gps.combo <- combn(ngps, 2)
@@ -1432,8 +1448,8 @@ CR<-function(x,gps){
 # streamlined CR
 # used in: apply.CR, boot.CR
 quick.CR <-function(x,gps){ # no CR.mat made
-  g<-factor(as.numeric(gps))
-  ngps<-nlevels(g)
+  g <- gps
+  ngps <- length(unique(g))
   S<-var(x)
   diag(S)<-0
   gps.combo <- combn(ngps, 2)
@@ -1450,21 +1466,18 @@ quick.CR <-function(x,gps){ # no CR.mat made
 # permutation for CR
 # used in: modularity.test
 
-apply.CR <- function(x,gps, iter, seed = NULL){
-  CR.obs <- CR(x,gps)$CR
-  ind <- perm.index(length(gps), iter, seed=seed)
+apply.CR <- function(x,g,k, iter, seed = NULL){# g = partition.gp
+  ind <- perm.CR.index(g,k, iter, seed=seed)
   jj <- iter+1
   if(jj > 100) j <- 1:100 else j <- 1:jj
   CR.rand <- NULL
   while(jj > 0){
     ind.j <- ind[j]
-    x.r<-lapply(1:length(j), function(i) x[,ind.j[[i]]])
-    CR.rand<-c(CR.rand, sapply(1:length(j), function(i) quick.CR(x.r[[i]],gps))) 
+    CR.rand<-c(CR.rand, sapply(1:length(j), function(i) quick.CR(x, gps=ind.j[[i]])))
     jj <- jj-length(j)
     if(jj > 100) kk <- 1:100 else kk <- 1:jj
     j <- j[length(j)] +kk
   }
-
   CR.rand
 }
 

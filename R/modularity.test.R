@@ -71,17 +71,19 @@ modularity.test<-function(A,partition.gp,iter=999, seed=NULL){
   if (length(dim(A))==3){ x<-two.d.array(A)
            p<-dim(A)[1]; k<-dim(A)[2];n<-dim(A)[3]
            if(length(partition.gp)!=p){stop("Not all landmarks are assigned to a partition.")}
-           gps<-as.factor(rep(partition.gp,k,each = k, length=p*k))  }
-  if (length(dim(A))==2){ x<-A
+            }
+  if (length(dim(A))==2){ x<-A; k<-1; p <- ncol(A); n <- nrow(A)
            if(length(partition.gp)!=ncol(x)){stop("Not all variables are assigned to a partition.")}
-           gps<-as.factor(partition.gp)  }
+            }
+  gps<-factor(as.numeric(as.factor(partition.gp)))
+  gps.obs <- as.factor(rep(gps,k,each = k, length=p*k))
   if(!is.null(seed) && seed=="random") seed = sample(1:iter, 1)
   ngps<-nlevels(gps)
   if (length(dim(A))==2){
-    CR.obs<-CR(x,gps)
+    CR.obs<-CR(x,gps=gps.obs)
     if(ngps > 2) CR.mat <- CR.obs$CR.mat else CR.mat <- NULL
     CR.obs <- CR.obs$CR
-    CR.rand <- apply.CR(x, gps, iter=iter, seed=seed)
+    CR.rand <- apply.CR(x, gps, k=k, iter=iter, seed=seed)
     p.val <- 1-pval(CR.rand)  #b/c smaller values more significant 
     if (p.val==0){p.val<-1/(iter+1)}
     CR.boot<- boot.CR(x, gps, iter=iter, seed=seed)
@@ -101,9 +103,10 @@ modularity.test<-function(A,partition.gp,iter=999, seed=NULL){
     rotatedCRs <-sapply(1:length(rot.mat), function(j) {
       r <- rot.mat[[j]]
       rotA <- t(mapply(function(a) matrix(t(a%*%r)), Alist))
-      CR(rotA,gps)$CR
+      CR(rotA, gps=gps.obs)$CR
     })
     avgCR <- mean(rotatedCRs)
+    
     # Angle interpolation (must determine if CR is ascending or descending)
     if(avgCR <= rotatedCRs[1]) avgCR.int <- which(as.numeric(avgCR >= rotatedCRs)==1)[1] else
         avgCR.int <-which(as.numeric(avgCR <= rotatedCRs)==1)[1] 
@@ -116,9 +119,9 @@ modularity.test<-function(A,partition.gp,iter=999, seed=NULL){
               optRot <- matrix(c(cos(optAngle*pi/180),
                sin(optAngle*pi/180),0,-sin(optAngle*pi/180),cos(optAngle*pi/180), 0,0,0,1),ncol=3)
     x <- t(mapply(function(a) matrix(t(a%*%optRot)), Alist))
-    CR.rand <- apply.CR(x, gps, iter=iter, seed=seed)
+    CR.rand <- apply.CR(x, g=gps, k=k, iter=iter, seed=seed)
     CR.rand[1] <- CR.obs <- avgCR
-    if(ngps > 2) CR.mat <- CR(x,gps)$CR.mat else CR.mat <- NULL
+    if(ngps > 2) CR.mat <- CR(x,gps.obs)$CR.mat else CR.mat <- NULL
     p.val <- pval(1/CR.rand)  #b/c smaller values more significant
     CR.boot<- boot.CR(x, gps, iter=iter, seed=seed)
     CR.CI<-quantile(CR.boot, c(.025, .975))
