@@ -35,9 +35,9 @@
 #' @keywords analysis
 #' @author Dean Adams
 #' @return Objects of class "CR" from modularity.test return a list of the following:
-#'    \item{CR}{Covariance ratio: The estimate of the observed modular signal.
+#'    \item{CR}{Covariance ratio: The estimate of the observed modular signal.}
 #'    \item{CInterval}{The bootstrapped 95 percent confidence intervals of the CR, if CI = TRUE.}
-#'    \item{CR.boot}{The bootstrapped CR values, if CI = TRUE}
+#'    \item{CR.boot}{The bootstrapped CR values, if CI = TRUE
 #'    (For more than two partitions, this is the mean CR of pairwise CRs.)}
 #'    \item{P.value}{The empirically calculated P-value from the resampling procedure.}
 #'    \item{CR.mat}{For more than two partitions, the pairwise CRs among partitions.}
