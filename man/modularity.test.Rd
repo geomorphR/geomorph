@@ -13,7 +13,7 @@ modularity.test(A, partition.gp, iter = 999, CI = FALSE, seed = NULL)
 
 \item{iter}{Number of iterations for significance testing}
 
-\item{CI}{An optional parameter indicating whether bootstrapping should be used for estimating confidence intervals}
+\item{CI}{A logical argument indicating whether bootstrapping should be used for estimating confidence intervals}
 
 \item{seed}{An optional argument for setting the seed for random permutations of the resampling procedure.
 If left NULL (the default), the exact same P-values will be found for repeated runs of the analysis (with the same number of iterations).
@@ -23,7 +23,8 @@ which might be of interest for advanced users.}
 \value{
 An object of class "CR" is a list containing the following
 \item{CR}{Covariance ratio: The estimate of the observed modular signal.}
-\item{CInterval}{The bootstrapped 95 percent confidence intervals of the CR.}
+\item{CInterval}{The bootstrapped 95 percent confidence intervals of the CR, if CI = TRUE.}
+   \item{CR.boot}{The bootstrapped CR values, if CI = TRUE}
 \item{P.value}{The empirically calculated P-value from the resampling procedure.}
    \item{CR.mat}{For more than two partitions, the pairwise CRs among partitions.}
    \item{random.CR}{The CR calculated in each of the random permutations of the resampling procedure.}
