@@ -65,9 +65,9 @@ plotAllSpecimens<-function(A,mean=TRUE,links=NULL,label=FALSE,plot.param = list(
     plot3d(A3d,type="s",col=p.p$pt.bg,xlab="x",ylab="y",zlab="z",size=p.p$pt.cex*1.5,aspect=FALSE)
     if(mean==TRUE){ 
       if(is.null(links)==FALSE){
-        linkcol <- rep(link.col,nrow(links))[1:nrow(links)]
-        linklwd <- rep(link.lwd,nrow(links))[1:nrow(links)]
-        linklty <- rep(link.lty,nrow(links))[1:nrow(links)]
+        linkcol <- rep(p.p$link.col,nrow(links))[1:nrow(links)]
+        linklwd <- rep(p.p$link.lwd,nrow(links))[1:nrow(links)]
+        linklty <- rep(p.p$link.lty,nrow(links))[1:nrow(links)]
         for (i in 1:nrow(links)){
           segments3d(rbind(mn[links[i,1],],mn[links[i,2],]),
                      col=linkcol[i],lty=linklty[i],lwd=linklwd[i])
