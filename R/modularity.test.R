@@ -34,7 +34,7 @@
 #'  
 #' @param A A 3D array (p x k x n) containing GPA-aligned coordinates for all specimens, or a matrix (n x variables)
 #' @param partition.gp A list of which landmarks (or variables) belong in which partition (e.g. A,A,A,B,B,B,C,C,C)
-#' @param CI An optional parameter indicating whether bootstrapping should be used for estimating confidence intervals
+#' @param CI A logical argument indicating whether bootstrapping should be used for estimating confidence intervals
 #' @param iter Number of iterations for significance testing
 #' @param seed An optional argument for setting the seed for random permutations of the resampling procedure.  
 #' If left NULL (the default), the exact same P-values will be found for repeated runs of the analysis (with the same number of iterations).
@@ -45,7 +45,8 @@
 #' @author Dean Adams
 #' @return An object of class "CR" is a list containing the following
 #' \item{CR}{Covariance ratio: The estimate of the observed modular signal.}
-#' \item{CInterval}{The bootstrapped 95 percent confidence intervals of the CR.}
+#' \item{CInterval}{The bootstrapped 95 percent confidence intervals of the CR, if CI = TRUE.}
+#'    \item{CR.boot}{The bootstrapped CR values, if CI = TRUE}
 #' \item{P.value}{The empirically calculated P-value from the resampling procedure.}
 #'    \item{CR.mat}{For more than two partitions, the pairwise CRs among partitions.}
 #'    \item{random.CR}{The CR calculated in each of the random permutations of the resampling procedure.}
@@ -92,7 +93,8 @@ modularity.test<-function(A,partition.gp,iter=999, CI=FALSE,seed=NULL){
       CR.CI<-quantile(CR.boot, c(.025, .975)) 
     }
     if(CI=="FALSE"){
-      CR.CI<-c("NULL", "NULL")
+      CR.boot <- NULL
+      CR.CI < - NULL
     }
 
   }
@@ -130,11 +132,12 @@ modularity.test<-function(A,partition.gp,iter=999, CI=FALSE,seed=NULL){
       CR.CI<-quantile(CR.boot, c(.025, .975))
     }
     if(CI=="FALSE"){
-      CR.CI<-c("NULL", "NULL")
+      CR.boot <- NULL
+      CR.CI <- NULL
     }
   }
   
-  out <- list(CR=CR.obs, CInterval=CR.CI, P.value=p.val,
+  out <- list(CR=CR.obs, CInterval=CR.CI, CR.boot = CR.boot, P.value=p.val,
               CR.mat = CR.mat, random.CR = CR.rand,
               permutations=iter+1, call=match.call())
   class(out) <- "CR"

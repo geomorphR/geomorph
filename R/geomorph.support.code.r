@@ -1490,8 +1490,17 @@ boot.CR <- function(x,gps, k,iter, seed = NULL){
   x<-as.matrix(x)
   boot <- boot.index(nrow(x), iter, seed=seed)
   if(k==1){
-    x.r<-lapply(1:(iter+1), function(j) x[boot[[j]],])
-    CR.boot<-sapply(1:(iter+1), function(j) quick.CR(x.r[[j]],gps)) 
+    jj <- iter+1
+    if(jj > 100) j <- 1:100 else j <- 1:jj
+    CR.boot <- NULL
+    while(jj > 0){
+      boot.j <- boot[j]
+      x.r<-lapply(1:length(j), function(i) x[boot.j[[i]],])
+      CR.boot<-c(CR.boot, sapply(1:length(j), function(i) quick.CR(x.r[[i]],gps)))
+      jj <- jj-length(j)
+      if(jj > 100) kk <- 1:100 else kk <- 1:jj
+      j <- j[length(j)] +kk
+    }
   }
   
   if(k>1){  #for GM data
@@ -1511,20 +1520,19 @@ boot.CR <- function(x,gps, k,iter, seed = NULL){
       boot.j <- boot[j]
       x.r<-lapply(1:length(j), function(i) x[boot.j[[i]],])
       Alist.r <-lapply(1:length(x.r), function(i) { y <- x.r[[i]]; arrayspecs(y, ncol(y)/k,k)})
-      CR.boot <- lapply(1:length(Alist.r), function(i){
+      CR.boot <- c(CR.boot, lapply(1:length(Alist.r), function(i){
         A <- Alist.r[[i]]
         A <- lapply(1:dim(A)[[3]], function(ii) A[,,ii])
         B <- Map(function(r) t(mapply(function(a) matrix(t(a%*%r)), A)), rot.mat)
         CRs <- Map(function(x) quick.CR(x,gps), B)
         Reduce("+", CRs)/length(CRs)
-      })
+      }))
       jj <- jj-length(j)
       if(jj > 100) kk <- 1:100 else kk <- 1:jj
       j <- j[length(j)] +kk
     }
-    CR.boot<-unlist(simplify2array(CR.boot)  )    
   }
-  CR.boot
+  unlist(CR.boot)
 }
 
 # CR.phylo
@@ -1597,22 +1605,55 @@ apply.phylo.CR <- function(x,invC,gps, k, iter, seed=NULL){
 # boot.phylo.CR
 # bootstrap for phylo.CR
 # phylo.modularity 
-boot.phylo.CR <- function(x,invC,gps, iter, seed = NULL){
+boot.phylo.CR <- function(x, invC, gps, k,iter, seed = NULL){
   x<-as.matrix(x)
   boot <- boot.index(nrow(x), iter, seed=seed)
-  jj <- iter+1
-  if(jj > 100) j <- 1:100 else j <- 1:jj
-  CR.boot <- NULL
-  while(jj > 0){
-    boot.j <- boot[j]
-    x.r<-lapply(1:length(j), function(i) x[boot.j[[i]],])
-    invC.r <- lapply(1:length(j), function(i) invC[boot.j[[i]],boot.j[[i]]])
-    CR.boot<-c(CR.boot, sapply(1:length(j), function(i) quick.CR.phylo(x=x.r[[i]],invC=invC.r[[i]],gps=gps))) 
-    jj <- jj-length(j)
-    if(jj > 100) kk <- 1:100 else kk <- 1:jj
-    j <- j[length(j)] +kk
+  if(k==1){
+    jj <- iter+1
+    if(jj > 100) j <- 1:100 else j <- 1:jj
+    CR.boot <- NULL
+    while(jj > 0){
+      boot.j <- boot[j]
+      x.r<-lapply(1:length(j), function(i) x[boot.j[[i]],])
+      invC.r <- lapply(1:length(j), function(i) invC[boot.j[[i]],boot.j[[i]]])
+      CR.boot<-c(CR.boot, sapply(1:length(j), function(i) quick.CR.phylo(x=x.r[[i]],invC=invC.r[[i]],gps=gps)))
+      jj <- jj-length(j)
+      if(jj > 100) kk <- 1:100 else kk <- 1:jj
+      j <- j[length(j)] +kk
+    }
   }
-  CR.boot
+  
+  if(k>1){  #for GM data
+    angle <- seq(-44,44,2)
+    if(k==2){
+      rot.mat<-lapply(1:(length(angle)), function(i) matrix(c(cos(angle[i]*pi/180),
+                                                              sin(angle[i]*pi/180),-sin(angle[i]*pi/180),cos(angle[i]*pi/180)),ncol=2))      
+    }
+    if(k==3){
+      rot.mat<-lapply(1:(length(angle)), function(i) matrix(c(cos(angle[i]*pi/180),
+                                                              sin(angle[i]*pi/180),0,-sin(angle[i]*pi/180),cos(angle[i]*pi/180), 0,0,0,1),ncol=3))      
+    }
+    jj <- iter+1
+    if(jj > 100) j <- 1:100 else j <- 1:jj
+    CR.boot <- NULL
+    while(jj > 0){
+      boot.j <- boot[j]
+      x.r<-lapply(1:length(j), function(i) x[boot.j[[i]],])
+      Alist.r <-lapply(1:length(x.r), function(i) { y <- x.r[[i]]; arrayspecs(y, ncol(y)/k,k)})
+      invC.r <- lapply(1:length(j), function(i) invC[boot.j[[i]],boot.j[[i]]])
+      CR.boot <- c(CR.boot, lapply(1:length(Alist.r), function(i){
+        A <- Alist.r[[i]]
+        A <- lapply(1:dim(A)[[3]], function(ii) A[,,ii])
+        B <- Map(function(r) t(mapply(function(a) matrix(t(a%*%r)), A)), rot.mat)
+        CRs <- Map(function(x) quick.CR.phylo(x=x.r[[i]],invC=invC.r[[i]],gps=gps), B)
+        Reduce("+", CRs)/length(CRs)
+      }))
+      jj <- jj-length(j)
+      if(jj > 100) kk <- 1:100 else kk <- 1:jj
+      j <- j[length(j)] +kk
+    }
+  }
+  unlist(CR.boot)
 }
 
 # phylo.mat 

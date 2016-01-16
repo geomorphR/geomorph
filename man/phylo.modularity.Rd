@@ -4,7 +4,8 @@
 \alias{phylo.modularity}
 \title{Evaluate the degree of phylogenetic modular signal in morphometric datasets}
 \usage{
-phylo.modularity(A, partition.gp, phy, iter = 999, seed = NULL)
+phylo.modularity(A, partition.gp, phy, CI = FALSE, iter = 999,
+  seed = NULL)
 }
 \arguments{
 \item{A}{A 3D array (p x k x n) containing GPA-aligned coordinates for all specimens, or a matrix (n x variables)}
@@ -12,6 +13,8 @@ phylo.modularity(A, partition.gp, phy, iter = 999, seed = NULL)
 \item{partition.gp}{A list of which landmarks (or variables) belong in which partition (e.g. A,A,A,B,B,B,C,C,C)}
 
 \item{phy}{A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape}
+
+\item{CI}{A logical argument indicating whether bootstrapping should be used for estimating confidence intervals}
 
 \item{iter}{Number of iterations for significance testing}
 
@@ -23,6 +26,8 @@ which might be of interest for advanced users.}
 \value{
 Objects of class "CR" from modularity.test return a list of the following:
    \item{CR}{Covariance ratio: The estimate of the observed modular signal.
+   \item{CInterval}{The bootstrapped 95 percent confidence intervals of the CR, if CI = TRUE.}
+   \item{CR.boot}{The bootstrapped CR values, if CI = TRUE}
    (For more than two partitions, this is the mean CR of pairwise CRs.)}
    \item{P.value}{The empirically calculated P-value from the resampling procedure.}
    \item{CR.mat}{For more than two partitions, the pairwise CRs among partitions.}
@@ -59,7 +64,8 @@ data(plethspecies)
 Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment
 land.gps<-c("A","A","A","A","A","B","B","B","B","B","B") 
 
-MT <- phylo.modularity(Y.gpa$coords,partition.gp=land.gps,phy=plethspecies$phy,iter=999)
+MT <- phylo.modularity(Y.gpa$coords, partition.gp=land.gps, phy=plethspecies$phy, 
+CI = FALSE, iter=999)
 summary(MT) # Test summary
 plot(MT) # Histogram of CR sampling distribution 
 }

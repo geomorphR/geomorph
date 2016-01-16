@@ -24,6 +24,7 @@
 #'
 #' @param A A 3D array (p x k x n) containing GPA-aligned coordinates for all specimens, or a matrix (n x variables)
 #' @param partition.gp A list of which landmarks (or variables) belong in which partition (e.g. A,A,A,B,B,B,C,C,C)
+#' @param CI A logical argument indicating whether bootstrapping should be used for estimating confidence intervals
 #' @param phy A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape
 #' @param iter Number of iterations for significance testing
 #' @param seed An optional argument for setting the seed for random permutations of the resampling procedure.  
@@ -35,6 +36,8 @@
 #' @author Dean Adams
 #' @return Objects of class "CR" from modularity.test return a list of the following:
 #'    \item{CR}{Covariance ratio: The estimate of the observed modular signal.
+#'    \item{CInterval}{The bootstrapped 95 percent confidence intervals of the CR, if CI = TRUE.}
+#'    \item{CR.boot}{The bootstrapped CR values, if CI = TRUE}
 #'    (For more than two partitions, this is the mean CR of pairwise CRs.)}
 #'    \item{P.value}{The empirically calculated P-value from the resampling procedure.}
 #'    \item{CR.mat}{For more than two partitions, the pairwise CRs among partitions.}
@@ -52,10 +55,11 @@
 #' Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment
 #' land.gps<-c("A","A","A","A","A","B","B","B","B","B","B") 
 #' 
-#' MT <- phylo.modularity(Y.gpa$coords,partition.gp=land.gps,phy=plethspecies$phy,iter=999)
+#' MT <- phylo.modularity(Y.gpa$coords, partition.gp=land.gps, phy=plethspecies$phy, 
+#' CI = FALSE, iter=999)
 #' summary(MT) # Test summary
 #' plot(MT) # Histogram of CR sampling distribution 
-phylo.modularity<-function(A,partition.gp,phy,iter=999, seed=NULL){
+phylo.modularity<-function(A,partition.gp,phy, CI=FALSE, iter=999, seed=NULL){
   if(any(is.na(A))==T){
     stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').")  }
   if (class(phy) != "phylo")
@@ -88,8 +92,14 @@ phylo.modularity<-function(A,partition.gp,phy,iter=999, seed=NULL){
     CR.rand <- apply.phylo.CR(x,invC, gps, k, iter=iter, seed=seed)
     p.val <- 1-pval(CR.rand)  #b/c smaller values more significant
     if (p.val==0){p.val<-1/(iter+1)}
-    CR.boot<- boot.phylo.CR(x, invC=invC, gps=gps, iter=iter, seed=seed)
-    CR.CI<-quantile(CR.boot, c(.025, .975))
+    if(CI=="TRUE"){
+      CR.boot<- boot.CR(x, gps, k,iter=iter, seed=seed)
+      CR.CI<-quantile(CR.boot, c(.025, .975)) 
+    }
+    if(CI=="FALSE"){
+      CR.boot <- NULL
+      CR.CI <- NULL
+    }
   }
   if (length(dim(A))==3){
     angle <- seq(0,89.95,.05)
@@ -120,11 +130,17 @@ phylo.modularity<-function(A,partition.gp,phy,iter=999, seed=NULL){
     CR.rand[1] <- CR.obs <- avgCR
     if(ngps > 2) CR.mat <- CR(x,gps)$CR.mat else CR.mat <- NULL
     p.val <- pval(1/CR.rand)  #b/c smaller values more significant
-    CR.boot<- boot.phylo.CR(x, invC=invC, gps=gps.obs, iter=iter, seed=seed)
-    CR.CI<-quantile(CR.boot, c(.025, .975))
+    if(CI=="TRUE"){
+      CR.boot<- boot.CR(x, gps, k,iter=iter, seed=seed)
+      CR.CI<-quantile(CR.boot, c(.025, .975)) 
+    }
+    if(CI=="FALSE"){
+      CR.boot <- NULL
+      CR.CI <- NULL
+    }
   }
   
-  out <- list(CR=CR.obs, CInterval=CR.CI, P.value=p.val,
+  out <- list(CR=CR.obs, CInterval=CR.CI, CR.boot = CR.boot, P.value=p.val,
               CR.mat = CR.mat, random.CR = CR.rand,
               permutations=iter+1, call=match.call())
   class(out) <- "CR"

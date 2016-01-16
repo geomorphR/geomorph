@@ -669,8 +669,7 @@ print.CR <- function (x, ...) {
   cat(paste("\nCR:", round(x$CR, nchar(x$permutations))))
   cat(paste("\n\nP-value:", round(x$P.value, nchar(x$permutations))))
   cat(paste("\n\nBased on", x$permutations, "random permutations"))
-  if(is.numeric(x$CInterval)) {
-  cat(paste("\n\nConfidence Intervals", round(x$CInterval,nchar(x$permutations)))) }
+  if(!is.null(x$CInterval)) cat(paste("\n\nConfidence Intervals", round(x$CInterval,nchar(x$permutations)))) 
   invisible(x)
 }
 
@@ -721,6 +720,7 @@ print.CR.phylo <- function (x, ...) {
   cat(paste("\nCR:", round(x$CR, nchar(x$permutations))))
   cat(paste("\n\nP-value:", round(x$P.value, nchar(x$permutations))))
   cat(paste("\n\nBased on", x$permutations, "random permutations"))
+  if(!is.null(x$CInterval)) cat(paste("\n\nConfidence Intervals", round(x$CInterval,nchar(x$permutations)))) 
   invisible(x)
 }
 
