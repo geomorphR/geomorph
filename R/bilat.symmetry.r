@@ -68,7 +68,7 @@
 #' \item{symm.component}{The symmetric component of shape variation.}
 #' \item{asym.component}{The asymmetric component of shape variation.}
 #' \item{DA.component}{The directional asymmetry component, found as the mean shape for each side.}
-#' \item{FA.compnent}{The fluctuating asymmetry component for each specimen, found as the specimen-specific side deviation adjusted for the mean
+#' \item{FA.component}{The fluctuating asymmetry component for each specimen, found as the specimen-specific side deviation adjusted for the mean
 #'  directional asymmetry in the dataset.}
 #' \item{data.type}{A value indicating whether the analysis was performed as Object or Matching symmetry.}
 #' \item{permutations}{The number of random permutations used.}
@@ -228,7 +228,7 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
     colnames(anovaSz)[ncol(anovaSz)] <- "Pr(>F)"
     class(anovaSz) <- c("anova", class(anovaSz))
     out<-list(size.anova = anovaSz, shape.anova = anovaSh, symm.component = symm.component,
-              asymm.component = asymm.component, DA.component = DA.mns, FA.compnent = FA.component,
+              asymm.component = asymm.component, DA.component = DA.mns, FA.component = FA.component,
               data.type = ifelse(object.sym==TRUE,"Object", "Matching"),
               FA.mns = FA.component, DA.mns = DA.mns,
               permutations = iter+1,
@@ -237,7 +237,7 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
               call=match.call()) }
   if(object.sym==TRUE){
     out<-list(size.anova = NULL, shape.anova = anovaSh, symm.component = symm.component,
-              asymm.component = asymm.component, DA.component = DA.mns, FA.compnent = FA.component,
+              asymm.component = asymm.component, DA.component = DA.mns, FA.component = FA.component,
               data.type = ifelse(object.sym==TRUE,"Object", "Matching"),
               FA.mns = FA.component, DA.mns = DA.mns,
               permutations = iter+1,

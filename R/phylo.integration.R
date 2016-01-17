@@ -38,11 +38,25 @@
 #' @export
 #' @keywords analysis
 #' @author Dean Adams
-#' @return Function returns a list with the following components: 
-#'   \item{PLS.corr}{The estimate of phylogenetic morphological covariation}
-#'   \item{pvalue}{The significance level of the observed signal}
-#'   \item{Xscores}{PLS scores for the first block of landmarks (for 2 modules only)}
-#'   \item{Yscores}{PLS scores for the second block of landmarks (for 2 modules only)}
+#' @return Objects of class "pls" from integration.test return a list of the following:
+#'  \item{r.pls}{The estimate of morphological integration: PLS.corr. The mean of pairwise
+#'  PLS correlations between partitions is used when there are more than two partitions.}
+#'    \item{r.pls.mat}{The pairwise r.pls, if the number of partitions is greater than 2.}
+#'    \item{P.value}{The empirically calculated P-value from the resampling procedure.}
+#'    \item{left.pls.vectors}{The singular vectors of the left (x) block (for 2 modules only).}
+#'    \item{right.pls.vectors}{The singular vectors of the right (y) block (for 2 modules only).}
+#'    \item{random.r}{The correlation coefficients found in each random permutation of the 
+#'   resampling procedure.}
+#'    \item{XScores}{Values of left (x) block projected onto singular vectors 
+#'   (for 2 modules only).}
+#'    \item{YScores}{Values of right (y) block projected onto singular vectors
+#'   (for 2 modules only).}
+#'    \item{A1}{Input values for the left block (for 2 modules only).}
+#'    \item{A2}{Input values for the right block (for 2 modules only).}
+#'    \item{A1.matrix}{Left block (matrix) found from A1 (for 2 modules only).}
+#'    \item{A2.matrix}{Right block (matrix) found from A2 (for 2 modules only).}
+#'    \item{permutations}{The number of random permutations used in the resampling procedure.}
+#'    \item{call}{The match call.}
 #' @references  Adams, D.C. and R. Felice. 2014. Assessing phylogenetic morphological 
 #' integration and trait covariation in morphometric data using evolutionary covariance 
 #' matrices. PLOS ONE. 9(4):e94335.
