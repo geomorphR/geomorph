@@ -195,7 +195,7 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
     mn.shape <- gpa.res$consensus
     asymm.component<-simplify2array(lapply(1:n.ind, function(j) 
       {t(matrix(asymm.component[j,],k,p)) + mn.shape}))
-#    dimnames(asymm.component)[[3]] <- dimnames(symm.component)[[3]] <- spec.names
+    dimnames(asymm.component)[[3]] <- dimnames(symm.component)[[3]] <- spec.names
 
   }
   if(object.sym==TRUE){
@@ -205,7 +205,7 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
     n.ind <- nlevels(ind)
     asymm.component <-simplify2array(lapply(1:n.ind, function(j) 
     {mn.shape + gpa.res$coords[,,j] - symm.component[,,j]}))
-#    dimnames(asymm.component)[[3]] <- dimnames(symm.component)[[3]] <- spec.names
+    dimnames(asymm.component)[[3]] <- dimnames(symm.component)[[3]] <- spec.names
   }
   X.side <- model.matrix(~side + 0, data = as.data.frame(dat.shape[-1]))
   DA.mns <- arrayspecs(coef(.lm.fit(X.side, Y)),p,k)
@@ -219,7 +219,7 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
   mn.shape<-gpa.res$consensus
   FA.component<-simplify2array(lapply(1:n.ind, function(j) 
   {t(matrix(FA.component[j,],k,p)) + mn.shape - mn.DA}))
-#  dimnames(FA.component)[[3]] <- spec.names
+  dimnames(FA.component)[[3]] <- spec.names
   colnames(anovaSh)[1] <- "Df"
   colnames(anovaSh)[ncol(anovaSh)] <- "Pr(>F)"
   class(anovaSh) <- c("anova", class(anovaSh))
