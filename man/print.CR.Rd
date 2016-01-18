@@ -4,7 +4,7 @@
 \alias{print.CR}
 \title{Print/Summary Function for geomorph}
 \usage{
-print.CR(x, ...)
+\method{print}{CR}(x, ...)
 }
 \arguments{
 \item{x}{print/summary object}

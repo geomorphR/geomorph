@@ -4,7 +4,7 @@
 \alias{print.morphol.disparity}
 \title{Print/Summary Function for geomorph}
 \usage{
-print.morphol.disparity(x, ...)
+\method{print}{morphol.disparity}(x, ...)
 }
 \arguments{
 \item{x}{print/summary object}
