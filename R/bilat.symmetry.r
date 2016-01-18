@@ -219,7 +219,7 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
   mn.shape<-gpa.res$consensus
   FA.component<-simplify2array(lapply(1:n.ind, function(j) 
   {t(matrix(FA.component[j,],k,p)) + mn.shape - mn.DA}))
-#  dimnames(FA.component)[[3]] <- spec.names
+  dimnames(FA.component)[[3]] <- spec.names
   colnames(anovaSh)[1] <- "Df"
   colnames(anovaSh)[ncol(anovaSh)] <- "Pr(>F)"
   class(anovaSh) <- c("anova", class(anovaSh))
