@@ -130,7 +130,7 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
     if(all(is.na(replicate.match))) replicate <- NULL else 
       replicate <- factor(data[[which(!is.na(replicate.match))]])
   }
-  n<-dim(A)[3]; k<-dim(A)[2]; p<-dim(A)[1]; nind<-nlevels(ind); spec.names<-dimnames(A)[[3]]
+  n<-dim(A)[3]; k<-dim(A)[2]; p<-dim(A)[1]; nind<-nlevels(ind)
   if(object.sym == FALSE && is.null(side)) stop("Sides not specified.") 
   if(object.sym==TRUE){
     if(is.null(land.pairs)){stop("Landmark pairs not specified.")} 
