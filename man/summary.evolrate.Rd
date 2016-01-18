@@ -4,7 +4,7 @@
 \alias{summary.evolrate}
 \title{Print/Summary Function for geomorph}
 \usage{
-summary.evolrate(object, ...)
+\method{summary}{evolrate}(object, ...)
 }
 \arguments{
 \item{object}{print/summary object}

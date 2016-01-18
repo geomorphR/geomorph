@@ -4,7 +4,7 @@
 \alias{print.pls}
 \title{Print/Summary Function for geomorph}
 \usage{
-print.pls(x, ...)
+\method{print}{pls}(x, ...)
 }
 \arguments{
 \item{x}{print/summary object}

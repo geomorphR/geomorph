@@ -4,7 +4,7 @@
 \alias{summary.procD.lm}
 \title{Print/Summary Function for geomorph}
 \usage{
-summary.procD.lm(object, ...)
+\method{summary}{procD.lm}(object, ...)
 }
 \arguments{
 \item{object}{print/summary object}
