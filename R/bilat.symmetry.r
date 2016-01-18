@@ -185,9 +185,9 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
 # build shape components for output
   if(object.sym==FALSE){
     X.ind <- model.matrix(~ind + 0, data = as.data.frame(dat.shape[-1]))
-    symm.component <- arrayspecs(coef(.lm.fit(X.ind, Y)),p,k)
+    symm.component <- arrayspecs(coef(lm.fit(X.ind, Y)),p,k)
     X.side <- model.matrix(~(side:ind) + 0, data = as.data.frame(dat.shape[-1]))
-    avg.side.symm <- coef(.lm.fit(X.side, Y))
+    avg.side.symm <- coef(lm.fit(X.side, Y))
     n.ind <- nlevels(ind)
     n.side <- nlevels(side)
     indsq <- seq(n.side, (n.ind*n.side), n.side)
@@ -195,17 +195,17 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
     mn.shape <- gpa.res$consensus
     asymm.component<-simplify2array(lapply(1:n.ind, function(j) 
       {t(matrix(asymm.component[j,],k,p)) + mn.shape}))
-    dimnames(asymm.component)[[3]] <- dimnames(symm.component)[[3]] <- spec.names[1:n.ind]
+    dimnames(asymm.component)[[3]] <- dimnames(symm.component)[[3]]
 
   }
   if(object.sym==TRUE){
     X.ind <- model.matrix(~ind + 0, data = as.data.frame(dat.shape[-1]))
-    symm.component <- arrayspecs(coef(.lm.fit(X.ind, Y)),p,k)
+    symm.component <- arrayspecs(coef(lm.fit(X.ind, Y)),p,k)
     mn.shape<-gpa.res$consensus
     n.ind <- nlevels(ind)
     asymm.component <-simplify2array(lapply(1:n.ind, function(j) 
     {mn.shape + gpa.res$coords[,,j] - symm.component[,,j]}))
-    dimnames(asymm.component)[[3]] <- dimnames(symm.component)[[3]] <- spec.namesspec.names[1:n.ind]
+    dimnames(asymm.component)[[3]] <- dimnames(symm.component)[[3]] 
   }
   X.side <- model.matrix(~side + 0, data = as.data.frame(dat.shape[-1]))
   DA.mns <- arrayspecs(coef(.lm.fit(X.side, Y)),p,k)
@@ -219,7 +219,7 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
   mn.shape<-gpa.res$consensus
   FA.component<-simplify2array(lapply(1:n.ind, function(j) 
   {t(matrix(FA.component[j,],k,p)) + mn.shape - mn.DA}))
-  dimnames(FA.component)[[3]] <- spec.namesspec.names[1:n.ind]
+  dimnames(FA.component)[[3]] <- dimnames(symm.component)[[3]] 
   colnames(anovaSh)[1] <- "Df"
   colnames(anovaSh)[ncol(anovaSh)] <- "Pr(>F)"
   class(anovaSh) <- c("anova", class(anovaSh))
