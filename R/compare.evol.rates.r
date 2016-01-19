@@ -118,6 +118,7 @@ compare.evol.rates<-function(A,phy,gp,iter=999 ){
                 sigma.d.gp = sigma.obs$sigma.d.gp,
                 sigma.d.gp.ratio = sigma.obs$sigma.d.gp.ratio,
                 pairwise.pvalue = p.val.mat, Ngroups = nlevels(gp),
+                groups = levels(gp),
                 random.sigma = random.sigma, permutations=iter+1, 
                 call = match.call())
     
