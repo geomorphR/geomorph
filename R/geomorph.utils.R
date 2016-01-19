@@ -821,7 +821,7 @@ print.evolrate <- function (x, ...) {
   cat(paste("\n\nObserved Rate Ratio:", round(x$sigma.d.ratio, nchar(x$permutations))))
   cat(paste("\n\nP-value:", round(x$P.value, nchar(x$permutations))))
   cat(paste("\n\nBased on", x$permutations, "random permutations"))
-  cat(paste("\n\nThe Rates for each group:", x$sigma.d.gp, ""))
+  cat(paste("\n\nThe rate for group",x$groups,"is",x$sigma.d.gp, ""))
   invisible(x)
 }
 

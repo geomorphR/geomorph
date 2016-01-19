@@ -117,7 +117,7 @@ compare.multi.evol.rates<-function(A,gp,phy,Subset=TRUE,iter=999){
   out <- list(sigma.d.ratio = sigma.obs$sigma.d.ratio, P.value=p.val,
               sigma.d.gp = sigma.obs$rate.gps,
               sigma.d.gp.ratio = sigma.obs$sigma.d.gp.ratio,
-              pairwise.pvalue = p.val.mat, 
+              pairwise.pvalue = p.val.mat, groups = levels(gp), 
               random.sigma = random.sigma, permutations=iter+1, call= match.call())
   
   class(out) <- "evolrate"
