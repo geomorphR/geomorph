@@ -38,8 +38,8 @@ which might be of interest for advanced users.}
 An object of class "bilat.symmetry" returns a list of the following
 \item{shape.anova}{An analysis of variance table for the shape data.}
 \item{size.anova}{An analysis of variance table for the shape data (when object.sym=FALSE).}
-\item{symm.component}{The symmetric component of shape variation.}
-\item{asym.component}{The asymmetric component of shape variation.}
+\item{symm.shape}{The symmetric component of shape variation.}
+\item{asym.shape}{The asymmetric component of shape variation.}
 \item{DA.component}{The directional asymmetry component, found as the mean shape for each side.}
 \item{FA.component}{The fluctuating asymmetry component for each specimen, found as the specimen-specific side deviation adjusted for the mean
  directional asymmetry in the dataset.}
@@ -119,7 +119,7 @@ summary(scallop.sym)
 # NOTE one can also: scallop.sym$data.type # recall the symmetry type
 }
 \author{
-Dean Adams and Michael Collyer
+Dean Adams, Emma Sherratt, and Michael Collyer
 }
 \references{
 Klingenberg, C.P. and G.S. McIntyre. 1998. Quantitative genetics of geometric shape in the mouse mandible. Evolution. 55:2342-2352.

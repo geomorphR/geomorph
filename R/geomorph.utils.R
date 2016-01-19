@@ -581,12 +581,12 @@ summary.bilat.symmetry <- function(object, ...) {
 }
 
 plotBilatSymmetry <- function(b, warpgrids = TRUE, mesh= NULL){
-  k <- dim(b$symm.component)[[2]]
+  k <- dim(b$symm.shape)[[2]]
   if(b$data.type == "Matching"){
     if(k==2){  
       par(mfrow=c(2,2),oma=c(1.5,0,1.5,0))
-      plotAllSpecimens(b$symm.component)
-      plotAllSpecimens(b$asymm.component)
+      plotAllSpecimens(b$symm.shape)
+      plotAllSpecimens(b$asymm.shape)
       plotRefToTarget(b$DA.mns[,,1],b$DA.mns[,,2],method="TPS",main="Directional Asymmetry")
       plotRefToTarget(b$FA.mns[,,1],b$FA.mns[,,2],method="TPS",main="Fluctuating Asymmetry")
       mtext("Symmetric Shape Component (left) and Asymmetric Shape Component (right)",outer = TRUE,side=3)
@@ -613,8 +613,8 @@ plotBilatSymmetry <- function(b, warpgrids = TRUE, mesh= NULL){
     if(warpgrids==TRUE){
       if(k==2){  
         par(mfrow=c(2,2),oma=c(1.5,0,1.5,0))
-        plotAllSpecimens(b$symm.component)
-        plotAllSpecimens(b$asymm.component)
+        plotAllSpecimens(b$symm.shape)
+        plotAllSpecimens(b$asymm.shape)
         plotRefToTarget(b$DA.mns[,,1],b$DA.mns[,,2],method="TPS",main="Directional Asymmetry")
         plotRefToTarget(b$FA.mns[,,1],b$FA.mns[,,2],method="TPS",main="Fluctuating Asymmetry")
         mtext("Symmetric Shape Component (left) and Asymmetric Shape Component (right)",outer = TRUE,side=3)

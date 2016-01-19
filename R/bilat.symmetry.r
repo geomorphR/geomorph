@@ -61,12 +61,12 @@
 #' @param RRPP A logical value indicating whether residual randomization should be used for significance testing.
 #' @keywords analysis
 #' @export
-#' @author Dean Adams and Michael Collyer
+#' @author Dean Adams, Emma Sherratt, and Michael Collyer
 #' @return An object of class "bilat.symmetry" returns a list of the following
 #' \item{shape.anova}{An analysis of variance table for the shape data.}
 #' \item{size.anova}{An analysis of variance table for the shape data (when object.sym=FALSE).}
-#' \item{symm.component}{The symmetric component of shape variation.}
-#' \item{asym.component}{The asymmetric component of shape variation.}
+#' \item{symm.shape}{The symmetric component of shape variation.}
+#' \item{asym.shape}{The asymmetric component of shape variation.}
 #' \item{DA.component}{The directional asymmetry component, found as the mean shape for each side.}
 #' \item{FA.component}{The fluctuating asymmetry component for each specimen, found as the specimen-specific side deviation adjusted for the mean
 #'  directional asymmetry in the dataset.}
@@ -130,7 +130,7 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
     if(all(is.na(replicate.match))) replicate <- NULL else 
       replicate <- factor(data[[which(!is.na(replicate.match))]])
   }
-  n<-dim(A)[3]; k<-dim(A)[2]; p<-dim(A)[1]; nind<-nlevels(ind)
+  n<-dim(A)[3]; k<-dim(A)[2]; p<-dim(A)[1]; nind<-nlevels(ind); spec.names<-dimnames(A)[[3]]
   if(object.sym == FALSE && is.null(side)) stop("Sides not specified.") 
   if(object.sym==TRUE){
     if(is.null(land.pairs)){stop("Landmark pairs not specified.")} 
@@ -223,12 +223,17 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
   colnames(anovaSh)[1] <- "Df"
   colnames(anovaSh)[ncol(anovaSh)] <- "Pr(>F)"
   class(anovaSh) <- c("anova", class(anovaSh))
+  if(!is.null(spec.names)) {
+    spec.names <- spec.names[order(ind[1:n.ind])]
+    dimnames(FA.component)[[3]] <- dimnames(symm.component)[[3]] <- 
+      dimnames(asymm.component)[[3]] <- spec.names
+  }
   if(object.sym==FALSE){
     colnames(anovaSz)[1] <- "Df"
     colnames(anovaSz)[ncol(anovaSz)] <- "Pr(>F)"
     class(anovaSz) <- c("anova", class(anovaSz))
-    out<-list(size.anova = anovaSz, shape.anova = anovaSh, symm.component = symm.component,
-              asymm.component = asymm.component, DA.component = DA.mns, FA.component = FA.component,
+    out<-list(size.anova = anovaSz, shape.anova = anovaSh, symm.shape = symm.component,
+              asymm.shape = asymm.component, DA.component = DA.mns, FA.component = FA.component,
               data.type = ifelse(object.sym==TRUE,"Object", "Matching"),
               FA.mns = FA.component, DA.mns = DA.mns,
               permutations = iter+1,
@@ -236,8 +241,8 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
               perm.method = ifelse(RRPP==TRUE,"RRPP", "Raw"),
               call=match.call()) }
   if(object.sym==TRUE){
-    out<-list(size.anova = NULL, shape.anova = anovaSh, symm.component = symm.component,
-              asymm.component = asymm.component, DA.component = DA.mns, FA.component = FA.component,
+    out<-list(size.anova = NULL, shape.anova = anovaSh, symm.shape = symm.component,
+              asymm.shape = asymm.component, DA.component = DA.mns, FA.component = FA.component,
               data.type = ifelse(object.sym==TRUE,"Object", "Matching"),
               FA.mns = FA.component, DA.mns = DA.mns,
               permutations = iter+1,
