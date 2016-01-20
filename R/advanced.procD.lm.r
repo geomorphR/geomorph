@@ -135,7 +135,7 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
     pairwise.cond <-"none"
   }
   data.types <- lapply(data, class)
-  keep = sapply(data.types, function(x) x != "array" & x != "phylo")
+  keep = sapply(data.types, function(x) x != "array" & x != "phylo"  & x != "dist")
   if(!is.null(data)) dat2 <- as.data.frame(data[keep]) else dat2 <- pfitf$data
     
   if(!is.null(groups)){
