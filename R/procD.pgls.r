@@ -74,31 +74,6 @@
 #' ### Example of D-PGLS for high-dimensional data 
 #' data(plethspecies)
 #' Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment
-<<<<<<< HEAD
-#' procD.pgls(Y.gpa$coords ~ Y.gpa$Csize,plethspecies$phy,iter=999)
-#'
-#' ### Example of D-PGLS for high-dimensional data, using RRPP
-#' procD.pgls(Y.gpa$coords ~ Y.gpa$Csize,plethspecies$phy,iter=999,RRPP=TRUE)
-procD.pgls<-function(f1, phy, iter=999, int.first = FALSE, RRPP=FALSE, verbose=FALSE, ...){
-  dat <- procD.data.frame(f1)
-  if(any(class(f1)=="lm")) pf = procD.fit(f1,weights=f1$weights, contrasts=f1$contrasts, offset=f1$offset) else 
-    pf= procD.fit(f1, data=dat,...)
-  if(int.first == TRUE) ko = TRUE else ko = FALSE
-  Terms <- pf$Terms
-  k <- length(pf$Terms)
-  Y <- pf$Y.prime
-  if(is.null(dim(Y))) {
-    y.names <- names(Y)
-    Y <- matrix(Y) 
-    rownames(Y) <- y.names
-  } else {
-    y.names <- dimnames(Y)[[1]]
-    Y <- as.matrix(Y)
-  }
-  if (is.null(dimnames(Y)[[1]])) {
-    stop("No species names with Y-data")
-  } 
-=======
 #' gdf <- geomorph.data.frame(Y.gpa, phy = plethspecies$phy)
 #' procD.pgls(coords ~ Csize, phy = phy, data = gdf, iter = 999, RRPP = FALSE) # randomize raw values
 #' procD.pgls(coords ~ Csize, phy = phy, data = gdf, iter = 999, RRPP = TRUE) # randomize residuals
@@ -119,17 +94,12 @@ procD.pgls<-function(f1, phy, iter=999, seed=NULL, int.first = FALSE,
   phy.match <- match(phy.name, names(data))
   if(length(phy.match) > 1) stop("More than one object of class phylo in data frame")
   if(all(is.na(phy.match))) phy <- phy else phy <- data[[phy.match]]
->>>>>>> Develop
   N<-length(phy$tip.label)
   if(length(match(rownames(Y), phy$tip.label))!=N) 
     stop("Data matrix missing some taxa present on the tree.")
   if(length(match(phy$tip.label,rownames(Y)))!=N) 
     stop("Tree missing some taxa in the data matrix.")
-<<<<<<< HEAD
-  C<-vcv.phylo(phy)
-=======
   C <- vcv.phylo(phy)
->>>>>>> Develop
   eigC <- eigen(C)
   lambda <- zapsmall(eigC$values)
   if(any(lambda == 0)){
@@ -137,32 +107,6 @@ procD.pgls<-function(f1, phy, iter=999, seed=NULL, int.first = FALSE,
     lambda = lambda[lambda > 0]
   }
   eigC.vect = eigC$vectors[,1:(length(lambda))]
-<<<<<<< HEAD
-  Pcor <- solve(eigC.vect%*% diag(sqrt(lambda)) %*% t(eigC.vect)) 
-  dimnames(Pcor) <-dimnames(C)
-  Pcor<-Pcor[y.names,y.names]  
-  PY <- Pcor%*%Y   
-  Xs <- pf$Xs
-  anova.parts.obs <- anova.pgls.parts(pf, X=NULL, Pcor, Yalt = "observed", keep.order=ko)
-  anova.tab <-anova.parts.obs$table  
-  df <- anova.parts.obs$df[1:k]
-  dfE <-anova.parts.obs$df[k+1]
-  if(RRPP == TRUE) P <- SS.pgls.random(pf,Pcor,Yalt="RRPP", iter=iter) else 
-    P <- SS.pgls.random(pf, Pcor,Yalt="resample", iter=iter)
-  Fs <- sapply(1:(iter+1), function(j){
-    (P$SS[,,j]/df)/(P$SSEs[,,j]/dfE)
-  })
-  if(is.vector(Fs)) P.val <- pval(Fs) else P.val <- apply(Fs,1,pval)
-  if(is.vector(Fs)) Z <- effect.size(Fs) else Z <- apply(Fs,1,pval)
-  anova.tab <- data.frame(anova.tab, Z = c(Z, NA, NA), P.value = c(P.val, NA, NA))
-  if(RRPP == TRUE) anova.title = "\nRandomized Residual Permutation Procedure used\n" else 
-    anova.title = "\nRandomization of Raw Values used\n"  
-  attr(anova.tab, "heading") <- paste("\nType I (Sequential) Sums of Squares and Cross-products\n",anova.title)
-  class(anova.tab) <- c("anova", class(anova.tab))
-  if(verbose==TRUE)  {
-    list(anova.table = anova.tab, call=match.call(), SS.rand = P, phylo.transform.matrix = Pcor)
-  } else anova.tab
-=======
   Pcor <- fast.solve(eigC.vect%*% diag(sqrt(lambda)) %*% t(eigC.vect)) 
   dimnames(Pcor) <- dimnames(C)
   if(RRPP == TRUE) SSr <- Fpgls.iter(pfit, Yalt="RRPP", Pcor, iter=iter, seed=seed) else 
@@ -197,5 +141,4 @@ procD.pgls<-function(f1, phy, iter=999, seed=NULL, int.first = FALSE,
              random.SS = P, perm.method = ifelse(RRPP==TRUE,"RRPP", "Raw"))
   class(out) <- "procD.lm"
   out
->>>>>>> Develop
 }

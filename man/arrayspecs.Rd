@@ -14,21 +14,9 @@ arrayspecs(A, p, k)
 \item{k}{Number of dimensions (2 or 3)}
 }
 \value{
-<<<<<<< HEAD
-Function returns a (p x k x n) array, where p is the number of landmark points, k is the number 
-  of landmark dimensions (2 or 3), and n is the number of specimens. The third dimension of this array 
-  contains names for each specimen if specified in the original input matrix.
- @examples 
-x<-matrix(rnorm(18),nrow=3)  # Random triangles (all coordinates on same row for each triangle)
-arrayspecs(x,3,2) 
- 
-x2<-matrix(rnorm(18),ncol=2) # Random triangles (each landmark on its own row)
-arrayspecs(x2,3,2)
-=======
 Function returns a (p x k x n) array, where p is the number of landmark points, k is the
 number of landmark dimensions (2 or 3), and n is the number of specimens. The third dimension of
 this array contains names for each specimen if specified in the original input matrix.
->>>>>>> Develop
 }
 \description{
 Convert a matrix of landmark coordinates into a 3-dimensional array
@@ -40,8 +28,6 @@ This function converts a matrix of landmark coordinates into a (p x k x n)
  of each landmark are found on a separate row, or that each row contains all landmark 
  coordinates for a single specimen.
 }
-<<<<<<< HEAD
-=======
 \examples{
 x<-matrix(rnorm(18),nrow=3)  # Random triangles (all coordinates on same row for each triangle)
 arrayspecs(x,3,2) 
@@ -49,7 +35,6 @@ arrayspecs(x,3,2)
 x2<-matrix(rnorm(18),ncol=2) # Random triangles (each landmark on its own row)
 arrayspecs(x2,3,2)
 }
->>>>>>> Develop
 \author{
 Dean Adams & Mike Collyer
 }

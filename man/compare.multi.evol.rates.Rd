@@ -19,20 +19,12 @@ landmark configuration (default is TRUE)}
 \item{iter}{Number of iterations for significance testing}
 }
 \value{
-<<<<<<< HEAD
-Function returns a list with the following components: 
-  \item{rates.all}{The phylogenetic evolutionary rates for each trait}
-  \item{rate.ratio}{The ratio of maximum to minimum evolutionary rates}
-  \item{pvalue}{The significance level of the observed rate ratio}
-  \item{pvalue.gps}{Matrix of pairwise significance levels comparing each pair of rates}
-=======
 An object of class "evolrate" returns a list of the following: 
   \item{rates.all}{The phylogenetic evolutionary rates for each trait.}
   \item{rate.ratio}{The ratio of maximum to minimum evolutionary rates.}
   \item{pvalue}{The significance level of the observed rate ratio.}
   \item{pvalue.gps}{Matrix of pairwise significance levels comparing each pair of rates.}
   \item{call}{The matched call.}
->>>>>>> Develop
 }
 \description{
 Function calculates rates of shape evolution for two or more multi-dimensional traits on a 
@@ -51,12 +43,7 @@ Denton and Adams 2015). Significance testing is accomplished by phylogenetic sim
 which tips data are obtained under Brownian motion using a an evolutionary rate matrix 
 for all traits, which contains a common rate for all trait dimensions (Denton and Adams 2015).
 If three or more traits are used, pairwise p-values are 
-<<<<<<< HEAD
-also returned. A histogram of evolutionary rate ratios obtained via phylogenetic simulation 
-is presented, with the observed value designated by an arrow in the plot.
-=======
 also returned.
->>>>>>> Develop
 
 The shape data may be input as either a 3D array (p x k x n) containing GPA-aligned coordinates 
 for a set of species, or as a matrix (n x [p x k]) whose rows correspond to each species. In 
@@ -100,11 +87,7 @@ Adams, D.C. 2014. Quantifying and comparing phylogenetic evolutionary rates for
 
 Denton, J.S.S., and D.C. Adams. 2015. A new phylogenetic test for comparing 
 multiple high-dimensional evolutionary rates suggests interplay of evolutionary rates and 
-<<<<<<< HEAD
-modularity in lanternfishes (Myctophiformes; Myctophidae). Evolution. 69: doi:10.1111/evo.12743
-=======
 modularity in lanternfishes (Myctophiformes; Myctophidae). Evolution. 69:2425-2440.
->>>>>>> Develop
 }
 \keyword{analysis}
 

@@ -27,11 +27,7 @@ The function creates a plot of the landmark coordinates for all specimens. This 
  Additionally, if a matrix of links is provided, the landmarks of the mean shape will be connected by lines.  
  The link matrix is an m x 2 matrix, where m is the desired number of links. Each row of the link matrix 
  designates the two landmarks to be connected by that link. The function will plot either two- or 
-<<<<<<< HEAD
- three-dimensional data.
-=======
  three-dimensional data (e.g. see \code{\link{define.links}}).
->>>>>>> Develop
 }
 \examples{
 data(plethodon) 

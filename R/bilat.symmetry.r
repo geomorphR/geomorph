@@ -115,112 +115,6 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
     stop("Data matrix not a 3D array (see 'arrayspecs').")  }
   if(any(is.na(A))==T){
     stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').")  }
-<<<<<<< HEAD
-  if(is.null(ind)){stop("Individuals not specified.")}
-  ind<-factor(ind)
-  n<-dim(A)[3];   k<-dim(A)[2];  p<-dim(A)[1]; shpsp<-k*p-k-k*(k-1)/2-1; nind<-nlevels(ind) 
-    spec.names<-dimnames(A)[[3]]
-  if(!is.null(replicate)){replicate<-as.factor(replicate); nrep<-nlevels(replicate) }
-  if(object.sym==FALSE){
-    if(is.null(side)){stop("Sides not specified.")}  
-    side<-as.factor(side)
-    gpa.res<-gpagen(A,ShowPlot=FALSE)
-    shape<-two.d.array(gpa.res$coords)
-    f1<-"shape~ind*side"
-    if(!is.null(replicate)) f1<-paste(f1,"ind:side:replicate",sep="+")
-    f1<-as.formula(f1)
-    f1.df<-procD.data.frame(f1)
-    pf1<-procD.fit(f1, data=f1.df)
-    f2<-"gpa.res$Csize~ind*side"
-    if(!is.null(replicate)) f2<-paste(f2,"ind:side:replicate",sep="+")
-    f2<-as.formula(f2)
-    f2.df<-procD.data.frame(f2)
-    pf2<-procD.fit(f2, data=f2.df)
-    res.shape<-anova.parts(pf1, keep.order=FALSE,Yalt="observed")$table    
-    res.shape<-res.shape[1:(dim(res.shape)[1]-2),1:(dim(res.shape)[2]-2)]
-    res.shape[1,1]<-(nind-1)*shpsp;res.shape[2,1]<-shpsp; res.shape[3,1]<-(nind-1)*shpsp
-    if(!is.null(replicate)){res.shape[4,1]<-(nrep-1)*nind*2*shpsp}
-    res.shape[,3]<-res.shape[,2]/res.shape[,1] 
-    Goodall.F<-array(NA,nrow(res.shape));Goodall.F[1]<-res.shape[1,3]/res.shape[3,3]
-    Goodall.F[2]<-res.shape[2,3]/res.shape[3,3]; if(!is.null(replicate)){Goodall.F[3]<-res.shape[3,3]/res.shape[4,3]}
-    P.param<-array(NA,nrow(res.shape)); P.param[1]<-1-pf(Goodall.F[1],res.shape[1,1],res.shape[3,1])
-    P.param[2]<-1-pf(Goodall.F[2],res.shape[2,1],res.shape[3,1]); if(!is.null(replicate)){
-      P.param[3]<-1-pf(Goodall.F[3],res.shape[3,1],res.shape[4,1])}
-    P.param[zapsmall(P.param)==0]=0.00001
-    res.shape<-cbind(res.shape,Goodall.F,P.param)
-    res.size<-summary(aov(f2))[[1]]; res.size<-res.size[,(1:3)] 
-    colnames(res.size) <- c("df", "SS", "MS")
-    F<-array(NA,nrow(res.size)); F[1]<-res.size[1,3]/res.size[3,3]
-    F[2]<-res.size[2,3]/res.size[3,3]; if(!is.null(replicate)){F[3]<-res.size[3,3]/res.size[4,3]}
-    P<-array(NA,nrow(res.size)); P[1]<-1-pf(F[1],res.size[1,1],res.size[3,1])
-    P[2]<-1-pf(F[2],res.size[2,1],res.size[3,1]); if(!is.null(replicate)){
-      P[3]<-1-pf(F[3],res.size[3,1],res.size[4,1])}
-    P[zapsmall(P)==0]=0.00001
-    res.size<-cbind(res.size,F,P);  if(!is.null(replicate)){res.size<-res.size[(1:4),];
-                                                            rownames(res.size)[4]<-"replicate"}
-    class(res.shape) <- c("anova", class(res.shape))
-    class(res.size) <- c("anova", class(res.size))
-    DA.mns <- arrayspecs((rowsum(predict(lm(shape~side)), 
-                                 side)/as.vector(table(side))),p,k)
-    MSCP.FA<-summary(manova(lm(f1)))$SS[[3]]/res.shape[3,1]
-    eig.FA<-eigen(MSCP.FA); PC1.eigval<-eig.FA$values[1]/sum(eig.FA$values)
-    PC1<-shape%*%eig.FA$vec[,1]
-    FA.mns<-arrayspecs((rbind(shape[which.min(PC1),],shape[which.max(PC1),])),p,k) 
-    mn.shape<-mshape(gpa.res$coords)
-    
-    symm.cmp<-predict(lm(shape~ind))
-    symm.component<-arrayspecs(rowsum(symm.cmp, ind)/as.vector(table(ind)),p,k)
-      symm<-predict(lm(shape~ind*side))
-      avg.side.symm<-rowsum(symm, paste(ind,side))/as.vector(table(paste(ind,side)))
-    asymm.component<-array(data=NA,dim=c(nlevels(ind),p*k)) 
-    for (i in 1:nlevels(ind)){
-      asymm.component[i,]<-avg.side.symm[2*i,]-avg.side.symm[(2*i)-1,]
-    }
-    asymm.component<-arrayspecs(asymm.component,p,k)
-    for(i in 1:nlevels(ind)){
-      asymm.component[,,i]<-asymm.component[,,i]+mn.shape
-    }
-      if(ShowPlot==TRUE){ 
-        if(warpgrids == TRUE){
-          if(k==2){  
-            par(mfrow=c(2,2),oma=c(1.5,0,1.5,0))
-            plotAllSpecimens(symm.component)
-            plotAllSpecimens(asymm.component)
-            plotRefToTarget(DA.mns[,,1],DA.mns[,,2],method="TPS",main="Directional Asymmetry")
-            plotRefToTarget(FA.mns[,,1],FA.mns[,,2],method="TPS",main="Fluctuating Asymmetry")
-            mtext("Symmetric Shape Component (left) and Asymmetric Shape Component (right)",outer = TRUE,side=3)
-            mtext("Mean directional (left) and fluctuating (right) asymmetry",side = 1, outer = TRUE)
-            par(mfrow=c(1,1))
-          }
-          if (k==3){
-            if (is.null(mesh)==TRUE){
-              open3d()
-              plotRefToTarget(DA.mns[,,1],DA.mns[,,2],method="points",main="Directional Asymmetry")
-              open3d()
-              plotRefToTarget(FA.mns[,,1],FA.mns[,,2],method="points",main="Fluctuating Asymmetry")
-              } 
-            if(is.null(mesh)==FALSE){
-              plotRefToTarget(DA.mns[,,1],DA.mns[,,2],mesh,method="surface")
-              title3d(main="Directional Asymmetry")
-              plotRefToTarget(FA.mns[,,1],FA.mns[,,2],mesh,method="surface")
-              title3d(main="Fluctuating Asymmetry")
-              }
-          }
-        layout(1) 
-        }
-      }  
-    if(verbose==TRUE){
-    	class(res.size) <- c("anova", class(res.size))
-    	class(res.shape) <- c("anova", class(res.shape))
-    	return(list(symm.shape=symm.component,asymm.shape=asymm.component, 
-                                     ANOVA.size=res.size,ANOVA.Shape=res.shape)) }
-    if(verbose==FALSE){
-    	class(res.size) <- c("anova", class(res.size))
-    	class(res.shape) <- c("anova", class(res.shape))
-    	return(list(ANOVA.size=res.size,ANOVA.Shape=res.shape)) }
-    }
-  
-=======
   if(is.null(data)){
     if(is.null(ind)) stop("Individuals not specified.") else ind <- factor(ind)
     if(!is.null(side)) side <- factor(side)
@@ -238,7 +132,6 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
   }
   n<-dim(A)[3]; k<-dim(A)[2]; p<-dim(A)[1]; nind<-nlevels(ind); spec.names<-dimnames(A)[[3]]
   if(object.sym == FALSE && is.null(side)) stop("Sides not specified.") 
->>>>>>> Develop
   if(object.sym==TRUE){
     if(is.null(land.pairs)){stop("Landmark pairs not specified.")} 
     npairs <- nrow(land.pairs); nl<-p-2*npairs
@@ -246,74 +139,6 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
     A2[land.pairs[,1],,] <- A[land.pairs[,2],,]
     A2[land.pairs[,2],,] <- A[land.pairs[,1],,]
     A2[,1,]<-A2[,1,]*-1
-<<<<<<< HEAD
-    A<-array(c(A,A2), c(p,k, 2*n))
-    ind<-rep(ind,2);side<-gl(2,n); if(!is.null(replicate)){replicate<-rep(replicate,2)}
-    gpa.res<-gpagen(A,ShowPlot = FALSE)
-    shape<-two.d.array(gpa.res$coords)    
-    f1<-"shape~ind*side"
-    if(!is.null(replicate)) f1<-paste(f1,"ind:side:replicate",sep="+")
-    f1<-as.formula(f1)
-    f1.df<-procD.data.frame(f1)
-    pf1<-procD.fit(f1, data=f1.df)
-    res.shape<-anova.parts(pf1, keep.order=FALSE, data=f1.df,Yalt="observed")$table    
-    res.shape<-res.shape[1:(dim(res.shape)[1]-2),1:(dim(res.shape)[2]-2)]
-    res.shape[,2]<-res.shape[,2]/2 
-    res.shape[2,1]<-ifelse(k==2,((2*npairs+nl-2)),((3*npairs+nl-3)))
-    res.shape[1,1]<-res.shape[3,1]<-(nind-1)*res.shape[2,1]
-    if(k==3){res.shape[1,1]=res.shape[1,1]+((nind-1)*(nl-1))}
-    if(!is.null(replicate)){res.shape[4,1]<-(nrep-1)*nind*shpsp}
-    res.shape[,3]<-res.shape[,2]/res.shape[,1] 
-    Goodall.F<-array(NA,nrow(res.shape));Goodall.F[1]<-res.shape[1,3]/res.shape[3,3]
-    Goodall.F[2]<-res.shape[2,3]/res.shape[3,3]; if(!is.null(replicate)){Goodall.F[3]<-res.shape[3,3]/res.shape[4,3]}
-    P.param<-array(NA,nrow(res.shape)); P.param[1]<-1-pf(Goodall.F[1],res.shape[1,1],res.shape[3,1])
-    P.param[2]<-1-pf(Goodall.F[2],res.shape[2,1],res.shape[3,1]); if(!is.null(replicate)){
-      P.param[3]<-1-pf(Goodall.F[3],res.shape[3,1],res.shape[4,1])}
-    P.param[zapsmall(P.param)==0]=0.00001
-    res.shape<-cbind(res.shape,Goodall.F,P.param)
-    class(res.shape) <- c("anova", class(res.shape))
-    
-    DA.mns <- arrayspecs((rowsum(predict(lm(shape~side)), 
-                                 side)/as.vector(table(side))),p,k)
-    MSCP.FA<-summary(manova(lm(f1)))$SS[[3]]/res.shape[3,1]
-    eig.FA<-eigen(MSCP.FA); PC1.eigval<-eig.FA$values[1]/sum(eig.FA$values)
-    PC1<-shape%*%eig.FA$vec[,1]
-    FA.mns<-arrayspecs((rbind(shape[which.min(PC1),],shape[which.max(PC1),])),p,k) 
-    symm.component<-arrayspecs(predict(lm(shape~ind)),p,k)
-    symm.component<-symm.component[,,(1:n)]
-    asymm.component<-array(data=NA,dim=c(p,k,n)) 
-      dimnames(symm.component)[[3]] <- dimnames(asymm.component)[[3]]<-spec.names
-    mn.shape<-mshape(gpa.res$coords)
-    for (i in 1:n){ asymm.component[,,i]<-(gpa.res$coords[,,i]-symm.component[,,i]) + mn.shape}
-    if(ShowPlot==TRUE){ 
-        if(warpgrids==TRUE){
-          if(k==2){  
-            par(mfrow=c(2,2),oma=c(1.5,0,1.5,0))
-            plotAllSpecimens(symm.component)
-            plotAllSpecimens(asymm.component)
-            plotRefToTarget(DA.mns[,,1],DA.mns[,,2],method="TPS",main="Directional Asymmetry")
-            plotRefToTarget(FA.mns[,,1],FA.mns[,,2],method="TPS",main="Fluctuating Asymmetry")
-            mtext("Symmetric Shape Component (left) and Asymmetric Shape Component (right)",outer = TRUE,side=3)
-            mtext("Mean directional (left) and fluctuating (right) asymmetry",side = 1, outer = TRUE)
-          }
-          if (k==3){
-            if(is.null(mesh)==TRUE){
-              open3d()
-              plotRefToTarget(DA.mns[,,1],DA.mns[,,2],method="points",main="Directional Asymmetry")
-              open3d()
-              plotRefToTarget(FA.mns[,,1],FA.mns[,,2],method="points",main="Fluctuating Asymmetry")
-            } 
-            if(is.null(mesh)==FALSE){
-              plotRefToTarget(DA.mns[,,1],DA.mns[,,2],mesh,method="surface")
-              title3d(main="Directional Asymmetry")
-              plotRefToTarget(FA.mns[,,1],FA.mns[,,2],mesh,method="surface")
-              title3d(main="Fluctuating Asymmetry")
-            }  
-          }
-        layout(1) 
-      } 
-    
-=======
     A <- array(c(A,A2), c(p,k, 2*n))
     ind <- factor(rep(ind,2)); side <- gl(2,n); if(!is.null(replicate)) replicate <- rep(replicate,2)
   }
@@ -346,7 +171,6 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
     } else {
       form.size <- size~ind*side
       dat.size <- geomorph.data.frame(size = size, ind = ind, side = side)
->>>>>>> Develop
     }
     pfitSz=procD.fit(form.size, data=dat.size, keep.order=TRUE)
     if(RRPP == TRUE) PSz <- SS.iter(pfitSz,Yalt="RRPP", iter=iter, seed=seed) else 

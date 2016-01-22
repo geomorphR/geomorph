@@ -6,14 +6,10 @@
 \title{Landmarks on pupfish}
 \description{
 Landmark data from Cyprindon pecosensis body shapes, with indication of Sex and 
-<<<<<<< HEAD
-Population from which fish were sampled (Marsh or Sinkhole).  These data were previously aligned 
-=======
 Population from which fish were sampled (Marsh or Sinkhole).
 }
 \details{
 These data were previously aligned 
->>>>>>> Develop
 with GPA.  Centroid size (CS) is also provided.
 }
 \author{

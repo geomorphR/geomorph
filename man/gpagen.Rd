@@ -10,27 +10,15 @@ gpagen(A, curves = NULL, surfaces = NULL, PrinAxes = TRUE,
 \arguments{
 \item{A}{An array (p x k x n) containing landmark coordinates for a set of specimens}
 
-<<<<<<< HEAD
-\item{Proj}{A logical value indicating whether or not the aligned Procrustes residuals should be projected 
-into tangent space}
-=======
 \item{curves}{An optional matrix defining which landmarks should be treated as semilandmarks on boundary 
 curves, and which landmarks specify the tangent directions for their sliding}
->>>>>>> Develop
 
 \item{surfaces}{An optional vector defining which landmarks should be treated as semilandmarks on surfaces}
 
 \item{PrinAxes}{A logical value indicating whether or not to align the shape data by principal axes}
 
-<<<<<<< HEAD
-\item{ShowPlot}{A logical value indicating whether or not a plot of Procrustes residuals should be displayed (calls \code{\link{plotAllSpecimens}})}
-
-\item{curves}{An optional matrix defining which landmarks should be treated as semilandmarks on boundary 
-curves, and which landmarks specify the tangent directions for their sliding}
-=======
 \item{max.iter}{The maximum number of GPA iterations to perform before superimposition is halted.  The final
 number of iterations could be larger than this, if curves or surface semilandmarks are involved.}
->>>>>>> Develop
 
 \item{ProcD}{A logical value indicating whether or not Procrustes distance should be used as the criterion
 for optimizing the positions of semilandmarks}
@@ -39,14 +27,6 @@ for optimizing the positions of semilandmarks}
 into tangent space}
 }
 \value{
-<<<<<<< HEAD
-Function returns a list with the following components: 
-  \item{coords}{A (p x k x n) array of aligned Procrustes coordinates, where p is the number of landmark 
-    points, k is the number of landmark dimensions (2 or 3), and n is the number of specimens. The third 
-    dimension of this array contains names for each specimen if specified in the original input array}
-  \item{Csize}{A vector of centroid sizes for each specimen, containing the names for each specimen if 
-    specified in the original input array}
-=======
 An object of class gpagen returns a list with the following components:
  \item{coords}{A (p x k x n) array of aligned Procrustes coordinates, where p is the number of landmark 
     points, k is the number of landmark dimensions (2 or 3), and n is the number of specimens. The third 
@@ -64,7 +44,6 @@ An object of class gpagen returns a list with the following components:
  \item{Q}{Final convergence criterion value.}
  \item{slide.method}{Method used to slide semilandmarks.}
  \item{call}{The match call.}
->>>>>>> Develop
 }
 \description{
 A general function to perform Procrustes analysis of two- or three-dimensional landmark data that 
@@ -111,29 +90,15 @@ inferential analyses using Procrustes residuals.
 }
 }
 \examples{
-<<<<<<< HEAD
-#Example 1: fixed points only
-data(plethodon) 
-gpagen(plethodon$land,PrinAxes=FALSE)
-gpagen(plethodon$land,pointscale=2)
-=======
 # Example 1: fixed points only
 data(plethodon) 
 Y.gpa <- gpagen(plethodon$land,PrinAxes=FALSE)
 summary(Y.gpa)
 plot(Y.gpa)
->>>>>>> Develop
 
 # Example 2: points and semilandmarks on curves
 data(hummingbirds)
 
-<<<<<<< HEAD
-#Using Procrustes Distance for sliding
-gpagen(hummingbirds$land,curves=hummingbirds$curvepts)   
-
-#Using bending energy for sliding
-gpagen(hummingbirds$land,curves=hummingbirds$curvepts,ProcD=FALSE)   
-=======
 # Using Procrustes Distance for sliding
 Y.gpa <- gpagen(hummingbirds$land,curves=hummingbirds$curvepts)   
 summary(Y.gpa)
@@ -143,20 +108,14 @@ plot(Y.gpa)
 Y.gpa <- gpagen(hummingbirds$land,curves=hummingbirds$curvepts,ProcD=FALSE)   
 summary(Y.gpa)
 plot(Y.gpa)
->>>>>>> Develop
 
 # Example 3: points, curves and surfaces
 data(scallops)
-<<<<<<< HEAD
-#Using Procrustes Distance for sliding
-gpagen(A=scallops$coorddata, curves=scallops$curvslide, surfaces=scallops$surfslide) 
-=======
 
 # Using Procrustes Distance for sliding
 Y.gpa <- gpagen(A=scallops$coorddata, curves=scallops$curvslide, surfaces=scallops$surfslide)
 # NOTE can summarize as: summary(Y.gpa)
 # NOTE can plot as: plot(Y.gpa) 
->>>>>>> Develop
 }
 \author{
 Dean Adams and Michael Collyer

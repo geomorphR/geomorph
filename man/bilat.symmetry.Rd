@@ -35,13 +35,6 @@ which might be of interest for advanced users.}
 \item{RRPP}{A logical value indicating whether residual randomization should be used for significance testing.}
 }
 \value{
-<<<<<<< HEAD
-Function returns a list with the following components:
-  \item{ANOVA.shape}{Procrustes ANOVA table assessing patterns of shape asymmetry}
-  \item{ANOVA.size}{Procrustes ANOVA table assessing patterns of shape asymmetry (when {object.sym=FALSE})} 
-  \item{symm.shape}{The symmetric component of shape variation of the aligned specimens ({when verbose=TRUE})}
-  \item{asymm.shape}{The asymmetric component of shape variation of the aligned specimens ({when verbose=TRUE})}
-=======
 An object of class "bilat.symmetry" returns a list of the following
 \item{shape.anova}{An analysis of variance table for the shape data.}
 \item{size.anova}{An analysis of variance table for the shape data (when object.sym=FALSE).}
@@ -56,7 +49,6 @@ An object of class "bilat.symmetry" returns a list of the following
 \item{random.size.F}{A matrix of random F-values from the Centroid Size analysis.}
 \item{perm.method}{A value indicating whether "Raw" values were shuffled or "RRPP" performed.}
 \item{call}{The matched call.}
->>>>>>> Develop
 }
 \description{
 Function performs an analysis of directional and fluctuating asymmetry for bilaterally symmetric objects
@@ -65,21 +57,12 @@ Function performs an analysis of directional and fluctuating asymmetry for bilat
 The function quantifies components of shape variation for a set of specimens as described by their patterns of symmetry
  and asymmetry. Here, shape variation is decomposed into variation among individuals, variation among sides (directional 
  asymmetry), and variation due to an individual x side interaction (fluctuating symmetry). These components are then 
-<<<<<<< HEAD
- statistically evaluated using Procrustes ANOVA and Goodall's F tests (i.e. an isotropic model of shape variation). Methods for both 
- matching symmetry and object symmetry can be implemented. Matching symmetry is when each object contains mirrored 
- pairs of structures (e.g., right and left hands) while object symmetry is when a single object is symmetric 
- about a midline (e.g., right and left sides of human faces). Analytical and computational details concerning the 
- analysis of symmetry in geometric morphometrics can be found in Mardia et al. 2000; Klingenberg et al. 2002.
-
-=======
  statistically evaluated using Procrustes ANOVA. Statistical assessment of model effects for shape variation is accomplished using permutation procedures. 
  Methods for both matching symmetry and object symmetry can be implemented. Matching symmetry is when each object contains mirrored 
  pairs of structures (e.g., right and left hands) while object symmetry is when a single object is symmetric 
  about a midline (e.g., right and left sides of human faces). Details on general approaches for the study of symmetry in geometric 
  morphometrics may be found in: Mardia et al. 2000; Klingenberg et al. 2002.
  
->>>>>>> Develop
 Analyses of symmetry for matched pairs of objects is implemented when {object.sym=FALSE}. Here, a 3D array [p x k x 2n] 
  contains the landmark coordinates for all pairs of structures (2 structures for each of n specimens). Because the two sets of 
  structures are on opposite sides, they represent mirror images, and one set must be reflected prior to the analysis to 
@@ -94,9 +77,6 @@ Analyses of object symmetry is implemented when {object.sym=TRUE}. Here, a 3D ar
  by reflecting them about one of their coordinate axes. The landmarks across the line of symmetry are then relabeled to obtain
  landmark correspondence. The user must supply a list of landmark pairs. A vector containing information on individuals 
  must also be supplied. Replicates of each specimen may also be included in the dataset, and when specified will be 
-<<<<<<< HEAD
- used as measurement error.
-=======
  used as measurement error. 
  
   \subsection{Notes for geomorph 3.0}{ 
@@ -115,7 +95,6 @@ Analyses of object symmetry is implemented when {object.sym=TRUE}. Here, a 3D ar
  }
  
  The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{bilat.symmetry}}.
->>>>>>> Develop
 }
 \examples{
 #Example of matching symmetry

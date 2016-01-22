@@ -33,25 +33,6 @@ Function calculates the degree of phylogenetic signal from a set of Procrustes-a
 The function estimates the degree of phylogenetic signal present in shape data for a given phylogeny. 
 It is assumed that the landmarks have previously been aligned 
   using Generalized Procrustes Analysis (GPA) [e.g., with \code{\link{gpagen}}].  
-<<<<<<< HEAD
-  Two approaches may be used to quantify phylogenetic signal. First, a multivariate version of the 
-  K-statistic may be utilized (Kmult: Adams 2014). This value evaluates the degree of phylogenetic signal
-  in a dataset relative to what is expected under a Brownian motion model of evolution. For geometric
-  morphometric data, the approach is a mathematical generalization of the Kappa statistic (Blomberg et al. 
-  2003) appropriate for highly multivariate data (see Adams 2014).
-    
-  The second approach estimates phylogenetic signal as the sum of squared changes (SSC) in 
-  shape along all branches of the phylogeny (Klingenberg and Gidaszewski 2010). Significance testing 
-  is found by permuting the shape data among the tips of the phylogeny. Note that this 
-  method can be quite slow as ancestral states must be estimated for every iteration.
-  
-  For both approaches a plot of the specimens in tangent space with the phylogeny superimposed 
-  is included (NOTE: if ancestral states are desired, run \code{\link{plotGMPhyloMorphoSpace}}). 
-  
- The tree must have number of tips equal to number of taxa in the data matrix (e.g. \code{\link[ape]{drop.tip}}).
-And, tip labels of the tree MUST be exactly the same as the taxa names in the landmark data matrix
-(check using \code{\link[base]{match}}).
-=======
   The degree of phylogenetic signal in data is estimated using the multivariate version of the K-statistic 
   (Kmult: Adams 2014). This value evaluates the degree of phylogenetic signal
   in a dataset relative to what is expected under a Brownian motion model of evolution. For geometric
@@ -63,7 +44,6 @@ And, tip labels of the tree MUST be exactly the same as the taxa names in the la
 This function can also be used with univariate data (i.e. centroid size) if imported as matrix with rownames
 giving the taxa names. In this case, the estimate of phylogenetic signal is identical to that found using the 
 standard kappa statistic (Blomberg et al. 2003).
->>>>>>> Develop
 
 The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{physignal}}.
  The generic function, \code{\link{plot}}, produces a histogram of random K statistics, associated with the resampling procedure.
@@ -95,12 +75,6 @@ Dean Adams
 Blomberg SP, Garland T, Ives AR. 2003. Testing for phylogenetic signal in comparative 
 data: behavioral traits are more labile. Evolution, 57:717-745.
 
-<<<<<<< HEAD
-Klingenberg, C. P., and N. A. Gidaszewski. 2010. Testing and quantifying phylogenetic signals 
-  and homoplasy in morphometric data. Syst. Biol. 59:245-261.
-
-=======
->>>>>>> Develop
 Adams, D.C. 2014. A generalized K statistic for estimating phylogenetic signal from shape and 
 other high-dimensional multivariate data. Systematic Biology.  63:685-697.
 }

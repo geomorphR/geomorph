@@ -29,11 +29,6 @@ which might be of interest for advanced users.}
 \item{...}{Arguments passed on to procD.fit (typically associated with the lm function)}
 }
 \value{
-<<<<<<< HEAD
-Function returns a list with the following components: 
-  \item{Disp.obs}{A matrix of Procrustes variance for each group}
-  \item{Prob.Dist}{A matrix of pairwise significance levels based on permutation}
-=======
 Objects of class "morphol.disparity" return a list with the following components 
 (if groups are specified): 
   \item{Procrustes.var}{Observed Procrustes variances.}
@@ -43,21 +38,12 @@ Objects of class "morphol.disparity" return a list with the following components
   \item{random.PV.dist}{Pairwise distance matrices produced in the resampling procedure.}
   \item{permutations}{Number of random permutations in resampling procedure.}
   \item{call}{The match call}
->>>>>>> Develop
 }
 \description{
 Function estimates morphological disparity and performs pairwise comparisons among groups.
 }
 \details{
 The function estimates morphological disparity and performs pairwise comparisons to identify differences
-<<<<<<< HEAD
-between groups. The function takes as input GPA-aligned shape data [e.g., \code{\link{gpagen}}] and a grouping factor, and
-estimates disparity as the Procrustes variance for each group, which is the sum of the diagonal elements 
-of the group covariance matrix (e.g., Zelditch et al. 2012). The group Procrustes variances are used as 
-test values, and these are then statistically evaluated through permutation, where the vectors of residuals
-are randomized among groups. The function can be used to obtain disparity for the whole
-dataset by using a dummy group factor assigning all specimens to one group, in which case only Procrustes variance is returned.
-=======
 between groups. Morphological disparity is estimated as the Procrustes variance, overall or for groups, 
 using residuals of a linear model fit.  Procrustes variance is the same sum of the diagonal elements 
 of the group covariance matrix divided by the number of observations in the group (e.g., Zelditch et al. 2012).
@@ -74,7 +60,6 @@ e.g., "~ Csize", Procrustes variance will be calculated for the whole data set o
 linear regression described.  Finally, different factors can be indicated in the formula and for groups, if one wishes to 
 compare morphological disparities for groups comprising only a portion of or collapsing of the groups in a more complex model 
 (see examples).
->>>>>>> Develop
 }
 \examples{
 data(plethodon)

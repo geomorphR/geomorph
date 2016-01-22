@@ -19,13 +19,6 @@ If seed = "random", a random seed will be used, and P-values will vary.  One can
 which might be of interest for advanced users.}
 }
 \value{
-<<<<<<< HEAD
-Function returns a list with the following components: 
-  \item{value}{The estimate of association between block}
-  \item{pvalue}{The significance level of the observed association}
-  \item{Xscores}{PLS scores for the first block of landmarks (when {verbose=TRUE})}
-  \item{Yscores}{PLS scores for the second block of landmarks (when {verbose=TRUE})}
-=======
 Object of class "pls" that returns a list of the following:
   \item{r.pls}{The correlation coefficient between scores of projected values on the first
   singular vectors of left (x) and right (y) blocks of landmarks (or other variables)}
@@ -42,7 +35,6 @@ Object of class "pls" that returns a list of the following:
   \item{A2.matrix}{Right block (matrix) found from A2.}
   \item{permutations}{The number of random permutations used in the resampling procedure.}
   \item{call}{The match call.}
->>>>>>> Develop
 }
 \description{
 Function performs two-block partial least squares analysis to assess the degree of association between 
@@ -54,14 +46,6 @@ The function quantifies the degree of association between two blocks of shape da
   used, it is assumed 
   that the landmarks have previously been aligned using 
   Generalized Procrustes Analysis (GPA) [e.g., with \code{\link{gpagen}}]. If other variables are used, they must be input as a 
-<<<<<<< HEAD
-  2-Dimensional matrix (rows = specimens, columns = variables).
-  
-  A plot of PLS scores from Block1 versus Block2 is provided for the first set of PLS axes. Thin-plate spline 
-  deformation grids along these axes are also shown (if data were input as a 3D array).
-  
-  If the specimens in A1 and A2 are differently ordered, the function will reorder A2 to match A1.
-=======
   2-Dimensional matrix (rows = specimens, columns = variables).  It is also assumed that the separate inputs
   have specimens (observations) in the same order.
   
@@ -76,7 +60,6 @@ There is a slight change in two.b.pls plots with geomorph 3.0.  Rather than use 
 scores, major-axis regression is used and the extreme fitted values are used to generate deformation grids.  This ensures that shape deformations
 are exactly along the major axis of shape covariation.  This axis is also shown as a best-fit line in the plot.
 }
->>>>>>> Develop
 }
 \examples{
 data(plethShapeFood) 

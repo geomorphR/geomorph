@@ -53,14 +53,6 @@ Function performs Procrustes ANOVA with permutation procedures to assess statist
 }
 \details{
 The function quantifies the relative amount of shape variation attributable to one or more factors in a 
-<<<<<<< HEAD
-  linear model and estimates teh probability of this variation ("signifiance") for a null model, via distributions generated 
-  from resampling permutations. Data input is specified by a formula (e.g., 
-  y~X), where 'y' specifies the response variables (shape data), and 'X' contains one or more independent 
-  variables (discrete or continuous). The response matrix 'y' can be either in the form of a two-dimensional data 
-  matrix of dimension (n x [p x k]), or a 3D array (p x n x k).  It is assumed that the landmarks have previously 
-  been aligned using Generalized Procrustes Analysis (GPA) [e.g., with \code{\link{gpagen}}]. 
-=======
   linear model and estimates the probability of this variation ("significance") for a null model, via distributions generated 
   from resampling permutations. Data input is specified by a formula (e.g., 
   y~X), where 'y' specifies the response variables (shape data), and 'X' contains one or more independent 
@@ -68,46 +60,31 @@ The function quantifies the relative amount of shape variation attributable to o
   matrix of dimension (n x [p x k]), or a 3D array (p x n x k).  It is assumed that  -if the data based
   on landmark coordinates - the landmarks have previously been aligned using Generalized Procrustes Analysis (GPA) 
   [e.g., with \code{\link{gpagen}}]. 
->>>>>>> Develop
   The names specified for the independent (x) variables in the formula represent one or more 
   vectors containing continuous data or factors. It is assumed that the order of the specimens in the 
   shape matrix matches the order of values in the independent variables.  Linear model fits (using the  \code{\link{lm}} function)
   can also be input in place of a formula.  Arguments for \code{\link{lm}} can also be passed on via this function.
   
   The function \code{\link{two.d.array}} can be used to obtain a two-dimensional data matrix from a 3D array of landmark
-<<<<<<< HEAD
-  coordinates; however this step is no longer necessary, as procD.lm can receive 3D arrays as depedendent variables.
-=======
   coordinates; however this step is no longer necessary, as procD.lm can receive 3D arrays as dependent variables.  It is also 
   recommended that \code{\link{geomorph.data.frame}} is used to create and input a data frame.  This will reduce problems caused
   by conflicts between the global and function environments.  In the absence of a specified data frame, procD.lm will attempt to 
   coerce input data into a data frame, but success is not guaranteed.
->>>>>>> Develop
 
 The function performs statistical assessment of the terms in the model using Procrustes distances among 
   specimens, rather than explained covariance matrices among variables. With this approach, the sum-of-squared 
   Procrustes distances are used as a measure of SS (see Goodall 1991). The observed SS are evaluated through 
   permutation. In morphometrics this approach is known as a Procrustes ANOVA (Goodall 1991), which is equivalent
   to distance-based anova designs (Anderson 2001). Two possible resampling procedures are provided. First, if RRPP=FALSE, 
-<<<<<<< HEAD
-  the rows of the matrix of shape variables 
-  are randomized relative to the design matrix. This is analogous to a 'full' randomization. Second, if RRPP=TRUE,
-  a residual randomization permutation procedure is utilized (Collyer et al. 2014). Here, residual shape values from a reduced model are
-=======
   the rows of the matrix of shape variables are randomized relative to the design matrix. 
   This is analogous to a 'full' randomization. Second, if RRPP=TRUE, a residual randomization permutation procedure is utilized 
   (Collyer et al. 2015). Here, residual shape values from a reduced model are
->>>>>>> Develop
   obtained, and are randomized with respect to the linear model under consideration. These are then added to 
   predicted values from the remaining effects to obtain pseudo-values from which SS are calculated. NOTE: for
   single-factor designs, the two approaches are identical.  However, when evaluating factorial models it has been
   shown that RRPP attains higher statistical power and thus has greater ability to identify patterns in data should
   they be present (see Anderson and terBraak 2003). Effect-sizes (Z-scores) are computed as standard deviates of the SS sampling 
-<<<<<<< HEAD
-  distributions generated, which might be more intuitive for P-values than F-values (see Collyer et al. 2014).  In the case that multiple 
-=======
   distributions generated, which might be more intuitive for P-values than F-values (see Collyer et al. 2015).  In the case that multiple 
->>>>>>> Develop
   factor or factor-covariate interactions are used in the model formula, one can specify whether all main effects should be added to the 
   model first, or interactions should precede subsequent main effects 
   (i.e., Y ~ a + b + c + a:b + ..., or Y ~ a + b + a:b + c + ..., respectively.)
@@ -118,13 +95,9 @@ The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\li
 \examples{
 ### MANOVA example for Goodall's F test (multivariate shape vs. factors)
 data(plethodon) 
-<<<<<<< HEAD
-Y.gpa<-gpagen(plethodon$land)    #GPA-alignment    
-=======
 Y.gpa <- gpagen(plethodon$land)    #GPA-alignment  
 gdf <- geomorph.data.frame(shape = Y.gpa$coords, 
 site = plethodon$site, species = plethodon$species) # geomorph data frame
->>>>>>> Develop
 
 procD.lm(shape ~ species * site, data = gdf, iter = 999, RRPP = FALSE) # randomize raw values
 procD.lm(shape ~ species * site, data = gdf, iter = 999, RRPP = TRUE) # randomize residuals

@@ -77,34 +77,12 @@ morphol.disparity <- function(f1, groups = NULL, iter = 999, seed = NULL, data =
   if(!is.null(groups) & class(groups) != "formula") stop("groups must be a formula; e.g., groups = ~ X")
   if(is.null(groups)) gps <- single.factor(pfit) else {
     data.types <- lapply(data, class)
-    keep = sapply(data.types, function(x) x != "array" & x != "phylo" & x != "dist")
+    keep = sapply(data.types, function(x) x != "array" & x != "phylo")
     dat2 <- as.data.frame(data[keep])
     gps <- model.frame(groups, data= dat2)
     if(ncol(gps) > 1) gps <- factor(apply(gps, 1,function(x) paste(x, collapse=":"))) else 
       gps <- as.factor(unlist(gps))
   }
-<<<<<<< HEAD
-  m <- length(levels(groups))
-  y = resid(lm(y ~ groups))
-  procvar <- function(x){sum(dist(x)^2)/(nrow(x)^2)}
-  if(m ==1){ d.obs <- procvar(y)
-             return(d.obs)}
-  if(m > 1){
-    d.obs <- by(y, groups, procvar)
-    diff.d.obs <- as.matrix(dist(d.obs))
-    PDisp <- array(0, dim = c(m, m))
-    ind <- perm.index(nrow(y),iter)
-    for (i in (1:iter+1)){
-      y.r <- y[ind[[i]],]
-      d.rand <- by(y.r, groups, procvar)
-      diff.d.rand <- as.matrix(dist(d.rand))
-      PDisp <- ifelse(diff.d.rand >= diff.d.obs, PDisp + 1, PDisp)
-    }
-    PDisp <- PDisp/(iter + 1)
-    d.obs <- as.matrix(d.obs)
-    colnames(d.obs) <- "ProcVar"
-    return(list(Disp.obs = d.obs, Prob.Disp = PDisp))
-=======
   k <- length(pfit$wResiduals)
   R <- as.matrix(pfit$wResiduals[[k]])
   if(length(gps) == 0) pv = sum(R^2)/nrow(R) else 
@@ -133,7 +111,6 @@ morphol.disparity <- function(f1, groups = NULL, iter = 999, seed = NULL, data =
       out <- list(Procrustes.var = pv, PV.dist = pvd, PV.dist.Pval = p.val,
                   random.PV.dist = P, permutations = iter+1, call = match.call())
       class(out) <-"morphol.disparity"
->>>>>>> Develop
   }
   out
 }

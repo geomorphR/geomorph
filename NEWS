@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 CHANGES IN GEOMORPH VERSION 3.0.0
 
   NEW FEATURES
@@ -11,7 +9,7 @@ CHANGES IN GEOMORPH VERSION 3.0.0
     o Added 'summary' option to most analytical functions
     o Plotting for most analytical functions as 'plot(res)' if res is output from function
     o Diagnostic plots for anova/regression added
-    o Nested ANOVA via nested.update of procD.lm() objects
+    o Nested ANOVA via nested.update of procD.lm objects
 
 
   OTHER CHANGES
@@ -24,18 +22,17 @@ CHANGES IN GEOMORPH VERSION 3.0.0
     o Added plotting options to plotAllSpecimens
   
   BUG FIXES
-    o Fixed morphol.disparity $Prob.Disp displaying NAs
 
 
->>>>>>> Develop
 CHANGES IN GEOMORPH VERSION 2.1.7-1
 
+  NEW FEATURES
+  
+  OTHER CHANGES
+  
   BUG FIXES
-    
-    o bilat.symmetry(): Fixed output estimates of symmetric/asymmetric components so length of output Nspec (and minor change in how asymmetric component calculated), removed redundant line of code
-    o Fixed error with warpRefToTarget() due to change in tps2d3d()
-    o Fixed error with 3D arrays in f1 of model functions
-    o Fixed errors with procD.fit and associated functions (problems included data-framing and correct degrees of freedom)
+    o Fixed small change in C-code for gpagen
+  
   
 CHANGES IN GEOMORPH VERSION 2.1.7
 

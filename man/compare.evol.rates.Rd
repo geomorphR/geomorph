@@ -16,21 +16,12 @@ compare.evol.rates(A, phy, gp, iter = 999)
 \item{iter}{Number of iterations for significance testing}
 }
 \value{
-<<<<<<< HEAD
-Function returns a list with the following components: 
-  \item{sigma.d}{The phylogenetic evolutionary rate for all species on the phylogeny}
-  \item{sigmad.all}{The phylogenetic evolutionary rate for each group of species on the phylogeny}
-  \item{sigmad.ratio}{The ratio of maximum to minimum evolutionary rates}
-  \item{pvalue}{The significance level of the observed ratio}
-  \item{pairwise.pvalue}{Matrix of pairwise significance levels comparing each pair of rates}
-=======
 An object of class "evolrate" returns a list with the following components: 
   \item{sigma.d.ratio}{The ratio of maximum to minimum evolutionary rates.}
   \item{P.value}{The significance level of the observed ratio.}
   \item{sigma.d.gp}{The phylogenetic evolutionary rate for each group of species on the phylogeny.}
   \item{random.sigma}{The sigma values found in random permutations of the resampling procedure.}
   \item{permutations}{The number of random permutations used.}
->>>>>>> Develop
 }
 \description{
 Function calculates rates of shape evolution for two or more groups of species on a phylogeny from a set of Procrustes-aligned specimens
@@ -43,21 +34,12 @@ The function compares rates of morphological evolution for two or more groups of
  for each group is calculated, and a ratio of rates is obtained. If three or more groups of species are used, the ratio of 
  the maximum to minimum rate is used as a test statistic (see Adams 2014). Significance testing 
  is accomplished by phylogenetic simulation in which tips data are obtained under Brownian motion using a common 
-<<<<<<< HEAD
- evolutionary rate pattern for all species on the phylogeny (i.e., a common evolutionary rate matrix). This procedure is
- more general, and retains the desirable statistical properties of earlier methods, but for a wider array of data types.  
- If three or more groups of species are used, pairwise p-values are also returned. A histogram of evolutionary rate ratios obtained 
- via phylogenetic simulation is presented, 
- with the observed value designated by an arrow in the plot. The function can be used to obtain a rate for the whole
- dataset of species by using a dummy group factor assigning all species to one group.
-=======
  evolutionary rate pattern for all species on the phylogeny. Specifically, the common evolutionary rate matrix for all
  species is used, with the multi-dimensional rate used along the diagonal elements (see Denton and Adams 2015). This procedure is
  more general than the original simulation procedure, and retains the desirable statistical properties of earlier methods, 
  and under a wider array of data types.  
  If three or more groups of species are used, pairwise p-values are also calculated. The function can be used to obtain a 
  rate for the whole dataset of species by using a dummy group factor assigning all species to one group.
->>>>>>> Develop
  
  This function can be used with univariate data (i.e. centroid size) if imported as matrix with rownames
  giving the taxa names.
@@ -73,10 +55,6 @@ in the program.  Additionally, for 3 or more groups, the pairwise p-values are f
 \examples{
 data(plethspecies) 
 Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment    
-<<<<<<< HEAD
-
-=======
->>>>>>> Develop
  gp.end<-factor(c(0,0,1,0,0,1,1,0,0))  #endangered species vs. rest
  names(gp.end)<-plethspecies$phy$tip
 
