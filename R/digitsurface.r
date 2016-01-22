@@ -1,4 +1,4 @@
-#' Digitize 3D fixed landmarks and surface semilandmarks.
+#' Digitize 3D fixed landmarks and surface semilandmarks
 #' 
 #' An interactive function to digitize three-dimensional (3D) landmarks on a surface lacking known landmarks.
 #' Input for the function is either a matrix of vertex coordinates defining a 3D surface object
@@ -20,7 +20,7 @@
 #' \subsection{Digitizing}{
 #' Digitizing is interactive between landmark selection using a mouse (see below for instructions), 
 #' and the R console. Once a point is selected, the user is asked if the system should keep or discard the 
-#' selection #'(y/n). If "y", the user is asked to continue to select the next landmark. If "n" the removes the last chosen
+#' selection (y/n). If "y", the user is asked to continue to select the next landmark. If "n" the removes the last chosen
 #' landmark, and the user is asked to select it again. This can be repeated until the user is comfortable with the landmark
 #' chosen. 
 #' 
@@ -92,9 +92,9 @@ digitsurface<-function(spec, fixed, ptsize = 1, center = TRUE)    {
       lmk.add <- rbind(lmk.add, which.min(sqrt((fixed[i,1]-specimen[,1])^2+(fixed[i,2]-specimen[,2])^2+(fixed[i,3]-specimen[,3])^2))[1])}
     fixed <- nrow(fixed)} 
   template<-as.matrix(read.table("template.txt",header=TRUE))
-  specimen<-trans(as.matrix(specimen))
-  template<-trans(template)*(csize(specimen[lmk.add,])[[1]]/csize(template[(1:fixed),])[[1]])  
-  template<-template%*%(pPsup(template[(1:fixed),],specimen[lmk.add,]))[[3]] 
+  specimen<-center(as.matrix(specimen))
+  template<-center(template)*(csize(specimen[lmk.add,])/csize(template[(1:fixed),]))  
+  template<-template%*%rotate.mat(specimen[lmk.add,],template[(1:fixed),])
   template.tps<-tps2d3d(template[-(1:fixed),],template[(1:fixed),],specimen[lmk.add,])             
   spec.surfs<-specimen[-lmk.add,]
   nei<-numeric(dim(template.tps)[1])

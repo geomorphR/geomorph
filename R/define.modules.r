@@ -4,7 +4,7 @@
 #' 
 #' Function takes a matrix of digitized landmark coordinates (e.g. from \code{\link{mshape}}) and allows the user to assign 
 #' landmarks to each module. The output is a list of which 
-#' landmarks belong in which partition, to be used by \code{\link{compare.modular.partitions}}.  
+#' landmarks belong in which partition, to be used by \code{\link{modularity.test}} or \code{\link{integration.test}}.  
 #'  
 #'  \subsection{Selection in 2D}{ 
 #' Choosing which landmarks will be included in each module involves landmark selection using a mouse in 
@@ -18,17 +18,17 @@
 #' Choosing which landmarks will be included in each module involves landmark selection using a mouse in 
 #' the rgl plot window. The user is prompted to select one or more landmarks. To do so, use the RIGHT mouse button 
 #' (or command + LEFT button for Mac users), draw a rectangle around landmarks to select.
-#' Selected landmarks will be coloured yellow. Then type into the console a letter (e.g. 1, 2, 3...) to assign selected landmark(s) 
+#' Selected landmarks will be colored yellow. Then type into the console a letter (e.g. 1, 2, 3...) to assign selected landmark(s) 
 #' to this module. Repeat until all landmarks are assigned to modules.
 #' }
 #' 
 #' @param spec Name of specimen, as an object matrix containing 2D or 3D landmark coordinates
 #' @param nmodules Number of modules to be defined
 #' @return Function returns a vector of which landmarks belong in which module (e.g. 1,1,1,2,2,3,3,3,2) to be used
-#' with \code{\link{compare.modular.partitions}} option 'landgroups'.
+#' with \code{\link{modularity.test}} or \code{\link{integration.test}}.
 #' @export
 #' @keywords utilities
-#' @seealso  \code{\link{compare.modular.partitions}}
+#' @seealso  \code{\link{modularity.test}} and \code{\link{integration.test}} 
 #' @author Emma Sherratt
 #' 
 define.modules <- function(spec, nmodules){

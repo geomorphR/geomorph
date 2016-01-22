@@ -38,8 +38,8 @@
 #' plotGMPhyloMorphoSpace(plethspecies$phy,Y.gpa$coords)
 #' plotGMPhyloMorphoSpace(plethspecies$phy,Y.gpa$coords, 
 #'                  plot.param=list(t.bg="blue",txt.col="red",n.cex=1))
-#' plotGMPhyloMorphoSpace(plethspecies$phy,Y.gpa$coords, zaxis= "time",
-#'                  plot.param=list(n.cex=2, n.bg="blue"), shadow=TRUE)
+#' #NOTE: 3D plot also available: plotGMPhyloMorphoSpace(plethspecies$phy,Y.gpa$coords, zaxis= "time",
+#' #                 plot.param=list(n.cex=2, n.bg="blue"), shadow=TRUE)
 plotGMPhyloMorphoSpace<-function(phy,A,tip.labels=TRUE,node.labels=TRUE,ancStates=TRUE, xaxis=1, yaxis=2, zaxis=NULL, 
                                  plot.param = list(), shadow=FALSE){
   if(any(is.na(A))==T){

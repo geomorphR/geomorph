@@ -59,10 +59,17 @@ readland.nts<-function(file){
   tmp<-unlist(strsplit(ntsfile[-1],"\\s+"))
   speclab<-NULL; 
   if(r.lab==TRUE){
+<<<<<<< HEAD
 #     speclab<-ntsfile[2:(1+n)]
 #     tmp <- tmp[c((length(tmp)-(p*k)+1):length(tmp))]
       speclab<-tmp[1:n]
       tmp<-tmp[-(1:length(speclab))]  
+=======
+    #     speclab<-ntsfile[2:(1+n)]
+    #     tmp <- tmp[c((length(tmp)-(p*k)+1):length(tmp))]
+    speclab<-tmp[1:n]
+    tmp<-tmp[-(1:length(speclab))]  
+>>>>>>> Develop
   }
   if(c.lab==TRUE){ tmp<-tmp[-(1:(p*k))] }
   if(missdata==TRUE){tmp[grep(missval,as.integer(tmp))] <- NA}
