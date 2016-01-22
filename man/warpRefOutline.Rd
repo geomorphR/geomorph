@@ -2,7 +2,7 @@
 % Please edit documentation in R/warpRefOutline.r
 \name{warpRefOutline}
 \alias{warpRefOutline}
-\title{Creates a 2D outline warped to the mean shape.}
+\title{Creates a 2D outline warped to the mean shape}
 \usage{
 warpRefOutline(file, coord, ref)
 }
@@ -19,7 +19,12 @@ Function returns an outline object
 \description{
 A function to take an outline (defined by many points) and use thin-plate spline method to warp the outline
 into the estimated mean shape for a set of aligned specimens.
+<<<<<<< HEAD
  
+=======
+}
+\details{
+>>>>>>> Develop
 Function takes an outline (defined by many points) with a set of fixed landmark coordinates and uses the thin-plate spline method (Bookstein 1989) 
 to warp the outline into the shape defined by a second set of landmark coordinates, usually those of the 
 mean shape for a set of aligned specimens. It is highly recommended that the mean shape is used as the 
@@ -34,7 +39,11 @@ specimen - do this by eye, or use \code{\link{findMeanSpec}} }
 }
 The returned outline object is for use in geomorph
 functions where shape deformations are plotted (\code{\link{plotTangentSpace}}, 
+<<<<<<< HEAD
 \code{\link{plotAllometry}}, \code{\link{bilat.symmetry}}, and \code{\link{plotRefToTarget}}).
+=======
+\code{\link{two.b.pls}}, \code{\link{bilat.symmetry}}, and \code{\link{plotRefToTarget}}).
+>>>>>>> Develop
 }
 \author{
 Emma Sherratt

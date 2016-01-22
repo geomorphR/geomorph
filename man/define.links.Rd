@@ -14,7 +14,7 @@ define.links(spec, ptsize = 1, links = NULL)
 \item{links}{Optional An existing links matrix to add on to}
 }
 \value{
-Function returns a matrix of which landmarks will be linkes
+Function returns a matrix of which landmarks will be links
 to be used by \code{\link{plotAllSpecimens}} & \code{\link{plotRefToTarget}} option 'links='.
 }
 \description{

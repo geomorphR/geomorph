@@ -4,8 +4,7 @@
 \alias{compare.multi.evol.rates}
 \title{Comparing rates of shape evolution among traits on phylogenies}
 \usage{
-compare.multi.evol.rates(A, gp, phy, Subset = TRUE, ShowPlot = TRUE,
-  iter = 999)
+compare.multi.evol.rates(A, gp, phy, Subset = TRUE, iter = 999)
 }
 \arguments{
 \item{A}{A matrix (n x [p x k]) or 3D array (p x k x n) containing GPA-aligned coordinates for a set of specimens}
@@ -17,16 +16,23 @@ compare.multi.evol.rates(A, gp, phy, Subset = TRUE, ShowPlot = TRUE,
 \item{Subset}{A logical value indicating whether or not the traits are subsets from a single 
 landmark configuration (default is TRUE)}
 
-\item{ShowPlot}{A logical value indicating whether or not the plot should be returned}
-
 \item{iter}{Number of iterations for significance testing}
 }
 \value{
+<<<<<<< HEAD
 Function returns a list with the following components: 
   \item{rates.all}{The phylogenetic evolutionary rates for each trait}
   \item{rate.ratio}{The ratio of maximum to minimum evolutionary rates}
   \item{pvalue}{The significance level of the observed rate ratio}
   \item{pvalue.gps}{Matrix of pairwise significance levels comparing each pair of rates}
+=======
+An object of class "evolrate" returns a list of the following: 
+  \item{rates.all}{The phylogenetic evolutionary rates for each trait.}
+  \item{rate.ratio}{The ratio of maximum to minimum evolutionary rates.}
+  \item{pvalue}{The significance level of the observed rate ratio.}
+  \item{pvalue.gps}{Matrix of pairwise significance levels comparing each pair of rates.}
+  \item{call}{The matched call.}
+>>>>>>> Develop
 }
 \description{
 Function calculates rates of shape evolution for two or more multi-dimensional traits on a 
@@ -45,8 +51,12 @@ Denton and Adams 2015). Significance testing is accomplished by phylogenetic sim
 which tips data are obtained under Brownian motion using a an evolutionary rate matrix 
 for all traits, which contains a common rate for all trait dimensions (Denton and Adams 2015).
 If three or more traits are used, pairwise p-values are 
+<<<<<<< HEAD
 also returned. A histogram of evolutionary rate ratios obtained via phylogenetic simulation 
 is presented, with the observed value designated by an arrow in the plot.
+=======
+also returned.
+>>>>>>> Develop
 
 The shape data may be input as either a 3D array (p x k x n) containing GPA-aligned coordinates 
 for a set of species, or as a matrix (n x [p x k]) whose rows correspond to each species. In 
@@ -64,6 +74,11 @@ is performed without alteration as described above. However, if the shapes are d
 different structures (shapes) that were superimposed separately, then the estimates of the rates must 
 take the difference in the number of trait dimensions into account (see discussion in Denton and
 Adams 2015). This option is identified by selecting Subset = FALSE.
+
+The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with 
+ \code{\link{compare.multi.evol.rates}}.
+ The generic function, \code{\link{plot}}, produces a histogram of random rate-ratios associated with
+ the resampling procedure.
 }
 \examples{
 
@@ -71,7 +86,10 @@ data(plethspecies)
 Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment    
 land.gp<-c("A","A","A","A","A","B","B","B","B","B","B")  #mandible and cranium subsets
 
-compare.multi.evol.rates(Y.gpa$coords,land.gp,plethspecies$phy,iter=99)
+EMR<-compare.multi.evol.rates(A=Y.gpa$coords,gp=land.gp, 
+    Subset=TRUE, phy= plethspecies$phy,iter=999)
+summary(EMR)
+plot(EMR)
 }
 \author{
 Dean Adams
@@ -82,7 +100,11 @@ Adams, D.C. 2014. Quantifying and comparing phylogenetic evolutionary rates for
 
 Denton, J.S.S., and D.C. Adams. 2015. A new phylogenetic test for comparing 
 multiple high-dimensional evolutionary rates suggests interplay of evolutionary rates and 
+<<<<<<< HEAD
 modularity in lanternfishes (Myctophiformes; Myctophidae). Evolution. 69: doi:10.1111/evo.12743
+=======
+modularity in lanternfishes (Myctophiformes; Myctophidae). Evolution. 69:2425-2440.
+>>>>>>> Develop
 }
 \keyword{analysis}
 

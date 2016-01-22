@@ -2,7 +2,7 @@
 % Please edit documentation in R/digitsurface.r
 \name{digitsurface}
 \alias{digitsurface}
-\title{Digitize 3D fixed landmarks and surface semilandmarks.}
+\title{Digitize 3D fixed landmarks and surface semilandmarks}
 \usage{
 digitsurface(spec, fixed, ptsize = 1, center = TRUE)
 }
@@ -40,7 +40,11 @@ Some of the "fixed" landmarks digitized with digitsurface can be later designate
 \subsection{Digitizing}{
 Digitizing is interactive between landmark selection using a mouse (see below for instructions), 
 and the R console. Once a point is selected, the user is asked if the system should keep or discard the 
+<<<<<<< HEAD
 selection #'(y/n). If "y", the user is asked to continue to select the next landmark. If "n" the removes the last chosen
+=======
+selection (y/n). If "y", the user is asked to continue to select the next landmark. If "n" the removes the last chosen
+>>>>>>> Develop
 landmark, and the user is asked to select it again. This can be repeated until the user is comfortable with the landmark
 chosen.
 

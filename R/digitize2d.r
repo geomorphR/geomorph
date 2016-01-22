@@ -1,4 +1,4 @@
-#' Digitize 2D landmarks.
+#' Digitize 2D landmarks on .jpg files
 #'
 #' An interactive function to digitize two-dimensional(2D) landmarks from .jpg files.
 #'
@@ -36,19 +36,23 @@
 #'  
 #' If verbose = FALSE the digitizing of landmarks is continuous and uninterrupted. Here the user will not be prompted to approve each landmark selection. 
 #'  
-#'   At the end of digitizing, the landmark coordinates are written to a TPS file. The x,y values are unscaled if a vector of scales is included, and the scale is returned on line SCALE= after each specimen x,y data.
+#'   At the end of digitizing, the landmark coordinates are written to a TPS file. By default, the 
+#'   x,y values are unscaled if a vector of scales is included, and the scale is returned on line 
+#'   SCALE= after each specimen x,y data.  Optionally, one may have the coordinates pre-multiplied by
+#'   scale by using the option MultScale=TRUE.
 #'   }
 #' 
 #' @param filelist A list of names of jpeg images to be digitized. 
 #' @param nlandmarks Number of landmarks to be digitized.
 #' @param scale An vector containing the length of the scale to be placed on each image.
 #' @param tpsfile The name of a TPS file to be created or read
+#' @param MultScale A logical option indicating if the coordinates should be pre-multiplied by scale
 #' @param verbose logical. User decides whether to digitize in verbose or silent format (see details), default is verbose
 #' @return Function returns a tps file containing the digitized landmark coordinates.
 #' @keywords digitizing
 #' @export
 #' @author Dean Adams, Erik Otarola-Castillo and Emma Sherratt
-digitize2d <- function (filelist, nlandmarks, scale=NULL, tpsfile, verbose = TRUE) 
+digitize2d <- function (filelist, nlandmarks, scale=NULL, tpsfile, MultScale=FALSE,verbose = TRUE) 
 {
   flist <- dir()
   if (sum(which(flist == tpsfile)) == 0) {
@@ -71,6 +75,9 @@ digitize2d <- function (filelist, nlandmarks, scale=NULL, tpsfile, verbose = TRU
   }
   digitized <- apply(two.d.array(newdata), 1, sum)
   digstart <- min(which(digitized == 0))
+  if(is.infinite(digstart)){
+    stop("It appears that all specimens have already been digitized.")
+  }
   for (i in digstart:length(filelist)) {
     cat(paste("Digitizing specimen", i, "in filelist"), 
         "\n")
@@ -140,8 +147,13 @@ digitize2d <- function (filelist, nlandmarks, scale=NULL, tpsfile, verbose = TRU
       }
     }
     newdata[, , i] <- selected
-    if(!is.null(scalebar)){writeland.tps(newdata, tpsfile, scale = scalebar)}
+    if(MultScale==TRUE){newdata[,,i]<-selected*scalebar}
     if(is.null(scalebar)){writeland.tps(newdata, tpsfile)}
+    if(!is.null(scalebar) && MultScale==FALSE){
+      writeland.tps(newdata, tpsfile, scale = scalebar)}
+    if(!is.null(scalebar) && MultScale==TRUE){
+      writeland.tps(newdata, tpsfile)}
+
     if (i < length(filelist)) {
       cat(paste("Continue to next specimen (y/n)?"), "\n")
       ans <- readLines(n = 1)
@@ -150,5 +162,5 @@ digitize2d <- function (filelist, nlandmarks, scale=NULL, tpsfile, verbose = TRU
       }
     }
   }
-  cat(paste("All specimens in filelist have been digitized to",  tpsfile), "\n")
+  cat(paste("All specimens from session have been digitized to",  tpsfile), "\n")
 }

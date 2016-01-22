@@ -16,7 +16,7 @@
 #' @param spec Name of specimen, as an object matrix containing 2D or 3D landmark coordinates
 #' @param ptsize Numeric Size to plot the landmarks
 #' @param links Optional An existing links matrix to add on to
-#' @return Function returns a matrix of which landmarks will be linkes
+#' @return Function returns a matrix of which landmarks will be links
 #' to be used by \code{\link{plotAllSpecimens}} & \code{\link{plotRefToTarget}} option 'links='.
 #' @export
 #' @keywords utilities

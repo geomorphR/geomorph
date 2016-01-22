@@ -13,7 +13,7 @@ define.modules(spec, nmodules)
 }
 \value{
 Function returns a vector of which landmarks belong in which module (e.g. 1,1,1,2,2,3,3,3,2) to be used
-with \code{\link{compare.modular.partitions}} option 'landgroups'.
+with \code{\link{modularity.test}} or \code{\link{integration.test}}.
 }
 \description{
 An interactive function to define which landmarks should be assigned to each module (landmark partition).
@@ -21,7 +21,11 @@ An interactive function to define which landmarks should be assigned to each mod
 \details{
 Function takes a matrix of digitized landmark coordinates (e.g. from \code{\link{mshape}}) and allows the user to assign 
 landmarks to each module. The output is a list of which 
+<<<<<<< HEAD
 landmarks belong in which partition, to be used by \code{\link{compare.modular.partitions}}.  
+=======
+landmarks belong in which partition, to be used by \code{\link{modularity.test}} or \code{\link{integration.test}}.  
+>>>>>>> Develop
  
  \subsection{Selection in 2D}{ 
 Choosing which landmarks will be included in each module involves landmark selection using a mouse in 
@@ -35,7 +39,11 @@ landmarks for module 2. Repeat until all modules are defined.
 Choosing which landmarks will be included in each module involves landmark selection using a mouse in 
 the rgl plot window. The user is prompted to select one or more landmarks. To do so, use the RIGHT mouse button 
 (or command + LEFT button for Mac users), draw a rectangle around landmarks to select.
+<<<<<<< HEAD
 Selected landmarks will be coloured yellow. Then type into the console a letter (e.g. 1, 2, 3...) to assign selected landmark(s) 
+=======
+Selected landmarks will be colored yellow. Then type into the console a letter (e.g. 1, 2, 3...) to assign selected landmark(s) 
+>>>>>>> Develop
 to this module. Repeat until all landmarks are assigned to modules.
 }
 }
@@ -43,7 +51,7 @@ to this module. Repeat until all landmarks are assigned to modules.
 Emma Sherratt
 }
 \seealso{
-\code{\link{compare.modular.partitions}}
+\code{\link{modularity.test}} and \code{\link{integration.test}}
 }
 \keyword{utilities}
 

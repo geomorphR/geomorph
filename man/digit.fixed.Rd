@@ -2,7 +2,7 @@
 % Please edit documentation in R/digit.fixed.r
 \name{digit.fixed}
 \alias{digit.fixed}
-\title{Digitize 3D landmarks}
+\title{Digitize 3D landmarks on mesh3d object}
 \usage{
 digit.fixed(spec, fixed, index = FALSE, ptsize = 1, center = TRUE)
 }

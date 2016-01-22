@@ -1,4 +1,4 @@
-#' Digitize 3D landmarks
+#' Digitize 3D landmarks on mesh3d object
 #'
 #' An interactive function to digitize three-dimensional (3D) landmarks.
 #' Input for the function is either a matrix of vertex coordinates defining a 3D surface object
