@@ -8,7 +8,7 @@ Details of the installion can be found here: <url> http://geomorphpackage.blogsp
 
 <code> install.packages("geomorph") </code>
 
-### To install the current version of geomorph R-package (same as CRAN) from Github using devtools:
+### To install the current version of geomorph R-package from Github using devtools:
 
 <i> Within R:</i>
 
@@ -16,14 +16,7 @@ Details of the installion can be found here: <url> http://geomorphpackage.blogsp
 
 <code> devtools::install_github("geomorphR/geomorph")</code>
 
-### To install the stable version of the current version of geomorph R-package from Github using devtools:
-Sometimes errors slip thorugh the cracks and are uploaded with the CRAN version. The "Stable" release of the current version of geomorph is held here on GitHub to fix major bugs.
-
-<i> Within R:</i>
-
-<code> install.packages("devtools")</code>
-
-<code> devtools::install_github("geomorphR/geomorph",ref = "Stable")</code>
+This installs a stable release of the current version of geomorph on CRAN, allowing us to quickly fix errors that slip thorugh the cracks and are uploaded with the CRAN version.
 
 ### To install the Development version (beta) of geomorph R-package from Github using devtools:
 
