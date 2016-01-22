@@ -9,7 +9,7 @@ CHANGES IN GEOMORPH VERSION 3.0.0
     o Added 'summary' option to most analytical functions
     o Plotting for most analytical functions as 'plot(res)' if res is output from function
     o Diagnostic plots for anova/regression added
-    o Nested ANOVA via nested.update of procD.lm objects
+    o Nested ANOVA via nested.update of procD.lm() objects
 
 
   OTHER CHANGES
@@ -22,6 +22,7 @@ CHANGES IN GEOMORPH VERSION 3.0.0
     o Added plotting options to plotAllSpecimens
   
   BUG FIXES
+    o Fixed morphol.disparity $Prob.Disp displaying NAs
 
 
 CHANGES IN GEOMORPH VERSION 2.1.7-1
