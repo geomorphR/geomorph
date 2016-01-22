@@ -14,10 +14,10 @@
 #' @export
 #' @keywords utilities
 #' @author Dean Adams & Mike Collyer
-#' @return Function returns a (p x k x n) array, where p is the number of landmark points, k is the number 
-#'   of landmark dimensions (2 or 3), and n is the number of specimens. The third dimension of this array 
-#'   contains names for each specimen if specified in the original input matrix.
-#'  @examples 
+#' @return Function returns a (p x k x n) array, where p is the number of landmark points, k is the
+#' number of landmark dimensions (2 or 3), and n is the number of specimens. The third dimension of
+#' this array contains names for each specimen if specified in the original input matrix.
+#' @examples 
 #' x<-matrix(rnorm(18),nrow=3)  # Random triangles (all coordinates on same row for each triangle)
 #' arrayspecs(x,3,2) 
 #'  

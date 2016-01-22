@@ -59,7 +59,7 @@ estimate.missing<-function(A,method=c("TPS","Reg")){
   if(method=="TPS"){
     A2<-A
     spec.NA<-which(rowSums(is.na(two.d.array(A)))>0)
-    Y.gpa<-gpagen(A[,,-spec.NA],ShowPlot = FALSE,PrinAxes=FALSE)
+    Y.gpa<-gpagen(A[,,-spec.NA],PrinAxes=FALSE)
     p<-dim(Y.gpa$coords)[1]; k<-dim(Y.gpa$coords)[2]; n<-dim(Y.gpa$coords)[3]    
     ref<-mshape(arrayspecs(two.d.array(Y.gpa$coords)*Y.gpa$Csize,p,k))
     for (i in 1:length(spec.NA)){
@@ -75,21 +75,21 @@ estimate.missing<-function(A,method=c("TPS","Reg")){
     A2<-A
     complete<-A[,,-spec.NA]
     incomplete<-A[,,spec.NA]
-    Y.gpa<-gpagen(complete,ShowPlot = FALSE, PrinAxes=FALSE)
+    Y.gpa<-gpagen(complete, PrinAxes=FALSE)
     ref<-mshape(arrayspecs(two.d.array(Y.gpa$coords)*Y.gpa$Csize,p,k))
     complete<-arrayspecs(two.d.array(Y.gpa$coords)*Y.gpa$Csize,p,k)
     if(length(dim(incomplete))>2){
       for (i in 1:dim(incomplete)[3]){
-        missing<-which(is.na(incomplete[,1,i])== T)
-        lndmk<-which(is.na(incomplete[,1,i])!= T)
-        tmp<-TransRot(incomplete[-missing,,i],ref[-missing,])[[1]]
+        missing<-which(is.na(incomplete[,1,i])== TRUE)
+        lndmk<-which(is.na(incomplete[,1,i])!= TRUE)
+        tmp <- apply.pPsup(center(ref[-missing,]), list(center(incomplete[-missing,,i])))[[1]]
         incomplete[lndmk,,i]<-tmp
       }      
     }
     if(length(dim(incomplete))==2){
       missing<-which(is.na(incomplete[,1])== T)
       lndmk<-which(is.na(incomplete[,1])!= T)
-      tmp<-TransRot(incomplete[-missing,],ref[-missing,])[[1]]
+      tmp <- apply.pPsup(center(ref[-missing,]), list(center(incomplete[-missing,])))[[1]]
       incomplete[lndmk,]<-tmp
     }
     A2[,,-spec.NA]<-complete
@@ -105,14 +105,14 @@ estimate.missing<-function(A,method=c("TPS","Reg")){
       U<-pls$u; V<-pls$v
       XScores<-x%*%U; YScores<-y%*%V
       beta<-coef(lm(YScores[,1]~XScores[,1]))
-        miss.xsc<-c(1,A.2d[spec.NA[i],-missing]%*%U[,1])
-        miss.ysc<-c(miss.xsc%*%beta,(rep(0,(ncol(y)-1))))
+      miss.xsc<-c(1,A.2d[spec.NA[i],-missing]%*%U[,1])
+      miss.ysc<-c(miss.xsc%*%beta,(rep(0,(ncol(y)-1))))
       pred.val<-miss.ysc%*%t(V)
-     for (j in 1:length(missing)){
+      for (j in 1:length(missing)){
         A.2d[spec.NA[i],missing[j]]<-pred.val[j]    
       }
     }
-  A2<-arrayspecs(A.2d,dim(A)[1],dim(A)[2])
+    A2<-arrayspecs(A.2d,dim(A)[1],dim(A)[2])
   }
   return(A2)
 }

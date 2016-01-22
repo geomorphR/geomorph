@@ -62,14 +62,13 @@
 #' method="vector",mag=3)
 #'
 #' # Three dimensional data
-#' data(scallops)
-#' Y.gpa<-gpagen(A=scallops$coorddata, curves=scallops$curvslide, surfaces=scallops$surfslide)
-#' ref<-mshape(Y.gpa$coords)
-#' plotRefToTarget(ref,Y.gpa$coords[,,1],method="points")
-#' scallinks <- matrix(c(1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,11,11,12,12,13,13,
-#' 14,14,15,15,16,16,1), nrow=16, byrow=TRUE)
-#' plotRefToTarget(ref,Y.gpa$coords[,,1],gridPars=gridPar(tar.pt.bg = "blue", tar.link.col="blue",
-#'  tar.link.lwd=2), method="points", links = scallinks)
+#' # data(scallops)
+#' # Y.gpa<-gpagen(A=scallops$coorddata, curves=scallops$curvslide, surfaces=scallops$surfslide)
+#' # ref<-mshape(Y.gpa$coords)
+#' # plotRefToTarget(ref,Y.gpa$coords[,,1],method="points")
+#' # scallinks <- matrix(c(1,rep(2:16, each=2),1), nrow=16, byrow=TRUE)
+#' # plotRefToTarget(ref,Y.gpa$coords[,,1],gridPars=gridPar(tar.pt.bg = "blue", tar.link.col="blue",
+#' # tar.link.lwd=2), method="points", links = scallinks)
 #' 
 plotRefToTarget<-function(M1,M2,mesh= NULL,outline=NULL,method=c("TPS","vector","points","surface"),
                           mag=1.0,links=NULL, label=FALSE, gridPars = NULL, useRefPts=FALSE,...){
@@ -240,8 +239,6 @@ plotRefToTarget<-function(M1,M2,mesh= NULL,outline=NULL,method=c("TPS","vector",
       warp <- tps2d3d(vb, M1, M2)
       warp.PLY$vb <- rbind(t(warp), 1)
       open3d(); shade3d(warp.PLY, ...)
-      if(label == TRUE){text3d(M1, texts = paste(1:dim(M1)[1]), adj=gP$txt.adj,
-                               pos=gP$txt.pos,cex=gP$txt.cex,col=gP$txt.col)}
       return(warp.PLY)
     }
   }

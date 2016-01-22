@@ -28,6 +28,7 @@
 #' @param txt.pos The position of the landmark label (single numerical value, as in base R \code{\link{text}}) 
 #' @param txt.cex The size of the landmark label text (single numerical value, as in base R \code{\link{text}})
 #' @param txt.col The color of the landmark label text (single numerical value, as in base R \code{\link{text}})
+#' @keywords utilities
 #' @keywords visualization
 #' @export
 #' @author Michael Collyer & Emma Sherratt

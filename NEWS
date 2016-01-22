@@ -1,9 +1,38 @@
+CHANGES IN GEOMORPH VERSION 3.0.0
+
+  NEW FEATURES
+    o New functions: modularity.test(), integration.test(), phylo.modularity(), 
+        phylo.integration(), procD.allometry(), nested.update(), geomorph.data.frame()
+    o Seed option added for most analytical functions
+    o Major overhaul of underlying support code for analytics
+    o Output from analytical functions provided in lists
+    o Added 'summary' option to most analytical functions
+    o Plotting for most analytical functions as 'plot(res)' if res is output from function
+    o Diagnostic plots for anova/regression added
+    o Nested ANOVA via nested.update of procD.lm objects
+
+
+  OTHER CHANGES
+    o Deprecated: compare.modular.partitions(), morphol.integr(), phylo.pls(), and plotAllometry() 
+    o Removed internal C-code for gpagen
+    o Removed automatic plots for most analytical functions
+    o Removed method="" parameter from physignal(). Only Kmult used
+    o Removed verbose option for most functions: all output provided in lists
+    o Added option to pre-multiply coordinates by scale in digitize2d
+    o Added plotting options to plotAllSpecimens
+  
+  BUG FIXES
+
+
 CHANGES IN GEOMORPH VERSION 2.1.7-1
 
+  NEW FEATURES
+  
+  OTHER CHANGES
+  
   BUG FIXES
-    o Fixed error with warpRefToTarget() due to change in tps2d3d()
-    o Fixed error with 3D arrays in f1 of model functions
-    o Fixed errors with procD.fit and associated functions (problems included data-framing and correct degrees of freedom)
+    o Fixed small change in C-code for gpagen
+  
   
 CHANGES IN GEOMORPH VERSION 2.1.7
 

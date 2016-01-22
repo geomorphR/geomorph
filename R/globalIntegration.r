@@ -22,8 +22,7 @@
 #' @keywords analysis
 #' @author Dean Adams
 #' @references  Bookstein, F. L. 2015. Integration, disintegration, and self-similarity: 
-#' Characterizing the scales of shape variaiton in landmark data. Evol. Biol. 
-#' DOI 10.1007/s11692-015-9317-8
+#' Characterizing the scales of shape variation in landmark data. Evol. Biol.42(4): 395-426.
 #' 
 #' @examples
 #' data(plethodon) 

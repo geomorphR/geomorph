@@ -1,4 +1,4 @@
-#' Select points to "slide" along curves.
+#' Select points to "slide" along curves
 #'
 #' An interactive function to define which landmarks will "slide" along two-dimensional (2D) or
 #' three-dimensional (3D) curves.

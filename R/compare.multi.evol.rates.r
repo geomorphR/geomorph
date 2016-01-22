@@ -15,8 +15,7 @@
 #' which tips data are obtained under Brownian motion using a an evolutionary rate matrix 
 #' for all traits, which contains a common rate for all trait dimensions (Denton and Adams 2015).
 #' If three or more traits are used, pairwise p-values are 
-#' also returned. A histogram of evolutionary rate ratios obtained via phylogenetic simulation 
-#' is presented, with the observed value designated by an arrow in the plot. 
+#' also returned. 
 #' 
 #' The shape data may be input as either a 3D array (p x k x n) containing GPA-aligned coordinates 
 #' for a set of species, or as a matrix (n x [p x k]) whose rows correspond to each species. In 
@@ -34,36 +33,44 @@
 #' different structures (shapes) that were superimposed separately, then the estimates of the rates must 
 #' take the difference in the number of trait dimensions into account (see discussion in Denton and
 #' Adams 2015). This option is identified by selecting Subset = FALSE.
-#'  
+#' 
+#'  The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with 
+#'  \code{\link{compare.multi.evol.rates}}.
+#'  The generic function, \code{\link{plot}}, produces a histogram of random rate-ratios associated with
+#'  the resampling procedure.
+#'
 #' @param A A matrix (n x [p x k]) or 3D array (p x k x n) containing GPA-aligned coordinates for a set of specimens
 #' @param gp A factor array designating group membership
 #' @param phy A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape
 #' @param Subset A logical value indicating whether or not the traits are subsets from a single 
 #' landmark configuration (default is TRUE)
-#' @param ShowPlot A logical value indicating whether or not the plot should be returned
 #' @param iter Number of iterations for significance testing
 #' @keywords analysis
 #' @author Dean Adams
 #' @export
-#' @return Function returns a list with the following components: 
-#'   \item{rates.all}{The phylogenetic evolutionary rates for each trait}
-#'   \item{rate.ratio}{The ratio of maximum to minimum evolutionary rates}
-#'   \item{pvalue}{The significance level of the observed rate ratio}
-#'   \item{pvalue.gps}{Matrix of pairwise significance levels comparing each pair of rates}
+#' @return An object of class "evolrate" returns a list of the following: 
+#'   \item{rates.all}{The phylogenetic evolutionary rates for each trait.}
+#'   \item{rate.ratio}{The ratio of maximum to minimum evolutionary rates.}
+#'   \item{pvalue}{The significance level of the observed rate ratio.}
+#'   \item{pvalue.gps}{Matrix of pairwise significance levels comparing each pair of rates.}
+#'   \item{call}{The matched call.}
 #'   
 #' @references Adams, D.C. 2014. Quantifying and comparing phylogenetic evolutionary rates for 
 #'  shape and other high-dimensional phenotypic data. Syst. Biol. 63:166-177.
 #' @references Denton, J.S.S., and D.C. Adams. 2015. A new phylogenetic test for comparing 
 #' multiple high-dimensional evolutionary rates suggests interplay of evolutionary rates and 
-#' modularity in lanternfishes (Myctophiformes; Myctophidae). Evolution. 69: doi:10.1111/evo.12743
+#' modularity in lanternfishes (Myctophiformes; Myctophidae). Evolution. 69:2425-2440.
 #' @examples
 #' 
 #' data(plethspecies) 
 #' Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment    
 #' land.gp<-c("A","A","A","A","A","B","B","B","B","B","B")  #mandible and cranium subsets
 #'
-#' compare.multi.evol.rates(Y.gpa$coords,land.gp,plethspecies$phy,iter=99)
-compare.multi.evol.rates<-function(A,gp,phy,Subset=TRUE,ShowPlot=TRUE,iter=999){
+#' EMR<-compare.multi.evol.rates(A=Y.gpa$coords,gp=land.gp, 
+#'     Subset=TRUE, phy= plethspecies$phy,iter=999)
+#' summary(EMR)
+#' plot(EMR)
+compare.multi.evol.rates<-function(A,gp,phy,Subset=TRUE,iter=999){
   if(any(is.na(A))==T){
     stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').")}
   gp<-as.factor(gp)
@@ -74,7 +81,7 @@ compare.multi.evol.rates<-function(A,gp,phy,Subset=TRUE,ShowPlot=TRUE,iter=999){
   if (length(dim(A))==2){ x<-A
                           if(length(gp)!=ncol(x)){stop("Not all variables are assigned to a partition.")}
                           gps<-gp  }
-  ngps<-nlevels(gp)
+  ngps<-nlevels(gps)
   if(ngps==1){stop("Only one shape assigned.")}
   ntaxa<-length(phy$tip.label)
   N<-nrow(x) 
@@ -88,76 +95,32 @@ compare.multi.evol.rates<-function(A,gp,phy,Subset=TRUE,ShowPlot=TRUE,iter=999){
     stop("Data matrix missing some taxa present on the tree.")
   if(length(match(phy$tip.label,rownames(x)))!=N) 
     stop("Tree missing some taxa in the data matrix.")
-  sigma.d<-function(phy,x,Subset){
-    ones<-array(1,N)
-    p<-ncol(x)
-    C<-vcv.phylo(phy)
-    C<-C[rownames(x),rownames(x)]
-    a.obs<-colSums(solve(C))%*%x/sum(solve(C))  
-    eigC <- eigen(C)
-    lambda <- zapsmall(eigC$values)
-    if(any(lambda == 0)){
-      warning("Singular phylogenetic covariance matrix. Proceed with caution")
-      lambda = lambda[lambda > 0]
-    }
-    eigC.vect = eigC$vectors[,1:(length(lambda))]
-    D.mat <- solve(eigC.vect%*% diag(sqrt(lambda)) %*% t(eigC.vect)) 
-    dist.adj<-as.matrix(dist(rbind((D.mat%*%(x-(ones%*%a.obs))),0))) 
-    vec.d2<-dist.adj[N+1,1:N]^2
-    sigma<-sum(vec.d2)/N/p  
-    if(Subset==FALSE){sigma<-sum(vec.d2)/N}
-    return(sigma = sigma)
-  }
-  rate.global<-sigma.d(phy,x,Subset)
-  rate.gps<-array(NA,ngps)
-  for (i in 1:nlevels(gps)){rate.gps[i]<-sigma.d(phy,x[,which(gps==levels(gps)[i])],Subset)}
-  rate.ratio<-max(rate.gps)/min(rate.gps)
+  x<-as.matrix(x)
+  phy.parts<-phylo.mat(x,phy)
+  invC<-phy.parts$invC; D.mat<-phy.parts$D.mat;C = phy.parts$C
+  sigma.obs<-sigma.d.multi(x,invC,D.mat,gps,Subset)
+  R<-sigma.obs$R; diag(R)<-sigma.obs$rate.global
+  R<-matrix(nearPD(R,corr=FALSE)$mat,nrow=ncol(R),ncol=ncol(R))
+  x.sim<-sim.char(phy,R,nsim=iter) 
+  sigma.rand <- sapply(1:(iter), function(j) sigma.d.multi(as.matrix(x.sim[,,j]),invC,D.mat,gps,Subset))
+  random.sigma<-c(sigma.obs$sigma.d.ratio,as.vector(unlist(sigma.rand[1,])))
+  p.val <- pval(random.sigma)
+  ratio.vals<-matrix(NA,nrow=(iter+1),ncol=length(unlist(sigma.obs[4])))
+  ratio.vals[1,]<-as.vector(sigma.obs$sigma.d.gp.ratio)
+  for(i in 1:iter) ratio.vals[i+1,]<-as.vector(unlist(sigma.rand[4,][[i]]))
+  tmp.p.val.mat <- sapply(1:ncol(ratio.vals), function(j){ pval(ratio.vals[,j])})
+  p.val.mat<-dist(matrix(0,length(tmp.p.val.mat)))
+  if(ngps==2) p.val.mat<-tmp.p.val.mat
   if(ngps>2){
-    sig.rate.gps<-array(1,dim=c(ngps,ngps))
-    rate.ratio.gps<- array(0, dim = c(ngps, ngps))
-    for (i in 1:(ngps - 1)) {
-      for (j in 2:ngps) { tmp<-c(rate.gps[i],rate.gps[j])
-        rate.ratio.gps[i, j]<-rate.ratio.gps[j,i]  <-max(tmp)/min(tmp)
-        diag(rate.ratio.gps) <- 0
-      }
-    }
+    for(i in 1:length(p.val.mat)) p.val.mat[[i]] <- tmp.p.val.mat[i]
   }
-  ones<-array(1,N)
-  p<-ncol(x)
-  C<-vcv.phylo(phy)
-  C<-C[rownames(x),rownames(x)]
-  a.obs<-colSums(solve(C))%*%x/sum(solve(C))  
-  rate.mat<-t(x-ones%*%a.obs)%*%solve(C)%*%(x-ones%*%a.obs)/ntaxa
-  diag(rate.mat)<-rate.global
-  rate.mat<-matrix(nearPD(rate.mat,corr=FALSE)$mat,nrow=p,ncol=p)
-  x.sim<-sim.char(phy,rate.mat,nsim=iter) 
-  sig.rate<-1
-  rate.val<-rep(0,iter)
-  for(ii in 1:iter){
-    rate.gps.r<-array(NA,ngps)
-    for (i in 1:nlevels(gps)){rate.gps.r[i]<-sigma.d(phy,x.sim[,which(gps==levels(gps)[i]),ii],Subset)}
-    rate.ratio.r<-max(rate.gps.r)/min(rate.gps.r)
-    if(ngps>2){
-      rate.ratio.gps.r<- array(0, dim = c(ngps, ngps))
-      for (i in 1:(ngps - 1)) {
-        for (j in 2:ngps) {    tmp<-c(rate.gps.r[i],rate.gps.r[j])
-          rate.ratio.gps.r[i, j] <-rate.ratio.gps.r[j, i]<-max(tmp)/min(tmp)
-          diag(rate.ratio.gps.r) <- 0
-        }
-      }
-    }
-    sig.rate<-ifelse(rate.ratio.r>=rate.ratio, sig.rate+1,sig.rate)
-    if(ngps>2){ sig.rate.gps<-ifelse(rate.ratio.gps.r>=rate.ratio.gps, sig.rate.gps+1,sig.rate.gps) }
-    rate.val[ii]<-rate.ratio.r
-  }
-  sig.rate<-sig.rate/(iter+1)
-  if(ngps>2){  sig.rate.gps<-sig.rate.gps/(iter+1)}
-  rate.val[iter+1]=rate.ratio
-  if(ShowPlot==TRUE){ 
-  hist(rate.val,30,freq=TRUE,col="gray",xlab="SigmaD ratio")
-  arrows(rate.ratio,50,rate.ratio,5,length=0.1,lwd=2) }
-  if(ngps==2){
-    return(list(rates.all = rate.gps, rate.ratio = rate.ratio,pvalue=sig.rate))}
-  if(ngps>2){
-    return(list(rates.all = rate.gps, rate.ratio = rate.ratio,pvalue=sig.rate,pvalue.gps=sig.rate.gps))}
+  out <- list(sigma.d.ratio = sigma.obs$sigma.d.ratio, P.value=p.val,
+              sigma.d.gp = sigma.obs$rate.gps,
+              sigma.d.gp.ratio = sigma.obs$sigma.d.gp.ratio,
+              pairwise.pvalue = p.val.mat, groups = levels(gp), 
+              random.sigma = random.sigma, permutations=iter+1, call= match.call())
+  
+  class(out) <- "evolrate"
+  out 
+
 }

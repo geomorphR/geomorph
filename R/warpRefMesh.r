@@ -1,8 +1,8 @@
-#' Creates a mesh3d object warped to the mean shape.
+#' Creates a mesh3d object warped to the mean shape
 #' 
 #' A function to take a 3D mesh and use thin-plate spline method to warp the file
-#' into the estimated mean shape for a set of aligned specimens.
-#'  
+#' into the estimated mean shape for a set of aligned specimens
+#'
 #' Function takes a 3D mesh (class mesh3d or shape3d, e.g. from \code{\link{read.ply}}) and its digitized landmark coordinates 
 #' and uses the thin-plate spline method (Bookstein 1989) to warp the mesh into the shape 
 #' defined by a second set of landmark coordinates, usually those of the 
@@ -21,7 +21,7 @@
 #' specimen being centered prior to landmark acquisition in the RGL window. For landmark data collected outside
 #' of geomorph, centered=FALSE will usually be the case. The returned mesh3d object is for use in geomorph
 #' functions where shape deformations are plotted (\code{\link{plotTangentSpace}}, 
-#' \code{\link{plotAllometry}}, \code{\link{bilat.symmetry}}, and \code{\link{plotRefToTarget}}). 
+#' \code{\link{two.b.pls}}, \code{\link{bilat.symmetry}}, and \code{\link{plotRefToTarget}}). 
 #' 
 #' @param mesh A mesh3d object (e.g. made by \code{\link{read.ply}})
 #' @param mesh.coord A p x k matrix of 3D coordinates digitized on the ply file.

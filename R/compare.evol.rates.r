@@ -9,46 +9,53 @@
 #'  for each group is calculated, and a ratio of rates is obtained. If three or more groups of species are used, the ratio of 
 #'  the maximum to minimum rate is used as a test statistic (see Adams 2014). Significance testing 
 #'  is accomplished by phylogenetic simulation in which tips data are obtained under Brownian motion using a common 
-#'  evolutionary rate pattern for all species on the phylogeny (i.e., a common evolutionary rate matrix). This procedure is
-#'  more general, and retains the desirable statistical properties of earlier methods, but for a wider array of data types.  
-#'  If three or more groups of species are used, pairwise p-values are also returned. A histogram of evolutionary rate ratios obtained 
-#'  via phylogenetic simulation is presented, 
-#'  with the observed value designated by an arrow in the plot. The function can be used to obtain a rate for the whole
-#'  dataset of species by using a dummy group factor assigning all species to one group.
+#'  evolutionary rate pattern for all species on the phylogeny. Specifically, the common evolutionary rate matrix for all
+#'  species is used, with the multi-dimensional rate used along the diagonal elements (see Denton and Adams 2015). This procedure is
+#'  more general than the original simulation procedure, and retains the desirable statistical properties of earlier methods, 
+#'  and under a wider array of data types.  
+#'  If three or more groups of species are used, pairwise p-values are also calculated. The function can be used to obtain a 
+#'  rate for the whole dataset of species by using a dummy group factor assigning all species to one group.
 #'  
 #'  This function can be used with univariate data (i.e. centroid size) if imported as matrix with rownames
 #'  giving the taxa names.
+#'  
+#'  The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{compare.evol.rates}}.
+#'  The generic function, \code{\link{plot}}, produces a histogram of random rate-ratios associated with
+#'  the resampling procedure.
 #'
+#'  \subsection{Notes for geomorph 3.0}{ 
+#' Compared to older versions of geomorph, the order of input variables has changed, so that it is consistent with other functions
+#' in the program.  Additionally, for 3 or more groups, the pairwise p-values are found in the output object.}
 #' @param phy A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape
 #' @param A A matrix (n x [p x k]) or 3D array (p x k x n) containing GPA-aligned coordinates for a set of specimens
 #' @param gp A factor array designating group membership
-#' @param ShowPlot A logical value indicating whether or not the plot should be returned
 #' @param iter Number of iterations for significance testing
 #' @keywords analysis
 #' @author Dean Adams & Emma Sherratt
 #' @export
-#' @return Function returns a list with the following components: 
-#'   \item{sigma.d}{The phylogenetic evolutionary rate for all species on the phylogeny}
-#'   \item{sigmad.all}{The phylogenetic evolutionary rate for each group of species on the phylogeny}
-#'   \item{sigmad.ratio}{The ratio of maximum to minimum evolutionary rates}
-#'   \item{pvalue}{The significance level of the observed ratio}
-#'   \item{pairwise.pvalue}{Matrix of pairwise significance levels comparing each pair of rates}
+#' @return An object of class "evolrate" returns a list with the following components: 
+#'   \item{sigma.d.ratio}{The ratio of maximum to minimum evolutionary rates.}
+#'   \item{P.value}{The significance level of the observed ratio.}
+#'   \item{sigma.d.gp}{The phylogenetic evolutionary rate for each group of species on the phylogeny.}
+#'   \item{random.sigma}{The sigma values found in random permutations of the resampling procedure.}
+#'   \item{permutations}{The number of random permutations used.}
 #'   
 #' @references Adams, D.C. 2014. Quantifying and comparing phylogenetic evolutionary rates for 
 #'  shape and other high-dimensional phenotypic data. Syst. Biol. 63:166-177.
+#' @references Denton, J.S.S., and D.C. Adams. 2015. A new phylogenetic test for comparing 
+#' multiple high-dimensional evolutionary rates suggests interplay of evolutionary rates and 
+#' modularity in lanternfishes (Myctophiformes; Myctophidae). Evolution. 69:2425-2440.
 #' @examples
 #' data(plethspecies) 
 #' Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment    
-#'
 #'  gp.end<-factor(c(0,0,1,0,0,1,1,0,0))  #endangered species vs. rest
 #'  names(gp.end)<-plethspecies$phy$tip
 #' 
-#' #Calculate rates of shape
-#' compare.evol.rates(plethspecies$phy,Y.gpa$coords,gp=gp.end,iter=49)
-#' 
-#' #Calculate rates of size
-#' compare.evol.rates(plethspecies$phy,Y.gpa$Csize,gp=gp.end,iter=49)
-compare.evol.rates<-function(phy,A,gp,ShowPlot=TRUE,iter=999 ){
+#' ER<-compare.evol.rates(A=Y.gpa$coords, phy=plethspecies$phy,gp=gp.end,iter=999)
+#' summary(ER)
+#' plot(ER)
+compare.evol.rates<-function(A,phy,gp,iter=999 ){
+  gp<-as.factor(gp)
   if (length(dim(A))==3){ 
       if(is.null(dimnames(A)[[3]])){
       stop("Data matrix does not include taxa names as dimnames for 3rd dimension.")  }
@@ -63,8 +70,6 @@ compare.evol.rates<-function(phy,A,gp,ShowPlot=TRUE,iter=999 ){
     x<-as.matrix(A) }
   if(any(is.na(A))==T){
     stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').")  }
-  if(!is.factor(gp)){
-    stop("gp is not a factor.")}
   if (is.null(names(gp))){
     stop("Factor contains no names. Use names() to assign specimen names to group factor.")}
   if (class(phy) != "phylo") 
@@ -77,88 +82,47 @@ compare.evol.rates<-function(phy,A,gp,ShowPlot=TRUE,iter=999 ){
     stop("Data matrix missing some taxa present on the tree.")
   if(length(match(phy$tip.label,rownames(x)))!=N) 
     stop("Tree missing some taxa in the data matrix.")
-  p<-ncol(x)           
-  sigma.d<-function(phy,x,N,gp){
-    x<-prcomp(x)$x
-    gp<-gp[rownames(x)]
-    ngps<-nlevels(gp)
-    gpsz<-table(gp)
-    ones<-array(1,N)
-    C<-vcv.phylo(phy)
-    C<-C[rownames(x),rownames(x)]
-    a.obs<-colSums(solve(C))%*%x/sum(solve(C))  
-    eigC <- eigen(C)
-    lambda <- zapsmall(eigC$values)
-    if(any(lambda == 0)){
-      warning("Singular phylogenetic covariance matrix. Proceed with caution")
-      lambda = lambda[lambda > 0]
-    }
-    eigC.vect = eigC$vectors[,1:(length(lambda))]
-    D.mat <- solve(eigC.vect%*% diag(sqrt(lambda)) %*% t(eigC.vect)) 
-    dist.adj<-as.matrix(dist(rbind((D.mat%*%(x-(ones%*%a.obs))),0))) 
-    vec.d2<-dist.adj[N+1,1:N]^2
-    sigma.d<-tapply(vec.d2,gp,sum)/gpsz/p   
-    sigma.d.all<-sum(vec.d2)/N/p   
-    if (ngps==1){ return(sigma.d.all) }
-    if (ngps==2){sigma.d.rat<-max(sigma.d)/min(sigma.d)
-                 return(list(sigma.all = sigma.d.all, ratio = sigma.d.rat, sigma.d.all=sigma.d)) }
-    if(ngps>2){
-      sigma.d.rat.gp<- array(0, dim = c(ngps, ngps))
-      for (i in 1:(ngps - 1)) {
-        for (j in 2:ngps) {
-          tmp<-c(sigma.d[i],sigma.d[j])
-          sigma.d.rat.gp[i, j] <-max(tmp)/min(tmp)
-          diag(sigma.d.rat.gp) <- 0
-          sigma.d.rat.gp[lower.tri(sigma.d.rat.gp)] <- 0 }
-      }
-        sigma.d.rat <- max(sigma.d.rat.gp)
-        return(list(sigma.all = sigma.d.all, ratio = sigma.d.rat, sigma.d.all=sigma.d,
-                    sigma.gp = sigma.d.rat.gp)) 
-    }
+  p<-ncol(x)
+  gp<-gp[rownames(x)]
+  phy.parts<-phylo.mat(x,phy)
+  invC<-phy.parts$invC; D.mat<-phy.parts$D.mat;C = phy.parts$C
+  sigma.obs<-sigma.d(x,invC,D.mat,gp)
+  rate.mat<-sigma.obs$R
+  diag(rate.mat)<-sigma.obs$sigma.d.all
+  rate.mat<-matrix(nearPD(rate.mat,corr=FALSE)$mat,nrow=ncol(rate.mat),ncol=ncol(rate.mat))
+  x.sim<-sim.char(phy=phy,par=rate.mat,nsim=iter,model="BM") 
+  sigma.rand <- sapply(1:(iter), function(j) sigma.d(as.matrix(x.sim[,,j]),invC,D.mat,gp))
+  random.sigma<-c(sigma.obs$sigma.d.ratio,as.vector(unlist(sigma.rand[1,])))
+  if(nlevels(gp)>1){
+    p.val <- pval(random.sigma)
+    p.val.mat<-NULL
+    if(nlevels(gp)==2) p.val.mat<-p.val
+    if(nlevels(gp)>2){
+      ratio.vals<-matrix(NA,nrow=(iter+1),ncol=length(unlist(sigma.obs[4])))
+      ratio.vals[1,]<-as.vector(sigma.obs$sigma.d.gp.ratio)
+      for(i in 1:iter) ratio.vals[i+1,]<-as.vector(unlist(sigma.rand[4,][[i]]))
+      tmp.p.val.mat <- sapply(1:ncol(ratio.vals), function(j){ pval(ratio.vals[,j])})
+      p.val.mat<-dist(matrix(0,length(tmp.p.val.mat)))
+      for(i in 1:length(p.val.mat)) p.val.mat[[i]] <- tmp.p.val.mat[i]
+    }    
   }
-  if (nlevels(gp) == 1) {
-    print("Single group. Sigma calculated for all specimens together.")
-    sigmad.obs<-sigma.d(phy,x,ntaxa,gp) 
-    return(list(sigma.d = sigmad.obs))
+  if(nlevels(gp)==1){ 
+    out <- list(sigma.d.all = sigma.obs$sigma.d.all,
+                Ngroups = nlevels(gp))
+    
+    class(out) <- "evolrate1"
+    }
+  if(nlevels(gp)>1){
+    out <- list(sigma.d.ratio = sigma.obs$sigma.d.ratio, P.value=p.val,
+                sigma.d.all = sigma.obs$sigma.d.all,
+                sigma.d.gp = sigma.obs$sigma.d.gp,
+                sigma.d.gp.ratio = sigma.obs$sigma.d.gp.ratio,
+                pairwise.pvalue = p.val.mat, Ngroups = nlevels(gp),
+                groups = levels(gp),
+                random.sigma = random.sigma, permutations=iter+1, 
+                call = match.call())
+    
+    class(out) <- "evolrate"
   }
-  if (nlevels(gp) > 1) {
-    sigmad.obs<-sigma.d(phy,x,ntaxa,gp) 
-    ones<-array(1,N)
-    C<-vcv.phylo(phy); C<-C[rownames(x),rownames(x)]
-    a.obs<-colSums(solve(C))%*%x/sum(solve(C))  
-    rate.mat<-t(x-ones%*%a.obs)%*%solve(C)%*%(x-ones%*%a.obs)/N
-    x.sim<-sim.char(phy,rate.mat,nsim=iter) 
-    sig.sim<-1
-    if (nlevels(gp) > 2) {
-      gp.sig.sim <- array(1, dim = c(dim(sigmad.obs$sigma.gp)[1], 
-                                     dim(sigmad.obs$sigma.gp)[1]))}
-    rate.val<-rep(0,iter)
-    for(ii in 1:iter){
-      sigmad.sim<-sigma.d(phy,x.sim[,,ii],ntaxa,gp)
-      sig.sim<-ifelse(sigmad.sim$ratio>=sigmad.obs$ratio, sig.sim+1,sig.sim)
-      rate.val[ii]<-sigmad.sim$ratio
-      if (nlevels(gp) > 2) {
-        gp.sig.sim <- ifelse(sigmad.sim$sigma.gp >= sigmad.obs$sigma.gp, 
-                             gp.sig.sim + 1, gp.sig.sim)}
-    }
-    sig.sim<-sig.sim/(iter+1)
-    if (nlevels(gp) > 2) {
-      gp.sig.sim <- gp.sig.sim/(iter + 1)
-      rownames(gp.sig.sim) <- colnames(gp.sig.sim) <- levels(gp)
-      gp.sig.sim[lower.tri(gp.sig.sim)]<-NA
-    }
-    rate.val[iter+1]=sigmad.obs$ratio
-    if(ShowPlot==TRUE){ 
-      hist(rate.val,30,freq=TRUE,col="gray",xlab="SigmaD ratio")
-      arrows(sigmad.obs$ratio,50,sigmad.obs$ratio,5,length=0.1,lwd=2)
-      
-    }
-    if (nlevels(gp) > 2) {
-      return(list(sigma.d = sigmad.obs$sigma.all, sigmad.all = sigmad.obs$sigma.d.all, 
-                  sigmad.ratio = sigmad.obs$ratio, pvalue = sig.sim, pairwise.pvalue = gp.sig.sim))
-    } else if (nlevels(gp) == 2) {
-      return(list(sigma.d = sigmad.obs$sigma.all, sigmad.all = sigmad.obs$sigma.d.all, 
-                  sigmad.ratio = sigmad.obs$ratio, pvalue = sig.sim))
-    }
-  }
+  out 
 }
