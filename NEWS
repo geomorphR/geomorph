@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 CHANGES IN GEOMORPH VERSION 3.0.0
 
   NEW FEATURES
@@ -301,6 +302,8 @@ CHANGES IN GEOMORPH VERSION 1.1-0
   OTHER CHANGES
     o read.morphologika() accepts greater variety of input file formats
 =======
+=======
+>>>>>>> origin/Stable
 CHANGES IN GEOMORPH VERSION 3.0.0-1
 
     o Removed dependency on phytools 

@@ -203,4 +203,7 @@ import(utils)
 importFrom(Matrix,nearPD)
 importFrom(geiger,sim.char)
 importFrom(jpeg,readJPEG)
+<<<<<<< HEAD
+>>>>>>> origin/Stable
+=======
 >>>>>>> origin/Stable
