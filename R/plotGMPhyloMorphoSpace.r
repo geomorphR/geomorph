@@ -5,7 +5,7 @@
 #' The function creates a plot of the principal dimensions of tangent space for a set of Procrustes-aligned 
 #'   specimens. Default is a plot of PC axis 1 and 2. The phylogenetic tree for these specimens is superimposed in this plot revealing how shape 
 #'   evolves (e.g., Rohlf 2002; Klingenberg and Gidaszewski 2010). The plot also displays the ancestral 
-#'   states for each node of the phylogenetic tree (analagous to \code{\link[phytools]{fastAnc}} in phytools), whose values can optionally be returned. 
+#'   states for each node of the phylogenetic tree (analogous to \code{\link[phytools]{fastAnc}} in phytools), whose values can optionally be returned. 
 #'   If a tree with branch lengths scaled by time is used, with the option zaxis = "time", the function plots a 3D phylomorphospace, with internal nodes positioned along the Z-axis scaled 
 #'   to time (a.k.a. Chronophylomorphospace, Sakamoto & Ruta 2012).
 #'
