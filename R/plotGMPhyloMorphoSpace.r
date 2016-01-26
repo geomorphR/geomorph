@@ -17,7 +17,7 @@
 #' @param yaxis A numeric value indicating which PC axis should be displayed as the Y-axis (default = PC2)
 #' @param zaxis Optional, a numeric value indicating which PC axis should be displayed as the Z-axis (e.g. PC3) or if zaxis="time", 
 #' internal nodes are plotted along the Z-axis relative to time
-#' @param ancStates A logical value indicating whether ancestral state values should be returned
+#' @param ancStates Either a logical value indicating whether ancestral state values should be returned, or a matrix of ancestral states (i.e. calculated with \code{\link[phytools]{fastAnc}} or \code{\link[ape]{ace}})
 #' @param plot.param A list of plotting parameters for the tips (t.bg, t.pch, t.cex), nodes (n.bg, n.pch, n.cex), 
 #' branches (l.col, lwd), taxa labels (txt.cex, txt.adj, txt.col) and node labels (n.txt.cex, n.txt.adj, n.txt.col)
 #' @param shadow A logical value indicating whether a 2D phylomorphospace should be plotted at the base when zaxis="time"
@@ -40,8 +40,7 @@
 #'                  plot.param=list(t.bg="blue",txt.col="red",n.cex=1))
 #' #NOTE: 3D plot also available: plotGMPhyloMorphoSpace(plethspecies$phy,Y.gpa$coords, zaxis= "time",
 #' #                 plot.param=list(n.cex=2, n.bg="blue"), shadow=TRUE)
-plotGMPhyloMorphoSpace<-function(phy,A,tip.labels=TRUE,node.labels=TRUE,ancStates=TRUE, xaxis=1, yaxis=2, zaxis=NULL, 
-                                 plot.param = list(), shadow=FALSE){
+plotGMPhyloMorphoSpace<-function(phy,A,tip.labels=TRUE,node.labels=TRUE,ancStates=TRUE, xaxis=1, yaxis=2, zaxis=NULL, plot.param = list(), shadow=FALSE){
   if(any(is.na(A))==T){
     stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').")  }
   if (length(dim(A))==3){ 
@@ -72,15 +71,17 @@ plotGMPhyloMorphoSpace<-function(phy,A,tip.labels=TRUE,node.labels=TRUE,ancState
     if(is.null(p.p$txt.cex)) p.p$txt.cex=1 ; if(is.null(p.p$n.txt.adj)) p.p$n.txt.adj=c(-.1,-.1) 
     if(is.null(p.p$n.txt.col)) p.p$n.txt.col="black" ; if(is.null(p.p$n.txt.cex)) p.p$n.txt.cex=0.6
   x<-x[phy$tip.label, ]  
-  names<-row.names(x)
-  anc.states<-NULL
-  for (i in 1:ncol(x)){
-    options(warn=-1)  
-    tmp <- as.vector(fastAnc(phy, x[, i]))
-    anc.states<-cbind(anc.states,tmp)   }
-  colnames(anc.states)<-NULL
-  ## add labels to anc.states
-  row.names(anc.states)<-1:length(tmp)
+  # using phytools
+  # if(is.logical(ancStates)){anc.states<-apply(x, 2, fastAnc, tree=phy)} else {anc.states = ancStates}
+  # using ape
+  if(is.logical(ancStates)){
+    anc.states<-NULL
+    for (i in 1:ncol(x)){
+      options(warn=-1)  
+      tmp <- as.vector(ace(x[, i],phy)$ace)
+      anc.states<-cbind(anc.states,tmp)   }
+    colnames(anc.states)<-NULL
+    } else {anc.states = ancStates}
   all.data<-rbind(x,anc.states)  
   pcdata<-prcomp(all.data)$x 
   limits = function(x,s){ 
