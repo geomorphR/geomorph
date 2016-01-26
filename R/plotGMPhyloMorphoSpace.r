@@ -54,7 +54,7 @@ plotGMPhyloMorphoSpace<-function(phy,A,tip.labels=TRUE,node.labels=TRUE,ancState
   if (class(phy) != "phylo") 
     stop("tree must be of class 'phylo.'")
   if (!is.binary.tree(phy)) 
-    stop("tree is not fully bifurcating (consider 'multi2di' in ape.")
+    stop("tree is not fully bifurcating. Consider 'multi2di' in ape.")
   N<-length(phy$tip.label)
   Nnode <- phy$Nnode
   if(N!=dim(x)[1]){
