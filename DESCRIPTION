@@ -16,7 +16,6 @@ Imports:
     utils,
     jpeg,
     geiger,
-    phytools,
     Matrix
 Description: Read, manipulate, and digitize landmark data, generate shape
     variables via Procrustes analysis for points, curves and surfaces, perform

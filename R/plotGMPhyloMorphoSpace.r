@@ -54,36 +54,38 @@ plotGMPhyloMorphoSpace<-function(phy,A,tip.labels=TRUE,node.labels=TRUE,ancState
   if (class(phy) != "phylo") 
     stop("tree must be of class 'phylo.'")
   if (!is.binary.tree(phy)) 
-    stop("tree is not fully bifurcating.")
+    stop("tree is not fully bifurcating (consider 'multi2di' in ape.")
   N<-length(phy$tip.label)
+  Nnode <- phy$Nnode
   if(N!=dim(x)[1]){
     stop("Number of taxa in data matrix and tree are not not equal.")  }
   if(length(match(rownames(x), phy$tip.label))!=N) 
     stop("Data matrix missing some taxa present on the tree.")
   if(length(match(phy$tip.label,rownames(x)))!=N) 
     stop("Tree missing some taxa in the data matrix.")
-  p.p <- plot.param
-    if(is.null(p.p$t.bg)) p.p$t.bg="black" ; if(is.null(p.p$t.pch)) p.p$t.pch=21
-    if(is.null(p.p$t.cex)) p.p$t.cex=2 ; if(is.null(p.p$n.bg)) p.p$n.bg="white"
-    if(is.null(p.p$n.pch)) p.p$n.pch=21 ; if(is.null(p.p$n.cex)) p.p$n.cex=1.25
-    if(is.null(p.p$l.col)) p.p$l.col="black" ; if(is.null(p.p$lwd)) p.p$lwd=3
-    if(is.null(p.p$txt.adj)) p.p$txt.adj=c(-.1,-.1) ; if(is.null(p.p$txt.col)) p.p$txt.col="black"
-    if(is.null(p.p$txt.cex)) p.p$txt.cex=1 ; if(is.null(p.p$n.txt.adj)) p.p$n.txt.adj=c(-.1,-.1) 
-    if(is.null(p.p$n.txt.col)) p.p$n.txt.col="black" ; if(is.null(p.p$n.txt.cex)) p.p$n.txt.cex=0.6
   x<-x[phy$tip.label, ]  
-  # using phytools
-  # if(is.logical(ancStates)){anc.states<-apply(x, 2, fastAnc, tree=phy)} else {anc.states = ancStates}
-  # using ape
-  if(is.logical(ancStates)){
-    anc.states<-NULL
-    for (i in 1:ncol(x)){
-      options(warn=-1)  
-      tmp <- as.vector(ace(x[, i],phy)$ace)
-      anc.states<-cbind(anc.states,tmp)   }
-    colnames(anc.states)<-NULL
-    } else {anc.states = ancStates}
+  anc.states<-NULL   #follows fastAnc in phytools
+  for (i in 1:ncol(x)){
+    x1<-x[,i]
+    tmp <- vector()
+    for (j in 1:Nnode + N) {
+      a <- multi2di(root(phy, node = j))
+      tmp[j - N] <- ace(x1, a, method = "pic")$ace[1]
+    }
+    anc.states<-cbind(anc.states,tmp)   }
+  colnames(anc.states)<-NULL
+  row.names(anc.states)<-1:length(tmp)
   all.data<-rbind(x,anc.states)  
   pcdata<-prcomp(all.data)$x 
+#plotting  
+  p.p <- plot.param
+  if(is.null(p.p$t.bg)) p.p$t.bg="black" ; if(is.null(p.p$t.pch)) p.p$t.pch=21
+  if(is.null(p.p$t.cex)) p.p$t.cex=2 ; if(is.null(p.p$n.bg)) p.p$n.bg="white"
+  if(is.null(p.p$n.pch)) p.p$n.pch=21 ; if(is.null(p.p$n.cex)) p.p$n.cex=1.25
+  if(is.null(p.p$l.col)) p.p$l.col="black" ; if(is.null(p.p$lwd)) p.p$lwd=3
+  if(is.null(p.p$txt.adj)) p.p$txt.adj=c(-.1,-.1) ; if(is.null(p.p$txt.col)) p.p$txt.col="black"
+  if(is.null(p.p$txt.cex)) p.p$txt.cex=1 ; if(is.null(p.p$n.txt.adj)) p.p$n.txt.adj=c(-.1,-.1) 
+  if(is.null(p.p$n.txt.col)) p.p$n.txt.col="black" ; if(is.null(p.p$n.txt.cex)) p.p$n.txt.cex=0.6
   limits = function(x,s){ 
     r = range(x)
     rc=scale(r,scale=F)
