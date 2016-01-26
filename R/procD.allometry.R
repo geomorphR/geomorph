@@ -164,7 +164,7 @@ procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
   if(!is.null(f2) || !is.null(f3)){
     if(!is.null(data)) {
       data.types <- lapply(data, class)
-      keep = sapply(data.types, function(x) x != "array" & x != "phylo")
+      keep = sapply(data.types, function(x) x != "array" & x != "phylo" & x != "dist")
       dat2 <- as.data.frame(data[keep])
       } else dat2 <- NULL
       

@@ -77,7 +77,7 @@ morphol.disparity <- function(f1, groups = NULL, iter = 999, seed = NULL, data =
   if(!is.null(groups) & class(groups) != "formula") stop("groups must be a formula; e.g., groups = ~ X")
   if(is.null(groups)) gps <- single.factor(pfit) else {
     data.types <- lapply(data, class)
-    keep = sapply(data.types, function(x) x != "array" & x != "phylo")
+    keep = sapply(data.types, function(x) x != "array" & x != "phylo" & x != "dist")
     dat2 <- as.data.frame(data[keep])
     gps <- model.frame(groups, data= dat2)
     if(ncol(gps) > 1) gps <- factor(apply(gps, 1,function(x) paste(x, collapse=":"))) else 
