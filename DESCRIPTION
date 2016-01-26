@@ -6,8 +6,7 @@ Version: 3.0.0-1
 Author: Dean Adams, Michael Collyer, Emma Sherratt
 Maintainer: Dean Adams <dcadams@iastate.edu>
 Depends: rgl, ape, R(>= 3.1.0)
-Imports: graphics, grDevices, stats, utils, jpeg, geiger, phytools,
-        Matrix
+Imports: graphics, grDevices, stats, utils, jpeg, geiger, Matrix
 Description: Read, manipulate, and digitize landmark data, generate shape
     variables via Procrustes analysis for points, curves and surfaces, perform
     shape analyses, and provide graphical depictions of shapes and patterns of
