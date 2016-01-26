@@ -5,7 +5,7 @@
 #' The function creates a plot of the principal dimensions of tangent space for a set of Procrustes-aligned 
 #'   specimens. Default is a plot of PC axis 1 and 2. The phylogenetic tree for these specimens is superimposed in this plot revealing how shape 
 #'   evolves (e.g., Rohlf 2002; Klingenberg and Gidaszewski 2010). The plot also displays the ancestral 
-#'   states for each node of the phylogenetic tree (analogous to \code{\link[phytools]{fastAnc}} from phytools), whose values can optionally be returned. 
+#'   states for each node of the phylogenetic tree (obtained from \code{\link[phytools]{fastAnc}}), whose values can optionally be returned. 
 #'   If a tree with branch lengths scaled by time is used, with the option zaxis = "time", the function plots a 3D phylomorphospace, with internal nodes positioned along the Z-axis scaled 
 #'   to time (a.k.a. Chronophylomorphospace, Sakamoto & Ruta 2012).
 #'
@@ -54,7 +54,7 @@ plotGMPhyloMorphoSpace<-function(phy,A,tip.labels=TRUE,node.labels=TRUE,ancState
   if (class(phy) != "phylo") 
     stop("tree must be of class 'phylo.'")
   if (!is.binary.tree(phy)) 
-    stop("tree is not fully bifurcating. Consider 'multi2di' in ape.")
+    stop("tree is not fully bifurcating (consider 'multi2di' in ape.")
   N<-length(phy$tip.label)
   Nnode <- phy$Nnode
   if(N!=dim(x)[1]){
