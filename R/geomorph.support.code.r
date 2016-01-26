@@ -17,7 +17,6 @@
 #' @import grDevices
 #' @importFrom geiger sim.char
 #' @importFrom jpeg readJPEG
-#' @importFrom phytools fastAnc
 #' @importFrom Matrix nearPD
 #' 
 #' @section geomorph TOC:
