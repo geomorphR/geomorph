@@ -675,7 +675,7 @@ pGpa.wSliders <- function(Y, curves, surf, ProcD = TRUE, PrinAxes = FALSE, Proj 
 #
 #
 tps<-function(matr, matt, n,sz=1.5, pt.bg="black",
-              grid.col="black", grid.lwd=1, grid.lty=1, refpts=FALSE){		#DCA: altered from J. Claude: 2D only	
+              grid.col="black", grid.lwd=1, grid.lty=1, refpts=FALSE,...){		#DCA: altered from J. Claude: 2D only	
   xm<-min(matt[,1])
   ym<-min(matt[,2])
   xM<-max(matt[,1])
@@ -686,7 +686,7 @@ tps<-function(matr, matt, n,sz=1.5, pt.bg="black",
   m<-round(0.5+(n-1)*(2/5*rX+ yM-ym)/(2/5*rX+ xM-xm))
   M<-as.matrix(expand.grid(a,b))
   ngrid<-tps2d(M,matr,matt)
-  plot(ngrid, cex=0.2,asp=1,axes=FALSE,xlab="",ylab="")
+  plot(ngrid, cex=0.2,asp=1,axes=FALSE,xlab="",ylab="", ...)
   for (i in 1:m){lines(ngrid[(1:n)+(i-1)*n,], col=grid.col,lwd=grid.lwd,lty=grid.lty)}
   for (i in 1:n){lines(ngrid[(1:m)*n-i+1,], col=grid.col,lwd=grid.lwd,lty=grid.lty)}
   if(refpts==FALSE) points(matt,pch=21,bg=pt.bg,cex=sz) else points(matr,pch=21,bg=pt.bg,cex=sz)
