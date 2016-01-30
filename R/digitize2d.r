@@ -44,7 +44,7 @@
 #' 
 #' @param filelist A list of names of jpeg images to be digitized. 
 #' @param nlandmarks Number of landmarks to be digitized.
-#' @param scale An vector containing the length of the scale to be placed on each image.
+#' @param scale A vector containing the length of the scale to be placed on each image.
 #' @param tpsfile The name of a TPS file to be created or read
 #' @param MultScale A logical option indicating if the coordinates should be pre-multiplied by scale
 #' @param verbose logical. User decides whether to digitize in verbose or silent format (see details), default is verbose
