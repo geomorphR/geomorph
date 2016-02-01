@@ -1346,7 +1346,7 @@ apply.pls <- function(x,y, RV=FALSE, iter, seed = NULL){
   if(jj > 100) j <- 1:100 else j <- 1:jj
   while(jj > 0){
     ind.j <- ind[j]
-    y.rand <-lapply(1:length(j), function(j) y[ind.j[[j]],])
+    y.rand <-lapply(1:length(j), function(i) y[ind.j[[i]],])
     if(RV == TRUE) RV.rand <- c(RV.rand,sapply(1:length(j), function(i) pls(x,y.rand[[i]], RV=TRUE, verbose = TRUE)$RV)) else
       r.rand <- c(r.rand, sapply(1:length(j), function(i) quick.pls(x,y.rand[[i]], px,py,pmin)))
     jj <- jj-length(j)
@@ -1757,7 +1757,7 @@ apply.plsmulti.phylo <- function(x,gps, invC,D.mat, iter, seed= NULL){
   r.rand <- NULL
   while(jj > 0){
     ind.j <- ind[j]
-    x.r <-lapply(1:length(j), function(i) x[ind.j[[j]],which(gps==levels(gps)[1])])
+    x.r <-lapply(1:length(j), function(i) x[ind.j[[i]],which(gps==levels(gps)[1])])
     r.rand <- c(r.rand, sapply(1:length(j), function(i) plsmulti.phylo(cbind(x.r[[i]],x[,which(gps!=levels(gps)[1])]), 
                            gps, invC,D.mat)$r.pls))
                 jj <- jj-length(j)
