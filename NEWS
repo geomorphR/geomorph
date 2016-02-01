@@ -1,6 +1,9 @@
 CHANGES IN GEOMORPH VERSION 3.0.1
 
     o Removed dependency on phytools
+    
+  BUG FIXES
+    o Fixed digitize2D scaling issue when different scales used in each image
 
 
 CHANGES IN GEOMORPH VERSION 3.0.0

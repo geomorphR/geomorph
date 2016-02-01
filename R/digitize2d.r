@@ -78,9 +78,10 @@ digitize2d <- function (filelist, nlandmarks, scale=NULL, tpsfile, MultScale=FAL
   if(is.infinite(digstart)){
     stop("It appears that all specimens have already been digitized.")
   }
+  
+  scalebar=vector(length=length(filelist))
   for (i in digstart:length(filelist)) {
-    cat(paste("Digitizing specimen", i, "in filelist"), 
-        "\n")
+    cat(paste("Digitizing specimen", i, "in filelist"), "\n")
     spec.name <- unlist(strsplit(basename(filelist[i]), "\\."))[1]
     specimen <- readJPEG(filelist[i], native = T)
     plot(seq(0, dim(specimen)[2], length.out = 10), seq(0, 
@@ -88,12 +89,12 @@ digitize2d <- function (filelist, nlandmarks, scale=NULL, tpsfile, MultScale=FAL
          ylab = "y", asp = 1, tck = 0, xaxt = "n", yaxt = "n")
     rasterImage(specimen, 1, 1, dim(specimen)[2], dim(specimen)[1])
     if (is.null(scale)) {
-      cat("Scale not provided! Proceed with caution.\n") 
+     cat("Scale not provided! Proceed with caution.\n") 
       scalebar = NULL
     }
     if (!is.null(scale)) {
       cat("Set scale =", scale[i], "\n")
-      scalebar <- picscale(scale[i])
+      scalebar[i] <- picscale(scale[i])
     }
     selected <- matrix(NA, nrow = nlandmarks, ncol = 2)
     fix <- NULL
@@ -113,26 +114,22 @@ digitize2d <- function (filelist, nlandmarks, scale=NULL, tpsfile, MultScale=FAL
         if (ans == "a") {
           selected[ii, 1] <- NA
           selected[ii, 2] <- NA
-          points(fix, type = "n", col = "black", cex = 1, 
-                 pch = 21, bg = "red")
+          points(fix, type = "n", col = "black", cex = 1, pch = 21, bg = "red")
         }
         if (ans == "n") {
-          cat(paste("Select Landmark ", ii, " Again"), 
-              "\n")
+          cat(paste("Select Landmark ", ii, " Again"), "\n")
         }
         while (ans == "n") {
           fix <- locator(n = 1, type = "p", col = "black", 
                          cex = 4, pch = 21, bg = "red")
-          cat(paste("Keep Landmark ", ii, "(y/n)?"), 
-              "\n")
+          cat(paste("Keep Landmark ", ii, "(y/n)?"),  "\n")
           ans <- readLines(n = 1)
           if (ans == "y") {
             selected[ii, 1] <- fix$x
             selected[ii, 2] <- fix$y
           }
           if (ans == "n") {
-            cat(paste("Select Landmark ", ii, " Again"), 
-                "\n")
+            cat(paste("Select Landmark ", ii, " Again"),   "\n")
           }
         }
       }
@@ -146,8 +143,9 @@ digitize2d <- function (filelist, nlandmarks, scale=NULL, tpsfile, MultScale=FAL
         selected[ii, 2] <- fix$y
       }
     }
-    newdata[, , i] <- selected
-    if(MultScale==TRUE){newdata[,,i]<-selected*scalebar}
+
+   newdata[, , i] <- selected
+    if(MultScale==TRUE){newdata[,,i]<-selected*scalebar[i]}
     if(is.null(scalebar)){writeland.tps(newdata, tpsfile)}
     if(!is.null(scalebar) && MultScale==FALSE){
       writeland.tps(newdata, tpsfile, scale = scalebar)}
