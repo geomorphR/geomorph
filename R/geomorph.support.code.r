@@ -295,8 +295,8 @@ getU <- function(y,tn, surf){
     if(k==3) pc23 <- sapply(1:length(surf), function(j) pc.dir[[j]][2,3])
     U[z11] <- pc11; U[z21] <- pc21; U[z21] <- pc12; U[z22] <- pc22
     if(k==3) U[z31] <- pc13; U[z32] <- pc23
-    }                   
-    U                  
+  }                   
+  U                  
 }
 
 # Ltemplate
@@ -394,7 +394,7 @@ getSurfPCs <- function(y, surf){
     p2z <- sapply(1:p, function(j) {x <- pc.dir[[j]]; if(is.matrix(x)) x[2,3] else 0})
   } else
   {p1z <- NULL; p2z <- NULL}
-    
+  
   list(p1x=p1x,p1y=p1y, p2x=p2x, p2y=p2y, p1z=p1z, p2z=p2z)
 }
 
@@ -405,15 +405,15 @@ semilandmarks.slide.tangents.BE <- function(y, tans, ref, L){
   yc <- y - ref
   p <- nrow(yc); k <-ncol(yc)
   if(k==3) {tx <- tans[,1]; ty <- tans[,2]; tz <- tans[,3 ]} else {tx <- tans[,1]; ty <- tans[,2]}
- 
-    if(k==3) {
-      int.part <- fast.ginv(t(t(tx*L)*tx)+t(t(ty*L)*ty)+ 
-                              t(t(tz*L)*tz))%*%cbind(tx*L,ty*L,tz*L)
-      Ht <- rbind(tx*int.part, ty*int.part, tz*int.part) 
-    } else {
-      int.part <- fast.ginv(t(t(tx*L)*tx)+t(t(ty*L)*ty))%*%cbind(tx*L,ty*L)
-      Ht <- rbind(tx*int.part, ty*int.part) 
-    }
+  
+  if(k==3) {
+    int.part <- fast.ginv(t(t(tx*L)*tx)+t(t(ty*L)*ty)+ 
+                            t(t(tz*L)*tz))%*%cbind(tx*L,ty*L,tz*L)
+    Ht <- rbind(tx*int.part, ty*int.part, tz*int.part) 
+  } else {
+    int.part <- fast.ginv(t(t(tx*L)*tx)+t(t(ty*L)*ty))%*%cbind(tx*L,ty*L)
+    Ht <- rbind(tx*int.part, ty*int.part) 
+  }
   y  - matrix(Ht%*%as.vector(yc), p,k)
 }
 
@@ -423,25 +423,25 @@ semilandmarks.slide.tangents.BE <- function(y, tans, ref, L){
 semilandmarks.slide.surf.BE <- function(y, surf, ref, L){
   yc <- y - ref
   p <- nrow(yc); k <-ncol(yc)
-    PC <- getSurfPCs(y, surf)
-    p1x <- PC$p1x; p1y <- PC$p1y; p1z <- PC$p1z; p2x <- PC$p2x; p2y <- PC$p2y; p2z <- PC$p2z
-    if(k==3) {
-      int.part <- fast.ginv(t(t(p1x*L)*p1x)+t(t(p1y*L)*p1y)+ 
-                              t(t(p1z*L)*p1z))%*%cbind(p1x*L,p1y*L,p1z*L)
-      Hp1 <- rbind(p1x*int.part, p1y*int.part, p1z*int.part) 
-    } else {
-      int.part <- fast.ginv(t(t(p1x*L)*p1x)+t(t(p1y*L)*p1y))%*%cbind(p1x*L,p1y*L)
-      Hp1 <- rbind(p1x*int.part, p1y*int.part) 
-    }
-    if(k==3) {
-      int.part <- fast.ginv(t(t(p2x*L)*p2x)+t(t(p2y*L)*p2y)+ 
-                              t(t(p2z*L)*p2z))%*%cbind(p2x*L,p2y*L,p2z*L)
-      Hp2 <- rbind(p2x*int.part, p2y*int.part, p2z*int.part) 
-    } else {
-      int.part <- fast.ginv(t(t(p2x*L)*p2x)+t(t(p2y*L)*p2y))%*%cbind(p2x*L,p2y*L)
-      Hp2 <- rbind(p2x*int.part, p2y*int.part) 
-    }
-    y  - matrix( Hp1%*%as.vector(yc) + Hp2%*%as.vector(yc), p,k) 
+  PC <- getSurfPCs(y, surf)
+  p1x <- PC$p1x; p1y <- PC$p1y; p1z <- PC$p1z; p2x <- PC$p2x; p2y <- PC$p2y; p2z <- PC$p2z
+  if(k==3) {
+    int.part <- fast.ginv(t(t(p1x*L)*p1x)+t(t(p1y*L)*p1y)+ 
+                            t(t(p1z*L)*p1z))%*%cbind(p1x*L,p1y*L,p1z*L)
+    Hp1 <- rbind(p1x*int.part, p1y*int.part, p1z*int.part) 
+  } else {
+    int.part <- fast.ginv(t(t(p1x*L)*p1x)+t(t(p1y*L)*p1y))%*%cbind(p1x*L,p1y*L)
+    Hp1 <- rbind(p1x*int.part, p1y*int.part) 
+  }
+  if(k==3) {
+    int.part <- fast.ginv(t(t(p2x*L)*p2x)+t(t(p2y*L)*p2y)+ 
+                            t(t(p2z*L)*p2z))%*%cbind(p2x*L,p2y*L,p2z*L)
+    Hp2 <- rbind(p2x*int.part, p2y*int.part, p2z*int.part) 
+  } else {
+    int.part <- fast.ginv(t(t(p2x*L)*p2x)+t(t(p2y*L)*p2y))%*%cbind(p2x*L,p2y*L)
+    Hp2 <- rbind(p2x*int.part, p2y*int.part) 
+  }
+  y  - matrix( Hp1%*%as.vector(yc) + Hp2%*%as.vector(yc), p,k) 
 }
 
 # semilandmarks.slide.tangents.surf.BE
@@ -451,32 +451,32 @@ semilandmarks.slide.tangents.surf.BE <- function(y, tans, surf, ref, L){
   yc <- y - ref
   p <- nrow(yc); k <-ncol(yc)
   if(k==3) {tx <- tans[,1]; ty <- tans[,2]; tz <- tans[,3 ]} else {tx <- tans[,1]; ty <- tans[,2]}
-    if(k==3) {
-      int.part <- fast.ginv(t(t(tx*L)*tx)+t(t(ty*L)*ty)+ 
-                              t(t(tz*L)*tz))%*%cbind(tx*L,ty*L,tz*L)
-      Ht <- rbind(tx*int.part, ty*int.part, tz*int.part) 
-    } else {
-      int.part <- fast.ginv(t(t(tx*L)*tx)+t(t(ty*L)*ty))%*%cbind(tx*L,ty*L)
-      Ht <- rbind(tx*int.part, ty*int.part) 
-    }
-    PC <- getSurfPCs(y, surf)
-    p1x <- PC$p1x; p1y <- PC$p1y; p1z <- PC$p1z; p2x <- PC$p2x; p2y <- PC$p2y; p2z <- PC$p2z
-    if(k==3) {
-      int.part <- fast.ginv(t(t(p1x*L)*p1x)+t(t(p1y*L)*p1y)+ 
-                              t(t(p1z*L)*p1z))%*%cbind(p1x*L,p1y*L,p1z*L)
-      Hp1 <- rbind(p1x*int.part, p1y*int.part, p1z*int.part) 
-    } else {
-      int.part <- fast.ginv(t(t(p1x*L)*p1x)+t(t(p1y*L)*p1y))%*%cbind(p1x*L,p1y*L)
-      Hp1 <- rbind(p1x*int.part, p1y*int.part) 
-    }
-    if(k==3) {
-      int.part <- fast.ginv(t(t(p2x*L)*p2x)+t(t(p2y*L)*p2y)+ 
-                              t(t(p2z*L)*p2z))%*%cbind(p2x*L,p2y*L,p2z*L)
-      Hp2 <- rbind(p2x*int.part, p2y*int.part, p2z*int.part) 
-    } else {
-      int.part <- fast.ginv(t(t(p2x*L)*p2x)+t(t(p2y*L)*p2y))%*%cbind(p2x*L,p2y*L)
-      Hp2 <- rbind(p2x*int.part, p2y*int.part) 
-    }
+  if(k==3) {
+    int.part <- fast.ginv(t(t(tx*L)*tx)+t(t(ty*L)*ty)+ 
+                            t(t(tz*L)*tz))%*%cbind(tx*L,ty*L,tz*L)
+    Ht <- rbind(tx*int.part, ty*int.part, tz*int.part) 
+  } else {
+    int.part <- fast.ginv(t(t(tx*L)*tx)+t(t(ty*L)*ty))%*%cbind(tx*L,ty*L)
+    Ht <- rbind(tx*int.part, ty*int.part) 
+  }
+  PC <- getSurfPCs(y, surf)
+  p1x <- PC$p1x; p1y <- PC$p1y; p1z <- PC$p1z; p2x <- PC$p2x; p2y <- PC$p2y; p2z <- PC$p2z
+  if(k==3) {
+    int.part <- fast.ginv(t(t(p1x*L)*p1x)+t(t(p1y*L)*p1y)+ 
+                            t(t(p1z*L)*p1z))%*%cbind(p1x*L,p1y*L,p1z*L)
+    Hp1 <- rbind(p1x*int.part, p1y*int.part, p1z*int.part) 
+  } else {
+    int.part <- fast.ginv(t(t(p1x*L)*p1x)+t(t(p1y*L)*p1y))%*%cbind(p1x*L,p1y*L)
+    Hp1 <- rbind(p1x*int.part, p1y*int.part) 
+  }
+  if(k==3) {
+    int.part <- fast.ginv(t(t(p2x*L)*p2x)+t(t(p2y*L)*p2y)+ 
+                            t(t(p2z*L)*p2z))%*%cbind(p2x*L,p2y*L,p2z*L)
+    Hp2 <- rbind(p2x*int.part, p2y*int.part, p2z*int.part) 
+  } else {
+    int.part <- fast.ginv(t(t(p2x*L)*p2x)+t(t(p2y*L)*p2y))%*%cbind(p2x*L,p2y*L)
+    Hp2 <- rbind(p2x*int.part, p2y*int.part) 
+  }
   y  - matrix(Ht%*%as.vector(yc) + Hp1%*%as.vector(yc) + Hp2%*%as.vector(yc), p,k) 
 }
 
@@ -675,7 +675,7 @@ pGpa.wSliders <- function(Y, curves, surf, ProcD = TRUE, PrinAxes = FALSE, Proj 
 #
 #
 tps<-function(matr, matt, n,sz=1.5, pt.bg="black",
-              grid.col="black", grid.lwd=1, grid.lty=1, refpts=FALSE,...){		#DCA: altered from J. Claude: 2D only	
+              grid.col="black", grid.lwd=1, grid.lty=1, refpts=FALSE){		#DCA: altered from J. Claude: 2D only	
   xm<-min(matt[,1])
   ym<-min(matt[,2])
   xM<-max(matt[,1])
@@ -686,7 +686,7 @@ tps<-function(matr, matt, n,sz=1.5, pt.bg="black",
   m<-round(0.5+(n-1)*(2/5*rX+ yM-ym)/(2/5*rX+ xM-xm))
   M<-as.matrix(expand.grid(a,b))
   ngrid<-tps2d(M,matr,matt)
-  plot(ngrid, cex=0.2,asp=1,axes=FALSE,xlab="",ylab="", ...)
+  plot(ngrid, cex=0.2,asp=1,axes=FALSE,xlab="",ylab="")
   for (i in 1:m){lines(ngrid[(1:n)+(i-1)*n,], col=grid.col,lwd=grid.lwd,lty=grid.lty)}
   for (i in 1:n){lines(ngrid[(1:m)*n-i+1,], col=grid.col,lwd=grid.lwd,lty=grid.lty)}
   if(refpts==FALSE) points(matt,pch=21,bg=pt.bg,cex=sz) else points(matr,pch=21,bg=pt.bg,cex=sz)
@@ -786,9 +786,9 @@ procD.fit <- function(f1, keep.order=FALSE, pca=TRUE, data=NULL,...){
     if(class(Y) == "dist") Y <- pcoa(Y) else
       if(length(dim(Y)) == 3)  Y <- two.d.array(Y) else 
         Y <- as.matrix(Y)
-    weights <- NULL
-    contrasts <- NULL
-    offset <- NULL
+      weights <- NULL
+      contrasts <- NULL
+      offset <- NULL
   }
   n <- nrow(Y)
   if(ncol(Y) > n & pca==TRUE){
@@ -894,10 +894,10 @@ perm.CR.index <- function(g, k, iter, seed=NULL){ # g is numeric partititon.gp
       if(!is.numeric(seed)) seed = iter
       set.seed(seed)
       p <- length(g)
-        ind <- c(list(1:p),(Map(function(x) sample.int(p,p), 1:iter)))
-        ind <- Map(function(x) g[x], ind)
-        ind <- Map(function(x) as.factor(rep(x,k,each = k, length=p*k)), ind)
-        ind
+      ind <- c(list(1:p),(Map(function(x) sample.int(p,p), 1:iter)))
+      ind <- Map(function(x) g[x], ind)
+      ind <- Map(function(x) as.factor(rep(x,k,each = k, length=p*k)), ind)
+      ind
 }
 
 # boot.index
@@ -907,9 +907,9 @@ boot.index <-function(n, iter, seed=NULL){
   if(is.null(seed)) seed = iter else
     if(seed == "random") seed = sample(1:iter,1) else
       if(!is.numeric(seed)) seed = iter
-  set.seed(seed)
-  ind <- c(list(1:n),(Map(function(x) sample.int(n, n, replace = TRUE), 1:iter)))
-  ind
+      set.seed(seed)
+      ind <- c(list(1:n),(Map(function(x) sample.int(n, n, replace = TRUE), 1:iter)))
+      ind
 }
 
 # SS.iter
@@ -1259,8 +1259,8 @@ apply.slopes <- function(pfit, Yr, g=NULL, slope=NULL, data=NULL){
   if(!is.null(g)) 
     slopes <- Map(function(y) slopes(pfit, Y=y, g=g, slope=slope, data=dat), Yr) else
       slopes <- Map(function(y) slopes(pfit, Y=y, g=NULL, slope=slope, data=dat), Yr)
-  if(ncol(Y)==1) slopes <- Map(function(s) cbind(1,s), slopes)
-  slopes 
+    if(ncol(Y)==1) slopes <- Map(function(s) cbind(1,s), slopes)
+    slopes 
 }
 
 # vec.cor.matrix
@@ -1301,15 +1301,15 @@ pls <- function(x,y, RV=FALSE, verbose = FALSE){
   S12 <- matrix(S[1:px,-(1:px)], px,py)
   pls <- La.svd(S12, pmin, pmin)
   U <- pls$u; V <- t(pls$vt)
-    XScores <- x %*% U
-    YScores <- y %*% V
+  XScores <- x %*% U
+  YScores <- y %*% V
   r.pls <- cor(XScores[,1],YScores[,1])
   if(RV==TRUE){
     S11 <- S[1:px,1:px]
     S22 <- S[-(1:px),-(1:px)]
     RV <- sum(colSums(S12^2))/sqrt(sum(S11^2)*sum(S22^2))
   } else
-      RV <- NULL
+    RV <- NULL
   if(verbose==TRUE){
     XScores <- as.matrix(XScores); Y <- as.matrix(YScores)
     rownames(U)  = colnames(x); rownames(V) = colnames(y)
@@ -1328,8 +1328,8 @@ quick.pls <- function(x,y, px, py, pmin) {# no RV; no verbose output
   S12 <- matrix(S[1:px,-(1:px)], px,py)
   pls <- La.svd(S12, pmin, pmin)
   U<-pls$u; V <- t(pls$vt)
-    XScores <- x %*% U
-    YScores <- y %*% V
+  XScores <- x %*% U
+  YScores <- y %*% V
   cor(XScores[,1],YScores[,1])
 }
 
@@ -1346,7 +1346,7 @@ apply.pls <- function(x,y, RV=FALSE, iter, seed = NULL){
   if(jj > 100) j <- 1:100 else j <- 1:jj
   while(jj > 0){
     ind.j <- ind[j]
-    y.rand <-lapply(1:length(j), function(j) y[ind.j[[j]],])
+    y.rand <-lapply(1:length(j), function(i) y[ind.j[[i]],])
     if(RV == TRUE) RV.rand <- c(RV.rand,sapply(1:length(j), function(i) pls(x,y.rand[[i]], RV=TRUE, verbose = TRUE)$RV)) else
       r.rand <- c(r.rand, sapply(1:length(j), function(i) quick.pls(x,y.rand[[i]], px,py,pmin)))
     jj <- jj-length(j)
@@ -1414,7 +1414,7 @@ apply.plsmulti <- function(x,gps, iter, seed = NULL){
     ind.j <- ind[j]
     x.r<-lapply(1:length(j), function(i) x[ind.j[[i]],which(g==levels(g)[1])]) 
     r.rand<-c(r.rand, sapply(1:length(j), function(i) quick.plsmulti(cbind(x.r[[i]],
-                x[,which(g!=levels(g)[1])]), gps=g))) 
+                                                                           x[,which(g!=levels(g)[1])]), gps=g))) 
     jj <- jj-length(j)
     if(jj > 100) kk <- 1:100 else kk <- 1:jj
     j <- j[length(j)] +kk
@@ -1757,12 +1757,12 @@ apply.plsmulti.phylo <- function(x,gps, invC,D.mat, iter, seed= NULL){
   r.rand <- NULL
   while(jj > 0){
     ind.j <- ind[j]
-    x.r <-lapply(1:length(j), function(i) x[ind.j[[j]],which(gps==levels(gps)[1])])
+    x.r <-lapply(1:length(j), function(i) x[ind.j[[i]],which(gps==levels(gps)[1])])
     r.rand <- c(r.rand, sapply(1:length(j), function(i) plsmulti.phylo(cbind(x.r[[i]],x[,which(gps!=levels(gps)[1])]), 
-                           gps, invC,D.mat)$r.pls))
-                jj <- jj-length(j)
-                if(jj > 100) kk <- 1:100 else kk <- 1:jj
-                j <- j[length(j)] +kk
+                                                                       gps, invC,D.mat)$r.pls))
+    jj <- jj-length(j)
+    if(jj > 100) kk <- 1:100 else kk <- 1:jj
+    j <- j[length(j)] +kk
   }
   r.rand
 }
@@ -1862,7 +1862,7 @@ trajsize <- function(y) {
   tpairs <- cbind(1:(k-1),2:k)
   sapply(1:length(y), function(j) {
     d <- as.matrix(dist(y[[j]]))
-  sum(d[tpairs])
+    sum(d[tpairs])
   })
 }
 

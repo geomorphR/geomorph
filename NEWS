@@ -4,6 +4,7 @@ CHANGES IN GEOMORPH VERSION 3.0.1
     
   BUG FIXES
     o Fixed digitize2D scaling issue when different scales used in each image
+    o Fixed phylo.integration() error when 3+ partitions examined
 
 
 CHANGES IN GEOMORPH VERSION 3.0.0
