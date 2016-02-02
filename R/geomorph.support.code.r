@@ -2071,9 +2071,8 @@ identifyPch <- function(x, y = NULL, n = length(x), pch = 19, col="red", ...)
   }
   res
 } 
-##Function to read tps file for digitize2d
-readland.tps2 <- function (file, specID = c("None", "ID", "imageID"), 
-                           readcurves = FALSE, warnmsg = T) 
+##Function to read tps file for digitize2d (streamlined for specific use)
+readland.tps2 <- function (file, specID = c("None", "ID", "imageID")) 
 {
   ignore.case = TRUE
   specID <- match.arg(specID)
@@ -2101,44 +2100,18 @@ readland.tps2 <- function (file, specID = c("None", "ID", "imageID"),
   if (length(imscale)==0) {
     imscale = array(0, nspecs)
   }
-  if (warnmsg == T) {
-    if (length(imscale) != nspecs) {
-      print("Not all specimens have scale. Assuming landmarks have been previously scaled.")
-    }
-  }
   if (length(imscale) != nspecs) {
     imscale = array(1, nspecs)
   }
-  crvs <- grep("CURVES=", tpsfile, ignore.case)
-  if(length(crvs)>0){
-    if (readcurves == TRUE && length(crvs) == 0){ stop("No CURVES= field present in file") } 
-    ncurve <- as.numeric(sub("CURVES=", "", tpsfile[crvs], ignore.case))
-    ncurvepts <- as.numeric(sub("POINTS=", "", tpsfile[grep("POINTS=", tpsfile, ignore.case)], ignore.case))
-    if (max(ncurve) - min(ncurve) != 0) {
-      stop("Number of curves not the same for all specimens.") }
-    if (warnmsg == T && readcurves==T) {print(paste("Landmarks 1:", p, " are fixed landmarks.", sep=""))
-      print(paste("Landmarks ", p+1, ":", p+sum(ncurvepts[1:ncurve[1]]), " are semilandmarks.", sep=""))}
-    p <- nland[1] + sum(ncurvepts[1:ncurve[1]]) 
-  }    
   tmp <- tpsfile[-(grep("=", tpsfile))]
   options(warn = -1)
   tmp <- matrix(as.numeric(unlist(strsplit(tmp,"\\s+"))),ncol = k, byrow = T)
-  
-  if (warnmsg == T) {
-    if (sum(which(is.na(tmp) == TRUE)) > 0) {
-      print("NOTE.  Missing data identified.")
-    }
-  }
+
   coords <- aperm(array(t(tmp), c(k, p, n)), c(2, 1, 3))
-  #  imscale <- aperm(array(rep(imscale, p * k), c(n, k, p)), 
-  #                   c(3, 2, 1))
+  #  imscale <- aperm(array(rep(imscale, p * k), c(n, k, p)), c(3, 2, 1))
   #  coords <- coords * imscale
-  if (readcurves==F){coords<-coords[1:nland,,] 
-  if(n==1) coords <- array(coords, c(nland,k,n))}
-  if (specID == "None") {
-    if (warnmsg == T) {print("No Specimen names extracted")
-    }
-  }
+  coords<-coords[1:nland,,] 
+  if(n==1) coords <- array(coords, c(nland,k,n))
   if (specID == "imageID") {
     imageID <- (sub("IMAGE=", "", tpsfile[grep("IMAGE", tpsfile, ignore.case)], 
                     ignore.case))
@@ -2150,28 +2123,12 @@ readland.tps2 <- function (file, specID = c("None", "ID", "imageID"),
       imageID <- sub(".jpeg", "", imageID, ignore.case)
       imageID <- sub(".jpe", "", imageID, ignore.case)
       dimnames(coords)[[3]] <- as.list(imageID)
-      if (warnmsg == T) {
-        print("Specimen names extracted from line IMAGE=")
-      }
     }
-    if (length(imageID) == 0) {
-      if (warnmsg == T) {
-        print("No name given under IMAGE=. Specimen names not extracted")
-      }
-    } 
   }
   if (specID == "ID") {
     ID <- sub("ID=", "", tpsfile[grep("ID", tpsfile, ignore.case)], ignore.case)
-    if (length(ID) == 0) {
-      if(warnmsg ==T){
-        print("No name given under ID=. Specimen names not extracted")
-      }
-    }
     if (length(ID) != 0) {
       dimnames(coords)[[3]] <- as.list(ID)
-      if (warnmsg == T) {
-        print("Specimen names extracted from line ID=")
-      }
     }
   }
   return(list(coords = coords,scale=imscale)  )                  

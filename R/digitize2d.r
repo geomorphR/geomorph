@@ -60,7 +60,7 @@ digitize2d <- function (filelist, nlandmarks, scale=NULL, tpsfile, MultScale=FAL
     dimnames(newdata)[[3]] <- as.list(filelist)
     writeland.tps(newdata, tpsfile)
   }
-  olddat <- readland.tps2(file=tpsfile, warnmsg = F, specID = "ID")
+  olddat <- readland.tps2(file=tpsfile, specID = "ID")
   
   newdata<-olddat$coords
   inscale<-olddat$scale
