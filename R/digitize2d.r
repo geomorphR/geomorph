@@ -60,7 +60,10 @@ digitize2d <- function (filelist, nlandmarks, scale=NULL, tpsfile, MultScale=FAL
     dimnames(newdata)[[3]] <- as.list(filelist)
     writeland.tps(newdata, tpsfile)
   }
-  newdata <- readland.tps(tpsfile, warnmsg = F, specID = "ID")
+  olddat <- readland.tps2(file=tpsfile, warnmsg = F, specID = "ID")
+  
+  newdata<-olddat$coords
+  inscale<-olddat$scale
   names <- dimnames(newdata)[[3]]
   if (dim(newdata)[3] != length(filelist)) {
     stop("Filelist not the same length as input TPS file.")
@@ -78,8 +81,8 @@ digitize2d <- function (filelist, nlandmarks, scale=NULL, tpsfile, MultScale=FAL
   if(is.infinite(digstart)){
     stop("It appears that all specimens have already been digitized.")
   }
-  
   scalebar=vector(length=length(filelist))
+  if(digstart>1){scalebar[1:(digstart-1)]<-inscale[1:(digstart-1)]}  
   for (i in digstart:length(filelist)) {
     cat(paste("Digitizing specimen", i, "in filelist"), "\n")
     spec.name <- unlist(strsplit(basename(filelist[i]), "\\."))[1]
