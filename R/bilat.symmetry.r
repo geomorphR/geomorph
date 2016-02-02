@@ -104,7 +104,7 @@
 #' # NOTE one can also: scallop.sym$data.type # recall the symmetry type
 
 bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,land.pairs=NULL,
-      data = NULL, iter = 999, seed = NULL, RRPP = TRUE){
+                         data = NULL, iter = 999, seed = NULL, RRPP = TRUE){
   if(!is.null(data)) {
     A.name <- deparse(substitute(A))
     A.name.match <- match(A.name, names(data))
@@ -180,9 +180,9 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
     Sz.random.Fs <-anova.parts.Sz$random.Fs
     if(is.matrix(Sz.random.Fs))
       colnames(Sz.random.Fs) <- c("obs", paste("iter", 1:iter, sep=":")) else
-      names(Sz.random.Fs) <-c("obs", paste("iter", 1:iter, sep=":"))
+        names(Sz.random.Fs) <-c("obs", paste("iter", 1:iter, sep=":"))
   }
-# build shape components for output
+  # build shape components for output
   if(object.sym==FALSE){
     X.ind <- model.matrix(~ind + 0, data = as.data.frame(dat.shape[-1]))
     symm.component <- arrayspecs(coef(lm.fit(X.ind, Y)),p,k)
@@ -194,9 +194,9 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
     asymm.component <- avg.side.symm[indsq,] - avg.side.symm[-indsq,]
     mn.shape <- gpa.res$consensus
     asymm.component<-simplify2array(lapply(1:n.ind, function(j) 
-      {t(matrix(asymm.component[j,],k,p)) + mn.shape}))
+    {t(matrix(asymm.component[j,],k,p)) + mn.shape}))
     dimnames(asymm.component)[[3]] <- dimnames(symm.component)[[3]]
-
+    
   }
   if(object.sym==TRUE){
     X.ind <- model.matrix(~ind + 0, data = as.data.frame(dat.shape[-1]))
