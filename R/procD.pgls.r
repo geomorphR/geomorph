@@ -129,7 +129,7 @@ procD.pgls<-function(f1, phy, iter=999, seed=NULL, int.first = FALSE,
   colnames(tab)[ncol(tab)] <- "Pr(>F)"
   class(tab) <- c("anova", class(tab))
   PY <- Pcor%*%pfit$Y; PX <- Pcor%*%pfit$X
-  Pfit <- lm.wfit(PX, PW, pfit$weights)
+  Pfit <- lm.wfit(PX, PY, pfit$weights)
   out = list(aov.table = tab, call = match.call(),
              coefficients=pfit$coefficients, 
              Y=pfit$Y,  X=pfit$X, 
