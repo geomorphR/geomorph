@@ -2,6 +2,8 @@ CHANGES IN GEOMORPH VERSION 3.0.0-1
 
     o Removed dependency on phytools 
 
+  BUG FIXES
+    o Fixed phylo.integration() error when 3+ partitions examined
 
 CHANGES IN GEOMORPH VERSION 3.0.0
 

@@ -30,7 +30,7 @@ which might be of interest for advanced users.}
 \value{
 procD.lm.pgls returns an object of class "procD.lm".  
 See \code{\link{procD.lm}} for a description of the list of results generated.  Additionally, procD.pgls provides
-the phylogenetic correction matrix, Pcor.
+the phylogenetic correction matrix, Pcor, plus "pgls" adjusted coefficients, fitted values, and residuals.
 }
 \description{
 Function performs Procrustes ANOVA in a phylogenetic framework and uses  permutation procedures to assess 

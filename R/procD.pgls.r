@@ -63,7 +63,7 @@
 #' @author Dean Adams and Michael Collyer
 #' @return procD.lm.pgls returns an object of class "procD.lm".  
 #' See \code{\link{procD.lm}} for a description of the list of results generated.  Additionally, procD.pgls provides
-#' the phylogenetic correction matrix, Pcor.
+#' the phylogenetic correction matrix, Pcor, plus "pgls" adjusted coefficients, fitted values, and residuals.
 #' @references Adams, D.C. 2014. A method for assessing phylogenetic least squares models for shape and other high-dimensional 
 #' multivariate data. Evolution. 68:2675-2688. 
 #' @references Adams, D.C., and M.L. Collyer. 2015. Permutation tests for phylogenetic comparative analyses of high-dimensional 
@@ -84,9 +84,9 @@
 #' plot(pleth.pgls)
 #' pleth.pgls$Pcor # the phylogenetic transformation (correction) matrix
 procD.pgls<-function(f1, phy, iter=999, seed=NULL, int.first = FALSE, 
-                         RRPP=TRUE, data=NULL, ...){
+                     RRPP=TRUE, data=NULL, ...){
   if(int.first==TRUE) ko = TRUE else ko = FALSE
-  pfit <- procD.fit(f1, data=data, keep.order=ko)
+  pfit <- procD.fit(f1, data=data, keep.order=ko, pca=FALSE)
   Terms <- pfit$Terms
   k <- length(pfit$term.labels) 
   Y <- as.matrix(pfit$wY)
@@ -128,15 +128,18 @@ procD.pgls<-function(f1, phy, iter=999, seed=NULL, int.first = FALSE,
   colnames(tab)[1] <- "Df"
   colnames(tab)[ncol(tab)] <- "Pr(>F)"
   class(tab) <- c("anova", class(tab))
-  pfit <- procD.fit(f1, data=data, keep.order=ko, pca=FALSE)
+  PY <- Pcor%*%pfit$Y; PX <- Pcor%*%pfit$X
+  Pfit <- lm.wfit(PX, PW, pfit$weights)
   out = list(aov.table = tab, call = match.call(),
              coefficients=pfit$coefficients, 
              Y=pfit$Y,  X=pfit$X, 
              Pcor=Pcor, 
              QR = pfit$QRs[[k+1]], fitted=pfit$fitted[[k+1]], 
              residuals = pfit$residuals[[k+1]], 
-             weights = pfit$w, Terms = pfit$Terms, term.labels = pfit$term.labels,
+             weights = pfit$weights, Terms = pfit$Terms, term.labels = pfit$term.labels,
              SS = anova.parts.obs$SS, df = anova.parts.obs$df, R2 = anova.parts.obs$R2[1:k], 
+             pgls.coefficients = Pfit$coefficients, pgls.fitted = Pfit$fitted, 
+             pgls.residuals = Pfit$residuals,
              F = anova.parts.obs$Fs[1:k], permutations = iter+1,
              random.SS = P, perm.method = ifelse(RRPP==TRUE,"RRPP", "Raw"))
   class(out) <- "procD.lm"
