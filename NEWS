@@ -1,10 +1,11 @@
 CHANGES IN GEOMORPH VERSION 3.0.0-1
 
+  OTHER CHANGES
     o Removed dependency on phytools 
+    o Small addition to outputs in procD.pgls
 
   BUG FIXES
     o Fixed phylo.integration() error when 3+ partitions examined
-    o Small addition to outputs in procD.pgls
 
 CHANGES IN GEOMORPH VERSION 3.0.0
 
