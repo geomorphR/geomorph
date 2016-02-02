@@ -125,7 +125,6 @@ plot.QQ <- function(r){
 plot.procD.lm <- function(x, outliers=FALSE, ...){
   r <- x$residuals
   f <- x$fitted
-  if(!is.null(x$weights)) {r <- r*sqrt(x$weights); f <- f*sqrt(x$weights)}
   if(!is.null(x$Pcor)) {
     y <- x$Pcor%*%x$Y
     X <- x$Pcor%*%x$X
@@ -133,6 +132,7 @@ plot.procD.lm <- function(x, outliers=FALSE, ...){
     f <- fit$fitted.values
     r <- fit$residuals
   }
+  if(!is.null(x$weights)) {r <- r*sqrt(x$weights); f <- f*sqrt(x$weights)}
   pca.r <- prcomp(r)
   var.r <- round(pca.r$sdev^2/sum(pca.r$sdev^2)*100,2)
   plot(pca.r$x, pch=19, asp =1,
