@@ -9,7 +9,8 @@
 #'  If the headers "[labels]", "[labelvalues]" and "[groups]" are present, then a data matrix containing all 
 #'  individual specimen information is returned.
 #'  If the header "[wireframe]" is present, then a matrix of the landmark addresses for the wireframe is
-#'  returned (see \code{\link{plotRefToTarget}} option 'links')
+#'  returned (see \code{\link{plotRefToTarget}} option 'links'). 
+#'  If the header "[polygon]" is present, then a matrix of the landmark addresses for the polygon wireframe is returned (see \code{\link[rgl]{polygon3d}} or \code{\link[graphics]{polygon}}). 
 #' 
 #' @param file A Morphologika *.txt file containing two- or three-dimensional landmark data. 
 #' @export
@@ -32,27 +33,39 @@ read.morphologika<-function(file){
   labvalmat <- wiref <- names <- NULL
   rawdat <- mfile[grep("rawpoints",mfile,ignore.case=T) + 1:(n*p+n)]
   rawdat <- rawdat[-grep("'",rawdat)]
-  landdata <- matrix(as.numeric(unlist(strsplit(rawdat,"\\s+"))),ncol = k, byrow = T)
+  landdata <- matrix(as.numeric(unlist(strsplit(rawdat,"\\s+"))),
+                     ncol = k, byrow = T)
   if (sum(which(is.na(landdata) == TRUE)) > 0) { print("NOTE.  Missing data identified.") }
   coords<-arrayspecs(landdata,p,k)
   names <- mfile[grep("names",mfile,ignore.case=T) + 1:n]
   if(!is.null(names)) dimnames(coords)[[3]]<-names
   if(length(grep("label",mfile,ignore.case=T))>0) {
     tmp <- unlist(strsplit(mfile[grep("labels",mfile,ignore.case=T) + 1],"\\s+"))
-    labvals <- unlist(strsplit(mfile[grep("labelvalues",mfile,ignore.case=T) + 1:n],"\\s+"))
-    labvalmat <- matrix(labvals, ncol=length(tmp), byrow=T, dimnames=list(names,tmp)) }
+    labvals <- unlist(strsplit(mfile[grep("labelvalues",mfile,
+                                          ignore.case=T) + 1:n],"\\s+"))
+    labvalmat <- matrix(labvals, ncol=length(tmp), byrow=T, dimnames=list(names,
+                                                                          tmp)) }
   if(length(grep("groups",mfile,ignore.case=T))>0) {
-    tmp <- matrix(unlist(strsplit(mfile[grep("groups",mfile,ignore.case=T) + 1],"\\s+")), ncol=2, byrow=T)
+    tmp <- matrix(unlist(strsplit(mfile[grep("groups",mfile,ignore.case=T) + 1],
+                                  "\\s+")), ncol=2, byrow=T)
     gpval <- NULL
     for(i in 1:nrow(tmp)){ gpval <- c(gpval, rep(tmp[i,1], tmp[i,2]))}
     labvalmat <- cbind(labvalmat, groups=gpval) }
+  if(length(grep("polygon",mfile,ignore.case=T))>0) { 
+    strtpy <- grep("polygon",mfile, ignore.case=T)
+    endpy <-strtpy + grep("[",mfile[strtpy+1:length(mfile)], fixed=T)[1]
+    if(is.na(endpy)){ endpy <- length(mfile)}
+    polyg <- matrix(as.numeric(unlist(strsplit(mfile[(strtpy+1):(endpy-1)],
+                                               "\\s+"))),ncol=3, byrow=T) }
   if(length(grep("wireframe",mfile,ignore.case=T))>0) {
     strtwf <- grep("wireframe",mfile, ignore.case=T)
     endwf <-strtwf + grep("[",mfile[strtwf+1:length(mfile)], fixed=T)[1]
       if(is.na(endwf)){ endwf <- length(mfile)}
-    wiref <- matrix(as.numeric(unlist(strsplit(mfile[(strtwf+1):(endwf-1)],"\\s+"))),ncol=2, byrow=T) }  
-  if(!is.null(wiref) && is.null(labvalmat)) return(list(coords = coords, wireframe = wiref)) 
-  if(is.null(wiref) && !is.null(labvalmat)) return(list(coords = coords, labels = labvalmat)) 
-  if(!is.null(wiref) && !is.null(labvalmat)) return(list(coords = coords, labels = labvalmat, wireframe = wiref)) 
-  else return(coords=coords)
+    wiref <- matrix(as.numeric(unlist(strsplit(mfile[(strtwf+1):(endwf-1)],
+                                               "\\s+"))),ncol=2, byrow=T) } 
+  rtrn <- list(coords = coords)
+  if(!is.null(labvalmat)) rtrn$labels <- labvalmat
+  if(!is.null(wiref)) rtrn$wireframe <- wiref 
+  if(!is.null(polyg)) rtrn$polygon <- polyg
+  return(rtrn)
 }  
