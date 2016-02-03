@@ -2071,3 +2071,66 @@ identifyPch <- function(x, y = NULL, n = length(x), pch = 19, col="red", ...)
   }
   res
 } 
+
+##Function to read tps file for digitize2d (streamlined for specific use)
+readland.tps2 <- function (file, specID = c("None", "ID", "imageID")) 
+{
+  ignore.case = TRUE
+  specID <- match.arg(specID)
+  tpsfile <- scan(file = file, what = "char", sep = "\n", quiet = TRUE)
+  lmdata <- grep("LM=", tpsfile, ignore.case)
+  if (length(lmdata !=0)) {
+    nland <- as.numeric(sub("LM=", "", tpsfile[lmdata], ignore.case))
+    k <- 2
+  }
+  if (length(lmdata) == 0) {
+    lmdata <- grep("LM3=", tpsfile, ignore.case)
+    nland <- as.numeric(sub("LM3=", "", tpsfile[lmdata], ignore.case))
+    k <- 3
+  }
+  n <- nspecs <- length(lmdata)
+  if (max(nland) - min(nland) != 0) {
+    stop("Number of landmarks not the same for all specimens.")
+  }
+  p <- nland[1]
+  imscale <- as.numeric(sub("SCALE=", "", tpsfile[grep("SCALE", 
+                                                       tpsfile, ignore.case)], ignore.case))
+  if (is.null(imscale)) {
+    imscale = array(0, nspecs)
+  }
+  if (length(imscale)==0) {
+    imscale = array(0, nspecs)
+  }
+  if (length(imscale) != nspecs) {
+    imscale = array(1, nspecs)
+  }
+  tmp <- tpsfile[-(grep("=", tpsfile))]
+  options(warn = -1)
+  tmp <- matrix(as.numeric(unlist(strsplit(tmp,"\\s+"))),ncol = k, byrow = T)
+  
+  coords <- aperm(array(t(tmp), c(k, p, n)), c(2, 1, 3))
+  #  imscale <- aperm(array(rep(imscale, p * k), c(n, k, p)), c(3, 2, 1))
+  #  coords <- coords * imscale
+  coords<-coords[1:nland,,] 
+  if(n==1) coords <- array(coords, c(nland,k,n))
+  if (specID == "imageID") {
+    imageID <- (sub("IMAGE=", "", tpsfile[grep("IMAGE", tpsfile, ignore.case)], 
+                    ignore.case))
+    if (length(imageID) != 0) {
+      imageID <- sub(".jpg", "", imageID, ignore.case)
+      imageID <- sub(".tif", "", imageID, ignore.case)
+      imageID <- sub(".bmp", "", imageID, ignore.case)
+      imageID <- sub(".tiff", "", imageID, ignore.case)
+      imageID <- sub(".jpeg", "", imageID, ignore.case)
+      imageID <- sub(".jpe", "", imageID, ignore.case)
+      dimnames(coords)[[3]] <- as.list(imageID)
+    }
+  }
+  if (specID == "ID") {
+    ID <- sub("ID=", "", tpsfile[grep("ID", tpsfile, ignore.case)], ignore.case)
+    if (length(ID) != 0) {
+      dimnames(coords)[[3]] <- as.list(ID)
+    }
+  }
+  return(list(coords = coords,scale=imscale)  )                  
+}
