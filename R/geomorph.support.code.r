@@ -706,8 +706,8 @@ P[which(is.na(P))]<-0
 Q<-cbind(1, matr)
 L<-rbind(cbind(P,Q), cbind(t(Q),matrix(0,3,3)))
 m2<-rbind(matt, matrix(0, 3, 2))
-coefx<-qr.solve(qr(L))%*%m2[,1]
-coefy<-qr.solve(qr(L))%*%m2[,2]
+coefx<-fast.solve(L)%*%m2[,1]
+coefy<-fast.solve(L)%*%m2[,2]
 fx<-function(matr, M, coef)
 {Xn<-numeric(q)
 for (i in 1:q)
