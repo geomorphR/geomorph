@@ -25,7 +25,8 @@ This function reads a *.txt file in the Morphologika format containing two- or t
 If the headers "[labels]", "[labelvalues]" and "[groups]" are present, then a data matrix containing all 
  individual specimen information is returned.
  If the header "[wireframe]" is present, then a matrix of the landmark addresses for the wireframe is
- returned (see \code{\link{plotRefToTarget}} option 'links')
+ returned (see \code{\link{plotRefToTarget}} option 'links'). 
+ If the header "[polygon]" is present, then a matrix of the landmark addresses for the polygon wireframe is returned (see \code{\link[rgl]{polygon3d}} or \code{\link[graphics]{polygon}}).
 }
 \author{
 Emma Sherratt & Erik Otarola-Castillo
