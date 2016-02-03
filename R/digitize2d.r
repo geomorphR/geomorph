@@ -60,7 +60,10 @@ digitize2d <- function (filelist, nlandmarks, scale=NULL, tpsfile, MultScale=FAL
     dimnames(newdata)[[3]] <- as.list(filelist)
     writeland.tps(newdata, tpsfile)
   }
-  newdata <- readland.tps(tpsfile, warnmsg = F, specID = "ID")
+  olddat <- readland.tps2(file=tpsfile, specID = "ID")
+  
+  newdata<-olddat$coords
+  inscale<-olddat$scale
   names <- dimnames(newdata)[[3]]
   if (dim(newdata)[3] != length(filelist)) {
     stop("Filelist not the same length as input TPS file.")
@@ -78,9 +81,10 @@ digitize2d <- function (filelist, nlandmarks, scale=NULL, tpsfile, MultScale=FAL
   if(is.infinite(digstart)){
     stop("It appears that all specimens have already been digitized.")
   }
+  scalebar=vector(length=length(filelist))
+  if(digstart>1){scalebar[1:(digstart-1)]<-inscale[1:(digstart-1)]}  
   for (i in digstart:length(filelist)) {
-    cat(paste("Digitizing specimen", i, "in filelist"), 
-        "\n")
+    cat(paste("Digitizing specimen", i, "in filelist"), "\n")
     spec.name <- unlist(strsplit(basename(filelist[i]), "\\."))[1]
     specimen <- readJPEG(filelist[i], native = T)
     plot(seq(0, dim(specimen)[2], length.out = 10), seq(0, 
@@ -93,7 +97,7 @@ digitize2d <- function (filelist, nlandmarks, scale=NULL, tpsfile, MultScale=FAL
     }
     if (!is.null(scale)) {
       cat("Set scale =", scale[i], "\n")
-      scalebar <- picscale(scale[i])
+      scalebar[i] <- picscale(scale[i])
     }
     selected <- matrix(NA, nrow = nlandmarks, ncol = 2)
     fix <- NULL
@@ -113,26 +117,22 @@ digitize2d <- function (filelist, nlandmarks, scale=NULL, tpsfile, MultScale=FAL
         if (ans == "a") {
           selected[ii, 1] <- NA
           selected[ii, 2] <- NA
-          points(fix, type = "n", col = "black", cex = 1, 
-                 pch = 21, bg = "red")
+          points(fix, type = "n", col = "black", cex = 1, pch = 21, bg = "red")
         }
         if (ans == "n") {
-          cat(paste("Select Landmark ", ii, " Again"), 
-              "\n")
+          cat(paste("Select Landmark ", ii, " Again"), "\n")
         }
         while (ans == "n") {
           fix <- locator(n = 1, type = "p", col = "black", 
                          cex = 4, pch = 21, bg = "red")
-          cat(paste("Keep Landmark ", ii, "(y/n)?"), 
-              "\n")
+          cat(paste("Keep Landmark ", ii, "(y/n)?"),  "\n")
           ans <- readLines(n = 1)
           if (ans == "y") {
             selected[ii, 1] <- fix$x
             selected[ii, 2] <- fix$y
           }
           if (ans == "n") {
-            cat(paste("Select Landmark ", ii, " Again"), 
-                "\n")
+            cat(paste("Select Landmark ", ii, " Again"),   "\n")
           }
         }
       }
@@ -146,14 +146,15 @@ digitize2d <- function (filelist, nlandmarks, scale=NULL, tpsfile, MultScale=FAL
         selected[ii, 2] <- fix$y
       }
     }
+    
     newdata[, , i] <- selected
-    if(MultScale==TRUE){newdata[,,i]<-selected*scalebar}
+    if(MultScale==TRUE){newdata[,,i]<-selected*scalebar[i]}
     if(is.null(scalebar)){writeland.tps(newdata, tpsfile)}
     if(!is.null(scalebar) && MultScale==FALSE){
       writeland.tps(newdata, tpsfile, scale = scalebar)}
     if(!is.null(scalebar) && MultScale==TRUE){
       writeland.tps(newdata, tpsfile)}
-
+    
     if (i < length(filelist)) {
       cat(paste("Continue to next specimen (y/n)?"), "\n")
       ans <- readLines(n = 1)
