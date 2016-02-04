@@ -94,7 +94,7 @@ modularity.test<-function(A,partition.gp,iter=999, CI=FALSE,seed=NULL){
     }
     if(CI=="FALSE"){
       CR.boot <- NULL
-      CR.CI < - NULL
+      CR.CI <- NULL
     }
 
   }
