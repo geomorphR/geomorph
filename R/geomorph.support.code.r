@@ -631,9 +631,9 @@ procD.slide <- function(curves, surf, Ya, ref, max.iter=5){# see pGpa.wCurves fo
       M <- Reduce("+", slid)/n
       ss2 <-(1-sum(M^2))*n
       slid0 <- slid
+      QQ <- abs(ss-ss2)
       ss <- ss2
       ref <- M
-      QQ <- abs(ss-ss2)
       if(iter.s >= max.iter) break
     }
     Q <- abs(ss0-ss)
