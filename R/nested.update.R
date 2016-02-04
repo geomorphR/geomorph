@@ -14,10 +14,29 @@
 #' currently only handle single factors nested within other single factors.  
 #' 
 #' Function returns the same list as \code{\link{procD.lm}} but with random F values appended.  The 
-#' ANOVA table is updated in terms of F-values, Z-scores, and P-values,
+#' ANOVA table is updated in terms of F-values, Z-scores, and P-values.  It is important that the formula is input correctly.  
+#' It can be input as one of the following four styles:
+#' 
+#'  ~ fixed/random
+#' 
+#'  ~ fixed + fixed/random
+#' 
+#' The two formulae above achieve the same model terms for the expanded model: ~ fixed + fixed:random
+#' 
+#'  ~ random + fixed/random
+#' 
+#'  ~ random + fixed + fixed/random
+#' 
+#' The two formulae above achieve the same model terms for the expanded model: ~ random + fixed + random:fixed
+#' 
+#' The \code{\link{procD.lm}} object will be updated in the same way with either of the approached.  First, the F-value
+#' for the fixed term will be adjusted as MS-fixed/MS-interaction for every random permutation.  Second, the P-value for the fixed
+#' effect will be estimated from this new distribution of F-values.  Although the function will try to catch improper 
+#' formulae and alert the user, it is possible the function will work with an improper formula.  Thus, adherence to one of the 
+#' formulae above is recommended for best results.
 #' 
 #' @param P A \code{\link{procD.lm}} object
-#' @param f1 A right-hand or full formula for one factor nested within another; e.g., ~ A/B 
+#' @param f1 A right-hand or full formula for one factor nested within another; e.g., ~ A/B or ~B + A/B
 #' @export
 #' @author Michael Collyer
 #' @seealso \code{\link{procD.lm}}
@@ -29,11 +48,21 @@
 #'data(larvalTails)
 #'Y.gpa <- gpagen(larvalTails$landmarks)
 #'gdf <- geomorph.data.frame(Y.gpa, Treatment = larvalTails$Treatment, Family = larvalTails$Family)
+#'
+#'# Model with fixed and nested effects
 #'tailANOVA <- procD.lm(coords ~ Treatment/Family, iter=99, RRPP=TRUE, data=gdf)
 #'summary(tailANOVA)
 #'
 #'# Update for nested effects
 #'tailANOVA <- nested.update(tailANOVA, ~ Treatment/Family)
+#'summary(tailANOVA)
+#'
+#'# Model with random, fixed, and nested effects
+#'tailANOVA <- procD.lm(coords ~ Family + Treatment/Family, iter=99, RRPP=TRUE, data=gdf)
+#'summary(tailANOVA)
+#'
+#'# Update for nested effects
+#'tailANOVA <- nested.update(tailANOVA, ~ Family + Treatment/Family)
 #'summary(tailANOVA)
 #'
 #' # One needs to be careful using this function!
@@ -54,13 +83,22 @@
 nested.update <- function(P, f1){
   Terms <- terms(f1)
   term.lbls <- attr(Terms, "term.labels")
-  k <- length(term.lbls)
-  if(k != 2) stop("Formula is not correct.  Should be of form ~ A/B or ~ A + B%in%A")
-  if(length(strsplit(term.lbls[2], ":")[[1]]) != 2) 
-    stop("Formula is not correct.  Should be of form ~ A/B or ~ A + B%in%A")
   AT <- P$aov.table
-  fixedrow = which(rownames(AT) == term.lbls[1])
-  randomrow = which(rownames(AT) == term.lbls[2])
+  k <- length(term.lbls)
+  if(k < 2  | k > 3) stop("Formula is not correct.  Should be of form ~ A/B or ~ B + A/B; where A is fixed and B is random")
+  if(k == 2) {
+    if(length(strsplit(term.lbls[2], ":")[[1]]) != 2) 
+      stop("Formula is not correct.  Should be of form ~ A/B or ~ A + B + A/B; where A is fixed and B is random")
+    fixedrow = which(rownames(AT) == term.lbls[1])
+    randomrow = which(rownames(AT) == term.lbls[2])
+  }
+  if(k == 3) {
+    if(length(strsplit(term.lbls[3], ":")[[1]]) != 2) 
+      stop("Formula is not correct.  Should be of form ~ A/B or ~ A + B + A/B; where A is fixed and B is random")
+    fixedrow = which(rownames(AT) == term.lbls[2])
+    randomrow = which(rownames(AT) == term.lbls[3])
+  } 
+  
   if(length(fixedrow) == 0 | length(randomrow) == 0)
     stop("Formula provided is not consitent with formula used in procD.lm object")
   MSF <- AT[fixedrow,3]
@@ -76,7 +114,7 @@ nested.update <- function(P, f1){
   AT[fixedrow,7] <- newP
   AT[fixedrow,6] <- newZ
   P$aov.table <- AT
-  if(is.null(P$randomF))
+if(is.null(P$randomF))
      {Fs <- matrix(Fs,1,length(Fs)); rownames(Fs) <- term.lbls[1]} else
      {
        newnames <- c(rownames(P$randomF), term.lbls[1])
