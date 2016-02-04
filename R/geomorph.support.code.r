@@ -730,9 +730,9 @@ tps2d3d<-function(M, matr, matt){		#DCA: altered from J. Claude 2008
   Q<-cbind(1, matr)
   L<-rbind(cbind(P,Q), cbind(t(Q),matrix(0,k+1,k+1)))
   m2<-rbind(matt, matrix(0, k+1, k))   
-  coefx<-qr.solve(qr(L))%*%m2[,1]
-  coefy<-qr.solve(qr(L))%*%m2[,2]
-  if(k==3){coefz<-qr.solve(qr(L))%*%m2[,3]}
+  coefx<-fast.solve(L)%*%m2[,1]
+  coefy<-fast.solve(L)%*%m2[,2]
+  if(k==3){coefz<-fast.solve(L)%*%m2[,3]}
   fx<-function(matr, M, coef){
     Xn<-numeric(q)
     for (i in 1:q){
