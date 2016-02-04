@@ -9,7 +9,7 @@ nested.update(P, f1)
 \arguments{
 \item{P}{A \code{\link{procD.lm}} object}
 
-\item{f1}{A right-hand or full formula for one factor nested within another; e.g., ~ A/B}
+\item{f1}{A right-hand or full formula for one factor nested within another; e.g., ~ A/B or ~B + A/B}
 }
 \description{
 This function is used to update \code{\link{procD.lm}} objects for fixed effects with 
@@ -27,18 +27,47 @@ This function can be used recursively for multiple updates, when multiple nested
 currently only handle single factors nested within other single factors.
 
 Function returns the same list as \code{\link{procD.lm}} but with random F values appended.  The 
-ANOVA table is updated in terms of F-values, Z-scores, and P-values,
+ANOVA table is updated in terms of F-values, Z-scores, and P-values.  It is important that the formula is input correctly.  
+It can be input as one of the following six styles:
+
+~ fixed/random
+~ fixed + fixed/random
+~ fixed + random%in%fixed
+
+The three formulae above achieve the same model terms for the expanded model: ~ fixed + fixed:random
+
+~ random + fixed/random
+~ random + fixed + fixed/random
+~ random + fixed + random%in%fixed
+
+The three formulae above achieve the same model terms for the expanded model: ~ random + fixed + random:fixed
+
+The \code{\link{procD.lm}} object will be updated in the same way with either of the approached.  First, the F-value
+for the fixed term will be adjusted as MS-fixed/MS-interaction for every random permutation.  Second, the P-value for the fixed
+effect will be estimated from this new distribution of F-values.  Although the function will try to catch improper 
+formulae and alert the user, it is possible the function will work with an improper formula.  Thus, adherence to one of the 
+formulae above is recommended for best results.
 }
 \examples{
 
 data(larvalTails)
 Y.gpa <- gpagen(larvalTails$landmarks)
 gdf <- geomorph.data.frame(Y.gpa, Treatment = larvalTails$Treatment, Family = larvalTails$Family)
+
+# Model with fixed and nested effects
 tailANOVA <- procD.lm(coords ~ Treatment/Family, iter=99, RRPP=TRUE, data=gdf)
 summary(tailANOVA)
 
 # Update for nested effects
 tailANOVA <- nested.update(tailANOVA, ~ Treatment/Family)
+summary(tailANOVA)
+
+# Model with random, fixed, and nested effects
+tailANOVA <- procD.lm(coords ~ Family + Treatment/Family, iter=99, RRPP=TRUE, data=gdf)
+summary(tailANOVA)
+
+# Update for nested effects
+tailANOVA <- nested.update(tailANOVA, ~ Family + Treatment/Family)
 summary(tailANOVA)
 
 # One needs to be careful using this function!
