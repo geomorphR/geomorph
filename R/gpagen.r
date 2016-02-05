@@ -68,7 +68,8 @@
 #'  \item{consnsus}{The consensus (mean) configuration.}
 #'  \item{p}{Number of landmarks.}
 #'  \item{k}{Number of landmark dimensions.}
-#'  \item{nsliders}{Number of semilandmarks.}
+#'  \item{nsliders}{Number of semilandmarks along curves.}
+#'  \item{nsurf}{Number of semilandmarks as surface points.}
 #'  \item{data}{Data frame with an n x (pk) matrix of Procrustes residuals and centroid size.}
 #'  \item{Q}{Final convergence criterion value.}
 #'  \item{slide.method}{Method used to slide semilandmarks.}
