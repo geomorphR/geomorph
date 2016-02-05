@@ -175,14 +175,15 @@ gpagen = function(A, curves=NULL, surfaces=NULL, PrinAxes = TRUE,
     if(ProcD == TRUE) smeth <- "ProcD" else smeth <- "BE"
     } else {
         nsliders <- 0
+        nsurf <- 0
         smeth <- NULL
     }
-  
+  if(is.null(nsliders)) nsliders <- 0; if(is.null(nsurf)) nsurf <- 0
   out <- list(coords=coords, Csize=Csize, 
               iter=iter, 
               points.VCV = pt.VCV, points.var = pt.var, 
               consensus = M, p=p,k=k, 
-              nsliders=nsliders,
+              nsliders=nsliders, nsurf = nsurf,
               data = data.frame(coords = two.d.coords, Csize = Csize),
               Q = gpa$Q, slide.method = smeth, call= match.call())
   class(out) <- "gpagen"

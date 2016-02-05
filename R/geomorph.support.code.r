@@ -614,34 +614,28 @@ procD.slide <- function(curves, surf, Ya, ref, max.iter=5){# see pGpa.wCurves fo
   n <- length(Ya); p <- nrow(Ya[[1]]); k <- ncol(Ya[[1]])
   iter <- 1 # from initial rotation of Ya
   slid0 <- Ya
-  iter.s <- 0
-  Q <- QQ <-1
-  ss <- ss0 <- n*(1-sum(ref^2))
+  Q <-ss0 <-1
+  ss0 <- n*(1-sum(ref^2))
   while(Q > 0.0001){
     iter <- iter+1
-    while(QQ > 0.0001){
-      iter.s <- iter.s + 1
-      if(!is.null(curves)) tans <- Map(function(y) tangents(curves, y, scaled=TRUE), slid0)
-      if(is.null(surf) & !is.null(curves))
-        slid <- Map(function(tn,y) semilandmarks.slide.tangents.procD(y, tn, ref), tans, slid0)
-      if(!is.null(surf) & is.null(curves))
-        slid <- Map(function(y) semilandmarks.slide.surf.procD(y, surf, ref), slid0)
-      if(!is.null(surf) & !is.null(curves))
-        slid <- Map(function(tn,y) semilandmarks.slide.tangents.surf.procD(y, tn, surf, ref), tans, slid0)
-      M <- Reduce("+", slid)/n
-      ss2 <-(1-sum(M^2))*n
-      slid0 <- slid
-      QQ <- abs(ss-ss2)
-      ss <- ss2
-      ref <- M
-      if(iter.s >= max.iter) break
-    }
+    if(!is.null(curves)) tans <- Map(function(y) tangents(curves, y, scaled=TRUE), slid0)
+    if(is.null(surf) & !is.null(curves))
+      slid <- Map(function(tn,y) semilandmarks.slide.tangents.procD(y, tn, ref), tans, slid0)
+    if(!is.null(surf) & is.null(curves))
+      slid <- Map(function(y) semilandmarks.slide.surf.procD(y, surf, ref), slid0)
+    if(!is.null(surf) & !is.null(curves))
+      slid <- Map(function(tn,y) semilandmarks.slide.tangents.surf.procD(y, tn, surf, ref), tans, slid0)
+    M <- Reduce("+", slid)/n
+    ss <-(1-sum(M^2))*n
+    ref <- cs.scale(M)
+    Ya <- apply.pPsup(ref, slid)
     Q <- abs(ss0-ss)
-    ss0 <-ss
+    slid0 <- Ya
+    ss0 <- ss
     if(iter >=max.iter) break
   }
   gpa.final <- pGpa(slid, PrinAxes = F, Proj = F)
-  list(coords=gpa.final$coords, consensus=gpa.final$consensus, iter=iter+iter.s+1, Q=Q)
+  list(coords=gpa.final$coords, consensus=gpa.final$consensus, iter=iter+1, Q=Q)
 }
 
 # pGPA.wSliders
@@ -668,7 +662,7 @@ pGpa.wSliders <- function(Y, curves, surf, ProcD = TRUE, PrinAxes = FALSE, Proj 
     Ya <- Map(function(y) y%*%rot, Ya)
     M <- center.scale(Reduce("+", Ya)/n)$coords
   }
-  list(coords= Ya, CS=CS, iter=iter, iter.s=NULL, consensus=M, Q=Q, nsliders=NULL)
+  list(coords= Ya, CS=CS, iter=iter, consensus=M, Q=Q, nsliders=NULL)
 }
 
 # tps

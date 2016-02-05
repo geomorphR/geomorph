@@ -14,8 +14,8 @@ print.gpagen <- function (x, ...) {
   cat(deparse(x$call), fill=TRUE, "\n\n")
   cat("\nGeneralized Procrustes Analysis\n")
   cat("with Partial Procrustes Superimposition\n\n")
-  cat(paste(x$p-x$nsliders, "fixed landmarks\n"))
-  cat(paste(x$nsliders, "semilandmarks (sliders)\n"))
+  cat(paste(x$p-x$nsliders-x$nsurf, "fixed landmarks\n"))
+  cat(paste(x$nsliders+x$nsurf, "semilandmarks (sliders)\n"))
   cat(paste(x$k,"-dimensional landmarks\n",sep=""))
   cat(paste(x$iter, "GPA iterations to converge\n"))
   if(!is.null(x$slide.method)) sm <- match.arg(x$slide.method, c("BE", "ProcD")) else
