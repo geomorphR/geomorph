@@ -295,8 +295,8 @@ getU <- function(y,tn, surf){
     if(k==3) pc23 <- sapply(1:length(surf), function(j) pc.dir[[j]][2,3])
     U[z11] <- pc11; U[z21] <- pc21; U[z21] <- pc12; U[z22] <- pc22
     if(k==3) U[z31] <- pc13; U[z32] <- pc23
-    }                   
-    U                  
+  }                   
+  U                  
 }
 
 # Ltemplate
@@ -394,7 +394,7 @@ getSurfPCs <- function(y, surf){
     p2z <- sapply(1:p, function(j) {x <- pc.dir[[j]]; if(is.matrix(x)) x[2,3] else 0})
   } else
   {p1z <- NULL; p2z <- NULL}
-    
+  
   list(p1x=p1x,p1y=p1y, p2x=p2x, p2y=p2y, p1z=p1z, p2z=p2z)
 }
 
@@ -405,15 +405,15 @@ semilandmarks.slide.tangents.BE <- function(y, tans, ref, L){
   yc <- y - ref
   p <- nrow(yc); k <-ncol(yc)
   if(k==3) {tx <- tans[,1]; ty <- tans[,2]; tz <- tans[,3 ]} else {tx <- tans[,1]; ty <- tans[,2]}
- 
-    if(k==3) {
-      int.part <- fast.ginv(t(t(tx*L)*tx)+t(t(ty*L)*ty)+ 
-                              t(t(tz*L)*tz))%*%cbind(tx*L,ty*L,tz*L)
-      Ht <- rbind(tx*int.part, ty*int.part, tz*int.part) 
-    } else {
-      int.part <- fast.ginv(t(t(tx*L)*tx)+t(t(ty*L)*ty))%*%cbind(tx*L,ty*L)
-      Ht <- rbind(tx*int.part, ty*int.part) 
-    }
+  
+  if(k==3) {
+    int.part <- fast.ginv(t(t(tx*L)*tx)+t(t(ty*L)*ty)+ 
+                            t(t(tz*L)*tz))%*%cbind(tx*L,ty*L,tz*L)
+    Ht <- rbind(tx*int.part, ty*int.part, tz*int.part) 
+  } else {
+    int.part <- fast.ginv(t(t(tx*L)*tx)+t(t(ty*L)*ty))%*%cbind(tx*L,ty*L)
+    Ht <- rbind(tx*int.part, ty*int.part) 
+  }
   y  - matrix(Ht%*%as.vector(yc), p,k)
 }
 
@@ -423,25 +423,25 @@ semilandmarks.slide.tangents.BE <- function(y, tans, ref, L){
 semilandmarks.slide.surf.BE <- function(y, surf, ref, L){
   yc <- y - ref
   p <- nrow(yc); k <-ncol(yc)
-    PC <- getSurfPCs(y, surf)
-    p1x <- PC$p1x; p1y <- PC$p1y; p1z <- PC$p1z; p2x <- PC$p2x; p2y <- PC$p2y; p2z <- PC$p2z
-    if(k==3) {
-      int.part <- fast.ginv(t(t(p1x*L)*p1x)+t(t(p1y*L)*p1y)+ 
-                              t(t(p1z*L)*p1z))%*%cbind(p1x*L,p1y*L,p1z*L)
-      Hp1 <- rbind(p1x*int.part, p1y*int.part, p1z*int.part) 
-    } else {
-      int.part <- fast.ginv(t(t(p1x*L)*p1x)+t(t(p1y*L)*p1y))%*%cbind(p1x*L,p1y*L)
-      Hp1 <- rbind(p1x*int.part, p1y*int.part) 
-    }
-    if(k==3) {
-      int.part <- fast.ginv(t(t(p2x*L)*p2x)+t(t(p2y*L)*p2y)+ 
-                              t(t(p2z*L)*p2z))%*%cbind(p2x*L,p2y*L,p2z*L)
-      Hp2 <- rbind(p2x*int.part, p2y*int.part, p2z*int.part) 
-    } else {
-      int.part <- fast.ginv(t(t(p2x*L)*p2x)+t(t(p2y*L)*p2y))%*%cbind(p2x*L,p2y*L)
-      Hp2 <- rbind(p2x*int.part, p2y*int.part) 
-    }
-    y  - matrix( Hp1%*%as.vector(yc) + Hp2%*%as.vector(yc), p,k) 
+  PC <- getSurfPCs(y, surf)
+  p1x <- PC$p1x; p1y <- PC$p1y; p1z <- PC$p1z; p2x <- PC$p2x; p2y <- PC$p2y; p2z <- PC$p2z
+  if(k==3) {
+    int.part <- fast.ginv(t(t(p1x*L)*p1x)+t(t(p1y*L)*p1y)+ 
+                            t(t(p1z*L)*p1z))%*%cbind(p1x*L,p1y*L,p1z*L)
+    Hp1 <- rbind(p1x*int.part, p1y*int.part, p1z*int.part) 
+  } else {
+    int.part <- fast.ginv(t(t(p1x*L)*p1x)+t(t(p1y*L)*p1y))%*%cbind(p1x*L,p1y*L)
+    Hp1 <- rbind(p1x*int.part, p1y*int.part) 
+  }
+  if(k==3) {
+    int.part <- fast.ginv(t(t(p2x*L)*p2x)+t(t(p2y*L)*p2y)+ 
+                            t(t(p2z*L)*p2z))%*%cbind(p2x*L,p2y*L,p2z*L)
+    Hp2 <- rbind(p2x*int.part, p2y*int.part, p2z*int.part) 
+  } else {
+    int.part <- fast.ginv(t(t(p2x*L)*p2x)+t(t(p2y*L)*p2y))%*%cbind(p2x*L,p2y*L)
+    Hp2 <- rbind(p2x*int.part, p2y*int.part) 
+  }
+  y  - matrix( Hp1%*%as.vector(yc) + Hp2%*%as.vector(yc), p,k) 
 }
 
 # semilandmarks.slide.tangents.surf.BE
@@ -451,32 +451,32 @@ semilandmarks.slide.tangents.surf.BE <- function(y, tans, surf, ref, L){
   yc <- y - ref
   p <- nrow(yc); k <-ncol(yc)
   if(k==3) {tx <- tans[,1]; ty <- tans[,2]; tz <- tans[,3 ]} else {tx <- tans[,1]; ty <- tans[,2]}
-    if(k==3) {
-      int.part <- fast.ginv(t(t(tx*L)*tx)+t(t(ty*L)*ty)+ 
-                              t(t(tz*L)*tz))%*%cbind(tx*L,ty*L,tz*L)
-      Ht <- rbind(tx*int.part, ty*int.part, tz*int.part) 
-    } else {
-      int.part <- fast.ginv(t(t(tx*L)*tx)+t(t(ty*L)*ty))%*%cbind(tx*L,ty*L)
-      Ht <- rbind(tx*int.part, ty*int.part) 
-    }
-    PC <- getSurfPCs(y, surf)
-    p1x <- PC$p1x; p1y <- PC$p1y; p1z <- PC$p1z; p2x <- PC$p2x; p2y <- PC$p2y; p2z <- PC$p2z
-    if(k==3) {
-      int.part <- fast.ginv(t(t(p1x*L)*p1x)+t(t(p1y*L)*p1y)+ 
-                              t(t(p1z*L)*p1z))%*%cbind(p1x*L,p1y*L,p1z*L)
-      Hp1 <- rbind(p1x*int.part, p1y*int.part, p1z*int.part) 
-    } else {
-      int.part <- fast.ginv(t(t(p1x*L)*p1x)+t(t(p1y*L)*p1y))%*%cbind(p1x*L,p1y*L)
-      Hp1 <- rbind(p1x*int.part, p1y*int.part) 
-    }
-    if(k==3) {
-      int.part <- fast.ginv(t(t(p2x*L)*p2x)+t(t(p2y*L)*p2y)+ 
-                              t(t(p2z*L)*p2z))%*%cbind(p2x*L,p2y*L,p2z*L)
-      Hp2 <- rbind(p2x*int.part, p2y*int.part, p2z*int.part) 
-    } else {
-      int.part <- fast.ginv(t(t(p2x*L)*p2x)+t(t(p2y*L)*p2y))%*%cbind(p2x*L,p2y*L)
-      Hp2 <- rbind(p2x*int.part, p2y*int.part) 
-    }
+  if(k==3) {
+    int.part <- fast.ginv(t(t(tx*L)*tx)+t(t(ty*L)*ty)+ 
+                            t(t(tz*L)*tz))%*%cbind(tx*L,ty*L,tz*L)
+    Ht <- rbind(tx*int.part, ty*int.part, tz*int.part) 
+  } else {
+    int.part <- fast.ginv(t(t(tx*L)*tx)+t(t(ty*L)*ty))%*%cbind(tx*L,ty*L)
+    Ht <- rbind(tx*int.part, ty*int.part) 
+  }
+  PC <- getSurfPCs(y, surf)
+  p1x <- PC$p1x; p1y <- PC$p1y; p1z <- PC$p1z; p2x <- PC$p2x; p2y <- PC$p2y; p2z <- PC$p2z
+  if(k==3) {
+    int.part <- fast.ginv(t(t(p1x*L)*p1x)+t(t(p1y*L)*p1y)+ 
+                            t(t(p1z*L)*p1z))%*%cbind(p1x*L,p1y*L,p1z*L)
+    Hp1 <- rbind(p1x*int.part, p1y*int.part, p1z*int.part) 
+  } else {
+    int.part <- fast.ginv(t(t(p1x*L)*p1x)+t(t(p1y*L)*p1y))%*%cbind(p1x*L,p1y*L)
+    Hp1 <- rbind(p1x*int.part, p1y*int.part) 
+  }
+  if(k==3) {
+    int.part <- fast.ginv(t(t(p2x*L)*p2x)+t(t(p2y*L)*p2y)+ 
+                            t(t(p2z*L)*p2z))%*%cbind(p2x*L,p2y*L,p2z*L)
+    Hp2 <- rbind(p2x*int.part, p2y*int.part, p2z*int.part) 
+  } else {
+    int.part <- fast.ginv(t(t(p2x*L)*p2x)+t(t(p2y*L)*p2y))%*%cbind(p2x*L,p2y*L)
+    Hp2 <- rbind(p2x*int.part, p2y*int.part) 
+  }
   y  - matrix(Ht%*%as.vector(yc) + Hp1%*%as.vector(yc) + Hp2%*%as.vector(yc), p,k) 
 }
 
@@ -614,34 +614,28 @@ procD.slide <- function(curves, surf, Ya, ref, max.iter=5){# see pGpa.wCurves fo
   n <- length(Ya); p <- nrow(Ya[[1]]); k <- ncol(Ya[[1]])
   iter <- 1 # from initial rotation of Ya
   slid0 <- Ya
-  iter.s <- 0
-  Q <- QQ <-1
-  ss <- ss0 <- n*(1-sum(ref^2))
+  Q <-ss0 <-1
+  ss0 <- n*(1-sum(ref^2))
   while(Q > 0.0001){
     iter <- iter+1
-    while(QQ > 0.0001){
-      iter.s <- iter.s + 1
-      if(!is.null(curves)) tans <- Map(function(y) tangents(curves, y, scaled=TRUE), slid0)
-      if(is.null(surf) & !is.null(curves))
-        slid <- Map(function(tn,y) semilandmarks.slide.tangents.procD(y, tn, ref), tans, slid0)
-      if(!is.null(surf) & is.null(curves))
-        slid <- Map(function(y) semilandmarks.slide.surf.procD(y, surf, ref), slid0)
-      if(!is.null(surf) & !is.null(curves))
-        slid <- Map(function(tn,y) semilandmarks.slide.tangents.surf.procD(y, tn, surf, ref), tans, slid0)
-      M <- Reduce("+", slid)/n
-      ss2 <-(1-sum(M^2))*n
-      slid0 <- slid
-      QQ <- abs(ss-ss2)
-      ss <- ss2
-      ref <- M
-      if(iter.s >= max.iter) break
-    }
+    if(!is.null(curves)) tans <- Map(function(y) tangents(curves, y, scaled=TRUE), slid0)
+    if(is.null(surf) & !is.null(curves))
+      slid <- Map(function(tn,y) semilandmarks.slide.tangents.procD(y, tn, ref), tans, slid0)
+    if(!is.null(surf) & is.null(curves))
+      slid <- Map(function(y) semilandmarks.slide.surf.procD(y, surf, ref), slid0)
+    if(!is.null(surf) & !is.null(curves))
+      slid <- Map(function(tn,y) semilandmarks.slide.tangents.surf.procD(y, tn, surf, ref), tans, slid0)
+    M <- Reduce("+", slid)/n
+    ss <-(1-sum(M^2))*n
+    ref <- cs.scale(M)
+    Ya <- apply.pPsup(ref, slid)
     Q <- abs(ss0-ss)
-    ss0 <-ss
+    slid0 <- Ya
+    ss0 <- ss
     if(iter >=max.iter) break
   }
   gpa.final <- pGpa(slid, PrinAxes = F, Proj = F)
-  list(coords=gpa.final$coords, consensus=gpa.final$consensus, iter=iter+iter.s+1, Q=Q)
+  list(coords=gpa.final$coords, consensus=gpa.final$consensus, iter=iter+1, Q=Q)
 }
 
 # pGPA.wSliders
@@ -668,7 +662,7 @@ pGpa.wSliders <- function(Y, curves, surf, ProcD = TRUE, PrinAxes = FALSE, Proj 
     Ya <- Map(function(y) y%*%rot, Ya)
     M <- center.scale(Reduce("+", Ya)/n)$coords
   }
-  list(coords= Ya, CS=CS, iter=iter, iter.s=NULL, consensus=M, Q=Q, nsliders=NULL)
+  list(coords= Ya, CS=CS, iter=iter, consensus=M, Q=Q, nsliders=NULL)
 }
 
 # tps
@@ -786,9 +780,9 @@ procD.fit <- function(f1, keep.order=FALSE, pca=TRUE, data=NULL,...){
     if(class(Y) == "dist") Y <- pcoa(Y) else
       if(length(dim(Y)) == 3)  Y <- two.d.array(Y) else 
         Y <- as.matrix(Y)
-    weights <- NULL
-    contrasts <- NULL
-    offset <- NULL
+      weights <- NULL
+      contrasts <- NULL
+      offset <- NULL
   }
   n <- nrow(Y)
   if(ncol(Y) > n & pca==TRUE){
@@ -894,10 +888,10 @@ perm.CR.index <- function(g, k, iter, seed=NULL){ # g is numeric partititon.gp
       if(!is.numeric(seed)) seed = iter
       set.seed(seed)
       p <- length(g)
-        ind <- c(list(1:p),(Map(function(x) sample.int(p,p), 1:iter)))
-        ind <- Map(function(x) g[x], ind)
-        ind <- Map(function(x) as.factor(rep(x,k,each = k, length=p*k)), ind)
-        ind
+      ind <- c(list(1:p),(Map(function(x) sample.int(p,p), 1:iter)))
+      ind <- Map(function(x) g[x], ind)
+      ind <- Map(function(x) as.factor(rep(x,k,each = k, length=p*k)), ind)
+      ind
 }
 
 # boot.index
@@ -907,9 +901,9 @@ boot.index <-function(n, iter, seed=NULL){
   if(is.null(seed)) seed = iter else
     if(seed == "random") seed = sample(1:iter,1) else
       if(!is.numeric(seed)) seed = iter
-  set.seed(seed)
-  ind <- c(list(1:n),(Map(function(x) sample.int(n, n, replace = TRUE), 1:iter)))
-  ind
+      set.seed(seed)
+      ind <- c(list(1:n),(Map(function(x) sample.int(n, n, replace = TRUE), 1:iter)))
+      ind
 }
 
 # SS.iter
@@ -1259,8 +1253,8 @@ apply.slopes <- function(pfit, Yr, g=NULL, slope=NULL, data=NULL){
   if(!is.null(g)) 
     slopes <- Map(function(y) slopes(pfit, Y=y, g=g, slope=slope, data=dat), Yr) else
       slopes <- Map(function(y) slopes(pfit, Y=y, g=NULL, slope=slope, data=dat), Yr)
-  if(ncol(Y)==1) slopes <- Map(function(s) cbind(1,s), slopes)
-  slopes 
+    if(ncol(Y)==1) slopes <- Map(function(s) cbind(1,s), slopes)
+    slopes 
 }
 
 # vec.cor.matrix
@@ -1301,15 +1295,15 @@ pls <- function(x,y, RV=FALSE, verbose = FALSE){
   S12 <- matrix(S[1:px,-(1:px)], px,py)
   pls <- La.svd(S12, pmin, pmin)
   U <- pls$u; V <- t(pls$vt)
-    XScores <- x %*% U
-    YScores <- y %*% V
+  XScores <- x %*% U
+  YScores <- y %*% V
   r.pls <- cor(XScores[,1],YScores[,1])
   if(RV==TRUE){
     S11 <- S[1:px,1:px]
     S22 <- S[-(1:px),-(1:px)]
     RV <- sum(colSums(S12^2))/sqrt(sum(S11^2)*sum(S22^2))
   } else
-      RV <- NULL
+    RV <- NULL
   if(verbose==TRUE){
     XScores <- as.matrix(XScores); Y <- as.matrix(YScores)
     rownames(U)  = colnames(x); rownames(V) = colnames(y)
@@ -1328,8 +1322,8 @@ quick.pls <- function(x,y, px, py, pmin) {# no RV; no verbose output
   S12 <- matrix(S[1:px,-(1:px)], px,py)
   pls <- La.svd(S12, pmin, pmin)
   U<-pls$u; V <- t(pls$vt)
-    XScores <- x %*% U
-    YScores <- y %*% V
+  XScores <- x %*% U
+  YScores <- y %*% V
   cor(XScores[,1],YScores[,1])
 }
 
@@ -1414,7 +1408,7 @@ apply.plsmulti <- function(x,gps, iter, seed = NULL){
     ind.j <- ind[j]
     x.r<-lapply(1:length(j), function(i) x[ind.j[[i]],which(g==levels(g)[1])]) 
     r.rand<-c(r.rand, sapply(1:length(j), function(i) quick.plsmulti(cbind(x.r[[i]],
-                x[,which(g!=levels(g)[1])]), gps=g))) 
+                                                                           x[,which(g!=levels(g)[1])]), gps=g))) 
     jj <- jj-length(j)
     if(jj > 100) kk <- 1:100 else kk <- 1:jj
     j <- j[length(j)] +kk
@@ -1759,10 +1753,10 @@ apply.plsmulti.phylo <- function(x,gps, invC,D.mat, iter, seed= NULL){
     ind.j <- ind[j]
     x.r <-lapply(1:length(j), function(i) x[ind.j[[i]],which(gps==levels(gps)[1])])
     r.rand <- c(r.rand, sapply(1:length(j), function(i) plsmulti.phylo(cbind(x.r[[i]],x[,which(gps!=levels(gps)[1])]), 
-                           gps, invC,D.mat)$r.pls))
-                jj <- jj-length(j)
-                if(jj > 100) kk <- 1:100 else kk <- 1:jj
-                j <- j[length(j)] +kk
+                                                                       gps, invC,D.mat)$r.pls))
+    jj <- jj-length(j)
+    if(jj > 100) kk <- 1:100 else kk <- 1:jj
+    j <- j[length(j)] +kk
   }
   r.rand
 }
@@ -1862,7 +1856,7 @@ trajsize <- function(y) {
   tpairs <- cbind(1:(k-1),2:k)
   sapply(1:length(y), function(j) {
     d <- as.matrix(dist(y[[j]]))
-  sum(d[tpairs])
+    sum(d[tpairs])
   })
 }
 
@@ -2071,7 +2065,6 @@ identifyPch <- function(x, y = NULL, n = length(x), pch = 19, col="red", ...)
   }
   res
 } 
-
 ##Function to read tps file for digitize2d (streamlined for specific use)
 readland.tps2 <- function (file, specID = c("None", "ID", "imageID")) 
 {
@@ -2107,7 +2100,7 @@ readland.tps2 <- function (file, specID = c("None", "ID", "imageID"))
   tmp <- tpsfile[-(grep("=", tpsfile))]
   options(warn = -1)
   tmp <- matrix(as.numeric(unlist(strsplit(tmp,"\\s+"))),ncol = k, byrow = T)
-  
+
   coords <- aperm(array(t(tmp), c(k, p, n)), c(2, 1, 3))
   #  imscale <- aperm(array(rep(imscale, p * k), c(n, k, p)), c(3, 2, 1))
   #  coords <- coords * imscale
