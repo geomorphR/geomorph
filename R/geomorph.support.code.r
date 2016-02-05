@@ -616,7 +616,7 @@ procD.slide <- function(curves, surf, Ya, ref, max.iter=5){# see pGpa.wCurves fo
   slid0 <- Ya
   iter.s <- 0
   Q <- QQ <-1
-  ss0 <- n*(1-sum(ref^2))
+  ss <- ss0 <- n*(1-sum(ref^2))
   while(Q > 0.0001){
     iter <- iter+1
     while(QQ > 0.0001){
