@@ -2,18 +2,17 @@ CHANGES IN GEOMORPH VERSION 3.0.1
 
   OTHER CHANGES
     o Removed dependency on phytools
-    o Small addition to outputs in procD.pgls
-    o added reading polygons in read.morphologika
+    o Small addition to outputs in procD.pgls()
+    o added reading polygons in read.morphologika()
 
   BUG FIXES
     o Fixed two small issues with gpagen source files: indexing errors and arbitrary PC rotations for surface points.
-    o Fixed digitize2D scaling issue when different scales used in each image
+    o Fixed digitize2D() scaling issue when different scales used in each image
     o Fixed phylo.integration() error when 3+ partitions examined
-    o Fixed typo in modularity.test for CI intervals into matrix input
+    o Fixed typo in modularity.test() for CI intervals into matrix input
 
 
 CHANGES IN GEOMORPH VERSION 3.0.0
-
 
   NEW FEATURES
     o New functions: modularity.test(), integration.test(), phylo.modularity(), 
@@ -24,11 +23,11 @@ CHANGES IN GEOMORPH VERSION 3.0.0
     o Added 'summary' option to most analytical functions
     o Plotting for most analytical functions as 'plot(res)' if res is output from function
     o Diagnostic plots for anova/regression added
-    o Nested ANOVA via nested.update of procD.lm() objects
+    o Nested ANOVA via nested.update() of procD.lm() objects
 
   OTHER CHANGES
     o Deprecated: compare.modular.partitions(), morphol.integr(), phylo.pls(), and plotAllometry() 
-    o Removed internal C-code for gpagen
+    o Removed internal C-code for gpagen()
     o Removed automatic plots for most analytical functions
     o Removed method="" parameter from physignal(). Only Kmult used
     o Removed verbose option for most functions: all output provided in lists
@@ -36,13 +35,13 @@ CHANGES IN GEOMORPH VERSION 3.0.0
     o Added plotting options to plotAllSpecimens
 
   BUG FIXES
-    o Fixed morphol.disparity $Prob.Disp displaying NAs
+    o Fixed morphol.disparity()$Prob.Disp displaying NAs
 
 
 CHANGES IN GEOMORPH VERSION 2.1.7-1
 
   BUG FIXES
-    o Fixed small change in C-code for gpagen
+    o Fixed small change in C-code for gpagen()
 
 CHANGES IN GEOMORPH VERSION 2.1.7
 
