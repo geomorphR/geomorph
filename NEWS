@@ -7,7 +7,6 @@ CHANGES IN GEOMORPH VERSION 3.0.1
 
   BUG FIXES
     o Fixed three small issues with gpagen source files: indexing errors, arbitrary PC rotations for surface points, maximum iteration disparity.
-    o Fixed digitize2D scaling issue when different scales used in each image
     o Fixed digitize2D() scaling issue when different scales used in each image
     o Fixed phylo.integration() error when 3+ partitions examined
     o Fixed typo in modularity.test() for CI intervals into matrix input
@@ -32,8 +31,8 @@ CHANGES IN GEOMORPH VERSION 3.0.0
     o Removed automatic plots for most analytical functions
     o Removed method="" parameter from physignal(). Only Kmult used
     o Removed verbose option for most functions: all output provided in lists
-    o Added option to pre-multiply coordinates by scale in digitize2d
-    o Added plotting options to plotAllSpecimens
+    o Added option to pre-multiply coordinates by scale in digitize2d()
+    o Added plotting options to plotAllSpecimens()
 
   BUG FIXES
     o Fixed morphol.disparity()$Prob.Disp displaying NAs
