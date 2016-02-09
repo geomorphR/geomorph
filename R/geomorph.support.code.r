@@ -370,7 +370,7 @@ pGpa <- function(Y, PrinAxes = FALSE, Proj = FALSE, max.iter = 5){
 # finds PC loadings for surface landmarks
 # used in semilandmarks functions, within the larger gpagen framework
 getSurfPCs <- function(y, surf){
-  V <- t(La.svd(y, nu=0)$vt)
+  V <- t(La.svd(center(y), nu=0)$vt)
   p <- nrow(y); k <- ncol(y)
   pc.match <- 1:p; pc.match[-surf] = NA
   nearpts <- lapply(1:p, function(j) {
@@ -379,7 +379,7 @@ getSurfPCs <- function(y, surf){
       c(nearest(y,nn, k=k+1),nn)})
   tmp.pts <- lapply(1:p, function(j) {
     k <- nearpts[[j]]
-    if(sum(k) > 0) x <- y[k,] else x <- NA
+    if(sum(k) > 0) x <- center(y[k,]) else x <- NA
     x})
   pc.dir <- lapply(1:p, function(j) {
     x <- tmp.pts[[j]]
