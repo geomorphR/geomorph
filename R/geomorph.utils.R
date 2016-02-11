@@ -698,7 +698,7 @@ plot.CR <- function(x, ...){
   CR.val <- x$random.CR
   CR.obs <- x$CR
   p <- x$P.value
-  ndec <- nchar(p)-2
+  ndec <- nchar(x$permutations)
   CR.obs <- round(CR.obs, ndec)
   main.txt <- paste("Observed CR =",CR.obs,";", "P-value =", p)
   hist(CR.val,30,freq=TRUE,col="gray",xlab="CR Coefficient",xlim=c(0,max(c(2,CR.val))),
@@ -748,7 +748,7 @@ plot.CR.phylo <- function(x, ...){
   CR.val <- x$random.CR
   CR.obs <- x$CR
   p <- x$P.value
-  ndec <- nchar(p)-2
+  ndec <- nchar(x$permutations)
   CR.obs <- round(CR.obs, ndec)
   main.txt <- paste("Observed CR =",CR.obs,";", "P-value =", p)
   hist(CR.val,30,freq=TRUE,col="gray",xlab="CR Coefficient",xlim=c(0,max(c(2,CR.val))),
