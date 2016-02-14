@@ -277,26 +277,20 @@ getU <- function(y,tn, surf){
     U <- rbind(Ux,Uy,Uz)
   }
   if(!is.null(surf)){
-    U2 <- array(0,dim=c(k*p,p))  
-    U <- cbind(U,U2)
-    nearpts <- sapply(1:length(surf), function(j) nearest(y,surf[j], k=4))
-    nearpts <- cbind(t(nearpts), surf)
-    tmp.pts <- lapply(1:nrow(nearpts), function(j) {
-      k <- nearpts[j,]
-      x <- y[k,]; x})
-    pc.dir<-Map(function(y) La.svd(var(y), k, k)$u, tmp.pts)
-    z11 <- cbind(surf,surf); z21 <- cbind(p+surf, surf); if(k==3) z31 <- cbind(2*p+surf, surf)
-    z12 <- cbind(surf,p+surf); z22 <- cbind(p+surf, p+surf); if(k==3) z32 <- cbind(2*p+surf, p+surf)
-    pc11 <- sapply(1:length(surf), function(j) pc.dir[[j]][1,1])
-    pc12 <- sapply(1:length(surf), function(j) pc.dir[[j]][1,2])
-    if(k==3) pc13 <- sapply(1:length(surf), function(j) pc.dir[[j]][1,3])
-    pc21 <- sapply(1:length(surf), function(j) pc.dir[[j]][2,1])
-    pc22 <- sapply(1:length(surf), function(j) pc.dir[[j]][2,2])
-    if(k==3) pc23 <- sapply(1:length(surf), function(j) pc.dir[[j]][2,3])
-    U[z11] <- pc11; U[z21] <- pc21; U[z21] <- pc12; U[z22] <- pc22
-    if(k==3) U[z31] <- pc13; U[z32] <- pc23
+    Up1 <- Up2 <- array(0,dim=c(k*p,p))  
+    PC <- getSurfPCs(y, surf)
+    z11 <- z12 <- cbind(surf,surf); z21 <- z22 <- cbind(p+surf, surf)
+    if(k==3) z31 <- z32 <- cbind(2*p+surf, surf)
+    pc11 <- PC$p1x; pc12 <- PC$p1y; pc21 <- PC$p2x; pc22 <- PC$p2y
+    Up1[z11] <- pc11; Up2[z21] <- pc21; Up1[z21] <- pc12; Up2[z22] <- pc22
+    if(k==3) pc13 <- PC$p1z; pc23 <- PC$p2z; Up1[z31] <- pc13; Up2[z32] <- pc23
   }                   
-  U                  
+  U <- cbind(U,Up1,Up2)    
+  vec<-1/sqrt(apply(U*U,2,sum)); vec<-ifelse(is.infinite(vec),0,vec)
+  temp<-array(vec,dim=c(length(vec),k*p))
+  y<-t(temp)
+  U<-U*y ; U<-ifelse(is.na(U),0,U)  
+  U                 
 }
 
 # Ltemplate
