@@ -5,6 +5,7 @@ CHANGES IN GEOMORPH VERSION 3.0.0-1
     o Small addition to outputs in procD.pgls()
 
   BUG FIXES
+    o Fixed two small issues with plot.pls, regarding best fit line and matrix reduction.
     o Fixed three small issues with gpagen source files: indexing errors, arbitrary PC rotations for surface points, maximum iteration disparity.
     o Fixed generalized inverse for tps2d()
     o Fixed digitize2D() scaling issue when different scales used in each image
