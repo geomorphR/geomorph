@@ -268,6 +268,7 @@ nearest <- function(X,m,k=4) {
 # getU
 # calculates U matrix for sliding semilandmarks
 # currently not used but retained for posterity
+
 getU <- function(y,tn, surf){
   p <- nrow(tn); k <- ncol(tn)
   Ux <- Uy <- Uz <- matrix(0,p,p)
@@ -282,17 +283,15 @@ getU <- function(y,tn, surf){
     z11 <- z12 <- cbind(surf,surf); z21 <- z22 <- cbind(p+surf, surf)
     if(k==3) z31 <- z32 <- cbind(2*p+surf, surf)
     pc11 <- PC$p1x; pc12 <- PC$p1y; pc21 <- PC$p2x; pc22 <- PC$p2y
-    Up1[z11] <- pc11; Up2[z21] <- pc21; Up1[z21] <- pc12; Up2[z22] <- pc22
-    if(k==3) pc13 <- PC$p1z; pc23 <- PC$p2z; Up1[z31] <- pc13; Up2[z32] <- pc23
+    diag(Up1[1:p,1:p]) <- pc11; diag(Up2[1:p,1:p]) <- pc21
+    diag(Up1[(1+p):(2*p),1:p]) <- pc12; diag(Up2[(1+p):(2*p),1:p]) <- pc22
+    if(k==3) {pc13 <- PC$p1z; pc23 <- PC$p2z
+    diag(Up1[(1+2*p):(3*p),1:p]) <- pc13 
+    diag(Up2[(1+2*p):(3*p),1:p]) <- pc23}
   }                   
   U <- cbind(U,Up1,Up2)    
-  vec<-1/sqrt(apply(U*U,2,sum)); vec<-ifelse(is.infinite(vec),0,vec)
-  temp<-array(vec,dim=c(length(vec),k*p))
-  y<-t(temp)
-  U<-U*y ; U<-ifelse(is.na(U),0,U)  
   U                 
 }
-
 
 # Ltemplate
 # calculates inverse of bending energy matrix
@@ -368,7 +367,7 @@ pGpa <- function(Y, PrinAxes = FALSE, Proj = FALSE, max.iter = 5){
 # finds PC loadings for surface landmarks
 # used in semilandmarks functions, within the larger gpagen framework
 getSurfPCs <- function(y, surf){
-  V <- t(La.svd(center(y), nu=0)$vt)
+  V <- La.svd(center(y), nu=0)$vt
   p <- nrow(y); k <- ncol(y)
   pc.match <- 1:p; pc.match[-surf] = NA
   nearpts <- lapply(1:p, function(j) {
@@ -382,9 +381,9 @@ getSurfPCs <- function(y, surf){
   pc.dir <- lapply(1:p, function(j) {
     x <- tmp.pts[[j]]
     if(is.matrix(x)) {
-      pc <- t(La.svd(x, nu=0)$vt)
+      pc <- La.svd(x, nu=0)$vt
       s=sign(diag(crossprod(V,pc)))
-      t(t(pc)*s)
+      pc*s
     } else 0
   })
   p1x <- sapply(1:p, function(j) {x <- pc.dir[[j]]; if(is.matrix(x)) x[1,1] else 0})

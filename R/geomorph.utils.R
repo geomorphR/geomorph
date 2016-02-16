@@ -464,10 +464,10 @@ plotPLS <- function(p, label = NULL, warpgrids=TRUE){
     pls2.max <- A2.ref + A2.max
   }
   if (length(dim(A1)) != 3 && length(dim(A2)) != 3) {
-    plot(XScores[, 1], YScores[, 1], pch = 21, bg = "black", 
+    plot(XScores, YScores, pch = 21, bg = "black", 
          main = "PLS Plot", xlab = "PLS1 Block 1", ylab = "PLS1 Block 2")
     if (length(label != 0)) {
-      text(XScores[, 1], YScores[, 1], label, adj = c(-0.7, -0.7))
+      text(XScores, YScores, label, adj = c(-0.7, -0.7))
     }
   }
   if (length(dim(A1)) == 3 || length(dim(A2)) == 3) {
@@ -482,8 +482,7 @@ plotPLS <- function(p, label = NULL, warpgrids=TRUE){
          xlab = "PLS1 Block 1", ylab = "PLS1 Block 2")
     abline(lm(py~px), col="red")
     if (length(label != 0)) {
-      text(XScores[, 1], YScores[, 1], label, adj = c(-0.7, 
-                                                      -0.7))    
+      text(XScores, YScores, label, adj = c(-0.7, -0.7))    
     }
     if (warpgrids == TRUE) {
       if (length(dim(A1)) == 3 && dim(A1)[2] == 2) {
@@ -503,12 +502,12 @@ plotPLS <- function(p, label = NULL, warpgrids=TRUE){
     par(mar = c(5.1, 4.1, 4.1, 2.1))
   }
   if (length(dim(A1)) == 3 && dim(A1)[2] == 3) {
-    plot(XScores[, 1], YScores[, 1], pch = 21, bg = "black", 
+    plot(XScores, YScores, pch = 21, bg = "black", 
          main = "PLS Plot", xlab = "PLS1 Block 1", ylab = "PLS1 Block 2")
     if (length(label != 0)) {
-      text(XScores[, 1], YScores[, 1], label, adj = c(-0.7, 
-                                                      -0.7))
+      text(XScores, YScores, label, adj = c(-0.7, -0.7))
     }
+    abline(lm(py~px), col="red")
     open3d()
     plot3d(pls1.min, type = "s", col = "gray", main = paste("PLS Block1 negative"), 
            size = 1.25, aspect = FALSE)
