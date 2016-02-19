@@ -1661,7 +1661,7 @@ pls.phylo <- function(x,y, invC,D.mat, verbose = FALSE){
   px <- ncol(x); py <- ncol(y); pmin <- min(px,py)
   data.all<-cbind(x,y)
   one<-matrix(1,nrow(x),1)  
-  a<-t(t(one)%*%invC%*% data.all)*sum(sum(invC))^-1  
+  a<-t(t(one)%*%invC%*% data.all)*(sum(invC))^-1  
   R<- crossprod((data.all-one%*%t(a)),invC)%*%(data.all-one%*%t(a))*(nrow(x)-1)^-1 
   R12 <- matrix(R[1:px,-(1:px)], px,py)
   pls <- La.svd(R12, pmin, pmin)
@@ -1688,7 +1688,7 @@ apply.pls.phylo <- function(x,y,invC,D.mat, iter, seed = NULL){
   n.x<-ncol(x)
   data.all<-cbind(x,y)
   one<-matrix(1,nrow(x),1)  
-  a<-t(t(one)%*%invC%*% data.all)*sum(sum(invC))^-1  
+  a<-t(t(one)%*%invC%*% data.all)*(sum(invC))^-1  
   dat.trans<-D.mat%*%(data.all-(one%*%t(a)))
   x<-dat.trans[,1:n.x];y<-dat.trans[,-(1:n.x)]
   ind <- perm.index(nrow(x), iter, seed=seed)
@@ -1705,23 +1705,6 @@ apply.pls.phylo <- function(x,y,invC,D.mat, iter, seed = NULL){
   }
   r.rand
 }
-
-#OLD
-#apply.pls.phylo <- function(x,y,invC,D.mat, iter, seed = NULL){
-#  ind <- perm.index(nrow(x), iter, seed=seed)
-#  jj <- iter+1
-#  if(jj > 100) j <- 1:100 else j <- 1:jj
-#  r.rand <- NULL
-#  while(jj > 0){
-#    ind.j <- ind[j]
-#    y.rand <-lapply(1:length(j), function(i) y[ind.j[[i]],])
-#    r.rand <- c(r.rand, sapply(1:length(j), function(i) pls.phylo(x,y.rand[[i]], invC,D.mat, verbose = FALSE)))
-#    jj <- jj-length(j)
-#    if(jj > 100) kk <- 1:100 else kk <- 1:jj
-#    j <- j[length(j)] +kk
-#  }
-#  r.rand
-#}
 
 # plsmulti.phylo
 # average pairwise phylo.pls
@@ -1754,7 +1737,7 @@ plsmulti.phylo<-function(x,gps, invC, D.mat){
 # used in: phylo.integration
 apply.plsmulti.phylo <- function(x,gps, invC,D.mat, iter, seed= NULL){
   one<-matrix(1,nrow(x),1)  
-  a<-t(t(one)%*%invC%*% x)*sum(sum(invC))^-1  
+  a<-t(t(one)%*%invC%*% x)*(sum(invC))^-1  
   x<-D.mat%*%(x-(one%*%t(a)))
   gps<-factor(gps)
   ind <- perm.index(nrow(x), iter, seed=seed)
@@ -1772,26 +1755,6 @@ apply.plsmulti.phylo <- function(x,gps, invC,D.mat, iter, seed= NULL){
   }
   r.rand
 }
-
-#### OLD
-#apply.plsmulti.phylo <- function(x,gps, invC,D.mat, iter, seed= NULL){
-#  gps<-factor(gps)
-#  ind <- perm.index(nrow(x), iter, seed=seed)
-#  jj <- iter+1
-#  if(jj > 100) j <- 1:100 else j <- 1:jj
-#  r.rand <- NULL
-#  while(jj > 0){
-#    ind.j <- ind[j]
-#    x.r <-lapply(1:length(j), function(i) x[ind.j[[i]],which(gps==levels(gps)[1])])
-#    r.rand <- c(r.rand, sapply(1:length(j), function(i) plsmulti.phylo(cbind(x.r[[i]],x[,which(gps!=levels(gps)[1])]), 
-#                                                                       gps, invC,D.mat)$r.pls))
-#    jj <- jj-length(j)
-#    if(jj > 100) kk <- 1:100 else kk <- 1:jj
-#    j <- j[length(j)] +kk
-#  }
-#  r.rand
-#}
-
 
 # sigma.d
 # multivariate evolutionary rate
