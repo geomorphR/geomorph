@@ -471,6 +471,7 @@ plotPLS <- function(p, label = NULL, warpgrids=TRUE){
     pls2.min <- A2.ref + A2.min
     pls2.max <- A2.ref + A2.max
   }
+  
   if (length(dim(A1)) != 3 && length(dim(A2)) != 3) {
     plot(XScores, YScores, pch = 21, bg = "black", 
          main = "PLS Plot", xlab = "PLS1 Block 1", ylab = "PLS1 Block 2")
