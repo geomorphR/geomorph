@@ -1,17 +1,20 @@
-CHANGES IN GEOMORPH VERSION 3.0.0-1
+CHANGES IN GEOMORPH VERSION 3.0.1
 
   OTHER CHANGES
-    o Removed dependency on phytools 
+    o Removed dependency on phytools
     o Small addition to outputs in procD.pgls()
+    o added reading polygons in read.morphologika()
 
   BUG FIXES
+      o Fixed deformation plot issue with phylo.integration (via plot.pls)
     o Fixed two small issues with plot.pls, regarding best fit line and matrix reduction.
-    o Fixed three small issues with gpagen source files: indexing errors, arbitrary PC rotations for surface points, maximum iteration disparity.
     o Fixed generalized inverse for tps2d()
+    o Fixed three small issues with gpagen source files: indexing errors, arbitrary PC rotations for surface points, maximum iteration disparity.
     o Fixed digitize2D() scaling issue when different scales used in each image
     o Fixed phylo.integration() error when 3+ partitions examined
     o Fixed typo in modularity.test() for CI intervals into matrix input
     o Updated permutation procedure in phylo.integration so that prob(A,B|phy)~prob(B,A|phy)
+
 
 CHANGES IN GEOMORPH VERSION 3.0.0
 
@@ -26,7 +29,6 @@ CHANGES IN GEOMORPH VERSION 3.0.0
     o Diagnostic plots for anova/regression added
     o Nested ANOVA via nested.update() of procD.lm() objects
 
-
   OTHER CHANGES
     o Deprecated: compare.modular.partitions(), morphol.integr(), phylo.pls(), and plotAllometry() 
     o Removed internal C-code for gpagen()
@@ -35,21 +37,16 @@ CHANGES IN GEOMORPH VERSION 3.0.0
     o Removed verbose option for most functions: all output provided in lists
     o Added option to pre-multiply coordinates by scale in digitize2d()
     o Added plotting options to plotAllSpecimens()
-  
+
   BUG FIXES
     o Fixed morphol.disparity()$Prob.Disp displaying NAs
 
 
 CHANGES IN GEOMORPH VERSION 2.1.7-1
 
-  NEW FEATURES
-  
-  OTHER CHANGES
-  
   BUG FIXES
     o Fixed small change in C-code for gpagen()
-  
-  
+
 CHANGES IN GEOMORPH VERSION 2.1.7
 
   NEW FEATURES
@@ -66,7 +63,7 @@ CHANGES IN GEOMORPH VERSION 2.1.7
     o Generalized read.ply() to allow reading meshes with many properties
     o Generalised input for physignal() and compare.evol.rates(): univariate data accepted as named vector
     o Enhanced input for define.links(): read and append links to existing links matrix
-    
+
   BUG FIXES
     o Corrected error in warpRefMesh() where normals were incorrectly assigned to new mesh3d object
     o Corrected error in readland.tps() which read in a file containing a single specimen returned a 2D matrix rather than 3D array; this fixes the issue with digitize2d not working for a single file
@@ -74,19 +71,20 @@ CHANGES IN GEOMORPH VERSION 2.1.7
     o Corrected issue with globalIntegration for use with 3D data
     o Corrected bug in plotRefToTarget method = "TPS" where the wrong options from gridPars were being passed
 
+
 CHANGES IN GEOMORPH VERSION 2.1.6
 
   NEW FEATURES
     o New globalIntegration() function for evaluating integration vs. self-similarity of shape variation 
     o Coordinates returned by digitize2d() are now unscaled, and SCALE= returns the scale
-    
+
   OTHER CHANGES   
     o Phylogenetic simulation procedure in compare.evol.rates() generalized to use a single evolutionary rate matrix
     o pairwiseD.test() and pairwise.slope().test now defunct
     o define.sliders.2d() and define.sliders.3d() now defunct
     o read.morphologika() can read files with missing data
     o Ability to not show plot added to physignal() and compare.evol.rates()
-    
+
   BUG FIXES
     o Corrected error in defining starting point in digit.curves()
 
@@ -288,7 +286,6 @@ CHANGES IN GEOMORPH VERSION 1.1-2
     o Alternative ancestral state reconstruction and tests for bifurcating tree implemeneted in PlotGMPhyloMorphoSpace()
 
 CHANGES IN GEOMORPH VERSION 1.1-1
-
     o Removed dependency in physignal() on getAncStates() from geiger, which is no longer supported
     o Removed dependency in plotGMPhyloMorphoSpace() on getAncStates() from geiger, which is no longer supported
 
@@ -315,4 +312,3 @@ CHANGES IN GEOMORPH VERSION 1.1-0
 
   OTHER CHANGES
     o read.morphologika() accepts greater variety of input file formats
-    o new example data added for trajectory.analysis() (motionpaths)
