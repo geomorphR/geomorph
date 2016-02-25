@@ -439,26 +439,33 @@ plotPLS <- function(p, label = NULL, warpgrids=TRUE){
   XScores <- p$XScores; YScores <- p$YScores
   if(is.matrix(XScores)) XScores <- XScores[,1]
   if(is.matrix(YScores)) YScores <- YScores[,1]
+  plsRaw <- pls(two.d.array(A1), two.d.array(A2), verbose=TRUE)
+  XScoresRaw <- plsRaw$XScores[,1]; YScoresRaw <- plsRaw$YScores[,1]
   pc <- prcomp(cbind(XScores, YScores))$x[,1]
   px <- predict(lm(XScores~pc))
   py <- predict(lm(YScores~pc))
   pxmax <- max(px); pxmin <- min(px)
   pymax <- max(py); pymin <- min(py)
+  pcRaw <- prcomp(cbind(XScoresRaw, YScoresRaw))$x[,1]
+  pxRaw <- predict(lm(XScoresRaw~pcRaw))
+  pyRaw <- predict(lm(YScoresRaw~pcRaw))
+  pxmaxRaw <- max(pxRaw); pxminRaw <- min(pxRaw)
+  pymaxRaw <- max(pyRaw); pyminRaw <- min(pyRaw)
   
   if (length(dim(A1)) == 3) {
     A1.ref <- mshape(A1)
-    A1.min <- arrayspecs(pxmin*p$left.pls.vectors[,1], 
+    A1.min <- arrayspecs(pxminRaw*p$left.pls.vectors[,1], 
                          nrow(A1.ref), ncol(A1.ref))[,,1]
-    A1.max <- arrayspecs(pxmax*p$left.pls.vectors[,1], 
+    A1.max <- arrayspecs(pxmaxRaw*p$left.pls.vectors[,1], 
                          nrow(A1.ref), ncol(A1.ref))[,,1]
     pls1.min <- A1.ref + A1.min
     pls1.max <- A1.ref + A1.max
   }
   if (length(dim(A2)) == 3) {
     A2.ref <- mshape(A2)
-    A2.min <- arrayspecs(pymin*p$right.pls.vectors[,1], 
+    A2.min <- arrayspecs(pyminRaw*p$right.pls.vectors[,1], 
                          nrow(A2.ref), ncol(A2.ref))[,,1]
-    A2.max <- arrayspecs(pymax*p$right.pls.vectors[,1], 
+    A2.max <- arrayspecs(pymaxRaw*p$right.pls.vectors[,1], 
                          nrow(A2.ref), ncol(A2.ref))[,,1]
     pls2.min <- A2.ref + A2.min
     pls2.max <- A2.ref + A2.max
