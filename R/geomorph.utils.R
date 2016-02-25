@@ -461,6 +461,7 @@ plotPLS <- function(p, label = NULL, warpgrids=TRUE){
     pls1.min <- A1.ref + A1.min
     pls1.max <- A1.ref + A1.max
   }
+  
   if (length(dim(A2)) == 3) {
     A2.ref <- mshape(A2)
     A2.min <- arrayspecs(pyminRaw*p$right.pls.vectors[,1], 
