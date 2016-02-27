@@ -10,11 +10,11 @@
 #' 
 #' The function estimates the degree of  morphological covariation between two or sets of variables 
 #' while accounting for phylogeny using partial least squares (Adams and Felice 2014), and under a Brownian
-#' motion model of evolution. If more than two partitions 
-#' are defined, the average pairwise PLS correlation is utilized as the test statistic. The observed value is 
-#' statistically assessed using permutation, where data for one partition are permuted across the tips of the phylogeny, 
-#' an estimate of the covariation between sets of variables is obtained, and compared to the observed value. The analysis is conducted
-#' under a Brownian motion model of evolution (see Adams anbd Felice 2014).
+#' motion model of evolution. If more than two partitions are defined, the average pairwise PLS correlation is 
+#' utilized as the test statistic. The observed value is statistically assessed using permutation, where data for 
+#' one partition are permuted relative to the other partitions. Note that this permutation is performed on phylogenetically-
+#' transformed data, so that the probability of phylogenetic association of A vs. B is similar to that of B vs. A: 
+#' i.e., prob(A,B|phy)~prob(B,A|phy).  
 #' 
 #'   Input for the analysis can take one of two forms. First, one can input a single dataset (as a matrix or 3D array, along with 
 #'  a vector describing which variables correspond to which partitions (for the case of a 3D array, which landmarks belong to which 

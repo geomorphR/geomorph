@@ -1664,7 +1664,7 @@ pls.phylo <- function(x,y, invC,D.mat, verbose = FALSE){
   px <- ncol(x); py <- ncol(y); pmin <- min(px,py)
   data.all<-cbind(x,y)
   one<-matrix(1,nrow(x),1)  
-  a<-t(t(one)%*%invC%*% data.all)*sum(sum(invC))^-1  
+  a<-t(t(one)%*%invC%*% data.all)*(sum(invC))^-1  
   R<- crossprod((data.all-one%*%t(a)),invC)%*%(data.all-one%*%t(a))*(nrow(x)-1)^-1 
   R12 <- matrix(R[1:px,-(1:px)], px,py)
   pls <- La.svd(R12, pmin, pmin)
@@ -1688,6 +1688,12 @@ pls.phylo <- function(x,y, invC,D.mat, verbose = FALSE){
 # permutation for phylo.pls
 # used in: phylo.integration
 apply.pls.phylo <- function(x,y,invC,D.mat, iter, seed = NULL){
+  n.x<-ncol(x)
+  data.all<-cbind(x,y)
+  one<-matrix(1,nrow(x),1)  
+  a<-t(t(one)%*%invC%*% data.all)*(sum(invC))^-1  
+  dat.trans<-D.mat%*%(data.all-(one%*%t(a)))
+  x<-dat.trans[,1:n.x];y<-dat.trans[,-(1:n.x)]
   ind <- perm.index(nrow(x), iter, seed=seed)
   jj <- iter+1
   if(jj > 100) j <- 1:100 else j <- 1:jj
@@ -1695,7 +1701,7 @@ apply.pls.phylo <- function(x,y,invC,D.mat, iter, seed = NULL){
   while(jj > 0){
     ind.j <- ind[j]
     y.rand <-lapply(1:length(j), function(i) y[ind.j[[i]],])
-    r.rand <- c(r.rand, sapply(1:length(j), function(i) pls.phylo(x,y.rand[[i]], invC,D.mat, verbose = FALSE)))
+    r.rand <- c(r.rand, sapply(1:length(j), function(i) pls(x,y.rand[[i]], verbose = FALSE)))
     jj <- jj-length(j)
     if(jj > 100) kk <- 1:100 else kk <- 1:jj
     j <- j[length(j)] +kk
@@ -1733,6 +1739,9 @@ plsmulti.phylo<-function(x,gps, invC, D.mat){
 # permutations for plsmulti.phylo
 # used in: phylo.integration
 apply.plsmulti.phylo <- function(x,gps, invC,D.mat, iter, seed= NULL){
+  one<-matrix(1,nrow(x),1)  
+  a<-t(t(one)%*%invC%*% x)*(sum(invC))^-1  
+  x<-D.mat%*%(x-(one%*%t(a)))
   gps<-factor(gps)
   ind <- perm.index(nrow(x), iter, seed=seed)
   jj <- iter+1
@@ -1741,8 +1750,8 @@ apply.plsmulti.phylo <- function(x,gps, invC,D.mat, iter, seed= NULL){
   while(jj > 0){
     ind.j <- ind[j]
     x.r <-lapply(1:length(j), function(i) x[ind.j[[i]],which(gps==levels(gps)[1])])
-    r.rand <- c(r.rand, sapply(1:length(j), function(i) plsmulti.phylo(cbind(x.r[[i]],x[,which(gps!=levels(gps)[1])]), 
-                                                                       gps, invC,D.mat)$r.pls))
+    r.rand <- c(r.rand, sapply(1:length(j), function(i) plsmulti(cbind(x.r[[i]],x[,which(gps!=levels(gps)[1])]), 
+                                                                 gps)$r.pls))
     jj <- jj-length(j)
     if(jj > 100) kk <- 1:100 else kk <- 1:jj
     j <- j[length(j)] +kk
