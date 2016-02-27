@@ -1188,6 +1188,7 @@ ls.means = function(pfit, Y=NULL, g=NULL, data=NULL) {
                model.matrix(~fac+0))
     lsm <- .lm.fit(model.matrix(~fac+0),X%*%coef(fit))$coefficients
   }
+  lsm <- as.matrix(lsm)
   rownames(lsm) <- levels(fac)
   lsm
 }
