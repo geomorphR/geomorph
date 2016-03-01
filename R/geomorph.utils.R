@@ -439,7 +439,7 @@ plotPLS <- function(p, label = NULL, warpgrids=TRUE){
   XScores <- p$XScores; YScores <- p$YScores
   if(is.matrix(XScores)) XScores <- XScores[,1]
   if(is.matrix(YScores)) YScores <- YScores[,1]
-  plsRaw <- pls(two.d.array(A1), two.d.array(A2), verbose=TRUE)
+  plsRaw <- pls(p$A1.matrix, p$A2.matrix, verbose=TRUE)
   XScoresRaw <- plsRaw$XScores[,1]; YScoresRaw <- plsRaw$YScores[,1]
   pc <- prcomp(cbind(XScores, YScores))$x[,1]
   px <- predict(lm(XScores~pc))
