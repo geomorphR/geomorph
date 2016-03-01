@@ -46,7 +46,7 @@ Function estimates morphological disparity and performs pairwise comparisons amo
 The function estimates morphological disparity and performs pairwise comparisons to identify differences
 between groups. Morphological disparity is estimated as the Procrustes variance, overall or for groups, 
 using residuals of a linear model fit.  Procrustes variance is the same sum of the diagonal elements 
-of the group covariance matrix divided by the number of observations in the group (e.g., Zelditch et al. 2012).
+of the group sums of squares and cross-products matrix divided by the number of observations in the group (e.g., Zelditch et al. 2012).
 The function takes as input a formula to describe the linear model fit,
 plus a formulaic indication of groups (e.g., ~ groups).  It is assumed that the formula describes shape data that 
 have been GPA-aligned [e.g., \code{\link{gpagen}}], although the function can work with any multivariate data.
