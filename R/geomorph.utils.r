@@ -439,7 +439,7 @@ plotPLS <- function(p, label = NULL, warpgrids=TRUE){
   XScores <- p$XScores; YScores <- p$YScores
   if(is.matrix(XScores)) XScores <- XScores[,1]
   if(is.matrix(YScores)) YScores <- YScores[,1]
-  plsRaw <- pls(two.d.array(A1), two.d.array(A2), verbose=TRUE)
+  plsRaw <- pls(p$A1.matrix, p$A2.matrix, verbose=TRUE)
   XScoresRaw <- plsRaw$XScores[,1]; YScoresRaw <- plsRaw$YScores[,1]
   pc <- prcomp(cbind(XScores, YScores))$x[,1]
   px <- predict(lm(XScores~pc))
@@ -471,6 +471,7 @@ plotPLS <- function(p, label = NULL, warpgrids=TRUE){
     pls2.min <- A2.ref + A2.min
     pls2.max <- A2.ref + A2.max
   }
+  
   if (length(dim(A1)) != 3 && length(dim(A2)) != 3) {
     plot(XScores, YScores, pch = 21, bg = "black", 
          main = "PLS Plot", xlab = "PLS1 Block 1", ylab = "PLS1 Block 2")
@@ -532,6 +533,7 @@ plotPLS <- function(p, label = NULL, warpgrids=TRUE){
            size = 1.25, aspect = FALSE)
   } 
 }
+
 
 #' Plot Function for geomorph
 #' 

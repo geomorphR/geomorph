@@ -1,4 +1,4 @@
-#'  Quantify and compare shape change trajectories 
+#'  Quantify and compare shape change trajectories
 #'
 #'  Function estimates attributes of shape change trajectories or "motion" trajectories for a set of 
 #'  Procrustes-aligned specimens and compares them statistically
