@@ -210,8 +210,7 @@ plotRefToTarget<-function(M1,M2,mesh= NULL,outline=NULL,method=c("TPS","vector",
       }
     }
     if(method=="points"){
-      plot3d(M1,type="s",col=gP$pt.bg,size=gP$pt.size,aspect=FALSE,
-             xlab="x", ylab="y",zlab="z",...)
+      plot3d(M1,type="s",col=gP$pt.bg,size=gP$pt.size,aspect=FALSE,...)
       plot3d(M2,type="s", col=gP$tar.pt.bg,size=gP$tar.pt.size, add=TRUE)
       if(label == TRUE){text3d(M1, texts = paste(1:dim(M1)[1]), adj=(gP$txt.adj+gP$pt.size),
                                pos=(gP$txt.pos+gP$pt.size),cex=gP$txt.cex,col=gP$txt.col)}
@@ -238,7 +237,7 @@ plotRefToTarget<-function(M1,M2,mesh= NULL,outline=NULL,method=c("TPS","vector",
       vb <- as.matrix(t(mesh$vb)[,-4])
       warp <- tps2d3d(vb, M1, M2)
       warp.PLY$vb <- rbind(t(warp), 1)
-      open3d(); shade3d(warp.PLY, ...)
+      shade3d(warp.PLY, ...)
       return(warp.PLY)
     }
   }

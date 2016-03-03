@@ -4,11 +4,12 @@ CHANGES IN GEOMORPH VERSION 3.0.1
     o Removed dependency on phytools
     o Small addition to outputs in procD.pgls()
     o added reading polygons in read.morphologika()
+    o plots of 3D shapes now plotted in pairs in single rgl window for: plotTangentSpace(), plot.bilat.symmetry(), plot.procD.allometry(), plot.pls()
 
   BUG FIXES
-      o Fixed deformation plot issue with phylo.integration (via plot.pls)
-    o Fixed two small issues with plot.pls, regarding best fit line and matrix reduction.
-    o Fixed three small issues with gpagen source files: indexing errors, arbitrary PC rotations for surface points, maximum iteration disparity.
+    o Fixed deformation plot issue with phylo.integration (via plot.pls)
+    o Fixed two small issues with plot.pls(), regarding best fit line and matrix reduction.
+    o Fixed three small issues with gpagen() source files: indexing errors, arbitrary PC rotations for surface points, maximum iteration disparity.
     o Fixed digitize2D() scaling issue when different scales used in each image
     o Fixed phylo.integration() error when 3+ partitions examined
     o Fixed typo in modularity.test() for CI intervals into matrix input

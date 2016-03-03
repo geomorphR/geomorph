@@ -331,20 +331,22 @@ plot.procD.allometry <- function(x, method=c("CAC","RegScore","PredLine"),warpgr
     y <- x$pred.val
   
   if(is.null(x$gps)){
-    if(warpgrids==TRUE){
+    if(warpgrids==TRUE && x$k==2){
       arrows(min(size), (0.7 * max(y)), min(size), 0, length = 0.1,lwd = 2)
       arrows(max(size), (0.7 * min(y)), max(size), 0, length = 0.1,lwd = 2)
     }
   }
   if(warpgrids==TRUE && x$k==3){
     if(is.null(mesh)){
-      open3d()
-      plot3d(x$Ahat[,,which.min(size)],type="s",col="gray",main="Shape at minimum size",size=1.25,aspect=FALSE)
-      open3d()
-      plot3d(x$Ahat[,,which.max(size)],type="s",col="gray",main="Shape at maximum size",size=1.25,aspect=FALSE)
+      open3d() ; mfrow3d(1, 2)
+      plot3d(x$Ahat[,,which.min(size)],type="s",col="gray",main="Shape at minimum size",size=1.25,aspect=FALSE,xlab="",ylab="",zlab="",box=FALSE, axes=FALSE)
+      plot3d(x$Ahat[,,which.max(size)],type="s",col="gray",main="Shape at maximum size",size=1.25,aspect=FALSE,xlab="",ylab="",zlab="",box=FALSE, axes=FALSE)
       if(!is.null(mesh)){
+        open3d() ; mfrow3d(1, 2) 
+        print("Warping mesh to size minima and maxima. Please wait...")
         plotRefToTarget(x$ref, x$Ahat[,,which.min(size)], mesh, method = "surface")
         title3d(main="Shape at minimum size")
+        next3d()
         plotRefToTarget(x$ref, x$Ahat[,,which.max(size)], mesh, method = "surface")
         title3d(main="Shape at maximum size")
       }}
@@ -516,20 +518,18 @@ plotPLS <- function(p, label = NULL, warpgrids=TRUE){
       text(XScores, YScores, label, adj = c(-0.7, -0.7))
     }
     abline(lm(py~px), col="red")
-    open3d()
+    open3d() ; mfrow3d(1, 2) 
     plot3d(pls1.min, type = "s", col = "gray", main = paste("PLS Block1 negative"), 
-           size = 1.25, aspect = FALSE)
-    open3d()
+           size = 1.25, aspect = FALSE,xlab="",ylab="",zlab="",box=FALSE, axes=FALSE)
     plot3d(pls1.max, type = "s", col = "gray", main = paste("PLS Block1 positive"), 
-           size = 1.25, aspect = FALSE)
+           size = 1.25, aspect = FALSE,xlab="",ylab="",zlab="",box=FALSE, axes=FALSE)
   }
   if (length(dim(A2)) == 3 && dim(A2)[2] == 3) {
-    open3d()
+    open3d() ; mfrow3d(1, 2) 
     plot3d(pls2.min, type = "s", col = "gray", main = paste("PLS Block2 negative"), 
-           size = 1.25, aspect = FALSE)
-    open3d()
+           size = 1.25, aspect = FALSE,xlab="",ylab="",zlab="",box=FALSE, axes=FALSE)
     plot3d(pls2.max, type = "s", col = "gray", main = paste("PLS Block2 positive"), 
-           size = 1.25, aspect = FALSE)
+           size = 1.25, aspect = FALSE,xlab="",ylab="",zlab="",box=FALSE, axes=FALSE)
   } 
 }
 
@@ -602,14 +602,16 @@ plotBilatSymmetry <- function(b, warpgrids = TRUE, mesh= NULL){
     }
     if (k==3){
       if (is.null(mesh)){
-        open3d()
-        plotRefToTarget(b$DA.mns[,,1],b$DA.mns[,,2],method="points",main="Directional Asymmetry")
-        open3d()
-        plotRefToTarget(b$FA.mns[,,1],b$FA.mns[,,2],method="points",main="Fluctuating Asymmetry")
+        open3d() ; mfrow3d(1, 2) 
+        plotRefToTarget(b$DA.mns[,,1],b$DA.mns[,,2],method="points",main="Directional Asymmetry",xlab="",ylab="",zlab="",box=FALSE, axes=FALSE)
+        next3d()
+        plotRefToTarget(b$FA.mns[,,1],b$FA.mns[,,2],method="points",main="Fluctuating Asymmetry",xlab="",ylab="",zlab="",box=FALSE, axes=FALSE)
       } 
       if(!is.null(mesh)){
+        open3d() ; mfrow3d(1, 2) 
         plotRefToTarget(b$DA.mns[,,1],b$DA.mns[,,2],mesh,method="surface")
         title3d(main="Directional Asymmetry")
+        next3d()
         plotRefToTarget(b$FA.mns[,,1],b$FA.mns[,,2],mesh,method="surface")
         title3d(main="Fluctuating Asymmetry")
       }
@@ -629,14 +631,16 @@ plotBilatSymmetry <- function(b, warpgrids = TRUE, mesh= NULL){
       }
       if (k==3){
         if(is.null(mesh)) {
-          open3d()
-          plotRefToTarget(b$DA.mns[,,1],b$DA.mns[,,2],method="points",main="Directional Asymmetry")
-          open3d()
-          plotRefToTarget(b$FA.mns[,,1],b$FA.mns[,,2],method="points",main="Fluctuating Asymmetry")
+          open3d() ; mfrow3d(1, 2) 
+          plotRefToTarget(b$DA.mns[,,1],b$DA.mns[,,2],method="points",main="Directional Asymmetry",xlab="",ylab="",zlab="",box=FALSE, axes=FALSE)
+          next3d()
+          plotRefToTarget(b$FA.mns[,,1],b$FA.mns[,,2],method="points",main="Fluctuating Asymmetry",xlab="",ylab="",zlab="",box=FALSE, axes=FALSE)
         } 
         if(!is.null(mesh)){
+          open3d() ; mfrow3d(1, 2) 
           plotRefToTarget(b$DA.mns[,,1],b$DA.mns[,,2],mesh,method="surface")
           title3d(main="Directional Asymmetry")
+          next3d()
           plotRefToTarget(b$FA.mns[,,1],b$FA.mns[,,2],mesh,method="surface")
           title3d(main="Fluctuating Asymmetry")
         }  

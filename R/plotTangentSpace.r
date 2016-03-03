@@ -117,15 +117,16 @@ plotTangentSpace<-function (A, axis1 = 1, axis2 = 2, warpgrids = TRUE, mesh = NU
     }
     if (k == 3) {
       if (is.null(mesh)==TRUE){
-        open3d()
-        plot3d(shape.min.1, type = "s", col = "gray", main = paste("PC ", axis1," negative"),size = 1.25, aspect = FALSE)
-        open3d()
-        plot3d(shape.max.1, type = "s", col = "gray", main = paste("PC ", axis1," positive"), size = 1.25, aspect = FALSE)
+        open3d() ; mfrow3d(1, 2) 
+        plot3d(shape.min.1, type = "s", col = "gray", main = paste("PC ", axis1," negative"),size = 1.25, aspect = FALSE,xlab="",ylab="",zlab="",box=FALSE, axes=FALSE)
+        plot3d(shape.max.1, type = "s", col = "gray", main = paste("PC ", axis1," positive"), size = 1.25, aspect = FALSE,xlab="",ylab="",zlab="",box=FALSE, axes=FALSE)
         }
       if(is.null(mesh)==FALSE){
-        print("Warping mesh to axis 1 minima and maxima...")
+        open3d() ; mfrow3d(1, 2) 
+        print("Warping mesh to axis 1 minima and maxima. Please wait...")
         plotRefToTarget(ref, shape.min.1, mesh, method = "surface")
         title3d(main=paste("PC ", axis1," negative"))
+        next3d()
         plotRefToTarget(ref, shape.max.1, mesh, method = "surface")
         title3d(main=paste("PC ", axis1," positive"))
         }
