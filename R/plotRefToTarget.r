@@ -235,6 +235,7 @@ plotRefToTarget<-function(M1,M2,mesh= NULL,outline=NULL,method=c("TPS","vector",
       }
       warp.PLY <- mesh
       vb <- as.matrix(t(mesh$vb)[,-4])
+      cat("\nWarping mesh\n")
       warp <- tps2d3d(vb, M1, M2)
       warp.PLY$vb <- rbind(t(warp), 1)
       shade3d(warp.PLY, ...)

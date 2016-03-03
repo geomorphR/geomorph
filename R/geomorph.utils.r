@@ -343,10 +343,11 @@ plot.procD.allometry <- function(x, method=c("CAC","RegScore","PredLine"),warpgr
       plot3d(x$Ahat[,,which.max(size)],type="s",col="gray",main="Shape at maximum size",size=1.25,aspect=FALSE,xlab="",ylab="",zlab="",box=FALSE, axes=FALSE)
       if(!is.null(mesh)){
         open3d() ; mfrow3d(1, 2) 
-        print("Warping mesh to size minima and maxima. Please wait...")
+        cat("\nWarping mesh to minimum size\n")
         plotRefToTarget(x$ref, x$Ahat[,,which.min(size)], mesh, method = "surface")
         title3d(main="Shape at minimum size")
         next3d()
+        cat("\nWarping mesh to maximum size")
         plotRefToTarget(x$ref, x$Ahat[,,which.max(size)], mesh, method = "surface")
         title3d(main="Shape at maximum size")
       }}
@@ -357,7 +358,6 @@ plot.procD.allometry <- function(x, method=c("CAC","RegScore","PredLine"),warpgr
   }
   layout(1) 
 }
-
 
 
 ## morphol.disparity
@@ -609,9 +609,11 @@ plotBilatSymmetry <- function(b, warpgrids = TRUE, mesh= NULL){
       } 
       if(!is.null(mesh)){
         open3d() ; mfrow3d(1, 2) 
+        cat("\nWarping mesh\n")
         plotRefToTarget(b$DA.mns[,,1],b$DA.mns[,,2],mesh,method="surface")
         title3d(main="Directional Asymmetry")
         next3d()
+        cat("\nWarping mesh\n")
         plotRefToTarget(b$FA.mns[,,1],b$FA.mns[,,2],mesh,method="surface")
         title3d(main="Fluctuating Asymmetry")
       }
@@ -638,9 +640,11 @@ plotBilatSymmetry <- function(b, warpgrids = TRUE, mesh= NULL){
         } 
         if(!is.null(mesh)){
           open3d() ; mfrow3d(1, 2) 
+          cat("\nWarping mesh\n")
           plotRefToTarget(b$DA.mns[,,1],b$DA.mns[,,2],mesh,method="surface")
           title3d(main="Directional Asymmetry")
           next3d()
+          cat("\nWarping mesh\n")
           plotRefToTarget(b$FA.mns[,,1],b$FA.mns[,,2],mesh,method="surface")
           title3d(main="Fluctuating Asymmetry")
         }  

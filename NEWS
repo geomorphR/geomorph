@@ -5,6 +5,7 @@ CHANGES IN GEOMORPH VERSION 3.0.1
     o Small addition to outputs in procD.pgls()
     o added reading polygons in read.morphologika()
     o plots of 3D shapes now plotted in pairs in single rgl window for: plotTangentSpace(), plot.bilat.symmetry(), plot.procD.allometry(), plot.pls()
+    o Functions performing warping of 3D meshes now present progress bar
 
   BUG FIXES
     o Fixed deformation plot issue with phylo.integration (via plot.pls)

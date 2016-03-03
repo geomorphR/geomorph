@@ -123,10 +123,11 @@ plotTangentSpace<-function (A, axis1 = 1, axis2 = 2, warpgrids = TRUE, mesh = NU
         }
       if(is.null(mesh)==FALSE){
         open3d() ; mfrow3d(1, 2) 
-        print("Warping mesh to axis 1 minima and maxima. Please wait...")
+        cat(paste("\nWarping mesh to negative end of axis ", axis1, "\n", sep=""))
         plotRefToTarget(ref, shape.min.1, mesh, method = "surface")
         title3d(main=paste("PC ", axis1," negative"))
         next3d()
+        cat(paste("\nWarping mesh to positive end of axis ", axis1, "\n", sep=""))
         plotRefToTarget(ref, shape.max.1, mesh, method = "surface")
         title3d(main=paste("PC ", axis1," positive"))
         }
