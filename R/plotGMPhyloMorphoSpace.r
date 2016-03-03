@@ -134,10 +134,11 @@ plotGMPhyloMorphoSpace<-function(phy,A,tip.labels=TRUE,node.labels=TRUE,ancState
   if(is.character(zaxis)){
     zaxis <- node.depth.edgelength(phy)
     zaxis <- abs(node.depth.edgelength(phy) - max(zaxis))
+    view3d(phi=90, fov=30)
     plot3d(pcdata[,xaxis],pcdata[,yaxis],zaxis,type="n",xlim=limits(pcdata[,xaxis],1.5),
              ylim=limits(pcdata[,yaxis],1.5),
              zlim=c(max(zaxis), min(zaxis)),
-             asp=c(1,1,1), view3d(phi=90, fov=30),
+             asp=c(1,1,1),
            xlab= paste("PC",xaxis), ylab= paste("PC",yaxis), zlab="Time")
     points3d(pcdata[1:N,xaxis], pcdata[1:N,yaxis], zaxis[1:N],
              col= p.p$t.bg, size=p.p$t.cex*4)
