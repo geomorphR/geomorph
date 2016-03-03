@@ -35,7 +35,7 @@ plotAllSpecimens<-function(A,mean=TRUE,links=NULL,label=FALSE,plot.param = list(
   p.p <- plot.param
   if(is.null(p.p$pt.bg)) p.p$pt.bg="gray" ; if(is.null(p.p$pt.cex)) p.p$pt.cex=1 ; 
   if(is.null(p.p$mean.bg)) p.p$mean.bg="black" ; if(is.null(p.p$mean.cex)) p.p$mean.cex=2
-  if(is.null(p.p$link.col)) p.p$l.col="black" ; if(is.null(p.p$link.lwd)) p.p$link.lwd=2
+  if(is.null(p.p$link.col)) p.p$link.col="black" ; if(is.null(p.p$link.lwd)) p.p$link.lwd=2
   if(is.null(p.p$link.lty)) p.p$link.lty=1 ; if(is.null(p.p$txt.adj)) p.p$txt.adj=c(-.1,-.1)
   if(is.null(p.p$txt.col)) p.p$txt.col="black" ; if(is.null(p.p$txt.cex)) p.p$txt.cex=0.8
   if(is.null(p.p$txt.pos)) p.p$txt.pos=1
