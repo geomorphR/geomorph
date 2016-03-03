@@ -16,6 +16,7 @@ CHANGES IN GEOMORPH VERSION 3.0.1
     o Fixed phylo.integration() error when 3+ partitions examined
     o Fixed typo in modularity.test() for CI intervals into matrix input
     o Updated permutation procedure in phylo.integration so that prob(A,B|phy)~prob(B,A|phy)
+    o Fixed typo in plotAllSpecimens where links were not being plotted
 
 
 CHANGES IN GEOMORPH VERSION 3.0.0

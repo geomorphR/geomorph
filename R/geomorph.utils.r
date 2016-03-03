@@ -42,13 +42,13 @@ summary.gpagen <- function(object, ...) {
 #' Plot Function for geomorph
 #' 
 #' @param x plot object
-#' @param ... other arguments passed to plot
+#' @param ... other arguments passed to plotAllSpecimens
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities
 #' @keywords visualization
 plot.gpagen <- function(x, ...){
-  plotAllSpecimens(x$coords)
+  plotAllSpecimens(x$coords, ...)
 }
 
 
