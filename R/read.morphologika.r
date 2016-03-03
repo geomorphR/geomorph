@@ -35,7 +35,7 @@ read.morphologika<-function(file){
   rawdat <- rawdat[-grep("'",rawdat)]
   landdata <- matrix(as.numeric(unlist(strsplit(rawdat,"\\s+"))),
                      ncol = k, byrow = T)
-  if (sum(which(is.na(landdata) == TRUE)) > 0) { print("NOTE.  Missing data identified.") }
+  if (sum(which(is.na(landdata) == TRUE)) > 0) { cat("NOTE.  Missing data identified.") }
   coords<-arrayspecs(landdata,p,k)
   names <- mfile[grep("names",mfile,ignore.case=T) + 1:n]
   if(!is.null(names)) dimnames(coords)[[3]]<-names

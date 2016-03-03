@@ -67,7 +67,7 @@ readmulti.nts<-function(filelist){
     landdata<-rbind(landdata,data)
   }
   coords<-arrayspecs(landdata,p,k)
-  if(sum(which(is.na(landdata)==TRUE))>0){print("NOTE.  Missing data identified.")}
+  if(sum(which(is.na(landdata)==TRUE))>0){cat("NOTE.  Missing data identified.")}
   dimnames(coords)[[3]]<- as.list(names)
   return(coords=coords)
 }
