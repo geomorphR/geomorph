@@ -115,7 +115,7 @@ f6a597f1e703debeb24ef70e0a8e2890 *man/two.b.pls.Rd
 87a86c2e9b2d31119ab1883c54e092ec *man/warpRefOutline.Rd
 036ec1108cf8b6363ebf542ca50cf8ae *man/writeland.tps.Rd
 dced349f2a8288757f8d0eaf232d2810 *NAMESPACE
-0dd4f69ac0554f08147bf5b64f2a4cc5 *NEWS
+4e40dbd3f3daa8c8a1a05a37009a86a7 *NEWS
 24d6f6b78e00f18a321107e8046c3d10 *R/advanced.procD.lm.r
 c3bf88c10dcae2eb5430025e36867d98 *R/arrayspecs.r
 807c22dc4f7ff4549f5afc716c4c825f *R/bilat.symmetry.r
@@ -143,7 +143,7 @@ f9c40367d0770e7751a1537b0f1eea53 *R/geomorph.utils.r
 e09c5bdfc67d5d3406eda297f5cd8507 *R/integration.test.r
 2a8734a96a9648d9fa5dd25c6245031d *R/modularity.test.r
 6f8f612a447a6f6ead56cd13d159dd43 *R/morphol.disparity.r
-08a938cfb06e4d65fe5735851f27ce4c *R/nested.update.r
+084f845900f98683ff877ac399e822b3 *R/nested.update.r
 c6800acda3e64ac1be473ca0e76edc1d *R/phylo.integration.r
 caa1b74623078c6d9a1d21f79101684c *R/phylo.modularity.r
 71d515ee689803a88260a0c4b3cc9512 *R/physignal.r
@@ -153,7 +153,7 @@ d980cf69c05ca1167831b7a730a40a15 *R/plotOutliers.r
 f8f0cfddf20ff12f5b2bd51b06617edb *R/plotRefToTarget.r
 41db23cebd8d7be6c3decf781bd378e0 *R/plotspec.r
 4ef1d71caaad5cf5ebc16cd24f9a26d4 *R/plotTangentSpace.r
-9d16fb297e7d12807292d61be1d1bc47 *R/procD.allometry.r
+8f26c7c4f0f63cc04a2de9e1629c27c2 *R/procD.allometry.r
 d97832b7297c18a6a2eb86372f063c65 *R/procD.lm.r
 a82b54b96f451fee3ef6e4a77ba08910 *R/procD.pgls.r
 2a39213ef1d6feae4571e44c09344bc1 *R/read.morphologika.r
