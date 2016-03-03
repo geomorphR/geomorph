@@ -9,6 +9,7 @@ CHANGES IN GEOMORPH VERSION 3.0.1
     o Added option pt.col to plot.procD.allometry() to designate plotting colors
 
   BUG FIXES
+    o Fixed centering error for CAC scores in procD.Allometry
     o Fixed deformation plot issue with phylo.integration (via plot.pls())
     o Fixed two small issues with plot.pls(), regarding best fit line and matrix reduction.
     o Fixed three small issues with gpagen() source files: indexing errors, arbitrary PC rotations for surface points, maximum iteration disparity.
