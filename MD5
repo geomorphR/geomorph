@@ -129,13 +129,13 @@ ce54e0082a7500c7a9ec4b443df968a8 *R/define.modules.r
 be4b26adcacca7e3422c19761bf243c0 *R/digit.curves.r
 0c03428098d628c816597b70abc3ccd3 *R/digit.fixed.r
 ddff41e987eac54d3500e2313799c3c6 *R/digitize2d.r
-fd266fb3d96223dbb9c1f39f701c8e75 *R/digitsurface.r
+6ee66fc21bc5f6391b02c890d2313575 *R/digitsurface.r
 05f8cee04bf9faaab3fda006fbd3efbe *R/editTemplate.r
-a20acee83da00bac7ea6738893dd4a70 *R/estimate.missing.r
+4b33ac63527cbc3afaef07d7e0e70c4b *R/estimate.missing.r
 da56107aec80b7583dc4a6b841b30c74 *R/findMeanSpec.r
 1e71d260e79093bb0d36f6ded44dd437 *R/fixed.angle.r
 203177efc30cc6fef4bd604b2fc2af01 *R/geomorph.data.frame.r
-42ced3c810b28ebb62396115193236ac *R/geomorph.support.code.r
+6f2cae22670fe05cf48463e1f12ce081 *R/geomorph.support.code.r
 511f56ad29abb1096436318acfb945f3 *R/geomorph.utils.r
 0d9d88147f22cff2241b6e2e7396d57f *R/globalIntegration.r
 9cd10d15e42d687a63fe1f3d7f0adb73 *R/gpagen.r
