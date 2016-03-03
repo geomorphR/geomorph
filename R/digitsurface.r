@@ -95,6 +95,7 @@ digitsurface<-function(spec, fixed, ptsize = 1, center = TRUE)    {
   specimen<-center(as.matrix(specimen))
   template<-center(template)*(csize(specimen[lmk.add,])/csize(template[(1:fixed),]))  
   template<-template%*%rotate.mat(specimen[lmk.add,],template[(1:fixed),])
+  cat("\nWarping template\n")
   template.tps<-tps2d3d(template[-(1:fixed),],template[(1:fixed),],specimen[lmk.add,])             
   spec.surfs<-specimen[-lmk.add,]
   nei<-numeric(dim(template.tps)[1])

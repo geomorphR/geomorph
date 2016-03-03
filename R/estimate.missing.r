@@ -64,7 +64,7 @@ estimate.missing<-function(A,method=c("TPS","Reg")){
     ref<-mshape(arrayspecs(two.d.array(Y.gpa$coords)*Y.gpa$Csize,p,k))
     for (i in 1:length(spec.NA)){
       missing<-which(is.na(A2[,1,spec.NA[i]])== T)
-      tmp<-tps2d3d(ref,ref[-missing,],A2[-missing,,spec.NA[i]])
+      tmp<-tps2d3d(ref,ref[-missing,],A2[-missing,,spec.NA[i]], PB=FALSE)
       A2[,,spec.NA[i]]<-tmp
     }
   }

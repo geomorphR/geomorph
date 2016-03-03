@@ -702,7 +702,7 @@ matg}
 # tps2d3d
 #
 #
-tps2d3d<-function(M, matr, matt){		#DCA: altered from J. Claude 2008  
+tps2d3d<-function(M, matr, matt, PB=TRUE){		#DCA: altered from J. Claude 2008  
   p<-dim(matr)[1]; k<-dim(matr)[2];q<-dim(M)[1]
   Pdist<-as.matrix(dist(matr))
   ifelse(k==2,P<-Pdist^2*log(Pdist^2),P<- Pdist) 
@@ -720,11 +720,11 @@ tps2d3d<-function(M, matr, matt){		#DCA: altered from J. Claude 2008
       ifelse(k==2,Z1<-Z*log(Z),Z1<-sqrt(Z)); Z1[which(is.na(Z1))]<-0
       ifelse(k==2,Xn[i]<-coef[p+1]+coef[p+2]*M[i,1]+coef[p+3]*M[i,2]+sum(coef[1:p]*Z1),
              Xn[i]<-coef[p+1]+coef[p+2]*M[i,1]+coef[p+3]*M[i,2]+coef[p+4]*M[i,3]+sum(coef[1:p]*Z1))
-      setTxtProgressBar(pb, step + i) # updates progress bar
+      if(PB==TRUE){setTxtProgressBar(pb, step + i)}
     }    
     Xn}
   matg<-matrix(NA, q, k)
-  pb <- txtProgressBar(min = 0, max = q*k, style = 3)   # create progress bar
+  if(PB==TRUE){pb <- txtProgressBar(min = 0, max = q*k, style = 3) }
   matg[,1]<-fx(matr, M, coefx, step = 1)
   matg[,2]<-fx(matr, M, coefy, step=q)
   if(k==3){matg[,3]<-fx(matr, M, coefz, step=q*2)
