@@ -284,6 +284,7 @@ summary.procD.allometry <- function(object, ...) {
 #' @param warpgrids A logical value indicating whether deformation grids for small and large shapes 
 #'  should be displayed (note: if groups are provided no TPS grids are shown)
 #' @param label An optional vector indicating labels for each specimen that are to be displayed
+#' @param pt.col An optional vector of colours to use for points (as in points(bg=))
 #' @param mesh A mesh3d object to be warped to represent shape deformation of the minimum and maximum size 
 #' if {warpgrids=TRUE} (see \code{\link{warpRefMesh}}).
 #' @param ... other arguments passed to plot
@@ -292,20 +293,21 @@ summary.procD.allometry <- function(object, ...) {
 #' @keywords utilities
 #' @keywords visualization
 plot.procD.allometry <- function(x, method=c("CAC","RegScore","PredLine"),warpgrids=TRUE,
-                                 label=NULL, mesh=NULL, ...) {
+                                 label=NULL, mesh=NULL, pt.col=NULL,...) {
   method <- match.arg(method)
   if(x$logsz) xlab <- "log(Size)" else xlab <- "Size"
   if(x$logsz) size <- log(x$size) else size <- x$size
   n <- length(size)
-  if(!is.null(x$gps)) pt.cols <- as.numeric(x$gps) else pt.cols <- rep(1, length(size))
+  if(!is.null(x$gps) && is.null(pt.col)) pt.col <- as.numeric(x$gps) 
+  if(is.null(x$gps) && is.null(pt.col)) pt.col <- rep(1, length(size))
   if(method == "CAC"){
     layout(matrix(c(3,1,1,1,1,1,1,1,4,2,2,2,2,2,2,2,2,2),3,6))   
-    plot(size,x$CAC,xlab=xlab, ylab="CAC",pch=21,bg=pt.cols,cex=1.25)
+    plot(size,x$CAC,xlab=xlab, ylab="CAC",pch=21,bg=pt.col,cex=1.25)
     if (length(label!=0)) {
       if(isTRUE(label)){text(size,x$CAC,seq(1, n),adj=c(-0.7,-0.7)) }
       else{text(size,x$CAC,label,adj=c(-0.1,-0.1))}
     }
-    plot(x$CAC,x$RSC[,1], xlab="CAC",ylab="RSC 1", pch=21,bg=pt.cols,cex=1.25)
+    plot(x$CAC,x$RSC[,1], xlab="CAC",ylab="RSC 1", pch=21,bg=pt.col,cex=1.25)
     if (!is.null(label)) {
       if(!is.null(label)){text(x$CAC,x$RSC,seq(1, n),adj=c(-0.7,-0.7)) }
       else{text(x$CAC,x$RSC,label,adj=c(-0.1,-0.1))}
@@ -313,7 +315,7 @@ plot.procD.allometry <- function(x, method=c("CAC","RegScore","PredLine"),warpgr
   }
   if(method=="PredLine"){
     layout(matrix(c(2,1,1,1,1,1,1,1,3),3,3))   
-    plot(size,x$pred.val,xlab=xlab, ylab="Shape (Predicted)",pch=21,bg=pt.cols,cex=1.25)
+    plot(size,x$pred.val,xlab=xlab, ylab="Shape (Predicted)",pch=21,bg=pt.col,cex=1.25)
     if (length(label!=0)) {
       if(isTRUE(label)){text(size,x$pred.val,seq(1, n),adj=c(-0.7,-0.7)) }
       else{text(size,x$pred.val,label,adj=c(-0.1,-0.1))}
@@ -321,7 +323,7 @@ plot.procD.allometry <- function(x, method=c("CAC","RegScore","PredLine"),warpgr
   }
   if(method=="RegScore"){
     layout(matrix(c(2,1,1,1,1,1,1,1,3),3,3))   
-    plot(size,x$Reg.proj,xlab=xlab, ylab="Shape (Regression Score)",pch=21,bg=pt.cols,cex=1.25)
+    plot(size,x$Reg.proj,xlab=xlab, ylab="Shape (Regression Score)",pch=21,bg=pt.col,cex=1.25)
     if (length(label!=0)) {
       if(isTRUE(label)){text(size,x$Reg.proj,seq(1, n),adj=c(-0.7,-0.7)) }
       else{text(size,x$Reg.proj,label,adj=c(-0.1,-0.1))}
