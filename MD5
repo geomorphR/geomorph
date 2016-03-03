@@ -148,7 +148,7 @@ c6800acda3e64ac1be473ca0e76edc1d *R/phylo.integration.r
 caa1b74623078c6d9a1d21f79101684c *R/phylo.modularity.r
 71d515ee689803a88260a0c4b3cc9512 *R/physignal.r
 7cf1ed920592c19f683c12d57be311d2 *R/plotAllSpecimens.r
-4c229f02c4adcf0fa7fce9cc3d3ad8bc *R/plotGMPhyloMorphoSpace.r
+dfd0571936b18c4a6b6edc2845ee3c73 *R/plotGMPhyloMorphoSpace.r
 d980cf69c05ca1167831b7a730a40a15 *R/plotOutliers.r
 ee4a0bd986c2198b80235e22820ca455 *R/plotRefToTarget.r
 41db23cebd8d7be6c3decf781bd378e0 *R/plotspec.r
@@ -156,11 +156,11 @@ ee4a0bd986c2198b80235e22820ca455 *R/plotRefToTarget.r
 9d16fb297e7d12807292d61be1d1bc47 *R/procD.allometry.r
 d97832b7297c18a6a2eb86372f063c65 *R/procD.lm.r
 8fddc5e2ea5bb252515f047c32d4abe8 *R/procD.pgls.r
-878260f72c7c097943439f3ea4e6afeb *R/read.morphologika.r
-889d4562e4ff052f48091d9b739d10d8 *R/read.ply.r
-df34bf85d4ee0a11e9ecd485fdac162a *R/readland.nts.r
-79eea8cb7ff9fdda3b0bbb83c8ed1467 *R/readland.tps.r
-45ba1c3e7d8ddf5d039b6ae0b11dc47e *R/readmulti.nts.r
+4358fa6182e7328e5146dd4223601f55 *R/read.morphologika.r
+9c3c828f71a413b5437d45228a3bf9b7 *R/read.ply.r
+42b8ec9ece98e00b47ac14bd9e6bd43b *R/readland.nts.r
+adf34dc1a135d985468330dc492e0e13 *R/readland.tps.r
+8b7193e5cbcdaf8153f3614834afc818 *R/readmulti.nts.r
 a05d9e5f24e41ff1529a638b5116ee99 *R/trajectory.analysis.r
 17ac2dbf9d744e503a1824cb91886bbf *R/two.b.pls.r
 cac4c94b232cb0da0e2faf26f9f07597 *R/two.d.array.r
