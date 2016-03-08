@@ -57,10 +57,10 @@ bf7d0d9da67337471defb77bb108380c *man/phylo.pls.Rd
 e0afaf6be09de7d549e27b9d658327ba *man/plot.CR.phylo.Rd
 e3b0a2490726c32a3cd030a2f458ce1b *man/plot.CR.Rd
 87b4fba2b80b81dd20d4b354d7271ba1 *man/plot.evolrate.Rd
-d7b9dd789703d1ec36760f6532353fbd *man/plot.gpagen.Rd
+6b6d505f0f56cdff3b9174a5f12487ab *man/plot.gpagen.Rd
 c3b38c1383fe25147174fe7cec8b6c80 *man/plot.physignal.Rd
 261ee2bf2846bf998ac7524f4e1c187a *man/plot.pls.Rd
-dd23deca08cbb535e0fbe170ee3fea9e *man/plot.procD.allometry.Rd
+cd354e9b6622867764ec47b1550edea6 *man/plot.procD.allometry.Rd
 7edb43da5aea167beeae3c1ce4058ff9 *man/plot.procD.lm.Rd
 58b05555677a90ba65303a44f91a53be *man/plot.trajectory.analysis.Rd
 6707b3ae828958503ea23cddc52173c1 *man/plotAllometry.Rd
@@ -115,7 +115,7 @@ f6a597f1e703debeb24ef70e0a8e2890 *man/two.b.pls.Rd
 87a86c2e9b2d31119ab1883c54e092ec *man/warpRefOutline.Rd
 036ec1108cf8b6363ebf542ca50cf8ae *man/writeland.tps.Rd
 dced349f2a8288757f8d0eaf232d2810 *NAMESPACE
-efb5bb31687e1784b8d7114f2f8fa51c *NEWS
+603af977f1ff98e418d0d6d9d6c4a276 *NEWS
 24d6f6b78e00f18a321107e8046c3d10 *R/advanced.procD.lm.r
 c3bf88c10dcae2eb5430025e36867d98 *R/arrayspecs.r
 82e0be984295fc9e1b4b1e7973219b36 *R/bilat.symmetry.r
@@ -145,7 +145,7 @@ e09c5bdfc67d5d3406eda297f5cd8507 *R/integration.test.r
 9612acdfc96487ec71f14e0e8e1e71d7 *R/morphol.disparity.r
 084f845900f98683ff877ac399e822b3 *R/nested.update.r
 c6800acda3e64ac1be473ca0e76edc1d *R/phylo.integration.r
-caa1b74623078c6d9a1d21f79101684c *R/phylo.modularity.r
+1e21598d041990fd8178408ad181a72e *R/phylo.modularity.r
 71d515ee689803a88260a0c4b3cc9512 *R/physignal.r
 7cf1ed920592c19f683c12d57be311d2 *R/plotAllSpecimens.r
 dfd0571936b18c4a6b6edc2845ee3c73 *R/plotGMPhyloMorphoSpace.r
