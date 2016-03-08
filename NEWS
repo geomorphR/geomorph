@@ -6,6 +6,7 @@ CHANGES IN GEOMORPH VERSION 3.0.1
     o added reading polygons in read.morphologika()
 
   BUG FIXES
+    o Fixed 2D data input error for phylo.modularity
     o Fixed centering error for CAC scores in procDAllometry
     o Fixed deformation plot issue with phylo.integration (via plot.pls)
     o Fixed two small issues with plot.pls, regarding best fit line and matrix reduction.

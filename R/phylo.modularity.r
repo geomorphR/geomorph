@@ -68,7 +68,7 @@ phylo.modularity<-function(A,partition.gp,phy, CI=FALSE, iter=999, seed=NULL){
            p<-dim(A)[1]; k<-dim(A)[2];n<-dim(A)[3]
            if(length(partition.gp)!=p){stop("Not all landmarks are assigned to a partition.")}
            }
-  if (length(dim(A))==2){ x<-A; k <-1
+  if (length(dim(A))==2){ x<-A; k <-1; p <- ncol(A)
            if(length(partition.gp)!=ncol(x)){stop("Not all variables are assigned to a partition.")}
            }
   gps<-factor(as.numeric(as.factor(partition.gp)))
