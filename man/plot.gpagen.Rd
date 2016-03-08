@@ -9,7 +9,7 @@
 \arguments{
 \item{x}{plot object}
 
-\item{...}{other arguments passed to plot}
+\item{...}{other arguments passed to plotAllSpecimens}
 }
 \description{
 Plot Function for geomorph

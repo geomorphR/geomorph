@@ -5,7 +5,7 @@
 \title{Plot Function for geomorph}
 \usage{
 \method{plot}{procD.allometry}(x, method = c("CAC", "RegScore", "PredLine"),
-  warpgrids = TRUE, label = NULL, mesh = NULL, ...)
+  warpgrids = TRUE, label = NULL, mesh = NULL, pt.col = NULL, ...)
 }
 \arguments{
 \item{x}{plot object}
@@ -19,6 +19,8 @@ should be displayed (note: if groups are provided no TPS grids are shown)}
 
 \item{mesh}{A mesh3d object to be warped to represent shape deformation of the minimum and maximum size 
 if {warpgrids=TRUE} (see \code{\link{warpRefMesh}}).}
+
+\item{pt.col}{An optional vector of colours to use for points (as in points(bg=))}
 
 \item{...}{other arguments passed to plot}
 }
