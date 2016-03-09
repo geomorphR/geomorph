@@ -842,7 +842,7 @@ procD.fit <- function(f1, keep.order=FALSE, pca=TRUE, data=NULL,...){
   term.labels <- attr(Terms, "term.labels")
   if(length(term.labels) > 0) mf.out <- model.frame(Terms, data= mf) else
     mf.out <- data.frame(Int = rep(1,n))
-  mf.out <- data.frame(Y=Y, mf.out)
+  mf.out <- as.data.frame(Y=Y, mf.out)
   out <- list(Y=Y, wY=wY, X=X, Xs=Xs, wX=wX, wXs=wXs,
               QRs = QRs, wQRs=wQRs, fitted=fitted, wFitted=wFitted,
               residuals = residuals, wResiduals=wResiduals,
@@ -1147,8 +1147,8 @@ single.factor <- function(pfit) {# pfit = Procrustes fit
 # Extacts covariates from design matrices
 # advanced.procD.lm
 cov.extract <- function(pfit) {
-  Terms <- pfit$Terms
-  mf <- model.frame(Terms, data=pfit$data)
+  vars <- na.omit(match(pfit$term.labels,colnames(pfit$data)))
+  mf <- pfit$data[,vars]
   if(is.null(.getXlevels(Terms, mf))) covs <- NULL else
   {
     datClasses <- sapply(mf, function(x) data.class(x))
