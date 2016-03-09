@@ -1146,8 +1146,8 @@ single.factor <- function(pfit) {# pfit = Procrustes fit
 # Extacts covariates from design matrices
 # advanced.procD.lm
 cov.extract <- function(pfit) {
-  Terms <- pfit$Terms
-  mf <- model.frame(Terms, data=pfit$data)
+  vars <- na.omit(match(pfit$term.labels,colnames(pfit$data)))
+  mf <- pfit$data[,vars]
   if(is.null(.getXlevels(Terms, mf))) covs <- NULL else
   {
     datClasses <- sapply(mf, function(x) data.class(x))
