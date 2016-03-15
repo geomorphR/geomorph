@@ -30,7 +30,7 @@ read.morphologika<-function(file){
   n <- as.numeric(mfile[grep("individuals",mfile,ignore.case=T) + 1])
   p <- as.numeric(mfile[grep("landmarks",mfile,ignore.case=T) + 1])
   k <- as.numeric(mfile[grep("dimensions",mfile,ignore.case=T) + 1])
-  labvalmat <- wiref <- names <- NULL
+  labvalmat <- wiref <- names <- polyg<- NULL
   rawdat <- mfile[grep("rawpoints",mfile,ignore.case=T) + 1:(n*p+n)]
   rawdat <- rawdat[-grep("'",rawdat)]
   landdata <- matrix(as.numeric(unlist(strsplit(rawdat,"\\s+"))),
@@ -67,5 +67,6 @@ read.morphologika<-function(file){
   if(!is.null(labvalmat)) rtrn$labels <- labvalmat
   if(!is.null(wiref)) rtrn$wireframe <- wiref 
   if(!is.null(polyg)) rtrn$polygon <- polyg
+  if(length(rtrn) == 1) rtrn <- rtrn$coords
   return(rtrn)
 }  
