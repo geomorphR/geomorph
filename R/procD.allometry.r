@@ -136,7 +136,7 @@
 #' ## Obtaining size-adjusted residuals
 #' shape.resid<- procD.lm(plethAllometry$formula,
 #'      data = plethAllometry$data, iter = 499, RRPP=TRUE)$residuals
-#'      shape.resid<-arrayspecs(shape.resid,p=dim(Y.gpa$coords)[1], p=dim(Y.gpa$coords)[2])
+#' shape.resid<-arrayspecs(shape.resid,p=dim(Y.gpa$coords)[1], p=dim(Y.gpa$coords)[2])
 #' 
 #' # Group Allometries
 #' plethAllometry <- procD.allometry(coords~Csize, ~species*site, 
