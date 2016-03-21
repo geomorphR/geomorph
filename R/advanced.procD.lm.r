@@ -226,6 +226,9 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
       angles.obs <-random.angles[,,1]
       diag(angles.obs) <- 0
     } 
+    obs.slope.lengths <- slope.lengths[[1]]
+    obs.slope.dist <- as.matrix(dist(obs.slope.lengths))
+    dimnames(P.val.slopes.dist) <- dimnames(Z.slopes.dist) <- dimnames(obs.slope.dist)
   }
   
   if(pairwise.cond == "none"){
@@ -253,8 +256,8 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
   }
   if(pairwise.cond == "slopes"){
     if(angle.type == "r"){
-      out <- list(anova.table = anova.table, slopes = g.slopes[[1]], slope.lengths = slope.lengths[[1]],
-      slopes.dist = P.slopes.dist[[1]], P.slopes.dist = P.val.slopes.dist,
+      out <- list(anova.table = anova.table, slopes = g.slopes[[1]], slope.lengths = obs.slope.lengths,
+      slopes.dist = obs.slope.dist, P.slopes.dist = P.val.slopes.dist,
       Z.slopes.dist = Z.slopes.dist,
       slopes.cor = P.cor[[1]], P.slopes.cor = P.val.cor, Z.slopes.cor = Z.cor,
       random.slopes = g.slopes, random.slopes.dist = P.slopes.dist, random.slopes.cor = P.cor,
@@ -267,8 +270,8 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
       call= match.call()
       )
     } else {
-      out <- list(anova.table = anova.table, slopes = g.slopes[[1]],slope.lengths = slope.lengths[[1]],
-      slopes.dist = P.slopes.dist[[1]], P.slopes.dist = P.val.slopes.dist,
+      out <- list(anova.table = anova.table, slopes = g.slopes[[1]], slope.lengths = obs.slope.lengths,
+      slopes.dist = obs.slope.dist, P.slopes.dist = P.val.slopes.dist,
       Z.slopes.dist = Z.slopes.dist,
       slopes.angles = angles.obs, P.angles = P.val.cor, Z.angles = Z.cor,
       random.slopes = g.slopes, random.slopes.dist = P.slopes.dist, random.angles = random.angles,
