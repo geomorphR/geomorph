@@ -195,7 +195,8 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
       j <- j[length(j)] +kk
     }
     P <- simplify2array(P)
-    P.slopes.dist <- Map(function(y) as.matrix(dist(y)), g.slopes) 
+    slope.lengths <- Map(function(y) sqrt(diag(tcrossprod(y))), g.slopes) 
+    P.slopes.dist <- Map(function(y) as.matrix(dist(matrix(y))), slope.lengths) 
     P.cor <- Map(function(y) vec.cor.matrix(y), g.slopes) 
     P.val <- pval(P) 
     Z.score <- effect.size(P)
@@ -252,7 +253,7 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
   }
   if(pairwise.cond == "slopes"){
     if(angle.type == "r"){
-      out <- list(anova.table = anova.table, slopes = g.slopes[[1]],
+      out <- list(anova.table = anova.table, slopes = g.slopes[[1]], slope.lengths = slope.lengths[[1]],
       slopes.dist = P.slopes.dist[[1]], P.slopes.dist = P.val.slopes.dist,
       Z.slopes.dist = Z.slopes.dist,
       slopes.cor = P.cor[[1]], P.slopes.cor = P.val.cor, Z.slopes.cor = Z.cor,
@@ -266,7 +267,7 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
       call= match.call()
       )
     } else {
-      out <- list(anova.table = anova.table, slopes = g.slopes[[1]],
+      out <- list(anova.table = anova.table, slopes = g.slopes[[1]],slope.lengths = slope.lengths[[1]],
       slopes.dist = P.slopes.dist[[1]], P.slopes.dist = P.val.slopes.dist,
       Z.slopes.dist = Z.slopes.dist,
       slopes.angles = angles.obs, P.angles = P.val.cor, Z.angles = Z.cor,
