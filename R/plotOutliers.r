@@ -58,9 +58,7 @@ plotOutliers <- function(A, groups = NULL){
       points(D[which(D >= UL)], pch=19, col="red")
       text(D[which(D >= UL)], labels=names(D)[which(D >= UL)], col= "red", adj=0.8, pos=4, cex=0.5)
     } else { text(D, labels=names(D), adj=c(0.5, 0.1), pos=4, cex=0.5)}
-    ordered <- NULL
-    for (i in names(D)) {
-      ordered <- c(ordered, which(dimnames(A.d)[[1]] == i)) }
+    ordered<-match(D,d)        
     names(ordered) <- names(D)
     return(ordered)
   })
