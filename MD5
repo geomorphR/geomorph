@@ -44,7 +44,7 @@ d49189047d4d144a8f92a2987b1822c9 *man/gridPar.Rd
 9c45e199ed444c6fe413617264f7d9db *man/mosquito.Rd
 ba1bc984d157f6a6e19ec1edf5d44d9d *man/motionpaths.Rd
 4c7fc634b47238bb67b1ef79de83d374 *man/mshape.Rd
-0d646ddf80faaf27897bf86be129186c *man/nested.update.Rd
+0e35cc894e52fa670466653beda77ae2 *man/nested.update.Rd
 afb53c0b97063b028033ff35d0f4d2b1 *man/phylo.integration.Rd
 96e088cc9fbcc8fe95562e1111566970 *man/phylo.modularity.Rd
 bf7d0d9da67337471defb77bb108380c *man/phylo.pls.Rd
@@ -83,7 +83,7 @@ b77f26a718b4c289faba0e30a82c400f *man/print.pls.Rd
 5d8b5522e189c3f72b648a1e089438e5 *man/print.procD.allometry.Rd
 3bb7b0cc6078b68f094ed8136c9b497b *man/print.procD.lm.Rd
 debfbaa1a8edfbef3b4ec0254f5213ef *man/print.trajectory.analysis.Rd
-8f122158b0b78ef0c9a1e9456eeb789d *man/procD.allometry.Rd
+a9d4e27235f94d4890354397f4048168 *man/procD.allometry.Rd
 bd21637da1c4c2dcc0ecc05db330da64 *man/procD.lm.Rd
 5ab35c5a3c4a171dd77339f819defeba *man/procD.pgls.Rd
 34923fc68c6ffd6f20d5b40c9a751940 *man/pupfish.Rd
@@ -135,7 +135,7 @@ a20acee83da00bac7ea6738893dd4a70 *R/estimate.missing.r
 da56107aec80b7583dc4a6b841b30c74 *R/findMeanSpec.r
 1e71d260e79093bb0d36f6ded44dd437 *R/fixed.angle.r
 203177efc30cc6fef4bd604b2fc2af01 *R/geomorph.data.frame.r
-b8b83ced7b1f173c40526ad007be2b9c *R/geomorph.support.code.r
+4113a1589a9d0db9f70498b6db12679d *R/geomorph.support.code.r
 f9c40367d0770e7751a1537b0f1eea53 *R/geomorph.utils.r
 0d9d88147f22cff2241b6e2e7396d57f *R/globalIntegration.r
 9cd10d15e42d687a63fe1f3d7f0adb73 *R/gpagen.r
@@ -153,7 +153,7 @@ d980cf69c05ca1167831b7a730a40a15 *R/plotOutliers.r
 f8f0cfddf20ff12f5b2bd51b06617edb *R/plotRefToTarget.r
 41db23cebd8d7be6c3decf781bd378e0 *R/plotspec.r
 4ef1d71caaad5cf5ebc16cd24f9a26d4 *R/plotTangentSpace.r
-8366018a2a5390102230963c423314ed *R/procD.allometry.r
+dbec68fce46f8c93b66a2f15484e4f1d *R/procD.allometry.r
 d97832b7297c18a6a2eb86372f063c65 *R/procD.lm.r
 a82b54b96f451fee3ef6e4a77ba08910 *R/procD.pgls.r
 2a39213ef1d6feae4571e44c09344bc1 *R/read.morphologika.r
