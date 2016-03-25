@@ -863,6 +863,7 @@ perm.index <-function(n, iter, seed=NULL){
       if(!is.numeric(seed)) seed = iter
       set.seed(seed)
       ind <- c(list(1:n),(Map(function(x) sample.int(n,n), 1:iter)))
+      rm(.Random.seed, envir=globalenv())
       ind
 }
 
@@ -879,6 +880,7 @@ perm.CR.index <- function(g, k, iter, seed=NULL){ # g is numeric partititon.gp
       ind <- c(list(1:p),(Map(function(x) sample.int(p,p), 1:iter)))
       ind <- Map(function(x) g[x], ind)
       ind <- Map(function(x) as.factor(rep(x,k,each = k, length=p*k)), ind)
+      rm(.Random.seed, envir=globalenv())
       ind
 }
 
@@ -891,6 +893,7 @@ boot.index <-function(n, iter, seed=NULL){
       if(!is.numeric(seed)) seed = iter
       set.seed(seed)
       ind <- c(list(1:n),(Map(function(x) sample.int(n, n, replace = TRUE), 1:iter)))
+      rm(.Random.seed, envir=globalenv())
       ind
 }
 
