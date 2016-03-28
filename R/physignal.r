@@ -97,7 +97,7 @@ physignal<-function(A,phy,iter=999, seed=NULL){
     MSEobs.d<-sum(distmat[(1:N),(N+1)]^2)   
     dist.adj<-as.matrix(dist(rbind((D.mat%*%(x-(ones%*%a.obs))),0))) 
     MSE.d<-sum(dist.adj[(1:N),(N+1)]^2) 
-    K.denom<-(sum(diag(C))- N*solve(t(ones)%*%solve(C)%*%ones)) / (N-1)
+    K.denom<-(sum(diag(C))- N*fast.solve(t(ones)%*%invC%*%ones)) / (N-1)
     K.stat<-(MSEobs.d/MSE.d)/K.denom
     return(K.stat)
   }
