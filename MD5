@@ -147,6 +147,7 @@ e09c5bdfc67d5d3406eda297f5cd8507 *R/integration.test.r
 c6800acda3e64ac1be473ca0e76edc1d *R/phylo.integration.r
 1e21598d041990fd8178408ad181a72e *R/phylo.modularity.r
 b37e3be3b5aed29c555507c8d14fcd8b *R/physignal.r
+c27c09580467d920b47468ccf4328583 *R/physignal.r
 7cf1ed920592c19f683c12d57be311d2 *R/plotAllSpecimens.r
 dfd0571936b18c4a6b6edc2845ee3c73 *R/plotGMPhyloMorphoSpace.r
 8db1f082de4f53ca8b704a8ff93a7b60 *R/plotOutliers.r
