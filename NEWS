@@ -1,3 +1,9 @@
+CHANGES IN GEOMORPH VERSION 3.0.2
+
+  NEW FEATURES
+    o Added return of min/max shape matrices to plot.procD.allometry() and plot.pls()
+
+
 CHANGES IN GEOMORPH VERSION 3.0.1
 
   OTHER CHANGES
@@ -10,7 +16,7 @@ CHANGES IN GEOMORPH VERSION 3.0.1
 
   BUG FIXES
     o Fixed error in output order in plotOutliers
-    o Fixed error in calculation slope distances in advanced.procD.lm  
+    o Fixed error in calculation slope distances in advanced.procD.lm()  
     o Fixed 2D data input error for phylo.modularity
     o Fixed centering error for CAC scores in procD.Allometry
     o Fixed deformation plot issue with phylo.integration (via plot.pls())

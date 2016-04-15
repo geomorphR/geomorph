@@ -288,6 +288,7 @@ summary.procD.allometry <- function(object, ...) {
 #' @param mesh A mesh3d object to be warped to represent shape deformation of the minimum and maximum size 
 #' if {warpgrids=TRUE} (see \code{\link{warpRefMesh}}).
 #' @param ... other arguments passed to plot
+#' @return Function returns a list containing the shape coordinates of the small and large shapes
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities
@@ -341,8 +342,10 @@ plot.procD.allometry <- function(x, method=c("CAC","RegScore","PredLine"),warpgr
   if(warpgrids==TRUE && x$k==3){
     if(is.null(mesh)){
       open3d() ; mfrow3d(1, 2)
-      plot3d(x$Ahat[,,which.min(size)],type="s",col="gray",main="Shape at minimum size",size=1.25,aspect=FALSE,xlab="",ylab="",zlab="",box=FALSE, axes=FALSE)
-      plot3d(x$Ahat[,,which.max(size)],type="s",col="gray",main="Shape at maximum size",size=1.25,aspect=FALSE,xlab="",ylab="",zlab="",box=FALSE, axes=FALSE)
+      plot3d(x$Ahat[,,which.min(size)],type="s",col="gray",main="Shape at minimum size",
+             size=1.25,aspect=FALSE,xlab="",ylab="",zlab="",box=FALSE, axes=FALSE)
+      plot3d(x$Ahat[,,which.max(size)],type="s",col="gray",main="Shape at maximum size",
+             size=1.25,aspect=FALSE,xlab="",ylab="",zlab="",box=FALSE, axes=FALSE)
       if(!is.null(mesh)){
         open3d() ; mfrow3d(1, 2) 
         cat("\nWarping mesh to minimum size\n")
@@ -359,6 +362,7 @@ plot.procD.allometry <- function(x, method=c("CAC","RegScore","PredLine"),warpgr
     tps(x$ref,x$Ahat[,,which.max(size)],20)
   }
   layout(1) 
+  return(list(min.shape = x$Ahat[,,which.min(size)], max.shape = x$Ahat[,,which.max(size)]))
 }
 
 
@@ -533,6 +537,11 @@ plotPLS <- function(p, label = NULL, warpgrids=TRUE){
     plot3d(pls2.max, type = "s", col = "gray", main = paste("PLS Block2 positive"), 
            size = 1.25, aspect = FALSE,xlab="",ylab="",zlab="",box=FALSE, axes=FALSE)
   } 
+  layout(1)
+  if (length(dim(A1)) == 3 || length(dim(A2)) == 3) { rtrn <- list() }
+  if (length(dim(A1)) == 3) { rtrn$pls1.min = pls1.min ; rtrn$pls1.max = pls1.max }
+  if (length(dim(A2)) == 3) { rtrn$pls2.min = pls2.min ; rtrn$pls2.max = pls2.max }
+  return(rtrn)
 }
 
 #' Plot Function for geomorph
@@ -541,6 +550,7 @@ plotPLS <- function(p, label = NULL, warpgrids=TRUE){
 #' @param label Optional vector to label points
 #' @param warpgrids Logical argument whether to include warpgrids
 #' @param ... other arguments passed to plot
+#' @return Function returns a list containing the shape coordinates of the extreme ends of axis1 and axis2 if 3D arrays were originally provided for each
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities

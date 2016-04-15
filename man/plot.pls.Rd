@@ -15,6 +15,9 @@
 
 \item{...}{other arguments passed to plot}
 }
+\value{
+Function returns a list containing the shape coordinates of the extreme ends of axis1 and axis2 if 3D arrays were originally provided for each
+}
 \description{
 Plot Function for geomorph
 }

@@ -24,6 +24,9 @@ if {warpgrids=TRUE} (see \code{\link{warpRefMesh}}).}
 
 \item{...}{other arguments passed to plot}
 }
+\value{
+Function returns a list containing the shape coordinates of the small and large shapes
+}
 \description{
 Plot Function for geomorph
 }
