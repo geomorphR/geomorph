@@ -5,7 +5,8 @@
 \title{Plot Function for geomorph}
 \usage{
 \method{plot}{procD.allometry}(x, method = c("CAC", "RegScore", "PredLine"),
-  warpgrids = TRUE, label = NULL, mesh = NULL, pt.col = NULL, ...)
+  warpgrids = TRUE, label = NULL, pt.col = NULL, mesh = NULL,
+  shapes = TRUE, ...)
 }
 \arguments{
 \item{x}{plot object}
@@ -17,15 +18,17 @@ should be displayed (note: if groups are provided no TPS grids are shown)}
 
 \item{label}{An optional vector indicating labels for each specimen that are to be displayed}
 
+\item{pt.col}{An optional vector of colours to use for points (as in points(bg=))}
+
 \item{mesh}{A mesh3d object to be warped to represent shape deformation of the minimum and maximum size 
 if {warpgrids=TRUE} (see \code{\link{warpRefMesh}}).}
 
-\item{pt.col}{An optional vector of colours to use for points (as in points(bg=))}
+\item{shapes}{Logical argument whether to return the the shape coordinates shape coordinates of the small and large shapes}
 
 \item{...}{other arguments passed to plot}
 }
 \value{
-Function returns a list containing the shape coordinates of the small and large shapes
+If shapes = TRUE, function returns a list containing the shape coordinates of the small and large shapes
 }
 \description{
 Plot Function for geomorph

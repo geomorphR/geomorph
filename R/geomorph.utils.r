@@ -287,14 +287,15 @@ summary.procD.allometry <- function(object, ...) {
 #' @param pt.col An optional vector of colours to use for points (as in points(bg=))
 #' @param mesh A mesh3d object to be warped to represent shape deformation of the minimum and maximum size 
 #' if {warpgrids=TRUE} (see \code{\link{warpRefMesh}}).
+#' @param shapes Logical argument whether to return the the shape coordinates shape coordinates of the small and large shapes
 #' @param ... other arguments passed to plot
-#' @return Function returns a list containing the shape coordinates of the small and large shapes
+#' @return If shapes = TRUE, function returns a list containing the shape coordinates of the small and large shapes
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities
 #' @keywords visualization
 plot.procD.allometry <- function(x, method=c("CAC","RegScore","PredLine"),warpgrids=TRUE,
-                                 label=NULL, mesh=NULL, pt.col=NULL,...) {
+                                 label=NULL, pt.col=NULL, mesh=NULL, shapes=TRUE,...) {
   method <- match.arg(method)
   if(x$logsz) xlab <- "log(Size)" else xlab <- "Size"
   if(x$logsz) size <- log(x$size) else size <- x$size
@@ -362,7 +363,7 @@ plot.procD.allometry <- function(x, method=c("CAC","RegScore","PredLine"),warpgr
     tps(x$ref,x$Ahat[,,which.max(size)],20)
   }
   layout(1) 
-  return(list(min.shape = x$Ahat[,,which.min(size)], max.shape = x$Ahat[,,which.max(size)]))
+  if(shapes==TRUE){ return(list(min.shape = x$Ahat[,,which.min(size)], max.shape = x$Ahat[,,which.max(size)])) }
 }
 
 
@@ -442,12 +443,25 @@ summary.pls <- function(object, ...) {
   print.pls(x, ...)
 }
 
-plotPLS <- function(p, label = NULL, warpgrids=TRUE){
-  A1 <- p$A1; A2 <- p$A2
-  XScores <- p$XScores; YScores <- p$YScores
+
+#' Plot Function for geomorph
+#' 
+#' @param x plot object
+#' @param label Optional vector to label points
+#' @param warpgrids Logical argument whether to include warpgrids
+#' @param shapes Logical argument whether to return the the shape coordinates of the extreme ends of axis1 and axis2
+#' @param ... other arguments passed to plot
+#' @return If shapes = TRUE, function returns a list containing the shape coordinates of the extreme ends of axis1 and axis2 if 3D arrays were originally provided for each
+#' @export
+#' @author Michael Collyer
+#' @keywords utilities
+#' @keywords visualization
+plot.pls <- function(x, label = NULL, warpgrids=TRUE, shapes=TRUE, ...){
+  A1 <- x$A1; A2 <- x$A2
+  XScores <- x$XScores; YScores <- x$YScores
   if(is.matrix(XScores)) XScores <- XScores[,1]
   if(is.matrix(YScores)) YScores <- YScores[,1]
-  plsRaw <- pls(p$A1.matrix, p$A2.matrix, verbose=TRUE)
+  plsRaw <- pls(x$A1.matrix, x$A2.matrix, verbose=TRUE)
   XScoresRaw <- plsRaw$XScores[,1]; YScoresRaw <- plsRaw$YScores[,1]
   pc <- prcomp(cbind(XScores, YScores))$x[,1]
   px <- predict(lm(XScores~pc))
@@ -462,9 +476,9 @@ plotPLS <- function(p, label = NULL, warpgrids=TRUE){
   
   if (length(dim(A1)) == 3) {
     A1.ref <- mshape(A1)
-    A1.min <- arrayspecs(pxminRaw*p$left.pls.vectors[,1], 
+    A1.min <- arrayspecs(pxminRaw*x$left.pls.vectors[,1], 
                          nrow(A1.ref), ncol(A1.ref))[,,1]
-    A1.max <- arrayspecs(pxmaxRaw*p$left.pls.vectors[,1], 
+    A1.max <- arrayspecs(pxmaxRaw*x$left.pls.vectors[,1], 
                          nrow(A1.ref), ncol(A1.ref))[,,1]
     pls1.min <- A1.ref + A1.min
     pls1.max <- A1.ref + A1.max
@@ -472,9 +486,9 @@ plotPLS <- function(p, label = NULL, warpgrids=TRUE){
   
   if (length(dim(A2)) == 3) {
     A2.ref <- mshape(A2)
-    A2.min <- arrayspecs(pyminRaw*p$right.pls.vectors[,1], 
+    A2.min <- arrayspecs(pyminRaw*x$right.pls.vectors[,1], 
                          nrow(A2.ref), ncol(A2.ref))[,,1]
-    A2.max <- arrayspecs(pymaxRaw*p$right.pls.vectors[,1], 
+    A2.max <- arrayspecs(pymaxRaw*x$right.pls.vectors[,1], 
                          nrow(A2.ref), ncol(A2.ref))[,,1]
     pls2.min <- A2.ref + A2.min
     pls2.max <- A2.ref + A2.max
@@ -538,27 +552,13 @@ plotPLS <- function(p, label = NULL, warpgrids=TRUE){
            size = 1.25, aspect = FALSE,xlab="",ylab="",zlab="",box=FALSE, axes=FALSE)
   } 
   layout(1)
-  if (length(dim(A1)) == 3 || length(dim(A2)) == 3) { rtrn <- list() }
-  if (length(dim(A1)) == 3) { rtrn$pls1.min = pls1.min ; rtrn$pls1.max = pls1.max }
-  if (length(dim(A2)) == 3) { rtrn$pls2.min = pls2.min ; rtrn$pls2.max = pls2.max }
-  return(rtrn)
+  if(shapes == TRUE){
+    if (length(dim(A1)) == 3 || length(dim(A2)) == 3) { rtrn <- list() }
+    if (length(dim(A1)) == 3) { rtrn$pls1.min = pls1.min ; rtrn$pls1.max = pls1.max }
+    if (length(dim(A2)) == 3) { rtrn$pls2.min = pls2.min ; rtrn$pls2.max = pls2.max }
+    return(rtrn) 
+  }
 }
-
-#' Plot Function for geomorph
-#' 
-#' @param x plot object
-#' @param label Optional vector to label points
-#' @param warpgrids Logical argument whether to include warpgrids
-#' @param ... other arguments passed to plot
-#' @return Function returns a list containing the shape coordinates of the extreme ends of axis1 and axis2 if 3D arrays were originally provided for each
-#' @export
-#' @author Michael Collyer
-#' @keywords utilities
-#' @keywords visualization
-plot.pls <- function(x, label = NULL, warpgrids=TRUE, ...){
-  plotPLS(x, label=label, warpgrids=warpgrids)
-}
-
 
 ## bilat.symmetry
 
@@ -599,73 +599,6 @@ summary.bilat.symmetry <- function(object, ...) {
   print.bilat.symmetry(x, ...)
 }
 
-plotBilatSymmetry <- function(b, warpgrids = TRUE, mesh= NULL){
-  k <- dim(b$symm.shape)[[2]]
-  if(b$data.type == "Matching"){
-    if(k==2){  
-      par(mfrow=c(2,2),oma=c(1.5,0,1.5,0))
-      plotAllSpecimens(b$symm.shape)
-      plotAllSpecimens(b$asymm.shape)
-      plotRefToTarget(b$DA.mns[,,1],b$DA.mns[,,2],method="TPS",main="Directional Asymmetry")
-      plotRefToTarget(b$FA.mns[,,1],b$FA.mns[,,2],method="TPS",main="Fluctuating Asymmetry")
-      mtext("Symmetric Shape Component (left) and Asymmetric Shape Component (right)",outer = TRUE,side=3)
-      mtext("Mean directional (left) and fluctuating (right) asymmetry",side = 1, outer = TRUE)
-      par(mfrow=c(1,1))
-    }
-    if (k==3){
-      if (is.null(mesh)){
-        open3d() ; mfrow3d(1, 2) 
-        plotRefToTarget(b$DA.mns[,,1],b$DA.mns[,,2],method="points",main="Directional Asymmetry",xlab="",ylab="",zlab="",box=FALSE, axes=FALSE)
-        next3d()
-        plotRefToTarget(b$FA.mns[,,1],b$FA.mns[,,2],method="points",main="Fluctuating Asymmetry",xlab="",ylab="",zlab="",box=FALSE, axes=FALSE)
-      } 
-      if(!is.null(mesh)){
-        open3d() ; mfrow3d(1, 2) 
-        cat("\nWarping mesh\n")
-        plotRefToTarget(b$DA.mns[,,1],b$DA.mns[,,2],mesh,method="surface")
-        title3d(main="Directional Asymmetry")
-        next3d()
-        cat("\nWarping mesh\n")
-        plotRefToTarget(b$FA.mns[,,1],b$FA.mns[,,2],mesh,method="surface")
-        title3d(main="Fluctuating Asymmetry")
-      }
-    }
-    layout(1) 
-  }
-  if(b$data.typ == "Object"){
-    if(warpgrids==TRUE){
-      if(k==2){  
-        par(mfrow=c(2,2),oma=c(1.5,0,1.5,0))
-        plotAllSpecimens(b$symm.shape)
-        plotAllSpecimens(b$asymm.shape)
-        plotRefToTarget(b$DA.mns[,,1],b$DA.mns[,,2],method="TPS",main="Directional Asymmetry")
-        plotRefToTarget(b$FA.mns[,,1],b$FA.mns[,,2],method="TPS",main="Fluctuating Asymmetry")
-        mtext("Symmetric Shape Component (left) and Asymmetric Shape Component (right)",outer = TRUE,side=3)
-        mtext("Mean directional (left) and fluctuating (right) asymmetry",side = 1, outer = TRUE)
-      }
-      if (k==3){
-        if(is.null(mesh)) {
-          open3d() ; mfrow3d(1, 2) 
-          plotRefToTarget(b$DA.mns[,,1],b$DA.mns[,,2],method="points",main="Directional Asymmetry",xlab="",ylab="",zlab="",box=FALSE, axes=FALSE)
-          next3d()
-          plotRefToTarget(b$FA.mns[,,1],b$FA.mns[,,2],method="points",main="Fluctuating Asymmetry",xlab="",ylab="",zlab="",box=FALSE, axes=FALSE)
-        } 
-        if(!is.null(mesh)){
-          open3d() ; mfrow3d(1, 2) 
-          cat("\nWarping mesh\n")
-          plotRefToTarget(b$DA.mns[,,1],b$DA.mns[,,2],mesh,method="surface")
-          title3d(main="Directional Asymmetry")
-          next3d()
-          cat("\nWarping mesh\n")
-          plotRefToTarget(b$FA.mns[,,1],b$FA.mns[,,2],mesh,method="surface")
-          title3d(main="Fluctuating Asymmetry")
-        }  
-      }
-      layout(1) 
-    } 
-  }
-}
-
 #' Plot Function for geomorph
 #' 
 #' @param x plot object
@@ -677,8 +610,71 @@ plotBilatSymmetry <- function(b, warpgrids = TRUE, mesh= NULL){
 #' @keywords utilities
 #' @keywords visualization
 plot.bilat.symmetry <- function(x, warpgrids = TRUE, mesh= NULL, ...){
-  plotBilatSymmetry(x, warpgrids = warpgrids, mesh = mesh)
-}
+    k <- dim(x$symm.shape)[[2]]
+    if(x$data.type == "Matching"){
+      if(k==2){  
+        par(mfrow=c(2,2),oma=c(1.5,0,1.5,0))
+        plotAllSpecimens(x$symm.shape)
+        plotAllSpecimens(x$asymm.shape)
+        plotRefToTarget(x$DA.mns[,,1],x$DA.mns[,,2],method="TPS",main="Directional Asymmetry")
+        plotRefToTarget(x$FA.mns[,,1],x$FA.mns[,,2],method="TPS",main="Fluctuating Asymmetry")
+        mtext("Symmetric Shape Component (left) and Asymmetric Shape Component (right)",outer = TRUE,side=3)
+        mtext("Mean directional (left) and fluctuating (right) asymmetry",side = 1, outer = TRUE)
+        par(mfrow=c(1,1))
+      }
+      if (k==3){
+        if (is.null(mesh)){
+          open3d() ; mfrow3d(1, 2) 
+          plotRefToTarget(x$DA.mns[,,1],x$DA.mns[,,2],method="points",main="Directional Asymmetry",xlab="",ylab="",zlab="",box=FALSE, axes=FALSE)
+          next3d()
+          plotRefToTarget(x$FA.mns[,,1],x$FA.mns[,,2],method="points",main="Fluctuating Asymmetry",xlab="",ylab="",zlab="",box=FALSE, axes=FALSE)
+        } 
+        if(!is.null(mesh)){
+          open3d() ; mfrow3d(1, 2) 
+          cat("\nWarping mesh\n")
+          plotRefToTarget(x$DA.mns[,,1],x$DA.mns[,,2],mesh,method="surface")
+          title3d(main="Directional Asymmetry")
+          next3d()
+          cat("\nWarping mesh\n")
+          plotRefToTarget(x$FA.mns[,,1],x$FA.mns[,,2],mesh,method="surface")
+          title3d(main="Fluctuating Asymmetry")
+        }
+      }
+      layout(1) 
+    }
+    if(x$data.typ == "Object"){
+      if(warpgrids==TRUE){
+        if(k==2){  
+          par(mfrow=c(2,2),oma=c(1.5,0,1.5,0))
+          plotAllSpecimens(x$symm.shape)
+          plotAllSpecimens(x$asymm.shape)
+          plotRefToTarget(x$DA.mns[,,1],x$DA.mns[,,2],method="TPS",main="Directional Asymmetry")
+          plotRefToTarget(x$FA.mns[,,1],x$FA.mns[,,2],method="TPS",main="Fluctuating Asymmetry")
+          mtext("Symmetric Shape Component (left) and Asymmetric Shape Component (right)",outer = TRUE,side=3)
+          mtext("Mean directional (left) and fluctuating (right) asymmetry",side = 1, outer = TRUE)
+        }
+        if (k==3){
+          if(is.null(mesh)) {
+            open3d() ; mfrow3d(1, 2) 
+            plotRefToTarget(x$DA.mns[,,1],x$DA.mns[,,2],method="points",main="Directional Asymmetry",xlab="",ylab="",zlab="",box=FALSE, axes=FALSE)
+            next3d()
+            plotRefToTarget(x$FA.mns[,,1],x$FA.mns[,,2],method="points",main="Fluctuating Asymmetry",xlab="",ylab="",zlab="",box=FALSE, axes=FALSE)
+          } 
+          if(!is.null(mesh)){
+            open3d() ; mfrow3d(1, 2) 
+            cat("\nWarping mesh\n")
+            plotRefToTarget(x$DA.mns[,,1],x$DA.mns[,,2],mesh,method="surface")
+            title3d(main="Directional Asymmetry")
+            next3d()
+            cat("\nWarping mesh\n")
+            plotRefToTarget(x$FA.mns[,,1],x$FA.mns[,,2],mesh,method="surface")
+            title3d(main="Fluctuating Asymmetry")
+          }  
+        }
+        layout(1) 
+      } 
+    }
+  }
 
 
 ## CR

@@ -4,7 +4,7 @@
 \alias{plot.pls}
 \title{Plot Function for geomorph}
 \usage{
-\method{plot}{pls}(x, label = NULL, warpgrids = TRUE, ...)
+\method{plot}{pls}(x, label = NULL, warpgrids = TRUE, shapes = TRUE, ...)
 }
 \arguments{
 \item{x}{plot object}
@@ -13,10 +13,12 @@
 
 \item{warpgrids}{Logical argument whether to include warpgrids}
 
+\item{shapes}{Logical argument whether to return the the shape coordinates of the extreme ends of axis1 and axis2}
+
 \item{...}{other arguments passed to plot}
 }
 \value{
-Function returns a list containing the shape coordinates of the extreme ends of axis1 and axis2 if 3D arrays were originally provided for each
+If shapes = TRUE, function returns a list containing the shape coordinates of the extreme ends of axis1 and axis2 if 3D arrays were originally provided for each
 }
 \description{
 Plot Function for geomorph
