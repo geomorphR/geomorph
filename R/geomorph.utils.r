@@ -553,10 +553,12 @@ plot.pls <- function(x, label = NULL, warpgrids=TRUE, shapes=TRUE, ...){
   } 
   layout(1)
   if(shapes == TRUE){
-    if (length(dim(A1)) == 3 || length(dim(A2)) == 3) { rtrn <- list() }
-    if (length(dim(A1)) == 3) { rtrn$pls1.min = pls1.min ; rtrn$pls1.max = pls1.max }
-    if (length(dim(A2)) == 3) { rtrn$pls2.min = pls2.min ; rtrn$pls2.max = pls2.max }
-    return(rtrn) 
+    if (length(dim(A1)) == 3 || length(dim(A2)) == 3) { 
+      rtrn <- list() 
+      if (length(dim(A1)) == 3) { rtrn$pls1.min = pls1.min ; rtrn$pls1.max = pls1.max }
+      if (length(dim(A2)) == 3) { rtrn$pls2.min = pls2.min ; rtrn$pls2.max = pls2.max }
+    }
+    if (length(dim(A1)) == 3 || length(dim(A2)) == 3) retrun(rtrn)
   }
 }
 
