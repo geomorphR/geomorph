@@ -115,30 +115,8 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
     } else {
       if(pc.shape == TRUE) pfit2= procD.fit(f2, pca = TRUE) else pfit2= procD.fit(f2, pca = FALSE)
     }
-
   }
-  if(!is.null(phy)){
-    phy.name <- deparse(substitute(phy))
-    phy.match <- match(phy.name, names(data))
-    if(length(phy.match) > 1) stop("More than one object of class phylo in data frame")
-    if(all(is.na(phy.match))) phy <- phy else phy <- data[[phy.match]]
-    N<-length(phy$tip.label)
-    if(length(match(rownames(Y), phy$tip.label))!=N) 
-      stop("Data matrix missing some taxa present on the tree.")
-    if(length(match(phy$tip.label,rownames(Y)))!=N) 
-      stop("Tree missing some taxa in the data matrix.")
-    C <- vcv.phylo(phy)
-    eigC <- eigen(C)
-    lambda <- zapsmall(eigC$values)
-    if(any(lambda == 0)){
-      warning("Singular phylogenetic covariance matrix. Proceed with caution")
-      lambda = lambda[lambda > 0]
-    }
-    eigC.vect = eigC$vectors[,1:(length(lambda))]
-    Pcor <- fast.solve(eigC.vect%*% diag(sqrt(lambda)) %*% t(eigC.vect)) 
-    dimnames(Pcor) <- dimnames(C)
-    Pcor <- Pcor[rownames(Y),rownames(Y)]
-  } lse Pcor <- NULL
+
   if(!is.null(phy)){
     phy.name <- deparse(substitute(phy))
     phy.match <- match(phy.name, names(data))
