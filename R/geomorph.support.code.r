@@ -1166,8 +1166,9 @@ cov.extract <- function(pfit) {
 # ls.means
 # estimates ls.means from models with slopes and factors
 # advanced.procD.lm
-ls.means = function(pfit, Y=NULL, g=NULL, data=NULL) { 
+ls.means = function(pfit, Y=NULL, g=NULL, data=NULL, Pcor = NULL) { 
   if(is.null(Y)) Y <- pfit$wY
+  if(!is.null(Pcor)) Y <- Pcor%*%Y
   n <- nrow(Y)
   if(is.null(data)) dat <- pfit$data else dat <- data
   if(!is.null(g)) {
@@ -1180,18 +1181,21 @@ ls.means = function(pfit, Y=NULL, g=NULL, data=NULL) {
   } else fac <- single.factor(pfit)
   covs <- cov.extract(pfit)
   if(is.null(covs)){
-    lsm <- .lm.fit(model.matrix(~fac+0),Y)$coefficients
+    if(is.null(Pcor)) lsm <- .lm.fit(Pcor%*%model.matrix(~fac+0),Y)$coefficients else 
+      lsm <- .lm.fit(model.matrix(~fac+0),Y)$coefficients
   } else if(ncol(as.matrix(covs)) == 1){
     covs <- as.vector(covs)
-    fit <- .lm.fit(model.matrix(~covs+fac+0),Y)
-    X <- cbind(mean(covs),model.matrix(~fac+0))
-    lsm <- .lm.fit(model.matrix(~fac+0),X%*%coef(fit))$coefficients
+    if(is.null(Pcor)) fit <- .lm.fit(Pcor%*%model.matrix(~covs+fac+0),Y) else fit <- .lm.fit(model.matrix(~covs+fac+0),Y)
+    X <- cbind(mean(covs),model.matrix(~fac+0)); if(!is.null(Pcor)) X <- Pcor%*%X
+    if(is.null(Pcor)) lsm <- .lm.fit(Pcor%*%model.matrix(~fac+0),X%*%coef(fit))$coefficients else 
+      lsm <- .lm.fit(model.matrix(~fac+0),X%*%coef(fit))$coefficients
   } else {
     covs <- sapply(covs, function(x) matrix(x))
-    fit <- .lm.fit(model.matrix(~covs+fac+0),Y)
+    if(is.null(Pcor)) fit <- .lm.fit(Pcor%*%model.matrix(~covs+fac+0),Y) else fit <- .lm.fit(model.matrix(~covs+fac+0),Y)
     X <- cbind(matrix(rep(colMeans(covs), rep.int(nrow(covs), ncol(covs))),n),
-               model.matrix(~fac+0))
-    lsm <- .lm.fit(model.matrix(~fac+0),X%*%coef(fit))$coefficients
+               model.matrix(~fac+0)); if(!is.null(Pcor)) X <- Pcor%*%X
+    if(is.null(Pcor)) lsm <- .lm.fit(Pcor%*%model.matrix(~fac+0),X%*%coef(fit))$coefficients else 
+      lsm <- .lm.fit(model.matrix(~fac+0),X%*%coef(fit))$coefficients
   }
   rownames(lsm) <- levels(fac)
   lsm
@@ -1200,16 +1204,17 @@ ls.means = function(pfit, Y=NULL, g=NULL, data=NULL) {
 # apply.ls.means
 # estimates ls.means from models with slopes and factors across random outcomes in a list
 # advanced.procD.lm
-apply.ls.means <- function(pfit, Yr, g=NULL, data=NULL){
+apply.ls.means <- function(pfit, Yr, g=NULL, data=NULL, Pcor=NULL){
   if(is.null(data)) dat <- pfit$data else dat <- data
-  Map(function(y) ls.means(pfit, Y=y, g=g, data=dat), Yr)
+  Map(function(y) ls.means(pfit, Y=y, g=g, data=dat, Pcor=Pcor), Yr)
 }
 
 # slopes
 # estimates slopes from models with slopes and factors
 # advanced.procD.lm
-slopes = function(pfit, Y=NULL, g = NULL, slope=NULL, data = NULL){ 
+slopes = function(pfit, Y=NULL, g = NULL, slope=NULL, data = NULL, Pcor = NULL){ 
   if(is.null(Y)) Y <- pfit$wY
+  if(!is.null(Pcor)) Y <- Pcor%*%Y
   if(is.null(data)) dat <- pfit$data else dat <- data
   if(!is.null(g)) {
     if(is.data.frame(g)){
@@ -1222,7 +1227,9 @@ slopes = function(pfit, Y=NULL, g = NULL, slope=NULL, data = NULL){
   if(!is.null(slope)) covs <- as.matrix(slope) else covs <- as.matrix(cov.extract(pfit))
   if(ncol(covs) > 1) stop("Only one covariate can be used for slope-comparisons")
   if(ncol(covs) == 0) stop("No covariate for which to compare slopes")
-  B <- qr.coef(qr(model.matrix(~fac*covs)), Y)
+  if(!is.null(Pcor)) {
+    B <- qr.coef(qr(Pcor%*%model.matrix(~fac*covs)), Y)
+    } else B <- qr.coef(qr(model.matrix(~fac*covs)), Y)
   fac.p <- qr(model.matrix(~fac))$rank
   if(is.matrix(B)) {
     Bslopes <- as.matrix(B[-(1:fac.p),])
@@ -1240,14 +1247,14 @@ slopes = function(pfit, Y=NULL, g = NULL, slope=NULL, data = NULL){
 # apply.slopes
 # estimates slopes from models with slopes and factors across random outcomes in a list
 # advanced.procD.lm
-apply.slopes <- function(pfit, Yr, g=NULL, slope=NULL, data=NULL){
+apply.slopes <- function(pfit, Yr, g=NULL, slope=NULL, data=NULL, Pcor=NULL){
   Y <- pfit$wY
   if(is.null(data)) dat <- pfit$data else dat <- data
   if(!is.null(g)) 
-    slopes <- Map(function(y) slopes(pfit, Y=y, g=g, slope=slope, data=dat), Yr) else
-      slopes <- Map(function(y) slopes(pfit, Y=y, g=NULL, slope=slope, data=dat), Yr)
-    if(ncol(Y)==1) slopes <- Map(function(s) cbind(1,s), slopes)
-    slopes 
+    slopes <- Map(function(y) slopes(pfit, Y=y, g=g, slope=slope, data=dat, Pcor=Pcor), Yr) else
+      slopes <- Map(function(y) slopes(pfit, Y=y, g=NULL, slope=slope, data=dat, Pcor=Pcor), Yr)
+  if(ncol(Y)==1) slopes <- Map(function(s) cbind(1,s), slopes)
+  slopes 
 }
 
 # vec.cor.matrix
