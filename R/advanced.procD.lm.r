@@ -115,8 +115,7 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
     } else {
       if(pc.shape == TRUE) pfit2= procD.fit(f2, pca = TRUE) else pfit2= procD.fit(f2, pca = FALSE)
     }
-<<<<<<< HEAD
-=======
+
   }
   if(!is.null(phy)){
     phy.name <- deparse(substitute(phy))
@@ -139,8 +138,7 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
     Pcor <- fast.solve(eigC.vect%*% diag(sqrt(lambda)) %*% t(eigC.vect)) 
     dimnames(Pcor) <- dimnames(C)
     Pcor <- Pcor[rownames(Y),rownames(Y)]
->>>>>>> c32e9d7451a248a84f9a808edc2daf3a0353fb4c
-  }
+  } lse Pcor <- NULL
   if(!is.null(phy)){
     phy.name <- deparse(substitute(phy))
     phy.match <- match(phy.name, names(data))
@@ -251,11 +249,8 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
         P <- c(P, lapply(1:length(j), function(i) sum(.lm.fit(Xr*sqrt(w),Yr[[i]]*sqrt(w))$residuals^2) - 
                            sum(.lm.fit(Xf*sqrt(w),Yr[[i]]*sqrt(w))$residuals^2)))
       }
-<<<<<<< HEAD
       lsms <- c(lsms, apply.ls.means(pfitf, Yr, g = gps, data = dat2, Pcor = Pcor)) 
-=======
-      lsms <- c(lsms, apply.ls.means(pfitf, Yr, g = gps, data = dat2, Pcor = if(is.null(Pcor)) NULL else Pcor)) 
->>>>>>> c32e9d7451a248a84f9a808edc2daf3a0353fb4c
+
       jj <- jj-length(j)
       if(jj > 100) kk <- 1:100 else kk <- 1:jj
       j <- j[length(j)] +kk
