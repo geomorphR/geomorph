@@ -1179,7 +1179,7 @@ ls.means = function(pfit, Y=NULL, g=NULL, data=NULL, Pcor = NULL) {
     if(ncol(as.matrix(facs)) > 1) fac <- factor(apply(facs, 1,function(x) paste(x, collapse=":"))) else 
       fac <- as.factor(unlist(facs))
   } else fac <- single.factor(pfit)
-  covs <- cov.extract(pfit)
+  covs <- cov.extract(pfit) 
   if(is.null(covs)){
     if(!is.null(Pcor)) lsm <- .lm.fit(Pcor%*%model.matrix(~fac+0),Y)$coefficients else 
       lsm <- .lm.fit(model.matrix(~fac+0),Y)$coefficients
