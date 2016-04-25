@@ -12,7 +12,7 @@ d8e8360c03c03fe45d2100e9c05d4a89 *data/plethodon.rda
 b84c8d27690670ad41c22b5642bb70d1 *DESCRIPTION
 32e740499950300161ec5b9a73a46d8d *geomorph.Rproj
 4bdde5c74d5d5ead8f87cd70b9f91250 *inst/CITATION
-a4e351da1b5707ccb2660d4eb3736a4d *man/advanced.procD.lm.Rd
+7f4e53ad2f35293c0bdcc4e772a2564a *man/advanced.procD.lm.Rd
 b9147b10c8eecf58afdbdfd97871a1dc *man/arrayspecs.Rd
 344b9d354fd844437ef94ce74dd28079 *man/bilat.symmetry.Rd
 98905c1726ae4f9391195460634be5dd *man/buildtemplate.Rd
@@ -114,9 +114,9 @@ f6a597f1e703debeb24ef70e0a8e2890 *man/two.b.pls.Rd
 8653af77b4457ee283d6bbb2cf239c99 *man/warpRefMesh.Rd
 87a86c2e9b2d31119ab1883c54e092ec *man/warpRefOutline.Rd
 036ec1108cf8b6363ebf542ca50cf8ae *man/writeland.tps.Rd
-e11f4386e7910e868cbcfb574311d581 *NAMESPACE
-9de12adb59bc5e0842f4909a541263de *NEWS
-dc4c227dd172e4a83d479416f23d2e44 *R/advanced.procD.lm.r
+dced349f2a8288757f8d0eaf232d2810 *NAMESPACE
+fafe134f7d65d9953447d34c3daee59b *NEWS
+8e6b19f5054c3a09aa16790fe1dab84c *R/advanced.procD.lm.r
 c3bf88c10dcae2eb5430025e36867d98 *R/arrayspecs.r
 82e0be984295fc9e1b4b1e7973219b36 *R/bilat.symmetry.r
 14713bbb2ad126d777d95e359c71bf1a *R/build.template.r
@@ -135,8 +135,8 @@ ddff41e987eac54d3500e2313799c3c6 *R/digitize2d.r
 da56107aec80b7583dc4a6b841b30c74 *R/findMeanSpec.r
 1e71d260e79093bb0d36f6ded44dd437 *R/fixed.angle.r
 203177efc30cc6fef4bd604b2fc2af01 *R/geomorph.data.frame.r
-123fc955bdb925eba78b9aba2e58e6f9 *R/geomorph.support.code.r
-a290841cb301696340e31418faa5a4e8 *R/geomorph.utils.r
+b6753200e1e5ca001ed696630f2565a2 *R/geomorph.support.code.r
+b5b84d181699ae5494c6be8b25dd0d90 *R/geomorph.utils.r
 0d9d88147f22cff2241b6e2e7396d57f *R/globalIntegration.r
 9cd10d15e42d687a63fe1f3d7f0adb73 *R/gpagen.r
 2d8ab3c6fea452711a7cf091ffba8ff5 *R/gridPar.r

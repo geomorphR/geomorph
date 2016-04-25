@@ -5,7 +5,8 @@
 \title{Procrustes ANOVA and pairwise tests for shape data, using complex linear models}
 \usage{
 advanced.procD.lm(f1, f2, groups = NULL, slope = NULL, angle.type = c("r",
-  "deg", "rad"), iter = 999, seed = NULL, data = NULL, ...)
+  "deg", "rad"), phy = NULL, pc.shape = FALSE, iter = 999, seed = NULL,
+  data = NULL, ...)
 }
 \arguments{
 \item{f1}{A formula for a linear model, containing the response matrix (e.g., y ~ x1 + x2)}
@@ -18,6 +19,11 @@ advanced.procD.lm(f1, f2, groups = NULL, slope = NULL, angle.type = c("r",
 
 \item{angle.type}{A value specifying whether differences between slopes should be represented by vector
 correlations (r), radians (rad) or degrees (deg)}
+
+\item{phy}{A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape (optional)}
+
+\item{pc.shape}{An argument for whether analysis should be pefroemd on the princiapl component scores fo shape.  This is a useful
+option if the data are high-dimensional (many more variables that observations) but will nto affect results}
 
 \item{iter}{Number of iterations for significance testing}
 
