@@ -279,8 +279,22 @@ summary.procD.allometry <- function(object, ...) {
 
 #' Plot Function for geomorph
 #' 
+#' The following are brief descriptions of the different plotting methods, with references.
+#'\itemize{
+#' \item {If "method=CAC" (the default) the function calculates the 
+#'   common allometric component of the shape data, which is an estimate of the average allometric trend 
+#'   within groups (Mitteroecker et al. 2004). The function also calculates the residual shape component (RSC) for 
+#'   the data.}
+#'   \item {If "method=RegScore" the function calculates shape scores 
+#'   from the regression of shape on size, and plots these versus size (Drake and Klingenberg 2008). 
+#'   For a single group, these shape scores are mathematically identical to the CAC (Adams et al. 2013).}
+#'   \item {If "method=PredLine" the function calculates predicted values from a regression of shape on size, and 
+#'   plots the first principal component of the predicted values versus size as a stylized graphic of the 
+#'   allometric trend (Adams and Nistri 2010). }
+#'   }
+#' 
 #' @param x plot object
-#' @param method Method for estimating allometric shape components; see \code{\link{procD.allometry}} for details
+#' @param method Method for estimating allometric shape components
 #' @param warpgrids A logical value indicating whether deformation grids for small and large shapes 
 #'  should be displayed (note: if groups are provided no TPS grids are shown)
 #' @param label An optional vector indicating labels for each specimen that are to be displayed
@@ -294,6 +308,14 @@ summary.procD.allometry <- function(object, ...) {
 #' @author Michael Collyer
 #' @keywords utilities
 #' @keywords visualization
+#' @references Adams, D.C., F.J. Rohlf, and D.E. Slice. 2013. A field comes of age: geometric morphometrics 
+#'   in the 21st century. Hystrix. 24:7-14. 
+#' @references Adams, D. C., and A. Nistri. 2010. Ontogenetic convergence and evolution of foot morphology 
+#'   in European cave salamanders (Family: Plethodontidae). BMC Evol. Biol. 10:1-10.
+#' @references Drake, A. G., and C. P. Klingenberg. 2008. The pace of morphological change: Historical 
+#'   transformation of skull shape in St Bernard dogs. Proc. R. Soc. B. 275:71-76.
+#' @references Mitteroecker, P., P. Gunz, M. Bernhard, K. Schaefer, and F. L. Bookstein. 2004. 
+#'   Comparison of cranial ontogenetic trajectories among great apes and humans. J. Hum. Evol. 46:679-698.
 plot.procD.allometry <- function(x, method=c("CAC","RegScore","PredLine"),warpgrids=TRUE,
                                  label=NULL, pt.col=NULL, mesh=NULL, shapes=TRUE,...) {
   method <- match.arg(method)
