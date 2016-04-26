@@ -4,7 +4,7 @@
 \alias{print.CR.phylo}
 \title{Print/Summary Function for geomorph}
 \usage{
-\method{print}{CR.phylo}(x, ...)
+print.CR.phylo(x, ...)
 }
 \arguments{
 \item{x}{print/summary object}

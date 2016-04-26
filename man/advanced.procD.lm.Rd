@@ -22,7 +22,7 @@ correlations (r), radians (rad) or degrees (deg)}
 
 \item{phy}{A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape (optional)}
 
-\item{pc.shape}{An argument for whether analysis should be pefroemd on the princiapl component scores fo shape.  This is a useful
+\item{pc.shape}{An argument for whether analysis should be performed on the principal component scores fo shape.  This is a useful
 option if the data are high-dimensional (many more variables that observations) but will nto affect results}
 
 \item{iter}{Number of iterations for significance testing}
