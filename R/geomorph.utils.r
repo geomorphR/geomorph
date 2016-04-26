@@ -279,7 +279,6 @@ summary.procD.allometry <- function(object, ...) {
 
 #' Plot Function for geomorph
 #' 
-#' @description
 #' The following are brief descriptions of the different plotting methods, with references.
 #'\itemize{
 #' \item {If "method=CAC" (the default) the function calculates the 
@@ -299,6 +298,7 @@ summary.procD.allometry <- function(object, ...) {
 #' @param warpgrids A logical value indicating whether deformation grids for small and large shapes 
 #'  should be displayed (note: if groups are provided no TPS grids are shown)
 #' @param label An optional vector indicating labels for each specimen that are to be displayed
+#' @param gp.label A logical value indicating labels for each group to be displayed (if group was originally included); "PredLine" only
 #' @param pt.col An optional vector of colours to use for points (as in points(bg=))
 #' @param mesh A mesh3d object to be warped to represent shape deformation of the minimum and maximum size 
 #' if {warpgrids=TRUE} (see \code{\link{warpRefMesh}}).
@@ -318,7 +318,7 @@ summary.procD.allometry <- function(object, ...) {
 #' @references Mitteroecker, P., P. Gunz, M. Bernhard, K. Schaefer, and F. L. Bookstein. 2004. 
 #'   Comparison of cranial ontogenetic trajectories among great apes and humans. J. Hum. Evol. 46:679-698.
 plot.procD.allometry <- function(x, method=c("CAC","RegScore","PredLine"),warpgrids=TRUE,
-                                 label=NULL, pt.col=NULL, mesh=NULL, shapes=TRUE,...) {
+                                 label=NULL, gp.label=FALSE, pt.col=NULL, mesh=NULL, shapes=TRUE,...) {
   method <- match.arg(method)
   if(x$logsz) xlab <- "log(Size)" else xlab <- "Size"
   if(x$logsz) size <- log(x$size) else size <- x$size
@@ -328,7 +328,7 @@ plot.procD.allometry <- function(x, method=c("CAC","RegScore","PredLine"),warpgr
   if(method == "CAC"){
     layout(matrix(c(3,1,1,1,1,1,1,1,4,2,2,2,2,2,2,2,2,2),3,6))   
     plot(size,x$CAC,xlab=xlab, ylab="CAC",pch=21,bg=pt.col,cex=1.25)
-    if (length(label!=0)) {
+    if (!is.null(label)) {
       if(isTRUE(label)){text(size,x$CAC,seq(1, n),adj=c(-0.7,-0.7)) }
       else{text(size,x$CAC,label,adj=c(-0.1,-0.1))}
     }
@@ -341,15 +341,19 @@ plot.procD.allometry <- function(x, method=c("CAC","RegScore","PredLine"),warpgr
   if(method=="PredLine"){
     layout(matrix(c(2,1,1,1,1,1,1,1,3),3,3))   
     plot(size,x$pred.val,xlab=xlab, ylab="Shape (Predicted)",pch=21,bg=pt.col,cex=1.25)
-    if (length(label!=0)) {
+    if (!is.null(label)) {
       if(isTRUE(label)){text(size,x$pred.val,seq(1, n),adj=c(-0.7,-0.7)) }
       else{text(size,x$pred.val,label,adj=c(-0.1,-0.1))}
+    }
+    if (!isTRUE(gp.label)) {
+      for(i in levels(x$gps)){
+        text(max(size[which(x$gps==i)]) , max(x$pred.val[which(x$gps==i)]), i ,pos=1)}
     }
   }
   if(method=="RegScore"){
     layout(matrix(c(2,1,1,1,1,1,1,1,3),3,3))   
     plot(size,x$Reg.proj,xlab=xlab, ylab="Shape (Regression Score)",pch=21,bg=pt.col,cex=1.25)
-    if (length(label!=0)) {
+    if (!is.null(label)) {
       if(isTRUE(label)){text(size,x$Reg.proj,seq(1, n),adj=c(-0.7,-0.7)) }
       else{text(size,x$Reg.proj,label,adj=c(-0.1,-0.1))}
     }
@@ -357,12 +361,13 @@ plot.procD.allometry <- function(x, method=c("CAC","RegScore","PredLine"),warpgr
   if(method=="CAC") y <- x$CAC else if (method=="RegScore") y <- x$Reg.proj else
     y <- x$pred.val
   
-  if(is.null(x$gps)){
+  if(is.null(x$gps) && !is.null(x$k)){
     if(warpgrids==TRUE && x$k==2){
       arrows(min(size), (0.7 * max(y)), min(size), 0, length = 0.1,lwd = 2)
       arrows(max(size), (0.7 * min(y)), max(size), 0, length = 0.1,lwd = 2)
+      tps(x$ref,x$Ahat[,,which.min(size)],20)
+      tps(x$ref,x$Ahat[,,which.max(size)],20)
     }
-  }
   if(warpgrids==TRUE && x$k==3){
     if(is.null(mesh)){
       open3d() ; mfrow3d(1, 2)
@@ -379,14 +384,10 @@ plot.procD.allometry <- function(x, method=c("CAC","RegScore","PredLine"),warpgr
         cat("\nWarping mesh to maximum size")
         plotRefToTarget(x$ref, x$Ahat[,,which.max(size)], mesh, method = "surface")
         title3d(main="Shape at maximum size")
-      }}
-  }
-  if(warpgrids==TRUE && x$k==2){
-    tps(x$ref,x$Ahat[,,which.min(size)],20)
-    tps(x$ref,x$Ahat[,,which.max(size)],20)
+      }}}
   }
   layout(1) 
-  if(shapes==TRUE){ return(list(min.shape = x$Ahat[,,which.min(size)], max.shape = x$Ahat[,,which.max(size)])) }
+  if(shapes==TRUE && !is.null(x$k)){ return(list(min.shape = x$Ahat[,,which.min(size)], max.shape = x$Ahat[,,which.max(size)])) }
 }
 
 

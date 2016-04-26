@@ -6,6 +6,10 @@ CHANGES IN GEOMORPH VERSION 3.0.2
   OTHER CHANGES
     o Added force match of specimen order between blocks in two.b.pls()
     o Updated A, Ahat, ref, p and k outputs when 2D matrix is used in procD.allometry()
+    o Added potion to plot group labels in plot.procD.allometry(method="PredLine")
+    
+  BUG FIXES
+    o Fixed error plotting TPS grids when groups were included in plot.procD.allometry()
     
 CHANGES IN GEOMORPH VERSION 3.0.1
 
