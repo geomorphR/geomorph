@@ -279,6 +279,7 @@ summary.procD.allometry <- function(object, ...) {
 
 #' Plot Function for geomorph
 #' 
+#' @description
 #' The following are brief descriptions of the different plotting methods, with references.
 #'\itemize{
 #' \item {If "method=CAC" (the default) the function calculates the 
