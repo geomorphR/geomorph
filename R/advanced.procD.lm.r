@@ -36,7 +36,7 @@
 #' @param angle.type A value specifying whether differences between slopes should be represented by vector
 #' correlations (r), radians (rad) or degrees (deg)
 #' @param phy A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape (optional)
-#' @param pc.shape An argument for whether analysis should be pefroemd on the princiapl component scores fo shape.  This is a useful
+#' @param pc.shape An argument for whether analysis should be performed on the principal component scores fo shape.  This is a useful
 #' option if the data are high-dimensional (many more variables that observations) but will nto affect results
 #' @param iter Number of iterations for significance testing
 #' @param seed An optional argument for setting the seed for random permutations of the resampling procedure.  
