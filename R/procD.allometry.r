@@ -77,7 +77,7 @@
 #' \item{Reg.proj}{The projected regression scores on the regression of shape on size. 
 #'   For a single group, these shape scores are mathematically identical to the CAC (Adams et al. 2013).}
 #' \item{pred.val}{Principal component scores (first PC) of predicted values.}
-#' \item{ref}{the reference configuration (if input coordinates are in a 3D array), or mean shape (if input data are in a 2D matrix).}
+#' \item{ref}{the reference configuration (if input coordinates are in a 3D array), or variable means (if input data are in a 2D matrix).}
 #' \item{gps}{A vector of group names.}
 #' \item{size}{A vector of size scores.}
 #' \item{logsz}{A logical value to indicate if size values were log=transformed for analysis.}
