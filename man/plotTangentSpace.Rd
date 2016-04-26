@@ -22,7 +22,7 @@ as described in \code{\link{plotRefToTarget}}.}
 \item{label}{An optional vector indicating labels for each specimen are to be displayed 
 (or if TRUE, numerical addresses are given)}
 
-\item{groups}{An optional factor vector specifying group identity for each specimen}
+\item{groups}{An optional factor vector specifying group identity for each specimen (see example)}
 
 \item{verbose}{A logical value indicating whether the output is basic or verbose (see Value below)}
 }
@@ -55,19 +55,15 @@ Y.gpa<-gpagen(plethodon$land)    #GPA-alignment
 gp <- as.factor(paste(plethodon$species, plethodon$site)) # group must be a factor
 plotTangentSpace(Y.gpa$coords, groups = gp) 
 
-## To plot residual shapes from an allometry regression (note: must add mean back in!) 
-plotTangentSpace(arrayspecs(resid(lm(two.d.array(Y.gpa$coords)~Y.gpa$Csize))+
-         predict(lm(two.d.array(Y.gpa$coords)~1)),12,2))
- 
 ##To change colors of groups
 col.gp <- rainbow(length(levels(gp))) 
    names(col.gp) <- levels(gp)
-col.gp <- col.gp[match(gp, names(col.gp))] # col.gp must not be a factor
-
+col.gp <- col.gp[match(gp, names(col.gp))] # col.gp must NOT be a factor
 plotTangentSpace(Y.gpa$coords, groups = col.gp)
 
-## To make a quick legend [not run]
-#plot.new(); legend(0,1, legend= levels(gp), pch=19, col = levels(as.factor(col.gp)))
+## To plot residual shapes from an allometry regression (note: must add mean back in!) 
+plotTangentSpace(arrayspecs(resid(lm(two.d.array(Y.gpa$coords)~Y.gpa$Csize))+
+         predict(lm(two.d.array(Y.gpa$coords)~1)),12,2))
 }
 \author{
 Dean Adams & Emma Sherratt

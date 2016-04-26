@@ -19,7 +19,7 @@
 #' @param axis2 A value indicating which PC axis should be displayed as the Y-axis (default = PC2)
 #' @param label An optional vector indicating labels for each specimen are to be displayed 
 #' (or if TRUE, numerical addresses are given)
-#' @param groups An optional factor vector specifying group identity for each specimen
+#' @param groups An optional factor vector specifying group identity for each specimen (see example)
 #' @param verbose A logical value indicating whether the output is basic or verbose (see Value below)
 #' @return Function returns a table summarizing the percent variation explained by each
 #'  pc axis (equivalent to summary() of \code{\link{prcomp}}) (default, verbose = FALSE).
@@ -38,19 +38,16 @@
 #' gp <- as.factor(paste(plethodon$species, plethodon$site)) # group must be a factor
 #' plotTangentSpace(Y.gpa$coords, groups = gp) 
 #' 
-#' ## To plot residual shapes from an allometry regression (note: must add mean back in!) 
-#' plotTangentSpace(arrayspecs(resid(lm(two.d.array(Y.gpa$coords)~Y.gpa$Csize))+
-#'          predict(lm(two.d.array(Y.gpa$coords)~1)),12,2))
-#'  
 #' ##To change colors of groups
 #' col.gp <- rainbow(length(levels(gp))) 
 #'    names(col.gp) <- levels(gp)
-#' col.gp <- col.gp[match(gp, names(col.gp))] # col.gp must not be a factor
-#' 
+#' col.gp <- col.gp[match(gp, names(col.gp))] # col.gp must NOT be a factor
 #' plotTangentSpace(Y.gpa$coords, groups = col.gp)
 #' 
-#' ## To make a quick legend [not run]
-#' #plot.new(); legend(0,1, legend= levels(gp), pch=19, col = levels(as.factor(col.gp)))
+#' ## To plot residual shapes from an allometry regression (note: must add mean back in!) 
+#' plotTangentSpace(arrayspecs(resid(lm(two.d.array(Y.gpa$coords)~Y.gpa$Csize))+
+#'          predict(lm(two.d.array(Y.gpa$coords)~1)),12,2))
+
 plotTangentSpace<-function (A, axis1 = 1, axis2 = 2, warpgrids = TRUE, mesh = NULL, label = NULL, 
                             groups=NULL, verbose=FALSE){
   if (length(dim(A)) != 3) {
@@ -98,7 +95,7 @@ plotTangentSpace<-function (A, axis1 = 1, axis2 = 2, warpgrids = TRUE, mesh = NU
                      paste("PC",axis2,"min", sep=""),paste("PC",axis2,"max", sep=""))
   if (warpgrids == TRUE) {
     if (k == 2) {
-      layout(t(matrix(c(2, 1, 1, 1, 1, 1, 1, 1, 3), 3,3)))
+      layout(t(matrix(c(2, 1, 4, 1, 1, 1, 1, 1, 3), 3,3)))
     }
     plot(pcdata[, axis1], pcdata[, axis2], asp = 1, pch = 21,bg = "black", cex = 2, xlab = paste("PC ",axis1),
          ylab = paste("PC ",axis2))
@@ -115,6 +112,11 @@ plotTangentSpace<-function (A, axis1 = 1, axis2 = 2, warpgrids = TRUE, mesh = NU
       tps(ref, shape.min.1, 20)
       tps(ref, shape.max.1, 20)
     }
+    if(!is.null(groups)){
+      plot.new(); 
+      if(is.factor(groups)){legend(0.5,1, legend=unique(groups), pch=19, bty="n", col=unique(groups))
+        } else {legend(0.5,1, legend=unique(names(groups)), pch=19, bty="n", col=unique(groups)) }
+      }
     if (k == 3) {
       if (is.null(mesh)==TRUE){
         open3d() ; mfrow3d(1, 2) 

@@ -7,7 +7,7 @@
 \method{plot}{pls}(x, label = NULL, warpgrids = TRUE, shapes = TRUE, ...)
 }
 \arguments{
-\item{x}{plot object (from \code{\link{phylo.integration}} or \code{\link{twp.b.pls}})}
+\item{x}{plot object (from \code{\link{phylo.integration}} or \code{\link{two.b.pls}})}
 
 \item{label}{Optional vector to label points}
 
