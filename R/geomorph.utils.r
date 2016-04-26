@@ -434,7 +434,7 @@ summary.morphol.disparity <- function(object, ...) {
 
 #' Print/Summary Function for geomorph
 #' 
-#' @param x print/summary object (from \code{\link{phylo.integration}} or \code{\link{twp.b.pls}})
+#' @param x print/summary object (from \code{\link{phylo.integration}} or \code{\link{two.b.pls}})
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
@@ -457,7 +457,7 @@ print.pls <- function (x, ...) {
 
 #' Print/Summary Function for geomorph
 #' 
-#' @param object print/summary object (from \code{\link{phylo.integration}} or \code{\link{twp.b.pls}})
+#' @param object print/summary object (from \code{\link{phylo.integration}} or \code{\link{two.b.pls}})
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
@@ -470,7 +470,7 @@ summary.pls <- function(object, ...) {
 
 #' Plot Function for geomorph
 #' 
-#' @param x plot object (from \code{\link{phylo.integration}} or \code{\link{twp.b.pls}})
+#' @param x plot object (from \code{\link{phylo.integration}} or \code{\link{two.b.pls}})
 #' @param label Optional vector to label points
 #' @param warpgrids Logical argument whether to include warpgrids
 #' @param shapes Logical argument whether to return the the shape coordinates of the extreme ends of axis1 and axis2
