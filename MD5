@@ -60,7 +60,7 @@ e3b0a2490726c32a3cd030a2f458ce1b *man/plot.CR.Rd
 6b6d505f0f56cdff3b9174a5f12487ab *man/plot.gpagen.Rd
 c3b38c1383fe25147174fe7cec8b6c80 *man/plot.physignal.Rd
 98bfc642a27e24ed9ea8665d115e44b6 *man/plot.pls.Rd
-b1d7690805ab6a5f7d8c42be365f22fc *man/plot.procD.allometry.Rd
+43bfe3fa7dc55087e0b4d08f87f34a7e *man/plot.procD.allometry.Rd
 7edb43da5aea167beeae3c1ce4058ff9 *man/plot.procD.lm.Rd
 58b05555677a90ba65303a44f91a53be *man/plot.trajectory.analysis.Rd
 6707b3ae828958503ea23cddc52173c1 *man/plotAllometry.Rd
@@ -115,7 +115,7 @@ f6a597f1e703debeb24ef70e0a8e2890 *man/two.b.pls.Rd
 87a86c2e9b2d31119ab1883c54e092ec *man/warpRefOutline.Rd
 036ec1108cf8b6363ebf542ca50cf8ae *man/writeland.tps.Rd
 e11f4386e7910e868cbcfb574311d581 *NAMESPACE
-051a9851d7dfbf4234165e76902be795 *NEWS
+e723c9e7f8f528575930cb357eac8ccc *NEWS
 fc8450124e5123f0e6d7fb0adff32588 *R/advanced.procD.lm.r
 c3bf88c10dcae2eb5430025e36867d98 *R/arrayspecs.r
 82e0be984295fc9e1b4b1e7973219b36 *R/bilat.symmetry.r
