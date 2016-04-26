@@ -185,12 +185,12 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
   if(!is.null(groups)){
     g.match <- match(names(dat2), attr(terms(groups), "term.labels"))
     if(!all(is.na(g.match))) gps <- dat2[,which(!is.na(g.match))] else
-      gps <- model.frame(groups)
+      gps <- model.frame(groups, data = dat2)
   } else gps <- NULL
   if(!is.null(slope)){
     s.match <- match(names(dat2), attr(terms(slope), "term.labels"))
     if(!all(is.na(s.match))) slp <- dat2[,which(!is.na(s.match))] else
-      slp <- model.frame(slope)
+      slp <- model.frame(slope, data = dat2)
   } else slp <- NULL
   
   if(pairwise.cond == "none"){
