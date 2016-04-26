@@ -7,7 +7,7 @@
 summary.advanced.procD.lm(object, ...)
 }
 \arguments{
-\item{object}{print/summary object}
+\item{object}{print/summary object (from \code{\link{advanced.procD.lm}})}
 
 \item{...}{other arguments passed to print/summary}
 }

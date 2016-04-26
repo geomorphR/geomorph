@@ -7,7 +7,7 @@
 summary.bilat.symmetry(object, ...)
 }
 \arguments{
-\item{object}{print/summary object}
+\item{object}{print/summary object (from \code{\link{bilat.symmetry}})}
 
 \item{...}{other arguments passed to print/summary}
 }

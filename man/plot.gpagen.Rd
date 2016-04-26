@@ -7,7 +7,7 @@
 \method{plot}{gpagen}(x, ...)
 }
 \arguments{
-\item{x}{plot object}
+\item{x}{plot object (from \code{\link{gpagen}})}
 
 \item{...}{other arguments passed to plotAllSpecimens}
 }

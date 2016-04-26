@@ -4,7 +4,7 @@
 
 #' Print/Summary Function for geomorph
 #' 
-#' @param x print/summary object
+#' @param x print/summary object (from \code{\link{gpagen}})
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
@@ -29,7 +29,7 @@ print.gpagen <- function (x, ...) {
 
 #' Print/Summary Function for geomorph
 #' 
-#' @param object print/summary object
+#' @param object print/summary object (from \code{\link{gpagen}})
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
@@ -41,7 +41,7 @@ summary.gpagen <- function(object, ...) {
 
 #' Plot Function for geomorph
 #' 
-#' @param x plot object
+#' @param x plot object (from \code{\link{gpagen}})
 #' @param ... other arguments passed to plotAllSpecimens
 #' @export
 #' @author Michael Collyer
@@ -56,7 +56,7 @@ plot.gpagen <- function(x, ...){
 
 #' Print/Summary Function for geomorph
 #' 
-#' @param x print/summary object
+#' @param x print/summary object (from \code{\link{procD.lm}})
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
@@ -76,7 +76,7 @@ print.procD.lm <- function (x, ...) {
 
 #' Print/Summary Function for geomorph
 #' 
-#' @param object print/summary object
+#' @param object print/summary object (from \code{\link{procD.lm}})
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
@@ -115,7 +115,7 @@ plot.QQ <- function(r){
 
 #' Plot Function for geomorph
 #' 
-#' @param x plot object
+#' @param x plot object (from \code{\link{procD.lm}})
 #' @param outliers Logical argument to include outliers plot
 #' @param ... other arguments passed to plot
 #' @export
@@ -164,7 +164,7 @@ plot.procD.lm <- function(x, outliers=FALSE, ...){
 
 #' Print/Summary Function for geomorph
 #' 
-#' @param x print/summary object
+#' @param x print/summary object (from \code{\link{advanced.procD.lm}})
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
@@ -196,7 +196,7 @@ print.advanced.procD.lm <- function (x, ...) {
 
 #' Print/Summary Function for geomorph
 #' 
-#' @param object print/summary object
+#' @param object print/summary object (from \code{\link{advanced.procD.lm}})
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
@@ -208,7 +208,7 @@ summary.advanced.procD.lm <- function(object, ...) {
 
 #' Plot Function for geomorph
 #' 
-#' @param x plot object
+#' @param x plot object (from \code{\link{advanced.procD.lm}})
 #' @param outliers Logical argument to include outliers plot
 #' @param ... other arguments passed to plot
 #' @export
@@ -216,7 +216,7 @@ summary.advanced.procD.lm <- function(object, ...) {
 #' @keywords utilities
 #' @keywords visualization
 plot.advanced.procD.lm <- function(x, outliers = FALSE, ...) {
-  plot.procD.lm(x,...)
+  plot.procD.lm(x, outliers, ...)
 }
 
 
@@ -255,7 +255,7 @@ printAllometry.noHOS <- function(x){
 
 #' Print/Summary Function for geomorph
 #' 
-#' @param x print/summary object
+#' @param x print/summary object (from \code{\link{procD.allometry}})
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
@@ -267,7 +267,7 @@ print.procD.allometry <- function (x, ...) {
 
 #' Print/Summary Function for geomorph
 #' 
-#' @param object print/summary object
+#' @param object print/summary object (from \code{\link{procD.allometry}})
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
@@ -293,7 +293,7 @@ summary.procD.allometry <- function(object, ...) {
 #'   allometric trend (Adams and Nistri 2010). }
 #'   }
 #' 
-#' @param x plot object
+#' @param x plot object (from \code{\link{procD.allometry}})
 #' @param method Method for estimating allometric shape components
 #' @param warpgrids A logical value indicating whether deformation grids for small and large shapes 
 #'  should be displayed (note: if groups are provided no TPS grids are shown)
@@ -395,7 +395,7 @@ plot.procD.allometry <- function(x, method=c("CAC","RegScore","PredLine"),warpgr
 
 #' Print/Summary Function for geomorph
 #' 
-#' @param x print/summary object
+#' @param x print/summary object (from \code{\link{morphol.disparity}})
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
@@ -419,7 +419,7 @@ print.morphol.disparity <- function (x, ...) {
 
 #' Print/Summary Function for geomorph
 #' 
-#' @param object print/summary object
+#' @param object print/summary object (from \code{\link{morphol.disparity}})
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
@@ -434,7 +434,7 @@ summary.morphol.disparity <- function(object, ...) {
 
 #' Print/Summary Function for geomorph
 #' 
-#' @param x print/summary object
+#' @param x print/summary object (from \code{\link{phylo.integration}} or \code{\link{twp.b.pls}})
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
@@ -457,7 +457,7 @@ print.pls <- function (x, ...) {
 
 #' Print/Summary Function for geomorph
 #' 
-#' @param object print/summary object
+#' @param object print/summary object (from \code{\link{phylo.integration}} or \code{\link{twp.b.pls}})
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
@@ -470,7 +470,7 @@ summary.pls <- function(object, ...) {
 
 #' Plot Function for geomorph
 #' 
-#' @param x plot object
+#' @param x plot object (from \code{\link{phylo.integration}} or \code{\link{twp.b.pls}})
 #' @param label Optional vector to label points
 #' @param warpgrids Logical argument whether to include warpgrids
 #' @param shapes Logical argument whether to return the the shape coordinates of the extreme ends of axis1 and axis2
@@ -590,7 +590,7 @@ plot.pls <- function(x, label = NULL, warpgrids=TRUE, shapes=TRUE, ...){
 
 #' Print/Summary Function for geomorph
 #' 
-#' @param x print/summary object
+#' @param x print/summary object (from \code{\link{bilat.symmetry}})
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
@@ -615,7 +615,7 @@ print.bilat.symmetry <- function (x, ...) {
 
 #' Print/Summary Function for geomorph
 #' 
-#' @param object print/summary object
+#' @param object print/summary object (from \code{\link{bilat.symmetry}})
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
@@ -627,7 +627,7 @@ summary.bilat.symmetry <- function(object, ...) {
 
 #' Plot Function for geomorph
 #' 
-#' @param x plot object
+#' @param x plot object (from \code{\link{bilat.symmetry}})
 #' @param warpgrids Logical argument whether to include warpgrids
 #' @param mesh Option to include mesh in warpgrids plots
 #' @param ... other arguments passed to plot
@@ -707,7 +707,7 @@ plot.bilat.symmetry <- function(x, warpgrids = TRUE, mesh= NULL, ...){
 
 #' Print/Summary Function for geomorph
 #' 
-#' @param x print/summary object
+#' @param x print/summary object (from \code{\link{phylo.modularity}})
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
@@ -725,7 +725,7 @@ print.CR <- function (x, ...) {
 
 #' Print/Summary Function for geomorph
 #' 
-#' @param object print/summary object
+#' @param object print/summary object (from \code{\link{phylo.modularity}})
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
@@ -737,7 +737,7 @@ summary.CR <- function(object, ...) {
 
 #' Plot Function for geomorph
 #' 
-#' @param x plot object
+#' @param x plot object (from \code{\link{phylo.modularity}})
 #' @param ... other arguments passed to plot
 #' @export
 #' @author Michael Collyer
@@ -758,7 +758,7 @@ plot.CR <- function(x, ...){
 
 #' Print/Summary Function for geomorph
 #' 
-#' @param x print/summary object
+#' @param x print/summary object (from \code{\link{phylo.modularity}})
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Dean Adams
@@ -775,7 +775,7 @@ print.CR.phylo <- function (x, ...) {
 
 #' Print/Summary Function for geomorph
 #' 
-#' @param object print/summary object
+#' @param object print/summary object (from \code{\link{phylo.modularity}})
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Dean Adams
@@ -787,7 +787,7 @@ summary.CR.phylo <- function(object, ...) {
 
 #' Plot Function for geomorph
 #' 
-#' @param x plot object
+#' @param x plot object (from \code{\link{phylo.modularity}})
 #' @param ... other arguments passed to plot
 #' @export
 #' @author Dean Adams
@@ -809,7 +809,7 @@ plot.CR.phylo <- function(x, ...){
 
 #' Print/Summary Function for geomorph
 #' 
-#' @param x print/summary object
+#' @param x print/summary object (from \code{\link{physignal}})
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
@@ -825,7 +825,7 @@ print.physignal <- function(x, ...){
 
 #' Print/Summary Function for geomorph
 #' 
-#' @param object print/summary object
+#' @param object print/summary object (from \code{\link{physignal}})
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
@@ -837,7 +837,7 @@ summary.physignal <- function(object, ...) {
 
 #' Plot Function for geomorph
 #' 
-#' @param x plot object
+#' @param x plot object (from \code{\link{physignal}})
 #' @param ... other arguments passed to plot
 #' @export
 #' @author Michael Collyer
@@ -1098,7 +1098,7 @@ trajplot.by.groups<-function(Data, TM, groups, group.cols = NULL,
 
 #' Plot Function for geomorph
 #' 
-#' @param x plot object
+#' @param x plot object (from \code{\link{trajectory.analysis}})
 #' @param group.cols An optional vector of colors for group levels
 #' @param pt.seq.pattern The sequence of colors for starting, middle, and end points of 
 #' trajectories, respectivly.  E.g., c("green", "gray", "red") for gray points

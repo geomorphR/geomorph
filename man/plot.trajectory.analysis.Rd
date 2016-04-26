@@ -8,7 +8,7 @@
   pt.seq.pattern = c("white", "gray", "black"), pt.scale = 1, ...)
 }
 \arguments{
-\item{x}{plot object}
+\item{x}{plot object (from \code{\link{trajectory.analysis}})}
 
 \item{group.cols}{An optional vector of colors for group levels}
 

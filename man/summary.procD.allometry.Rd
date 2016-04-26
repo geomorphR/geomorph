@@ -7,7 +7,7 @@
 summary.procD.allometry(object, ...)
 }
 \arguments{
-\item{object}{print/summary object}
+\item{object}{print/summary object (from \code{\link{procD.allometry}})}
 
 \item{...}{other arguments passed to print/summary}
 }

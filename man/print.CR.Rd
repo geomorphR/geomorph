@@ -7,7 +7,7 @@
 print.CR(x, ...)
 }
 \arguments{
-\item{x}{print/summary object}
+\item{x}{print/summary object (from \code{\link{phylo.modularity}})}
 
 \item{...}{other arguments passed to print/summary}
 }

@@ -9,7 +9,7 @@
   mesh = NULL, shapes = TRUE, ...)
 }
 \arguments{
-\item{x}{plot object}
+\item{x}{plot object (from \code{\link{procD.allometry}})}
 
 \item{method}{Method for estimating allometric shape components}
 
