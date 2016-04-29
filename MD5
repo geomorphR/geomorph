@@ -116,7 +116,7 @@ f6a597f1e703debeb24ef70e0a8e2890 *man/two.b.pls.Rd
 036ec1108cf8b6363ebf542ca50cf8ae *man/writeland.tps.Rd
 dced349f2a8288757f8d0eaf232d2810 *NAMESPACE
 7e7920e7ad746e51cb4c0988378705b8 *NEWS
-dc4c227dd172e4a83d479416f23d2e44 *R/advanced.procD.lm.r
+e41497cb3497fa9861a448ad53ec42ed *R/advanced.procD.lm.r
 c3bf88c10dcae2eb5430025e36867d98 *R/arrayspecs.r
 807c22dc4f7ff4549f5afc716c4c825f *R/bilat.symmetry.r
 14713bbb2ad126d777d95e359c71bf1a *R/build.template.r
@@ -146,7 +146,7 @@ e09c5bdfc67d5d3406eda297f5cd8507 *R/integration.test.r
 084f845900f98683ff877ac399e822b3 *R/nested.update.r
 c6800acda3e64ac1be473ca0e76edc1d *R/phylo.integration.r
 5088443e8fc40351765d334c47f7d061 *R/phylo.modularity.r
-b37e3be3b5aed29c555507c8d14fcd8b *R/physignal.r
+888e29ed150f8dd3fcb11f0ed0808418 *R/physignal.r
 3ae314b150407cdb4e1e879995f2001c *R/plotAllSpecimens.r
 7cf99bc560cdef1c1670c11c67fe6e49 *R/plotGMPhyloMorphoSpace.r
 8db1f082de4f53ca8b704a8ff93a7b60 *R/plotOutliers.r
