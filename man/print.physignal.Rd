@@ -4,7 +4,7 @@
 \alias{print.physignal}
 \title{Print/Summary Function for geomorph}
 \usage{
-print.physignal(x, ...)
+\method{print}{physignal}(x, ...)
 }
 \arguments{
 \item{x}{print/summary object (from \code{\link{physignal}})}
