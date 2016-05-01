@@ -37,7 +37,7 @@
 #' correlations (r), radians (rad) or degrees (deg)
 #' @param phy A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape (optional)
 #' @param pc.shape An argument for whether analysis should be performed on the principal component scores fo shape.  This is a useful
-#' option if the data are high-dimensional (many more variables that observations) but will nto affect results
+#' option if the data are high-dimensional (many more variables that observations) but will not affect results
 #' @param iter Number of iterations for significance testing
 #' @param seed An optional argument for setting the seed for random permutations of the resampling procedure.  
 #' If left NULL (the default), the exact same P-values will be found for repeated runs of the analysis (with the same number of iterations).
