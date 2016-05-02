@@ -26,8 +26,8 @@
 #'  include warpgrids, respectively.  Warpgrids can only be included for 3D arrays of Procrustes residuals. The plot is a plot of PLS scores from 
 #'  Block1 versus Block2 performed for the first set of PLS axes. 
 #'  
-#' @param A A 2D array (n x [p1 x k1]) or 3D array (p1 x k1 x n) containing landmark coordinates for the first block
-#' @param A2 An optional 2D array (n x [p2 x k2]) or 3D array (p2 x k2 x n) containing landmark coordinates for the second block 
+#' @param A A 3D array (p x k x n) containing GPA-aligned coordinates for the first block, or a matrix (n x variables)
+#' @param A2 An optional 3D array (p x k x n) containing GPA-aligned coordinates for the second block, or a matrix (n x variables)
 #' @param phy A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape
 #' @param partition.gp A list of which landmarks (or variables) belong in which partition (e.g. A,A,A,B,B,B,C,C,C) (required when only 1 dataset provided)
 #' @param iter Number of iterations for significance testing

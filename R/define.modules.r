@@ -22,7 +22,7 @@
 #' to this module. Repeat until all landmarks are assigned to modules.
 #' }
 #' 
-#' @param spec Name of specimen, as an object matrix containing 2D or 3D landmark coordinates
+#' @param spec A p x k matrix containing landmark coordinates of a single specimen (2D or 3D)
 #' @param nmodules Number of modules to be defined
 #' @return Function returns a vector of which landmarks belong in which module (e.g. 1,1,1,2,2,3,3,3,2) to be used
 #' with \code{\link{modularity.test}} or \code{\link{integration.test}}.

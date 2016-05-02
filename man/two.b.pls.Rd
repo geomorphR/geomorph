@@ -7,9 +7,9 @@
 two.b.pls(A1, A2, iter = 999, seed = NULL)
 }
 \arguments{
-\item{A1}{A matrix (n x [p x k]) or 3D array (p x k x n) containing GPA-aligned coordinates for the first block}
+\item{A1}{A 3D array (p x k x n) containing GPA-aligned coordinates for the first block, or a matrix (n x variables)}
 
-\item{A2}{A matrix (n x [p x k]) or 3D array (p x k x n) containing GPA-aligned coordinates for the second block}
+\item{A2}{A 3D array (p x k x n) containing GPA-aligned coordinates for the second block, or a matrix (n x variables)}
 
 \item{iter}{Number of iterations for significance testing}
 

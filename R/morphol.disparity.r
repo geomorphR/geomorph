@@ -21,9 +21,7 @@
 #' (see examples).
 #'
 #' @param f1 A formula describing the linear model used.  The left-hand portion of the formula should be
-#'  a matrix (n x [p x k]) or 3D array (p x k x n) containing GPA-aligned coordinates for a set of specimens.  However,
-#'  any matrix of multivariate data will work.  The right-hand portion of the formula should be " ~1" to use the overall mean,
-#'  or "~ x1 + x2 + x3 +...", where each x is a covariate or factor.  (Interactions and nested terms also work.)
+#'  a 3D array (p x k x n) containing GPA-aligned coordinates for a set of specimens, or a matrix (n x variables). The right-hand portion of the formula should be " ~1" to use the overall mean, or "~ x1 + x2 + x3 +...", where each x is a covariate or factor.  (Interactions and nested terms also work.)
 #' @param groups A formula designating groups, e.g., groups = ~ groups.  If NULL, morphol.disparity
 #' will attempt to define groups based on the linear model formula, f1.  If there are no groups inherently
 #' indicated in f1 and groups is NULL, a single Procrustes variance will be returned for the entire data set.

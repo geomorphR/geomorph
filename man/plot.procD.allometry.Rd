@@ -6,7 +6,7 @@
 \usage{
 \method{plot}{procD.allometry}(x, method = c("CAC", "RegScore", "PredLine"),
   warpgrids = TRUE, label = NULL, gp.label = FALSE, pt.col = NULL,
-  mesh = NULL, shapes = TRUE, ...)
+  mesh = NULL, shapes = FALSE, ...)
 }
 \arguments{
 \item{x}{plot object (from \code{\link{procD.allometry}})}

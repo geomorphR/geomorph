@@ -26,8 +26,8 @@
 #'  \subsection{Notes for geomorph 3.0}{ 
 #' Compared to older versions of geomorph, the order of input variables has changed, so that it is consistent with other functions
 #' in the program.  Additionally, for 3 or more groups, the pairwise p-values are found in the output object.}
+#' @param A A 3D array (p x k x n) containing GPA-aligned coordinates for all specimens, or a matrix (n x variables)
 #' @param phy A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape
-#' @param A A matrix (n x [p x k]) or 3D array (p x k x n) containing GPA-aligned coordinates for a set of specimens
 #' @param gp A factor array designating group membership
 #' @param iter Number of iterations for significance testing
 #' @keywords analysis
