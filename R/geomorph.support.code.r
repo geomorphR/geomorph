@@ -1167,8 +1167,8 @@ cov.extract <- function(pfit) {
 # estimates ls.means from models with slopes and factors
 # advanced.procD.lm
 ls.means = function(pfit, Y=NULL, g=NULL, data=NULL, Pcor = NULL) { 
-  if(is.null(Y)) Y <- pfit$wY
-  if(!is.null(Pcor)) Y <- Pcor%*%Y
+  if(!is.null(Pcor) && is.null(Y)) stop("If Pcor is provided, Y cannot be null")
+  if(is.null(Y)) Y <- pfit$wY 
   n <- nrow(Y)
   if(is.null(data)) dat <- pfit$data else dat <- data
   if(!is.null(g)) {
@@ -1180,23 +1180,20 @@ ls.means = function(pfit, Y=NULL, g=NULL, data=NULL, Pcor = NULL) {
       fac <- as.factor(unlist(facs))
   } else fac <- single.factor(pfit)
   covs <- cov.extract(pfit) 
-  if(is.null(covs)){
-    if(!is.null(Pcor)) lsm <- .lm.fit(Pcor%*%model.matrix(~fac+0),Y)$coefficients else 
-      lsm <- .lm.fit(model.matrix(~fac+0),Y)$coefficients
-  } else if(ncol(as.matrix(covs)) == 1){
-    covs <- as.vector(covs)
-    if(!is.null(Pcor)) fit <- .lm.fit(Pcor%*%model.matrix(~covs+fac+0),Y) else fit <- .lm.fit(model.matrix(~covs+fac+0),Y)
-    X <- cbind(mean(covs),model.matrix(~fac+0))
-    if(!is.null(Pcor)) lsm <- .lm.fit(Pcor%*%model.matrix(~fac+0),Pcor%*%X%*%coef(fit))$coefficients else 
-      lsm <- .lm.fit(model.matrix(~fac+0),X%*%coef(fit))$coefficients
-  } else {
-    covs <- sapply(covs, function(x) matrix(x))
-    if(!is.null(Pcor)) fit <- .lm.fit(Pcor%*%model.matrix(~covs+fac+0),Y) else fit <- .lm.fit(model.matrix(~covs+fac+0),Y)
-    X <- cbind(matrix(rep(colMeans(covs), rep.int(nrow(covs), ncol(covs))),n),
-               model.matrix(~fac+0))
-    if(!is.null(Pcor)) lsm <- .lm.fit(Pcor%*%model.matrix(~fac+0),Pcor%*%X%*%coef(fit))$coefficients else 
-      lsm <- .lm.fit(model.matrix(~fac+0),X%*%coef(fit))$coefficients
+  if(is.null(covs)) X0 <- model.matrix(~fac) else {
+    if(ncol(as.matrix(covs)) == 1) covs <- as.vector(covs)
+    X0 <- model.matrix(~covs+fac)
   }
+  X <- X0*sqrt(pfit$weights)
+  if(!is.null(Pcor)) X <- Pcor%*%X
+  fit <- .lm.fit(X,Y)$coefficients
+  Xcov.mean <- as.matrix(X[,1:ncol(model.matrix(~covs))])
+  Xcov.mean <- sapply(1:ncol(Xcov.mean), 
+         function(j) rep(mean(Xcov.mean[,j]),nrow(Xcov.mean)))
+  Xnew <- cbind(Xcov.mean, X[,-(1:ncol(Xcov.mean))])
+  if(!is.null(Pcor))
+    lsm <- lm.fit(Pcor%*%model.matrix(~fac+0),Xnew%*%fit)$coefficients else
+      lsm <- lm.fit(model.matrix(~fac+0),Xnew%*%fit)$coefficients 
   rownames(lsm) <- levels(fac)
   lsm
 }
@@ -1204,6 +1201,7 @@ ls.means = function(pfit, Y=NULL, g=NULL, data=NULL, Pcor = NULL) {
 # apply.ls.means
 # estimates ls.means from models with slopes and factors across random outcomes in a list
 # advanced.procD.lm
+# FUTURE: CAN BE MADE FASTER WITH SINGLE CALCULATION OF X
 apply.ls.means <- function(pfit, Yr, g=NULL, data=NULL, Pcor=NULL){
   if(is.null(data)) dat <- pfit$data else dat <- data
   Map(function(y) ls.means(pfit, Y=y, g=g, data=dat, Pcor=Pcor), Yr)
@@ -1213,8 +1211,8 @@ apply.ls.means <- function(pfit, Yr, g=NULL, data=NULL, Pcor=NULL){
 # estimates slopes from models with slopes and factors
 # advanced.procD.lm
 slopes = function(pfit, Y=NULL, g = NULL, slope=NULL, data = NULL, Pcor = NULL){ 
+  if(!is.null(Pcor) && is.null(Y)) stop("If Pcor is provided, Y cannot be null")
   if(is.null(Y)) Y <- pfit$wY
-  if(!is.null(Pcor)) Y <- Pcor%*%Y
   if(is.null(data)) dat <- pfit$data else dat <- data
   if(!is.null(g)) {
     if(is.data.frame(g)){
@@ -1290,9 +1288,8 @@ vec.ang.matrix <- function(M, type = c("rad", "deg", "r")){
 # Used in two.b.pls, integration.test, apply.pls
 pls <- function(x,y, RV=FALSE, verbose = FALSE){
   x <- as.matrix(x); y <- as.matrix(y)
-  px <- ncol(x); py <- ncol(y); pmin <- min(px,py)
-  S <-var(cbind(x,y))
-  S12 <- matrix(S[1:px,-(1:px)], px,py)
+  px <- dim(x)[2]; py <- dim(y)[2]; pmin <- min(px,py)
+  S12 <- crossprod(center(x),center(y))/(dim(x)[1] - 1)
   pls <- La.svd(S12, pmin, pmin)
   U <- pls$u; V <- t(pls$vt)
   XScores <- x %*% U

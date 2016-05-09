@@ -520,6 +520,7 @@ plot.pls <- function(x, label = NULL, warpgrids=TRUE, shapes=TRUE, ...){
   if (length(dim(A1)) != 3 && length(dim(A2)) != 3) {
     plot(XScores, YScores, pch = 21, bg = "black", 
          main = "PLS Plot", xlab = "PLS1 Block 1", ylab = "PLS1 Block 2")
+    abline(lm(py~px), col="red")
     if (length(label != 0)) {
       text(XScores, YScores, label, adj = c(-0.7, -0.7))
     }
