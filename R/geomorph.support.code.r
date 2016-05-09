@@ -1191,8 +1191,9 @@ ls.means = function(pfit, Y=NULL, g=NULL, data=NULL, Pcor = NULL) {
     Xcov.mean <- as.matrix(X[,1:ncol(model.matrix(~covs))])
     Xcov.mean <- sapply(1:ncol(Xcov.mean), 
                         function(j) rep(mean(Xcov.mean[,j]),nrow(Xcov.mean)))
-  } else Xcov.mean <- NULL
-  Xnew <- cbind(Xcov.mean, X[,-(1:ncol(Xcov.mean))])
+    Xnew <- cbind(Xcov.mean, X[,-(1:ncol(Xcov.mean))])
+  } else Xnew <- X
+  
   if(!is.null(Pcor))
     lsm <- lm.fit(Pcor%*%model.matrix(~fac+0),Xnew%*%fit)$coefficients else
       lsm <- lm.fit(model.matrix(~fac+0),Xnew%*%fit)$coefficients 
