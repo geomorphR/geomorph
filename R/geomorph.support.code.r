@@ -1191,8 +1191,9 @@ ls.means = function(pfit, Y=NULL, g=NULL, data=NULL, Pcor = NULL) {
     Xcov.mean <- as.matrix(X[,1:ncol(model.matrix(~covs))])
     Xcov.mean <- sapply(1:ncol(Xcov.mean), 
                         function(j) rep(mean(Xcov.mean[,j]),nrow(Xcov.mean)))
-  } else Xcov.mean <- NULL
-  Xnew <- cbind(Xcov.mean, X[,-(1:ncol(Xcov.mean))])
+    Xnew <- cbind(Xcov.mean, X[,-(1:ncol(Xcov.mean))])
+  } else Xnew <- X
+  
   if(!is.null(Pcor))
     lsm <- lm.fit(Pcor%*%model.matrix(~fac+0),Xnew%*%fit)$coefficients else
       lsm <- lm.fit(model.matrix(~fac+0),Xnew%*%fit)$coefficients 
@@ -1317,8 +1318,7 @@ pls <- function(x,y, RV=FALSE, verbose = FALSE){
 # used in: apply.pls
 quick.pls <- function(x,y, px, py, pmin) {# no RV; no verbose output
   # assume parameters already found
-  S <-var(cbind(x,y))
-  S12 <- matrix(S[1:px,-(1:px)], px,py)
+  S12 <- crossprod(center(x),center(y))/(dim(x)[1] - 1)
   pls <- La.svd(S12, pmin, pmin)
   U<-pls$u; V <- t(pls$vt)
   XScores <- x %*% U
