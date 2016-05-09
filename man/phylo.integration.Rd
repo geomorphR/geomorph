@@ -8,9 +8,9 @@ phylo.integration(A, A2 = NULL, phy, partition.gp = NULL, iter = 999,
   seed = NULL)
 }
 \arguments{
-\item{A}{A 2D array (n x [p1 x k1]) or 3D array (p1 x k1 x n) containing landmark coordinates for the first block}
+\item{A}{A 3D array (p x k x n) containing GPA-aligned coordinates for the first block, or a matrix (n x variables)}
 
-\item{A2}{An optional 2D array (n x [p2 x k2]) or 3D array (p2 x k2 x n) containing landmark coordinates for the second block}
+\item{A2}{An optional 3D array (p x k x n) containing GPA-aligned coordinates for the second block, or a matrix (n x variables)}
 
 \item{phy}{A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape}
 

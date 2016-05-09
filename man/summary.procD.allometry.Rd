@@ -4,7 +4,7 @@
 \alias{summary.procD.allometry}
 \title{Print/Summary Function for geomorph}
 \usage{
-\method{summary}{procD.allometry}(object, ...)
+summary.procD.allometry(object, ...)
 }
 \arguments{
 \item{object}{print/summary object (from \code{\link{procD.allometry}})}

@@ -4,7 +4,7 @@
 \alias{print.pls}
 \title{Print/Summary Function for geomorph}
 \usage{
-\method{print}{pls}(x, ...)
+print.pls(x, ...)
 }
 \arguments{
 \item{x}{print/summary object (from \code{\link{phylo.integration}} or \code{\link{two.b.pls}})}

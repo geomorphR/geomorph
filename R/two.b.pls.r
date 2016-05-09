@@ -23,8 +23,8 @@
 #' are exactly along the major axis of shape covariation.  This axis is also shown as a best-fit line in the plot.
 #' }
 #' 
-#' @param A1 A matrix (n x [p x k]) or 3D array (p x k x n) containing GPA-aligned coordinates for the first block
-#' @param A2 A matrix (n x [p x k]) or 3D array (p x k x n) containing GPA-aligned coordinates for the second block 
+#' @param A1 A 3D array (p x k x n) containing GPA-aligned coordinates for the first block, or a matrix (n x variables)
+#' @param A2 A 3D array (p x k x n) containing GPA-aligned coordinates for the second block, or a matrix (n x variables)
 #' @param iter Number of iterations for significance testing
 #' @param seed An optional argument for setting the seed for random permutations of the resampling procedure.  
 #' If left NULL (the default), the exact same P-values will be found for repeated runs of the analysis (with the same number of iterations).

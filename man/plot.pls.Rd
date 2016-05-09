@@ -4,7 +4,7 @@
 \alias{plot.pls}
 \title{Plot Function for geomorph}
 \usage{
-\method{plot}{pls}(x, label = NULL, warpgrids = TRUE, shapes = TRUE, ...)
+\method{plot}{pls}(x, label = NULL, warpgrids = TRUE, shapes = FALSE, ...)
 }
 \arguments{
 \item{x}{plot object (from \code{\link{phylo.integration}} or \code{\link{two.b.pls}})}

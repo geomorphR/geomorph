@@ -318,7 +318,7 @@ summary.procD.allometry <- function(object, ...) {
 #' @references Mitteroecker, P., P. Gunz, M. Bernhard, K. Schaefer, and F. L. Bookstein. 2004. 
 #'   Comparison of cranial ontogenetic trajectories among great apes and humans. J. Hum. Evol. 46:679-698.
 plot.procD.allometry <- function(x, method=c("CAC","RegScore","PredLine"),warpgrids=TRUE,
-                                 label=NULL, gp.label=FALSE, pt.col=NULL, mesh=NULL, shapes=TRUE,...) {
+                                 label=NULL, gp.label=FALSE, pt.col=NULL, mesh=NULL, shapes=FALSE,...) {
   method <- match.arg(method)
   if(x$logsz) xlab <- "log(Size)" else xlab <- "Size"
   if(x$logsz) size <- log(x$size) else size <- x$size
@@ -480,7 +480,7 @@ summary.pls <- function(object, ...) {
 #' @author Michael Collyer
 #' @keywords utilities
 #' @keywords visualization
-plot.pls <- function(x, label = NULL, warpgrids=TRUE, shapes=TRUE, ...){
+plot.pls <- function(x, label = NULL, warpgrids=TRUE, shapes=FALSE, ...){
   A1 <- x$A1; A2 <- x$A2
   XScores <- x$XScores; YScores <- x$YScores
   if(is.matrix(XScores)) XScores <- XScores[,1]
