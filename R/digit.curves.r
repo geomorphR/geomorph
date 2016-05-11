@@ -9,6 +9,8 @@
 #' \code{\link{digit.fixed}} or \code{\link{digitize2d}} - but note that there should be more points defining the curve than nPoints in order to accurately calculate the semilandmarks).
 #'
 #' If 'closed = T', the function returns the coordinates of the 'start' landmark plus nPoints. If 'closed = F', the function returns the coordinates of the 'start' landmark, plus nPoints and the end of the curve. 
+#' 
+#' If unsure if the points defining the curve are ordered, then plot and colour them using the rainbow function, e.g. plot(curve, pch=19, cex=0.1, col=rainbow(nrow(outline))), and it should be easy to visualise.
 #'
 #' @param start A vector of x,y,(z) coordinates for the fixed landmark defining the start of the curve
 #' @param curve A p-x-k matrix of 2D or 3D coordinates for a set of ordered points defining a curve
@@ -25,7 +27,7 @@
 digit.curves <- function(start, curve, nPoints, closed=TRUE){
   nPoints=nPoints+2
   checkmat <- is.matrix(curve)
-  if (checkmat==FALSE) { stop("Input must be a p-x-k matrix of landmark coordinates")}
+  if (checkmat==FALSE) { stop("Input must be a p-x-k matrix of curve coordinates")}
   checkdim <- dim(curve)[2]
   nCurvePoints = nrow(curve)
   start <- as.numeric(start)
