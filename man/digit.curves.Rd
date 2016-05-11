@@ -4,10 +4,10 @@
 \alias{digit.curves}
 \title{Calculate semilandmarks along a curve}
 \usage{
-digit.curves(start, curve, nPoints, closed = T)
+digit.curves(start, curve, nPoints, closed = TRUE)
 }
 \arguments{
-\item{start}{A vector of x,y,(z) coordinates for the fixed landmark defining the start of the curve}
+\item{start}{A numeric vector of x,y,(z) coordinates for the landmark defining the start of the curve (can be simply first point on open outline: curve[1,])}
 
 \item{curve}{A p-x-k matrix of 2D or 3D coordinates for a set of ordered points defining a curve}
 
@@ -29,6 +29,8 @@ The start of the curve is a fixed landmark on the curve that is equivalent (homo
 \code{\link{digit.fixed}} or \code{\link{digitize2d}} - but note that there should be more points defining the curve than nPoints in order to accurately calculate the semilandmarks).
 
 If 'closed = T', the function returns the coordinates of the 'start' landmark plus nPoints. If 'closed = F', the function returns the coordinates of the 'start' landmark, plus nPoints and the end of the curve.
+
+If unsure if the points defining the curve are ordered, then plot and colour them using the rainbow function, e.g. plot(curve, pch=19, cex=0.1, col=rainbow(nrow(outline))), and it should be easy to visualise.
 }
 \author{
 Emma Sherratt

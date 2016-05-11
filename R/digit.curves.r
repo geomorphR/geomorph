@@ -12,7 +12,7 @@
 #' 
 #' If unsure if the points defining the curve are ordered, then plot and colour them using the rainbow function, e.g. plot(curve, pch=19, cex=0.1, col=rainbow(nrow(outline))), and it should be easy to visualise.
 #'
-#' @param start A vector of x,y,(z) coordinates for the fixed landmark defining the start of the curve
+#' @param start A numeric vector of x,y,(z) coordinates for the landmark defining the start of the curve (can be simply first point on open outline: curve[1,])
 #' @param curve A p-x-k matrix of 2D or 3D coordinates for a set of ordered points defining a curve
 #' @param nPoints Numeric how many semilandmarks to place equidistantly along the curve 
 #' @param closed Logical Whether the curve is closed (TRUE) or open (FALSE)
@@ -39,8 +39,9 @@ digit.curves <- function(start, curve, nPoints, closed=TRUE){
                                               (start[2]-curve[,2])^2+
                                               (start[3]-curve[,3])^2))}
   newPoints[1,] <- curve[start,]
-  if(start!=1){curve <- rbind(curve[start:nCurvePoints,],
+  if(start!=1 && start!= nCurvePoints){curve <- rbind(curve[start:nCurvePoints,],
                                curve[1:(start-1),])} 
+  if(start == nCurvePoints){curve <-curve[nCurvePoints:1,]  }
   if(closed==FALSE){newPoints[nPoints,] <- curve[nrow(curve),]}
   if(closed==TRUE){curve <- rbind(curve, curve[1,])
                 nCurvePoints <- nCurvePoints+1
