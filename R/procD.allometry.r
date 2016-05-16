@@ -42,7 +42,32 @@
 #' \subsection{Notes for geomorph 3.0 and making allometry plots}{ 
 #' Former versions of geomorph had a "plotAllometry" function that performed ANOVA and produced
 #' plots of allometry curves.  In geomorph 3.0, the \code{\link{plot}} function is used with 
-#' \code{\link{procD.allometry}} objects to produce such plots. Use ?\code{\link{plot.procD.allometry}} to see the arguments.}
+#' \code{\link{procD.allometry}} objects to produce such plots.  The following arguments can be used in 
+#' \code{\link{plot}} to achieve desired results.
+#' \itemize{
+#' \item{method = ("CAC, "RegScore, "PredLine").  Choose the desired plot method.}
+#' \item{warpgrids: default = TRUE.  Logical value to indicate whether warpgrids should be plotted.} 
+#' (Only workds with 3D array data)
+#' \item{label: can be logical to label points (1:n) - e.g., label = TRUE - or a vector indicating
+#' text to use as labels.}
+#' \item{mesh: A mesh3d object to be warped to represent shape deformation of the minimum and maximum size 
+#' if {warpgrids=TRUE} (see \code{\link{warpRefMesh}}).}
+#' }
+#' Use ?\code{\link{plot.procD.allometry}} to understand the arguments used.  The following are brief 
+#' descriptions of the different plotting methods using \code{\link{plot}}, with references.
+#'\itemize{
+#' \item {If "method=CAC" (the default) the function calculates the 
+#'   common allometric component of the shape data, which is an estimate of the average allometric trend 
+#'   within groups (Mitteroecker et al. 2004). The function also calculates the residual shape component (RSC) for 
+#'   the data.}
+#'   \item {If "method=RegScore" the function calculates shape scores 
+#'   from the regression of shape on size, and plots these versus size (Drake and Klingenberg 2008). 
+#'   For a single group, these shape scores are mathematically identical to the CAC (Adams et al. 2013).}
+#'   \item {If "method=PredLine" the function calculates predicted values from a regression of shape on size, and 
+#'   plots the first principal component of the predicted values versus size as a stylized graphic of the 
+#'   allometric trend (Adams and Nistri 2010). }
+#'   }
+#'   }
 #'   
 #' @param f1 A formula for the relationship of shape and size; e.g., Y ~ X.
 #' @param f2 An optional right-hand formula for the inclusion of groups; e.g., ~ groups.
@@ -77,15 +102,23 @@
 #' \item{Reg.proj}{The projected regression scores on the regression of shape on size. 
 #'   For a single group, these shape scores are mathematically identical to the CAC (Adams et al. 2013).}
 #' \item{pred.val}{Principal component scores (first PC) of predicted values.}
-#' \item{ref}{the reference configuration (if input coordinates are in a 3D array), or variable means (if input data are in a 2D matrix).}
+#' \item{ref}{the reference configuration (if input coordinates are in a 3D array).}
 #' \item{gps}{A vector of group names.}
 #' \item{size}{A vector of size scores.}
 #' \item{logsz}{A logical value to indicate if size values were log=transformed for analysis.}
-#' \item{A}{Procrustes (aligned) residuals (if input coordinates are in a 3D array), or residuals (if input data are in a 2D matrix). }
-#' \item{Ahat}{Predicted Procrustes residuals (if input coordinates are in a 3D array), or predicted values (if input data are in a 2D matrix).}
-#' \item{p}{landmark number (if input coordinates are in a 3D array), or number of variables (if input data are in a 2D matrix).}
-#' \item{k}{landmark dimensions (if input coordinates are in a 3D array).}
+#' \item{A}{Procrustes (aligned) residuals.}
+#' \item{Ahat}{Predicted Procrustes residuals(if input coordinates are in a 3D array).}
+#' \item{p}{landmark number}
+#' \item{k}{landmark dimensions}
 #' 
+#' @references Adams, D.C., F.J. Rohlf, and D.E. Slice. 2013. A field comes of age: geometric morphometrics 
+#'   in the 21st century. Hystrix. 24:7-14. 
+#' @references Adams, D. C., and A. Nistri. 2010. Ontogenetic convergence and evolution of foot morphology 
+#'   in European cave salamanders (Family: Plethodontidae). BMC Evol. Biol. 10:1-10.
+#' @references Drake, A. G., and C. P. Klingenberg. 2008. The pace of morphological change: Historical 
+#'   transformation of skull shape in St Bernard dogs. Proc. R. Soc. B. 275:71-76.
+#' @references Mitteroecker, P., P. Gunz, M. Bernhard, K. Schaefer, and F. L. Bookstein. 2004. 
+#'   Comparison of cranial ontogenetic trajectories among great apes and humans. J. Hum. Evol. 46:679-698.
 #' @seealso \code{\link{procD.lm}} and \code{\link{advanced.procD.lm}} within geomorph;
 #' \code{\link[stats]{lm}} for more on linear model fits
 #' @examples
@@ -170,7 +203,7 @@ procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
       o.Terms <- NULL
     }
   }
-
+  if(is.null(f2) && is.null(f3)) form2 <- form1
     if(!is.null(f2) & !is.null(f3)) {
       if(!logsz){
         form4 <- update(f3, ~. + size + gps)
