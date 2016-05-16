@@ -153,7 +153,13 @@ dfd0571936b18c4a6b6edc2845ee3c73 *R/plotGMPhyloMorphoSpace.r
 ee4a0bd986c2198b80235e22820ca455 *R/plotRefToTarget.r
 41db23cebd8d7be6c3decf781bd378e0 *R/plotspec.r
 81950e2fd81a3f34709c28427d5d1fbd *R/plotTangentSpace.r
+<<<<<<< HEAD
 32f6b91e0649b89f24518ca44b3ba996 *R/procD.allometry.r
+||||||| merged common ancestors
+b921c50f8799a864db4c5b1d25e34a3f *R/procD.allometry.r
+=======
+e905a2fc4b9be1c1db3ac05c6161e325 *R/procD.allometry.r
+>>>>>>> fb3d5a7b1899c45797c32d58c2a0991a8becd9e3
 d97832b7297c18a6a2eb86372f063c65 *R/procD.lm.r
 8fddc5e2ea5bb252515f047c32d4abe8 *R/procD.pgls.r
 9817244fb71ac387d06d26f4550fb953 *R/read.morphologika.r
