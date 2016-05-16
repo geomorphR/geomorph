@@ -152,10 +152,12 @@ procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
       if(any(attr(g.Terms, "dataClasses") == "numeric")) stop("groups formula (f2) must contain only factors")
       if(ncol(dat.g) > 1) gps <- factor(apply(dat.g, 1,function(x) paste(x, collapse=":"))) else 
         gps <- as.factor(unlist(dat.g))
+      form2 <- update(form1, ~. + gps)
     }  else {
       dat.g <- NULL
       g.Terms <- NULL
       gps <- NULL
+      form2 <- form1
     }
   
     if(!is.null(f3)) {
@@ -179,10 +181,11 @@ procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
         form5 <- update(f3, ~. + log(size) * gps)
       }
     }
-      if(!is.null(f2) & is.null(f3)) {
-        form4 <- form1
-        form5 <- update(form1, ~.  * gps)
-      }
+  
+  if(!is.null(f2) & is.null(f3)) {
+    form4 <- form2
+    form5 <- update(form1, ~.  * gps)
+  }
   
   if(!is.null(f2) & !is.null(f3)) {
     formfull <-as.formula(c("~",paste(unique(
@@ -207,7 +210,7 @@ procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
           collapse="+")))
     form.type <- "o"
   } else {
-    formfull <- form1
+    formfull <- form2
     form.type <- NULL}
   
   if(!is.null(f2)){
