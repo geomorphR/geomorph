@@ -204,6 +204,7 @@ procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
     }
   }
   if(is.null(f2) && is.null(f3)) form2 <- form1
+  if(is.null(f2) && is.null(f3)) form2 <- form1 
     if(!is.null(f2) & !is.null(f3)) {
       if(!logsz){
         form4 <- update(f3, ~. + size + gps)
