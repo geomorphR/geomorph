@@ -138,8 +138,8 @@ procD.pgls<-function(f1, phy, iter=999, seed=NULL, int.first = FALSE,
              residuals = pfit$residuals[[k+1]], 
              weights = pfit$weights, Terms = pfit$Terms, term.labels = pfit$term.labels,
              SS = anova.parts.obs$SS, df = anova.parts.obs$df, R2 = anova.parts.obs$R2[1:k], 
-             pgls.coefficients = Pfit$coefficients, pgls.fitted = Pfit$fitted, 
-             pgls.residuals = Pfit$residuals,
+             pgls.coefficients = Pfit$coefficients, pgls.fitted = pfit$X%*%Pfit$coefficients, 
+             pgls.residuals = PY - pfit$X%*%Pfit$coefficients,
              F = anova.parts.obs$Fs[1:k], permutations = iter+1,
              random.SS = P, perm.method = ifelse(RRPP==TRUE,"RRPP", "Raw"))
   class(out) <- "procD.lm"
