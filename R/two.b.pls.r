@@ -43,6 +43,7 @@
 #'   resampling procedure.}
 #'   \item{XScores}{Values of left (x) block projected onto singular vectors.}
 #'   \item{YScores}{Values of right (y) block projected onto singular vectors.}
+#'   \item{svd}{The singular value decomposition of the cross-covariances.}
 #'   \item{A1}{Input values for the left block.}
 #'   \item{A2}{Input values for the right block.}
 #'   \item{A1.matrix}{Left block (matrix) found from A1.}
@@ -76,6 +77,8 @@ two.b.pls <- function (A1, A2,  iter = 999, seed = NULL){
   n <- nrow(x)
   pls.rand <- apply.pls(x, y, RV=FALSE, iter=iter, seed=seed)
   pls.obs <- pls(x, y, RV=FALSE, verbose=TRUE)
+  rownames(pls.obs$pls.svd$u) <- colnames(x)
+  rownames(pls.obs$pls.svd$v) <- colnames(y)
   p.val <- pval(pls.rand)
   XScores <- pls.obs$XScores
   YScores <- pls.obs$YScores
@@ -86,6 +89,7 @@ two.b.pls <- function (A1, A2,  iter = 999, seed = NULL){
               random.r = pls.rand, 
               XScores = pls.obs$XScores,
               YScores = pls.obs$YScores,
+              svd = pls.obs$pls.svd,
               A1 = A1, A2 = A2,
               A1.matrix = x, A2.matrix =y,
               permutations = iter+1, call=match.call(),

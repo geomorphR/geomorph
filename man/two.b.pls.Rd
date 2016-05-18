@@ -29,6 +29,7 @@ Object of class "pls" that returns a list of the following:
   resampling procedure.}
   \item{XScores}{Values of left (x) block projected onto singular vectors.}
   \item{YScores}{Values of right (y) block projected onto singular vectors.}
+  \item{svd}{The singular value decomposition of the cross-covariances.}
   \item{A1}{Input values for the left block.}
   \item{A2}{Input values for the right block.}
   \item{A1.matrix}{Left block (matrix) found from A1.}
