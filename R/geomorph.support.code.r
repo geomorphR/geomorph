@@ -963,7 +963,7 @@ SS.iter = function(pfit,iter, seed = NULL, Yalt="RRPP"){
 Fpgls.iter = function(pfit,Pcor,iter, seed=NULL, Yalt="RRPP"){
   Y <- as.matrix(pfit$Y)
   k <- length(pfit$QRs)
-  n <- nrow(Y)
+  n <- dim(Y)[1]; p <- dim(Y)[2]
   Yh <- pfit$fitted
   E <- pfit$residuals
   w<- pfit$weights
