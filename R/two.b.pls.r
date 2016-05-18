@@ -78,7 +78,7 @@ two.b.pls <- function (A1, A2,  iter = 999, seed = NULL){
   pls.rand <- apply.pls(x, y, RV=FALSE, iter=iter, seed=seed)
   pls.obs <- pls(x, y, RV=FALSE, verbose=TRUE)
   rownames(pls.obs$pls.svd$u) <- colnames(x)
-  rownames(pls.obs$pls.svd$v) <- colnames(y)
+  rownames(pls.obs$pls.svd$v) <- colnames(pls.obs$pls.svd$vt) <- colnames(y)
   p.val <- pval(pls.rand)
   XScores <- pls.obs$XScores
   YScores <- pls.obs$YScores
