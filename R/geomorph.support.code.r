@@ -898,18 +898,35 @@ boot.index <-function(n, iter, seed=NULL){
       ind
 }
 
+# fastFit
+# calculates fitted values for a linear model, after decomoposition of X to get U
+# used in SS.itr and Fpgls.iter; future need: advanced.procD.lm 
+fastFit <- function(U,y,n,p){
+  if(p > n) U%*%t(U)%*%y else 
+    U%*%(t(U)%*%y) 
+}
+
+# fastLM
+# calculates fitted values and residuals, after fastFit
+# placeholder in case needed later
+fastLM<- function(U,y){
+  p <- dim(y)[2]; n <- dim(y)[1]
+  yh <- fastFit(U,y,n,p)
+  list(fitted = yh, residuals = y-yh)
+}
+
 # SS.iter
 # calculates SS in random iterations of a resmapling procedure
 # used in nearly all 'procD.lm' functions, unless pgls in used
 SS.iter = function(pfit,iter, seed = NULL, Yalt="RRPP"){
   Y <- as.matrix(pfit$Y)
   k <- length(pfit$QRs)
-  n <- nrow(Y)
+  n <- dim(Y)[1]; p <- dim(Y)[2]
   Yh <- pfit$fitted
   E <- pfit$residuals
   w<- pfit$weights
-  Xr <- lapply(pfit$wXs[1:(k-1)], function(x) as.matrix(x))
-  Xf <- lapply(pfit$wXs[2:k], function(x) as.matrix(x))
+  Ur <- lapply(pfit$wQRs[1:(k-1)], function(x) qr.Q(x))
+  Uf <- lapply(pfit$wQRs[2:k], function(x) qr.Q(x))
   ind = perm.index(n,iter, seed=seed)
   SS <- NULL
   jj <- iter+1
@@ -929,9 +946,9 @@ SS.iter = function(pfit,iter, seed = NULL, Yalt="RRPP"){
         }
       }
     
-    SS.temp <- lapply(1:length(j), function(j){
-      mapply(function(x1,x2,y) sum(.lm.fit(x1,y)$residuals^2 - .lm.fit(x2,y)$residuals^2), 
-             Xr, Xf,Yr[[j]])})
+    SS.temp <- lapply(1:length(j), function(j){ 
+      mapply(function(ur,uf,y) sum((fastFit(uf,y,n,p) - fastFit(ur,y,n,p))^2), 
+             Ur, Uf,Yr[[j]])})
     SS <- c(SS, SS.temp)
     jj <- jj-length(j)
     if(jj > 100) kk <- 1:100 else kk <- 1:jj
@@ -943,7 +960,6 @@ SS.iter = function(pfit,iter, seed = NULL, Yalt="RRPP"){
 # Fpgls.iter
 # calculates F values in random iterations of a resmapling procedure, with pgls involved
 # used in the 'procD.lm' functions where pgls in used
-
 Fpgls.iter = function(pfit,Pcor,iter, seed=NULL, Yalt="RRPP"){
   Y <- as.matrix(pfit$Y)
   k <- length(pfit$QRs)
@@ -956,8 +972,8 @@ Fpgls.iter = function(pfit,Pcor,iter, seed=NULL, Yalt="RRPP"){
   df <- dfE[-1] - dfE[1:(k-1)]
   Pcor <- Pcor[rownames(Y),rownames(Y)]
   PwXs <- lapply(pfit$wXs, function(x) crossprod(Pcor,as.matrix(x)))
-  Xr <- lapply(PwXs[1:(k-1)], function(x) as.matrix(x))
-  Xf <- lapply(PwXs[2:k], function(x) as.matrix(x))
+  Ur <- lapply(pfit$wQRs[1:(k-1)], function(x) qr.Q(x))
+  Uf <- lapply(pfit$wQRs[2:k], function(x) qr.Q(x))
   ind = perm.index(n,iter, seed=seed)
   SS <- SSEs <-Fs <- NULL
   jj <- iter+1
@@ -969,9 +985,9 @@ Fpgls.iter = function(pfit,Pcor,iter, seed=NULL, Yalt="RRPP"){
     } else {
       Yr = Map(function(x) Map(function(y) crossprod(Pcor,as.matrix((y[x,])*sqrt(w))), lapply(1:(k-1),function(.) Y)),ind.j)
     }
-    SS.temp <- lapply(1:length(j), function(j){
-      mapply(function(x1,x2,y) sum(.lm.fit(x1,y)$residuals^2 - .lm.fit(x2,y)$residuals^2), 
-             Xr, Xf,Yr[[j]])})
+    SS.temp <- lapply(1:length(j), function(j){ 
+      mapply(function(ur,uf,y) sum((fastFit(uf,y,n,p) - fastFit(ur,y,n,p))^2), 
+             Ur, Uf,Yr[[j]])})
     SSEs.temp <- Map(function(y) sum(.lm.fit(Xf[[k-1]],y[[k-1]])$residuals^2), Yr)
     Fs.temp <- Map(function(s1,s2) (s1/df)/(s2/(n-k)), SS.temp, SSEs.temp)
     SS <- c(SS,SS.temp)
