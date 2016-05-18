@@ -972,6 +972,8 @@ Fpgls.iter = function(pfit,Pcor,iter, seed=NULL, Yalt="RRPP"){
   df <- dfE[-1] - dfE[1:(k-1)]
   Pcor <- Pcor[rownames(Y),rownames(Y)]
   PwXs <- lapply(pfit$wXs, function(x) crossprod(Pcor,as.matrix(x)))
+  Xr <- lapply(PwXs[1:(k-1)], function(x) as.matrix(x))
+  Xf <- lapply(PwXs[2:k], function(x) as.matrix(x))
   Ur <- lapply(pfit$wQRs[1:(k-1)], function(x) qr.Q(x))
   Uf <- lapply(pfit$wQRs[2:k], function(x) qr.Q(x))
   ind = perm.index(n,iter, seed=seed)
