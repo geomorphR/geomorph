@@ -1003,7 +1003,7 @@ Fpgls.iter = function(pfit,Pcor,iter, seed=NULL, Yalt="RRPP"){
     SSEs <- c(SSEs,SSEs.temp)
     Fs <- c(Fs,Fs.temp)
     jj <- jj-length(j)
-    if(jj > 200) kk <- 1:200 else kk <- 1:jj
+    if(jj > 100) kk <- 1:100 else kk <- 1:jj
     j <- j[length(j)] +kk
     setTxtProgressBar(pb,step)
     step <- step+1
