@@ -983,7 +983,9 @@ Fpgls.iter = function(pfit,Pcor,iter, seed=NULL, Yalt="RRPP"){
   Uf <- lapply(pfit$wQRs[2:k], function(x) qr.Q(x))
   ind = perm.index(n,iter, seed=seed)
   SS <- SSEs <-Fs <- NULL
+  pb <- txtProgressBar(min = 1, max = ceiling(iter/100), initial = 1, style=3) 
   jj <- iter+1
+  step <- 1
   if(jj > 100) j <- 1:100 else j <- 1:jj
   while(jj > 0){
     ind.j <- ind[j]
@@ -1003,8 +1005,10 @@ Fpgls.iter = function(pfit,Pcor,iter, seed=NULL, Yalt="RRPP"){
     jj <- jj-length(j)
     if(jj > 200) kk <- 1:200 else kk <- 1:jj
     j <- j[length(j)] +kk
+    setTxtProgressBar(pb,step)
+    step <- step+1
   }
-  
+  close(pb)
   list(SS=simplify2array(SS), SSE = SSEs[[1]], Fs=simplify2array(Fs))
 }
 
