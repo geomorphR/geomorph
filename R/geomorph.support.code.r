@@ -339,8 +339,10 @@ pGpa <- function(Y, PrinAxes = FALSE, Proj = FALSE, max.iter = 5){
   Q <- ss <- n*(1-sum(M^2))
   M <- cs.scale(M)
   iter <- 1
+  pb <- txtProgressBar(min = 0, max = max.iter, initial = 0, style=3) 
   while(Q > 0.0001){
     iter <- iter+1
+    setTxtProgressBar(pb,iter)
     Ya <- apply.pPsup(M, Ya)
     M <- Reduce("+",Ya)/n
     ss2 <- n*(1-sum(M^2))
@@ -357,6 +359,7 @@ pGpa <- function(Y, PrinAxes = FALSE, Proj = FALSE, max.iter = 5){
     Ya <- Map(function(y) y%*%rot, Ya)
     M <- cs.scale(Reduce("+", Ya)/n)
   }
+  close(pb)
   list(coords= Ya, CS=CS, iter=iter, consensus=M, Q=Q, nsliders=NULL)
 }
 
@@ -576,8 +579,10 @@ BE.slide <- function(curves, surf, Ya, ref, max.iter=5){# see pGpa.wCurves for v
   iter <- 1 # from initial rotation of Ya
   slid0 <- Ya
   Q <- ss0 <- sum(Reduce("+",Ya)^2)/n
+  pb <- txtProgressBar(min = 0, max = max.iter, initial = 0, style=3) 
   while(Q > 0.0001){
     iter <- iter+1
+    setTxtProgressBar(pb,iter)
     if(!is.null(curves)) tans <- Map(function(y) tangents(curves, y, scaled=TRUE), slid0)
     L <- Ltemplate(ref)
     if(is.null(surf) & !is.null(curves))
@@ -593,7 +598,7 @@ BE.slide <- function(curves, surf, Ya, ref, max.iter=5){# see pGpa.wCurves for v
     ss0 <- ss
     if(iter >= max.iter) break
   }
-
+  close(pb)
   list(coords=slid0, consensus=ref, iter=iter+1, Q=Q)
 }
 
@@ -605,8 +610,10 @@ procD.slide <- function(curves, surf, Ya, ref, max.iter=5){# see pGpa.wCurves fo
   iter <- 1 # from initial rotation of Ya
   slid0 <- Ya
   Q <- ss0 <- sum(Reduce("+",Ya)^2)/n
+  pb <- txtProgressBar(min = 0, max = max.iter, initial = 0, style=3) 
   while(Q > 0.0001){
     iter <- iter+1
+    setTxtProgressBar(pb,iter)
     if(!is.null(curves)) tans <- Map(function(y) tangents(curves, y, scaled=TRUE), slid0)
     if(is.null(surf) & !is.null(curves))
       slid <- Map(function(tn,y) semilandmarks.slide.tangents.procD(y, tn, ref), tans, slid0)
@@ -621,6 +628,7 @@ procD.slide <- function(curves, surf, Ya, ref, max.iter=5){# see pGpa.wCurves fo
     ss0 <- ss
     if(iter >=max.iter) break
   }
+  close(pb)
   list(coords=slid0, consensus=ref, iter=iter+1, Q=Q)
 }
 
