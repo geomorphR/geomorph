@@ -89,7 +89,7 @@
 #'groups = ~species, slope = ~logcs, angle.type = "deg", iter = 199, data = gdf)
 #'
 #'summary(aov.pleth) # ANOVA plus pairwise tests
-#'plot(aov.pleth) # diagnostic plots 
+#'plot(aov.pleth) # diagnostic plots
 #'aov.pleth$slopes # extract the slope vectors
 
 advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL, 
