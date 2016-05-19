@@ -1223,18 +1223,14 @@ ls.means = function(pfit, Y=NULL, g=NULL, data=NULL, Pcor = NULL) {
     X0 <- model.matrix(~covs+fac)
   }
   X <- X0*sqrt(pfit$weights)
-  if(!is.null(Pcor)) X <- Pcor%*%X
-  fit <- .lm.fit(X,Y)$coefficients
+  if(!is.null(Pcor)) fit <- .lm.fit(Pcor%*%X,Y)$coefficients else fit <- .lm.fit(X,Y)$coefficients
   if(!is.null(covs)){
     Xcov.mean <- as.matrix(X[,1:ncol(model.matrix(~covs))])
     Xcov.mean <- sapply(1:ncol(Xcov.mean), 
                         function(j) rep(mean(Xcov.mean[,j]),nrow(Xcov.mean)))
     Xnew <- cbind(Xcov.mean, X[,-(1:ncol(Xcov.mean))])
   } else Xnew <- X
-  
-  if(!is.null(Pcor))
-    lsm <- lm.fit(Pcor%*%model.matrix(~fac+0),Xnew%*%fit)$coefficients else
-      lsm <- lm.fit(model.matrix(~fac+0),Xnew%*%fit)$coefficients 
+  lsm <- lm.fit(model.matrix(~fac+0),Xnew%*%fit)$coefficients 
   rownames(lsm) <- levels(fac)
   lsm
 }
