@@ -103,7 +103,7 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
   Y <- as.matrix(pfit1$Y)
   if(!is.null(pfit1$weights)) w <- pfit1$weights else w <- rep(1,n)
   if(any(w < 0)) stop("Weights cannot be negative")
-  n <- nrow(Y)
+  n <- dim(Y)[1]; p <- dim(Y)[2]
   if(!is.null(data)) data2 <- geomorph.data.frame(Y=Y, data) else
     data2 <- geomorph.data.frame(Y=Y, pfit1$data[,-(1:ncol(Y))])
   if(any(class(f2)=="lm")) {
@@ -156,12 +156,16 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
   dff <- nrow(pfitf$wResiduals[[kf]]) - dff
   Xf <- as.matrix(pfitf$Xs[[kf]])
   Xr <- as.matrix(pfitr$Xs[[kr]])
+  Qr <-qr.Q(qr(Xr*sqrt(w)))
+  Qf <-qr.Q(qr(Xf*sqrt(w)))
   if(!is.null(phy)){
     PXf <- Pcor%*%Xf
     PXr <- Pcor%*%Xr
+    PQr <-qr.Q(qr(PXr*sqrt(w)))
+    PQf <-qr.Q(qr(PXf*sqrt(w)))
     PY <- Pcor%*%Y
-    SSEr <- sum(.lm.fit(PXr*sqrt(w), PY*sqrt(w))$residuals^2)
-    SSEf <- sum(.lm.fit(PXf*sqrt(w), PY*sqrt(w))$residuals^2)
+    SSEr <- sum(fastLM(PQr, PY*sqrt(w))$residuals^2)
+    SSEf <- sum(fastLM(PQf, PY*sqrt(w))$residuals^2)
     SSY <- sum(.lm.fit(Pcor%*%as.matrix(pfitf$wXs[[1]]), PY*sqrt(w))$residuals^2)
   } else {
     SSEr <- sum(pfitr$wResiduals[[kr]]^2)
@@ -194,24 +198,38 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
   } else slp <- NULL
   
   if(pairwise.cond == "none"){
-    P <- sapply(1:(iter+1), function(j){
+    pb <- txtProgressBar(min = 0, max = ceiling(iter/100), initial = 0, style=3) 
+    jj <- iter+1
+    step <- 1
+    if(jj > 100) j <- 1:100 else j <- 1:jj
+    while(jj > 0){
+      ind.j <- ind[j]
+      P <- sapply(1:length(j), function(i){
       if(!is.null(phy)) {
-        y <- Pcor%*%(pfitr$residuals[[kr]][ind[[j]],] + pfitr$fitted[[kr]])*sqrt(w)
-        ssr <- sum(.lm.fit(PXr*sqrt(w),y)$residuals^2)
-        ssf <- sum(.lm.fit(PXf*sqrt(w),y)$residuals^2)
+        y <- Pcor%*%(pfitr$residuals[[kr]][ind[[i]],] + pfitr$fitted[[kr]])*sqrt(w)
+        ssr <- sum(fastLM(PQr,y)$residuals^2)
+        ssf <- sum(fastLM(PQf,y)$residuals^2)
         ((ssr-ssf)/(dfr-dff))/(ssf/dff)
       } else {
-        y <- (pfitr$residuals[[kr]][ind[[j]],] + pfitr$fitted[[kr]])*sqrt(w)
-        sum(.lm.fit(Xr*sqrt(w), y)$residuals^2) - sum(.lm.fit(Xf*sqrt(w), y)$residuals^2)
+        y <- (pfitr$residuals[[kr]][ind[[i]],] + pfitr$fitted[[kr]])*sqrt(w)
+        sum((fastFit(Qf, y, n, p)- fastFit(Qr, y, n, p))^2)
       }
     })
+      jj <- jj-length(j)
+      if(jj > 100) kk <- 1:100 else kk <- 1:jj
+      j <- j[length(j)] +kk
+      setTxtProgressBar(pb,step)
+      step <- step+1
+    }
     P.val <- pval(P) 
     Z.score <- effect.size(P)
   }
   
   if(pairwise.cond == "means") {
     P <- lsms <- NULL
+    pb <- txtProgressBar(min = 0, max = ceiling(iter/100), initial = 0, style=3) 
     jj <- iter+1
+    step <- 1
     if(jj > 100) j <- 1:100 else j <- 1:jj
     while(jj > 0){
       ind.j <- ind[j]
@@ -219,20 +237,22 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
       if(!is.null(phy)) {
         Yr <- lapply(1:length(j), function(i) Pcor%*%Yr[[i]])
         P <- c(P, lapply(1:length(j), function(i) {
-          ssr <- sum(.lm.fit(PXr*sqrt(w),Yr[[i]])$residuals^2)
-          ssf <- sum(.lm.fit(PXf*sqrt(w),Yr[[i]])$residuals^2)
+          y <- Yr[[i]]
+          ssr <- sum(fastLM(PQr,)$residuals^2)
+          ssf <- sum(fastLM(PQf,y)$residuals^2)
           ((ssr-ssf)/(dfr-dff))/(ssf/dff)
         }))
-      } else {
-        P <- c(P, lapply(1:length(j), function(i) sum(.lm.fit(Xr*sqrt(w),Yr[[i]])$residuals^2) - 
-                           sum(.lm.fit(Xf*sqrt(w),Yr[[i]])$residuals^2)))
-      }
+      } else 
+        P <- c(P, lapply(1:length(j), function(i) 
+          sum((fastFit(Qf, Yr[[i]], n, p)- fastFit(Qr, Yr[[i]], n, p))^2)))
       lsms <- c(lsms, apply.ls.means(pfitf, Yr, g = gps, data = dat2, Pcor = Pcor)) 
-
       jj <- jj-length(j)
       if(jj > 100) kk <- 1:100 else kk <- 1:jj
       j <- j[length(j)] +kk
+      setTxtProgressBar(pb,step)
+      step <- step+1
     }
+    close(pb)
     P <- simplify2array(P)
     P.dist <- lapply(1:length(lsms), function(j){as.matrix(dist(lsms[[j]]))})
     P.val <- pval(P) 
@@ -245,7 +265,9 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
   
   if(pairwise.cond == "slopes") {
     P <- g.slopes <- NULL
+    pb <- txtProgressBar(min = 0, max = ceiling(iter/100), initial = 0, style=3) 
     jj <- iter+1
+    step <- 1
     if(jj > 100) j <- 1:100 else j <- 1:jj
     while(jj > 0){
       ind.j <- ind[j]
@@ -253,19 +275,22 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
       if(!is.null(phy)) {
         Yr <- lapply(1:length(j), function(i) Pcor%*%Yr[[i]])
         P <- c(P, lapply(1:length(j), function(i) {
-          ssr <- sum(.lm.fit(PXr*sqrt(w),Yr[[i]])$residuals^2)
-          ssf <- sum(.lm.fit(PXf*sqrt(w),Yr[[i]])$residuals^2)
+          y <- Yr[[i]]
+          ssr <- sum(fastLM(PQr,)$residuals^2)
+          ssf <- sum(fastLM(PQf,y)$residuals^2)
           ((ssr-ssf)/(dfr-dff))/(ssf/dff)
         }))
-      } else {
-        P <- c(P, lapply(1:length(j), function(i) sum(.lm.fit(Xr*sqrt(w),Yr[[i]])$residuals^2) - 
-                           sum(.lm.fit(Xf*sqrt(w),Yr[[i]])$residuals^2)))
-      }
+      } else 
+        P <- c(P, lapply(1:length(j), function(i) 
+          sum((fastFit(Qf, Yr[[i]], n, p)- fastFit(Qr, Yr[[i]], n, p))^2)))
       g.slopes <- c(g.slopes, apply.slopes(pfitf, g=gps, slope=slp, Yr, data=dat2, Pcor = if(is.null(Pcor)) NULL else Pcor)) 
       jj <- jj-length(j)
       if(jj > 100) kk <- 1:100 else kk <- 1:jj
       j <- j[length(j)] +kk
+      setTxtProgressBar(pb,step)
+      step <- step+1
     }
+    close(pb)
     P <- simplify2array(P)
     slope.lengths <- Map(function(y) sqrt(diag(tcrossprod(y))), g.slopes) 
     P.slopes.dist <- Map(function(y) as.matrix(dist(matrix(y))), slope.lengths) 
