@@ -85,25 +85,25 @@ advanced.procD.lm(coords ~ logcs + species,
 
 # Example of a test of a factor interaction, plus pairwise comparisons 
 advanced.procD.lm(coords ~ site*species, ~site + species, groups = ~site*species, 
-   iter=999, data = gdf)
+   iter=499, data = gdf)
 
 # Example of a test of a factor interaction, plus pairwise comparisons, 
 # accounting for a common allometry  
 advanced.procD.lm(coords ~ Csize + site*species, 
 ~Csize + site + species, 
-groups = ~site*species, slope = ~Csize, iter = 999, data = gdf)
+groups = ~site*species, slope = ~Csize, iter = 499, data = gdf)
 
 # Example of a test of homogeneity of slopes, plus pairwise slopes comparisons
 advanced.procD.lm(coords ~ logcs, 
 ~logcs + site*species, 
 groups = ~site*species, 
-slope = ~logcs, angle.type = "deg", iter = 999, data = gdf)
+slope = ~logcs, angle.type = "deg", iter = 499, data = gdf)
 
 # Example of partial pairwise comparisons, given greater model complexity.
 # Plus, working with class advanced.procD.lm objects.
 aov.pleth <- advanced.procD.lm(coords ~ logcs*site*species, 
 ~logcs + site*species, 
-groups = ~species, slope = ~logcs, angle.type = "deg", iter = 999, data = gdf)
+groups = ~species, slope = ~logcs, angle.type = "deg", iter = 499, data = gdf)
 
 summary(aov.pleth) # ANOVA plus pairwise tests
 plot(aov.pleth) # diagnostic plots
