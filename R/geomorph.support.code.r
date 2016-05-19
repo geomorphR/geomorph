@@ -929,7 +929,7 @@ SS.iter = function(pfit,iter, seed = NULL, Yalt="RRPP"){
   Uf <- lapply(pfit$wQRs[2:k], function(x) qr.Q(x))
   ind = perm.index(n,iter, seed=seed)
   SS <- NULL
-  pb <- txtProgressBar(min = 1, max = ceiling(iter/100), initial = 1) 
+  pb <- txtProgressBar(min = 1, max = ceiling(iter/100), initial = 1, style=3) 
   jj <- iter+1
   step <- 1
   if(jj > 100) j <- 1:100 else j <- 1:jj
