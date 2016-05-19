@@ -1292,8 +1292,8 @@ pls <- function(x,y, RV=FALSE, verbose = FALSE){
   YScores <- y %*% V
   r.pls <- cor(XScores[,1],YScores[,1])
   if(RV==TRUE){
-    S11 <- S[1:px,1:px]
-    S22 <- S[-(1:px),-(1:px)]
+    S11 <- var(x)
+    S22 <- var(y)
     RV <- sum(colSums(S12^2))/sqrt(sum(S11^2)*sum(S22^2))
   } else
     RV <- NULL
