@@ -359,6 +359,7 @@ pGpa <- function(Y, PrinAxes = FALSE, Proj = FALSE, max.iter = 5){
     Ya <- Map(function(y) y%*%rot, Ya)
     M <- cs.scale(Reduce("+", Ya)/n)
   }
+  if(iter < max.iter) setTxtProgressBar(pb,max.iter)
   close(pb)
   list(coords= Ya, CS=CS, iter=iter, consensus=M, Q=Q, nsliders=NULL)
 }
@@ -598,6 +599,7 @@ BE.slide <- function(curves, surf, Ya, ref, max.iter=5){# see pGpa.wCurves for v
     ss0 <- ss
     if(iter >= max.iter) break
   }
+  if(iter < max.iter) setTxtProgressBar(pb,max.iter)
   close(pb)
   list(coords=slid0, consensus=ref, iter=iter+1, Q=Q)
 }
@@ -628,6 +630,7 @@ procD.slide <- function(curves, surf, Ya, ref, max.iter=5){# see pGpa.wCurves fo
     ss0 <- ss
     if(iter >=max.iter) break
   }
+  if(iter < max.iter) setTxtProgressBar(pb,max.iter)
   close(pb)
   list(coords=slid0, consensus=ref, iter=iter+1, Q=Q)
 }
@@ -1370,7 +1373,9 @@ apply.pls <- function(x,y, RV=FALSE, iter, seed = NULL){
   pmin <- min(px,py)
   ind <- perm.index(nrow(x), iter, seed=seed)
   RV.rand <- r.rand <- NULL
+  pb <- txtProgressBar(min = 0, max = ceiling(iter/100), initial = 0, style=3) 
   jj <- iter+1
+  step <- 1
   if(jj > 100) j <- 1:100 else j <- 1:jj
   while(jj > 0){
     ind.j <- ind[j]
@@ -1380,7 +1385,10 @@ apply.pls <- function(x,y, RV=FALSE, iter, seed = NULL){
     jj <- jj-length(j)
     if(jj > 100) kk <- 1:100 else kk <- 1:jj
     j <- j[length(j)] +kk
+    setTxtProgressBar(pb,step)
+    step <- step+1
   }
+  close(pb)
   if(RV == TRUE) RV.rand else r.rand
 }
 
@@ -1435,7 +1443,9 @@ apply.plsmulti <- function(x,gps, iter, seed = NULL){
   S <-var(x)
   r.obs <- plsmulti(x,gps)$r.pls
   ind <- perm.index(nrow(x), iter, seed=seed)
+  pb <- txtProgressBar(min = 0, max = ceiling(iter/100), initial = 0, style=3) 
   jj <- iter+1
+  step <- 1
   if(jj > 100) j <- 1:100 else j <- 1:jj
   r.rand <- NULL
   while(jj > 0){
@@ -1446,7 +1456,10 @@ apply.plsmulti <- function(x,gps, iter, seed = NULL){
     jj <- jj-length(j)
     if(jj > 100) kk <- 1:100 else kk <- 1:jj
     j <- j[length(j)] +kk
+    setTxtProgressBar(pb,step)
+    step <- step+1
   }
+  close(pb)
   r.rand
 }
 
@@ -1497,7 +1510,9 @@ quick.CR <-function(x,gps){ # no CR.mat made
 
 apply.CR <- function(x,g,k, iter, seed = NULL){# g = partition.gp
   ind <- perm.CR.index(g,k, iter, seed=seed)
+  pb <- txtProgressBar(min = 0, max = ceiling(iter/100), initial = 0, style=3) 
   jj <- iter+1
+  step <- 1
   if(jj > 100) j <- 1:100 else j <- 1:jj
   CR.rand <- NULL
   while(jj > 0){
@@ -1506,7 +1521,10 @@ apply.CR <- function(x,g,k, iter, seed = NULL){# g = partition.gp
     jj <- jj-length(j)
     if(jj > 100) kk <- 1:100 else kk <- 1:jj
     j <- j[length(j)] +kk
+    setTxtProgressBar(pb,step)
+    step <- step+1
   }
+  close(pb)
   CR.rand
 }
 
@@ -1616,7 +1634,9 @@ quick.CR.phylo <- function(x,invC,gps){
 # used in: phylo.modularity
 apply.phylo.CR <- function(x,invC,gps, k, iter, seed=NULL){
   ind <- perm.CR.index(g=gps,k, iter, seed=seed)
+  pb <- txtProgressBar(min = 0, max = ceiling(iter/100), initial = 0, style=3) 
   jj <- iter+1
+  step <- 1
   if(jj > 100) j <- 1:100 else j <- 1:jj
   CR.rand <- NULL
   while(jj > 0){
@@ -1625,7 +1645,10 @@ apply.phylo.CR <- function(x,invC,gps, k, iter, seed=NULL){
     jj <- jj-length(j)
     if(jj > 100) kk <- 1:100 else kk <- 1:jj
     j <- j[length(j)] +kk
+    setTxtProgressBar(pb,step)
+    step <- step+1
   }
+  close(pb)
   CR.rand
 }
 
@@ -1740,7 +1763,9 @@ apply.pls.phylo <- function(x,y,invC,D.mat, iter, seed = NULL){
   dat.trans<-D.mat%*%(data.all-(one%*%t(a)))
   x<-dat.trans[,1:n.x];y<-dat.trans[,-(1:n.x)]
   ind <- perm.index(nrow(x), iter, seed=seed)
+  pb <- txtProgressBar(min = 0, max = ceiling(iter/100), initial = 0, style=3) 
   jj <- iter+1
+  step <- 1
   if(jj > 100) j <- 1:100 else j <- 1:jj
   r.rand <- NULL
   while(jj > 0){
@@ -1750,7 +1775,10 @@ apply.pls.phylo <- function(x,y,invC,D.mat, iter, seed = NULL){
     jj <- jj-length(j)
     if(jj > 100) kk <- 1:100 else kk <- 1:jj
     j <- j[length(j)] +kk
+    setTxtProgressBar(pb,step)
+    step <- step+1
   }
+  close(pb)
   r.rand
 }
 
@@ -1789,7 +1817,9 @@ apply.plsmulti.phylo <- function(x,gps, invC,D.mat, iter, seed= NULL){
   x<-D.mat%*%(x-(one%*%t(a)))
   gps<-factor(gps)
   ind <- perm.index(nrow(x), iter, seed=seed)
+  pb <- txtProgressBar(min = 0, max = ceiling(iter/100), initial = 0, style=3) 
   jj <- iter+1
+  step <- 1
   if(jj > 100) j <- 1:100 else j <- 1:jj
   r.rand <- NULL
   while(jj > 0){
@@ -1800,7 +1830,10 @@ apply.plsmulti.phylo <- function(x,gps, invC,D.mat, iter, seed= NULL){
     jj <- jj-length(j)
     if(jj > 100) kk <- 1:100 else kk <- 1:jj
     j <- j[length(j)] +kk
+    setTxtProgressBar(pb,step)
+    step <- step+1
   }
+  close(pb)
   r.rand
 }
 
