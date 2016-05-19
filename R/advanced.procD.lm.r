@@ -89,7 +89,7 @@
 #'groups = ~species, slope = ~logcs, angle.type = "deg", iter = 199, data = gdf)
 #'
 #'summary(aov.pleth) # ANOVA plus pairwise tests
-#'plot(aov.pleth) # diagnostic plots
+#'plot(aov.pleth) # diagnostic plots 
 #'aov.pleth$slopes # extract the slope vectors
 
 advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL, 
@@ -242,8 +242,20 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
           ssf <- sum(fastLM(PQf,y)$residuals^2)
           ((ssr-ssf)/(dfr-dff))/(ssf/dff)
         }))
+<<<<<<< HEAD
       } else P <- c(P, lapply(1:length(j), function(i) 
           sum((fastFit(Qf, Yr[[i]])- fastFit(Qr, Yr[[i]]))^2)))
+||||||| merged common ancestors
+      } else {
+        P <- c(P, lapply(1:length(j), function(i) sum(.lm.fit(Xr*sqrt(w),Yr[[i]])$residuals^2) - 
+                           sum(.lm.fit(Xf*sqrt(w),Yr[[i]])$residuals^2)))
+      }
+=======
+      } else {
+        P <- c(P, lapply(1:length(j), function(i) 
+          sum((fastFit(Qf, Yr[[i]])- fastFit(Qr, Yr[[i]]))^2)
+      }
+>>>>>>> origin/Develop
       lsms <- c(lsms, apply.ls.means(pfitf, Yr, g = gps, data = dat2, Pcor = Pcor)) 
       jj <- jj-length(j)
       if(jj > 100) kk <- 1:100 else kk <- 1:jj
@@ -279,9 +291,21 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
           ssf <- sum(fastLM(PQf,y)$residuals^2)
           ((ssr-ssf)/(dfr-dff))/(ssf/dff)
         }))
+<<<<<<< HEAD
       } else P <- c(P, lapply(1:length(j), function(i) 
           sum((fastFit(Qf, Yr[[i]])- fastFit(Qr, Yr[[i]]))^2)))
   
+||||||| merged common ancestors
+      } else {
+        P <- c(P, lapply(1:length(j), function(i) sum(.lm.fit(Xr*sqrt(w),Yr[[i]])$residuals^2) - 
+                           sum(.lm.fit(Xf*sqrt(w),Yr[[i]])$residuals^2)))
+      }
+=======
+      } else {
+        P <- c(P, lapply(1:length(j), function(i) 
+          sum((fastFit(Qf, Yr[[i]])- fastFit(Qr, Yr[[i]]))^2)
+      }
+>>>>>>> origin/Develop
       g.slopes <- c(g.slopes, apply.slopes(pfitf, g=gps, slope=slp, Yr, data=dat2, Pcor = if(is.null(Pcor)) NULL else Pcor)) 
       jj <- jj-length(j)
       if(jj > 100) kk <- 1:100 else kk <- 1:jj
