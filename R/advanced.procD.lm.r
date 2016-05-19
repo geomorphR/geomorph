@@ -68,28 +68,28 @@
 #'
 #'# Example of a test of a factor interaction, plus pairwise comparisons 
 #'advanced.procD.lm(coords ~ site*species, ~site + species, groups = ~site*species, 
-#'    iter=199, data = gdf)
+#'    iter=999, data = gdf)
 #'
 #'# Example of a test of a factor interaction, plus pairwise comparisons, 
 #'# accounting for a common allometry  
 #'advanced.procD.lm(coords ~ Csize + site*species, 
 #'~Csize + site + species, 
-#'groups = ~site*species, slope = ~Csize, iter = 199, data = gdf)
+#'groups = ~site*species, slope = ~Csize, iter = 999, data = gdf)
 #'
 #'# Example of a test of homogeneity of slopes, plus pairwise slopes comparisons
 #'advanced.procD.lm(coords ~ logcs, 
 #'~logcs + site*species, 
 #'groups = ~site*species, 
-#'slope = ~logcs, angle.type = "deg", iter = 199, data = gdf)
+#'slope = ~logcs, angle.type = "deg", iter = 999, data = gdf)
 #'
 #'# Example of partial pairwise comparisons, given greater model complexity.
 #'# Plus, working with class advanced.procD.lm objects.
 #'aov.pleth <- advanced.procD.lm(coords ~ logcs*site*species, 
 #'~logcs + site*species, 
-#'groups = ~species, slope = ~logcs, angle.type = "deg", iter = 199, data = gdf)
+#'groups = ~species, slope = ~logcs, angle.type = "deg", iter = 999, data = gdf)
 #'
 #'summary(aov.pleth) # ANOVA plus pairwise tests
-#'plot(aov.pleth) # diagnostic plots 
+#'plot(aov.pleth) # diagnostic plots
 #'aov.pleth$slopes # extract the slope vectors
 
 advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL, 
@@ -103,7 +103,7 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
   Y <- as.matrix(pfit1$Y)
   if(!is.null(pfit1$weights)) w <- pfit1$weights else w <- rep(1,n)
   if(any(w < 0)) stop("Weights cannot be negative")
-  n <- nrow(Y)
+  n <- dim(Y)[1]; p <- dim(Y)[2]
   if(!is.null(data)) data2 <- geomorph.data.frame(Y=Y, data) else
     data2 <- geomorph.data.frame(Y=Y, pfit1$data[,-(1:ncol(Y))])
   if(any(class(f2)=="lm")) {
@@ -212,7 +212,7 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
         ((ssr-ssf)/(dfr-dff))/(ssf/dff)
       } else {
         y <- (pfitr$residuals[[kr]][ind[[i]],] + pfitr$fitted[[kr]])*sqrt(w)
-        sum((fastFit(Qf, y)- fastFit(Qr, y))^2)
+        sum((fastFit(Qf, y,n,p)- fastFit(Qr, y,n,p))^2)
       }
     })
       jj <- jj-length(j)
@@ -244,7 +244,7 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
         }))
 
       } else P <- c(P, lapply(1:length(j), function(i) 
-          sum((fastFit(Qf, Yr[[i]])- fastFit(Qr, Yr[[i]]))^2)))
+          sum((fastFit(Qf, Yr[[i]],n,p)- fastFit(Qr, Yr[[i]],n,p))^2)))
 
       lsms <- c(lsms, apply.ls.means(pfitf, Yr, g = gps, data = dat2, Pcor = Pcor)) 
       jj <- jj-length(j)
@@ -282,6 +282,7 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
           ((ssr-ssf)/(dfr-dff))/(ssf/dff)
         }))
       } else P <- c(P, lapply(1:length(j), function(i) 
+        sum((fastFit(Qf, Yr[[i]],n,p)- fastFit(Qr, Yr[[i]],n,p))^2)))
       g.slopes <- c(g.slopes, apply.slopes(pfitf, g=gps, slope=slp, Yr, data=dat2, Pcor = if(is.null(Pcor)) NULL else Pcor)) 
       jj <- jj-length(j)
       if(jj > 100) kk <- 1:100 else kk <- 1:jj
