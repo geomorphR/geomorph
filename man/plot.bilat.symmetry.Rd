@@ -7,7 +7,7 @@
 \method{plot}{bilat.symmetry}(x, warpgrids = TRUE, mesh = NULL, ...)
 }
 \arguments{
-\item{x}{plot object}
+\item{x}{plot object (from \code{\link{bilat.symmetry}})}
 
 \item{warpgrids}{Logical argument whether to include warpgrids}
 

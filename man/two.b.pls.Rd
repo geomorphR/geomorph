@@ -7,9 +7,9 @@
 two.b.pls(A1, A2, iter = 999, seed = NULL)
 }
 \arguments{
-\item{A1}{A matrix (n x [p x k]) or 3D array (p x k x n) containing GPA-aligned coordinates for the first block}
+\item{A1}{A 3D array (p x k x n) containing GPA-aligned coordinates for the first block, or a matrix (n x variables)}
 
-\item{A2}{A matrix (n x [p x k]) or 3D array (p x k x n) containing GPA-aligned coordinates for the second block}
+\item{A2}{A 3D array (p x k x n) containing GPA-aligned coordinates for the second block, or a matrix (n x variables)}
 
 \item{iter}{Number of iterations for significance testing}
 
@@ -29,6 +29,7 @@ Object of class "pls" that returns a list of the following:
   resampling procedure.}
   \item{XScores}{Values of left (x) block projected onto singular vectors.}
   \item{YScores}{Values of right (y) block projected onto singular vectors.}
+  \item{svd}{The singular value decomposition of the cross-covariances.}
   \item{A1}{Input values for the left block.}
   \item{A2}{Input values for the right block.}
   \item{A1.matrix}{Left block (matrix) found from A1.}
@@ -49,7 +50,7 @@ The function quantifies the degree of association between two blocks of shape da
   2-Dimensional matrix (rows = specimens, columns = variables).  It is also assumed that the separate inputs
   have specimens (observations) in the same order.
   
- The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{modularity.test}}.
+ The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{two.b.pls}}.
  The generic function, \code{\link{plot}}, produces a two-block.pls plot.  This function calls \code{\link{plot.pls}}, which has two additional
  arguments (with defaults): label = NULL, warpgrids = TRUE.  These arguments allow one to include a vector to label points and a logical statement to
  include warpgrids, respectively.  Warpgrids can only be included for 3D arrays of Procrustes residuals. The plot is a plot of PLS scores from 
