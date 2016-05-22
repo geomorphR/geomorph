@@ -213,8 +213,6 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
         } else {
           y <- (pfitr$residuals[[kr]][ind[[i]],] + pfitr$fitted[[kr]])*sqrt(w)
           sum((fastFit(Qf, y, n, p)- fastFit(Qr, y, n, p))^2)
-          y <- (pfitr$residuals[[kr]][ind[[i]],] + pfitr$fitted[[kr]])*sqrt(w)
-          sum((fastFit(Qf, y,n,p)- fastFit(Qr, y,n,p))^2)
         }
       })
       jj <- jj-length(j)
