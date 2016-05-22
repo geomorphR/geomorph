@@ -5,7 +5,8 @@
 \title{Procrustes ANOVA and pairwise tests for shape data, using complex linear models}
 \usage{
 advanced.procD.lm(f1, f2, groups = NULL, slope = NULL, angle.type = c("r",
-  "deg", "rad"), iter = 999, seed = NULL, data = NULL, ...)
+  "deg", "rad"), pc.shape = FALSE, iter = 999, seed = NULL, data = NULL,
+  ...)
 }
 \arguments{
 \item{f1}{A formula for a linear model, containing the response matrix (e.g., y ~ x1 + x2)}
@@ -18,6 +19,9 @@ advanced.procD.lm(f1, f2, groups = NULL, slope = NULL, angle.type = c("r",
 
 \item{angle.type}{A value specifying whether differences between slopes should be represented by vector
 correlations (r), radians (rad) or degrees (deg)}
+
+\item{pc.shape}{An argument for whether analysis should be performed on the principal component scores fo shape.  This is a useful
+option if the data are high-dimensional (many more variables that observations) but will not affect results}
 
 \item{iter}{Number of iterations for significance testing}
 
@@ -79,25 +83,25 @@ advanced.procD.lm(coords ~ logcs + species,
 
 # Example of a test of a factor interaction, plus pairwise comparisons 
 advanced.procD.lm(coords ~ site*species, ~site + species, groups = ~site*species, 
-   iter=199, data = gdf)
+   iter=499, data = gdf)
 
 # Example of a test of a factor interaction, plus pairwise comparisons, 
 # accounting for a common allometry  
 advanced.procD.lm(coords ~ Csize + site*species, 
 ~Csize + site + species, 
-groups = ~site*species, slope = ~Csize, iter = 199, data = gdf)
+groups = ~site*species, slope = ~Csize, iter = 499, data = gdf)
 
 # Example of a test of homogeneity of slopes, plus pairwise slopes comparisons
 advanced.procD.lm(coords ~ logcs, 
 ~logcs + site*species, 
 groups = ~site*species, 
-slope = ~logcs, angle.type = "deg", iter = 199, data = gdf)
+slope = ~logcs, angle.type = "deg", iter = 499, data = gdf)
 
 # Example of partial pairwise comparisons, given greater model complexity.
 # Plus, working with class advanced.procD.lm objects.
 aov.pleth <- advanced.procD.lm(coords ~ logcs*site*species, 
 ~logcs + site*species, 
-groups = ~species, slope = ~logcs, angle.type = "deg", iter = 199, data = gdf)
+groups = ~species, slope = ~logcs, angle.type = "deg", iter = 499, data = gdf)
 
 summary(aov.pleth) # ANOVA plus pairwise tests
 plot(aov.pleth) # diagnostic plots
