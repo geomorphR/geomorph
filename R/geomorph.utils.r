@@ -390,7 +390,6 @@ plot.procD.allometry <- function(x, method=c("CAC","RegScore","PredLine"),warpgr
   if(shapes==TRUE && !is.null(x$k)){ return(list(min.shape = x$Ahat[,,which.min(size)], max.shape = x$Ahat[,,which.max(size)])) }
 }
 
-
 ## morphol.disparity
 
 #' Print/Summary Function for geomorph
@@ -429,7 +428,6 @@ summary.morphol.disparity <- function(object, ...) {
   print.morphol.disparity(x, ...)
 }
 
-
 ## pls
 
 #' Print/Summary Function for geomorph
@@ -466,7 +464,6 @@ summary.pls <- function(object, ...) {
   x<- object
   print.pls(x, ...)
 }
-
 
 #' Plot Function for geomorph
 #' 
@@ -702,7 +699,6 @@ plot.bilat.symmetry <- function(x, warpgrids = TRUE, mesh= NULL, ...){
       } 
     }
   }
-
 
 ## CR
 
