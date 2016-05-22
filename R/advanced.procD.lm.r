@@ -68,25 +68,25 @@
 #'
 #'# Example of a test of a factor interaction, plus pairwise comparisons 
 #'advanced.procD.lm(coords ~ site*species, ~site + species, groups = ~site*species, 
-#'    iter=199, data = gdf)
+#'    iter=499, data = gdf)
 #'
 #'# Example of a test of a factor interaction, plus pairwise comparisons, 
 #'# accounting for a common allometry  
 #'advanced.procD.lm(coords ~ Csize + site*species, 
 #'~Csize + site + species, 
-#'groups = ~site*species, slope = ~Csize, iter = 199, data = gdf)
+#'groups = ~site*species, slope = ~Csize, iter = 499, data = gdf)
 #'
 #'# Example of a test of homogeneity of slopes, plus pairwise slopes comparisons
 #'advanced.procD.lm(coords ~ logcs, 
 #'~logcs + site*species, 
 #'groups = ~site*species, 
-#'slope = ~logcs, angle.type = "deg", iter = 199, data = gdf)
+#'slope = ~logcs, angle.type = "deg", iter = 499, data = gdf)
 #'
 #'# Example of partial pairwise comparisons, given greater model complexity.
 #'# Plus, working with class advanced.procD.lm objects.
 #'aov.pleth <- advanced.procD.lm(coords ~ logcs*site*species, 
 #'~logcs + site*species, 
-#'groups = ~species, slope = ~logcs, angle.type = "deg", iter = 199, data = gdf)
+#'groups = ~species, slope = ~logcs, angle.type = "deg", iter = 499, data = gdf)
 #'
 #'summary(aov.pleth) # ANOVA plus pairwise tests
 #'plot(aov.pleth) # diagnostic plots
@@ -213,6 +213,8 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
       } else {
         y <- (pfitr$residuals[[kr]][ind[[i]],] + pfitr$fitted[[kr]])*sqrt(w)
         sum((fastFit(Qf, y, n, p)- fastFit(Qr, y, n, p))^2)
+        y <- (pfitr$residuals[[kr]][ind[[i]],] + pfitr$fitted[[kr]])*sqrt(w)
+        sum((fastFit(Qf, y,n,p)- fastFit(Qr, y,n,p))^2)
       }
     })
       jj <- jj-length(j)
@@ -283,6 +285,8 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
       } else 
         P <- c(P, lapply(1:length(j), function(i) 
           sum((fastFit(Qf, Yr[[i]], n, p)- fastFit(Qr, Yr[[i]], n, p))^2)))
+      } else P <- c(P, lapply(1:length(j), function(i) 
+        sum((fastFit(Qf, Yr[[i]],n,p)- fastFit(Qr, Yr[[i]],n,p))^2)))
       g.slopes <- c(g.slopes, apply.slopes(pfitf, g=gps, slope=slp, Yr, data=dat2, Pcor = if(is.null(Pcor)) NULL else Pcor)) 
       jj <- jj-length(j)
       if(jj > 100) kk <- 1:100 else kk <- 1:jj

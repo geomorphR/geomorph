@@ -367,7 +367,6 @@ pGpa <- function(Y, PrinAxes = FALSE, Proj = FALSE, max.iter = 5){
 # getSurfPCs
 # finds PC loadings for surface landmarks
 # used in semilandmarks functions, within the larger gpagen framework
-
 getSurfPCs <- function(y, surf){
   V <- La.svd(center(y), nu=0)$vt
   p <- nrow(y); k <- ncol(y)
@@ -1910,7 +1909,7 @@ trajset.int <- function(y, tp,tn) { # assume data in order of variables within p
   })
 }
 
-# trajset.int
+# trajset.gps
 # set-up trajectories from a model without an interaction: assumes data are trajectories
 # used in: trajectory.analysis
 trajset.gps <- function(y, traj.pts) { # assume data in order of variables within points
