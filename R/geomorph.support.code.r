@@ -339,8 +339,10 @@ pGpa <- function(Y, PrinAxes = FALSE, Proj = FALSE, max.iter = 5){
   Q <- ss <- n*(1-sum(M^2))
   M <- cs.scale(M)
   iter <- 1
+  pb <- txtProgressBar(min = 0, max = max.iter, initial = 0, style=3) 
   while(Q > 0.0001){
     iter <- iter+1
+    setTxtProgressBar(pb,iter)
     Ya <- apply.pPsup(M, Ya)
     M <- Reduce("+",Ya)/n
     ss2 <- n*(1-sum(M^2))
@@ -357,12 +359,11 @@ pGpa <- function(Y, PrinAxes = FALSE, Proj = FALSE, max.iter = 5){
     Ya <- Map(function(y) y%*%rot, Ya)
     M <- cs.scale(Reduce("+", Ya)/n)
   }
+  if(iter < max.iter) setTxtProgressBar(pb,max.iter)
+  close(pb)
   list(coords= Ya, CS=CS, iter=iter, consensus=M, Q=Q, nsliders=NULL)
 }
 
-# getSurfPCs
-# finds PC loadings for surface landmarks
-# used in semilandmarks functions, within the larger gpagen framework
 # getSurfPCs
 # finds PC loadings for surface landmarks
 # used in semilandmarks functions, within the larger gpagen framework
@@ -578,8 +579,10 @@ BE.slide <- function(curves, surf, Ya, ref, max.iter=5){# see pGpa.wCurves for v
   iter <- 1 # from initial rotation of Ya
   slid0 <- Ya
   Q <- ss0 <- sum(Reduce("+",Ya)^2)/n
+  pb <- txtProgressBar(min = 0, max = max.iter, initial = 0, style=3) 
   while(Q > 0.0001){
     iter <- iter+1
+    setTxtProgressBar(pb,iter)
     if(!is.null(curves)) tans <- Map(function(y) tangents(curves, y, scaled=TRUE), slid0)
     L <- Ltemplate(ref)
     if(is.null(surf) & !is.null(curves))
@@ -595,7 +598,8 @@ BE.slide <- function(curves, surf, Ya, ref, max.iter=5){# see pGpa.wCurves for v
     ss0 <- ss
     if(iter >= max.iter) break
   }
-  
+  if(iter < max.iter) setTxtProgressBar(pb,max.iter)
+  close(pb)
   list(coords=slid0, consensus=ref, iter=iter+1, Q=Q)
 }
 
@@ -607,8 +611,10 @@ procD.slide <- function(curves, surf, Ya, ref, max.iter=5){# see pGpa.wCurves fo
   iter <- 1 # from initial rotation of Ya
   slid0 <- Ya
   Q <- ss0 <- sum(Reduce("+",Ya)^2)/n
+  pb <- txtProgressBar(min = 0, max = max.iter, initial = 0, style=3) 
   while(Q > 0.0001){
     iter <- iter+1
+    setTxtProgressBar(pb,iter)
     if(!is.null(curves)) tans <- Map(function(y) tangents(curves, y, scaled=TRUE), slid0)
     if(is.null(surf) & !is.null(curves))
       slid <- Map(function(tn,y) semilandmarks.slide.tangents.procD(y, tn, ref), tans, slid0)
@@ -623,6 +629,8 @@ procD.slide <- function(curves, surf, Ya, ref, max.iter=5){# see pGpa.wCurves fo
     ss0 <- ss
     if(iter >=max.iter) break
   }
+  if(iter < max.iter) setTxtProgressBar(pb,max.iter)
+  close(pb)
   list(coords=slid0, consensus=ref, iter=iter+1, Q=Q)
 }
 
@@ -704,7 +712,7 @@ matg}
 # tps2d3d
 #
 #
-tps2d3d<-function(M, matr, matt){		#DCA: altered from J. Claude 2008  
+tps2d3d<-function(M, matr, matt, PB=TRUE){		#DCA: altered from J. Claude 2008  
   p<-dim(matr)[1]; k<-dim(matr)[2];q<-dim(M)[1]
   Pdist<-as.matrix(dist(matr))
   ifelse(k==2,P<-Pdist^2*log(Pdist^2),P<- Pdist) 
@@ -715,19 +723,22 @@ tps2d3d<-function(M, matr, matt){		#DCA: altered from J. Claude 2008
   coefx<-fast.solve(L)%*%m2[,1]
   coefy<-fast.solve(L)%*%m2[,2]
   if(k==3){coefz<-fast.solve(L)%*%m2[,3]}
-  fx<-function(matr, M, coef){
+  fx<-function(matr, M, coef, step){
     Xn<-numeric(q)
     for (i in 1:q){
       Z<-apply((matr-matrix(M[i,],p,k,byrow=TRUE))^2,1,sum)  
       ifelse(k==2,Z1<-Z*log(Z),Z1<-sqrt(Z)); Z1[which(is.na(Z1))]<-0
       ifelse(k==2,Xn[i]<-coef[p+1]+coef[p+2]*M[i,1]+coef[p+3]*M[i,2]+sum(coef[1:p]*Z1),
              Xn[i]<-coef[p+1]+coef[p+2]*M[i,1]+coef[p+3]*M[i,2]+coef[p+4]*M[i,3]+sum(coef[1:p]*Z1))
+      if(PB==TRUE){setTxtProgressBar(pb, step + i)}
     }    
     Xn}
   matg<-matrix(NA, q, k)
-  matg[,1]<-fx(matr, M, coefx)
-  matg[,2]<-fx(matr, M, coefy)
-  if(k==3){matg[,3]<-fx(matr, M, coefz)}  
+  if(PB==TRUE){pb <- txtProgressBar(min = 0, max = q*k, style = 3) }
+  matg[,1]<-fx(matr, M, coefx, step = 1)
+  matg[,2]<-fx(matr, M, coefy, step=q)
+  if(k==3){matg[,3]<-fx(matr, M, coefz, step=q*2)
+  } 
   matg
 }
 
@@ -897,21 +908,40 @@ boot.index <-function(n, iter, seed=NULL){
       ind
 }
 
+# fastFit
+# calculates fitted values for a linear model, after decomoposition of X to get U
+# used in SS.itr and Fpgls.iter; future need: advanced.procD.lm 
+fastFit <- function(U,y,n,p){
+  if(p > n) U%*%t(U)%*%y else 
+    U%*%(t(U)%*%y) 
+}
+
+# fastLM
+# calculates fitted values and residuals, after fastFit
+# placeholder in case needed later
+fastLM<- function(U,y){
+  p <- dim(y)[2]; n <- dim(y)[1]
+  yh <- fastFit(U,y,n,p)
+  list(fitted = yh, residuals = y-yh)
+}
+
 # SS.iter
 # calculates SS in random iterations of a resmapling procedure
 # used in nearly all 'procD.lm' functions, unless pgls in used
 SS.iter = function(pfit,iter, seed = NULL, Yalt="RRPP"){
   Y <- as.matrix(pfit$Y)
   k <- length(pfit$QRs)
-  n <- nrow(Y)
+  n <- dim(Y)[1]; p <- dim(Y)[2]
   Yh <- pfit$fitted
   E <- pfit$residuals
   w<- pfit$weights
-  Xr <- lapply(pfit$wXs[1:(k-1)], function(x) as.matrix(x))
-  Xf <- lapply(pfit$wXs[2:k], function(x) as.matrix(x))
+  Ur <- lapply(pfit$wQRs[1:(k-1)], function(x) qr.Q(x))
+  Uf <- lapply(pfit$wQRs[2:k], function(x) qr.Q(x))
   ind = perm.index(n,iter, seed=seed)
   SS <- NULL
+  pb <- txtProgressBar(min = 0, max = ceiling(iter/100), initial = 0, style=3) 
   jj <- iter+1
+  step <- 1
   if(jj > 100) j <- 1:100 else j <- 1:jj
   while(jj > 0){
     ind.j <- ind[j]
@@ -928,25 +958,27 @@ SS.iter = function(pfit,iter, seed = NULL, Yalt="RRPP"){
         }
       }
     
-    SS.temp <- lapply(1:length(j), function(j){
-      mapply(function(x1,x2,y) sum(.lm.fit(x1,y)$residuals^2 - .lm.fit(x2,y)$residuals^2), 
-             Xr, Xf,Yr[[j]])})
+    SS.temp <- lapply(1:length(j), function(j){ 
+      mapply(function(ur,uf,y) sum((fastFit(uf,y,n,p) - fastFit(ur,y,n,p))^2), 
+             Ur, Uf,Yr[[j]])})
     SS <- c(SS, SS.temp)
     jj <- jj-length(j)
     if(jj > 100) kk <- 1:100 else kk <- 1:jj
     j <- j[length(j)] +kk
+    setTxtProgressBar(pb,step)
+    step <- step+1
   }
+  close(pb)
   simplify2array(SS)
 }
 
 # Fpgls.iter
 # calculates F values in random iterations of a resmapling procedure, with pgls involved
 # used in the 'procD.lm' functions where pgls in used
-
 Fpgls.iter = function(pfit,Pcor,iter, seed=NULL, Yalt="RRPP"){
   Y <- as.matrix(pfit$Y)
   k <- length(pfit$QRs)
-  n <- nrow(Y)
+  n <- dim(Y)[1]; p <- dim(Y)[2]
   Yh <- pfit$fitted
   E <- pfit$residuals
   w<- pfit$weights
@@ -957,9 +989,13 @@ Fpgls.iter = function(pfit,Pcor,iter, seed=NULL, Yalt="RRPP"){
   PwXs <- lapply(pfit$wXs, function(x) crossprod(Pcor,as.matrix(x)))
   Xr <- lapply(PwXs[1:(k-1)], function(x) as.matrix(x))
   Xf <- lapply(PwXs[2:k], function(x) as.matrix(x))
+  Ur <- lapply(pfit$wQRs[1:(k-1)], function(x) qr.Q(x))
+  Uf <- lapply(pfit$wQRs[2:k], function(x) qr.Q(x))
   ind = perm.index(n,iter, seed=seed)
   SS <- SSEs <-Fs <- NULL
+  pb <- txtProgressBar(min = 0, max = ceiling(iter/100), initial = 0, style=3) 
   jj <- iter+1
+  step <- 1
   if(jj > 100) j <- 1:100 else j <- 1:jj
   while(jj > 0){
     ind.j <- ind[j]
@@ -968,19 +1004,21 @@ Fpgls.iter = function(pfit,Pcor,iter, seed=NULL, Yalt="RRPP"){
     } else {
       Yr = Map(function(x) Map(function(y) crossprod(Pcor,as.matrix((y[x,])*sqrt(w))), lapply(1:(k-1),function(.) Y)),ind.j)
     }
-    SS.temp <- lapply(1:length(j), function(j){
-      mapply(function(x1,x2,y) sum(.lm.fit(x1,y)$residuals^2 - .lm.fit(x2,y)$residuals^2), 
-             Xr, Xf,Yr[[j]])})
+    SS.temp <- lapply(1:length(j), function(j){ 
+      mapply(function(ur,uf,y) sum((fastFit(uf,y,n,p) - fastFit(ur,y,n,p))^2), 
+             Ur, Uf,Yr[[j]])})
     SSEs.temp <- Map(function(y) sum(.lm.fit(Xf[[k-1]],y[[k-1]])$residuals^2), Yr)
     Fs.temp <- Map(function(s1,s2) (s1/df)/(s2/(n-k)), SS.temp, SSEs.temp)
     SS <- c(SS,SS.temp)
     SSEs <- c(SSEs,SSEs.temp)
     Fs <- c(Fs,Fs.temp)
     jj <- jj-length(j)
-    if(jj > 200) kk <- 1:200 else kk <- 1:jj
+    if(jj > 100) kk <- 1:100 else kk <- 1:jj
     j <- j[length(j)] +kk
+    setTxtProgressBar(pb,step)
+    step <- step+1
   }
-  
+  close(pb)
   list(SS=simplify2array(SS), SSE = SSEs[[1]], Fs=simplify2array(Fs))
 }
 
@@ -1311,8 +1349,7 @@ pls <- function(x,y, RV=FALSE, verbose = FALSE){
 # used in: apply.pls
 quick.pls <- function(x,y, px, py, pmin) {# no RV; no verbose output
   # assume parameters already found
-  S <-var(cbind(x,y))
-  S12 <- matrix(S[1:px,-(1:px)], px,py)
+  S12 <- crossprod(center(x),center(y))/(dim(x)[1] - 1)
   pls <- La.svd(S12, pmin, pmin)
   U<-pls$u; V <- t(pls$vt)
   XScores <- x %*% U
@@ -1329,7 +1366,9 @@ apply.pls <- function(x,y, RV=FALSE, iter, seed = NULL){
   pmin <- min(px,py)
   ind <- perm.index(nrow(x), iter, seed=seed)
   RV.rand <- r.rand <- NULL
+  pb <- txtProgressBar(min = 0, max = ceiling(iter/100), initial = 0, style=3) 
   jj <- iter+1
+  step <- 1
   if(jj > 100) j <- 1:100 else j <- 1:jj
   while(jj > 0){
     ind.j <- ind[j]
@@ -1339,7 +1378,10 @@ apply.pls <- function(x,y, RV=FALSE, iter, seed = NULL){
     jj <- jj-length(j)
     if(jj > 100) kk <- 1:100 else kk <- 1:jj
     j <- j[length(j)] +kk
+    setTxtProgressBar(pb,step)
+    step <- step+1
   }
+  close(pb)
   if(RV == TRUE) RV.rand else r.rand
 }
 
@@ -1394,7 +1436,9 @@ apply.plsmulti <- function(x,gps, iter, seed = NULL){
   S <-var(x)
   r.obs <- plsmulti(x,gps)$r.pls
   ind <- perm.index(nrow(x), iter, seed=seed)
+  pb <- txtProgressBar(min = 0, max = ceiling(iter/100), initial = 0, style=3) 
   jj <- iter+1
+  step <- 1
   if(jj > 100) j <- 1:100 else j <- 1:jj
   r.rand <- NULL
   while(jj > 0){
@@ -1405,7 +1449,10 @@ apply.plsmulti <- function(x,gps, iter, seed = NULL){
     jj <- jj-length(j)
     if(jj > 100) kk <- 1:100 else kk <- 1:jj
     j <- j[length(j)] +kk
+    setTxtProgressBar(pb,step)
+    step <- step+1
   }
+  close(pb)
   r.rand
 }
 
@@ -1456,7 +1503,9 @@ quick.CR <-function(x,gps){ # no CR.mat made
 
 apply.CR <- function(x,g,k, iter, seed = NULL){# g = partition.gp
   ind <- perm.CR.index(g,k, iter, seed=seed)
+  pb <- txtProgressBar(min = 0, max = ceiling(iter/100), initial = 0, style=3) 
   jj <- iter+1
+  step <- 1
   if(jj > 100) j <- 1:100 else j <- 1:jj
   CR.rand <- NULL
   while(jj > 0){
@@ -1465,7 +1514,10 @@ apply.CR <- function(x,g,k, iter, seed = NULL){# g = partition.gp
     jj <- jj-length(j)
     if(jj > 100) kk <- 1:100 else kk <- 1:jj
     j <- j[length(j)] +kk
+    setTxtProgressBar(pb,step)
+    step <- step+1
   }
+  close(pb)
   CR.rand
 }
 
@@ -1575,7 +1627,9 @@ quick.CR.phylo <- function(x,invC,gps){
 # used in: phylo.modularity
 apply.phylo.CR <- function(x,invC,gps, k, iter, seed=NULL){
   ind <- perm.CR.index(g=gps,k, iter, seed=seed)
+  pb <- txtProgressBar(min = 0, max = ceiling(iter/100), initial = 0, style=3) 
   jj <- iter+1
+  step <- 1
   if(jj > 100) j <- 1:100 else j <- 1:jj
   CR.rand <- NULL
   while(jj > 0){
@@ -1584,7 +1638,10 @@ apply.phylo.CR <- function(x,invC,gps, k, iter, seed=NULL){
     jj <- jj-length(j)
     if(jj > 100) kk <- 1:100 else kk <- 1:jj
     j <- j[length(j)] +kk
+    setTxtProgressBar(pb,step)
+    step <- step+1
   }
+  close(pb)
   CR.rand
 }
 
@@ -1699,7 +1756,9 @@ apply.pls.phylo <- function(x,y,invC,D.mat, iter, seed = NULL){
   dat.trans<-D.mat%*%(data.all-(one%*%t(a)))
   x<-dat.trans[,1:n.x];y<-dat.trans[,-(1:n.x)]
   ind <- perm.index(nrow(x), iter, seed=seed)
+  pb <- txtProgressBar(min = 0, max = ceiling(iter/100), initial = 0, style=3) 
   jj <- iter+1
+  step <- 1
   if(jj > 100) j <- 1:100 else j <- 1:jj
   r.rand <- NULL
   while(jj > 0){
@@ -1709,7 +1768,10 @@ apply.pls.phylo <- function(x,y,invC,D.mat, iter, seed = NULL){
     jj <- jj-length(j)
     if(jj > 100) kk <- 1:100 else kk <- 1:jj
     j <- j[length(j)] +kk
+    setTxtProgressBar(pb,step)
+    step <- step+1
   }
+  close(pb)
   r.rand
 }
 
@@ -1748,7 +1810,9 @@ apply.plsmulti.phylo <- function(x,gps, invC,D.mat, iter, seed= NULL){
   x<-D.mat%*%(x-(one%*%t(a)))
   gps<-factor(gps)
   ind <- perm.index(nrow(x), iter, seed=seed)
+  pb <- txtProgressBar(min = 0, max = ceiling(iter/100), initial = 0, style=3) 
   jj <- iter+1
+  step <- 1
   if(jj > 100) j <- 1:100 else j <- 1:jj
   r.rand <- NULL
   while(jj > 0){
@@ -1759,10 +1823,12 @@ apply.plsmulti.phylo <- function(x,gps, invC,D.mat, iter, seed= NULL){
     jj <- jj-length(j)
     if(jj > 100) kk <- 1:100 else kk <- 1:jj
     j <- j[length(j)] +kk
+    setTxtProgressBar(pb,step)
+    step <- step+1
   }
+  close(pb)
   r.rand
 }
-
 
 # sigma.d
 # multivariate evolutionary rate
@@ -1841,7 +1907,7 @@ trajset.int <- function(y, tp,tn) { # assume data in order of variables within p
   })
 }
 
-# trajset.int
+# trajset.gps
 # set-up trajectories from a model without an interaction: assumes data are trajectories
 # used in: trajectory.analysis
 trajset.gps <- function(y, traj.pts) { # assume data in order of variables within points
