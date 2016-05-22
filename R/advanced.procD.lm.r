@@ -169,8 +169,8 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
     while(jj > 0){
       ind.j <- ind[j]
       P <- sapply(1:length(j), function(i){
-          y <- (pfitr$residuals[[kr]][ind[[i]],] + pfitr$fitted[[kr]])*sqrt(w)
-          sum((fastFit(Qf, y,n,p)- fastFit(Qr, y,n,p))^2)
+        y <- (pfitr$residuals[[kr]][ind[[i]],] + pfitr$fitted[[kr]])*sqrt(w)
+        sum((fastFit(Qf, y,n,p)- fastFit(Qr, y,n,p))^2)
       })
       jj <- jj-length(j)
       if(jj > 100) kk <- 1:100 else kk <- 1:jj
@@ -181,7 +181,6 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
     P.val <- pval(P) 
     Z.score <- effect.size(P)
   }
-  
   if(pairwise.cond == "means") {
     P <- lsms <- NULL
     pb <- txtProgressBar(min = 0, max = ceiling(iter/100), initial = 0, style=3) 
@@ -266,7 +265,6 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
     obs.slope.dist <- as.matrix(dist(obs.slope.lengths))
     dimnames(P.val.slopes.dist) <- dimnames(Z.slopes.dist) <- dimnames(obs.slope.dist)
   }
-  
   if(pairwise.cond == "none"){
     out <- list(anova.table = anova.table, 
                 coefficients=pfitf$coefficients,
