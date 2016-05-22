@@ -11,7 +11,7 @@
 #'   2-Dimensional matrix (rows = specimens, columns = variables).  It is also assumed that the separate inputs
 #'   have specimens (observations) in the same order.
 #'   
-#'  The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{modularity.test}}.
+#'  The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{two.b.pls}}.
 #'  The generic function, \code{\link{plot}}, produces a two-block.pls plot.  This function calls \code{\link{plot.pls}}, which has two additional
 #'  arguments (with defaults): label = NULL, warpgrids = TRUE.  These arguments allow one to include a vector to label points and a logical statement to
 #'  include warpgrids, respectively.  Warpgrids can only be included for 3D arrays of Procrustes residuals. The plot is a plot of PLS scores from 
@@ -23,8 +23,8 @@
 #' are exactly along the major axis of shape covariation.  This axis is also shown as a best-fit line in the plot.
 #' }
 #' 
-#' @param A1 A matrix (n x [p x k]) or 3D array (p x k x n) containing GPA-aligned coordinates for the first block
-#' @param A2 A matrix (n x [p x k]) or 3D array (p x k x n) containing GPA-aligned coordinates for the second block 
+#' @param A1 A 3D array (p x k x n) containing GPA-aligned coordinates for the first block, or a matrix (n x variables)
+#' @param A2 A 3D array (p x k x n) containing GPA-aligned coordinates for the second block, or a matrix (n x variables)
 #' @param iter Number of iterations for significance testing
 #' @param seed An optional argument for setting the seed for random permutations of the resampling procedure.  
 #' If left NULL (the default), the exact same P-values will be found for repeated runs of the analysis (with the same number of iterations).
@@ -43,6 +43,7 @@
 #'   resampling procedure.}
 #'   \item{XScores}{Values of left (x) block projected onto singular vectors.}
 #'   \item{YScores}{Values of right (y) block projected onto singular vectors.}
+#'   \item{svd}{The singular value decomposition of the cross-covariances.}
 #'   \item{A1}{Input values for the left block.}
 #'   \item{A2}{Input values for the right block.}
 #'   \item{A1.matrix}{Left block (matrix) found from A1.}
@@ -64,31 +65,35 @@
 #' plot(PLS)
 
 two.b.pls <- function (A1, A2,  iter = 999, seed = NULL){
-    if (any(is.na(A1)) == T) 
-      stop("Data matrix 1 contains missing values. Estimate these first (see 'estimate.missing').")
-    if (any(is.na(A2)) == T) 
-      stop("Data matrix 2 contains missing values. Estimate these first (see 'estimate.missing').")
+  if (any(is.na(A1)) == T) 
+    stop("Data matrix 1 contains missing values. Estimate these first (see 'estimate.missing').")
+  if (any(is.na(A2)) == T) 
+    stop("Data matrix 2 contains missing values. Estimate these first (see 'estimate.missing').")
   if (is.null(dim(A1))) A1 <- as.matrix(A1); if (is.null(dim(A2))) A2 <- as.matrix(A2)
   if (length(dim(A1)) == 3) x <- two.d.array(A1) else x <- as.matrix(A1)
   if (length(dim(A2)) == 3) y <- two.d.array(A2) else y <- as.matrix(A2)
   if (nrow(x) != nrow(y)) stop("Data matrices have different numbers of specimens.")
+  if (!is.null(rownames(x))  && !is.null(rownames(y))) {y <- y[rownames(x), ] }
   n <- nrow(x)
   pls.rand <- apply.pls(x, y, RV=FALSE, iter=iter, seed=seed)
   pls.obs <- pls(x, y, RV=FALSE, verbose=TRUE)
+  rownames(pls.obs$pls.svd$u) <- colnames(x)
+  rownames(pls.obs$pls.svd$v) <- colnames(pls.obs$pls.svd$vt) <- colnames(y)
   p.val <- pval(pls.rand)
   XScores <- pls.obs$XScores
   YScores <- pls.obs$YScores
-    
+  
   out <- list(r.pls = pls.rand[1], P.value = p.val,
               left.pls.vectors = pls.obs$left.vectors,
               right.pls.vectors = pls.obs$right.vectors,
               random.r = pls.rand, 
               XScores = pls.obs$XScores,
               YScores = pls.obs$YScores,
+              svd = pls.obs$pls.svd,
               A1 = A1, A2 = A2,
               A1.matrix = x, A2.matrix =y,
               permutations = iter+1, call=match.call(),
               method="PLS")
   class(out) <- "pls"
   out
-  }
+}
