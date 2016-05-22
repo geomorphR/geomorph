@@ -135,8 +135,8 @@ a20acee83da00bac7ea6738893dd4a70 *R/estimate.missing.r
 da56107aec80b7583dc4a6b841b30c74 *R/findMeanSpec.r
 1e71d260e79093bb0d36f6ded44dd437 *R/fixed.angle.r
 203177efc30cc6fef4bd604b2fc2af01 *R/geomorph.data.frame.r
-33cae2e2ebeacb5df53d680b1c115e93 *R/geomorph.support.code.r
-f9c40367d0770e7751a1537b0f1eea53 *R/geomorph.utils.r
+85c0bd72e771dc8a0bd5f9d7f89551fd *R/geomorph.support.code.r
+3abce076c3fee7d5f36bc4a4d37f5049 *R/geomorph.utils.r
 0d9d88147f22cff2241b6e2e7396d57f *R/globalIntegration.r
 9cd10d15e42d687a63fe1f3d7f0adb73 *R/gpagen.r
 2d8ab3c6fea452711a7cf091ffba8ff5 *R/gridPar.r
@@ -162,7 +162,7 @@ df34bf85d4ee0a11e9ecd485fdac162a *R/readland.nts.r
 79eea8cb7ff9fdda3b0bbb83c8ed1467 *R/readland.tps.r
 45ba1c3e7d8ddf5d039b6ae0b11dc47e *R/readmulti.nts.r
 7c6940ae5840fd6a14b17e72135edf90 *R/trajectory.analysis.r
-17ac2dbf9d744e503a1824cb91886bbf *R/two.b.pls.r
+cb11d092a4688f0d5dd0d597b812c632 *R/two.b.pls.r
 cac4c94b232cb0da0e2faf26f9f07597 *R/two.d.array.r
 a2264d43e2a91c27eff12ef39cc2bd22 *R/warpRefMesh.r
 59d493f9cc61f036c40f49bf8b7bb3e0 *R/warpRefOutline.r
