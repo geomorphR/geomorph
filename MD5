@@ -53,14 +53,14 @@ bf7d0d9da67337471defb77bb108380c *man/phylo.pls.Rd
 1d108559fe8b310b08b9d157d5edf73b *man/plethShapeFood.Rd
 0c470944e2627e9c6736dfa81377de5b *man/plethspecies.Rd
 212e774c9208fc354a9e806ee6abdf3d *man/plot.advanced.procD.lm.Rd
-2505bdeac4024a4c6e7b3109cab64f20 *man/plot.bilat.symmetry.Rd
+b9530cb6c613f4c9394ea8964138e666 *man/plot.bilat.symmetry.Rd
 e0afaf6be09de7d549e27b9d658327ba *man/plot.CR.phylo.Rd
 e3b0a2490726c32a3cd030a2f458ce1b *man/plot.CR.Rd
 87b4fba2b80b81dd20d4b354d7271ba1 *man/plot.evolrate.Rd
 d7b9dd789703d1ec36760f6532353fbd *man/plot.gpagen.Rd
 c3b38c1383fe25147174fe7cec8b6c80 *man/plot.physignal.Rd
-261ee2bf2846bf998ac7524f4e1c187a *man/plot.pls.Rd
-dd23deca08cbb535e0fbe170ee3fea9e *man/plot.procD.allometry.Rd
+5a714190e7838157d5c6b1693e847622 *man/plot.pls.Rd
+ed13af2c1a9e7426c694b5ea86f9fc82 *man/plot.procD.allometry.Rd
 7edb43da5aea167beeae3c1ce4058ff9 *man/plot.procD.lm.Rd
 58b05555677a90ba65303a44f91a53be *man/plot.trajectory.analysis.Rd
 6707b3ae828958503ea23cddc52173c1 *man/plotAllometry.Rd
@@ -96,7 +96,7 @@ b955f557977eb493daf1b8003e715928 *man/readmulti.nts.Rd
 e8b532a5350f31210e60d6b765e3e24c *man/scallopPLY.Rd
 e10509185843df7113644e0018cc2419 *man/scallops.Rd
 cfda93e7080abc6ad7f38d6537ee9397 *man/summary.advanced.procD.lm.Rd
-a2016b426f22a8f0b1782089f8cce497 *man/summary.bilat.symmetry.Rd
+c4bb6be6a8d8f3101bba01ed3f4d9df7 *man/summary.bilat.symmetry.Rd
 3c49e568781e314a6910c08177186d69 *man/summary.CR.phylo.Rd
 80cb7f61e3bf35c28f012cd2dbb630c6 *man/summary.CR.Rd
 cb5ff7a4c5a283066b0ddf389304b9b9 *man/summary.evolrate.Rd
@@ -109,7 +109,7 @@ f5e21d97bef9b5c530e6de6ef1b756f6 *man/summary.procD.allometry.Rd
 016600f578e422e85c696553179be0c7 *man/summary.procD.lm.Rd
 eb75ac344ef00bf0d68816c1e9c74cfe *man/summary.trajectory.analysis.Rd
 cb978ad65ec063be2635ae826b55d144 *man/trajectory.analysis.Rd
-f6a597f1e703debeb24ef70e0a8e2890 *man/two.b.pls.Rd
+69adf54273adc1d78389c26b48594f01 *man/two.b.pls.Rd
 8044aab3a35f1dee1ff421bdf27b2d25 *man/two.d.array.Rd
 8653af77b4457ee283d6bbb2cf239c99 *man/warpRefMesh.Rd
 87a86c2e9b2d31119ab1883c54e092ec *man/warpRefOutline.Rd
