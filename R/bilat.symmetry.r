@@ -142,6 +142,7 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
     A <- array(c(A,A2), c(p,k, 2*n))
     ind <- factor(rep(ind,2)); side <- gl(2,n); if(!is.null(replicate)) replicate <- rep(replicate,2)
   }
+  cat("\nGPA\n")
   gpa.res <- gpagen(A)
   Y <- two.d.array(gpa.res$coords)
   if(!is.null(replicate)) {
@@ -154,6 +155,7 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
   pfitSh <- procD.fit(form.shape, data = dat.shape, keep.order = TRUE)
   kSh <- length(pfitSh$term.labels)
   if(!is.null(seed) && seed=="random") seed = sample(1:iter, 1)
+  cat("\nShape Analysis\n")
   if(RRPP == TRUE) PSh <- SS.iter(pfitSh,Yalt="RRPP", iter=iter, seed=seed) else 
     PSh <- SS.iter(pfitSh, Yalt="resample", iter=iter, seed=seed)
   anova.parts.Sh <- anova.parts.symmetry(pfitSh, PSh, object.sym)
@@ -173,6 +175,7 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
       dat.size <- geomorph.data.frame(size = size, ind = ind, side = side)
     }
     pfitSz=procD.fit(form.size, data=dat.size, keep.order=TRUE)
+    cat("\nSize Analysis\n")
     if(RRPP == TRUE) PSz <- SS.iter(pfitSz,Yalt="RRPP", iter=iter, seed=seed) else 
       PSz <- SS.iter(pfitSz, Yalt="resample", iter=iter, seed=seed)
     anova.parts.Sz <- anova.parts.symmetry(pfitSz, PSz,object.sym)
