@@ -104,7 +104,7 @@
 #' # NOTE one can also: scallop.sym$data.type # recall the symmetry type
 
 bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,land.pairs=NULL,
-                         data = NULL, iter = 999, seed = NULL, RRPP = TRUE){
+      data = NULL, iter = 999, seed = NULL, RRPP = TRUE){
   if(!is.null(data)) {
     A.name <- deparse(substitute(A))
     A.name.match <- match(A.name, names(data))
@@ -142,6 +142,7 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
     A <- array(c(A,A2), c(p,k, 2*n))
     ind <- factor(rep(ind,2)); side <- gl(2,n); if(!is.null(replicate)) replicate <- rep(replicate,2)
   }
+  cat("\nGPA\n")
   gpa.res <- gpagen(A)
   Y <- two.d.array(gpa.res$coords)
   if(!is.null(replicate)) {
@@ -154,6 +155,7 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
   pfitSh <- procD.fit(form.shape, data = dat.shape, keep.order = TRUE)
   kSh <- length(pfitSh$term.labels)
   if(!is.null(seed) && seed=="random") seed = sample(1:iter, 1)
+  cat("\nShape Analysis\n")
   if(RRPP == TRUE) PSh <- SS.iter(pfitSh,Yalt="RRPP", iter=iter, seed=seed) else 
     PSh <- SS.iter(pfitSh, Yalt="resample", iter=iter, seed=seed)
   anova.parts.Sh <- anova.parts.symmetry(pfitSh, PSh, object.sym)
@@ -173,6 +175,7 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
       dat.size <- geomorph.data.frame(size = size, ind = ind, side = side)
     }
     pfitSz=procD.fit(form.size, data=dat.size, keep.order=TRUE)
+    cat("\nSize Analysis\n")
     if(RRPP == TRUE) PSz <- SS.iter(pfitSz,Yalt="RRPP", iter=iter, seed=seed) else 
       PSz <- SS.iter(pfitSz, Yalt="resample", iter=iter, seed=seed)
     anova.parts.Sz <- anova.parts.symmetry(pfitSz, PSz,object.sym)
@@ -180,9 +183,9 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
     Sz.random.Fs <-anova.parts.Sz$random.Fs
     if(is.matrix(Sz.random.Fs))
       colnames(Sz.random.Fs) <- c("obs", paste("iter", 1:iter, sep=":")) else
-        names(Sz.random.Fs) <-c("obs", paste("iter", 1:iter, sep=":"))
+      names(Sz.random.Fs) <-c("obs", paste("iter", 1:iter, sep=":"))
   }
-  # build shape components for output
+# build shape components for output
   if(object.sym==FALSE){
     X.ind <- model.matrix(~ind + 0, data = as.data.frame(dat.shape[-1]))
     symm.component <- arrayspecs(coef(lm.fit(X.ind, Y)),p,k)
@@ -194,9 +197,9 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
     asymm.component <- avg.side.symm[indsq,] - avg.side.symm[-indsq,]
     mn.shape <- gpa.res$consensus
     asymm.component<-simplify2array(lapply(1:n.ind, function(j) 
-    {t(matrix(asymm.component[j,],k,p)) + mn.shape}))
+      {t(matrix(asymm.component[j,],k,p)) + mn.shape}))
     dimnames(asymm.component)[[3]] <- dimnames(symm.component)[[3]]
-    
+
   }
   if(object.sym==TRUE){
     X.ind <- model.matrix(~ind + 0, data = as.data.frame(dat.shape[-1]))
