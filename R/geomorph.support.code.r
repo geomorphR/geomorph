@@ -329,6 +329,9 @@ bigLtemplate <-function(Mr, Mt=NULL){
 # GPA with partial Procrustes superimposition
 # used in gpagen
 pGpa <- function(Y, PrinAxes = FALSE, Proj = FALSE, max.iter = 5){
+  iter <- 0
+  pb <- txtProgressBar(min = 0, max = max.iter, initial = 0, style=3) 
+  setTxtProgressBar(pb,iter)
   n <- length(Y); p <- nrow(Y[[1]]); k <- ncol(Y[[1]])
   Yc <- Map(function(y) center.scale(y), Y)
   CS <- sapply(Yc,"[[","CS")
@@ -339,16 +342,16 @@ pGpa <- function(Y, PrinAxes = FALSE, Proj = FALSE, max.iter = 5){
   Q <- ss <- n*(1-sum(M^2))
   M <- cs.scale(M)
   iter <- 1
-  pb <- txtProgressBar(min = 0, max = max.iter, initial = 0, style=3) 
+  setTxtProgressBar(pb,iter)
   while(Q > 0.0001){
     iter <- iter+1
-    setTxtProgressBar(pb,iter)
     Ya <- apply.pPsup(M, Ya)
     M <- Reduce("+",Ya)/n
     ss2 <- n*(1-sum(M^2))
     Q <- abs(ss-ss2)
     ss <- ss2
     M <- cs.scale(M)
+    setTxtProgressBar(pb,iter)
     if(iter > max.iter) break
   }
   if (PrinAxes == TRUE) {
@@ -577,12 +580,12 @@ semilandmarks.slide.tangents.surf.procD <- function(y,tans,surf, ref){
 BE.slide <- function(curves, surf, Ya, ref, max.iter=5){# see pGpa.wCurves for variable meaning
   n <- length(Ya); p <- nrow(Ya[[1]]); k <- ncol(Ya[[1]])
   iter <- 1 # from initial rotation of Ya
+  pb <- txtProgressBar(min = 0, max = max.iter, initial = 0, style=3) 
   slid0 <- Ya
   Q <- ss0 <- sum(Reduce("+",Ya)^2)/n
-  pb <- txtProgressBar(min = 0, max = max.iter, initial = 0, style=3) 
+  setTxtProgressBar(pb,iter)
   while(Q > 0.0001){
     iter <- iter+1
-    setTxtProgressBar(pb,iter)
     if(!is.null(curves)) tans <- Map(function(y) tangents(curves, y, scaled=TRUE), slid0)
     L <- Ltemplate(ref)
     if(is.null(surf) & !is.null(curves))
@@ -596,6 +599,7 @@ BE.slide <- function(curves, surf, Ya, ref, max.iter=5){# see pGpa.wCurves for v
     ref = cs.scale(Reduce("+", slid0)/n)
     Q <- abs(ss0-ss)
     ss0 <- ss
+    setTxtProgressBar(pb,iter)
     if(iter >= max.iter) break
   }
   if(iter < max.iter) setTxtProgressBar(pb,max.iter)
@@ -609,12 +613,12 @@ BE.slide <- function(curves, surf, Ya, ref, max.iter=5){# see pGpa.wCurves for v
 procD.slide <- function(curves, surf, Ya, ref, max.iter=5){# see pGpa.wCurves for variable meaning
   n <- length(Ya); p <- nrow(Ya[[1]]); k <- ncol(Ya[[1]])
   iter <- 1 # from initial rotation of Ya
+  pb <- txtProgressBar(min = 0, max = max.iter, initial = 0, style=3) 
   slid0 <- Ya
   Q <- ss0 <- sum(Reduce("+",Ya)^2)/n
-  pb <- txtProgressBar(min = 0, max = max.iter, initial = 0, style=3) 
+  setTxtProgressBar(pb,iter)
   while(Q > 0.0001){
     iter <- iter+1
-    setTxtProgressBar(pb,iter)
     if(!is.null(curves)) tans <- Map(function(y) tangents(curves, y, scaled=TRUE), slid0)
     if(is.null(surf) & !is.null(curves))
       slid <- Map(function(tn,y) semilandmarks.slide.tangents.procD(y, tn, ref), tans, slid0)
@@ -627,6 +631,7 @@ procD.slide <- function(curves, surf, Ya, ref, max.iter=5){# see pGpa.wCurves fo
     ref = cs.scale(Reduce("+", slid0)/n)
     Q <- abs(ss0-ss)
     ss0 <- ss
+    setTxtProgressBar(pb,iter)
     if(iter >=max.iter) break
   }
   if(iter < max.iter) setTxtProgressBar(pb,max.iter)
