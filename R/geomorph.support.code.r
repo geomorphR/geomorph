@@ -915,7 +915,7 @@ boot.index <-function(n, iter, seed=NULL){
 
 # fastFit
 # calculates fitted values for a linear model, after decomoposition of X to get U
-# used in SS.itr and Fpgls.iter; future need: advanced.procD.lm 
+# used in SS.iter and Fpgls.iter; future need: advanced.procD.lm 
 fastFit <- function(U,y,n,p){
   if(p > n) U%*%t(U)%*%y else 
     U%*%(t(U)%*%y) 
@@ -994,8 +994,8 @@ Fpgls.iter = function(pfit,Pcor,iter, seed=NULL, Yalt="RRPP"){
   PwXs <- lapply(pfit$wXs, function(x) crossprod(Pcor,as.matrix(x)))
   Xr <- lapply(PwXs[1:(k-1)], function(x) as.matrix(x))
   Xf <- lapply(PwXs[2:k], function(x) as.matrix(x))
-  Ur <- lapply(pfit$wQRs[1:(k-1)], function(x) qr.Q(x))
-  Uf <- lapply(pfit$wQRs[2:k], function(x) qr.Q(x))
+  Ur <- lapply(Xr, function(x) qr.Q(qr(x)))
+  Uf <- lapply(Xf, function(x) qr.Q(qr(x)))
   ind = perm.index(n,iter, seed=seed)
   SS <- SSEs <-Fs <- NULL
   pb <- txtProgressBar(min = 0, max = ceiling(iter/100), initial = 0, style=3) 
@@ -1012,7 +1012,7 @@ Fpgls.iter = function(pfit,Pcor,iter, seed=NULL, Yalt="RRPP"){
     SS.temp <- lapply(1:length(j), function(j){ 
       mapply(function(ur,uf,y) sum((fastFit(uf,y,n,p) - fastFit(ur,y,n,p))^2), 
              Ur, Uf,Yr[[j]])})
-    SSEs.temp <- Map(function(y) sum(.lm.fit(Xf[[k-1]],y[[k-1]])$residuals^2), Yr)
+    SSEs.temp <- Map(function(y) sum(fastLM(Uf[[k-1]],y[[k-1]])$residuals^2), Yr)
     Fs.temp <- Map(function(s1,s2) (s1/df)/(s2/(n-k)), SS.temp, SSEs.temp)
     SS <- c(SS,SS.temp)
     SSEs <- c(SSEs,SSEs.temp)
