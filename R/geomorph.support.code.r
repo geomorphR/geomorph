@@ -917,6 +917,7 @@ boot.index <-function(n, iter, seed=NULL){
 # calculates fitted values for a linear model, after decomoposition of X to get U
 # used in SS.iter and Fpgls.iter; future need: advanced.procD.lm 
 fastFit <- function(U,y,n,p){
+  if(!is.matrix(y)) y <- as.matrix(y)
   if(p > n) U%*%t(U)%*%y else 
     U%*%(t(U)%*%y) 
 }
