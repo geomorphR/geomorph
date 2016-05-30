@@ -372,6 +372,42 @@ pGpa <- function(Y, PrinAxes = FALSE, Proj = FALSE, max.iter = 5){
   list(coords= Ya, CS=CS, iter=iter, consensus=M, Q=Q, nsliders=NULL)
 }
 
+# .pGPA
+# same as pGPA, but without progress bar option
+# used in gpagen
+.pGpa <- function(Y, PrinAxes = FALSE, Proj = FALSE, max.iter = 5){
+  iter <- 0
+  n <- length(Y); p <- nrow(Y[[1]]); k <- ncol(Y[[1]])
+  Yc <- Map(function(y) center.scale(y), Y)
+  CS <- sapply(Yc,"[[","CS")
+  Ya <- lapply(Yc,"[[","coords")
+  M <- Reduce("+",Ya)/n
+  Ya <- apply.pPsup(M, Ya)
+  M <- Reduce("+",Ya)/n
+  Q <- ss <- n*(1-sum(M^2))
+  M <- cs.scale(M)
+  iter <- 1
+  while(Q > 0.0001){
+    iter <- iter+1
+    Ya <- apply.pPsup(M, Ya)
+    M <- Reduce("+",Ya)/n
+    ss2 <- n*(1-sum(M^2))
+    Q <- abs(ss-ss2)
+    ss <- ss2
+    M <- cs.scale(M)
+    if(iter > max.iter) break
+  }
+  if (PrinAxes == TRUE) {
+    ref <- M
+    rot <- prcomp(ref)$rotation
+    for (i in 1:k) if (sign(rot[i, i]) != 1) 
+      rot[1:k, i] = -rot[1:k, i]
+    Ya <- Map(function(y) y%*%rot, Ya)
+    M <- cs.scale(Reduce("+", Ya)/n)
+  }
+  list(coords= Ya, CS=CS, iter=iter, consensus=M, Q=Q, nsliders=NULL)
+}
+
 # getSurfPCs
 # finds PC loadings for surface landmarks
 # used in semilandmarks functions, within the larger gpagen framework
@@ -612,6 +648,34 @@ BE.slide <- function(curves, surf, Ya, ref, max.iter=5){# see pGpa.wCurves for v
   list(coords=slid0, consensus=ref, iter=iter+1, Q=Q)
 }
 
+# .BE.slide
+# same as BE.slide, but without progress bar option
+# used in pGpa.wSliders
+.BE.slide <- function(curves, surf, Ya, ref, max.iter=5){# see pGpa.wCurves for variable meaning
+  n <- length(Ya); p <- nrow(Ya[[1]]); k <- ncol(Ya[[1]])
+  iter <- 1 # from initial rotation of Ya
+  slid0 <- Ya
+  Q <- ss0 <- sum(Reduce("+",Ya)^2)/n
+  while(Q > 0.0001){
+    iter <- iter+1
+    if(!is.null(curves)) tans <- Map(function(y) tangents(curves, y, scaled=TRUE), slid0)
+    L <- Ltemplate(ref)
+    if(is.null(surf) & !is.null(curves))
+      slid <- Map(function(tn,y) semilandmarks.slide.tangents.BE(y, tn, ref, L), tans, slid0)
+    if(!is.null(surf) & is.null(curves))
+      slid <- Map(function(y) semilandmarks.slide.surf.BE(y, surf, ref, L), slid0)
+    if(!is.null(surf) & !is.null(curves))
+      slid <- Map(function(tn,y) semilandmarks.slide.tangents.surf.BE(y, tn, surf, ref, L), tans, slid0)
+    ss <- sum(Reduce("+",slid)^2)/n
+    slid0 <- apply.pPsup(ref,slid)
+    ref = cs.scale(Reduce("+", slid0)/n)
+    Q <- abs(ss0-ss)
+    ss0 <- ss
+    if(iter >= max.iter) break
+  }
+  list(coords=slid0, consensus=ref, iter=iter+1, Q=Q)
+}
+
 # procD.slide
 # performs sliding iterations using minimized ProcD
 # used in pGpa.wSliders
@@ -641,6 +705,33 @@ procD.slide <- function(curves, surf, Ya, ref, max.iter=5){# see pGpa.wCurves fo
   }
   if(iter < max.iter) setTxtProgressBar(pb,max.iter)
   close(pb)
+  list(coords=slid0, consensus=ref, iter=iter+1, Q=Q)
+}
+
+# .procD.slide
+# same as procD.slide, but without progress bar option
+# used in pGpa.wSliders
+.procD.slide <- function(curves, surf, Ya, ref, max.iter=5){# see pGpa.wCurves for variable meaning
+  n <- length(Ya); p <- nrow(Ya[[1]]); k <- ncol(Ya[[1]])
+  iter <- 1 # from initial rotation of Ya
+  slid0 <- Ya
+  Q <- ss0 <- sum(Reduce("+",Ya)^2)/n
+  while(Q > 0.0001){
+    iter <- iter+1
+    if(!is.null(curves)) tans <- Map(function(y) tangents(curves, y, scaled=TRUE), slid0)
+    if(is.null(surf) & !is.null(curves))
+      slid <- Map(function(tn,y) semilandmarks.slide.tangents.procD(y, tn, ref), tans, slid0)
+    if(!is.null(surf) & is.null(curves))
+      slid <- Map(function(y) semilandmarks.slide.surf.procD(y, surf, ref), slid0)
+    if(!is.null(surf) & !is.null(curves))
+      slid <- Map(function(tn,y) semilandmarks.slide.tangents.surf.procD(y, tn, surf, ref), tans, slid0)
+    ss <- sum(Reduce("+",slid)^2)/n
+    slid0 <- apply.pPsup(ref,slid)
+    ref = cs.scale(Reduce("+", slid0)/n)
+    Q <- abs(ss0-ss)
+    ss0 <- ss
+    if(iter >=max.iter) break
+  }
   list(coords=slid0, consensus=ref, iter=iter+1, Q=Q)
 }
 
@@ -983,9 +1074,51 @@ SS.iter = function(pfit,iter, seed = NULL, Yalt="RRPP"){
   simplify2array(SS)
 }
 
+# .SS.iter
+# same as SS.iter, but without progress bar option
+# used in nearly all 'procD.lm' functions, unless pgls in used
+.SS.iter = function(pfit,iter, seed = NULL, Yalt="RRPP"){
+  Y <- as.matrix(pfit$Y)
+  k <- length(pfit$QRs)
+  n <- dim(Y)[1]; p <- dim(Y)[2]
+  Yh <- pfit$fitted
+  E <- pfit$residuals
+  w<- pfit$weights
+  Ur <- lapply(pfit$wQRs[1:(k-1)], function(x) qr.Q(x))
+  Uf <- lapply(pfit$wQRs[2:k], function(x) qr.Q(x))
+  ind = perm.index(n,iter, seed=seed)
+  SS <- NULL
+  jj <- iter+1
+  if(jj > 100) j <- 1:100 else j <- 1:jj
+  while(jj > 0){
+    ind.j <- ind[j]
+    if(Yalt=="RRPP") {
+      if(sum(w)==n) {
+        Yr = Map(function(x) (Map(function(y,e) e[x,]+y, Yh[1:(k-1)], E[1:(k-1)])),ind.j)
+      } else {
+        Yr = Map(function(x) (Map(function(y,e) (e[x,]+y)*sqrt(w), Yh[1:(k-1)], E[1:(k-1)])),ind.j) 
+      }} else {
+        if(sum(w)==n) {
+          Yr = Map(function(x) Map(function(y) y[x,], lapply(1:(k-1),function(.) Y)),ind.j)
+        } else {
+          Yr = Map(function(x) Map(function(y) (y[x,])*sqrt(w), lapply(1:(k-1),function(.) Y)),ind.j)
+        }
+      }
+    
+    SS.temp <- lapply(1:length(j), function(j){ 
+      mapply(function(ur,uf,y) sum((fastFit(uf,y,n,p) - fastFit(ur,y,n,p))^2), 
+             Ur, Uf,Yr[[j]])})
+    SS <- c(SS, SS.temp)
+    jj <- jj-length(j)
+    if(jj > 100) kk <- 1:100 else kk <- 1:jj
+    j <- j[length(j)] +kk
+  }
+  simplify2array(SS)
+}
+
 # Fpgls.iter
 # calculates F values in random iterations of a resmapling procedure, with pgls involved
-# used in the 'procD.lm' functions where pgls in used
+# used in the 'procD.lm' functions where pgls is used
 Fpgls.iter = function(pfit,Pcor,iter, seed=NULL, Yalt="RRPP"){
   Y <- as.matrix(pfit$Y)
   k <- length(pfit$QRs)
@@ -1030,6 +1163,51 @@ Fpgls.iter = function(pfit,Pcor,iter, seed=NULL, Yalt="RRPP"){
     step <- step+1
   }
   close(pb)
+  list(SS=simplify2array(SS), SSE = SSEs[[1]], Fs=simplify2array(Fs))
+}
+
+# .Fpgls.iter
+# same as Fpgls.iter, but without progress bar option
+# used in the 'procD.lm' functions where pgls is used
+.Fpgls.iter = function(pfit,Pcor,iter, seed=NULL, Yalt="RRPP"){
+  Y <- as.matrix(pfit$Y)
+  k <- length(pfit$QRs)
+  n <- dim(Y)[1]; p <- dim(Y)[2]
+  Yh <- pfit$fitted
+  E <- pfit$residuals
+  w<- pfit$weights
+  wQRs <- pfit$wQRs
+  dfE <- sapply(1:k, function(j) wQRs[[j]]$rank)
+  df <- dfE[-1] - dfE[1:(k-1)]
+  Pcor <- Pcor[rownames(Y),rownames(Y)]
+  PwXs <- lapply(pfit$wXs, function(x) crossprod(Pcor,as.matrix(x)))
+  Xr <- lapply(PwXs[1:(k-1)], function(x) as.matrix(x))
+  Xf <- lapply(PwXs[2:k], function(x) as.matrix(x))
+  Ur <- lapply(Xr, function(x) qr.Q(qr(x)))
+  Uf <- lapply(Xf, function(x) qr.Q(qr(x)))
+  ind = perm.index(n,iter, seed=seed)
+  SS <- SSEs <-Fs <- NULL
+  jj <- iter+1
+  if(jj > 100) j <- 1:100 else j <- 1:jj
+  while(jj > 0){
+    ind.j <- ind[j]
+    if(Yalt=="RRPP") {
+      Yr = Map(function(x) (Map(function(y,e) crossprod(Pcor,as.matrix(e[x,]+y)*sqrt(w)), Yh[1:(k-1)], E[1:(k-1)])),ind.j) 
+    } else {
+      Yr = Map(function(x) Map(function(y) crossprod(Pcor,as.matrix((y[x,])*sqrt(w))), lapply(1:(k-1),function(.) Y)),ind.j)
+    }
+    SS.temp <- lapply(1:length(j), function(j){ 
+      mapply(function(ur,uf,y) sum((fastFit(uf,y,n,p) - fastFit(ur,y,n,p))^2), 
+             Ur, Uf,Yr[[j]])})
+    SSEs.temp <- Map(function(y) sum(fastLM(Uf[[k-1]],y[[k-1]])$residuals^2), Yr)
+    Fs.temp <- Map(function(s1,s2) (s1/df)/(s2/(n-k)), SS.temp, SSEs.temp)
+    SS <- c(SS,SS.temp)
+    SSEs <- c(SSEs,SSEs.temp)
+    Fs <- c(Fs,Fs.temp)
+    jj <- jj-length(j)
+    if(jj > 100) kk <- 1:100 else kk <- 1:jj
+    j <- j[length(j)] +kk
+  }
   list(SS=simplify2array(SS), SSE = SSEs[[1]], Fs=simplify2array(Fs))
 }
 
@@ -1396,6 +1574,29 @@ apply.pls <- function(x,y, RV=FALSE, iter, seed = NULL){
   if(RV == TRUE) RV.rand else r.rand
 }
 
+# .apply.pls 
+# same as apply.pls, but without progress bar option
+# used in: two.b.pls, integration.test
+.apply.pls <- function(x,y, RV=FALSE, iter, seed = NULL){
+  x <- as.matrix(x); y <- as.matrix(y)
+  px <- ncol(x); py <- ncol(y)
+  pmin <- min(px,py)
+  ind <- perm.index(nrow(x), iter, seed=seed)
+  RV.rand <- r.rand <- NULL
+  jj <- iter+1
+  if(jj > 100) j <- 1:100 else j <- 1:jj
+  while(jj > 0){
+    ind.j <- ind[j]
+    y.rand <-lapply(1:length(j), function(i) y[ind.j[[i]],])
+    if(RV == TRUE) RV.rand <- c(RV.rand,sapply(1:length(j), function(i) pls(x,y.rand[[i]], RV=TRUE, verbose = TRUE)$RV)) else
+      r.rand <- c(r.rand, sapply(1:length(j), function(i) quick.pls(x,y.rand[[i]], px,py,pmin)))
+    jj <- jj-length(j)
+    if(jj > 100) kk <- 1:100 else kk <- 1:jj
+    j <- j[length(j)] +kk
+  }
+  if(RV == TRUE) RV.rand else r.rand
+}
+
 # pls.multi
 # obtain average of pairwise PLS analyses for 3+modules
 # used in: apply.plsmulti, integration.test
@@ -1467,6 +1668,30 @@ apply.plsmulti <- function(x,gps, iter, seed = NULL){
   r.rand
 }
 
+# .apply.plsmulti
+# same as apply.plsmulti, but without progress bar option
+# used in: integration.test
+.apply.plsmulti <- function(x,gps, iter, seed = NULL){
+  g <- as.factor(gps)
+  ngps<-nlevels(g)
+  S <-var(x)
+  r.obs <- plsmulti(x,gps)$r.pls
+  ind <- perm.index(nrow(x), iter, seed=seed)
+  jj <- iter+1
+  if(jj > 100) j <- 1:100 else j <- 1:jj
+  r.rand <- NULL
+  while(jj > 0){
+    ind.j <- ind[j]
+    x.r<-lapply(1:length(j), function(i) x[ind.j[[i]],which(g==levels(g)[1])]) 
+    r.rand<-c(r.rand, sapply(1:length(j), function(i) quick.plsmulti(cbind(x.r[[i]],
+                                                                           x[,which(g!=levels(g)[1])]), gps=g))) 
+    jj <- jj-length(j)
+    if(jj > 100) kk <- 1:100 else kk <- 1:jj
+    j <- j[length(j)] +kk
+  }
+  r.rand
+}
+
 # CR
 # Function to estimate CR coefficient
 # used in: modularity.test, apply.CR
@@ -1529,6 +1754,24 @@ apply.CR <- function(x,g,k, iter, seed = NULL){# g = partition.gp
     step <- step+1
   }
   close(pb)
+  CR.rand
+}
+
+# .apply.CR
+# same as apply.CR, but without progress bar option
+# used in: modularity.test
+.apply.CR <- function(x,g,k, iter, seed = NULL){# g = partition.gp
+  ind <- perm.CR.index(g,k, iter, seed=seed)
+  jj <- iter+1
+  if(jj > 100) j <- 1:100 else j <- 1:jj
+  CR.rand <- NULL
+  while(jj > 0){
+    ind.j <- ind[j]
+    CR.rand<-c(CR.rand, sapply(1:length(j), function(i) quick.CR(x, gps=ind.j[[i]])))
+    jj <- jj-length(j)
+    if(jj > 100) kk <- 1:100 else kk <- 1:jj
+    j <- j[length(j)] +kk
+  }
   CR.rand
 }
 
@@ -1653,6 +1896,24 @@ apply.phylo.CR <- function(x,invC,gps, k, iter, seed=NULL){
     step <- step+1
   }
   close(pb)
+  CR.rand
+}
+
+# .apply.phylo.CR
+# same as apply.phylo.CR, but without progress bar option
+# used in: phylo.modularity
+.apply.phylo.CR <- function(x,invC,gps, k, iter, seed=NULL){
+  ind <- perm.CR.index(g=gps,k, iter, seed=seed)
+  jj <- iter+1
+  if(jj > 100) j <- 1:100 else j <- 1:jj
+  CR.rand <- NULL
+  while(jj > 0){
+    ind.j <- ind[j]
+    CR.rand<-c(CR.rand, sapply(1:length(j), function(i) quick.CR.phylo(x,invC=invC,gps=ind.j[[i]]))) 
+    jj <- jj-length(j)
+    if(jj > 100) kk <- 1:100 else kk <- 1:jj
+    j <- j[length(j)] +kk
+  }
   CR.rand
 }
 
@@ -1786,6 +2047,31 @@ apply.pls.phylo <- function(x,y,invC,D.mat, iter, seed = NULL){
   r.rand
 }
 
+# .apply.pls.phylo
+# same as apply.phylo.pls, but without progress bar option
+# used in: phylo.integration
+.apply.pls.phylo <- function(x,y,invC,D.mat, iter, seed = NULL){
+  n.x<-ncol(x)
+  data.all<-cbind(x,y)
+  one<-matrix(1,nrow(x),1)  
+  a<-t(t(one)%*%invC%*% data.all)*(sum(invC))^-1  
+  dat.trans<-D.mat%*%(data.all-(one%*%t(a)))
+  x<-dat.trans[,1:n.x];y<-dat.trans[,-(1:n.x)]
+  ind <- perm.index(nrow(x), iter, seed=seed)
+  jj <- iter+1
+  if(jj > 100) j <- 1:100 else j <- 1:jj
+  r.rand <- NULL
+  while(jj > 0){
+    ind.j <- ind[j]
+    y.rand <-lapply(1:length(j), function(i) y[ind.j[[i]],])
+    r.rand <- c(r.rand, sapply(1:length(j), function(i) pls(x,y.rand[[i]], verbose = FALSE)))
+    jj <- jj-length(j)
+    if(jj > 100) kk <- 1:100 else kk <- 1:jj
+    j <- j[length(j)] +kk
+  }
+  r.rand
+}
+
 # plsmulti.phylo
 # average pairwise phylo.pls
 # used in: phylo.integration, apply.plsmulti.phylo
@@ -1838,6 +2124,30 @@ apply.plsmulti.phylo <- function(x,gps, invC,D.mat, iter, seed= NULL){
     step <- step+1
   }
   close(pb)
+  r.rand
+}
+
+# .apply.plsmulti.phylo
+# same as apply.plsmulti.phylo, but without progress bar option
+# used in: phylo.integration
+.apply.plsmulti.phylo <- function(x,gps, invC,D.mat, iter, seed= NULL){
+  one<-matrix(1,nrow(x),1)  
+  a<-t(t(one)%*%invC%*% x)*(sum(invC))^-1  
+  x<-D.mat%*%(x-(one%*%t(a)))
+  gps<-factor(gps)
+  ind <- perm.index(nrow(x), iter, seed=seed)
+  jj <- iter+1
+  if(jj > 100) j <- 1:100 else j <- 1:jj
+  r.rand <- NULL
+  while(jj > 0){
+    ind.j <- ind[j]
+    x.r <-lapply(1:length(j), function(i) x[ind.j[[i]],which(gps==levels(gps)[1])])
+    r.rand <- c(r.rand, sapply(1:length(j), function(i) plsmulti(cbind(x.r[[i]],x[,which(gps!=levels(gps)[1])]), 
+                                                                 gps)$r.pls))
+    jj <- jj-length(j)
+    if(jj > 100) kk <- 1:100 else kk <- 1:jj
+    j <- j[length(j)] +kk
+  }
   r.rand
 }
 
