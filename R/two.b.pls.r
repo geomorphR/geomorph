@@ -30,6 +30,8 @@
 #' If left NULL (the default), the exact same P-values will be found for repeated runs of the analysis (with the same number of iterations).
 #' If seed = "random", a random seed will be used, and P-values will vary.  One can also specify an integer for specific seed values,
 #' which might be of interest for advanced users.
+#' @param print.progress A logical value to indicate whether a progress bar should be printed to the screen.  
+#' This is helpful for long-running analyses.
 #' @export
 #' @keywords analysis
 #' @author Dean Adams and Michael Collyer
@@ -64,7 +66,7 @@
 #' summary(PLS)
 #' plot(PLS)
 
-two.b.pls <- function (A1, A2,  iter = 999, seed = NULL){
+two.b.pls <- function (A1, A2,  iter = 999, seed = NULL, print.progress=TRUE){
     if (any(is.na(A1)) == T) 
       stop("Data matrix 1 contains missing values. Estimate these first (see 'estimate.missing').")
     if (any(is.na(A2)) == T) 
@@ -75,14 +77,14 @@ two.b.pls <- function (A1, A2,  iter = 999, seed = NULL){
   if (nrow(x) != nrow(y)) stop("Data matrices have different numbers of specimens.")
   if (!is.null(rownames(x))  && !is.null(rownames(y))) {y <- y[rownames(x), ] }
   n <- nrow(x)
-  pls.rand <- apply.pls(x, y, RV=FALSE, iter=iter, seed=seed)
+  if(print.progress) pls.rand <- apply.pls(x, y, RV=FALSE, iter=iter, seed=seed) else
+    pls.rand <- .apply.pls(x, y, RV=FALSE, iter=iter, seed=seed) 
   pls.obs <- pls(x, y, RV=FALSE, verbose=TRUE)
   rownames(pls.obs$pls.svd$u) <- colnames(x)
   rownames(pls.obs$pls.svd$v) <- colnames(pls.obs$pls.svd$vt) <- colnames(y)
   p.val <- pval(pls.rand)
   XScores <- pls.obs$XScores
   YScores <- pls.obs$YScores
-    
   out <- list(r.pls = pls.rand[1], P.value = p.val,
               left.pls.vectors = pls.obs$left.vectors,
               right.pls.vectors = pls.obs$right.vectors,
