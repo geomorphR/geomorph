@@ -40,6 +40,8 @@
 #' If left NULL (the default), the exact same P-values will be found for repeated runs of the analysis (with the same number of iterations).
 #' If seed = "random", a random seed will be used, and P-values will vary.  One can also specify an integer for specific seed values,
 #' which might be of interest for advanced users.
+#' @param print.progress A logical value to indicate whether a progress bar should be printed to the screen.  
+#' This is helpful for long-running analyses.
 #' @keywords analysis
 #' @export
 #' @author Dean Adams
@@ -67,7 +69,7 @@
 #' plot(MT) # Histogram of CR sampling distribution 
 #' # Result implies modularity present
 
-modularity.test<-function(A,partition.gp,iter=999, CI=FALSE,seed=NULL){
+modularity.test<-function(A,partition.gp,iter=999, CI=FALSE,seed=NULL, print.progress = TRUE){
   if(any(is.na(A))==T){
     stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').")  }
   if (length(dim(A))==3){ x<-two.d.array(A)
@@ -85,7 +87,8 @@ modularity.test<-function(A,partition.gp,iter=999, CI=FALSE,seed=NULL){
     CR.obs<-CR(x,gps=gps.obs)
     if(ngps > 2) CR.mat <- CR.obs$CR.mat else CR.mat <- NULL
     CR.obs <- CR.obs$CR
-    CR.rand <- apply.CR(x, gps, k=k, iter=iter, seed=seed)
+    if(print.progress) CR.rand <- apply.CR(x, gps, k=k, iter=iter, seed=seed) else
+      CR.rand <- .apply.CR(x, gps, k=k, iter=iter, seed=seed)
     p.val <- 1-pval(CR.rand)  #b/c smaller values more significant 
     if (p.val==0){p.val<-1/(iter+1)}
     if(CI=="TRUE"){
@@ -123,7 +126,8 @@ modularity.test<-function(A,partition.gp,iter=999, CI=FALSE,seed=NULL){
               optRot <- matrix(c(cos(optAngle*pi/180),
                sin(optAngle*pi/180),0,-sin(optAngle*pi/180),cos(optAngle*pi/180), 0,0,0,1),ncol=3)
     x <- t(mapply(function(a) matrix(t(a%*%optRot)), Alist))
-    CR.rand <- apply.CR(x, g=gps, k=k, iter=iter, seed=seed)
+    if(print.progress) CR.rand <- apply.CR(x, gps, k=k, iter=iter, seed=seed) else
+      CR.rand <- .apply.CR(x, gps, k=k, iter=iter, seed=seed)
     CR.rand[1] <- CR.obs <- avgCR
     if(ngps > 2) CR.mat <- CR(x,gps.obs)$CR.mat else CR.mat <- NULL
     p.val <- pval(1/CR.rand)  #b/c smaller values more significant
