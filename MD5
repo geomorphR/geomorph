@@ -16,9 +16,9 @@ d8e8360c03c03fe45d2100e9c05d4a89 *data/plethodon.rda
 b9147b10c8eecf58afdbdfd97871a1dc *man/arrayspecs.Rd
 7b2e44e3ed29020407aded790ba13a43 *man/bilat.symmetry.Rd
 98905c1726ae4f9391195460634be5dd *man/buildtemplate.Rd
-45117b51a3eafe9f5da9afc66232b2e9 *man/compare.evol.rates.Rd
+4018b5634138ba87a93758b136d78bcc *man/compare.evol.rates.Rd
 9c8e6b36afc3fed78f5ee568f69cfa8c *man/compare.modular.partitions.Rd
-290fbf0c3739b056cd3a65ff484db959 *man/compare.multi.evol.rates.Rd
+fbdd701188cfb1fd96fe3c4ad45be14d *man/compare.multi.evol.rates.Rd
 ce3b5145255932743c01cd6bd2160bd6 *man/define.links.Rd
 72a15f91b816fc4a8b275f53509d3eb7 *man/define.modules.Rd
 db9247d5822209ba53e02342b676ee6b *man/define.sliders.Rd
@@ -39,7 +39,7 @@ d49189047d4d144a8f92a2987b1822c9 *man/gridPar.Rd
 4021aa7fa4c0aca0566691a7e8efc944 *man/integration.test.Rd
 03c8f034c267da9ca2bad0c0370613cc *man/larvalTails.Rd
 5fb8e06099b35da4afc5bb802d1ebcd5 *man/modularity.test.Rd
-af0fecde518018473bc6dced44b09623 *man/morphol.disparity.Rd
+a62b8fbfe4a33d037df146cbf9db1620 *man/morphol.disparity.Rd
 3e6b41e0610382ad6dbb8830746f7cd8 *man/morphol.integr.Rd
 9c45e199ed444c6fe413617264f7d9db *man/mosquito.Rd
 ba1bc984d157f6a6e19ec1edf5d44d9d *man/motionpaths.Rd
@@ -48,7 +48,7 @@ ba1bc984d157f6a6e19ec1edf5d44d9d *man/motionpaths.Rd
 4a0850406253d2c7317c6bc1e32230e5 *man/phylo.integration.Rd
 b23aabdaadfe70fe888098382b9a46fb *man/phylo.modularity.Rd
 bf7d0d9da67337471defb77bb108380c *man/phylo.pls.Rd
-6ea0b11c207ec69a66a402339378ae06 *man/physignal.Rd
+6e9ead9f61db8b195be7ee10252c8247 *man/physignal.Rd
 162793fa10585f70eb90063428a4968a *man/plethodon.Rd
 1d108559fe8b310b08b9d157d5edf73b *man/plethShapeFood.Rd
 0c470944e2627e9c6736dfa81377de5b *man/plethspecies.Rd
@@ -120,8 +120,8 @@ dced349f2a8288757f8d0eaf232d2810 *NAMESPACE
 c3bf88c10dcae2eb5430025e36867d98 *R/arrayspecs.r
 0cee1dd6e315db77236ac75347976652 *R/bilat.symmetry.r
 14713bbb2ad126d777d95e359c71bf1a *R/build.template.r
-003b04e1917ea1eb28e95800c5a04c96 *R/compare.evol.rates.r
-aec87927a1584b84217f9123bb9cc077 *R/compare.multi.evol.rates.r
+d6b732ced9620e1425df643cba90abae *R/compare.evol.rates.r
+4b414aa0dbf7c3ade511db1bf883cf2a *R/compare.multi.evol.rates.r
 9c8853f5d9c9bb5a9b0b21bfea6ebab8 *R/define.links.r
 d16ddcc0cc85bf6a16a27faf592b0a6c *R/define.modules.r
 4610ea0dddf960a20936351c10904225 *R/define.sliders.r
@@ -142,11 +142,11 @@ c406bf42a564dc3000f7db8cdb923d15 *R/geomorph.utils.r
 2d8ab3c6fea452711a7cf091ffba8ff5 *R/gridPar.r
 7369476d77cbcee3521078850d647653 *R/integration.test.r
 51dc82ce71cfd9974cef0c31ff713efa *R/modularity.test.r
-878efa90aafe58924a063baeb9bace14 *R/morphol.disparity.r
+3225d7f2ad055b5ed0ed85e283cdfc83 *R/morphol.disparity.r
 084f845900f98683ff877ac399e822b3 *R/nested.update.r
 1c4cb5ce348fc6d2d223ddb7968ce656 *R/phylo.integration.r
 ddac35926c471018e531cd2ada76baef *R/phylo.modularity.r
-5fe08ffb084de0677128c6a8b405d532 *R/physignal.r
+b6f6873b9dfb7651f969f7de470a70c3 *R/physignal.r
 7cf1ed920592c19f683c12d57be311d2 *R/plotAllSpecimens.r
 dfd0571936b18c4a6b6edc2845ee3c73 *R/plotGMPhyloMorphoSpace.r
 8db1f082de4f53ca8b704a8ff93a7b60 *R/plotOutliers.r
