@@ -6,7 +6,7 @@
 \usage{
 bilat.symmetry(A, ind = NULL, side = NULL, replicate = NULL,
   object.sym = FALSE, land.pairs = NULL, data = NULL, iter = 999,
-  seed = NULL, RRPP = TRUE)
+  seed = NULL, RRPP = TRUE, print.progress = TRUE)
 }
 \arguments{
 \item{A}{An array (p x k x n) containing GPA-aligned coordinates for a set of specimens [for "object.sym=FALSE, A is of dimension (n x k x 2n)]}
@@ -33,6 +33,9 @@ If left NULL (the default), the exact same P-values will be found for repeated r
 which might be of interest for advanced users.}
 
 \item{RRPP}{A logical value indicating whether residual randomization should be used for significance testing.}
+
+\item{print.progress}{A logical value to indicate whether a progress bar should be printed to the screen.
+This is helpful for long-running analyses.}
 }
 \value{
 An object of class "bilat.symmetry" returns a list of the following
