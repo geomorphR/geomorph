@@ -106,7 +106,7 @@
 #' # NOTE one can also: scallop.sym$data.type # recall the symmetry type
 
 bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,land.pairs=NULL,
-      data = NULL, iter = 999, seed = NULL, RRPP = TRUE){
+      data = NULL, iter = 999, seed = NULL, RRPP = TRUE, print.progress = TRUE){
   if(!is.null(data)) {
     A.name <- deparse(substitute(A))
     A.name.match <- match(A.name, names(data))
@@ -144,8 +144,8 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
     A <- array(c(A,A2), c(p,k, 2*n))
     ind <- factor(rep(ind,2)); side <- gl(2,n); if(!is.null(replicate)) replicate <- rep(replicate,2)
   }
-  cat("\nGPA\n")
-  gpa.res <- gpagen(A)
+  if(print.progress) cat("\nGPA\n")
+  gpa.res <- gpagen(A, print.progress = print.progress)
   Y <- two.d.array(gpa.res$coords)
   if(!is.null(replicate)) {
     form.shape <- Y ~ ind*side + ind:side:replicate 
@@ -157,7 +157,7 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
   pfitSh <- procD.fit(form.shape, data = dat.shape, keep.order = TRUE)
   kSh <- length(pfitSh$term.labels)
   if(!is.null(seed) && seed=="random") seed = sample(1:iter, 1)
-  cat("\nShape Analysis\n")
+  if(print.progress) cat("\nShape Analysis\n")
   if(print.progress) {
     if(RRPP == TRUE) PSh <- SS.iter(pfitSh,Yalt="RRPP", iter=iter, seed=seed) else 
       PSh <- SS.iter(pfitSh, Yalt="resample", iter=iter, seed=seed)
@@ -182,7 +182,7 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
       dat.size <- geomorph.data.frame(size = size, ind = ind, side = side)
     }
     pfitSz=procD.fit(form.size, data=dat.size, keep.order=TRUE)
-    cat("\nSize Analysis\n")
+    if(print.progress) cat("\nSize Analysis\n")
     if(print.progress) {
       if(RRPP == TRUE) PSz <- SS.iter(pfitSz,Yalt="RRPP", iter=iter, seed=seed) else 
         PSz <- SS.iter(pfitSz, Yalt="resample", iter=iter, seed=seed)
