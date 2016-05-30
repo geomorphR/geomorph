@@ -4,7 +4,7 @@
 \alias{compare.evol.rates}
 \title{Comparing rates of shape evolution on phylogenies}
 \usage{
-compare.evol.rates(A, phy, gp, iter = 999)
+compare.evol.rates(A, phy, gp, iter = 999, print.progress = TRUE)
 }
 \arguments{
 \item{A}{A 3D array (p x k x n) containing GPA-aligned coordinates for all specimens, or a matrix (n x variables)}
@@ -14,6 +14,9 @@ compare.evol.rates(A, phy, gp, iter = 999)
 \item{gp}{A factor array designating group membership}
 
 \item{iter}{Number of iterations for significance testing}
+
+\item{print.progress}{A logical value to indicate whether a progress bar should be printed to the screen.
+This is helpful for long-running analyses.}
 }
 \value{
 An object of class "evolrate" returns a list with the following components: 

@@ -31,6 +31,8 @@
 #' If seed = "random", a random seed will be used, and P-values will vary.  One can also specify an integer for specific seed values,
 #' which might be of interest for advanced users.
 #' @param data A data frame for the function environment, see \code{\link{geomorph.data.frame}}
+#' @param print.progress A logical value to indicate whether a progress bar should be printed to the screen.  
+#' This is helpful for long-running analyses.
 #' @param ... Arguments passed on to procD.fit (typically associated with the lm function)
 #' @keywords analysis
 #' @export
@@ -70,7 +72,8 @@
 #' # Extracting components
 #' MD <- morphol.disparity(coords ~ Csize + species*site, groups= ~ species, data = gdf, iter=999)
 #' MD$Procrustes.var # just the Procrustes variances
-morphol.disparity <- function(f1, groups = NULL, iter = 999, seed = NULL, data = NULL, ...){
+morphol.disparity <- function(f1, groups = NULL, iter = 999, seed = NULL, 
+                              data = NULL, print.progess = TRUE, ...){
   pfit <- procD.fit(f1, data=data)
   if(!is.null(groups) & class(groups) != "formula") stop("groups must be a formula; e.g., groups = ~ X")
   if(is.null(groups)) gps <- single.factor(pfit) else {
@@ -93,6 +96,26 @@ morphol.disparity <- function(f1, groups = NULL, iter = 999, seed = NULL, data =
     warning("No factor in formula from which to define groups.")
     out = (noquote(paste("Procrustes variance =",round(pv, 8))))
   } else{
+    if(print.progress){
+      ind <- perm.index(nrow(R),iter, seed=seed)
+      pb <- txtProgressBar(min = 0, max = iter, initial = 0, style=3) 
+      P <- lapply(1:(iter+1), function(j){
+        r <- R[ind[[j]],]
+        setTxtProgressBar(pb,j)
+        pvr <- sapply(1:nlevels(gps), function(j){
+          x <- r[gps==levels(gps)[j],]
+          sum(x^2)/nrow(x)
+        })
+        names(pvr)<-levels(gps)
+        as.matrix(dist(pvr))
+      } )
+      close(pb)
+      if(iter > 0) names(P) <- c("obs", 1:iter)
+      p.val <- Pval.matrix(simplify2array(P))
+      pvd <- P[[1]]
+      out <- list(Procrustes.var = pv, PV.dist = pvd, PV.dist.Pval = p.val,
+                  random.PV.dist = P, permutations = iter+1, call = match.call())
+    } else {
       ind <- perm.index(nrow(R),iter, seed=seed)
       P <- lapply(1:(iter+1), function(j){
         r <- R[ind[[j]],]
@@ -108,6 +131,9 @@ morphol.disparity <- function(f1, groups = NULL, iter = 999, seed = NULL, data =
       pvd <- P[[1]]
       out <- list(Procrustes.var = pv, PV.dist = pvd, PV.dist.Pval = p.val,
                   random.PV.dist = P, permutations = iter+1, call = match.call())
+    }
+      
+
       class(out) <-"morphol.disparity"
   }
   out
