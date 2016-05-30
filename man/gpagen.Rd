@@ -5,7 +5,7 @@
 \title{Generalized Procrustes analysis of points, curves, and surfaces}
 \usage{
 gpagen(A, curves = NULL, surfaces = NULL, PrinAxes = TRUE,
-  max.iter = NULL, ProcD = TRUE, Proj = TRUE)
+  max.iter = NULL, ProcD = TRUE, Proj = TRUE, print.progress = TRUE)
 }
 \arguments{
 \item{A}{An array (p x k x n) containing landmark coordinates for a set of specimens}
@@ -25,6 +25,8 @@ for optimizing the positions of semilandmarks}
 
 \item{Proj}{A logical value indicating whether or not the aligned Procrustes residuals should be projected 
 into tangent space}
+
+\item{print.progress}{A logical value to indicate whether a progress bar should be printed to the screen.}
 }
 \value{
 An object of class gpagen returns a list with the following components:

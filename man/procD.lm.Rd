@@ -5,7 +5,7 @@
 \title{Procrustes ANOVA/regression for shape data}
 \usage{
 procD.lm(f1, iter = 999, seed = NULL, RRPP = TRUE, int.first = FALSE,
-  data = NULL, ...)
+  data = NULL, print.progress = TRUE, ...)
 }
 \arguments{
 \item{f1}{A formula for the linear model (e.g., y~x1+x2)}
@@ -22,6 +22,9 @@ which might be of interest for advanced users.}
 \item{int.first}{A logical value to indicate if interactions of first main effects should precede subsequent main effects}
 
 \item{data}{A data frame for the function environment, see \code{\link{geomorph.data.frame}}}
+
+\item{print.progress}{A logical value to indicate whether a progress bar should be printed to the screen.
+This is helpful for long-running analyses.}
 
 \item{...}{Arguments passed on to procD.fit (typically associated with the lm function)}
 }
