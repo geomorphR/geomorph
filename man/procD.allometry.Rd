@@ -5,7 +5,8 @@
 \title{Procrustes ANOVA/regression, specifically for shape-size covariation (allometry)}
 \usage{
 procD.allometry(f1, f2 = NULL, f3 = NULL, logsz = TRUE, iter = 999,
-  seed = NULL, alpha = 0.05, RRPP = TRUE, data = NULL, ...)
+  seed = NULL, alpha = 0.05, RRPP = TRUE, print.progress = TRUE,
+  data = NULL, ...)
 }
 \arguments{
 \item{f1}{A formula for the relationship of shape and size; e.g., Y ~ X.}
@@ -26,6 +27,9 @@ which might be of interest for advanced users.}
 \item{alpha}{The significance level for the homegeneity of slopes test}
 
 \item{RRPP}{A logical value indicating whether residual randomization should be used for significance testing}
+
+\item{print.progress}{A logical value to indicate whether a progress bar should be printed to the screen.
+This is helpful for long-running analyses.}
 
 \item{data}{A data frame for the function environment, see \code{\link{geomorph.data.frame}}}
 

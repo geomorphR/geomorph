@@ -4,7 +4,7 @@
 \alias{physignal}
 \title{Assessing phylogenetic signal in morphometric data}
 \usage{
-physignal(A, phy, iter = 999, seed = NULL)
+physignal(A, phy, iter = 999, seed = NULL, print.progress = TRUE)
 }
 \arguments{
 \item{A}{A matrix (n x [p x k]) or 3D array (p x k x n) containing GPA-aligned coordinates for a set of specimens}
@@ -17,6 +17,9 @@ physignal(A, phy, iter = 999, seed = NULL)
 If left NULL (the default), the exact same P-values will be found for repeated runs of the analysis (with the same number of iterations).
 If seed = "random", a random seed will be used, and P-values will vary.  One can also specify an integer for specific seed values,
 which might be of interest for advanced users.}
+
+\item{print.progress}{A logical value to indicate whether a progress bar should be printed to the screen.
+This is helpful for long-running analyses.}
 }
 \value{
 Function returns a list with the following components: 

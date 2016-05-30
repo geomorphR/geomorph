@@ -1,4 +1,4 @@
-#'  Quantify and compare shape change trajectories
+#'  Quantify and compare shape change trajectories 
 #'
 #'  Function estimates attributes of shape change trajectories or "motion" trajectories for a set of 
 #'  Procrustes-aligned specimens and compares them statistically
@@ -73,6 +73,8 @@
 #' which might be of interest for advanced users.
 #' @param traj.pts An optional value specifying the number of points in each trajectory (if f1 contains a single factor)
 #' @param data A data frame for the function environment, see \code{\link{geomorph.data.frame}} 
+#' @param print.progress A logical value to indicate whether a progress bar should be printed to the screen.  
+#' This is helpful for long-running analyses.
 #' @param ... Arguments passed on to procD.fit (typically associated with the \code{\link{lm}} function)
 #' @export
 #' @keywords analysis
@@ -167,7 +169,8 @@
 #' plot(TA, group.cols = c("dark red", "dark blue", "dark green", "yellow"), pt.scale = 1.3)
 #' plot(TA, group.cols = c("dark red", "dark blue", "dark green", "yellow"), 
 #' pt.seq.pattern = c("green", "gray30", "red"), pt.scale = 1.3)
-trajectory.analysis <- function(f1, f2=NULL, iter=999, seed=NULL, traj.pts = NULL, data = NULL){
+trajectory.analysis <- function(f1, f2=NULL, iter=999, seed=NULL, traj.pts = NULL, 
+                                data = NULL,print.progress=TRUE){
   pfit1 <- procD.fit(f1, data=data, pca=FALSE)
   Terms <- pfit1$Terms
   dat <- pfit1$data
@@ -195,7 +198,7 @@ trajectory.analysis <- function(f1, f2=NULL, iter=999, seed=NULL, traj.pts = NUL
     fr <- as.formula(paste("Y~", paste(red.terms, collapse = "+"), sep=""))
   }
   if(!is.null(seed) && seed=="random") seed = sample(1:iter, 1)
-  pda <- procD.lm(ff, data=data, iter=iter, RRPP = TRUE, seed=seed)
+  pda <- procD.lm(ff, data=data, iter=iter, RRPP = TRUE, seed=seed, print.progress = print.progress)
   if(length(datClasses) == 1) pta <- traj.by.groups(ff, fr, traj.pts, data=data, iter=iter, seed=seed) else
     pta <- traj.w.int(ff, fr, data=data, iter=iter, seed=seed)
   if(length(datClasses) == 1) gp.names <- levels(pfit1$data[[length(pfit1$data)]]) else

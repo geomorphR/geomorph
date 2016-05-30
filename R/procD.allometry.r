@@ -81,6 +81,8 @@
 #' @param alpha The significance level for the homegeneity of slopes test
 #' @param RRPP A logical value indicating whether residual randomization should be used for significance testing
 #' @param data A data frame for the function environment, see \code{\link{geomorph.data.frame}} 
+#' @param print.progress A logical value to indicate whether a progress bar should be printed to the screen.  
+#' This is helpful for long-running analyses.
 #' @param ... Arguments passed on to procD.fit (typically associated with the lm function)
 #' @keywords analysis
 #' @export
@@ -154,7 +156,8 @@
 #' summary(plethANOVA) # Same ANOVA
 #' plot(plethANOVA) # diagnostic plot instead of allometry plot
 procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
-                           iter = 999, seed=NULL, alpha = 0.05, RRPP = TRUE, data=NULL, ...){
+                   iter = 999, seed=NULL, alpha = 0.05, RRPP = TRUE, 
+                   print.progress = TRUE, data=NULL, ...){
   pfit <- procD.fit(f1, data=data, pca=FALSE)
   dat <- pfit$data
   Y <- pfit$Y
@@ -175,8 +178,8 @@ procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
       data.types <- lapply(data, class)
       keep = sapply(data.types, function(x) x != "array" & x != "phylo" & x != "dist")
       dat2 <- as.data.frame(data[keep])
-    } else dat2 <- NULL
-    
+      } else dat2 <- NULL
+      
     if(!is.null(f2)) {
       if(length(f2) > 2) f2 <- f2[-2]
       dat.g <- model.frame(f2, data=dat2) 
@@ -192,7 +195,7 @@ procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
       gps <- NULL
       form2 <- form1
     }
-    
+  
     if(!is.null(f3)) {
       if(length(f3) > 2) f3 <- f3[-2]
       dat.o <- model.frame(f3, data=dat2) 
@@ -203,17 +206,18 @@ procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
       o.Terms <- NULL
     }
   }
-  if(is.null(f2) && is.null(f3)) form2 <- form1
-  if(!is.null(f2) & !is.null(f3)) {
-    if(!logsz){
-      form4 <- update(f3, ~. + size + gps)
-      form5 <- update(f3, ~. + size * gps)
+
+  if(is.null(f2) && is.null(f3)) form2 <- form1 
+    if(!is.null(f2) & !is.null(f3)) {
+      if(!logsz){
+        form4 <- update(f3, ~. + size + gps)
+        form5 <- update(f3, ~. + size * gps)
+      }
+      if(logsz){
+        form4 <- update(f3, ~. + log(size) + gps)
+        form5 <- update(f3, ~. + log(size) * gps)
+      }
     }
-    if(logsz){
-      form4 <- update(f3, ~. + log(size) + gps)
-      form5 <- update(f3, ~. + log(size) * gps)
-    }
-  }
   
   if(!is.null(f2) & is.null(f3)) {
     form4 <- form2
@@ -233,7 +237,7 @@ procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
         formfull <-as.formula(c("~",paste(unique(
           c(c("log(size)", attr(g.Terms, "term.labels"), paste("log(size)", attr(g.Terms, "term.labels"), sep=":")))),
           collapse="+")))
-      form.type <- "g"
+    form.type <- "g"
   } else if(is.null(f2) & !is.null(f3)) {
     if(!logsz) formfull <-as.formula(c("~",paste(unique(
       c(c("size", attr(o.Terms, "term.labels"), paste("size", attr(o.Terms, "term.labels"), sep=":")))),
@@ -241,7 +245,7 @@ procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
         formfull <-as.formula(c("~",paste(unique(
           c(c("log(size)", attr(o.Terms, "term.labels"), paste("log(size)", attr(o.Terms, "term.labels"), sep=":")))),
           collapse="+")))
-      form.type <- "o"
+    form.type <- "o"
   } else {
     formfull <- form2
     form.type <- NULL}
@@ -250,16 +254,17 @@ procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
     form4 <- update(form4, Y ~.)
     form5 <- update(form5, Y ~.)
     datHOS <- data.frame(dat, size=size, gps=gps)
-    HOS <- advanced.procD.lm(form4, form5, data=datHOS, iter=iter, seed=seed)$anova.table
+    HOS <- advanced.procD.lm(form4, form5, data=datHOS, iter=iter, seed=seed, 
+                             print.progress = print.progress)$anova.table
     rownames(HOS) = c("Common Allometry", "Group Allometries")
     hos.pval <- HOS[2,7]
     if(hos.pval > alpha){
       if(form.type == "go") {
         if(!logsz) rhs.formfull <- paste(c("size", attr(g.Terms, "term.labels"), 
                                            attr(o.Terms, "term.labels")), collapse="+") else
-                                             rhs.formfull <- paste(c("log(size)", attr(g.Terms, "term.labels"), 
-                                                                     attr(o.Terms, "term.labels")), collapse="+")  
-                                           formfull <- as.formula(c("Y ~", rhs.formfull))
+                   rhs.formfull <- paste(c("log(size)", attr(g.Terms, "term.labels"), 
+                                           attr(o.Terms, "term.labels")), collapse="+")  
+        formfull <- as.formula(c("Y ~", rhs.formfull))
       }
       if(form.type == "g") {
         if(!logsz) rhs.formfull <- paste(c("size", attr(g.Terms, "term.labels")),  collapse="+") else
@@ -271,7 +276,8 @@ procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
   
   formfull <- update(formfull, Y~.)
   fitf <- procD.fit(formfull, data=dat, pca=FALSE)
-  anovafull <- procD.lm(formfull, data=dat, iter=iter, seed=seed, RRPP=RRPP)$aov.table
+  anovafull <- procD.lm(formfull, data=dat, iter=iter, seed=seed, RRPP=RRPP,
+                        print.progress = print.progress)$aov.table
   if(RRPP) perm.method = "RRPP" else perm.method = "raw"
   
   # Plot set-up

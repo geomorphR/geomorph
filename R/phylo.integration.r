@@ -35,6 +35,8 @@
 #' If left NULL (the default), the exact same P-values will be found for repeated runs of the analysis (with the same number of iterations).
 #' If seed = "random", a random seed will be used, and P-values will vary.  One can also specify an integer for specific seed values,
 #' which might be of interest for advanced users.
+#' @param print.progress A logical value to indicate whether a progress bar should be printed to the screen.  
+#' This is helpful for long-running analyses.
 #' @export
 #' @keywords analysis
 #' @author Dean Adams
@@ -72,7 +74,7 @@
 #' summary(IT) # Test summary
 #' plot(IT) # PLS plot
 #' 
-phylo.integration <-function(A, A2=NULL, phy, partition.gp=NULL,iter=999, seed=NULL){ 
+phylo.integration <-function(A, A2=NULL, phy, partition.gp=NULL,iter=999, seed=NULL, print.progress=TRUE){ 
   if(any(is.na(A))==T){
     stop("Data matrix 1 contains missing values. Estimate these first(see 'estimate.missing').")  } 
   if (!is.phylo(phy))
@@ -137,14 +139,16 @@ phylo.integration <-function(A, A2=NULL, phy, partition.gp=NULL,iter=999, seed=N
 #Analysis  
   if(ngps==2){
     pls.obs <- pls.phylo(x, y, invC,D.mat,verbose=TRUE)
-    pls.rand <- apply.pls.phylo(x, y,invC,D.mat, iter=iter, seed=seed)
+    if(print.progress) pls.rand <- apply.pls.phylo(x, y,invC,D.mat, iter=iter, seed=seed) else
+      pls.rand <- .apply.pls.phylo(x, y,invC,D.mat, iter=iter, seed=seed)
     p.val <- pval(pls.rand)
     XScores <- pls.obs$XScores
     YScores <- pls.obs$YScores
   }
   if(ngps>2){
     pls.obs <- plsmulti.phylo(x, gps, invC,D.mat)  
-    pls.rand <- apply.plsmulti.phylo(x, gps, invC,D.mat, iter=iter, seed=seed)
+    if(print.progress) pls.rand <- apply.plsmulti.phylo(x, gps, invC,D.mat, iter=iter, seed=seed) else
+      pls.rand <- .apply.plsmulti.phylo(x, gps, invC,D.mat, iter=iter, seed=seed)
     p.val <- pval(pls.rand)
   } 
   ####OUTPUT
