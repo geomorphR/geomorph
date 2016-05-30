@@ -6,6 +6,7 @@ CHANGES IN GEOMORPH VERSION 3.0.1
     o added reading polygons in read.morphologika()
 
   BUG FIXES
+    o Fixed output formatting of pairwise pvalue matrix in compare.evol.rates
     o Fixed error in output order in plotOutliers
     o Fixed error in calculation slope distances in advanced.procD.lm  
     o Fixed 2D data input error for phylo.modularity
