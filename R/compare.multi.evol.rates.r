@@ -45,6 +45,8 @@
 #' @param Subset A logical value indicating whether or not the traits are subsets from a single 
 #' landmark configuration (default is TRUE)
 #' @param iter Number of iterations for significance testing
+#' @param print.progress A logical value to indicate whether a progress bar should be printed to the screen.  
+#' This is helpful for long-running analyses.
 #' @keywords analysis
 #' @author Dean Adams
 #' @export
@@ -70,7 +72,7 @@
 #'     Subset=TRUE, phy= plethspecies$phy,iter=999)
 #' summary(EMR)
 #' plot(EMR)
-compare.multi.evol.rates<-function(A,gp,phy,Subset=TRUE,iter=999){
+compare.multi.evol.rates<-function(A,gp,phy,Subset=TRUE,iter=999, print.progress=TRUE){
   if(any(is.na(A))==T){
     stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').")}
   gp<-as.factor(gp)
@@ -102,7 +104,15 @@ compare.multi.evol.rates<-function(A,gp,phy,Subset=TRUE,iter=999){
   R<-sigma.obs$R; diag(R)<-sigma.obs$rate.global
   R<-matrix(nearPD(R,corr=FALSE)$mat,nrow=ncol(R),ncol=ncol(R))
   x.sim<-sim.char(phy,R,nsim=iter) 
-  sigma.rand <- sapply(1:(iter), function(j) sigma.d.multi(as.matrix(x.sim[,,j]),invC,D.mat,gps,Subset))
+  if(print.progress){
+    pb <- txtProgressBar(min = 0, max = iter, initial = 0, style=3) 
+    sigma.rand <- sapply(1:iter, function(j) {
+      setTxtProgressBar(pb,j)
+      sigma.d.multi(as.matrix(x.sim[,,j]),invC,D.mat,gps,Subset)
+    })
+    close(pb)
+  } else sigma.rand <-sapply(1:iter, function(j) 
+    sigma.d.multi(as.matrix(x.sim[,,j]),invC,D.mat,gps,Subset))
   random.sigma<-c(sigma.obs$sigma.d.ratio,as.vector(unlist(sigma.rand[1,])))
   p.val <- pval(random.sigma)
   ratio.vals<-matrix(NA,nrow=(iter+1),ncol=length(unlist(sigma.obs[4])))
