@@ -45,6 +45,8 @@
 #' which might be of interest for advanced users.
 #' @param data A data frame for the function environment; see \code{\link{geomorph.data.frame}}.  If variables
 #' are transformed in formulae, they should also be transformed in the geomorph data frame.  (See examples.)
+#' @param print.progress A logical value to indicate whether a progress bar should be printed to the screen.  
+#' This is helpful for long-running analyses.
 #' @param ... Arguments passed on to procD.fit (typically associated with the lm function)
 #' @keywords analysis
 #' @export
@@ -97,7 +99,9 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
                             phy = NULL,
                             pc.shape = FALSE,
                             iter=999, 
-                            seed = NULL, data=NULL, ...){
+                            seed = NULL, 
+                            print.progress = TRUE,
+                            data=NULL, ...){
   if(pc.shape == TRUE) pfit1 <- procD.fit(f1, data=data, pca = TRUE) else pfit1 <- procD.fit(f1, data=data, pca=FALSE)
   if(!is.null(seed) && seed=="random") seed = sample(1:iter, 1)
   Y <- as.matrix(pfit1$Y)
@@ -198,7 +202,8 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
   } else slp <- NULL
   
   if(pairwise.cond == "none"){
-    pb <- txtProgressBar(min = 0, max = ceiling(iter/100), initial = 0, style=3) 
+    if(print.progress)
+      pb <- txtProgressBar(min = 0, max = ceiling(iter/100), initial = 0, style=3) 
     jj <- iter+1
     step <- 1
     if(jj > 100) j <- 1:100 else j <- 1:jj
@@ -218,7 +223,7 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
       jj <- jj-length(j)
       if(jj > 100) kk <- 1:100 else kk <- 1:jj
       j <- j[length(j)] +kk
-      setTxtProgressBar(pb,step)
+      if(print.progress) setTxtProgressBar(pb,step)
       step <- step+1
     }
     P.val <- pval(P) 
@@ -227,7 +232,8 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
   
   if(pairwise.cond == "means") {
     P <- lsms <- NULL
-    pb <- txtProgressBar(min = 0, max = ceiling(iter/100), initial = 0, style=3) 
+    if(print.progress)
+      pb <- txtProgressBar(min = 0, max = ceiling(iter/100), initial = 0, style=3) 
     jj <- iter+1
     step <- 1
     if(jj > 100) j <- 1:100 else j <- 1:jj
@@ -249,10 +255,10 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
       jj <- jj-length(j)
       if(jj > 100) kk <- 1:100 else kk <- 1:jj
       j <- j[length(j)] +kk
-      setTxtProgressBar(pb,step)
+      if(print.progress) setTxtProgressBar(pb,step)
       step <- step+1
     }
-    close(pb)
+    if(print.progress) close(pb)
     P <- simplify2array(P)
     P.dist <- lapply(1:length(lsms), function(j){as.matrix(dist(lsms[[j]]))})
     P.val <- pval(P) 
@@ -265,7 +271,8 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
   
   if(pairwise.cond == "slopes") {
     P <- g.slopes <- NULL
-    pb <- txtProgressBar(min = 0, max = ceiling(iter/100), initial = 0, style=3) 
+    if(print.progress)
+      pb <- txtProgressBar(min = 0, max = ceiling(iter/100), initial = 0, style=3)
     jj <- iter+1
     step <- 1
     if(jj > 100) j <- 1:100 else j <- 1:jj
@@ -286,10 +293,10 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
       jj <- jj-length(j)
       if(jj > 100) kk <- 1:100 else kk <- 1:jj
       j <- j[length(j)] +kk
-      setTxtProgressBar(pb,step)
+      if(print.progress) setTxtProgressBar(pb,step)
       step <- step+1
     }
-    close(pb)
+    if(print.progress) close(pb)
     P <- simplify2array(P)
     slope.lengths <- Map(function(y) sqrt(diag(tcrossprod(y))), g.slopes) 
     P.slopes.dist <- Map(function(y) as.matrix(dist(matrix(y))), slope.lengths) 

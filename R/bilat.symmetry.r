@@ -59,6 +59,8 @@
 #'   If seed = "random", a random seed will be used, and P-values will vary.  One can also specify an integer for specific seed values,
 #' which might be of interest for advanced users.
 #' @param RRPP A logical value indicating whether residual randomization should be used for significance testing.
+#' @param print.progress A logical value to indicate whether a progress bar should be printed to the screen.  
+#' This is helpful for long-running analyses.
 #' @keywords analysis
 #' @export
 #' @author Dean Adams, Emma Sherratt, and Michael Collyer
@@ -156,8 +158,13 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
   kSh <- length(pfitSh$term.labels)
   if(!is.null(seed) && seed=="random") seed = sample(1:iter, 1)
   cat("\nShape Analysis\n")
-  if(RRPP == TRUE) PSh <- SS.iter(pfitSh,Yalt="RRPP", iter=iter, seed=seed) else 
-    PSh <- SS.iter(pfitSh, Yalt="resample", iter=iter, seed=seed)
+  if(print.progress) {
+    if(RRPP == TRUE) PSh <- SS.iter(pfitSh,Yalt="RRPP", iter=iter, seed=seed) else 
+      PSh <- SS.iter(pfitSh, Yalt="resample", iter=iter, seed=seed)
+  } else {
+    if(RRPP == TRUE) PSh <- .SS.iter(pfitSh,Yalt="RRPP", iter=iter, seed=seed) else 
+      PSh <- .SS.iter(pfitSh, Yalt="resample", iter=iter, seed=seed)
+  }
   anova.parts.Sh <- anova.parts.symmetry(pfitSh, PSh, object.sym)
   anovaSh <-anova.parts.Sh$anova.table 
   Sh.random.Fs <-anova.parts.Sh$random.Fs
@@ -176,8 +183,13 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
     }
     pfitSz=procD.fit(form.size, data=dat.size, keep.order=TRUE)
     cat("\nSize Analysis\n")
-    if(RRPP == TRUE) PSz <- SS.iter(pfitSz,Yalt="RRPP", iter=iter, seed=seed) else 
-      PSz <- SS.iter(pfitSz, Yalt="resample", iter=iter, seed=seed)
+    if(print.progress) {
+      if(RRPP == TRUE) PSz <- SS.iter(pfitSz,Yalt="RRPP", iter=iter, seed=seed) else 
+        PSz <- SS.iter(pfitSz, Yalt="resample", iter=iter, seed=seed)
+    } else {
+      if(RRPP == TRUE) PSz <- .SS.iter(pfitSz,Yalt="RRPP", iter=iter, seed=seed) else 
+        PSz <- .SS.iter(pfitSz, Yalt="resample", iter=iter, seed=seed)
+    }
     anova.parts.Sz <- anova.parts.symmetry(pfitSz, PSz,object.sym)
     anovaSz <-anova.parts.Sz$anova.table 
     Sz.random.Fs <-anova.parts.Sz$random.Fs
