@@ -53,6 +53,7 @@
 #' @param curves An optional matrix defining which landmarks should be treated as semilandmarks on boundary 
 #'   curves, and which landmarks specify the tangent directions for their sliding
 #' @param surfaces An optional vector defining which landmarks should be treated as semilandmarks on surfaces
+#' @param print.progress A logical value to indicate whether a progress bar should be printed to the screen.  
 #' @keywords analysis
 #' @export
 #' @author Dean Adams and Michael Collyer
@@ -126,7 +127,8 @@
 #' # NOTE can summarize as: summary(Y.gpa)
 #' # NOTE can plot as: plot(Y.gpa) 
 gpagen = function(A, curves=NULL, surfaces=NULL, PrinAxes = TRUE, 
-                      max.iter = NULL, ProcD=TRUE, Proj = TRUE){
+                  max.iter = NULL, ProcD=TRUE, Proj = TRUE,
+                  print.progress = TRUE){
   n <- dim(A)[[3]]; p <- dim(A)[[1]]; k <- dim(A)[[2]]
   if(!is.array(A)) stop("Coordinates must be an array")
   if(length(dim(A)) != 3) stop("Coordinates array does not have proper dimensions")
@@ -145,10 +147,18 @@ gpagen = function(A, curves=NULL, surfaces=NULL, PrinAxes = TRUE,
     if(ncol(curves) != 3) stop("curves must be a matrix of three columns")
   } else curves <- NULL
   if(!is.null(surfaces)) surf <- as.vector(surfaces) else surf <- NULL
-  if(!is.null(curves) || !is.null(surf)) gpa <- pGpa.wSliders(Y, curves = curves, surf=surf,
-                                           PrinAxes = PrinAxes, max.iter=max.it, 
-                                           ProcD=prD) else
-    gpa <- pGpa(Y, PrinAxes = PrinAxes, max.iter=max.it)
+  if(print.progress == TRUE){
+    if(!is.null(curves) || !is.null(surf)) gpa <- pGpa.wSliders(Y, curves = curves, surf=surf,
+              PrinAxes = PrinAxes, max.iter=max.it, 
+              ProcD=prD) else
+              gpa <- pGpa(Y, PrinAxes = PrinAxes, max.iter=max.it)
+  } else {
+    if(!is.null(curves) || !is.null(surf)) gpa <- .pGpa.wSliders(Y, curves = curves, surf=surf,
+              PrinAxes = PrinAxes, max.iter=max.it, 
+              ProcD=prD) else
+              gpa <- .pGpa(Y, PrinAxes = PrinAxes, max.iter=max.it)
+  }
+  
   coords <- gpa$coords
   if (Proj == TRUE) {
     coords <- orp(coords)
