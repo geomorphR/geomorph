@@ -762,6 +762,33 @@ pGpa.wSliders <- function(Y, curves, surf, ProcD = TRUE, PrinAxes = FALSE, Proj 
   list(coords= Ya, CS=CS, iter=iter, consensus=M, Q=Q, nsliders=NULL)
 }
 
+# .pGPA.wSliders
+# same as pGPA.wSliders, without option for porgress bar
+# used in gpagen
+.pGpa.wSliders <- function(Y, curves, surf, ProcD = TRUE, PrinAxes = FALSE, Proj = FALSE, max.iter = 5){
+  n <- length(Y); p <- nrow(Y[[1]]); k <- ncol(Y[[1]])
+  Yc <- Map(function(y) center.scale(y), Y)
+  CS <- sapply(Yc,"[[","CS")
+  Ya <- lapply(Yc,"[[","coords")
+  Ya <- apply.pPsup(Ya[[1]], Ya)
+  M <- Reduce("+", Ya)/n
+  if(ProcD == FALSE) gpa.slide <- .BE.slide(curves, surf, Ya, ref=M, max.iter=max.iter) else 
+    gpa.slide <- .procD.slide(curves, surf, Ya, ref=M, max.iter=max.iter)
+  Ya <- gpa.slide$coords
+  M <- gpa.slide$consensus
+  iter <- gpa.slide$iter
+  Q <- gpa.slide$Q
+  if (PrinAxes == TRUE) {
+    ref <- M
+    rot <- prcomp(ref)$rotation
+    for (i in 1:k) if (sign(rot[i, i]) != 1) 
+      rot[1:k, i] = -rot[1:k, i]
+    Ya <- Map(function(y) y%*%rot, Ya)
+    M <- center.scale(Reduce("+", Ya)/n)$coords
+  }
+  list(coords= Ya, CS=CS, iter=iter, consensus=M, Q=Q, nsliders=NULL)
+}
+
 # tps
 #
 #
