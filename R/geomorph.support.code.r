@@ -153,7 +153,12 @@ NULL
 # center
 # centers a matrix faster than scale()
 # used in other functions for gpagen; digitsurface
-center <- function(x) x - rep(colMeans(x), rep.int(nrow(x), ncol(x)))
+center <- function(x){
+  if(is.vector(x)) x- mean(x) else {
+    x <- as.matrix(x)
+    x - rep(colMeans(x), rep.int(nrow(x), ncol(x)))
+  }
+}
 
 # csize
 # calculates centroid size
