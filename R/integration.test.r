@@ -36,6 +36,8 @@
 #' If left NULL (the default), the exact same P-values will be found for repeated runs of the analysis (with the same number of iterations).
 #' If seed = "random", a random seed will be used, and P-values will vary.  One can also specify an integer for specific seed values,
 #' which might be of interest for advanced users.
+#' @param print.progress A logical value to indicate whether a progress bar should be printed to the screen.  
+#' This is helpful for long-running analyses.
 #' @export
 #' @keywords analysis
 #' @author Dean Adams
@@ -73,7 +75,7 @@
 #' plot(IT) # PLS plot
 #' IT$left.pls.vectors # extracting just the left (first block) singular vectors
 
-integration.test<-function(A, A2=NULL,partition.gp=NULL,iter=999, seed=NULL){
+integration.test<-function(A, A2=NULL,partition.gp=NULL,iter=999, seed=NULL, print.progress=TRUE){
   if(any(is.na(A))==T){
     stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').")  }
   if(!is.null(partition.gp)){
@@ -108,7 +110,8 @@ integration.test<-function(A, A2=NULL,partition.gp=NULL,iter=999, seed=NULL){
     ngps=2; n<-dim(x)[2]
   }
   if(ngps==2){
-    pls.rand <- apply.pls(x, y, iter=iter, seed=seed)
+    if(print.progress) pls.rand <- apply.pls(x, y, iter=iter, seed=seed) else
+      pls.rand <- .apply.pls(x, y, iter=iter, seed=seed)
     pls.obs <- pls(x, y, verbose=TRUE)
     p.val <- pval(pls.rand)
     XScores <- pls.obs$XScores
@@ -116,7 +119,8 @@ integration.test<-function(A, A2=NULL,partition.gp=NULL,iter=999, seed=NULL){
   }
   if(ngps>2){
     pls.obs <- plsmulti(x, gps)  
-    pls.rand <- apply.plsmulti(x, gps, iter=iter, seed=seed)
+    if(print.progress) pls.rand <- apply.plsmulti(x, gps, iter=iter, seed=seed) else
+      pls.rand <- .apply.plsmulti(x, gps, iter=iter, seed=seed)
     p.val <- pval(pls.rand)
   }  
   ####OUTPUT

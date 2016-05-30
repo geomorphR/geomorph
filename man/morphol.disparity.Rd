@@ -5,13 +5,11 @@
 \title{Morphological disparity for one or more groups of specimens}
 \usage{
 morphol.disparity(f1, groups = NULL, iter = 999, seed = NULL,
-  data = NULL, ...)
+  data = NULL, print.progress = TRUE, ...)
 }
 \arguments{
 \item{f1}{A formula describing the linear model used.  The left-hand portion of the formula should be
-a matrix (n x [p x k]) or 3D array (p x k x n) containing GPA-aligned coordinates for a set of specimens.  However,
-any matrix of multivariate data will work.  The right-hand portion of the formula should be " ~1" to use the overall mean,
-or "~ x1 + x2 + x3 +...", where each x is a covariate or factor.  (Interactions and nested terms also work.)}
+a 3D array (p x k x n) containing GPA-aligned coordinates for a set of specimens, or a matrix (n x variables). The right-hand portion of the formula should be " ~1" to use the overall mean, or "~ x1 + x2 + x3 +...", where each x is a covariate or factor.  (Interactions and nested terms also work.)}
 
 \item{groups}{A formula designating groups, e.g., groups = ~ groups.  If NULL, morphol.disparity
 will attempt to define groups based on the linear model formula, f1.  If there are no groups inherently
@@ -25,6 +23,9 @@ If seed = "random", a random seed will be used, and P-values will vary.  One can
 which might be of interest for advanced users.}
 
 \item{data}{A data frame for the function environment, see \code{\link{geomorph.data.frame}}}
+
+\item{print.progress}{A logical value to indicate whether a progress bar should be printed to the screen.
+This is helpful for long-running analyses.}
 
 \item{...}{Arguments passed on to procD.fit (typically associated with the lm function)}
 }
@@ -46,7 +47,7 @@ Function estimates morphological disparity and performs pairwise comparisons amo
 The function estimates morphological disparity and performs pairwise comparisons to identify differences
 between groups. Morphological disparity is estimated as the Procrustes variance, overall or for groups, 
 using residuals of a linear model fit.  Procrustes variance is the same sum of the diagonal elements 
-of the group sums of squares and cross-products matrix divided by the number of observations in the group (e.g., Zelditch et al. 2012).
+of the group covariance matrix divided by the number of observations in the group (e.g., Zelditch et al. 2012).
 The function takes as input a formula to describe the linear model fit,
 plus a formulaic indication of groups (e.g., ~ groups).  It is assumed that the formula describes shape data that 
 have been GPA-aligned [e.g., \code{\link{gpagen}}], although the function can work with any multivariate data.

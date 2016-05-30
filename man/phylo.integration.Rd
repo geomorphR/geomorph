@@ -5,7 +5,7 @@
 \title{Quantify phylogenetic morphological integration between two or more sets of variables under Brownian motion}
 \usage{
 phylo.integration(A, A2 = NULL, phy, partition.gp = NULL, iter = 999,
-  seed = NULL)
+  seed = NULL, print.progress = TRUE)
 }
 \arguments{
 \item{A}{A 2D array (n x [p1 x k1]) or 3D array (p1 x k1 x n) containing landmark coordinates for the first block}
@@ -22,6 +22,9 @@ phylo.integration(A, A2 = NULL, phy, partition.gp = NULL, iter = 999,
 If left NULL (the default), the exact same P-values will be found for repeated runs of the analysis (with the same number of iterations).
 If seed = "random", a random seed will be used, and P-values will vary.  One can also specify an integer for specific seed values,
 which might be of interest for advanced users.}
+
+\item{print.progress}{A logical value to indicate whether a progress bar should be printed to the screen.
+This is helpful for long-running analyses.}
 }
 \value{
 Objects of class "pls" from integration.test return a list of the following:

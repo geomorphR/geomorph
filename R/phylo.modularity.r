@@ -31,6 +31,8 @@
 #' If left NULL (the default), the exact same P-values will be found for repeated runs of the analysis (with the same number of iterations).
 #' If seed = "random", a random seed will be used, and P-values will vary.  One can also specify an integer for specific seed values,
 #' which might be of interest for advanced users.
+#' @param print.progress A logical value to indicate whether a progress bar should be printed to the screen.  
+#' This is helpful for long-running analyses.
 #' @export
 #' @keywords analysis
 #' @author Dean Adams
@@ -59,7 +61,7 @@
 #' CI = FALSE, iter=999)
 #' summary(MT) # Test summary
 #' plot(MT) # Histogram of CR sampling distribution 
-phylo.modularity<-function(A,partition.gp,phy, CI=FALSE, iter=999, seed=NULL){
+phylo.modularity<-function(A,partition.gp,phy, CI=FALSE, iter=999, seed=NULL, print.progress=TRUE){
   if(any(is.na(A))==T){
     stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').")  }
   if (class(phy) != "phylo")
@@ -68,7 +70,7 @@ phylo.modularity<-function(A,partition.gp,phy, CI=FALSE, iter=999, seed=NULL){
            p<-dim(A)[1]; k<-dim(A)[2];n<-dim(A)[3]
            if(length(partition.gp)!=p){stop("Not all landmarks are assigned to a partition.")}
            }
-  if (length(dim(A))==2){ x<-A; k <-1; p <- ncol(A)
+  if (length(dim(A))==2){ x<-A; k <-1; p<-ncol(A)
            if(length(partition.gp)!=ncol(x)){stop("Not all variables are assigned to a partition.")}
            }
   gps<-factor(as.numeric(as.factor(partition.gp)))
@@ -89,7 +91,8 @@ phylo.modularity<-function(A,partition.gp,phy, CI=FALSE, iter=999, seed=NULL){
     CR.obs<-CR.phylo(x,invC,gps.obs)
     if(ngps > 2) CR.mat <- CR.obs$CR.mat else CR.mat <- NULL
     CR.obs <- CR.obs$CR
-    CR.rand <- apply.phylo.CR(x,invC, gps, k, iter=iter, seed=seed)
+    if(print.progress) CR.rand <- apply.phylo.CR(x,invC, gps, k, iter=iter, seed=seed) else
+      CR.rand <- .apply.phylo.CR(x,invC, gps, k, iter=iter, seed=seed) 
     p.val <- 1-pval(CR.rand)  #b/c smaller values more significant
     if (p.val==0){p.val<-1/(iter+1)}
     if(CI=="TRUE"){
@@ -126,7 +129,8 @@ phylo.modularity<-function(A,partition.gp,phy, CI=FALSE, iter=999, seed=NULL){
               optRot <- matrix(c(cos(optAngle*pi/180),
                sin(optAngle*pi/180),0,-sin(optAngle*pi/180),cos(optAngle*pi/180), 0,0,0,1),ncol=3)
     x <- t(mapply(function(a) matrix(t(a%*%optRot)), Alist))
-    CR.rand <- apply.phylo.CR(x, invC, gps, k, iter=iter, seed=seed)
+    if(print.progress) CR.rand <- apply.phylo.CR(x, invC, gps, k, iter=iter, seed=seed) else
+      CR.rand <- .apply.phylo.CR(x, invC, gps, k, iter=iter, seed=seed)
     CR.rand[1] <- CR.obs <- avgCR
     if(ngps > 2) CR.mat <- CR(x,gps)$CR.mat else CR.mat <- NULL
     p.val <- pval(1/CR.rand)  #b/c smaller values more significant

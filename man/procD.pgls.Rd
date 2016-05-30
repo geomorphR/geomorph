@@ -5,7 +5,7 @@
 \title{Phylogenetic ANOVA/regression for shape data}
 \usage{
 procD.pgls(f1, phy, iter = 999, seed = NULL, int.first = FALSE,
-  RRPP = TRUE, data = NULL, ...)
+  RRPP = TRUE, data = NULL, print.progress = TRUE, ...)
 }
 \arguments{
 \item{f1}{A formula for the linear model (e.g., y~x1+x2)}
@@ -24,6 +24,9 @@ which might be of interest for advanced users.}
 \item{RRPP}{a logical value indicating whether residual randomization should be used for significance testing}
 
 \item{data}{A data frame for the function environment, see \code{\link{geomorph.data.frame}}}
+
+\item{print.progress}{A logical value to indicate whether a progress bar should be printed to the screen.
+This is helpful for long-running analyses.}
 
 \item{...}{Arguments passed on to procD.fit (typically associated with the lm function)}
 }

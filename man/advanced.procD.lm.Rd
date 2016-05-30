@@ -5,8 +5,8 @@
 \title{Procrustes ANOVA and pairwise tests for shape data, using complex linear models}
 \usage{
 advanced.procD.lm(f1, f2, groups = NULL, slope = NULL, angle.type = c("r",
-  "deg", "rad"), pc.shape = FALSE, iter = 999, seed = NULL, data = NULL,
-  ...)
+  "deg", "rad"), pc.shape = FALSE, iter = 999, seed = NULL,
+  print.progress = TRUE, data = NULL, ...)
 }
 \arguments{
 \item{f1}{A formula for a linear model, containing the response matrix (e.g., y ~ x1 + x2)}
@@ -29,6 +29,9 @@ option if the data are high-dimensional (many more variables that observations) 
 If left NULL (the default), the exact same P-values will be found for repeated runs of the analysis (with the same number of iterations).
 If seed = "random", a random seed will be used, and P-values will vary.  One can also specify an integer for specific seed values,
 which might be of interest for advanced users.}
+
+\item{print.progress}{A logical value to indicate whether a progress bar should be printed to the screen.
+This is helpful for long-running analyses.}
 
 \item{data}{A data frame for the function environment; see \code{\link{geomorph.data.frame}}.  If variables
 are transformed in formulae, they should also be transformed in the geomorph data frame.  (See examples.)}

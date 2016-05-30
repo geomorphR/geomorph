@@ -5,7 +5,7 @@
 \title{Quantify and compare shape change trajectories}
 \usage{
 trajectory.analysis(f1, f2 = NULL, iter = 999, seed = NULL,
-  traj.pts = NULL, data = NULL)
+  traj.pts = NULL, data = NULL, print.progress = TRUE)
 }
 \arguments{
 \item{f1}{A formula for the linear model, for trajectories (e.g., Y ~ A or Y ~ A * B).
@@ -23,6 +23,9 @@ which might be of interest for advanced users.}
 \item{traj.pts}{An optional value specifying the number of points in each trajectory (if f1 contains a single factor)}
 
 \item{data}{A data frame for the function environment, see \code{\link{geomorph.data.frame}}}
+
+\item{print.progress}{A logical value to indicate whether a progress bar should be printed to the screen.
+This is helpful for long-running analyses.}
 
 \item{...}{Arguments passed on to procD.fit (typically associated with the \code{\link{lm}} function)}
 }

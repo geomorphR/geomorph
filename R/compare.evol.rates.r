@@ -26,10 +26,12 @@
 #'  \subsection{Notes for geomorph 3.0}{ 
 #' Compared to older versions of geomorph, the order of input variables has changed, so that it is consistent with other functions
 #' in the program.  Additionally, for 3 or more groups, the pairwise p-values are found in the output object.}
+#' @param A A 3D array (p x k x n) containing GPA-aligned coordinates for all specimens, or a matrix (n x variables)
 #' @param phy A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape
-#' @param A A matrix (n x [p x k]) or 3D array (p x k x n) containing GPA-aligned coordinates for a set of specimens
 #' @param gp A factor array designating group membership
 #' @param iter Number of iterations for significance testing
+#' @param print.progress A logical value to indicate whether a progress bar should be printed to the screen.  
+#' This is helpful for long-running analyses.
 #' @keywords analysis
 #' @author Dean Adams & Emma Sherratt
 #' @export
@@ -54,7 +56,7 @@
 #' ER<-compare.evol.rates(A=Y.gpa$coords, phy=plethspecies$phy,gp=gp.end,iter=999)
 #' summary(ER)
 #' plot(ER)
-compare.evol.rates<-function(A,phy,gp,iter=999 ){
+compare.evol.rates<-function(A,phy,gp,iter=999,print.progress=TRUE ){
   gp<-as.factor(gp)
   if (length(dim(A))==3){ 
       if(is.null(dimnames(A)[[3]])){
@@ -91,7 +93,14 @@ compare.evol.rates<-function(A,phy,gp,iter=999 ){
   diag(rate.mat)<-sigma.obs$sigma.d.all
   rate.mat<-matrix(nearPD(rate.mat,corr=FALSE)$mat,nrow=ncol(rate.mat),ncol=ncol(rate.mat))
   x.sim<-sim.char(phy=phy,par=rate.mat,nsim=iter,model="BM") 
-  sigma.rand <- sapply(1:(iter), function(j) sigma.d(as.matrix(x.sim[,,j]),invC,D.mat,gp))
+  if(print.progress){
+    pb <- txtProgressBar(min = 0, max = iter, initial = 0, style=3) 
+    sigma.rand <- sapply(1:iter, function(j) {
+      setTxtProgressBar(pb,j)
+      sigma.d(as.matrix(x.sim[,,j]),invC,D.mat,gp)
+    })
+    close(pb)
+    } else sigma.rand <- sapply(1:(iter), function(j) sigma.d(as.matrix(x.sim[,,j]),invC,D.mat,gp))
   random.sigma<-c(sigma.obs$sigma.d.ratio,as.vector(unlist(sigma.rand[1,])))
   if(nlevels(gp)>1){
     p.val <- pval(random.sigma)

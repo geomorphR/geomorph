@@ -4,7 +4,8 @@
 \alias{compare.multi.evol.rates}
 \title{Comparing rates of shape evolution among traits on phylogenies}
 \usage{
-compare.multi.evol.rates(A, gp, phy, Subset = TRUE, iter = 999)
+compare.multi.evol.rates(A, gp, phy, Subset = TRUE, iter = 999,
+  print.progress = TRUE)
 }
 \arguments{
 \item{A}{A matrix (n x [p x k]) or 3D array (p x k x n) containing GPA-aligned coordinates for a set of specimens}
@@ -17,6 +18,9 @@ compare.multi.evol.rates(A, gp, phy, Subset = TRUE, iter = 999)
 landmark configuration (default is TRUE)}
 
 \item{iter}{Number of iterations for significance testing}
+
+\item{print.progress}{A logical value to indicate whether a progress bar should be printed to the screen.
+This is helpful for long-running analyses.}
 }
 \value{
 An object of class "evolrate" returns a list of the following: 
