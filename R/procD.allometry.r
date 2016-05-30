@@ -81,6 +81,8 @@
 #' @param alpha The significance level for the homegeneity of slopes test
 #' @param RRPP A logical value indicating whether residual randomization should be used for significance testing
 #' @param data A data frame for the function environment, see \code{\link{geomorph.data.frame}} 
+#' @param print.progress A logical value to indicate whether a progress bar should be printed to the screen.  
+#' This is helpful for long-running analyses.
 #' @param ... Arguments passed on to procD.fit (typically associated with the lm function)
 #' @keywords analysis
 #' @export
@@ -154,7 +156,8 @@
 #' summary(plethANOVA) # Same ANOVA
 #' plot(plethANOVA) # diagnostic plot instead of allometry plot
 procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
-                   iter = 999, seed=NULL, alpha = 0.05, RRPP = TRUE, data=NULL, ...){
+                   iter = 999, seed=NULL, alpha = 0.05, RRPP = TRUE, 
+                   print.progress = TRUE, data=NULL, ...){
   pfit <- procD.fit(f1, data=data, pca=FALSE)
   dat <- pfit$data
   Y <- pfit$Y
@@ -251,7 +254,8 @@ procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
     form4 <- update(form4, Y ~.)
     form5 <- update(form5, Y ~.)
     datHOS <- data.frame(dat, size=size, gps=gps)
-    HOS <- advanced.procD.lm(form4, form5, data=datHOS, iter=iter, seed=seed)$anova.table
+    HOS <- advanced.procD.lm(form4, form5, data=datHOS, iter=iter, seed=seed, 
+                             print.progress = print.progress)$anova.table
     rownames(HOS) = c("Common Allometry", "Group Allometries")
     hos.pval <- HOS[2,7]
     if(hos.pval > alpha){
@@ -272,7 +276,8 @@ procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
   
   formfull <- update(formfull, Y~.)
   fitf <- procD.fit(formfull, data=dat, pca=FALSE)
-  anovafull <- procD.lm(formfull, data=dat, iter=iter, seed=seed, RRPP=RRPP)$aov.table
+  anovafull <- procD.lm(formfull, data=dat, iter=iter, seed=seed, RRPP=RRPP,
+                        print.progress = print.progress)$aov.table
   if(RRPP) perm.method = "RRPP" else perm.method = "raw"
   
   # Plot set-up
