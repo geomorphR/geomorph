@@ -57,6 +57,8 @@
 #' @param int.first A logical value to indicate if interactions of first main effects should precede subsequent main effects
 #' @param RRPP a logical value indicating whether residual randomization should be used for significance testing
 #' @param data A data frame for the function environment, see \code{\link{geomorph.data.frame}} 
+#' @param print.progress A logical value to indicate whether a progress bar should be printed to the screen.  
+#' This is helpful for long-running analyses.
 #' @param ... Arguments passed on to procD.fit (typically associated with the lm function)
 #' @keywords analysis
 #' @export
@@ -84,7 +86,7 @@
 #' plot(pleth.pgls)
 #' pleth.pgls$Pcor # the phylogenetic transformation (correction) matrix
 procD.pgls<-function(f1, phy, iter=999, seed=NULL, int.first = FALSE, 
-                         RRPP=TRUE, data=NULL, ...){
+                     RRPP=TRUE, data=NULL, print.progress = TRUE, ...){
   if(int.first==TRUE) ko = TRUE else ko = FALSE
   pfit <- procD.fit(f1, data=data, keep.order=ko, pca=FALSE)
   Terms <- pfit$Terms
@@ -109,8 +111,13 @@ procD.pgls<-function(f1, phy, iter=999, seed=NULL, int.first = FALSE,
   eigC.vect = eigC$vectors[,1:(length(lambda))]
   Pcor <- fast.solve(eigC.vect%*% diag(sqrt(lambda)) %*% t(eigC.vect)) 
   dimnames(Pcor) <- dimnames(C)
-  if(RRPP == TRUE) SSr <- Fpgls.iter(pfit, Yalt="RRPP", Pcor, iter=iter, seed=seed) else 
-    SSr <- Fpgls.iter(pfit, Yalt="resample", Pcor, iter=iter, seed=seed)
+  if(print.progress) {
+    if(RRPP == TRUE) SSr <- Fpgls.iter(pfit, Yalt="RRPP", Pcor, iter=iter, seed=seed) else 
+      SSr <- Fpgls.iter(pfit, Yalt="resample", Pcor, iter=iter, seed=seed)
+  } else {
+    if(RRPP == TRUE) SSr <- .Fpgls.iter(pfit, Yalt="RRPP", Pcor, iter=iter, seed=seed) else 
+      SSr <- .Fpgls.iter(pfit, Yalt="resample", Pcor, iter=iter, seed=seed)
+  }
   anova.parts.obs <- anova.parts.pgls(pfit, SSr)
   anova.tab <-anova.parts.obs$anova.table 
   P <- SSr$Fs
