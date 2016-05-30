@@ -5,7 +5,7 @@
 \title{Morphological disparity for one or more groups of specimens}
 \usage{
 morphol.disparity(f1, groups = NULL, iter = 999, seed = NULL,
-  data = NULL, print.progess = TRUE, ...)
+  data = NULL, print.progress = TRUE, ...)
 }
 \arguments{
 \item{f1}{A formula describing the linear model used.  The left-hand portion of the formula should be
@@ -24,10 +24,10 @@ which might be of interest for advanced users.}
 
 \item{data}{A data frame for the function environment, see \code{\link{geomorph.data.frame}}}
 
-\item{...}{Arguments passed on to procD.fit (typically associated with the lm function)}
-
 \item{print.progress}{A logical value to indicate whether a progress bar should be printed to the screen.
 This is helpful for long-running analyses.}
+
+\item{...}{Arguments passed on to procD.fit (typically associated with the lm function)}
 }
 \value{
 Objects of class "morphol.disparity" return a list with the following components 

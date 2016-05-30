@@ -73,7 +73,7 @@
 #' MD <- morphol.disparity(coords ~ Csize + species*site, groups= ~ species, data = gdf, iter=999)
 #' MD$Procrustes.var # just the Procrustes variances
 morphol.disparity <- function(f1, groups = NULL, iter = 999, seed = NULL, 
-                              data = NULL, print.progess = TRUE, ...){
+                              data = NULL, print.progress = TRUE, ...){
   pfit <- procD.fit(f1, data=data)
   if(!is.null(groups) & class(groups) != "formula") stop("groups must be a formula; e.g., groups = ~ X")
   if(is.null(groups)) gps <- single.factor(pfit) else {
