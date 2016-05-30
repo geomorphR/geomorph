@@ -51,6 +51,8 @@
 #' @param RRPP A logical value indicating whether residual randomization should be used for significance testing
 #' @param int.first A logical value to indicate if interactions of first main effects should precede subsequent main effects
 #' @param data A data frame for the function environment, see \code{\link{geomorph.data.frame}} 
+#' @param print.progress A logical value to indicate whether a progress bar should be printed to the screen.  
+#' This is helpful for long-running analyses.
 #' @param ... Arguments passed on to procD.fit (typically associated with the lm function)
 #' @keywords analysis
 #' @export
@@ -113,12 +115,18 @@
 #' attributes(rat.anova)
 #' rat.anova$fitted # just the fitted values
 procD.lm<- function(f1, iter = 999, seed=NULL, RRPP = TRUE, 
-                        int.first = FALSE,  data=NULL, ...){
+                        int.first = FALSE,  data=NULL, print.progress = TRUE, ...){
   if(int.first==TRUE) ko = TRUE else ko = FALSE
   pfit <- procD.fit(f1, data=data, keep.order=ko)
   k <- length(pfit$term.labels)
-  if(RRPP == TRUE) P <- SS.iter(pfit,Yalt="RRPP", iter=iter, seed=seed) else 
-    P <- SS.iter(pfit, Yalt="resample", iter=iter, seed=seed)
+  if(print.progress == TRUE){
+    if(RRPP == TRUE) P <- SS.iter(pfit,Yalt="RRPP", iter=iter, seed=seed) else 
+      P <- SS.iter(pfit, Yalt="resample", iter=iter, seed=seed)
+  } else {
+    if(RRPP == TRUE) P <- .SS.iter(pfit,Yalt="RRPP", iter=iter, seed=seed) else 
+      P <- .SS.iter(pfit, Yalt="resample", iter=iter, seed=seed)
+  }
+  
   anova.parts.obs <- anova.parts(pfit, P)
   anova.tab <-anova.parts.obs$anova.table 
   if(is.matrix(P)){
