@@ -112,11 +112,23 @@ modularity.test<-function(A,partition.gp,iter=999, CI=FALSE,seed=NULL, print.pro
                 sin(angle[i]*pi/180),0,-sin(angle[i]*pi/180),cos(angle[i]*pi/180), 0,0,0,1),ncol=3))      
     }
     Alist <-lapply(1:n,function(j) A[,,j]) # convert array to list
-    rotatedCRs <-sapply(1:length(rot.mat), function(j) {
-      r <- rot.mat[[j]]
-      rotA <- t(mapply(function(a) matrix(t(a%*%r)), Alist))
-      CR(rotA, gps=gps.obs)$CR
-    })
+    if(print.progress){
+      cat("\nFinding the optimal rotation for CR\n")
+      pb <- txtProgressBar(min = 0, max = length(rot.mat), initial = 0, style=3) 
+      rotatedCRs <-sapply(1:length(rot.mat), function(j) {
+        r <- rot.mat[[j]]
+        rotA <- t(mapply(function(a) matrix(t(a%*%r)), Alist))
+        setTxtProgressBar(pb,j)
+        CR(rotA, gps=gps.obs)$CR
+      })
+      close(pb)
+    } else {
+      rotatedCRs <-sapply(1:length(rot.mat), function(j) {
+        r <- rot.mat[[j]]
+        rotA <- t(mapply(function(a) matrix(t(a%*%r)), Alist))
+        CR(rotA, gps=gps.obs)$CR
+      })
+    }
     avgCR <- mean(rotatedCRs)
     angCheck <- abs(rotatedCRs-avgCR)
     optAngle <- angle[angCheck==min(angCheck)]
@@ -126,8 +138,10 @@ modularity.test<-function(A,partition.gp,iter=999, CI=FALSE,seed=NULL, print.pro
               optRot <- matrix(c(cos(optAngle*pi/180),
                sin(optAngle*pi/180),0,-sin(optAngle*pi/180),cos(optAngle*pi/180), 0,0,0,1),ncol=3)
     x <- t(mapply(function(a) matrix(t(a%*%optRot)), Alist))
-    if(print.progress) CR.rand <- apply.CR(x, gps, k=k, iter=iter, seed=seed) else
-      CR.rand <- .apply.CR(x, gps, k=k, iter=iter, seed=seed)
+    if(print.progress) {
+      cat("\nPerforming permutations\n")
+      CR.rand <- apply.CR(x, gps, k=k, iter=iter, seed=seed)
+      } else CR.rand <- .apply.CR(x, gps, k=k, iter=iter, seed=seed)
     CR.rand[1] <- CR.obs <- avgCR
     if(ngps > 2) CR.mat <- CR(x,gps.obs)$CR.mat else CR.mat <- NULL
     p.val <- pval(1/CR.rand)  #b/c smaller values more significant
