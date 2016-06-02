@@ -959,7 +959,7 @@ procD.fit <- function(f1, keep.order=FALSE, pca=TRUE, data=NULL,...){
     wXs <- Xs; wQRs <- QRs; wFitted <- fitted; wResiduals <- residuals
     wCoefficients <- coefficients
   } else {
-    wXs <- lapply(Xs, function(x) x*w)
+    wXs <- lapply(Xs, function(x) x*sqrt(w))
     wQRs <- lapply(wXs, function(x) qr(x))
     wFitted <- lapply(wQRs, function(x) qr.fitted(x,Y))
     wResiduals <- lapply(wQRs, function(x) qr.resid(x,Y))
