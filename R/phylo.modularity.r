@@ -122,7 +122,7 @@ phylo.modularity<-function(A,partition.gp,phy, CI=FALSE, iter=999, seed=NULL, pr
     })
     avgCR <- mean(rotatedCRs)
     angCheck <- abs(rotatedCRs-avgCR)
-    optAngle <- angle[angCheck==min(angCheck)]
+    optAngle <- angle[angCheck==min(angCheck)]; optAngle<-optAngle[1]
     # Optimal rotation 
     if(k==2) optRot <- matrix(c(cos(optAngle*pi/180),
              sin(optAngle*pi/180),-sin(optAngle*pi/180),cos(optAngle*pi/180)),ncol=2) else
