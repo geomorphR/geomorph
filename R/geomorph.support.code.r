@@ -893,7 +893,7 @@ procD.fit <- function(f1, keep.order=FALSE, pca=TRUE, data=NULL,...){
     weights <- f1$weights
     contrasts <- f1$contrasts
     offset <-f1$offset
-    data <- model.frame(f1)
+    dat <- data <- model.frame(f1)
     Y <- as.matrix(data[1])
   } else {
     if(!is.null(data)) {
