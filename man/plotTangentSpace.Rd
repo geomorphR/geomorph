@@ -53,6 +53,12 @@ Y.gpa<-gpagen(plethodon$land)    #GPA-alignment
 gp <- as.factor(paste(plethodon$species, plethodon$site)) # group must be a factor
 plotTangentSpace(Y.gpa$coords, groups = gp) 
 
+## To save and use output
+PCA <- plotTangentSpace(Y.gpa$coords, groups = gp) 
+summary(PCA)
+PCA$pc.shapes
+PCA$rotation
+
 ##To change colors of groups
 col.gp <- rainbow(length(levels(gp))) 
    names(col.gp) <- levels(gp)
