@@ -1118,4 +1118,28 @@ plot.trajectory.analysis <- function(x, group.cols = NULL,
            group.cols=group.cols, pattern = pt.seq.pattern, pt.scale=pt.scale)
 }
 
+# plotTangentSpace
 
+#' Print/Summary Function for geomorph
+#' 
+#' @param x print/summary object
+#' @param ... other arguments passed to print/summary
+#' @export
+#' @author Michael Collyer
+#' @keywords utilities
+print.plotTangentSpace <- function (x, ...) {
+  cat("\nPC Summary\n\n")
+  print(x$pc.summary)
+  invisible(x)
+}
+
+#' Print/Summary Function for geomorph
+#' 
+#' @param object print/summary object
+#' @param ... other arguments passed to print/summary
+#' @export
+#' @author Michael Collyer
+#' @keywords utilities
+summary.plotTangentSpace <- function (object, ...) {
+  print.plotTangentSpace(object, ...)
+}

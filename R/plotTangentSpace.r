@@ -20,14 +20,13 @@
 #' @param label An optional vector indicating labels for each specimen are to be displayed 
 #' (or if TRUE, numerical addresses are given)
 #' @param groups An optional factor vector specifying group identity for each specimen (see example)
-#' @param verbose A logical value indicating whether the output is basic or verbose (see Value below)
-#' @return Function returns a table summarizing the percent variation explained by each
-#'  pc axis (equivalent to summary() of \code{\link{prcomp}}) (default, verbose = FALSE).
-#'  If verbose=TRUE, function returns a list containing the following components: 
-#' \item{pc.summary}{A PC summary table as above}
-#' \item{pc.scores}{The set of principal component scores for all specimens.} 
-#' \item{pc.shapes}{A list with four components of the shape coordinates of the extreme ends of axis1 and axis2 
-#' is returned, which can be used by \code{\link{warpRefMesh}}.}
+#' @return Function returns a list of the following components:
+#' \item{pc.summary}{A table summarizing the percent variation explained by each pc axis, equivalent to summary of \code{\link{prcomp}}.}
+#' \item{pc.scores}{The set of principal component scores for all specimens.}
+#' \item{pc.shapes}{A list with four components of the shape coordinates of the extreme ends of axis1 and axis2}
+#' \item{sdev}{The standard deviations of the principal components (i.e., the square roots of the eigenvalues of the 
+#' covariance/correlation matrix, as per \code{\link{prcomp}}.}
+#' \item{rotation}{The matrix of variable loadings, as per \code{\link{prcomp}}.}
 #' @export
 #' @keywords visualization
 #' @author Dean Adams & Emma Sherratt
@@ -49,7 +48,7 @@
 #'          predict(lm(two.d.array(Y.gpa$coords)~1)),12,2))
 
 plotTangentSpace<-function (A, axis1 = 1, axis2 = 2, warpgrids = TRUE, mesh = NULL, label = NULL, 
-                            groups=NULL, verbose=FALSE){
+                            groups=NULL){
   if (length(dim(A)) != 3) {
     stop("Data matrix not a 3D array (see 'arrayspecs').") }
   if(any(is.na(A))==T){
@@ -136,6 +135,8 @@ plotTangentSpace<-function (A, axis1 = 1, axis2 = 2, warpgrids = TRUE, mesh = NU
       }
     layout(1)
     }
-  if(verbose==TRUE){ return(list(pc.summary = summary(pc.res), pc.scores = pcdata, pc.shapes= shapes)) }
-  if(verbose==FALSE){ return(pc.summary = summary(pc.res)) }
+  out <- list(pc.summary = summary(pc.res), pc.scores = pcdata, pc.shapes = shapes, 
+              sdev = pc.res$sdev, rotation = pc.res$rotation)
+  class(out) = "plotTangentSpace"
+  out
 }

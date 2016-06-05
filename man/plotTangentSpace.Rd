@@ -5,7 +5,7 @@
 \title{Plot specimens in tangent space}
 \usage{
 plotTangentSpace(A, axis1 = 1, axis2 = 2, warpgrids = TRUE, mesh = NULL,
-  label = NULL, groups = NULL, verbose = FALSE)
+  label = NULL, groups = NULL)
 }
 \arguments{
 \item{A}{An array (p x k x n) containing landmark coordinates for a set of aligned specimens}
@@ -23,17 +23,15 @@ as described in \code{\link{plotRefToTarget}}.}
 (or if TRUE, numerical addresses are given)}
 
 \item{groups}{An optional factor vector specifying group identity for each specimen (see example)}
-
-\item{verbose}{A logical value indicating whether the output is basic or verbose (see Value below)}
 }
 \value{
-Function returns a table summarizing the percent variation explained by each
- pc axis (equivalent to summary() of \code{\link{prcomp}}) (default, verbose = FALSE).
- If verbose=TRUE, function returns a list containing the following components: 
-\item{pc.summary}{A PC summary table as above}
-\item{pc.scores}{The set of principal component scores for all specimens.} 
-\item{pc.shapes}{A list with four components of the shape coordinates of the extreme ends of axis1 and axis2 
-is returned, which can be used by \code{\link{warpRefMesh}}.}
+Function returns a list of the following components:
+\item{pc.summary}{A table summarizing the percent variation explained by each pc axis, equivalent to summary of \code{\link{prcomp}}.}
+\item{pc.scores}{The set of principal component scores for all specimens.}
+\item{pc.shapes}{A list with four components of the shape coordinates of the extreme ends of axis1 and axis2}
+\item{sdev}{The standard deviations of the principal components (i.e., the square roots of the eigenvalues of the 
+covariance/correlation matrix, as per \code{\link{prcomp}}.}
+\item{rotation}{The matrix of variable loadings, as per \code{\link{prcomp}}.}
 }
 \description{
 Function plots a set of Procrustes-aligned specimens in tangent space along their principal axes
