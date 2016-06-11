@@ -109,8 +109,8 @@ physignal<-function(A,phy,iter=999, seed=NULL, print.progress=TRUE){
   if(print.progress){
     pb <- txtProgressBar(min = 0, max = iter+1, initial = 0, style=3) 
     K.rand <- sapply(1:(iter+1), function(j) {
-      Kmult(as.matrix(x.rand[[j]]), invC,D.mat)
       setTxtProgressBar(pb,j)
+      Kmult(as.matrix(x.rand[[j]]), invC,D.mat)
       })
     close(pb)
   } else K.rand <- sapply(1:(iter+1), 
