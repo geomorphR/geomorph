@@ -109,7 +109,9 @@
 #' \item{size}{A vector of size scores.}
 #' \item{logsz}{A logical value to indicate if size values were log=transformed for analysis.}
 #' \item{A}{Procrustes (aligned) residuals.}
-#' \item{Ahat}{Predicted Procrustes residuals(if input coordinates are in a 3D array).}
+#' \item{Ahat}{Predicted Procrustes residuals(matching array or matrix, as input).}
+#' \item{Ahat.at.min}{Predicted Procrustes residuals, specifically at minimum size.}
+#' \item{Ahat.at.max}{Predicted Procrustes residuals, specifically at maximum size.}
 #' \item{p}{landmark number}
 #' \item{k}{landmark dimensions}
 #' 
@@ -297,11 +299,15 @@ procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
   }
   if(lm.dim[[2]] == 2 || lm.dim[[2]] == 3){
     Ahat <- arrayspecs(yhat, lm.dim[[1]], lm.dim[[2]])
+    Ahat.at.min <- Ahat[,,which.min(sz)]
+    Ahat.at.max <- Ahat[,,which.max(sz)]
     A <- arrayspecs(Y, lm.dim[[1]], lm.dim[[2]])
     ref<-mshape(A)
     p=lm.dim[[1]] ; k= lm.dim[[2]]
   } else {
     Ahat <- yhat ; A <- Y
+    Ahat.at.min <- Ahat[which.min(sz),]
+    Ahat.at.max <- Ahat[which.max(sz),]
     ref<-apply(A, 2, mean)
     p= lm.dim[[2]] ; k=NULL
   }
@@ -312,7 +318,9 @@ procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
               CAC = CAC, RSC=RSC, Reg.proj = Reg.proj,
               pred.val=pred.val,
               ref=ref, gps=gps, size=size, logsz=logsz, 
-              A=A, Ahat=Ahat, p=p, k=k)
+              A=A, Ahat=Ahat, 
+              Ahat.at.min = Ahat.at.min, Ahat.at.max = Ahat.at.max,
+              p=p, k=k)
   class(out) <- "procD.allometry"
   out
 }
