@@ -58,7 +58,9 @@ in the formula, and the variable used for size is called "size".}
 \item{size}{A vector of size scores.}
 \item{logsz}{A logical value to indicate if size values were log=transformed for analysis.}
 \item{A}{Procrustes (aligned) residuals.}
-\item{Ahat}{Predicted Procrustes residuals(if input coordinates are in a 3D array).}
+\item{Ahat}{Predicted Procrustes residuals(matching array or matrix, as input).}
+\item{Ahat.at.min}{Predicted Procrustes residuals, specifically at minimum size.}
+\item{Ahat.at.max}{Predicted Procrustes residuals, specifically at maximum size.}
 \item{p}{landmark number}
 \item{k}{landmark dimensions}
 }
