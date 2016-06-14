@@ -36,7 +36,7 @@ e0b9730864863a7b5c42449de9db877a *man/geomorph.data.frame.Rd
 185d3571d23862421d4a206db853cba3 *man/gpagen.Rd
 d49189047d4d144a8f92a2987b1822c9 *man/gridPar.Rd
 9e21970bfa33baf0382079f559a00ebe *man/hummingbirds.Rd
-4021aa7fa4c0aca0566691a7e8efc944 *man/integration.test.Rd
+f680404da82cbfd87917492b83e6b008 *man/integration.test.Rd
 03c8f034c267da9ca2bad0c0370613cc *man/larvalTails.Rd
 5fb8e06099b35da4afc5bb802d1ebcd5 *man/modularity.test.Rd
 c7cd4682be82bebdead0d5676e43e4ab *man/morphol.disparity.Rd
@@ -45,7 +45,7 @@ c7cd4682be82bebdead0d5676e43e4ab *man/morphol.disparity.Rd
 ba1bc984d157f6a6e19ec1edf5d44d9d *man/motionpaths.Rd
 4c7fc634b47238bb67b1ef79de83d374 *man/mshape.Rd
 0e35cc894e52fa670466653beda77ae2 *man/nested.update.Rd
-4a0850406253d2c7317c6bc1e32230e5 *man/phylo.integration.Rd
+acdf6b4940ca49dcf3519bc41be109da *man/phylo.integration.Rd
 b23aabdaadfe70fe888098382b9a46fb *man/phylo.modularity.Rd
 bf7d0d9da67337471defb77bb108380c *man/phylo.pls.Rd
 6e9ead9f61db8b195be7ee10252c8247 *man/physignal.Rd
@@ -84,7 +84,7 @@ b50d9f7fd76c777b60601a9b7a3296c0 *man/print.evolrate.Rd
 8415a4147967e97875114a1a7498e884 *man/print.procD.allometry.Rd
 724d376dabd273c08934c7a290e3020f *man/print.procD.lm.Rd
 debfbaa1a8edfbef3b4ec0254f5213ef *man/print.trajectory.analysis.Rd
-a3db6ee9c85f0c3453453815f9734179 *man/procD.allometry.Rd
+3529eae9bbd2e7cdc18e2eab3fdc5db3 *man/procD.allometry.Rd
 1217d41e78edfad26b274db2073811bd *man/procD.lm.Rd
 4682149ec41df7514b66bb4afbcd4bfa *man/procD.pgls.Rd
 34923fc68c6ffd6f20d5b40c9a751940 *man/pupfish.Rd
@@ -142,11 +142,11 @@ da56107aec80b7583dc4a6b841b30c74 *R/findMeanSpec.r
 0d9d88147f22cff2241b6e2e7396d57f *R/globalIntegration.r
 66d5ab19ac37f42838b211ff99a1c48c *R/gpagen.r
 2d8ab3c6fea452711a7cf091ffba8ff5 *R/gridPar.r
-7369476d77cbcee3521078850d647653 *R/integration.test.r
+e3263cdda026d3091b2d1efc7e59eef7 *R/integration.test.r
 616263411f9e32cf5bec5e7f9e5508b1 *R/modularity.test.r
 becc1196a5ec267c9339e2b8f882d4b1 *R/morphol.disparity.r
 084f845900f98683ff877ac399e822b3 *R/nested.update.r
-1c4cb5ce348fc6d2d223ddb7968ce656 *R/phylo.integration.r
+e41311e219c0c0da1176579ca479672b *R/phylo.integration.r
 6c284f248e0fdce24c44e2b826529762 *R/phylo.modularity.r
 f0ec8f46092139a0c65082ad1571f985 *R/physignal.r
 7cf1ed920592c19f683c12d57be311d2 *R/plotAllSpecimens.r
@@ -155,7 +155,7 @@ dfd0571936b18c4a6b6edc2845ee3c73 *R/plotGMPhyloMorphoSpace.r
 ee4a0bd986c2198b80235e22820ca455 *R/plotRefToTarget.r
 41db23cebd8d7be6c3decf781bd378e0 *R/plotspec.r
 68901e44f6b16519cc53390fb5a7dea8 *R/plotTangentSpace.r
-8a1d90cb399ba208190a3b2299b33a4b *R/procD.allometry.r
+c86c12a67d483f8ab5627c8aa776aebf *R/procD.allometry.r
 ffc7cc452c5beba5b1cff7f23dc433c5 *R/procD.lm.r
 2c46cdf68c9897fc31eff55a41ea59e9 *R/procD.pgls.r
 9817244fb71ac387d06d26f4550fb953 *R/read.morphologika.r
