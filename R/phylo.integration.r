@@ -53,6 +53,7 @@
 #'   (for 2 modules only).}
 #'    \item{YScores}{Values of right (y) block projected onto singular vectors
 #'   (for 2 modules only).}
+#'    \item{svd}{The singular value decomposition of the cross-covariances (for 2 modules only).}
 #'    \item{A1}{Input values for the left block (for 2 modules only).}
 #'    \item{A2}{Input values for the right block (for 2 modules only).}
 #'    \item{A1.matrix}{Left block (matrix) found from A1 (for 2 modules only).}
@@ -160,6 +161,7 @@ phylo.integration <-function(A, A2=NULL, phy, partition.gp=NULL,iter=999, seed=N
                 random.r = pls.rand, 
                 XScores = pls.obs$XScores,
                 YScores = pls.obs$YScores,
+                svd = pls.obs$pls.svd,
                 A1 = A.new, A2 = A2.new,
                 A1.matrix = x, A2.matrix =y,
                 permutations = iter+1, call=match.call(),
