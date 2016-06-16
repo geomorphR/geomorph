@@ -43,7 +43,13 @@ are transformed in formulae, they should also be transformed in the geomorph dat
 \value{
 Function returns an ANOVA table of statistical results for model comparison: error df (for each model), SS, MS,
 F ratio, Z, and Prand.  A list of essentially the same components as \code{\link{procD.lm}} is also returned, and additionally
-LS means or slopes, pairwise differences comparisons of these, effect sizes, and P-values may also be returned.
+LS means or slopes, pairwise differences comparisons of these, effect sizes, and P-values may also be returned.  If a group formula
+is provided but slope formula is null, pairwise differences are Procrustes distances between least squares (LS) means for the 
+defined groups.  If a slope formula is provided, two sets of pairwise differences, plus effect sizes and P-values, are provided.  
+The first is for differences in slope vector length (magnitude).  The length of the slope vector corresponds to the amount of shape
+change per unit of covariate change.  Large differences correspond to differences in the amount of shape change between groups.  
+The second is for slope vector orientation differences.  Differences in the direction of shape change (covariance of shape variables)
+can be summarized as a vector correlation or angle between vectors.  See \code{\link{summary.advanced.procD.lm}} for summary options.
 }
 \description{
 The function quantifies the relative amount of shape variation explained by a suite of factors
@@ -79,34 +85,34 @@ The function performs statistical assessment of the terms in the model using Pro
 \examples{
 data(plethodon)
 Y.gpa<-gpagen(plethodon$land)    #GPA-alignment
-gdf <- geomorph.data.frame(Y.gpa, logcs = log(Y.gpa$Csize), 
-species = plethodon$species, site = plethodon$site)
+gdf <- geomorph.data.frame(Y.gpa, species = plethodon$species, site = plethodon$site)
 
 # Example of a nested model comparison (as with ANOVA with RRPP)
-advanced.procD.lm(coords ~ logcs + species, 
-~ logcs*species*site, iter=999, data = gdf)
+advanced.procD.lm(coords ~ log(Csize) + species, 
+~ log(Csize)*species*site, iter=999, data = gdf)
 
 # Example of a test of a factor interaction, plus pairwise comparisons 
-advanced.procD.lm(coords ~ site*species, ~site + species, groups = ~site*species, 
+advanced.procD.lm(coords ~ site*species, ~ site + species, groups = ~site*species, 
    iter=499, data = gdf)
 
 # Example of a test of a factor interaction, plus pairwise comparisons, 
 # accounting for a common allometry  
 advanced.procD.lm(coords ~ Csize + site*species, 
-~Csize + site + species, 
-groups = ~site*species, slope = ~Csize, iter = 499, data = gdf)
+~ log(Csize) + site + species, 
+groups = ~ site*species, slope = ~log(Csize), iter = 499, data = gdf)
 
 # Example of a test of homogeneity of slopes, plus pairwise slopes comparisons
-advanced.procD.lm(coords ~ logcs, 
-~logcs + site*species, 
-groups = ~site*species, 
-slope = ~logcs, angle.type = "deg", iter = 499, data = gdf)
+gdf$group <- factor(paste(gdf$species, gdf$site, sep="."))
+advanced.procD.lm(coords ~ log(Csize) + group, 
+~ log(Csize) * group, 
+groups = ~ group, 
+slope = ~ log(Csize), angle.type = "deg", iter = 499, data = gdf)
 
 # Example of partial pairwise comparisons, given greater model complexity.
 # Plus, working with class advanced.procD.lm objects.
-aov.pleth <- advanced.procD.lm(coords ~ logcs*site*species, 
-~logcs + site*species, 
-groups = ~species, slope = ~logcs, angle.type = "deg", iter = 499, data = gdf)
+aov.pleth <- advanced.procD.lm(coords ~ log(Csize)*site*species, 
+~ log(Csize) + site*species, 
+groups = ~ species, slope = ~ log(Csize), angle.type = "deg", iter = 499, data = gdf)
 
 summary(aov.pleth) # ANOVA plus pairwise tests
 plot(aov.pleth) # diagnostic plots
