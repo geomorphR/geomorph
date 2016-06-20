@@ -1737,10 +1737,10 @@ CR<-function(x,gps){
     S12<-S[which(g==gps.combo[1,j]),which(g==gps.combo[2,j])]
     sqrt(sum(colSums(S12^2))/sqrt(sum(S11^2)*sum(S22^2)))
   })
-  if(length(CR.gp) > 1) CR.mat <- dist(matrix(0, length(CR.gp),)) else 
+  if(length(CR.gp) > 1) CR.mat <- dist(matrix(0, ngps,)) else 
     CR.mat = 0 # may not be necessary
   for(i in 1:length(CR.mat)) CR.mat[[i]] <- CR.gp[i]
-  
+
   CR.obs <- mean(CR.gp) 
   list(CR = CR.obs, CR.mat=CR.mat)
 }
@@ -1874,7 +1874,7 @@ CR.phylo<-function(x,invC,gps){
     R12<-R[which(g==gps.combo[1,j]),which(g==gps.combo[2,j])]
     sqrt(sum(colSums(R12^2))/sqrt(sum(R11^2)*sum(R22^2)))
   })
-  if(length(CR.gp) > 1) CR.mat <- dist(matrix(0, length(CR.gp),)) else 
+  if(length(CR.gp) > 1) CR.mat <- dist(matrix(0, ngps,)) else 
     CR.mat = 0 
   for(i in 1:length(CR.mat)) CR.mat[[i]] <- CR.gp[i]
   
