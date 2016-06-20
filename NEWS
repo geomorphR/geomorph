@@ -10,7 +10,6 @@ CHANGES IN GEOMORPH VERSION 3.0.2
     o Added legend to plotTangentSpace() when groups are specified
     
   BUG FIXES
-    o Fixed label output issue with bilat.symmetry shape components
     o Fixed error plotting TPS grids when groups were included in plot.procD.allometry()
     o Fixed error in digit.curves() where open outline would be treated as closed if starting point was the end point
     
