@@ -16,6 +16,6 @@ Functions in this package allow one to read, manipulate, and digitize landmark d
 geomorph-package
 }
 \author{
-Dean C. Adams, Michael Collyer, & Emma Sherratt
+Dean C. Adams, Michael Collyer, Antigoni Kaliontzopoulou & Emma Sherratt
 }
 
