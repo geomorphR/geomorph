@@ -1,6 +1,6 @@
 #' Plot specimens in tangent space
 #'
-#' Function plots a set of Procrustes-aligned specimens in tangent space along their principal axes
+#' Function plots a set of Procrustes-aligned specimens in tangent space along their principal component axes
 #'
 #' The function performs a principal components analysis of shape variation and plots two 
 #'  dimensions of tangent space for a set of Procrustes-aligned specimens (default is PC1 vs. PC2). 

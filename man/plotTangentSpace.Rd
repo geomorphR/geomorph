@@ -36,7 +36,7 @@ Function returns a table summarizing the percent variation explained by each
 is returned, which can be used by \code{\link{warpRefMesh}}.}
 }
 \description{
-Function plots a set of Procrustes-aligned specimens in tangent space along their principal axes
+Function plots a set of Procrustes-aligned specimens in tangent space along their principal component axes
 }
 \details{
 The function performs a principal components analysis of shape variation and plots two 
