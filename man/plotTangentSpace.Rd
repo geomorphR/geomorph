@@ -34,7 +34,7 @@ covariance/correlation matrix, as per \code{\link{prcomp}}.}
 \item{rotation}{The matrix of variable loadings, as per \code{\link{prcomp}}.}
 }
 \description{
-Function plots a set of Procrustes-aligned specimens in tangent space along their principal axes
+Function plots a set of Procrustes-aligned specimens in tangent space along their principal component axes
 }
 \details{
 The function performs a principal components analysis of shape variation and plots two 
