@@ -137,7 +137,7 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
   } else A.name.match <- NULL
   if(is.null(A.name.match) && is.gpagen(A)) {
     size <- A$Csize
-    A <- A$coords
+    A <- A$coords 
   } else {
     if(!is.null(data)) {
       if(is.null(A.name.match)) stop("Coordinates are not part of the data frame provided")
