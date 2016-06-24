@@ -93,16 +93,16 @@ compare.evol.rates<-function(A,phy,gp,iter=999,print.progress=TRUE ){
   diag(rate.mat)<-sigma.obs$sigma.d.all
   rate.mat<-matrix(nearPD(rate.mat,corr=FALSE)$mat,nrow=ncol(rate.mat),ncol=ncol(rate.mat))
   x.sim<-sim.char(phy=phy,par=rate.mat,nsim=iter,model="BM") 
-  if(print.progress){
-    pb <- txtProgressBar(min = 0, max = iter, initial = 0, style=3) 
-    sigma.rand <- sapply(1:iter, function(j) {
-      setTxtProgressBar(pb,j)
-      sigma.d(as.matrix(x.sim[,,j]),invC,D.mat,gp)
-    })
-    close(pb)
-    } else sigma.rand <- sapply(1:(iter), function(j) sigma.d(as.matrix(x.sim[,,j]),invC,D.mat,gp))
-  random.sigma<-c(sigma.obs$sigma.d.ratio,as.vector(unlist(sigma.rand[1,])))
-  if(nlevels(gp)>1){
+  if(nlevels(gp) > 1){
+    if(print.progress){
+      pb <- txtProgressBar(min = 0, max = iter, initial = 0, style=3) 
+      sigma.rand <- sapply(1:iter, function(j) {
+        setTxtProgressBar(pb,j)
+        fast.sigma.d(as.matrix(x.sim[,,j]),invC,D.mat,gp, N,p)
+      })
+      close(pb)
+    } else sigma.rand <- sapply(1:(iter), function(j) fast.sigma.d(as.matrix(x.sim[,,j]),invC,D.mat,gp,N,p))
+    random.sigma<-c(sigma.obs$sigma.d.ratio,sigma.rand)
     p.val <- pval(random.sigma)
     p.val.mat<-NULL
     if(nlevels(gp)==2) p.val.mat<-p.val
@@ -113,8 +113,9 @@ compare.evol.rates<-function(A,phy,gp,iter=999,print.progress=TRUE ){
       tmp.p.val.mat <- sapply(1:ncol(ratio.vals), function(j){ pval(ratio.vals[,j])})
       p.val.mat<-dist(matrix(0,nlevels(gp)))
       for(i in 1:length(p.val.mat)) p.val.mat[[i]] <- tmp.p.val.mat[i]
-    }    
+    }
   }
+  
   if(nlevels(gp)==1){ 
     out <- list(sigma.d.all = sigma.obs$sigma.d.all,
                 Ngroups = nlevels(gp))

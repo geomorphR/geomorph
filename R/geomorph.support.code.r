@@ -2184,22 +2184,22 @@ apply.plsmulti.phylo <- function(x,gps, invC,D.mat, iter, seed= NULL){
 # multivariate evolutionary rate
 # used in: compare.evol.rates
 sigma.d<-function(x,invC,D.mat,gp){
-  N<-nrow(x);p<-ncol(x)
+  N<-dim(x)[1];p<-dim(x)[2]
   g<-factor(as.numeric(gp))
   ngps<-nlevels(g)
-  gpsz<-table(g)   
   ones<-matrix(1,N,1) 
-  a.obs<-colSums(invC)%*%x/sum(invC)  
-  R<-t(x-ones%*%a.obs)%*%invC%*%(x-ones%*%a.obs)/nrow(x)
-  dist.adj<-as.matrix(dist(rbind((D.mat%*%(x-(ones%*%a.obs))),0))) 
+  a.obs<-colSums(invC)%*%x/sum(invC) 
+  x.c<-x-(ones%*%a.obs)
+  R<-crossprod(x.c, crossprod(invC,x.c))/N
+  dist.adj<-as.matrix(dist(rbind((D.mat%*%(x.c)),0))) 
   vec.d2<-dist.adj[N+1,1:N]^2
   sigma.d.all<-sum(vec.d2)/N/p
-  sigma.d.gp<-tapply(vec.d2,gp,sum)/gpsz/p  
+  sigma.d.gp<-sapply(split(vec.d2, gp), mean)/p  
   sigma.d.ratio<-sigma.d.rat<-sigma.d.rat.mat<-rate.mat<-NULL
   if(ngps>1){
     gps.combo <- combn(ngps, 2)
     sigma.d.rat <- sapply(1:ncol(gps.combo), function(j){ 
-      rates<-c(sigma.d.gp[which(levels(g)==gps.combo[1,j])],sigma.d.gp[which(levels(g)==gps.combo[2,j])])
+      rates<-c(sigma.d.gp[levels(g)==gps.combo[1,j]],sigma.d.gp[levels(g)==gps.combo[2,j]])
       rate.rat<-max(rates)/min(rates)
     })
     if(length(sigma.d.rat) > 1) rate.mat <- dist(matrix(0, length(sigma.d.gp),)) else 
@@ -2211,17 +2211,43 @@ sigma.d<-function(x,invC,D.mat,gp){
        sigma.d.gp = sigma.d.gp, sigma.d.gp.ratio = rate.mat,R = R)  
 }
 
+# fast.sigma.d
+# same as sigma.d but only calculates sigma.d.ratio - fast in loops
+# used in: compare.evol.rates
+fast.sigma.d<-function(x,invC,D.mat,gp, N,p){
+  g<-factor(as.numeric(gp))
+  ngps<-nlevels(g)
+  gps.combo <- combn(ngps, 2)
+  ones<-matrix(1,N,1) 
+  a.obs<-colSums(invC)%*%x/sum(invC) 
+  x.c<-x-(ones%*%a.obs)
+  dist.adj<-as.matrix(dist(rbind((D.mat%*%(x.c)),0))) 
+  vec.d2<-dist.adj[N+1,1:N]^2
+  sigma.d.all<-sum(vec.d2)/N/p
+  sigma.d.gp<-sapply(split(vec.d2, gp), mean)/p  
+  sigma.d.ratio<-sigma.d.rat<-sigma.d.rat.mat<-rate.mat<-NULL
+  sigma.d.rat <- sapply(1:ncol(gps.combo), function(j){ 
+    rates<-c(sigma.d.gp[levels(g)==gps.combo[1,j]],sigma.d.gp[levels(g)==gps.combo[2,j]])
+    max(rates)/min(rates)
+  })
+  if(length(sigma.d.rat) > 1) rate.mat <- dist(matrix(0, length(sigma.d.gp),)) else 
+    rate.mat = 0 
+  for(i in 1:length(rate.mat)) rate.mat[[i]] <- sigma.d.rat[i]
+  max(rate.mat)
+}
+
 # sigma.d.multi
 # multiple trait multivariate evolutionary rates
 # used in: compare.multi.evol.rates
 sigma.d.multi<-function(x,invC,D.mat,gps,Subset){
   sig.calc<-function(x.i,invC.i,D.mat.i,Subset){
     x.i<-as.matrix(x.i)
-    N<-nrow(x.i);p<-ncol(x.i)
+    N<-dim(x.i)[1];p<-dim(x.i)[2]
     ones<-matrix(1,N,1) 
-    a.obs<-colSums(invC)%*%x.i/sum(invC)  
-    R<-t(x.i-ones%*%a.obs)%*%invC%*%(x.i-ones%*%a.obs)/N
-    dist.adj<-as.matrix(dist(rbind((D.mat.i%*%(x.i-(ones%*%a.obs))),0))) 
+    a.obs<-colSums(invC.i)%*%x.i/sum(invC.i) 
+    x.c<-x.i-(ones%*%a.obs)
+    R<-crossprod(x.c, crossprod(invC.i,x.c))/N
+    dist.adj<-as.matrix(dist(rbind((D.mat.i%*%(x.c)),0))) 
     vec.d2<-dist.adj[N+1,1:N]^2
     sigma<-sum(vec.d2)/N/p
     if(Subset==FALSE){sigma<-sum(vec.d2)/N}
@@ -2230,15 +2256,15 @@ sigma.d.multi<-function(x,invC,D.mat,gps,Subset){
   global<-sig.calc(x,invC,D.mat,Subset)
   rate.global<-global$sigma; R<-global$R
   ngps<-nlevels(gps)
-  rate.gps<-sapply(1:ngps, function(j){ sig.calc(x[,which(gps==levels(gps)[j])],
+  rate.gps<-sapply(1:ngps, function(j){ sig.calc(x[,gps==levels(gps)[j]],
                                                  invC,D.mat,Subset)$sigma  })
   sigma.d.ratio<-max(rate.gps)/min(rate.gps)
   g<-factor(as.numeric(gps))
   ngps<-nlevels(g)  
   gps.combo <- combn(ngps, 2)
   sigma.d.rat <- sapply(1:ncol(gps.combo), function(j){ 
-    rates<-c(rate.gps[which(levels(g)==gps.combo[1,j])],rate.gps[which(levels(g)==gps.combo[2,j])])
-    rate.rat<-max(rates)/min(rates)
+    rates<-c(rate.gps[levels(g)==gps.combo[1,j]],rate.gps[levels(g)==gps.combo[2,j]])
+    max(rates)/min(rates)
   })
   if(length(sigma.d.rat) > 1) rate.mat <- dist(matrix(0, length(rate.gps),)) else 
     rate.mat = 0 
