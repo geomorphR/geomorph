@@ -14,7 +14,7 @@ d8e8360c03c03fe45d2100e9c05d4a89 *data/plethodon.rda
 4bdde5c74d5d5ead8f87cd70b9f91250 *inst/CITATION
 aa82b9c3681af09894b0aec32ec53c42 *man/advanced.procD.lm.Rd
 b9147b10c8eecf58afdbdfd97871a1dc *man/arrayspecs.Rd
-42a33056c685695eaf3a605e9583c2c1 *man/bilat.symmetry.Rd
+c83ee01c97a21d65b8ebfb0782acb2dc *man/bilat.symmetry.Rd
 98905c1726ae4f9391195460634be5dd *man/buildtemplate.Rd
 4018b5634138ba87a93758b136d78bcc *man/compare.evol.rates.Rd
 9c8e6b36afc3fed78f5ee568f69cfa8c *man/compare.modular.partitions.Rd
@@ -120,7 +120,7 @@ e96c37b9aadabf2c8af65d9c4b282b89 *man/two.b.pls.Rd
 8cae39f93075c913a0e4a8aecab2e1a0 *NEWS
 14ae49210a602d77df7c9140e93bd924 *R/advanced.procD.lm.r
 c3bf88c10dcae2eb5430025e36867d98 *R/arrayspecs.r
-409a86ce2cce31604b7487be0f3d77de *R/bilat.symmetry.r
+18d0b985262475e1852f4e94287819f9 *R/bilat.symmetry.r
 14713bbb2ad126d777d95e359c71bf1a *R/build.template.r
 a34df01863b5c257e177d3c233031376 *R/compare.evol.rates.r
 4b414aa0dbf7c3ade511db1bf883cf2a *R/compare.multi.evol.rates.r
