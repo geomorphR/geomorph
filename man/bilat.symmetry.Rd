@@ -114,7 +114,7 @@ plot(mosquito.sym, warpgrids = TRUE)
 mosquito.sym$shape.anova # extract just the anova table on shape
 
 # Previous example, performing GPA first
-Y.gpa <- gpagen(mosquito$winshape)
+Y.gpa <- gpagen(mosquito$wingshape)
 mosquito.sym2 <- bilat.symmetry(A = Y.gpa, ind = ind, side = side,
 replicate = replicate, object.sym = FALSE, RRPP = TRUE, iter = 499, data = gdf)
 summary(mosquito.sym2)
