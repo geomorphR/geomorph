@@ -9,7 +9,7 @@
 #'  Methods for both matching symmetry and object symmetry can be implemented. Matching symmetry is when each object contains mirrored 
 #'  pairs of structures (e.g., right and left hands) while object symmetry is when a single object is symmetric 
 #'  about a midline (e.g., right and left sides of human faces). Details on general approaches for the study of symmetry in geometric 
-#'  morphometrics may be found in: Mardia et al. 2000; Klingenberg et al. 2002.
+#'  morphometrics may be found in: Mardia et al. 2000; Klingenberg et al. 2002. 
 #'  
 #'  As input, the function receives either an array (p x k x n) containing raw landmarks (requiring 
 #'  GPA to be performed) or a gpagen object (if GPA has been previously performed). If one wishes 
