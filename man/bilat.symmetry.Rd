@@ -68,6 +68,13 @@ The function quantifies components of shape variation for a set of specimens as 
  about a midline (e.g., right and left sides of human faces). Details on general approaches for the study of symmetry in geometric 
  morphometrics may be found in: Mardia et al. 2000; Klingenberg et al. 2002.
  
+ As input, the function receives either an array (p x k x n) containing raw landmarks (requiring 
+ GPA to be performed) or a gpagen object (if GPA has been previously performed). If one wishes 
+ to incorporate semilandmarks, GPA should be performed first using gpagen. Otherwise, 
+ bilat.symmetry can perform the initial GPA, assuming all landmarks are fixed. For 
+ "object.sym = FALSE, landmarks should be of dimension (p x k x 2n), as each specimen is 
+ represented by both left and right configurations.
+   
 Analyses of symmetry for matched pairs of objects is implemented when {object.sym=FALSE}. Here, a 3D array [p x k x 2n] 
  contains the landmark coordinates for all pairs of structures (2 structures for each of n specimens). Because the two sets of 
  structures are on opposite sides, they represent mirror images, and one set must be reflected prior to the analysis to 
