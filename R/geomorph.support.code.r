@@ -2244,8 +2244,7 @@ sigma.d.multi<-function(x,invC,D.mat,gps,Subset){
     a.obs<-colSums(invC.i)%*%x.i/sum(invC.i) 
     x.c<-x.i-(ones%*%a.obs)
     R<-crossprod(x.c, crossprod(invC.i,x.c))/N
-    dist.adj<-as.matrix(dist(rbind((D.mat.i%*%(x.c)),0))) 
-    vec.d2<-dist.adj[N+1,1:N]^2
+    vec.d2<-diag(tcrossprod(D.mat.i%*%x.c))
     sigma<-sum(vec.d2)/N/p
     if(Subset==FALSE){sigma<-sum(vec.d2)/N}
     return(list(sigma=sigma,R=R))
@@ -2270,33 +2269,34 @@ sigma.d.multi<-function(x,invC,D.mat,gps,Subset){
        rate.gps = rate.gps, sigma.d.gp.ratio = rate.mat,R = R)  
 }
 
+
 ##Fast version of compare.multi.rates for permutations
+
+sig.calc<-function(x.i,invC.i,D.mat.i,Subset){
+  x.i<-as.matrix(x.i)
+  N<-dim(x.i)[1];p<-dim(x.i)[2]
+  ones<-matrix(1,N,1) 
+  a.obs<-colSums(invC.i)%*%x.i/sum(invC.i) 
+  x.c<-x.i-(ones%*%a.obs)
+  vec.d2<-diag(tcrossprod(D.mat.i%*%x.c))
+  sigma<-sum(vec.d2)/N/p
+  if(Subset==FALSE){sigma<-sum(vec.d2)/N}
+  return(sigma)
+}
 fast.sigma.d.multi<-function(x,invC,D.mat,gps,Subset){
-  sig.calc<-function(x.i,invC.i,D.mat.i,Subset){
-    x.i<-as.matrix(x.i)
-    N<-dim(x.i)[1];p<-dim(x.i)[2]
-    ones<-matrix(1,N,1) 
-    a.obs<-colSums(invC.i)%*%x.i/sum(invC.i) 
-    x.c<-x.i-(ones%*%a.obs)
-    dist.adj<-as.matrix(dist(rbind((D.mat.i%*%(x.c)),0))) 
-    vec.d2<-dist.adj[N+1,1:N]^2
-    sigma<-sum(vec.d2)/N/p
-    if(Subset==FALSE){sigma<-sum(vec.d2)/N}
-    return(sigma)
-  }
-  rate.global<-sig.calc(x,invC,D.mat,Subset)
-  ngps<-nlevels(gps)
-  rate.gps<-sapply(1:ngps, function(j){ sig.calc(x[,gps==levels(gps)[j]],
-                                                 invC,D.mat,Subset)  })
-  sigma.d.ratio<-max(rate.gps)/min(rate.gps)
   g<-factor(as.numeric(gps))
-  ngps<-nlevels(g)  
+  glevs <- unique(g)
+  ngps <- length(glevs)
   gps.combo <- combn(ngps, 2)
-  sigma.d.rat <- sapply(1:ncol(gps.combo), function(j){ 
-    rates<-c(rate.gps[levels(g)==gps.combo[1,j]],rate.gps[levels(g)==gps.combo[2,j]])
+  rate.gps<-lapply(1:ngps, function(j){ sig.calc(x[,g==glevs[j]],
+                                                 invC,D.mat,Subset)  })
+  sigma.d.ratio<-max(unlist(rate.gps))/min(unlist(rate.gps))
+  sapply(1:ncol(gps.combo), function(j){ 
+    a <- gps.combo[1,j]
+    b <- gps.combo[2,j]
+    rates<-c(rate.gps[[a]],rate.gps[[b]])
     max(rates)/min(rates)
   })
-sigma.d.rat
 }
 
 
