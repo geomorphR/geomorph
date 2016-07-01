@@ -124,10 +124,8 @@ compare.multi.evol.rates<-function(A,gp,phy,Subset=TRUE,iter=999, print.progress
   for(i in 1:iter) ratio.vals[i+1,]<-as.vector(sigma.rand[[i]]) 
   tmp.p.val.mat <- sapply(1:ncol(ratio.vals), function(j){ pval(ratio.vals[,j])})
   p.val.mat<-D<-dist(matrix(0,nlevels(gp)))
-  if(ngps==2) p.val.mat<-tmp.p.val.mat
-  if(ngps>2){
+  if(ngps==2) p.val.mat<-tmp.p.val.mat else
     for(i in 1:length(p.val.mat)) p.val.mat[[i]] <- tmp.p.val.mat[i]
-  }
   out <- list(sigma.d.ratio = sigma.obs$sigma.d.ratio, P.value=p.val,
               sigma.d.gp = sigma.obs$rate.gps,
               sigma.d.gp.ratio = sigma.obs$sigma.d.gp.ratio,
