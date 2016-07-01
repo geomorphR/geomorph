@@ -136,6 +136,5 @@ compare.multi.evol.rates<-function(A,gp,phy,Subset=TRUE,iter=999, print.progress
   
   class(out) <- "evolrate"
   out 
-
 }
 

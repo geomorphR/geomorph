@@ -2283,7 +2283,7 @@ sig.calc<-function(x.i,invC.i,D.mat.i,Subset){
   if(Subset==FALSE){sigma<-sum(vec.d2)/N}
   return(sigma)
 }
-fast.sigma.d.multi<-function(x,invC,D.mat,gps,Subset){
+fast.sigma.d.multi<-function(x,invC,D.mat,gps,Subset){ 
   g<-factor(as.numeric(gps))
   glevs <- unique(g)
   ngps <- length(glevs)
