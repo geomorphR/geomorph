@@ -2187,12 +2187,10 @@ sigma.d<-function(x,invC,D.mat,gp){
   N<-dim(x)[1];p<-dim(x)[2]
   g<-factor(as.numeric(gp))
   ngps<-nlevels(g)
-  ones<-matrix(1,N,1) 
-  a.obs<-colSums(invC)%*%x/sum(invC) 
-  x.c<-x-(ones%*%a.obs)
+  ones<-matrix(1,N,N) 
+  x.c<-x-crossprod(ones,invC)%*%x/sum(invC) 
   R<-crossprod(x.c, crossprod(invC,x.c))/N
-  dist.adj<-as.matrix(dist(rbind((D.mat%*%(x.c)),0))) 
-  vec.d2<-dist.adj[N+1,1:N]^2
+  vec.d2<-diag(tcrossprod(D.mat.i%*%(x.c)))
   sigma.d.all<-sum(vec.d2)/N/p
   sigma.d.gp<-sapply(split(vec.d2, gp), mean)/p  
   sigma.d.ratio<-sigma.d.rat<-sigma.d.rat.mat<-rate.mat<-NULL
@@ -2218,11 +2216,9 @@ fast.sigma.d<-function(x,invC,D.mat,gp, N,p){
   g<-factor(as.numeric(gp))
   ngps<-nlevels(g)
   gps.combo <- combn(ngps, 2)
-  ones<-matrix(1,N,1) 
-  a.obs<-colSums(invC)%*%x/sum(invC) 
-  x.c<-x-(ones%*%a.obs)
-  dist.adj<-as.matrix(dist(rbind((D.mat%*%(x.c)),0))) 
-  vec.d2<-dist.adj[N+1,1:N]^2
+  ones<-matrix(1,N,N) 
+  x.c<-x -crossprod(ones,invC)%*%x/sum(invC) 
+  vec.d2<-diag(tcrossprod(D.mat.i%*%(x.c)))
   sigma.d.all<-sum(vec.d2)/N/p
   sigma.d.gp<-sapply(split(vec.d2, gp), mean)/p  
   sigma.d.ratio<-sigma.d.rat<-sigma.d.rat.mat<-rate.mat<-NULL
@@ -2240,24 +2236,22 @@ sigma.d.multi<-function(x,invC,D.mat,gps,Subset){
   sig.calc<-function(x.i,invC.i,D.mat.i,Subset){
     x.i<-as.matrix(x.i)
     N<-dim(x.i)[1];p<-dim(x.i)[2]
-    ones<-matrix(1,N,1) 
-    a.obs<-colSums(invC.i)%*%x.i/sum(invC.i) 
-    x.c<-x.i-(ones%*%a.obs)
+    ones<-matrix(1,N,N) 
+    x.c<- x.i - crossprod(ones,invC.i)%*%x.i/sum(invC.i) 
     R<-crossprod(x.c, crossprod(invC.i,x.c))/N
-    vec.d2<-diag(tcrossprod(D.mat.i%*%x.c))
-    sigma<-sum(vec.d2)/N/p
-    if(Subset==FALSE){sigma<-sum(vec.d2)/N}
+    if(Subset==FALSE) sigma<-sigma<-sum((D.mat.i%*%x.c)^2)/N  else 
+      sigma<-sum((D.mat.i%*%x.c)^2)/N/p
     return(list(sigma=sigma,R=R))
   }
-  global<-sig.calc(x,invC,D.mat,Subset)
-  rate.global<-global$sigma; R<-global$R
-  ngps<-nlevels(gps)
-  rate.gps<-sapply(1:ngps, function(j){ sig.calc(x[,gps==levels(gps)[j]],
-                                                 invC,D.mat,Subset)$sigma  })
-  sigma.d.ratio<-max(rate.gps)/min(rate.gps)
   g<-factor(as.numeric(gps))
   ngps<-nlevels(g)  
   gps.combo <- combn(ngps, 2)
+  global<-sig.calc(x,invC,D.mat,Subset)
+  rate.global<-global$sigma; R<-global$R
+  ngps<-nlevels(gps)
+  rate.gps<-sapply(1:ngps, function(j){ sig.calc(x[,g==j],
+                                                 invC,D.mat,Subset)$sigma  })
+  sigma.d.ratio<-max(rate.gps)/min(rate.gps)
   sigma.d.rat <- sapply(1:ncol(gps.combo), function(j){ 
     rates<-c(rate.gps[levels(g)==gps.combo[1,j]],rate.gps[levels(g)==gps.combo[2,j]])
     max(rates)/min(rates)
@@ -2275,12 +2269,10 @@ sigma.d.multi<-function(x,invC,D.mat,gps,Subset){
 sig.calc<-function(x.i,invC.i,D.mat.i,Subset){
   x.i<-as.matrix(x.i)
   N<-dim(x.i)[1];p<-dim(x.i)[2]
-  ones<-matrix(1,N,1) 
-  a.obs<-colSums(invC.i)%*%x.i/sum(invC.i) 
-  x.c<-x.i-(ones%*%a.obs)
-  vec.d2<-diag(tcrossprod(D.mat.i%*%x.c))
-  sigma<-sum(vec.d2)/N/p
-  if(Subset==FALSE){sigma<-sum(vec.d2)/N}
+  ones<-matrix(1,N,N) 
+  x.c<-x.i -crossprod(ones,invC.i)%*%x.i/sum(invC.i) 
+  if(Subset==FALSE) sigma<-sum((D.mat.i%*%x.c)^2)/N else 
+    sigma<-sum((D.mat.i%*%x.c)^2)/N/p
   return(sigma)
 }
 fast.sigma.d.multi<-function(x,invC,D.mat,gps,Subset){ 
