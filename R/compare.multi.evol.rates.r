@@ -113,17 +113,27 @@ compare.multi.evol.rates<-function(A,gp,phy,Subset=TRUE,iter=999, print.progress
     close(pb)
   } else sigma.rand <-sapply(1:iter, function(j) 
     fast.sigma.d.multi(as.matrix(x.sim[,,j]),invC,D.mat,gps,Subset))
-  random.sigma<-c(sigma.obs$sigma.d.ratio,as.vector(unlist(sigma.rand[1,])))
+  random.sigma<-c(sigma.obs$sigma.d.ratio,
+                  sapply(1:iter, function(j){
+                    max(sigma.rand[[j]])
+                  }))
   p.val <- pval(random.sigma)
   ratio.vals<-matrix(NA,nrow=(iter+1),ncol=length(unlist(sigma.obs[4])))
   ratio.vals[1,]<-as.vector(sigma.obs$sigma.d.gp.ratio)
-  for(i in 1:iter) ratio.vals[i+1,]<-as.vector(unlist(sigma.rand[2,][[i]])) 
+  for(i in 1:iter) ratio.vals[i+1,]<-as.vector(sigma.rand[i]) 
   tmp.p.val.mat <- sapply(1:ncol(ratio.vals), function(j){ pval(ratio.vals[,j])})
-  p.val.mat<-dist(matrix(0,nlevels(gp)))
+  p.val.mat<-D<-dist(matrix(0,nlevels(gp)))
   if(ngps==2) p.val.mat<-tmp.p.val.mat
   if(ngps>2){
     for(i in 1:length(p.val.mat)) p.val.mat[[i]] <- tmp.p.val.mat[i]
   }
+  random.sigma <- lapply(1:(iter+1), function(j){
+     d <- D
+     d[1:length(d)] <- random.sigma[[j]]
+     d <- as.matrix(d)
+     diag(d) <- 0
+     d
+  })
   out <- list(sigma.d.ratio = sigma.obs$sigma.d.ratio, P.value=p.val,
               sigma.d.gp = sigma.obs$rate.gps,
               sigma.d.gp.ratio = sigma.obs$sigma.d.gp.ratio,
@@ -134,3 +144,4 @@ compare.multi.evol.rates<-function(A,gp,phy,Subset=TRUE,iter=999, print.progress
   out 
 
 }
+

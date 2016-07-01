@@ -2230,10 +2230,7 @@ fast.sigma.d<-function(x,invC,D.mat,gp, N,p){
     rates<-c(sigma.d.gp[levels(g)==gps.combo[1,j]],sigma.d.gp[levels(g)==gps.combo[2,j]])
     max(rates)/min(rates)
   })
-  if(length(sigma.d.rat) > 1) rate.mat <- dist(matrix(0, length(sigma.d.gp),)) else 
-    rate.mat = 0 
-  for(i in 1:length(rate.mat)) rate.mat[[i]] <- sigma.d.rat[i]
-  max(rate.mat)
+  max(sigma.d.rat)
 }
 
 # sigma.d.multi
@@ -2299,10 +2296,7 @@ fast.sigma.d.multi<-function(x,invC,D.mat,gps,Subset){
     rates<-c(rate.gps[levels(g)==gps.combo[1,j]],rate.gps[levels(g)==gps.combo[2,j]])
     max(rates)/min(rates)
   })
-  if(length(sigma.d.rat) > 1) rate.mat <- dist(matrix(0, length(rate.gps),)) else 
-    rate.mat = 0 
-  for(i in 1:length(rate.mat)) rate.mat[[i]] <- sigma.d.rat[i]
-  return(list(sigma.d.ratio = max(rate.mat),  sigma.d.gp.ratio = rate.mat))  
+sigma.d.rat
 }
 
 
