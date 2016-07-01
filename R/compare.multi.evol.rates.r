@@ -117,7 +117,7 @@ compare.multi.evol.rates<-function(A,gp,phy,Subset=TRUE,iter=999, print.progress
   p.val <- pval(random.sigma)
   ratio.vals<-matrix(NA,nrow=(iter+1),ncol=length(unlist(sigma.obs[4])))
   ratio.vals[1,]<-as.vector(sigma.obs$sigma.d.gp.ratio)
-  for(i in 1:iter) ratio.vals[i+1,]<-as.vector(unlist(sigma.rand[2,][[i]]))
+  for(i in 1:iter) ratio.vals[i+1,]<-as.vector(unlist(sigma.rand[2,][[i]])) 
   tmp.p.val.mat <- sapply(1:ncol(ratio.vals), function(j){ pval(ratio.vals[,j])})
   p.val.mat<-dist(matrix(0,nlevels(gp)))
   if(ngps==2) p.val.mat<-tmp.p.val.mat
