@@ -2190,7 +2190,7 @@ sigma.d<-function(x,invC,D.mat,gp){
   ones<-matrix(1,N,N) 
   x.c<-x-crossprod(ones,invC)%*%x/sum(invC) 
   R<-crossprod(x.c, crossprod(invC,x.c))/N
-  vec.d2<-diag(tcrossprod(D.mat.i%*%(x.c)))
+  vec.d2<-diag(tcrossprod(D.mat%*%(x.c)))
   sigma.d.all<-sum(vec.d2)/N/p
   sigma.d.gp<-sapply(split(vec.d2, gp), mean)/p  
   sigma.d.ratio<-sigma.d.rat<-sigma.d.rat.mat<-rate.mat<-NULL
@@ -2218,7 +2218,7 @@ fast.sigma.d<-function(x,invC,D.mat,gp, N,p){
   gps.combo <- combn(ngps, 2)
   ones<-matrix(1,N,N) 
   x.c<-x -crossprod(ones,invC)%*%x/sum(invC) 
-  vec.d2<-diag(tcrossprod(D.mat.i%*%(x.c)))
+  vec.d2<-diag(tcrossprod(D.mat%*%(x.c)))
   sigma.d.all<-sum(vec.d2)/N/p
   sigma.d.gp<-sapply(split(vec.d2, gp), mean)/p  
   sigma.d.ratio<-sigma.d.rat<-sigma.d.rat.mat<-rate.mat<-NULL
