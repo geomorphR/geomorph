@@ -108,13 +108,14 @@ compare.evol.rates<-function(A,phy,gp,iter=999,print.progress=TRUE ){
         random.sigma<- sapply(1:(iter+1), function(j) {x <- sigma.rand[,j]; max(x)/min(x)})
       }
     p.val <- pval(random.sigma)
-    p.val.mat<-NULL
+    if(nlevels(gp) > 2) {
+      p.val.mat <- dist(sigma.obs$sigma.d.gp)
+      p.val.mat[1:length(p.val.mat)] <- apply(sigma.rand, 1, pval)
+    } else p.val.mat <- p.val
     if(nlevels(gp)==2) p.val.mat<-p.val
     if(nlevels(gp)>2){
       ratio.vals<-sigma.rand
       tmp.p.val.mat <- sapply(1:ncol(ratio.vals), function(j){ pval(ratio.vals[,j])})
-      p.val.mat<-dist(matrix(0,nlevels(gp)))
-      for(i in 1:length(p.val.mat)) p.val.mat[[i]] <- tmp.p.val.mat[i]
     }
   }
   
