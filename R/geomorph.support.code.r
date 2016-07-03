@@ -2226,7 +2226,7 @@ fast.sigma.d<-function(x,invC,D.mat,gp, N,p){
     rates<-c(sigma.d.gp[levels(g)==gps.combo[1,j]],sigma.d.gp[levels(g)==gps.combo[2,j]])
     max(rates)/min(rates)
   })
-  max(sigma.d.rat)
+  sigma.d.rat
 }
 
 # sigma.d.multi
