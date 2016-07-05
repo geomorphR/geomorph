@@ -5,7 +5,7 @@
 \title{Plot specimens in tangent space}
 \usage{
 plotTangentSpace(A, axis1 = 1, axis2 = 2, warpgrids = TRUE, mesh = NULL,
-  label = NULL, groups = NULL)
+  label = NULL, groups = NULL, legend = FALSE)
 }
 \arguments{
 \item{A}{An array (p x k x n) containing landmark coordinates for a set of aligned specimens}
