@@ -21,7 +21,7 @@ b9147b10c8eecf58afdbdfd97871a1dc *man/arrayspecs.Rd
 fbdd701188cfb1fd96fe3c4ad45be14d *man/compare.multi.evol.rates.Rd
 ce3b5145255932743c01cd6bd2160bd6 *man/define.links.Rd
 72a15f91b816fc4a8b275f53509d3eb7 *man/define.modules.Rd
-db9247d5822209ba53e02342b676ee6b *man/define.sliders.Rd
+f773e44b702c4ce118006ecf77aa505f *man/define.sliders.Rd
 91c337fb9b4a96e073f6939ff9a18eee *man/digit.curves.Rd
 ad00c9c0d97cb550ae6c6e26853f6979 *man/digit.fixed.Rd
 052dfc8f7ecb0a63b5cee531301e8188 *man/digitize2d.Rd
@@ -67,9 +67,9 @@ ed13af2c1a9e7426c694b5ea86f9fc82 *man/plot.procD.allometry.Rd
 9f51c2758f229351f592e56810f60ff2 *man/plotAllSpecimens.Rd
 a7229f95c05edbeb149dd62dab69299c *man/plotGMPhyloMorphoSpace.Rd
 ba7dc45ca2256b16d7ce4bd256b97990 *man/plotOutliers.Rd
-68cc06abf71fc9efebb5f5c4b0a771e3 *man/plotRefToTarget.Rd
+fa4468bb69be6813d8b79237962f923f *man/plotRefToTarget.Rd
 40c078dd06edf142ed69e31a65508ae8 *man/plotspec.Rd
-41e328db45a2640751d1a4bf312fb0b4 *man/plotTangentSpace.Rd
+5f0ceea0727966619384db175090e257 *man/plotTangentSpace.Rd
 831e44e9ca6467bda4a51889bbfa6497 *man/print.advanced.procD.lm.Rd
 99755717779b1e3d2884ab0651b68216 *man/print.bilat.symmetry.Rd
 507ab3367a1514f1a5a90572e07295e4 *man/print.CR.phylo.Rd
@@ -126,7 +126,7 @@ d249a789ec951053d9c7c3056111111e *R/compare.evol.rates.r
 4a70e6db4604301bb5bbe23f6a8c0f4d *R/compare.multi.evol.rates.r
 9c8853f5d9c9bb5a9b0b21bfea6ebab8 *R/define.links.r
 d16ddcc0cc85bf6a16a27faf592b0a6c *R/define.modules.r
-4610ea0dddf960a20936351c10904225 *R/define.sliders.r
+db0d002e857d6deca4c4aefc649932c8 *R/define.sliders.r
 334d262a465c55f7b5d66f378bae20f8 *R/deprecated.defunct.r
 c3c403052e3d72cfc8a47467fa4db33a *R/digit.curves.r
 0c03428098d628c816597b70abc3ccd3 *R/digit.fixed.r
@@ -152,9 +152,9 @@ f0ec8f46092139a0c65082ad1571f985 *R/physignal.r
 7cf1ed920592c19f683c12d57be311d2 *R/plotAllSpecimens.r
 dfd0571936b18c4a6b6edc2845ee3c73 *R/plotGMPhyloMorphoSpace.r
 8db1f082de4f53ca8b704a8ff93a7b60 *R/plotOutliers.r
-ee4a0bd986c2198b80235e22820ca455 *R/plotRefToTarget.r
+47a64e289c14a0c94eb8a415c661c6d8 *R/plotRefToTarget.r
 41db23cebd8d7be6c3decf781bd378e0 *R/plotspec.r
-16d3cdc33187f656b2292263619caa9c *R/plotTangentSpace.r
+0b72db77537d2e0be909ab6f7d5e840b *R/plotTangentSpace.r
 c86c12a67d483f8ab5627c8aa776aebf *R/procD.allometry.r
 ffc7cc452c5beba5b1cff7f23dc433c5 *R/procD.lm.r
 2c46cdf68c9897fc31eff55a41ea59e9 *R/procD.pgls.r
