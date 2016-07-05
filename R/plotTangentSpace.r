@@ -54,7 +54,7 @@
 #'          predict(lm(two.d.array(Y.gpa$coords)~1)),12,2))
 
 plotTangentSpace<-function (A, axis1 = 1, axis2 = 2, warpgrids = TRUE, mesh = NULL, label = NULL, 
-                            groups=NULL){
+                            groups=NULL, legend=FALSE){
   if (length(dim(A)) != 3) {
     stop("Data matrix not a 3D array (see 'arrayspecs').") }
   if(any(is.na(A))==T){
@@ -67,6 +67,7 @@ plotTangentSpace<-function (A, axis1 = 1, axis2 = 2, warpgrids = TRUE, mesh = NU
   pc.res <- prcomp(x)
   pcdata <- pc.res$x
   if (warpgrids == FALSE) {
+    if(legend==TRUE){ layout(t(matrix(c(1, 1, 2, 1, 1, 1, 1, 1, 1), 3,3))) }
     plot(pcdata[, axis1], pcdata[, axis2], asp = 1, pch = 21,bg = "black", cex = 2, xlab = paste("PC ",axis1),
          ylab = paste("PC ",axis2))
     if(!is.null(groups)){points(pcdata[, axis1], pcdata[, axis2],pch=21,bg=groups,cex=2)}
@@ -75,6 +76,11 @@ plotTangentSpace<-function (A, axis1 = 1, axis2 = 2, warpgrids = TRUE, mesh = NU
     if (length(label!=0)) {
       if(isTRUE(label)){text(pcdata[, axis1], pcdata[, axis2], seq(1, n), adj = c(-0.7, -0.7)) }
       else{text(pcdata[, axis1], pcdata[, axis2], label, adj = c(-0.1, -0.7)) }
+    }
+    if(!is.null(groups)){
+      plot.new(); 
+      if(is.factor(groups)){legend(0.5,1, legend=unique(groups), pch=19, bty="n", col=unique(groups))
+      } else {legend(0.5,1, legend=unique(names(groups)), pch=19, bty="n", col=unique(groups)) }
     }
   }
   pcaxis.min.1 <- min(pcdata[, axis1])
