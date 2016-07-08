@@ -257,7 +257,7 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
       } else 
         P <- c(P, lapply(1:length(j), function(i) 
           sum((fastFit(Qf, Yr[[i]], n, p)- fastFit(Qr, Yr[[i]], n, p))^2)))
-      lsms <- c(lsms, apply.ls.means(pfitf, Y=Yr, g = gps, data = dat2, Pcor = Pcor)) 
+      lsms <- c(lsms, apply.ls.means(pfitf, Yr, g = gps, data = dat2, Pcor = Pcor)) 
       jj <- jj-length(j)
       if(jj > 100) kk <- 1:100 else kk <- 1:jj
       j <- j[length(j)] +kk

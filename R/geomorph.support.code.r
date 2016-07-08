@@ -930,12 +930,18 @@ procD.fit <- function(f1, keep.order=FALSE, pca=TRUE, data=NULL,...){
   if (any(is.na(Y)) == T) stop("Response data matrix (shape) contains missing values. Estimate these first (see 'estimate.missing').")
   form.terms <- form.in
   form.terms[[2]] <- NULL
-  df.check <- c("matrix", "vector", "numeric", "integer", "character", "logical", "factor")
-  df.check <- sapply(1:length(dat), function(j) any(class(dat[[j]]) == df.check))
-  mf <- as.data.frame(dat[df.check])
-  Terms <- terms(form.terms, keep.order=keep.order, data = mf)
-  if(nrow(Y) != nrow(mf)) stop("Different numbers of specimens in dependent and independent variables")
-  X <- model.matrix(Terms, data=mf)
+  if(form.terms[[2]] == 1) {
+    X <- model.matrix(~1, data = data.frame(x=rep(1,n)))
+    Terms <- terms(form.terms, keep.order=keep.order, data = data.frame(x=rep(1,n)))
+  } else {
+    df.check <- c("matrix", "vector", "numeric", "integer", "character", "logical", "factor")
+    df.check <- sapply(1:length(dat), function(j) any(class(dat[[j]]) == df.check))
+    mf <- as.data.frame(dat[df.check])
+    Terms <- terms(form.terms, keep.order=keep.order, data = mf)
+    if(nrow(Y) != nrow(mf)) stop("Different numbers of specimens in dependent and independent variables")
+    X <- model.matrix(Terms, data=mf)
+  }
+
   if(is.null(weights) & !is.null(dots$weights)) w <- dots$weights else 
     if(is.null(weights)) w <- rep(1,n)
   if(sum(w)==n){
