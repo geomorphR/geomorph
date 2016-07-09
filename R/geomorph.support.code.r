@@ -1452,7 +1452,7 @@ ls.means = function(pfit, Y=NULL, g=NULL, data=NULL, Pcor = NULL) {
                         function(j) rep(mean(Xcov.mean[,j]),nrow(Xcov.mean)))
     Xnew <- cbind(Xcov.mean, X[,-(1:ncol(Xcov.mean))])
   } else Xnew <- X
-  lsm <- lm.fit(model.matrix(~fac+0),Xnew%*%fit)$coefficients 
+  lsm <- as.matrix(lm.fit(model.matrix(~fac+0),Xnew%*%fit)$coefficients)
   rownames(lsm) <- levels(fac)
   lsm
 }
