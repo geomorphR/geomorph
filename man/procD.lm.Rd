@@ -26,7 +26,10 @@ which might be of interest for advanced users.}
 \item{print.progress}{A logical value to indicate whether a progress bar should be printed to the screen.
 This is helpful for long-running analyses.}
 
-\item{...}{Arguments passed on to procD.fit (typically associated with the lm function)}
+\item{...}{Arguments passed on to procD.fit (typically associated with the lm function).  The function procD.fit can also currently
+handle either type I or type III sums of squares and cross-products (SSCP) calculations.  Choice of SSCP type can be made with the argument,
+SS.type; i.e., SS.type = "I" or SS.type = "III".  Only advanced users should consider using these additional arguments, as such arguments
+can be experimental.}
 }
 \value{
 An object of class "procD.lm" is a list containing the following
@@ -43,6 +46,7 @@ NULL is returned.}
 \item{Terms}{The results of the \code{\link{terms}} function applied to the model matrix}
 \item{term.labels}{The terms used in constructing the aov.table.}
 \item{SS}{The sums of squares for each term, model residuals, and the total.}
+\item{SS}{The type of sums of squares.  One of type I or type III.}
 \item{df}{The degrees of freedom for each SS.}
 \item{R2}{The coefficient of determination for each model term.}
 \item{F}{The F values for each model term.}

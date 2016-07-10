@@ -884,11 +884,49 @@ pcoa <- function(D){
   Yp
 }
 
+# In development for various functions
+
+model.matrix.g <- function(f1, data = NULL) {
+  f1 <- as.formula(f1)
+  Terms <- terms(f1)
+  labs <- attr(Terms, "term.labels")
+  if(!is.null(data)) {
+    matches <- na.omit(match(labs, names(data)))
+    dat <- as.data.frame(data[matches]) 
+  } else dat <- NULL
+  model.matrix(f1, data=dat)
+}
+
+# In development for procD.fit
+
+typeI <- function(f1, data=NULL){
+  f1 <- as.formula(f1)
+  Terms <- terms(f1)
+  labs <- attr(Terms, "term.labels")
+  if(!is.null(data)) {
+    matches <- na.omit(match(labs, names(data)))
+    dat <- as.data.frame(data[matches]) 
+  } else dat <- NULL
+  X <- model.matrix(f1, data=dat)
+  X.k <- attr(X, "assign")
+  k <- length(X.k)
+  QRx <- qr(X)
+  X <- X[, QRx$pivot, drop = FALSE]
+  X <- X[, 1:QRx$rank, drop = FALSE]
+  X.k <- X.k[QRx$pivot][1:QRx$rank]
+  uk <- unique(X.k)
+  k <- length(uk) - 1
+  Xs <- lapply(1:length(uk), function(j)  Xj <- X[, X.k %in% uk[1:j]])
+  names(Xs) <- c("Intercept", labs)
+  Xs
+}
+
 # procD.fit
 # lm-like fit modified for Procrustes residuals 
 # general workhorse for all 'procD.lm' functions
 # used in all 'procD.lm' functions
-procD.fit <- function(f1, keep.order=FALSE, pca=TRUE, data=NULL,...){
+procD.fit <- function(f1, keep.order=FALSE, pca=TRUE, data=NULL, 
+                      SS.type = c("I", "III"), ...){
   form.in <- formula(f1)
   if(any(class(f1)=="lm")) {
     weights <- f1$weights
@@ -917,6 +955,7 @@ procD.fit <- function(f1, keep.order=FALSE, pca=TRUE, data=NULL,...){
     y.pca <- prcomp(Y)
     Y <- y.pca$x[,zapsmall(y.pca$sdev) > 0]
   }
+  if(!is.null(SS.type)) SS.type <- match.arg(SS.type) else SS.type <- "I"
   dots <- list(...)
   if(!is.null(contrasts)) {
     op.c <- options()$contrasts
@@ -957,7 +996,12 @@ procD.fit <- function(f1, keep.order=FALSE, pca=TRUE, data=NULL,...){
   X.k <- X.k[QRx$pivot][1:QRx$rank]
   uk <- unique(X.k)
   k <- length(uk) - 1
-  Xs <- lapply(1:length(uk), function(j)  Xj <- X[, X.k %in% uk[1:j]])
+  if(SS.type == "III"){
+    Xs <- lapply(1:length(uk), function(j)  Xj <- X[, X.k %in% uk[-j]])
+    Xs <- c(Xs[-1], list(X))
+  }
+     else
+      Xs <- lapply(1:length(uk), function(j)  Xj <- X[, X.k %in% uk[1:j]])
   QRs <- lapply(Xs, function(x) qr(x))
   fitted <- lapply(QRs, function(x) qr.fitted(x,Y))
   residuals <- lapply(QRs, function(x) qr.resid(x,Y))
@@ -1064,15 +1108,24 @@ fastLM<- function(U,y){
 # SS.iter
 # calculates SS in random iterations of a resmapling procedure
 # used in nearly all 'procD.lm' functions, unless pgls in used
-SS.iter = function(pfit,iter, seed = NULL, Yalt="RRPP"){
+SS.iter = function(pfit,iter, seed = NULL, Yalt="RRPP", SS.type= NULL){
   Y <- as.matrix(pfit$Y)
-  k <- length(pfit$QRs)
+  Xf <- as.matrix(pfit$X)
+  k <- length(pfit$Xs)
   n <- dim(Y)[1]; p <- dim(Y)[2]
   Yh <- pfit$fitted
   E <- pfit$residuals
   w<- pfit$weights
-  Ur <- lapply(pfit$wQRs[1:(k-1)], function(x) qr.Q(x))
-  Uf <- lapply(pfit$wQRs[2:k], function(x) qr.Q(x))
+  if(is.null(SS.type)) SS.type <- "I"
+  if(is.na(match(SS.type, c("I","III")))) SS.type <- "I"
+  if(SS.type == "III") {
+    Ur <- lapply(pfit$wQRs[1:(k-1)], function(x) qr.Q(x))
+    Uf <- qr.Q(qr(Xf))
+    Uf <- lapply(1:(k-1), function(.) Uf)
+  } else {
+    Ur <- lapply(pfit$wQRs[1:(k-1)], function(x) qr.Q(x))
+    Uf <- lapply(pfit$wQRs[2:k], function(x) qr.Q(x))
+  }
   ind = perm.index(n,iter, seed=seed)
   SS <- NULL
   pb <- txtProgressBar(min = 0, max = ceiling(iter/100), initial = 0, style=3) 
@@ -1093,7 +1146,6 @@ SS.iter = function(pfit,iter, seed = NULL, Yalt="RRPP"){
           Yr = Map(function(x) Map(function(y) (y[x,])*sqrt(w), lapply(1:(k-1),function(.) Y)),ind.j)
         }
       }
-    
     SS.temp <- lapply(1:length(j), function(j){ 
       mapply(function(ur,uf,y) sum((fastFit(uf,y,n,p) - fastFit(ur,y,n,p))^2), 
              Ur, Uf,Yr[[j]])})
@@ -1111,15 +1163,24 @@ SS.iter = function(pfit,iter, seed = NULL, Yalt="RRPP"){
 # .SS.iter
 # same as SS.iter, but without progress bar option
 # used in nearly all 'procD.lm' functions, unless pgls in used
-.SS.iter = function(pfit,iter, seed = NULL, Yalt="RRPP"){
+.SS.iter = function(pfit,iter, seed = NULL, Yalt="RRPP", SS.type=NULL){
   Y <- as.matrix(pfit$Y)
-  k <- length(pfit$QRs)
+  Xf <- as.matrix(pfit$X)
+  k <- length(pfit$Xs)
   n <- dim(Y)[1]; p <- dim(Y)[2]
   Yh <- pfit$fitted
   E <- pfit$residuals
   w<- pfit$weights
-  Ur <- lapply(pfit$wQRs[1:(k-1)], function(x) qr.Q(x))
-  Uf <- lapply(pfit$wQRs[2:k], function(x) qr.Q(x))
+  if(is.null(SS.type)) SS.type <- "I"
+  if(is.na(match(SS.type, c("I","III")))) SS.type <- "I"
+  if(SS.type == "III") {
+    Ur <- lapply(pfit$wQRs[1:(k-1)], function(x) qr.Q(x))
+    Uf <- qr.Q(qr(Xf))
+    Uf <- lapply(1:(k-1), function(.) Uf)
+  } else {
+    Ur <- lapply(pfit$wQRs[1:(k-1)], function(x) qr.Q(x))
+    Uf <- lapply(pfit$wQRs[2:k], function(x) qr.Q(x))
+  }
   ind = perm.index(n,iter, seed=seed)
   SS <- NULL
   jj <- iter+1
@@ -1248,17 +1309,23 @@ Fpgls.iter = function(pfit,Pcor,iter, seed=NULL, Yalt="RRPP"){
 # anova.parts
 # makes an ANOVA table based on SS from SS.iter
 # used in nearly all 'procD.lm' functions
-anova.parts <- function(pfit, SS){ # SS from SS.iter
+
+### NEED to add type 
+
+anova.parts <- function(pfit, SS, SS.type = NULL){ # SS from SS.iter
   Y <- pfit$wY
   k <- length(pfit$term.labels)
+  if(is.null(SS.type)) SS.type <- "I"
+  if(is.na(match(SS.type, c("I","III")))) SS.type <- "I"
   dfe <-sapply(pfit$wQRs, function(x) x$rank)
-  df <- dfe[2:(k+1)] - dfe[1:k]
+  if(SS.type == "III") df <- dfe[length(dfe)] - dfe[1:(length(dfe)-1)] else
+    df <- dfe[2:(k+1)] - dfe[1:k]
   if(k==1) SS <- SS[1] else SS <- SS[,1]
   anova.terms <- pfit$term.labels
   SSY <- sum(qr.resid(qr(pfit$wX[,1]),pfit$wY)^2)
   MS <- SS/df
   R2 <- SS/SSY
-  SSE.model <- SSY - sum(SS)
+  SSE.model <- sum(qr.resid(qr(pfit$wXs[[k+1]]),pfit$wY)^2)
   dfE <- nrow(Y)-(sum(df)+1)
   MSE <- SSE.model/dfE
   Fs <- MS/MSE
@@ -1280,7 +1347,7 @@ anova.parts <- function(pfit, SS){ # SS from SS.iter
 anova.parts.pgls <- function(pfit, Fpgls){ # Fpgls from Fpgls.iter
   Y <- pfit$wY
   k <- length(pfit$term.labels)
-  dfe <-sapply(pfit$wQRs, function(x) x$rank)
+  dfe <- sapply(pfit$wQRs, function(x) x$rank)
   df <- dfe[2:(k+1)] - dfe[1:k]
   SSE <- Fpgls$SSE
   if(k==1) SS <- Fpgls$SS[1] else SS <- Fpgls$SS[,1]
