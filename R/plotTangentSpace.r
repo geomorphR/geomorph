@@ -20,6 +20,7 @@
 #' @param label An optional vector indicating labels for each specimen are to be displayed 
 #' (or if TRUE, numerical addresses are given)
 #' @param groups An optional factor vector specifying group identity for each specimen (see example)
+#' @param legend A logical value for whether to add a legened to the plot.
 #' @return Function returns a list of the following components:
 #' \item{pc.summary}{A table summarizing the percent variation explained by each pc axis, equivalent to summary of \code{\link{prcomp}}.}
 #' \item{pc.scores}{The set of principal component scores for all specimens.}

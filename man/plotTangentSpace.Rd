@@ -23,6 +23,8 @@ as described in \code{\link{plotRefToTarget}}.}
 (or if TRUE, numerical addresses are given)}
 
 \item{groups}{An optional factor vector specifying group identity for each specimen (see example)}
+
+\item{legend}{A logical value for whether to add a legened to the plot.}
 }
 \value{
 Function returns a list of the following components:
