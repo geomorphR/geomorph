@@ -1466,6 +1466,8 @@ cov.extract <- function(pfit) {
 # ls.means
 # estimates ls.means from models with slopes and factors
 # advanced.procD.lm
+# THIS FUNCTION IS NO LONGER USED.  It is retained, however, for future debugging
+# purposes, in the event updates have errors
 ls.means = function(pfit, Y=NULL, g=NULL, data=NULL, Pcor = NULL) { 
   if(!is.null(Pcor) && is.null(Y)) stop("If Pcor is provided, Y cannot be null")
   if(is.null(Y)) Y <- pfit$wY 
@@ -1499,11 +1501,45 @@ ls.means = function(pfit, Y=NULL, g=NULL, data=NULL, Pcor = NULL) {
 
 # apply.ls.means
 # estimates ls.means from models with slopes and factors across random outcomes in a list
+# via helper functions, quick.ls.means.setup, and quick.ls.means
 # advanced.procD.lm
-# FUTURE: CAN BE MADE FASTER WITH SINGLE CALCULATION OF X
-apply.ls.means <- function(pfit, Yr, g=NULL, data=NULL, Pcor=NULL){
+quick.ls.means.set.up <- function(pfit, g=NULL, data=NULL) {
   if(is.null(data)) dat <- pfit$data else dat <- data
-  Map(function(y) ls.means(pfit, Y=y, g=g, data=dat, Pcor=Pcor), Yr)
+  if(!is.null(g)) {
+    if(is.data.frame(g)){
+      fac.check <- sapply(g, is.factor)
+      facs <- g[,fac.check]
+    } else if(is.factor(g)) facs <- g else stop("groups input neither a factor nor factors")
+    if(ncol(as.matrix(facs)) > 1) fac <- factor(apply(facs, 1,function(x) paste(x, collapse=":"))) else 
+      fac <- as.factor(unlist(facs))
+  } else fac <- single.factor(pfit)
+  covs <- cov.extract(pfit) 
+  if(is.null(covs)) X0 <- model.matrix(~fac) else {
+    if(ncol(as.matrix(covs)) == 1) covs <- as.vector(covs)
+    X0 <- model.matrix(~covs+fac)
+  }
+  X <- X0*sqrt(pfit$weights)
+  if(!is.null(covs)){
+    Xcov.mean <- as.matrix(X[,1:ncol(model.matrix(~covs))])
+    Xcov.mean <- sapply(1:ncol(Xcov.mean), 
+                        function(j) rep(mean(Xcov.mean[,j]),nrow(Xcov.mean)))
+    Xnew <- cbind(Xcov.mean, X[,-(1:ncol(Xcov.mean))])
+  } else Xnew <- X
+  list(X0=X, X=Xnew, fac=fac)
+}
+
+quick.ls.means <- function(X0, X, Y, fac, Pcor=NULL){
+  if(!is.null(Pcor)) fit <- .lm.fit(Pcor%*%X0,Y)$coefficients else fit <- .lm.fit(X0,Y)$coefficients
+  lsm <- as.matrix(lm.fit(model.matrix(~fac+0),X%*%fit)$coefficients)
+  rownames(lsm) <- levels(fac)
+  lsm
+}
+
+apply.ls.means <- function(pfit, Yr, g=NULL, data=NULL, Pcor=NULL){
+  setup<-quick.ls.means.set.up(pfit, g=g, data=data)
+  X0 <- setup$X0; X <- setup$X; fac <- setup$fac
+  if(is.null(data)) dat <- pfit$data else dat <- data
+  Map(function(y) quick.ls.means(X0,X, Y=y, fac=fac, Pcor=Pcor), Yr)
 }
 
 # slopes
@@ -1544,13 +1580,48 @@ slopes = function(pfit, Y=NULL, g = NULL, slope=NULL, data = NULL, Pcor = NULL){
 # apply.slopes
 # estimates slopes from models with slopes and factors across random outcomes in a list
 # advanced.procD.lm
-apply.slopes <- function(pfit, Yr, g=NULL, slope=NULL, data=NULL, Pcor=NULL){
-  Y <- pfit$wY
+
+quick.slopes.set.up <- function(pfit, g=NULL, slope=NULL, data=NULL) {
   if(is.null(data)) dat <- pfit$data else dat <- data
-  if(!is.null(g)) 
-    slopes <- Map(function(y) slopes(pfit, Y=y, g=g, slope=slope, data=dat, Pcor=Pcor), Yr) else
-      slopes <- Map(function(y) slopes(pfit, Y=y, g=NULL, slope=slope, data=dat, Pcor=Pcor), Yr)
-  if(ncol(Y)==1) slopes <- Map(function(s) cbind(1,s), slopes)
+  if(!is.null(g)) {
+    if(is.data.frame(g)){
+      fac.check <- sapply(g, is.factor)
+      facs <- g[,fac.check]
+    } else if(is.factor(g)) facs <- g else stop("groups input neither a factor nor factors")
+    if(ncol(as.matrix(facs)) > 1) fac <- factor(apply(facs, 1,function(x) paste(x, collapse=":"))) else 
+      fac <- as.factor(unlist(facs))
+  } else fac <- single.factor(pfit)
+  if(!is.null(slope)) covs <- as.matrix(slope) else covs <- as.matrix(cov.extract(pfit))
+  if(ncol(covs) > 1) stop("Only one covariate can be used for slope-comparisons")
+  if(ncol(covs) == 0) stop("No covariate for which to compare slopes")
+  list(covs=covs, fac=fac)
+}
+
+quick.slopes <- function(covs, fac, Y, Pcor=NULL){
+  if(!is.null(Pcor)) {
+    B <- qr.coef(qr(Pcor%*%model.matrix(~fac*covs)), Y)
+  } else B <- qr.coef(qr(model.matrix(~fac*covs)), Y)
+  fac.p <- qr(model.matrix(~fac))$rank
+  ones <- matrix(1,fac.p-1)
+  if(is.matrix(B)) {
+    Bslopes <- as.matrix(B[-(1:fac.p),])
+    Int <- Bslopes[1,]
+    Badjust <- rbind(0,ones%*%Int)
+    Bslopes <- Bslopes + Badjust} else {
+      Bslopes <- B[-(1:fac.p)]
+      Badjust <- c(0,rep(Bslopes[1],(fac.p-1)))
+      Bslopes <- matrix(Bslopes + Badjust)
+    }
+  if(ncol(Bslopes)==1) Bslopes <- cbind(1, Bslopes)
+  rownames(Bslopes) <- levels(fac)
+  Bslopes
+}
+  
+apply.slopes <- function(pfit, Yr, g=NULL, slope=NULL, data=NULL, Pcor=NULL){
+  setup <- quick.slopes.set.up(pfit, g=g, slope=slope, data=data)
+  covs <- setup$covs; fac <- setup$fac
+  slopes <- Map(function(y) quick.slopes(covs, fac,y, Pcor=Pcor), Yr)
+  if(ncol(slopes[[1]])==1) slopes <- Map(function(s) cbind(1,s), slopes)
   slopes 
 }
 
