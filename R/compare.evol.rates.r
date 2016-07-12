@@ -93,15 +93,18 @@ compare.evol.rates<-function(A,phy,gp,iter=999,print.progress=TRUE ){
   diag(rate.mat)<-sigma.obs$sigma.d.all
   rate.mat<-matrix(nearPD(rate.mat,corr=FALSE)$mat,nrow=ncol(rate.mat),ncol=ncol(rate.mat))
   x.sim<-sim.char(phy=phy,par=rate.mat,nsim=iter,model="BM") 
+  ones <- matrix(1,N,N)
+  Xadj <- crossprod(ones,invC)/sum(invC) 
   if(nlevels(gp) > 1){
     if(print.progress){
       pb <- txtProgressBar(min = 0, max = iter, initial = 0, style=3) 
       sigma.rand <- sapply(1:iter, function(j) {
         setTxtProgressBar(pb,j)
-        fast.sigma.d(as.matrix(x.sim[,,j]),invC,D.mat,gp, N,p)
+        fast.sigma.d(as.matrix(x.sim[,,j]),D.mat,gp, N,p, Xadj)
       })
       close(pb)
-    } else sigma.rand <- sapply(1:(iter), function(j) fast.sigma.d(as.matrix(x.sim[,,j]),invC,D.mat,gp,N,p))
+    } else sigma.rand <- sapply(1:(iter), 
+                function(j) fast.sigma.d(as.matrix(x.sim[,,j]),D.mat,gp,N,p,Xadj))
     if(nlevels(gp) == 2) 
       sigma.rand <- random.sigma <- c(sigma.obs$sigma.d.gp.ratio, sigma.rand) else {
         sigma.rand <- cbind(as.vector(sigma.obs$sigma.d.gp.ratio), sigma.rand)
