@@ -1725,8 +1725,9 @@ apply.plsmulti <- function(x,gps, iter, seed = NULL){
   r.rand <- NULL
   while(jj > 0){
     ind.j <- ind[j]
-    x.r<-lapply(1:length(j), function(i) x[ind.j[[i]],]) 
-    r.rand<-c(r.rand, sapply(1:length(j), function(i) quick.plsmulti(x.r[[i]], g, gps.combo))) 
+    x.r<-lapply(1:length(j), function(i) x[ind.j[[i]],which(g==levels(g)[1])]) 
+    r.rand<-c(r.rand, sapply(1:length(j), function(i) quick.plsmulti(cbind(x.r[[i]],
+                                                  x[,which(g!=levels(g)[1])]), g, gps.combo))) 
     jj <- jj-length(j)
     if(jj > 100) kk <- 1:100 else kk <- 1:jj
     j <- j[length(j)] +kk
@@ -1750,8 +1751,9 @@ apply.plsmulti <- function(x,gps, iter, seed = NULL){
   r.rand <- NULL
   while(jj > 0){
     ind.j <- ind[j]
-    x.r<-lapply(1:length(j), function(i) x[ind.j[[i]],]) 
-    r.rand<-c(r.rand, sapply(1:length(j), function(i) quick.plsmulti(x.r[[i]], g, gps.combo))) 
+    x.r<-lapply(1:length(j), function(i) x[ind.j[[i]],which(g==levels(g)[1])]) 
+    r.rand<-c(r.rand, sapply(1:length(j), function(i) quick.plsmulti(cbind(x.r[[i]],
+                                                x[,which(g!=levels(g)[1])]), g, gps.combo))) 
     jj <- jj-length(j)
     if(jj > 100) kk <- 1:100 else kk <- 1:jj
     j <- j[length(j)] +kk
