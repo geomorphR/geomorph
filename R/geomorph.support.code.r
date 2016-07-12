@@ -2355,7 +2355,6 @@ fast.sigma.d.multi<-function(x,D.mat,Subset, gindx, ngps, gps.combo, N, p, Xadj)
   })
 }
 
-
 # trajset.int
 # set-up trajectories from a model with an interaction
 # used in: trajectory.analysis
