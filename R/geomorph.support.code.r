@@ -2135,13 +2135,14 @@ pls.phylo <- function(x,y, invC,D.mat, verbose = FALSE){
   x <- as.matrix(x); y <- as.matrix(y)
   px <- ncol(x); py <- ncol(y); pmin <- min(px,py)
   data.all<-cbind(x,y)
-  one<-matrix(1,nrow(x),1)  
-  a<-t(t(one)%*%invC%*% data.all)*(sum(invC))^-1  
-  R<- crossprod((data.all-one%*%t(a)),invC)%*%(data.all-one%*%t(a))*(nrow(x)-1)^-1 
+  one<-matrix(1,nrow(x))  
+  a.adj<-one%*%crossprod(one,invC)/sum(invC) 
+  x.c <-data.all-a.adj%*%data.all
+  R<-  crossprod(x.c, crossprod(invC, x.c)) * (nrow(x)-1)^-1 
   R12 <- matrix(R[1:px,-(1:px)], px,py)
   pls <- La.svd(R12, pmin, pmin)
   U <- pls$u; V <- t(pls$vt)
-  Phy.X<-D.mat%*%(data.all-one%*%t(a)) 
+  Phy.X<-D.mat%*%x.c
   x.phy <- Phy.X[, c(1:dim(x)[2])] 
   y.phy <- Phy.X[, c((dim(x)[2] + 1):(dim(x)[2] +  dim(y)[2]))] 
   XScores <- x.phy %*% U 
@@ -2161,6 +2162,7 @@ pls.phylo <- function(x,y, invC,D.mat, verbose = FALSE){
 # used in: phylo.integration
 apply.pls.phylo <- function(x,y,iter, seed = NULL){
   ind <- perm.index(nrow(x), iter, seed=seed)
+  px <- dim(x)[2]; py <- dim(y)[2]; pmin <- min(px,py)
   pb <- txtProgressBar(min = 0, max = ceiling(iter/100), initial = 0, style=3) 
   jj <- iter+1
   step <- 1
@@ -2169,7 +2171,7 @@ apply.pls.phylo <- function(x,y,iter, seed = NULL){
   while(jj > 0){
     ind.j <- ind[j]
     y.rand <-lapply(1:length(j), function(i) y[ind.j[[i]],])
-    r.rand <- c(r.rand, sapply(1:length(j), function(i) pls(x,y.rand[[i]], verbose = FALSE)))
+    r.rand <- c(r.rand, sapply(1:length(j), function(i) quick.pls(x,y.rand[[i]],px,py,pmin)))
     jj <- jj-length(j)
     if(jj > 100) kk <- 1:100 else kk <- 1:jj
     j <- j[length(j)] +kk
@@ -2185,13 +2187,14 @@ apply.pls.phylo <- function(x,y,iter, seed = NULL){
 # used in: phylo.integration
 .apply.pls.phylo <- function(x,y,iter, seed = NULL){
   ind <- perm.index(nrow(x), iter, seed=seed)
+  px <- dim(x)[2]; py <- dim(y)[2]; pmin <- min(px,py)
   jj <- iter+1
   if(jj > 100) j <- 1:100 else j <- 1:jj
   r.rand <- NULL
   while(jj > 0){
     ind.j <- ind[j]
     y.rand <-lapply(1:length(j), function(i) y[ind.j[[i]],])
-    r.rand <- c(r.rand, sapply(1:length(j), function(i) pls(x,y.rand[[i]], verbose = FALSE)))
+    r.rand <- c(r.rand, sapply(1:length(j), function(i) quick.pls(x,y.rand[[i]],px,py,pmin)))
     jj <- jj-length(j)
     if(jj > 100) kk <- 1:100 else kk <- 1:jj
     j <- j[length(j)] +kk
