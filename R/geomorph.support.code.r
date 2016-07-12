@@ -1285,9 +1285,6 @@ Fpgls.iter = function(pfit,Pcor,iter, seed=NULL, Yalt="RRPP"){
 # anova.parts
 # makes an ANOVA table based on SS from SS.iter
 # used in nearly all 'procD.lm' functions
-
-### NEED to add type 
-
 anova.parts <- function(pfit, SS, SS.type = NULL){ # SS from SS.iter
   Y <- pfit$wY
   k <- length(pfit$term.labels)
