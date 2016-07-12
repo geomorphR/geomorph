@@ -86,7 +86,7 @@ compare.multi.evol.rates<-function(A,gp,phy,Subset=TRUE,iter=999, print.progress
   ngps<-nlevels(gps)
   if(ngps==1){stop("Only one shape assigned.")}
   ntaxa<-length(phy$tip.label)
-  N<-nrow(x) 
+  N<-nrow(x); p <- ncol(x)
   if (class(phy) != "phylo") 
     stop("tree must be of class 'phylo.'")
   if(is.null(rownames(x))){
@@ -104,15 +104,21 @@ compare.multi.evol.rates<-function(A,gp,phy,Subset=TRUE,iter=999, print.progress
   R<-sigma.obs$R; diag(R)<-sigma.obs$rate.global
   R<-matrix(nearPD(R,corr=FALSE)$mat,nrow=ncol(R),ncol=ncol(R))
   x.sim<-sim.char(phy,R,nsim=iter) 
+  g<-factor(as.numeric(gps))
+  glevs <- unique(g)
+  gindx <- lapply(1:ngps, function(j) which(g==glevs[j]))
+  gps.combo <- combn(ngps, 2)
+  ones <- matrix(1,N,N)
+  Xadj <- crossprod(ones,invC)/sum(invC) 
   if(print.progress){
     pb <- txtProgressBar(min = 0, max = iter, initial = 0, style=3) 
     sigma.rand <- lapply(1:iter, function(j) {
       setTxtProgressBar(pb,j)
-      fast.sigma.d.multi(as.matrix(x.sim[,,j]),invC,D.mat,gps,Subset)
+      fast.sigma.d.multi(x=as.matrix(x.sim[,,j]),D.mat,Subset, gindx, ngps, gps.combo, N, p, Xadj)
     })
     close(pb)
   } else sigma.rand <-lapply(1:iter, function(j) 
-    fast.sigma.d.multi(as.matrix(x.sim[,,j]),invC,D.mat,gps,Subset))
+    fast.sigma.d.multi(x=as.matrix(x.sim[,,j]),D.mat,Subset, gindx, ngps, gps.combo, N, p, Xadj))
   if(ngps == 2) random.sigma<-c(sigma.obs$sigma.d.ratio, unlist(sigma.rand)) else
     random.sigma<-c(sigma.obs$sigma.d.ratio,
                   sapply(1:iter, function(j){
