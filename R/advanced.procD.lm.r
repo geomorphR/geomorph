@@ -75,7 +75,7 @@
 #'
 #'# Example of a test of a factor interaction, plus pairwise comparisons 
 #'advanced.procD.lm(coords ~ site*species, ~ site + species, groups = ~site*species, 
-#'    iter=499, data = gdf)
+#'    iter=999, data = gdf)
 #'
 #'# Example of a test of a factor interaction, plus pairwise comparisons, 
 #'# accounting for a common allometry  
