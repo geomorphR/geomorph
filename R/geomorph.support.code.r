@@ -2285,14 +2285,11 @@ sigma.d<-function(x,invC,D.mat,gp){
 # fast.sigma.d
 # same as sigma.d but only calculates sigma.d.ratio - fast in loops
 # used in: compare.evol.rates
-fast.sigma.d<-function(x,D.mat,gp, N,p, Xadj){
-  g<-factor(as.numeric(gp))
-  ngps<-nlevels(g)
-  gps.combo <- combn(ngps, 2)
+fast.sigma.d<-function(x,D.mat,g, ngps, gps.combo, N,p, Xadj){
   x.c<-x -Xadj%*%x
   vec.d2<-diag(tcrossprod(D.mat%*%(x.c)))
   sigma.d.all<-sum(vec.d2)/N/p
-  sigma.d.gp<-sapply(split(vec.d2, gp), mean)/p  
+  sigma.d.gp<-sapply(split(vec.d2, g), mean)/p  
   sigma.d.ratio<-sigma.d.rat<-sigma.d.rat.mat<-rate.mat<-NULL
   sigma.d.rat <- sapply(1:ncol(gps.combo), function(j){ 
     rates<-c(sigma.d.gp[levels(g)==gps.combo[1,j]],sigma.d.gp[levels(g)==gps.combo[2,j]])
