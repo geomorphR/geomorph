@@ -1285,9 +1285,6 @@ Fpgls.iter = function(pfit,Pcor,iter, seed=NULL, Yalt="RRPP"){
 # anova.parts
 # makes an ANOVA table based on SS from SS.iter
 # used in nearly all 'procD.lm' functions
-
-### NEED to add type 
-
 anova.parts <- function(pfit, SS, SS.type = NULL){ # SS from SS.iter
   Y <- pfit$wY
   k <- length(pfit$term.labels)
@@ -1620,9 +1617,7 @@ quick.pls <- function(x,y, px, py, pmin) {# no RV; no verbose output
   S12 <- crossprod(center(x),center(y))/(dim(x)[1] - 1)
   pls <- La.svd(S12, pmin, pmin)
   U<-pls$u; V <- t(pls$vt)
-  XScores <- x %*% U
-  YScores <- y %*% V
-  cor(XScores[,1],YScores[,1])
+  cor(x%*$U[,1],y%*%V[,1])
 }
 
 # apply.pls 
