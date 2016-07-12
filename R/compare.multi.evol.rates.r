@@ -1,4 +1,4 @@
-#' Comparing rates of shape evolution among traits on phylogenies
+#' Comparing rates of shape evolution among traits on phylogenies 
 #'
 #' Function calculates rates of shape evolution for two or more multi-dimensional traits on a 
 #' phylogeny from a set of Procrustes-aligned specimens
