@@ -1617,7 +1617,7 @@ quick.pls <- function(x,y, px, py, pmin) {# no RV; no verbose output
   S12 <- crossprod(center(x),center(y))/(dim(x)[1] - 1)
   pls <- La.svd(S12, pmin, pmin)
   U<-pls$u; V <- t(pls$vt)
-  cor(x%*$U[,1],y%*%V[,1])
+  cor(x%*%U[,1],y%*%V[,1])
 }
 
 # apply.pls 
