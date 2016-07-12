@@ -2159,13 +2159,7 @@ pls.phylo <- function(x,y, invC,D.mat, verbose = FALSE){
 # apply.pls.phylo
 # permutation for phylo.pls
 # used in: phylo.integration
-apply.pls.phylo <- function(x,y,invC,D.mat, iter, seed = NULL){
-  n.x<-ncol(x)
-  data.all<-cbind(x,y)
-  one<-matrix(1,nrow(x),1)  
-  a<-t(t(one)%*%invC%*% data.all)*(sum(invC))^-1  
-  dat.trans<-D.mat%*%(data.all-(one%*%t(a)))
-  x<-dat.trans[,1:n.x];y<-dat.trans[,-(1:n.x)]
+apply.pls.phylo <- function(x,y,iter, seed = NULL){
   ind <- perm.index(nrow(x), iter, seed=seed)
   pb <- txtProgressBar(min = 0, max = ceiling(iter/100), initial = 0, style=3) 
   jj <- iter+1
@@ -2189,13 +2183,7 @@ apply.pls.phylo <- function(x,y,invC,D.mat, iter, seed = NULL){
 # .apply.pls.phylo
 # same as apply.phylo.pls, but without progress bar option
 # used in: phylo.integration
-.apply.pls.phylo <- function(x,y,invC,D.mat, iter, seed = NULL){
-  n.x<-ncol(x)
-  data.all<-cbind(x,y)
-  one<-matrix(1,nrow(x),1)  
-  a<-t(t(one)%*%invC%*% data.all)*(sum(invC))^-1  
-  dat.trans<-D.mat%*%(data.all-(one%*%t(a)))
-  x<-dat.trans[,1:n.x];y<-dat.trans[,-(1:n.x)]
+.apply.pls.phylo <- function(x,y,iter, seed = NULL){
   ind <- perm.index(nrow(x), iter, seed=seed)
   jj <- iter+1
   if(jj > 100) j <- 1:100 else j <- 1:jj
@@ -2240,10 +2228,7 @@ plsmulti.phylo<-function(x,gps, invC, D.mat){
 # apply.plsmulti.phylo
 # permutations for plsmulti.phylo
 # used in: phylo.integration
-apply.plsmulti.phylo <- function(x,gps, invC,D.mat, iter, seed= NULL){
-  one<-matrix(1,nrow(x),1)  
-  a<-t(t(one)%*%invC%*% x)*(sum(invC))^-1  
-  x<-D.mat%*%(x-(one%*%t(a)))
+apply.plsmulti.phylo <- function(x, gps,a.adj,D.mat, iter=iter, seed=seed){
   gps<-factor(gps)
   ind <- perm.index(nrow(x), iter, seed=seed)
   pb <- txtProgressBar(min = 0, max = ceiling(iter/100), initial = 0, style=3) 
@@ -2269,10 +2254,8 @@ apply.plsmulti.phylo <- function(x,gps, invC,D.mat, iter, seed= NULL){
 # .apply.plsmulti.phylo
 # same as apply.plsmulti.phylo, but without progress bar option
 # used in: phylo.integration
-.apply.plsmulti.phylo <- function(x,gps, invC,D.mat, iter, seed= NULL){
-  one<-matrix(1,nrow(x),1)  
-  a<-t(t(one)%*%invC%*% x)*(sum(invC))^-1  
-  x<-D.mat%*%(x-(one%*%t(a)))
+.apply.plsmulti.phylo <- function(x, gps,a.adj,D.mat, n.x, iter=iter, seed=seed){
+  x<-D.mat%*%(x - a.adj%*%x)
   gps<-factor(gps)
   ind <- perm.index(nrow(x), iter, seed=seed)
   jj <- iter+1
