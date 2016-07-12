@@ -1545,6 +1545,8 @@ apply.ls.means <- function(pfit, Yr, g=NULL, data=NULL, Pcor=NULL){
 # slopes
 # estimates slopes from models with slopes and factors
 # advanced.procD.lm
+# THIS FUNCTION IS NO LONGER USED.  It is retained, however, for future debugging
+# purposes, in the event updates have errors
 slopes = function(pfit, Y=NULL, g = NULL, slope=NULL, data = NULL, Pcor = NULL){ 
   if(!is.null(Pcor) && is.null(Y)) stop("If Pcor is provided, Y cannot be null")
   if(is.null(Y)) Y <- pfit$wY
@@ -1580,7 +1582,6 @@ slopes = function(pfit, Y=NULL, g = NULL, slope=NULL, data = NULL, Pcor = NULL){
 # apply.slopes
 # estimates slopes from models with slopes and factors across random outcomes in a list
 # advanced.procD.lm
-
 quick.slopes.set.up <- function(pfit, g=NULL, slope=NULL, data=NULL) {
   if(is.null(data)) dat <- pfit$data else dat <- data
   if(!is.null(g)) {
