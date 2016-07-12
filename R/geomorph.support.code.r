@@ -897,30 +897,6 @@ model.matrix.g <- function(f1, data = NULL) {
   model.matrix(f1, data=dat)
 }
 
-# In development for procD.fit
-
-typeI <- function(f1, data=NULL){
-  f1 <- as.formula(f1)
-  Terms <- terms(f1)
-  labs <- attr(Terms, "term.labels")
-  if(!is.null(data)) {
-    matches <- na.omit(match(labs, names(data)))
-    dat <- as.data.frame(data[matches]) 
-  } else dat <- NULL
-  X <- model.matrix(f1, data=dat)
-  X.k <- attr(X, "assign")
-  k <- length(X.k)
-  QRx <- qr(X)
-  X <- X[, QRx$pivot, drop = FALSE]
-  X <- X[, 1:QRx$rank, drop = FALSE]
-  X.k <- X.k[QRx$pivot][1:QRx$rank]
-  uk <- unique(X.k)
-  k <- length(uk) - 1
-  Xs <- lapply(1:length(uk), function(j)  Xj <- X[, X.k %in% uk[1:j]])
-  names(Xs) <- c("Intercept", labs)
-  Xs
-}
-
 # procD.fit
 # lm-like fit modified for Procrustes residuals 
 # general workhorse for all 'procD.lm' functions
