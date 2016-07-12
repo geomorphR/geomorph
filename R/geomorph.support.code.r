@@ -1068,10 +1068,9 @@ boot.index <-function(n, iter, seed=NULL){
 # used in SS.iter and Fpgls.iter; future need: advanced.procD.lm 
 fastFit <- function(U,y,n,p){
   if(!is.matrix(y)) y <- as.matrix(y)
-  if(p > n) U%*%t(U)%*%y else 
-    U%*%(t(U)%*%y) 
+  if(p > n) tcrossprod(U)%*%y else 
+    U%*%crossprod(U,y) 
 }
-
 # fastLM
 # calculates fitted values and residuals, after fastFit
 # placeholder in case needed later
