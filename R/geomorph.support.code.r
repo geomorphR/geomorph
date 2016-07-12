@@ -1697,18 +1697,15 @@ plsmulti<-function(x,gps){
 # quick.plsmulti
 # a streamlined plsmulti
 # used in apply.plsmulti
-quick.plsmulti <- function(x,gps){
-  g<-factor(as.numeric(gps))
-  ngps<-nlevels(g)
-  S<-var(x)
-  gps.combo <- combn(ngps, 2)
+quick.plsmulti <- function(x,g,gps.combo){
   pls.gp <- sapply(1:ncol(gps.combo), function(j){ # no loops
-    S12<-S[which(g==gps.combo[1,j]),which(g==gps.combo[2,j])]
+    xx <- x[,g==gps.combo[1,j]]
+    yy <- x[,g==gps.combo[2,j]]
+    S12<-crossprod(center(xx),center(yy))/(dim(xx)[1] - 1)
     px <- nrow(S12); py <- ncol(S12); pmin <- min(px,py)
     pls<-La.svd(S12, pmin, pmin)
     U<-pls$u; V<-t(pls$vt)
-    XScores<-x[,which(g==gps.combo[1,j])]%*%U[,1]; YScores<-x[,which(g==gps.combo[2,j])]%*%V[,1]
-    cor(XScores,YScores)
+    cor(xx%*%U[,1], yy%*%V[,1])
   })
   mean(pls.gp) 
 }
@@ -1717,10 +1714,9 @@ quick.plsmulti <- function(x,gps){
 # permutation for multipls
 # used in: integration.test
 apply.plsmulti <- function(x,gps, iter, seed = NULL){
-  g <- as.factor(gps)
+  g<-factor(as.numeric(gps))
   ngps<-nlevels(g)
-  S <-var(x)
-  r.obs <- plsmulti(x,gps)$r.pls
+  gps.combo <- combn(ngps, 2)
   ind <- perm.index(nrow(x), iter, seed=seed)
   pb <- txtProgressBar(min = 0, max = ceiling(iter/100), initial = 0, style=3) 
   jj <- iter+1
@@ -1729,9 +1725,8 @@ apply.plsmulti <- function(x,gps, iter, seed = NULL){
   r.rand <- NULL
   while(jj > 0){
     ind.j <- ind[j]
-    x.r<-lapply(1:length(j), function(i) x[ind.j[[i]],which(g==levels(g)[1])]) 
-    r.rand<-c(r.rand, sapply(1:length(j), function(i) quick.plsmulti(cbind(x.r[[i]],
-                               x[,which(g!=levels(g)[1])]), gps=g))) 
+    x.r<-lapply(1:length(j), function(i) x[ind.j[[i]],]) 
+    r.rand<-c(r.rand, sapply(1:length(j), function(i) quick.plsmulti(x.r[[i]], g, gps.combo))) 
     jj <- jj-length(j)
     if(jj > 100) kk <- 1:100 else kk <- 1:jj
     j <- j[length(j)] +kk
@@ -1746,19 +1741,17 @@ apply.plsmulti <- function(x,gps, iter, seed = NULL){
 # same as apply.plsmulti, but without progress bar option
 # used in: integration.test
 .apply.plsmulti <- function(x,gps, iter, seed = NULL){
-  g <- as.factor(gps)
+  g<-factor(as.numeric(gps))
   ngps<-nlevels(g)
-  S <-var(x)
-  r.obs <- plsmulti(x,gps)$r.pls
+  gps.combo <- combn(ngps, 2)
   ind <- perm.index(nrow(x), iter, seed=seed)
   jj <- iter+1
   if(jj > 100) j <- 1:100 else j <- 1:jj
   r.rand <- NULL
   while(jj > 0){
     ind.j <- ind[j]
-    x.r<-lapply(1:length(j), function(i) x[ind.j[[i]],which(g==levels(g)[1])]) 
-    r.rand<-c(r.rand, sapply(1:length(j), function(i) quick.plsmulti(cbind(x.r[[i]],
-                  x[,which(g!=levels(g)[1])]), gps=g))) 
+    x.r<-lapply(1:length(j), function(i) x[ind.j[[i]],]) 
+    r.rand<-c(r.rand, sapply(1:length(j), function(i) quick.plsmulti(x.r[[i]], g, gps.combo))) 
     jj <- jj-length(j)
     if(jj > 100) kk <- 1:100 else kk <- 1:jj
     j <- j[length(j)] +kk
