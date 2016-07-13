@@ -141,9 +141,9 @@ phylo.integration <-function(A, A2=NULL, phy, partition.gp=NULL,iter=999, seed=N
   one<-matrix(1,nrow(x)); I = diag(1,nrow(x),) 
   Ptrans<-D.mat%*%(I-one%*%crossprod(one,invC)/sum(invC))
   if(ngps==2){
+    pls.obs <- pls.phylo(x, y, Ptrans,verbose=TRUE)
     x <- Ptrans%*%x
     y <- Ptrans%*%y
-    pls.obs <- pls.phylo(x, y, invC,D.mat,verbose=TRUE)
     if(print.progress) pls.rand <- apply.pls(x, y,  iter=iter, seed=seed) else
       pls.rand <- .apply.pls(x, y, iter=iter, seed=seed)
     p.val <- pval(pls.rand)
@@ -151,10 +151,10 @@ phylo.integration <-function(A, A2=NULL, phy, partition.gp=NULL,iter=999, seed=N
     YScores <- pls.obs$YScores
   }
   if(ngps>2){
-    pls.obs <- plsmulti.phylo(x, gps, invC,D.mat)  
+    pls.obs <- plsmulti.phylo(x, gps, Ptrans)  
     x <- Ptrans%*%x
     if(print.progress) pls.rand <- apply.plsmulti(x, gps, iter=iter, seed=seed) else
-      pls.rand <- .apply.plsmulti.phylo(x, gps,Ptrans, iter=iter, seed=seed)
+      pls.rand <- .apply.plsmulti.phylo(x, gps,iter=iter, seed=seed)
     p.val <- pval(pls.rand)
   } 
   ####OUTPUT

@@ -2131,22 +2131,16 @@ phylo.mat<-function(x,phy){
 # pls.phylo
 # phylogenetic pls
 # used in: phylo.integration, apply.pls.phylo
-pls.phylo <- function(x,y, invC,D.mat, verbose = FALSE){
+pls.phylo <- function(x,y, Ptrans, verbose = FALSE){
   x <- as.matrix(x); y <- as.matrix(y)
   px <- ncol(x); py <- ncol(y); pmin <- min(px,py)
-  data.all<-cbind(x,y)
-  one<-matrix(1,nrow(x))  
-  a.adj<-one%*%crossprod(one,invC)/sum(invC) 
-  x.c <-data.all-a.adj%*%data.all
-  R<-  crossprod(x.c, crossprod(invC, x.c)) * (nrow(x)-1)^-1 
-  R12 <- matrix(R[1:px,-(1:px)], px,py)
+  x <- Ptrans%*%x
+  y <- Ptrans%*%y
+  R12<-  crossprod(x,y)/(nrow(x)-1)
   pls <- La.svd(R12, pmin, pmin)
   U <- pls$u; V <- t(pls$vt)
-  Phy.X<-D.mat%*%x.c
-  x.phy <- Phy.X[, c(1:dim(x)[2])] 
-  y.phy <- Phy.X[, c((dim(x)[2] + 1):(dim(x)[2] +  dim(y)[2]))] 
-  XScores <- x.phy %*% U 
-  YScores <- y.phy %*% V
+  XScores <- x %*% U 
+  YScores <- y %*% V
   r.pls <- cor(XScores[, 1], YScores[, 1]) 
   if(verbose==TRUE){
     XScores <- as.matrix(XScores); Y <- as.matrix(YScores)
@@ -2217,13 +2211,12 @@ apply.pls.phylo <- function(x,y,Ptrans, iter, seed = NULL){
 # plsmulti.phylo
 # average pairwise phylo.pls
 # used in: phylo.integration, apply.plsmulti.phylo
-plsmulti.phylo<-function(x,gps, invC, D.mat){
+plsmulti.phylo<-function(x,gps, Ptrans){
   g<-factor(as.numeric(gps))
   ngps<-nlevels(g)
-  one<-matrix(1,nrow(x),1)  
-  a<-t(t(one)%*%invC%*% x)*sum(invC)^-1  
-  R<- t(x-one%*%t(a))%*%invC%*%(x-one%*%t(a))*(nrow(x)-1)^-1 
+  x <- Ptrans%*%x
   gps.combo <- combn(ngps, 2)
+  R<-  crossprod(x) * (nrow(x)-1)^-1 
   pls.gp <- sapply(1:ncol(gps.combo), function(j){ 
     R12<-R[which(g==gps.combo[1,j]),which(g==gps.combo[2,j])]
     px <- nrow(R12); py <- ncol(R12); pmin <- min(px,py)
