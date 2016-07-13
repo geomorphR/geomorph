@@ -139,22 +139,19 @@ phylo.integration <-function(A, A2=NULL, phy, partition.gp=NULL,iter=999, seed=N
   invC<-phy.parts$invC; D.mat<-phy.parts$D.mat
 #Analysis  
   one<-matrix(1,nrow(x))  
-  a.adj<-one%*%crossprod(one,invC)/sum(invC) 
+  a.adj<-diag(one)-one%*%crossprod(one,invC)/sum(invC) 
+  a.adj <- D.mat%*%a.adj
   if(ngps==2){
     n.x<-ncol(x)
     pls.obs <- pls.phylo(x, y, invC,D.mat,verbose=TRUE)
-    data.all<-cbind(x,y)
-    dat.trans<-D.mat%*%(data.all - a.adj%*%data.all)
-    x<-dat.trans[,1:n.x];y<-dat.trans[,-(1:n.x)]
-    if(print.progress) pls.rand <- apply.pls.phylo(x, y,iter=iter, seed=seed) else
-      pls.rand <- .apply.pls.phylo(x, y, iter=iter, seed=seed)
+    if(print.progress) pls.rand <- apply.pls.phylo(x, y, a.adj, D.mat, iter=iter, seed=seed) else
+      pls.rand <- .apply.pls.phylo(x, y, a.adj, D.mat, iter=iter, seed=seed)
     p.val <- pval(pls.rand)
     XScores <- pls.obs$XScores
     YScores <- pls.obs$YScores
   }
   if(ngps>2){
     pls.obs <- plsmulti.phylo(x, gps, invC,D.mat)  
-    x<-D.mat%*%(x - a.adj%*%x)
     if(print.progress) pls.rand <- apply.plsmulti.phylo(x, gps,a.adj,D.mat, iter=iter, seed=seed) else
       pls.rand <- .apply.plsmulti.phylo(x, gps,a.adj,D.mat, iter=iter, seed=seed)
     p.val <- pval(pls.rand)

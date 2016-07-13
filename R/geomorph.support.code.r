@@ -2160,9 +2160,11 @@ pls.phylo <- function(x,y, invC,D.mat, verbose = FALSE){
 # apply.pls.phylo
 # permutation for phylo.pls
 # used in: phylo.integration
-apply.pls.phylo <- function(x,y,iter, seed = NULL){
+apply.pls.phylo <- function(x,y,a.adj, D.mat, iter, seed = NULL){
+  n.x <- dim(x)[2]
   ind <- perm.index(nrow(x), iter, seed=seed)
   px <- dim(x)[2]; py <- dim(y)[2]; pmin <- min(px,py)
+  x <- a.adj%*%x
   pb <- txtProgressBar(min = 0, max = ceiling(iter/100), initial = 0, style=3) 
   jj <- iter+1
   step <- 1
@@ -2171,7 +2173,10 @@ apply.pls.phylo <- function(x,y,iter, seed = NULL){
   while(jj > 0){
     ind.j <- ind[j]
     y.rand <-lapply(1:length(j), function(i) y[ind.j[[i]],])
-    r.rand <- c(r.rand, sapply(1:length(j), function(i) quick.pls(x,y.rand[[i]],px,py,pmin)))
+    r.rand <- c(r.rand, sapply(1:length(j), function(i) {
+      yy <- a.adj%*%y.rand[[i]] 
+      quick.pls(x,yy,px,py,pmin)
+    }))
     jj <- jj-length(j)
     if(jj > 100) kk <- 1:100 else kk <- 1:jj
     j <- j[length(j)] +kk
@@ -2185,16 +2190,21 @@ apply.pls.phylo <- function(x,y,iter, seed = NULL){
 # .apply.pls.phylo
 # same as apply.phylo.pls, but without progress bar option
 # used in: phylo.integration
-.apply.pls.phylo <- function(x,y,iter, seed = NULL){
+.apply.pls.phylo <- function(x,y,a.adj, D.mat,iter, seed = NULL){
+  n.x <- dim(x)[2]
   ind <- perm.index(nrow(x), iter, seed=seed)
   px <- dim(x)[2]; py <- dim(y)[2]; pmin <- min(px,py)
+  x <- a.adj%*%x
   jj <- iter+1
   if(jj > 100) j <- 1:100 else j <- 1:jj
   r.rand <- NULL
   while(jj > 0){
     ind.j <- ind[j]
     y.rand <-lapply(1:length(j), function(i) y[ind.j[[i]],])
-    r.rand <- c(r.rand, sapply(1:length(j), function(i) quick.pls(x,y.rand[[i]],px,py,pmin)))
+    r.rand <- c(r.rand, sapply(1:length(j), function(i) {
+      yy <- a.adj%*%y.rand[[i]] 
+      quick.pls(x,yy,px,py,pmin)
+    }))
     jj <- jj-length(j)
     if(jj > 100) kk <- 1:100 else kk <- 1:jj
     j <- j[length(j)] +kk
@@ -2232,7 +2242,9 @@ plsmulti.phylo<-function(x,gps, invC, D.mat){
 # permutations for plsmulti.phylo
 # used in: phylo.integration
 apply.plsmulti.phylo <- function(x, gps,a.adj,D.mat, iter=iter, seed=seed){
-  gps<-factor(gps)
+  g<-factor(as.numeric(gps))
+  ngps<-nlevels(g)
+  gps.combo <- combn(ngps, 2)
   ind <- perm.index(nrow(x), iter, seed=seed)
   pb <- txtProgressBar(min = 0, max = ceiling(iter/100), initial = 0, style=3) 
   jj <- iter+1
@@ -2241,9 +2253,12 @@ apply.plsmulti.phylo <- function(x, gps,a.adj,D.mat, iter=iter, seed=seed){
   r.rand <- NULL
   while(jj > 0){
     ind.j <- ind[j]
-    x.r <-lapply(1:length(j), function(i) x[ind.j[[i]],which(gps==levels(gps)[1])])
-    r.rand <- c(r.rand, sapply(1:length(j), function(i) plsmulti(cbind(x.r[[i]],x[,which(gps!=levels(gps)[1])]), 
-                                                                       gps)$r.pls))
+    x.r <-lapply(1:length(j), function(i) x[ind.j[[i]],which(g==1)])
+    r.rand <- c(r.rand, sapply(1:length(j), function(i) {
+      xx <- cbind(x.r[[i]],x[,which(g!=1)])
+      xx<-D.mat%*%(xx - a.adj%*%xx)
+      quick.plsmulti(xx, g, gps.combo)
+      }))
     jj <- jj-length(j)
     if(jj > 100) kk <- 1:100 else kk <- 1:jj
     j <- j[length(j)] +kk
@@ -2259,7 +2274,9 @@ apply.plsmulti.phylo <- function(x, gps,a.adj,D.mat, iter=iter, seed=seed){
 # used in: phylo.integration
 .apply.plsmulti.phylo <- function(x, gps,a.adj,D.mat, n.x, iter=iter, seed=seed){
   x<-D.mat%*%(x - a.adj%*%x)
-  gps<-factor(gps)
+  g<-factor(as.numeric(gps))
+  ngps<-nlevels(g)
+  gps.combo <- combn(ngps, 2)
   ind <- perm.index(nrow(x), iter, seed=seed)
   jj <- iter+1
   if(jj > 100) j <- 1:100 else j <- 1:jj
@@ -2267,8 +2284,11 @@ apply.plsmulti.phylo <- function(x, gps,a.adj,D.mat, iter=iter, seed=seed){
   while(jj > 0){
     ind.j <- ind[j]
     x.r <-lapply(1:length(j), function(i) x[ind.j[[i]],which(gps==levels(gps)[1])])
-    r.rand <- c(r.rand, sapply(1:length(j), function(i) plsmulti(cbind(x.r[[i]],x[,which(gps!=levels(gps)[1])]), 
-                                                                 gps)$r.pls))
+    r.rand <- c(r.rand, sapply(1:length(j), function(i) {
+      xx <- cbind(x.r[[i]],x[,which(g!=1)])
+      xx<-D.mat%*%(xx - a.adj%*%xx)
+      quick.plsmulti(xx, g, gps.combo)
+    }))
     jj <- jj-length(j)
     if(jj > 100) kk <- 1:100 else kk <- 1:jj
     j <- j[length(j)] +kk
