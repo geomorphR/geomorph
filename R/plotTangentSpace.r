@@ -10,6 +10,9 @@
 #'  each group are plotted using distinct colors based on the order in which the groups are found in the dataset, 
 #'  and using R's standard color palette: black, red, green, blue, cyan, magenta, yellow, and gray. NOTE: to change
 #'  the colors of the groups, simply substitute a vector of the desired colors for each specimen (see example below).
+#'  
+#'  NOTE: previous versions of plotTangentSpace had option 'verbose' to return the PC scores and PC shapes. 
+#'  From version 3.0.2 this is automatic when assigned to an object.
 #'
 #' @param A An array (p x k x n) containing landmark coordinates for a set of aligned specimens 
 #' @param warpgrids A logical value indicating whether deformation grids for shapes along X-axis should be displayed
@@ -20,8 +23,8 @@
 #' @param label An optional vector indicating labels for each specimen are to be displayed 
 #' (or if TRUE, numerical addresses are given)
 #' @param groups An optional factor vector specifying group identity for each specimen (see example)
-#' @param legend A logical value for whether to add a legened to the plot.
-#' @return Function returns a list of the following components:
+#' @param legend A logical value for whether to add a legend to the plot (only when groups are assigned).
+#' @return If user assigns function to object, returned is a list of the following components:
 #' \item{pc.summary}{A table summarizing the percent variation explained by each pc axis, equivalent to summary of \code{\link{prcomp}}.}
 #' \item{pc.scores}{The set of principal component scores for all specimens.}
 #' \item{pc.shapes}{A list with four components of the shape coordinates of the extreme ends of axis1 and axis2}
@@ -78,10 +81,10 @@ plotTangentSpace<-function (A, axis1 = 1, axis2 = 2, warpgrids = TRUE, mesh = NU
       if(isTRUE(label)){text(pcdata[, axis1], pcdata[, axis2], seq(1, n), adj = c(-0.7, -0.7)) }
       else{text(pcdata[, axis1], pcdata[, axis2], label, adj = c(-0.1, -0.7)) }
     }
-    if(!is.null(groups)){
-      plot.new(); 
-      if(is.factor(groups)){legend(0.5,1, legend=unique(groups), pch=19, bty="n", col=unique(groups))
-      } else {legend(0.5,1, legend=unique(names(groups)), pch=19, bty="n", col=unique(groups)) }
+    if(!is.null(groups) && legend==TRUE){
+        plot.new(); 
+        if(is.factor(groups)){legend(0.5,1, legend=unique(groups), pch=19, bty="n", col=unique(groups))
+        } else {legend(0.5,1, legend=unique(names(groups)), pch=19, bty="n", col=unique(groups)) }
     }
   }
   pcaxis.min.1 <- min(pcdata[, axis1])
@@ -124,7 +127,7 @@ plotTangentSpace<-function (A, axis1 = 1, axis2 = 2, warpgrids = TRUE, mesh = NU
       tps(ref, shape.min.1, 20)
       tps(ref, shape.max.1, 20)
     }
-    if(!is.null(groups)){
+    if(!is.null(groups) && legend==TRUE){
       plot.new(); 
       if(is.factor(groups)){legend(0.5,1, legend=unique(groups), pch=19, bty="n", col=unique(groups))
         } else {legend(0.5,1, legend=unique(names(groups)), pch=19, bty="n", col=unique(groups)) }
