@@ -87,27 +87,19 @@ plotTangentSpace<-function (A, axis1 = 1, axis2 = 2, warpgrids = TRUE, mesh = NU
         } else {legend(0.5,1, legend=unique(names(groups)), pch=19, bty="n", col=unique(groups)) }
     }
   }
-  pcaxis.min.1 <- min(pcdata[, axis1])
-  pcaxis.max.1 <- max(pcdata[, axis1])
-  pc.min.1 <- pc.max.1 <- rep(0, dim(pcdata)[2])
-  pc.min.1[axis1] <- pcaxis.min.1
-  pc.max.1[axis1] <- pcaxis.max.1
-  shape.min.1 <- arrayspecs(as.matrix(pc.min.1 %*% (t(pc.res$rotation))), 
-                            p, k)[, , 1] + ref
-  shape.max.1 <- arrayspecs(as.matrix(pc.max.1 %*% (t(pc.res$rotation))), 
-                            p, k)[, , 1] + ref
-  pcaxis.min.2 <- min(pcdata[, axis2])
-  pcaxis.max.2 <- max(pcdata[, axis2])
-  pc.min.2 <- pc.max.2 <- rep(0, dim(pcdata)[2])
-  pc.min.2[axis2] <- pcaxis.min.2
-  pc.max.2[axis2] <- pcaxis.max.2
-  shape.min.2 <- arrayspecs(as.matrix(pc.min.2 %*% (t(pc.res$rotation))), 
-                            p, k)[, , 1] + ref
-  shape.max.2 <- arrayspecs(as.matrix(pc.max.2 %*% (t(pc.res$rotation))), 
-                            p, k)[, , 1] + ref
-  shapes <- list(shape.min.1, shape.max.1, shape.min.2, shape.max.2)
-  names(shapes) <- c(paste("PC",axis1,"min", sep=""),paste("PC",axis1,"max", sep=""),
-                     paste("PC",axis2,"min", sep=""),paste("PC",axis2,"max", sep=""))
+  shapes <- shape.names <- NULL
+  for(i in 1:ncol(pcdata)){
+    pcaxis.min <- min(pcdata[, i]) ; pcaxis.max <- max(pcdata[, i])
+    pc.min <- pc.max <- rep(0, dim(pcdata)[2])
+    pc.min[i] <- pcaxis.min ; pc.max[i] <- pcaxis.max
+    pc.min <- as.matrix(pc.min %*% (t(pc.res$rotation))) + as.vector(t(ref))
+    pc.max <- as.matrix(pc.max %*% (t(pc.res$rotation))) + as.vector(t(ref))
+    shapes <- rbind(shapes,pc.min, pc.max)
+    shape.names <- c(shape.names,paste("PC",i,"min", sep=""),paste("PC",i,"max", sep=""))
+  }
+  shapes <- arrayspecs(shapes,p, k)
+  shapes <- lapply(seq(dim(shapes)[3]), function(x) shapes[,,x])
+  names(shapes) <- shape.names
   if (warpgrids == TRUE) {
     if (k == 2) {
       layout(t(matrix(c(2, 1, 4, 1, 1, 1, 1, 1, 3), 3,3)))
@@ -121,11 +113,13 @@ plotTangentSpace<-function (A, axis1 = 1, axis2 = 2, warpgrids = TRUE, mesh = NU
       if(isTRUE(label)){text(pcdata[, axis1], pcdata[, axis2], seq(1, n), adj = c(-0.7, -0.7)) }
       else{text(pcdata[, axis1], pcdata[, axis2], label, adj = c(-0.1, -0.1)) }
     }
+    shape.min <- shapes[[which(names(shapes) == paste("PC",axis1,"min", sep=""))]]
+    shape.max <- shapes[[which(names(shapes) == paste("PC",axis1,"max", sep=""))]]
     if (k == 2) {
       arrows(min(pcdata[, axis1]), (0.7 * max(pcdata[,axis2])), min(pcdata[, axis1]), 0, length = 0.1,lwd = 2)
       arrows(max(pcdata[, axis1]), (0.7 * min(pcdata[,axis2])), max(pcdata[, axis1]), 0, length = 0.1,lwd = 2)
-      tps(ref, shape.min.1, 20)
-      tps(ref, shape.max.1, 20)
+      tps(ref, shape.min, 20)
+      tps(ref, shape.max, 20)
     }
     if(!is.null(groups) && legend==TRUE){
       plot.new(); 
@@ -135,17 +129,17 @@ plotTangentSpace<-function (A, axis1 = 1, axis2 = 2, warpgrids = TRUE, mesh = NU
     if (k == 3) {
       if (is.null(mesh)==TRUE){
         open3d() ; mfrow3d(1, 2) 
-        plot3d(shape.min.1, type = "s", col = "gray", main = paste("PC ", axis1," negative"),size = 1.25, aspect = FALSE,xlab="",ylab="",zlab="",box=FALSE, axes=FALSE)
-        plot3d(shape.max.1, type = "s", col = "gray", main = paste("PC ", axis1," positive"), size = 1.25, aspect = FALSE,xlab="",ylab="",zlab="",box=FALSE, axes=FALSE)
+        plot3d(shape.min, type = "s", col = "gray", main = paste("PC ", axis1," negative"),size = 1.25, aspect = FALSE,xlab="",ylab="",zlab="",box=FALSE, axes=FALSE)
+        plot3d(shape.max, type = "s", col = "gray", main = paste("PC ", axis1," positive"), size = 1.25, aspect = FALSE,xlab="",ylab="",zlab="",box=FALSE, axes=FALSE)
         }
       if(is.null(mesh)==FALSE){
         open3d() ; mfrow3d(1, 2) 
         cat(paste("\nWarping mesh to negative end of axis ", axis1, "\n", sep=""))
-        plotRefToTarget(ref, shape.min.1, mesh, method = "surface")
+        plotRefToTarget(ref, shape.min, mesh, method = "surface")
         title3d(main=paste("PC ", axis1," negative"))
         next3d()
         cat(paste("\nWarping mesh to positive end of axis ", axis1, "\n", sep=""))
-        plotRefToTarget(ref, shape.max.1, mesh, method = "surface")
+        plotRefToTarget(ref, shape.max, mesh, method = "surface")
         title3d(main=paste("PC ", axis1," positive"))
         }
       }
