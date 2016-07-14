@@ -74,7 +74,7 @@ compare.evol.rates<-function(A,phy,gp,iter=999,print.progress=TRUE ){
     stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').")  }
   if (is.null(names(gp))){
     stop("Factor contains no names. Use names() to assign specimen names to group factor.")}
-  if (inherits(phy, "phylo")){
+  if (!inherits(phy, "phylo")){
     stop("tree must be of class 'phylo.'")}
   ntaxa<-length(phy$tip.label)
   N<-nrow(x)  
