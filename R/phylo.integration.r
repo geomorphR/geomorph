@@ -144,8 +144,8 @@ phylo.integration <-function(A, A2=NULL, phy, partition.gp=NULL,iter=999, seed=N
     pls.obs <- pls.phylo(x, y, Ptrans,verbose=TRUE)
     x <- Ptrans%*%x
     y <- Ptrans%*%y
-    if(print.progress) pls.rand <- apply.pls(x, y,  iter=iter, seed=seed) else
-      pls.rand <- .apply.pls(x, y, iter=iter, seed=seed)
+    if(print.progress) pls.rand <- apply.pls(center(x), center(y),  iter=iter, seed=seed) else
+      pls.rand <- .apply.pls(center(x), center(y), iter=iter, seed=seed)
     p.val <- pval(pls.rand)
     XScores <- pls.obs$XScores
     YScores <- pls.obs$YScores
@@ -153,8 +153,8 @@ phylo.integration <-function(A, A2=NULL, phy, partition.gp=NULL,iter=999, seed=N
   if(ngps>2){
     pls.obs <- plsmulti.phylo(x, gps, Ptrans)  
     x <- Ptrans%*%x
-    if(print.progress) pls.rand <- apply.plsmulti(x, gps, iter=iter, seed=seed) else
-      pls.rand <- .apply.plsmulti.phylo(x, gps,iter=iter, seed=seed)
+    if(print.progress) pls.rand <- apply.plsmulti(center(x), gps, iter=iter, seed=seed) else
+      pls.rand <- .apply.plsmulti.phylo(center(y), gps,iter=iter, seed=seed)
     p.val <- pval(pls.rand)
   } 
   ####OUTPUT

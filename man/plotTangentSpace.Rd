@@ -24,13 +24,13 @@ as described in \code{\link{plotRefToTarget}}.}
 
 \item{groups}{An optional factor vector specifying group identity for each specimen (see example)}
 
-\item{legend}{A logical value for whether to add a legened to the plot.}
+\item{legend}{A logical value for whether to add a legend to the plot (only when groups are assigned).}
 }
 \value{
-Function returns a list of the following components:
+If user assigns function to object, returned is a list of the following components:
 \item{pc.summary}{A table summarizing the percent variation explained by each pc axis, equivalent to summary of \code{\link{prcomp}}.}
 \item{pc.scores}{The set of principal component scores for all specimens.}
-\item{pc.shapes}{A list with four components of the shape coordinates of the extreme ends of axis1 and axis2}
+\item{pc.shapes}{A list with the shape coordinates of the extreme ends of all PC axes, e.g. $PC1min}
 \item{sdev}{The standard deviations of the principal components (i.e., the square roots of the eigenvalues of the 
 covariance/correlation matrix, as per \code{\link{prcomp}}.}
 \item{rotation}{The matrix of variable loadings, as per \code{\link{prcomp}}.}
@@ -47,6 +47,9 @@ The function performs a principal components analysis of shape variation and plo
  each group are plotted using distinct colors based on the order in which the groups are found in the dataset, 
  and using R's standard color palette: black, red, green, blue, cyan, magenta, yellow, and gray. NOTE: to change
  the colors of the groups, simply substitute a vector of the desired colors for each specimen (see example below).
+ 
+ NOTE: previous versions of plotTangentSpace had option 'verbose' to return the PC scores and PC shapes. 
+ From version 3.0.2 this is automatic when assigned to an object.
 }
 \examples{
 data(plethodon) 

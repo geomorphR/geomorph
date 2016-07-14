@@ -4,14 +4,16 @@
 \alias{writeland.tps}
 \title{Write landmark data to tps file}
 \usage{
-writeland.tps(A, file, scale = NULL)
+writeland.tps(A, file, scale = NULL, specID = TRUE)
 }
 \arguments{
 \item{A}{An array (p x k x n) containing landmark coordinates for a set of specimens}
 
 \item{file}{Name of the *.tps file to be created}
 
-\item{scale}{An optional vector containing the length of the scale for each specimen}
+\item{scale}{A logical value stating whether warnings should be printedAn optional vector containing the length of the scale for each specimen}
+
+\item{specID}{A logical value stating whether specimen ID names should be saved to line ID=}
 }
 \description{
 Write *.tps file from obtain landmark coordinates in a 3-dimensional array

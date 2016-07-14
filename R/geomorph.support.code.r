@@ -1071,6 +1071,7 @@ fastFit <- function(U,y,n,p){
   if(p > n) tcrossprod(U)%*%y else 
     U%*%crossprod(U,y) 
 }
+
 # fastLM
 # calculates fitted values and residuals, after fastFit
 # placeholder in case needed later
@@ -1404,7 +1405,7 @@ Pval.matrix = function(M){
   P
 }
 
-# pval
+# effect.size
 # Effect sizes (standard deviates) form random outcomes
 # any analytical function
 effect.size <- function(x, center = FALSE) {
@@ -1537,7 +1538,6 @@ quick.ls.means <- function(X0, X, Y, fac, Pcor=NULL){
 apply.ls.means <- function(pfit, Yr, g=NULL, data=NULL, Pcor=NULL){
   setup<-quick.ls.means.set.up(pfit, g=g, data=data)
   X0 <- setup$X0; X <- setup$X; fac <- setup$fac
-  if(is.null(data)) dat <- pfit$data else dat <- data
   Map(function(y) quick.ls.means(X0,X, Y=y, fac=fac, Pcor=Pcor), Yr)
 }
 
@@ -1655,7 +1655,7 @@ vec.ang.matrix <- function(M, type = c("rad", "deg", "r")){
 
 # pls
 # performs PLS analysis
-# Used in two.b.pls, integration.test, apply.pls
+# Used in two.b.pls, integration.test, phylo.integration, apply.pls
 pls <- function(x,y, RV=FALSE, verbose = FALSE){
   x <- as.matrix(x); y <- as.matrix(y)
   px <- dim(x)[2]; py <- dim(y)[2]; pmin <- min(px,py)
@@ -1683,12 +1683,12 @@ pls <- function(x,y, RV=FALSE, verbose = FALSE){
 # quick.pls
 # a streamlines pls code
 # used in: apply.pls
-quick.pls <- function(x,y, px, py, pmin) {# no RV; no verbose output
-  # assume parameters already found
-  S12 <- crossprod(center(x),center(y))/(dim(x)[1] - 1)
-  pls <- La.svd(S12, pmin, pmin)
-  U<-pls$u; V <- t(pls$vt)
-  cor(x%*%U[,1],y%*%V[,1])
+quick.pls <- function(x,y) {# no RV; no verbose output
+  # assume parameters already found and assume x and y are centered
+  S12 <- crossprod(x,y)/(dim(x)[1] - 1)
+  pls <- La.svd(S12, 1, 1)
+  U<-pls$u; V <- as.vector(pls$vt)
+  cor(x%*%U,y%*%V)
 }
 
 # apply.pls 
@@ -1708,7 +1708,7 @@ apply.pls <- function(x,y, RV=FALSE, iter, seed = NULL){
     ind.j <- ind[j]
     y.rand <-lapply(1:length(j), function(i) y[ind.j[[i]],])
     if(RV == TRUE) RV.rand <- c(RV.rand,sapply(1:length(j), function(i) pls(x,y.rand[[i]], RV=TRUE, verbose = TRUE)$RV)) else
-      r.rand <- c(r.rand, sapply(1:length(j), function(i) quick.pls(x,y.rand[[i]], px,py,pmin)))
+      r.rand <- c(r.rand, sapply(1:length(j), function(i) quick.pls(x,y.rand[[i]])))
     jj <- jj-length(j)
     if(jj > 100) kk <- 1:100 else kk <- 1:jj
     j <- j[length(j)] +kk
@@ -1734,7 +1734,7 @@ apply.pls <- function(x,y, RV=FALSE, iter, seed = NULL){
     ind.j <- ind[j]
     y.rand <-lapply(1:length(j), function(i) y[ind.j[[i]],])
     if(RV == TRUE) RV.rand <- c(RV.rand,sapply(1:length(j), function(i) pls(x,y.rand[[i]], RV=TRUE, verbose = TRUE)$RV)) else
-      r.rand <- c(r.rand, sapply(1:length(j), function(i) quick.pls(x,y.rand[[i]], px,py,pmin)))
+      r.rand <- c(r.rand, sapply(1:length(j), function(i) quick.pls(x,y.rand[[i]])))
     jj <- jj-length(j)
     if(jj > 100) kk <- 1:100 else kk <- 1:jj
     j <- j[length(j)] +kk
@@ -1769,14 +1769,14 @@ plsmulti<-function(x,gps){
 # a streamlined plsmulti
 # used in apply.plsmulti
 quick.plsmulti <- function(x,g,gps.combo){
+  # assumed x is already centered
   pls.gp <- sapply(1:ncol(gps.combo), function(j){ # no loops
     xx <- x[,g==gps.combo[1,j]]
     yy <- x[,g==gps.combo[2,j]]
-    S12<-crossprod(center(xx),center(yy))/(dim(xx)[1] - 1)
-    px <- nrow(S12); py <- ncol(S12); pmin <- min(px,py)
-    pls<-La.svd(S12, pmin, pmin)
-    U<-pls$u; V<-t(pls$vt)
-    cor(xx%*%U[,1], yy%*%V[,1])
+    S12<-crossprod(xx,yy)/(dim(xx)[1] - 1)
+    pls<-La.svd(S12, 1, 1)
+    U<-pls$u; V<-as.vector(pls$vt)
+    cor(xx%*%U, yy%*%V)
   })
   mean(pls.gp) 
 }
@@ -1796,9 +1796,9 @@ apply.plsmulti <- function(x,gps, iter, seed = NULL){
   r.rand <- NULL
   while(jj > 0){
     ind.j <- ind[j]
-    x.r<-lapply(1:length(j), function(i) x[ind.j[[i]],which(g==levels(g)[1])]) 
+    x.r<-lapply(1:length(j), function(i) x[ind.j[[i]], g==1]) 
     r.rand<-c(r.rand, sapply(1:length(j), function(i) quick.plsmulti(cbind(x.r[[i]],
-                                                  x[,which(g!=levels(g)[1])]), g, gps.combo))) 
+                                                  x[,g!=1]), g, gps.combo))) 
     jj <- jj-length(j)
     if(jj > 100) kk <- 1:100 else kk <- 1:jj
     j <- j[length(j)] +kk
@@ -1822,9 +1822,9 @@ apply.plsmulti <- function(x,gps, iter, seed = NULL){
   r.rand <- NULL
   while(jj > 0){
     ind.j <- ind[j]
-    x.r<-lapply(1:length(j), function(i) x[ind.j[[i]],which(g==levels(g)[1])]) 
+    x.r<-lapply(1:length(j), function(i) x[ind.j[[i]], g==1]) 
     r.rand<-c(r.rand, sapply(1:length(j), function(i) quick.plsmulti(cbind(x.r[[i]],
-                                                x[,which(g!=levels(g)[1])]), g, gps.combo))) 
+                                 x[,g!=1]), g, gps.combo)))
     jj <- jj-length(j)
     if(jj > 100) kk <- 1:100 else kk <- 1:jj
     j <- j[length(j)] +kk
@@ -2158,7 +2158,6 @@ pls.phylo <- function(x,y, Ptrans, verbose = FALSE){
 apply.pls.phylo <- function(x,y,Ptrans, iter, seed = NULL){
   n.x <- dim(x)[2]
   ind <- perm.index(nrow(x), iter, seed=seed)
-  px <- dim(x)[2]; py <- dim(y)[2]; pmin <- min(px,py)
   x <- Ptrans%*%x
   pb <- txtProgressBar(min = 0, max = ceiling(iter/100), initial = 0, style=3) 
   jj <- iter+1
@@ -2170,7 +2169,7 @@ apply.pls.phylo <- function(x,y,Ptrans, iter, seed = NULL){
     y.rand <-lapply(1:length(j), function(i) y[ind.j[[i]],])
     r.rand <- c(r.rand, sapply(1:length(j), function(i) {
       yy <- Ptrans%*%y.rand[[i]] 
-      quick.pls(x,yy,px,py,pmin)
+      quick.pls(x,yy)
     }))
     jj <- jj-length(j)
     if(jj > 100) kk <- 1:100 else kk <- 1:jj
@@ -2189,7 +2188,6 @@ apply.pls.phylo <- function(x,y,Ptrans, iter, seed = NULL){
 .apply.pls.phylo <- function(x,y,Ptrans,iter, seed = NULL){
   n.x <- dim(x)[2]
   ind <- perm.index(nrow(x), iter, seed=seed)
-  px <- dim(x)[2]; py <- dim(y)[2]; pmin <- min(px,py)
   x <- Ptrans%*%x
   jj <- iter+1
   if(jj > 100) j <- 1:100 else j <- 1:jj
@@ -2199,7 +2197,7 @@ apply.pls.phylo <- function(x,y,Ptrans, iter, seed = NULL){
     y.rand <-lapply(1:length(j), function(i) y[ind.j[[i]],])
     r.rand <- c(r.rand, sapply(1:length(j), function(i) {
       yy <- Ptrans%*%y.rand[[i]] 
-      quick.pls(x,yy,px,py,pmin)
+      quick.pls(x,yy)
     }))
     jj <- jj-length(j)
     if(jj > 100) kk <- 1:100 else kk <- 1:jj
@@ -2222,8 +2220,7 @@ plsmulti.phylo<-function(x,gps, Ptrans){
     px <- nrow(R12); py <- ncol(R12); pmin <- min(px,py)
     pls<-La.svd(R12, pmin, pmin)
     U<-pls$u; V<-t(pls$vt)
-    Phy.X<-D.mat%*%(x-one%*%t(a)) 
-    XScores<-Phy.X[,which(g==gps.combo[1,j])]%*%U[,1]; YScores<-Phy.X[,which(g==gps.combo[2,j])]%*%V[,1]
+    XScores<-x[,which(g==gps.combo[1,j])]%*%U[,1]; YScores<-x[,which(g==gps.combo[2,j])]%*%V[,1]
     cor(XScores,YScores)
   })
   if(length(pls.gp) > 1) pls.mat <- dist(matrix(0, ngps,)) else 
@@ -2241,7 +2238,7 @@ apply.plsmulti.phylo <- function(x, gps,Ptrans, iter=iter, seed=seed){
   g<-factor(as.numeric(gps))
   ngps<-nlevels(g)
   gps.combo <- combn(ngps, 2)
-  xx <- x[,g==1]; yy <- Ptrans%*%x[,g!=1]
+  xx <- Ptrans%*%x[,g==1]; yy <- Ptrans%*%x[,g!=1]
   ind <- perm.index(nrow(x), iter, seed=seed)
   pb <- txtProgressBar(min = 0, max = ceiling(iter/100), initial = 0, style=3) 
   jj <- iter+1
@@ -2252,9 +2249,7 @@ apply.plsmulti.phylo <- function(x, gps,Ptrans, iter=iter, seed=seed){
     ind.j <- ind[j]
     x.r <-lapply(1:length(j), function(i) xx[ind.j[[i]],])
     r.rand <- c(r.rand, sapply(1:length(j), function(i) {
-      xr <- Ptrans%*%x.r[[i]]
-      xn <- cbind(xr,yy)
-      quick.plsmulti(xn, g, gps.combo)
+      quick.pls(x.r[[i]],yy)
       }))
     jj <- jj-length(j)
     if(jj > 100) kk <- 1:100 else kk <- 1:jj
@@ -2270,11 +2265,11 @@ apply.plsmulti.phylo <- function(x, gps,Ptrans, iter=iter, seed=seed){
 # same as apply.plsmulti.phylo, but without progress bar option
 # used in: phylo.integration
 # CURRENTLY NOT IN USE - USING .apply.plsmulti BECAUSE OF TYPE I ERROR ISSUES
-.apply.plsmulti.phylo <- function(x, gps,Ptrans, n.x, iter=iter, seed=seed){
+.apply.plsmulti.phylo <- function(x, gps,Ptrans, iter=iter, seed=seed){
   g<-factor(as.numeric(gps))
   ngps<-nlevels(g)
   gps.combo <- combn(ngps, 2)
-  xx <- x[,g==1]; yy <- Ptrans%*%x[,g!=1]
+  xx <- Ptrans%*%x[,g==1]; yy <- Ptrans%*%x[,g!=1]
   ind <- perm.index(nrow(x), iter, seed=seed)
   jj <- iter+1
   if(jj > 100) j <- 1:100 else j <- 1:jj
@@ -2283,9 +2278,7 @@ apply.plsmulti.phylo <- function(x, gps,Ptrans, iter=iter, seed=seed){
     ind.j <- ind[j]
     x.r <-lapply(1:length(j), function(i) xx[ind.j[[i]],])
     r.rand <- c(r.rand, sapply(1:length(j), function(i) {
-      xr <- Ptrans%*%x.r[[i]]
-      xn <- cbind(xr,yy)
-      quick.plsmulti(xn, g, gps.combo)
+      quick.pls(x.r[[i]],yy)
     }))
     jj <- jj-length(j)
     if(jj > 100) kk <- 1:100 else kk <- 1:jj

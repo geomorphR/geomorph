@@ -111,8 +111,8 @@ integration.test<-function(A, A2=NULL,partition.gp=NULL,iter=999, seed=NULL, pri
     ngps=2; n<-dim(x)[2]
   }
   if(ngps==2){
-    if(print.progress) pls.rand <- apply.pls(x, y, iter=iter, seed=seed) else
-      pls.rand <- .apply.pls(x, y, iter=iter, seed=seed)
+    if(print.progress) pls.rand <- apply.pls(center(x), center(y), iter=iter, seed=seed) else
+      pls.rand <- .apply.pls(center(x), center(y), iter=iter, seed=seed)
     pls.obs <- pls(x, y, verbose=TRUE)
     p.val <- pval(pls.rand)
     XScores <- pls.obs$XScores
@@ -120,8 +120,8 @@ integration.test<-function(A, A2=NULL,partition.gp=NULL,iter=999, seed=NULL, pri
   }
   if(ngps>2){
     pls.obs <- plsmulti(x, gps)  
-    if(print.progress) pls.rand <- apply.plsmulti(x, gps, iter=iter, seed=seed) else
-      pls.rand <- .apply.plsmulti(x, gps, iter=iter, seed=seed)
+    if(print.progress) pls.rand <- apply.plsmulti(center(x), gps, iter=iter, seed=seed) else
+      pls.rand <- .apply.plsmulti(center(x), gps, iter=iter, seed=seed)
     p.val <- pval(pls.rand)
   }  
   ####OUTPUT
