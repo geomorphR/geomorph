@@ -64,7 +64,7 @@
 phylo.modularity<-function(A,partition.gp,phy, CI=FALSE, iter=999, seed=NULL, print.progress=TRUE){
   if(any(is.na(A))==T){
     stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').")  }
-  if (inherits(phy, "phylo"))
+  if (!inherits(phy, "phylo"))
     stop("phy must be of class 'phylo.'") 
   if (length(dim(A))==3){ x<-two.d.array(A)
            p<-dim(A)[1]; k<-dim(A)[2];n<-dim(A)[3]
