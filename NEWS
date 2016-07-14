@@ -8,7 +8,8 @@ CHANGES IN GEOMORPH VERSION 3.0.2
     o Updated A, Ahat, ref, p and k outputs when 2D matrix is used in procD.allometry()
     o Added option to plot group labels in plot.procD.allometry(method="PredLine")
     o Added legend option to plotTangentSpace() when groups are specified
-    o Removed 'verbose' from plotTangentSPace(); function now returns PC scores automatically when assigned to object
+    o Removed 'verbose' from plotTangentSpace(); function now returns PC scores automatically when assigned to object
+    o Updated plotTangentSpace() to return min and max shapes for all PC axes in $pc.shapes
     
   BUG FIXES
     o Fixed label output issue with bilat.symmetry shape components
