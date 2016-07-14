@@ -87,7 +87,7 @@ compare.multi.evol.rates<-function(A,gp,phy,Subset=TRUE,iter=999, print.progress
   if(ngps==1){stop("Only one shape assigned.")}
   ntaxa<-length(phy$tip.label)
   N<-nrow(x) 
-  if (inherits(phy, "phylo"))
+  if (!inherits(phy, "phylo"))
     stop("tree must be of class 'phylo.'")
   if(is.null(rownames(x))){
     stop("Data matrix does not include taxa names.")  }
