@@ -93,7 +93,7 @@ morphol.disparity <- function(f1, groups = NULL, iter = 999, seed = NULL,
     })
   names(pv) <- levels(gps)
   if(length(gps) == 0) {
-    warning("No factor in formula from which to define groups.")
+    cat("No factor in formula from which to define groups.\n")
     out = (noquote(paste("Procrustes variance =",round(pv, 8))))
   } else{
     if(print.progress){
