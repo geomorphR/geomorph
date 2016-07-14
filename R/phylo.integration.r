@@ -78,7 +78,7 @@
 phylo.integration <-function(A, A2=NULL, phy, partition.gp=NULL,iter=999, seed=NULL, print.progress=TRUE){ 
   if(any(is.na(A))==T){
     stop("Data matrix 1 contains missing values. Estimate these first(see 'estimate.missing').")  } 
-  if (inherits(phy, "phylo"))
+  if (!inherits(phy, "phylo"))
     stop("phy must be of class 'phylo.'") 
   if(!is.null(seed) && seed=="random") seed = sample(1:iter, 1)
   if(!is.null(partition.gp)){
