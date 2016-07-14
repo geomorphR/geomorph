@@ -76,7 +76,7 @@ physignal<-function(A,phy,iter=999, seed=NULL, print.progress=TRUE){
     if(is.null(names(A))){
       stop("Data vector does not include taxa names as names.")  }
     x<-as.matrix(A) }
-  if (inherits(phy, "phylo"))
+  if (!inherits(phy, "phylo"))
     stop("tree must be of class 'phylo.'")
   N<-length(phy$tip.label)
   if(N!=dim(x)[1]){
