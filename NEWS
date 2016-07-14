@@ -2,6 +2,7 @@ CHANGES IN GEOMORPH VERSION 3.0.2
 
   NEW FEATURES
     o Added return of min/max shape matrices to plot.procD.allometry() and plot.pls()
+    o Added option to save specimen ID to ID= line in writeland.tps()
 
   OTHER CHANGES
     o Added force match of specimen order between blocks in two.b.pls()
