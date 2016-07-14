@@ -27,7 +27,7 @@
 #' @return If user assigns function to object, returned is a list of the following components:
 #' \item{pc.summary}{A table summarizing the percent variation explained by each pc axis, equivalent to summary of \code{\link{prcomp}}.}
 #' \item{pc.scores}{The set of principal component scores for all specimens.}
-#' \item{pc.shapes}{A list with four components of the shape coordinates of the extreme ends of axis1 and axis2}
+#' \item{pc.shapes}{A list with the shape coordinates of the extreme ends of all PC axes, e.g. $PC1min}
 #' \item{sdev}{The standard deviations of the principal components (i.e., the square roots of the eigenvalues of the 
 #' covariance/correlation matrix, as per \code{\link{prcomp}}.}
 #' \item{rotation}{The matrix of variable loadings, as per \code{\link{prcomp}}.}
