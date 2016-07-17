@@ -120,32 +120,8 @@ dced349f2a8288757f8d0eaf232d2810 *NAMESPACE
 c3bf88c10dcae2eb5430025e36867d98 *R/arrayspecs.r
 ad30f7200ed0894880f95b1dc7921c61 *R/bilat.symmetry.r
 14713bbb2ad126d777d95e359c71bf1a *R/build.template.r
-<<<<<<< HEAD
 e53b4d6d366c84e843cb890b2d360177 *R/compare.evol.rates.r
 b58f961fb0ec2d5c985993ef309906e2 *R/compare.multi.evol.rates.r
-||||||| merged common ancestors
-<<<<<<< Temporary merge branch 1
-5fe29acfc3edd268332d8bad8cb39386 *R/compare.evol.rates.r
-087acf83c9e0b34ccf22cc88dc705bbb *R/compare.multi.evol.rates.r
-||||||| merged common ancestors
-d6b732ced9620e1425df643cba90abae *R/compare.evol.rates.r
-4b414aa0dbf7c3ade511db1bf883cf2a *R/compare.multi.evol.rates.r
-=======
-e53b4d6d366c84e843cb890b2d360177 *R/compare.evol.rates.r
-b58f961fb0ec2d5c985993ef309906e2 *R/compare.multi.evol.rates.r
->>>>>>> Temporary merge branch 2
-=======
-<<<<<<< HEAD
-e53b4d6d366c84e843cb890b2d360177 *R/compare.evol.rates.r
-b58f961fb0ec2d5c985993ef309906e2 *R/compare.multi.evol.rates.r
-||||||| merged common ancestors
-d6b732ced9620e1425df643cba90abae *R/compare.evol.rates.r
-4b414aa0dbf7c3ade511db1bf883cf2a *R/compare.multi.evol.rates.r
-=======
-5fe29acfc3edd268332d8bad8cb39386 *R/compare.evol.rates.r
-087acf83c9e0b34ccf22cc88dc705bbb *R/compare.multi.evol.rates.r
->>>>>>> 07fa2d4cf65203504b0a83c7d9b064175b210f99
->>>>>>> 1d522e523455b600fdd8549c305fc1a2bfac4c7b
 9c8853f5d9c9bb5a9b0b21bfea6ebab8 *R/define.links.r
 ce54e0082a7500c7a9ec4b443df968a8 *R/define.modules.r
 4610ea0dddf960a20936351c10904225 *R/define.sliders.r
@@ -168,39 +144,9 @@ da56107aec80b7583dc4a6b841b30c74 *R/findMeanSpec.r
 3bf15559f284d21a97dd6968b8c3e941 *R/modularity.test.r
 becc1196a5ec267c9339e2b8f882d4b1 *R/morphol.disparity.r
 084f845900f98683ff877ac399e822b3 *R/nested.update.r
-<<<<<<< HEAD
 762d8d05b10aaf52afb1b3422f883866 *R/phylo.integration.r
 e1cb306b0d2dd762ad291bddaf2366e8 *R/phylo.modularity.r
 5e12723d8749bc8119410cd31dff7003 *R/physignal.r
-||||||| merged common ancestors
-<<<<<<< Temporary merge branch 1
-d1952c1e761f0da2a3993d8442a2a832 *R/phylo.integration.r
-e1cb306b0d2dd762ad291bddaf2366e8 *R/phylo.modularity.r
-00f50a4814f6e46af3b67f0bf0571012 *R/physignal.r
-||||||| merged common ancestors
-e41311e219c0c0da1176579ca479672b *R/phylo.integration.r
-6c284f248e0fdce24c44e2b826529762 *R/phylo.modularity.r
-f0ec8f46092139a0c65082ad1571f985 *R/physignal.r
-=======
-762d8d05b10aaf52afb1b3422f883866 *R/phylo.integration.r
-6c284f248e0fdce24c44e2b826529762 *R/phylo.modularity.r
-5e12723d8749bc8119410cd31dff7003 *R/physignal.r
->>>>>>> Temporary merge branch 2
-=======
-<<<<<<< HEAD
-762d8d05b10aaf52afb1b3422f883866 *R/phylo.integration.r
-6c284f248e0fdce24c44e2b826529762 *R/phylo.modularity.r
-5e12723d8749bc8119410cd31dff7003 *R/physignal.r
-||||||| merged common ancestors
-e41311e219c0c0da1176579ca479672b *R/phylo.integration.r
-6c284f248e0fdce24c44e2b826529762 *R/phylo.modularity.r
-f0ec8f46092139a0c65082ad1571f985 *R/physignal.r
-=======
-d1952c1e761f0da2a3993d8442a2a832 *R/phylo.integration.r
-e1cb306b0d2dd762ad291bddaf2366e8 *R/phylo.modularity.r
-00f50a4814f6e46af3b67f0bf0571012 *R/physignal.r
->>>>>>> 07fa2d4cf65203504b0a83c7d9b064175b210f99
->>>>>>> 1d522e523455b600fdd8549c305fc1a2bfac4c7b
 3ae314b150407cdb4e1e879995f2001c *R/plotAllSpecimens.r
 cce37a8c4a8388e9ebcb3f6ba18b95f3 *R/plotGMPhyloMorphoSpace.r
 8db1f082de4f53ca8b704a8ff93a7b60 *R/plotOutliers.r
