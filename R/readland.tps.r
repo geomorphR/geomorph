@@ -106,7 +106,7 @@ readland.tps <- function (file, specID = c("None", "ID", "imageID"),
     }
   }
   if (specID == "imageID") {
-    imageID <- (sub("IMAGE=", "", tpsfile[grep("IMAGE", tpsfile, ignore.case)], 
+    imageID <- (sub("IMAGE=", "", tpsfile[grep("IMAGE=", tpsfile, ignore.case)], 
                     ignore.case))
     if (length(imageID) != 0) {
       imageID <- sub(".jpg", "", imageID, ignore.case)
@@ -127,7 +127,7 @@ readland.tps <- function (file, specID = c("None", "ID", "imageID"),
     } 
   }
   if (specID == "ID") {
-    ID <- sub("ID=", "", tpsfile[grep("ID", tpsfile, ignore.case)], ignore.case)
+    ID <- sub("ID=", "", tpsfile[grep("ID=", tpsfile, ignore.case)], ignore.case)
     if (length(ID) == 0) {
       if(warnmsg ==T){
         print("No name given under ID=. Specimen names not extracted")
