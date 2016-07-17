@@ -145,10 +145,10 @@ da56107aec80b7583dc4a6b841b30c74 *R/findMeanSpec.r
 becc1196a5ec267c9339e2b8f882d4b1 *R/morphol.disparity.r
 084f845900f98683ff877ac399e822b3 *R/nested.update.r
 762d8d05b10aaf52afb1b3422f883866 *R/phylo.integration.r
-6c284f248e0fdce24c44e2b826529762 *R/phylo.modularity.r
+e1cb306b0d2dd762ad291bddaf2366e8 *R/phylo.modularity.r
 5e12723d8749bc8119410cd31dff7003 *R/physignal.r
 3ae314b150407cdb4e1e879995f2001c *R/plotAllSpecimens.r
-7cf99bc560cdef1c1670c11c67fe6e49 *R/plotGMPhyloMorphoSpace.r
+cce37a8c4a8388e9ebcb3f6ba18b95f3 *R/plotGMPhyloMorphoSpace.r
 8db1f082de4f53ca8b704a8ff93a7b60 *R/plotOutliers.r
 f8f0cfddf20ff12f5b2bd51b06617edb *R/plotRefToTarget.r
 41db23cebd8d7be6c3decf781bd378e0 *R/plotspec.r
@@ -159,7 +159,7 @@ ffc7cc452c5beba5b1cff7f23dc433c5 *R/procD.lm.r
 2a39213ef1d6feae4571e44c09344bc1 *R/read.morphologika.r
 889d4562e4ff052f48091d9b739d10d8 *R/read.ply.r
 df34bf85d4ee0a11e9ecd485fdac162a *R/readland.nts.r
-79eea8cb7ff9fdda3b0bbb83c8ed1467 *R/readland.tps.r
+a0b6f841b0ab7ea0c29a6d388e635ff0 *R/readland.tps.r
 45ba1c3e7d8ddf5d039b6ae0b11dc47e *R/readmulti.nts.r
 e71149e476c615fcc8df531bc2f52bd0 *R/trajectory.analysis.r
 8b4ee78567f5c05e98951619a589299a *R/two.b.pls.r
