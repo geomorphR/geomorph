@@ -2319,9 +2319,9 @@ sigma.d<-function(x,invC,D.mat,gp){
 # fast.sigma.d
 # same as sigma.d but only calculates sigma.d.ratio - fast in loops
 # used in: compare.evol.rates
-fast.sigma.d<-function(x,D.mat,g, ngps, gps.combo, N,p, Xadj){
-  x.c<-x -Xadj%*%x
-  vec.d2<-diag(tcrossprod(D.mat%*%(x.c)))
+fast.sigma.d<-function(x,Ptrans,g, ngps, gps.combo, N,p){
+  xp <- Ptrans%*%x
+  vec.d2<-diag(tcrossprod(xp))
   sigma.d.all<-sum(vec.d2)/N/p
   sigma.d.gp<-sapply(split(vec.d2, g), mean)/p  
   sigma.d.ratio<-sigma.d.rat<-sigma.d.rat.mat<-rate.mat<-NULL
@@ -2369,16 +2369,15 @@ sigma.d.multi<-function(x,invC,D.mat,gps,Subset){
 
 ##Fast version of compare.multi.rates for permutations
 
-sig.calc<-function(x.i,D.mat.i,Subset, N, p, Xadj.i){
-  x.i<-as.matrix(x.i)
-  x.c<-x.i -Xadj.i%*%x.i
-  if(Subset==FALSE) sigma<-sum((D.mat.i%*%x.c)^2)/N else 
-    sigma<-sum((D.mat.i%*%x.c)^2)/N/p
+sig.calc<-function(x.i,Ptrans.i,Subset, N, p){
+  xp.i <- Ptrans.i%*%x.i
+  if(Subset==FALSE) sigma<-sum((xp.i)^2)/N else 
+    sigma<-sum((xp.i)^2)/N/p
   return(sigma)
 }
 
-fast.sigma.d.multi<-function(x,D.mat,Subset, gindx, ngps, gps.combo, N, p, Xadj){ 
-  rate.gps<-lapply(1:ngps, function(j){ sig.calc(x[,gindx[[j]]], D.mat,Subset, N, p, Xadj)})
+fast.sigma.d.multi<-function(x,Ptrans,Subset, gindx, ngps, gps.combo, N, p){ 
+  rate.gps<-lapply(1:ngps, function(j){ sig.calc(x[,gindx[[j]]], Ptrans,Subset, N, p)})
   sapply(1:ncol(gps.combo), function(j){ 
     a <- gps.combo[1,j]
     b <- gps.combo[2,j]

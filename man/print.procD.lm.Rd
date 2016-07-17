@@ -7,7 +7,7 @@
 \method{print}{procD.lm}(x, ...)
 }
 \arguments{
-\item{x}{print/summary object}
+\item{x}{print/summary object (from \code{\link{procD.lm}})}
 
 \item{...}{other arguments passed to print/summary}
 }

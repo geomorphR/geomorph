@@ -108,22 +108,23 @@ compare.multi.evol.rates<-function(A,gp,phy,Subset=TRUE,iter=999, print.progress
   glevs <- unique(g)
   gindx <- lapply(1:ngps, function(j) which(g==glevs[j]))
   gps.combo <- combn(ngps, 2)
-  ones <- matrix(1,N,N)
-  Xadj <- crossprod(ones,invC)/sum(invC) 
+  ones <- matrix(1,N,N); I <- diag(1,N)
+  Xadj <- I - crossprod(ones,invC)/sum(invC) 
+  Ptrans <- D.mat%*%Xadj
   if(print.progress){
     pb <- txtProgressBar(min = 0, max = iter, initial = 0, style=3) 
     sigma.rand <- lapply(1:iter, function(j) {
       setTxtProgressBar(pb,j)
-      fast.sigma.d.multi(x=as.matrix(x.sim[,,j]),D.mat,Subset, gindx, ngps, gps.combo, N, p, Xadj)
+      fast.sigma.d.multi(x=as.matrix(x.sim[,,j]),Ptrans,Subset, gindx, ngps, gps.combo, N, p)
     })
     close(pb)
   } else sigma.rand <-lapply(1:iter, function(j) 
-    fast.sigma.d.multi(x=as.matrix(x.sim[,,j]),D.mat,Subset, gindx, ngps, gps.combo, N, p, Xadj))
+    fast.sigma.d.multi(x=as.matrix(x.sim[,,j]),Ptrans,Subset, gindx, ngps, gps.combo, N, p))
   if(ngps == 2) random.sigma<-c(sigma.obs$sigma.d.ratio, unlist(sigma.rand)) else
     random.sigma<-c(sigma.obs$sigma.d.ratio,
-                  sapply(1:iter, function(j){
-                    max(sigma.rand[[j]])
-                  }))
+                    sapply(1:iter, function(j){
+                      max(sigma.rand[[j]])
+                    }))
   p.val <- pval(random.sigma)
   ratio.vals<-matrix(NA,nrow=(iter+1),ncol=length(unlist(sigma.obs[4])))
   ratio.vals[1,]<-as.vector(sigma.obs$sigma.d.gp.ratio)
