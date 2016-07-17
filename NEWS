@@ -1,3 +1,26 @@
+CHANGES IN GEOMORPH VERSION 3.0.2
+
+  NEW FEATURES
+    o Added return of min/max shape matrices to plot.procD.allometry() and plot.pls()
+    o Added option to save specimen ID to ID= line in writeland.tps()
+    
+  OTHER CHANGES
+    o Optimized analytical functions for faster computations
+    o Added force match of specimen order between blocks in two.b.pls()
+    o Updated A, Ahat, ref, p and k outputs when 2D matrix is used in procD.allometry()
+    o Added option to plot group labels in plot.procD.allometry(method="PredLine")
+    o Added legend option to plotTangentSpace() when groups are specified
+    o Removed 'verbose' from plotTangentSpace(); function now returns PC scores automatically when assigned to object
+    o Updated plotTangentSpace() to return min and max shapes for all PC axes in $pc.shapes
+    
+  BUG FIXES
+    o Fixed label output issue with bilat.symmetry shape components
+    o Fixed error plotting TPS grids when groups were included in plot.procD.allometry()
+    o Fixed error in digit.curves() where open outline would be treated as closed if starting point was the end point
+    o Fixed reading of ape::chronos phylogenies in 'phylo' functions
+    o Fixed error in reading names in readland.tps() for some tps files
+    
+    
 CHANGES IN GEOMORPH VERSION 3.0.1
 
   OTHER CHANGES

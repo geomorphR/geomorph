@@ -1,4 +1,4 @@
-#' Comparing rates of shape evolution among traits on phylogenies
+#' Comparing rates of shape evolution among traits on phylogenies 
 #'
 #' Function calculates rates of shape evolution for two or more multi-dimensional traits on a 
 #' phylogeny from a set of Procrustes-aligned specimens
@@ -86,8 +86,8 @@ compare.multi.evol.rates<-function(A,gp,phy,Subset=TRUE,iter=999, print.progress
   ngps<-nlevels(gps)
   if(ngps==1){stop("Only one shape assigned.")}
   ntaxa<-length(phy$tip.label)
-  N<-nrow(x) 
-  if (class(phy) != "phylo") 
+  N<-nrow(x); p <- ncol(x)
+  if (!inherits(phy, "phylo"))
     stop("tree must be of class 'phylo.'")
   if(is.null(rownames(x))){
     stop("Data matrix does not include taxa names.")  }
@@ -104,26 +104,34 @@ compare.multi.evol.rates<-function(A,gp,phy,Subset=TRUE,iter=999, print.progress
   R<-sigma.obs$R; diag(R)<-sigma.obs$rate.global
   R<-matrix(nearPD(R,corr=FALSE)$mat,nrow=ncol(R),ncol=ncol(R))
   x.sim<-sim.char(phy,R,nsim=iter) 
+  g<-factor(as.numeric(gps))
+  glevs <- unique(g)
+  gindx <- lapply(1:ngps, function(j) which(g==glevs[j]))
+  gps.combo <- combn(ngps, 2)
+  ones <- matrix(1,N,N)
+  Xadj <- crossprod(ones,invC)/sum(invC) 
   if(print.progress){
     pb <- txtProgressBar(min = 0, max = iter, initial = 0, style=3) 
-    sigma.rand <- sapply(1:iter, function(j) {
+    sigma.rand <- lapply(1:iter, function(j) {
       setTxtProgressBar(pb,j)
-      sigma.d.multi(as.matrix(x.sim[,,j]),invC,D.mat,gps,Subset)
+      fast.sigma.d.multi(x=as.matrix(x.sim[,,j]),D.mat,Subset, gindx, ngps, gps.combo, N, p, Xadj)
     })
     close(pb)
-  } else sigma.rand <-sapply(1:iter, function(j) 
-    sigma.d.multi(as.matrix(x.sim[,,j]),invC,D.mat,gps,Subset))
-  random.sigma<-c(sigma.obs$sigma.d.ratio,as.vector(unlist(sigma.rand[1,])))
+  } else sigma.rand <-lapply(1:iter, function(j) 
+    fast.sigma.d.multi(x=as.matrix(x.sim[,,j]),D.mat,Subset, gindx, ngps, gps.combo, N, p, Xadj))
+  if(ngps == 2) random.sigma<-c(sigma.obs$sigma.d.ratio, unlist(sigma.rand)) else
+    random.sigma<-c(sigma.obs$sigma.d.ratio,
+                  sapply(1:iter, function(j){
+                    max(sigma.rand[[j]])
+                  }))
   p.val <- pval(random.sigma)
   ratio.vals<-matrix(NA,nrow=(iter+1),ncol=length(unlist(sigma.obs[4])))
   ratio.vals[1,]<-as.vector(sigma.obs$sigma.d.gp.ratio)
-  for(i in 1:iter) ratio.vals[i+1,]<-as.vector(unlist(sigma.rand[4,][[i]]))
+  for(i in 1:iter) ratio.vals[i+1,]<-as.vector(sigma.rand[[i]]) 
   tmp.p.val.mat <- sapply(1:ncol(ratio.vals), function(j){ pval(ratio.vals[,j])})
-  p.val.mat<-dist(matrix(0,nlevels(gp)))
-  if(ngps==2) p.val.mat<-tmp.p.val.mat
-  if(ngps>2){
+  p.val.mat<-D<-dist(matrix(0,nlevels(gp)))
+  if(ngps==2) p.val.mat<-tmp.p.val.mat else
     for(i in 1:length(p.val.mat)) p.val.mat[[i]] <- tmp.p.val.mat[i]
-  }
   out <- list(sigma.d.ratio = sigma.obs$sigma.d.ratio, P.value=p.val,
               sigma.d.gp = sigma.obs$rate.gps,
               sigma.d.gp.ratio = sigma.obs$sigma.d.gp.ratio,
@@ -132,5 +140,5 @@ compare.multi.evol.rates<-function(A,gp,phy,Subset=TRUE,iter=999, print.progress
   
   class(out) <- "evolrate"
   out 
-
 }
+

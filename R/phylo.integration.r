@@ -78,7 +78,7 @@
 phylo.integration <-function(A, A2=NULL, phy, partition.gp=NULL,iter=999, seed=NULL, print.progress=TRUE){ 
   if(any(is.na(A))==T){
     stop("Data matrix 1 contains missing values. Estimate these first(see 'estimate.missing').")  } 
-  if (!is.phylo(phy))
+  if (!inherits(phy, "phylo"))
     stop("phy must be of class 'phylo.'") 
   if(!is.null(seed) && seed=="random") seed = sample(1:iter, 1)
   if(!is.null(partition.gp)){
@@ -138,18 +138,23 @@ phylo.integration <-function(A, A2=NULL, phy, partition.gp=NULL,iter=999, seed=N
   phy.parts<-phylo.mat(x,phy)
   invC<-phy.parts$invC; D.mat<-phy.parts$D.mat
 #Analysis  
+  one<-matrix(1,nrow(x)); I = diag(1,nrow(x),) 
+  Ptrans<-D.mat%*%(I-one%*%crossprod(one,invC)/sum(invC))
   if(ngps==2){
-    pls.obs <- pls.phylo(x, y, invC,D.mat,verbose=TRUE)
-    if(print.progress) pls.rand <- apply.pls.phylo(x, y,invC,D.mat, iter=iter, seed=seed) else
-      pls.rand <- .apply.pls.phylo(x, y,invC,D.mat, iter=iter, seed=seed)
+    pls.obs <- pls.phylo(x, y, Ptrans,verbose=TRUE)
+    x <- Ptrans%*%x
+    y <- Ptrans%*%y
+    if(print.progress) pls.rand <- apply.pls(center(x), center(y),  iter=iter, seed=seed) else
+      pls.rand <- .apply.pls(center(x), center(y), iter=iter, seed=seed)
     p.val <- pval(pls.rand)
     XScores <- pls.obs$XScores
     YScores <- pls.obs$YScores
   }
   if(ngps>2){
-    pls.obs <- plsmulti.phylo(x, gps, invC,D.mat)  
-    if(print.progress) pls.rand <- apply.plsmulti.phylo(x, gps, invC,D.mat, iter=iter, seed=seed) else
-      pls.rand <- .apply.plsmulti.phylo(x, gps, invC,D.mat, iter=iter, seed=seed)
+    pls.obs <- plsmulti.phylo(x, gps, Ptrans)  
+    x <- Ptrans%*%x
+    if(print.progress) pls.rand <- apply.plsmulti(center(x), gps, iter=iter, seed=seed) else
+      pls.rand <- .apply.plsmulti.phylo(center(y), gps,iter=iter, seed=seed)
     p.val <- pval(pls.rand)
   } 
   ####OUTPUT

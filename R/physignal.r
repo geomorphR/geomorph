@@ -76,7 +76,7 @@ physignal<-function(A,phy,iter=999, seed=NULL, print.progress=TRUE){
     if(is.null(names(A))){
       stop("Data vector does not include taxa names as names.")  }
     x<-as.matrix(A) }
-  if (class(phy) != "phylo") 
+  if (!inherits(phy, "phylo"))
     stop("tree must be of class 'phylo.'")
   N<-length(phy$tip.label)
   if(N!=dim(x)[1]){
@@ -92,31 +92,29 @@ physignal<-function(A,phy,iter=999, seed=NULL, print.progress=TRUE){
   x<-as.matrix(x)
   phy.parts<-phylo.mat(x,phy)
   invC<-phy.parts$invC; D.mat<-phy.parts$D.mat;C = phy.parts$C
-  Kmult<-function(x,invC,D.mat){
-    ones<-matrix(1,nrow(x),1) 
-    a.obs<-colSums(invC)%*%x/sum(invC)  
-    distmat<-as.matrix(dist(rbind(as.matrix(x),a.obs))) 
-    MSEobs.d<-sum(distmat[(1:N),(N+1)]^2)   
-    dist.adj<-as.matrix(dist(rbind((D.mat%*%(x-(ones%*%a.obs))),0))) 
-    MSE.d<-sum(dist.adj[(1:N),(N+1)]^2) 
-    K.denom<-(sum(diag(C))- N*fast.solve(t(ones)%*%invC%*%ones))/(N-1)
-    K.stat<-(MSEobs.d/MSE.d)/K.denom
-    return(K.stat)
+  ones<-matrix(1,N,1) 
+  a.adj<-ones%*%crossprod(ones, invC)/sum(invC)
+  Kmult<-function(x,invC,D.mat, ones, a.adj){
+    x.c <- x-a.adj%*%x
+    MSEobs.d<-sum(x.c^2)  
+    x.a <- D.mat%*%x.c
+    MSE.d<-sum(x.a^2)  
+    K.denom<-(sum(diag(C))- N/sum(invC))/(N-1)
+    (MSEobs.d/MSE.d)/K.denom
   }
-  K.obs<-Kmult(x,invC,D.mat)
   ind <- perm.index(nrow(x), iter, seed=seed)
-  x.rand <-lapply(1:(iter+1), function(j) x[ind[[j]],])
+  x.rand <-Map(function(i) x[i,], ind)
   if(print.progress){
     pb <- txtProgressBar(min = 0, max = iter+1, initial = 0, style=3) 
     K.rand <- sapply(1:(iter+1), function(j) {
       setTxtProgressBar(pb,j)
-      Kmult(as.matrix(x.rand[[j]]), invC,D.mat)
+      Kmult(as.matrix(x.rand[[j]]), invC,D.mat, ones, a.adj)
       })
     close(pb)
   } else K.rand <- sapply(1:(iter+1), 
-                          function(j) Kmult(as.matrix(x.rand[[j]]), invC,D.mat))
+                          function(j) Kmult(as.matrix(x.rand[[j]]), invC,D.mat, ones, a.adj))
   p.val <- pval(K.rand)
-  out <- list(phy.signal=K.obs, pvalue=p.val, random.K = K.rand,
+  out <- list(phy.signal=K.rand[[1]], pvalue=p.val, random.K = K.rand,
               permutations = iter+1, call=match.call())
   class(out) <- "physignal"
   out

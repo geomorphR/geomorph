@@ -74,8 +74,8 @@ compare.evol.rates<-function(A,phy,gp,iter=999,print.progress=TRUE ){
     stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').")  }
   if (is.null(names(gp))){
     stop("Factor contains no names. Use names() to assign specimen names to group factor.")}
-  if (class(phy) != "phylo") 
-    stop("tree must be of class 'phylo.'")
+  if (!inherits(phy, "phylo")){
+    stop("tree must be of class 'phylo.'")}
   ntaxa<-length(phy$tip.label)
   N<-nrow(x)  
   if(N!=dim(x)[1]){
@@ -93,28 +93,38 @@ compare.evol.rates<-function(A,phy,gp,iter=999,print.progress=TRUE ){
   diag(rate.mat)<-sigma.obs$sigma.d.all
   rate.mat<-matrix(nearPD(rate.mat,corr=FALSE)$mat,nrow=ncol(rate.mat),ncol=ncol(rate.mat))
   x.sim<-sim.char(phy=phy,par=rate.mat,nsim=iter,model="BM") 
-  if(print.progress){
-    pb <- txtProgressBar(min = 0, max = iter, initial = 0, style=3) 
-    sigma.rand <- sapply(1:iter, function(j) {
-      setTxtProgressBar(pb,j)
-      sigma.d(as.matrix(x.sim[,,j]),invC,D.mat,gp)
-    })
-    close(pb)
-    } else sigma.rand <- sapply(1:(iter), function(j) sigma.d(as.matrix(x.sim[,,j]),invC,D.mat,gp))
-  random.sigma<-c(sigma.obs$sigma.d.ratio,as.vector(unlist(sigma.rand[1,])))
-  if(nlevels(gp)>1){
+  ones <- matrix(1,N,N)
+  Xadj <- crossprod(ones,invC)/sum(invC) 
+  g<-factor(as.numeric(gp))
+  ngps<-nlevels(g)
+  gps.combo <- combn(ngps, 2)
+  if(nlevels(gp) > 1){
+    if(print.progress){
+      pb <- txtProgressBar(min = 0, max = iter, initial = 0, style=3) 
+      sigma.rand <- sapply(1:iter, function(j) {
+        setTxtProgressBar(pb,j)
+        fast.sigma.d(as.matrix(x.sim[,,j]),D.mat,g, ngps, gps.combo, N,p, Xadj)
+      })
+      close(pb)
+    } else sigma.rand <- sapply(1:(iter), 
+                function(j) fast.sigma.d(as.matrix(x.sim[,,j]),D.mat,g, ngps, gps.combo,N,p,Xadj))
+    if(nlevels(gp) == 2) 
+      sigma.rand <- random.sigma <- c(sigma.obs$sigma.d.gp.ratio, sigma.rand) else {
+        sigma.rand <- cbind(as.vector(sigma.obs$sigma.d.gp.ratio), sigma.rand)
+        random.sigma<- sapply(1:(iter+1), function(j) {x <- sigma.rand[,j]; max(x)/min(x)})
+      }
     p.val <- pval(random.sigma)
-    p.val.mat<-NULL
+    if(nlevels(gp) > 2) {
+      p.val.mat <- dist(sigma.obs$sigma.d.gp)
+      p.val.mat[1:length(p.val.mat)] <- apply(sigma.rand, 1, pval)
+    } else p.val.mat <- p.val
     if(nlevels(gp)==2) p.val.mat<-p.val
     if(nlevels(gp)>2){
-      ratio.vals<-matrix(NA,nrow=(iter+1),ncol=length(unlist(sigma.obs[4])))
-      ratio.vals[1,]<-as.vector(sigma.obs$sigma.d.gp.ratio)
-      for(i in 1:iter) ratio.vals[i+1,]<-as.vector(unlist(sigma.rand[4,][[i]]))
+      ratio.vals<-sigma.rand
       tmp.p.val.mat <- sapply(1:ncol(ratio.vals), function(j){ pval(ratio.vals[,j])})
-      p.val.mat<-dist(matrix(0,nlevels(gp)))
-      for(i in 1:length(p.val.mat)) p.val.mat[[i]] <- tmp.p.val.mat[i]
-    }    
+    }
   }
+  
   if(nlevels(gp)==1){ 
     out <- list(sigma.d.all = sigma.obs$sigma.d.all,
                 Ngroups = nlevels(gp))

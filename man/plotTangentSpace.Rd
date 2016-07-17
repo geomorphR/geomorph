@@ -5,7 +5,7 @@
 \title{Plot specimens in tangent space}
 \usage{
 plotTangentSpace(A, axis1 = 1, axis2 = 2, warpgrids = TRUE, mesh = NULL,
-  label = NULL, groups = NULL, verbose = FALSE)
+  label = NULL, groups = NULL, legend = FALSE)
 }
 \arguments{
 \item{A}{An array (p x k x n) containing landmark coordinates for a set of aligned specimens}
@@ -22,18 +22,18 @@ as described in \code{\link{plotRefToTarget}}.}
 \item{label}{An optional vector indicating labels for each specimen are to be displayed 
 (or if TRUE, numerical addresses are given)}
 
-\item{groups}{An optional factor vector specifying group identity for each specimen}
+\item{groups}{An optional factor vector specifying group identity for each specimen (see example)}
 
-\item{verbose}{A logical value indicating whether the output is basic or verbose (see Value below)}
+\item{legend}{A logical value for whether to add a legend to the plot (only when groups are assigned).}
 }
 \value{
-Function returns a table summarizing the percent variation explained by each
- pc axis (equivalent to summary() of \code{\link{prcomp}}) (default, verbose = FALSE).
- If verbose=TRUE, function returns a list containing the following components: 
-\item{pc.summary}{A PC summary table as above}
-\item{pc.scores}{The set of principal component scores for all specimens.} 
-\item{pc.shapes}{A list with four components of the shape coordinates of the extreme ends of axis1 and axis2 
-is returned, which can be used by \code{\link{warpRefMesh}}.}
+If user assigns function to object, returned is a list of the following components:
+\item{pc.summary}{A table summarizing the percent variation explained by each pc axis, equivalent to summary of \code{\link{prcomp}}.}
+\item{pc.scores}{The set of principal component scores for all specimens.}
+\item{pc.shapes}{A list with the shape coordinates of the extreme ends of all PC axes, e.g. $PC1min}
+\item{sdev}{The standard deviations of the principal components (i.e., the square roots of the eigenvalues of the 
+covariance/correlation matrix, as per \code{\link{prcomp}}.}
+\item{rotation}{The matrix of variable loadings, as per \code{\link{prcomp}}.}
 }
 \description{
 Function plots a set of Procrustes-aligned specimens in tangent space along their principal component axes
@@ -47,6 +47,9 @@ The function performs a principal components analysis of shape variation and plo
  each group are plotted using distinct colors based on the order in which the groups are found in the dataset, 
  and using R's standard color palette: black, red, green, blue, cyan, magenta, yellow, and gray. NOTE: to change
  the colors of the groups, simply substitute a vector of the desired colors for each specimen (see example below).
+ 
+ NOTE: previous versions of plotTangentSpace had option 'verbose' to return the PC scores and PC shapes. 
+ From version 3.0.2 this is automatic when assigned to an object.
 }
 \examples{
 data(plethodon) 
@@ -55,19 +58,21 @@ Y.gpa<-gpagen(plethodon$land)    #GPA-alignment
 gp <- as.factor(paste(plethodon$species, plethodon$site)) # group must be a factor
 plotTangentSpace(Y.gpa$coords, groups = gp) 
 
-## To plot residual shapes from an allometry regression (note: must add mean back in!) 
-plotTangentSpace(arrayspecs(resid(lm(two.d.array(Y.gpa$coords)~Y.gpa$Csize))+
-         predict(lm(two.d.array(Y.gpa$coords)~1)),12,2))
- 
+## To save and use output
+PCA <- plotTangentSpace(Y.gpa$coords, groups = gp) 
+summary(PCA)
+PCA$pc.shapes
+PCA$rotation
+
 ##To change colors of groups
 col.gp <- rainbow(length(levels(gp))) 
    names(col.gp) <- levels(gp)
-col.gp <- col.gp[match(gp, names(col.gp))] # col.gp must not be a factor
-
+col.gp <- col.gp[match(gp, names(col.gp))] # col.gp must NOT be a factor
 plotTangentSpace(Y.gpa$coords, groups = col.gp)
 
-## To make a quick legend [not run]
-#plot.new(); legend(0,1, legend= levels(gp), pch=19, col = levels(as.factor(col.gp)))
+## To plot residual shapes from an allometry regression (note: must add mean back in!) 
+plotTangentSpace(arrayspecs(resid(lm(two.d.array(Y.gpa$coords)~Y.gpa$Csize))+
+         predict(lm(two.d.array(Y.gpa$coords)~1)),12,2))
 }
 \author{
 Dean Adams & Emma Sherratt

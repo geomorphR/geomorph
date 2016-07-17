@@ -883,17 +883,32 @@ pcoa <- function(D){
   Yp
 }
 
+
+# In development for various functions
+
+model.matrix.g <- function(f1, data = NULL) {
+  f1 <- as.formula(f1)
+  Terms <- terms(f1)
+  labs <- attr(Terms, "term.labels")
+  if(!is.null(data)) {
+    matches <- na.omit(match(labs, names(data)))
+    dat <- as.data.frame(data[matches]) 
+  } else dat <- NULL
+  model.matrix(f1, data=dat)
+}
+
 # procD.fit
 # lm-like fit modified for Procrustes residuals 
 # general workhorse for all 'procD.lm' functions
 # used in all 'procD.lm' functions
-procD.fit <- function(f1, keep.order=FALSE, pca=TRUE, data=NULL,...){
+procD.fit <- function(f1, keep.order=FALSE, pca=TRUE, data=NULL, 
+                      SS.type = c("I", "III"), ...){
   form.in <- formula(f1)
   if(any(class(f1)=="lm")) {
     weights <- f1$weights
     contrasts <- f1$contrasts
     offset <-f1$offset
-    dat <- data <- model.frame(f1)
+    data <- dat <- model.frame(f1)
     Y <- as.matrix(data[1])
   } else {
     if(!is.null(data)) {
@@ -916,6 +931,7 @@ procD.fit <- function(f1, keep.order=FALSE, pca=TRUE, data=NULL,...){
     y.pca <- prcomp(Y)
     Y <- y.pca$x[,zapsmall(y.pca$sdev) > 0]
   }
+  if(!is.null(SS.type)) SS.type <- match.arg(SS.type) else SS.type <- "I"
   dots <- list(...)
   if(!is.null(contrasts)) {
     op.c <- options()$contrasts
@@ -956,7 +972,12 @@ procD.fit <- function(f1, keep.order=FALSE, pca=TRUE, data=NULL,...){
   X.k <- X.k[QRx$pivot][1:QRx$rank]
   uk <- unique(X.k)
   k <- length(uk) - 1
-  Xs <- lapply(1:length(uk), function(j)  Xj <- X[, X.k %in% uk[1:j]])
+  if(SS.type == "III"){
+    Xs <- lapply(1:length(uk), function(j)  Xj <- X[, X.k %in% uk[-j]])
+    Xs <- c(Xs[-1], list(X))
+  }
+  else
+    Xs <- lapply(1:length(uk), function(j)  Xj <- X[, X.k %in% uk[1:j]])
   QRs <- lapply(Xs, function(x) qr(x))
   fitted <- lapply(QRs, function(x) qr.fitted(x,Y))
   residuals <- lapply(QRs, function(x) qr.resid(x,Y))
@@ -1047,8 +1068,8 @@ boot.index <-function(n, iter, seed=NULL){
 # used in SS.iter and Fpgls.iter; future need: advanced.procD.lm 
 fastFit <- function(U,y,n,p){
   if(!is.matrix(y)) y <- as.matrix(y)
-  if(p > n) U%*%t(U)%*%y else 
-    U%*%(t(U)%*%y) 
+  if(p > n) tcrossprod(U)%*%y else 
+    U%*%crossprod(U,y) 
 }
 
 # fastLM
@@ -1063,15 +1084,24 @@ fastLM<- function(U,y){
 # SS.iter
 # calculates SS in random iterations of a resmapling procedure
 # used in nearly all 'procD.lm' functions, unless pgls in used
-SS.iter = function(pfit,iter, seed = NULL, Yalt="RRPP"){
+SS.iter = function(pfit,iter, seed = NULL, Yalt="RRPP", SS.type= NULL){
   Y <- as.matrix(pfit$Y)
-  k <- length(pfit$QRs)
+  Xf <- as.matrix(pfit$X)
+  k <- length(pfit$Xs)
   n <- dim(Y)[1]; p <- dim(Y)[2]
   Yh <- pfit$fitted
   E <- pfit$residuals
   w<- pfit$weights
-  Ur <- lapply(pfit$wQRs[1:(k-1)], function(x) qr.Q(x))
-  Uf <- lapply(pfit$wQRs[2:k], function(x) qr.Q(x))
+  if(is.null(SS.type)) SS.type <- "I"
+  if(is.na(match(SS.type, c("I","III")))) SS.type <- "I"
+  if(SS.type == "III") {
+    Ur <- lapply(pfit$wQRs[1:(k-1)], function(x) qr.Q(x))
+    Uf <- qr.Q(qr(Xf))
+    Uf <- lapply(1:(k-1), function(.) Uf)
+  } else {
+    Ur <- lapply(pfit$wQRs[1:(k-1)], function(x) qr.Q(x))
+    Uf <- lapply(pfit$wQRs[2:k], function(x) qr.Q(x))
+  }
   ind = perm.index(n,iter, seed=seed)
   SS <- NULL
   pb <- txtProgressBar(min = 0, max = ceiling(iter/100), initial = 0, style=3) 
@@ -1092,7 +1122,6 @@ SS.iter = function(pfit,iter, seed = NULL, Yalt="RRPP"){
           Yr = Map(function(x) Map(function(y) (y[x,])*sqrt(w), lapply(1:(k-1),function(.) Y)),ind.j)
         }
       }
-    
     SS.temp <- lapply(1:length(j), function(j){ 
       mapply(function(ur,uf,y) sum((fastFit(uf,y,n,p) - fastFit(ur,y,n,p))^2), 
              Ur, Uf,Yr[[j]])})
@@ -1110,15 +1139,24 @@ SS.iter = function(pfit,iter, seed = NULL, Yalt="RRPP"){
 # .SS.iter
 # same as SS.iter, but without progress bar option
 # used in nearly all 'procD.lm' functions, unless pgls in used
-.SS.iter = function(pfit,iter, seed = NULL, Yalt="RRPP"){
+.SS.iter = function(pfit,iter, seed = NULL, Yalt="RRPP", SS.type=NULL){
   Y <- as.matrix(pfit$Y)
-  k <- length(pfit$QRs)
+  Xf <- as.matrix(pfit$X)
+  k <- length(pfit$Xs)
   n <- dim(Y)[1]; p <- dim(Y)[2]
   Yh <- pfit$fitted
   E <- pfit$residuals
   w<- pfit$weights
-  Ur <- lapply(pfit$wQRs[1:(k-1)], function(x) qr.Q(x))
-  Uf <- lapply(pfit$wQRs[2:k], function(x) qr.Q(x))
+  if(is.null(SS.type)) SS.type <- "I"
+  if(is.na(match(SS.type, c("I","III")))) SS.type <- "I"
+  if(SS.type == "III") {
+    Ur <- lapply(pfit$wQRs[1:(k-1)], function(x) qr.Q(x))
+    Uf <- qr.Q(qr(Xf))
+    Uf <- lapply(1:(k-1), function(.) Uf)
+  } else {
+    Ur <- lapply(pfit$wQRs[1:(k-1)], function(x) qr.Q(x))
+    Uf <- lapply(pfit$wQRs[2:k], function(x) qr.Q(x))
+  }
   ind = perm.index(n,iter, seed=seed)
   SS <- NULL
   jj <- iter+1
@@ -1247,17 +1285,20 @@ Fpgls.iter = function(pfit,Pcor,iter, seed=NULL, Yalt="RRPP"){
 # anova.parts
 # makes an ANOVA table based on SS from SS.iter
 # used in nearly all 'procD.lm' functions
-anova.parts <- function(pfit, SS){ # SS from SS.iter
+anova.parts <- function(pfit, SS, SS.type = NULL){ # SS from SS.iter
   Y <- pfit$wY
   k <- length(pfit$term.labels)
+  if(is.null(SS.type)) SS.type <- "I"
+  if(is.na(match(SS.type, c("I","III")))) SS.type <- "I"
   dfe <-sapply(pfit$wQRs, function(x) x$rank)
-  df <- dfe[2:(k+1)] - dfe[1:k]
+  if(SS.type == "III") df <- dfe[length(dfe)] - dfe[1:(length(dfe)-1)] else
+    df <- dfe[2:(k+1)] - dfe[1:k]
   if(k==1) SS <- SS[1] else SS <- SS[,1]
   anova.terms <- pfit$term.labels
   SSY <- sum(qr.resid(qr(pfit$wX[,1]),pfit$wY)^2)
   MS <- SS/df
   R2 <- SS/SSY
-  SSE.model <- SSY - sum(SS)
+  SSE.model <- sum(qr.resid(qr(pfit$wXs[[k+1]]),pfit$wY)^2)
   dfE <- nrow(Y)-(sum(df)+1)
   MSE <- SSE.model/dfE
   Fs <- MS/MSE
@@ -1364,7 +1405,7 @@ Pval.matrix = function(M){
   P
 }
 
-# pval
+# effect.size
 # Effect sizes (standard deviates) form random outcomes
 # any analytical function
 effect.size <- function(x, center = FALSE) {
@@ -1425,8 +1466,11 @@ cov.extract <- function(pfit) {
 # ls.means
 # estimates ls.means from models with slopes and factors
 # advanced.procD.lm
-ls.means = function(pfit, Y=NULL, g=NULL, data=NULL) { 
-  if(is.null(Y)) Y <- pfit$wY
+# THIS FUNCTION IS NO LONGER USED.  It is retained, however, for future debugging
+# purposes, in the event updates have errors
+ls.means = function(pfit, Y=NULL, g=NULL, data=NULL, Pcor = NULL) { 
+  if(!is.null(Pcor) && is.null(Y)) stop("If Pcor is provided, Y cannot be null")
+  if(is.null(Y)) Y <- pfit$wY 
   n <- nrow(Y)
   if(is.null(data)) dat <- pfit$data else dat <- data
   if(!is.null(g)) {
@@ -1437,38 +1481,73 @@ ls.means = function(pfit, Y=NULL, g=NULL, data=NULL) {
     if(ncol(as.matrix(facs)) > 1) fac <- factor(apply(facs, 1,function(x) paste(x, collapse=":"))) else 
       fac <- as.factor(unlist(facs))
   } else fac <- single.factor(pfit)
-  covs <- cov.extract(pfit)
-  if(is.null(covs)){
-    lsm <- .lm.fit(model.matrix(~fac+0),Y)$coefficients
-  } else if(ncol(as.matrix(covs)) == 1){
-    covs <- as.vector(covs)
-    fit <- .lm.fit(model.matrix(~covs+fac+0),Y)
-    X <- cbind(mean(covs),model.matrix(~fac+0))
-    lsm <- .lm.fit(model.matrix(~fac+0),X%*%coef(fit))$coefficients
-  } else {
-    covs <- sapply(covs, function(x) matrix(x))
-    fit <- .lm.fit(model.matrix(~covs+fac+0),Y)
-    X <- cbind(matrix(rep(colMeans(covs), rep.int(nrow(covs), ncol(covs))),n),
-               model.matrix(~fac+0))
-    lsm <- .lm.fit(model.matrix(~fac+0),X%*%coef(fit))$coefficients
+  covs <- cov.extract(pfit) 
+  if(is.null(covs)) X0 <- model.matrix(~fac) else {
+    if(ncol(as.matrix(covs)) == 1) covs <- as.vector(covs)
+    X0 <- model.matrix(~covs+fac)
   }
-  lsm <- as.matrix(lsm)
+  X <- X0*sqrt(pfit$weights)
+  if(!is.null(Pcor)) fit <- .lm.fit(Pcor%*%X,Y)$coefficients else fit <- .lm.fit(X,Y)$coefficients
+  if(!is.null(covs)){
+    Xcov.mean <- as.matrix(X[,1:ncol(model.matrix(~covs))])
+    Xcov.mean <- sapply(1:ncol(Xcov.mean), 
+                        function(j) rep(mean(Xcov.mean[,j]),nrow(Xcov.mean)))
+    Xnew <- cbind(Xcov.mean, X[,-(1:ncol(Xcov.mean))])
+  } else Xnew <- X
+  lsm <- as.matrix(lm.fit(model.matrix(~fac+0),Xnew%*%fit)$coefficients)
   rownames(lsm) <- levels(fac)
   lsm
 }
 
 # apply.ls.means
 # estimates ls.means from models with slopes and factors across random outcomes in a list
+# via helper functions, quick.ls.means.setup, and quick.ls.means
 # advanced.procD.lm
-apply.ls.means <- function(pfit, Yr, g=NULL, data=NULL){
+quick.ls.means.set.up <- function(pfit, g=NULL, data=NULL) {
   if(is.null(data)) dat <- pfit$data else dat <- data
-  Map(function(y) ls.means(pfit, Y=y, g=g, data=dat), Yr)
+  if(!is.null(g)) {
+    if(is.data.frame(g)){
+      fac.check <- sapply(g, is.factor)
+      facs <- g[,fac.check]
+    } else if(is.factor(g)) facs <- g else stop("groups input neither a factor nor factors")
+    if(ncol(as.matrix(facs)) > 1) fac <- factor(apply(facs, 1,function(x) paste(x, collapse=":"))) else 
+      fac <- as.factor(unlist(facs))
+  } else fac <- single.factor(pfit)
+  covs <- cov.extract(pfit) 
+  if(is.null(covs)) X0 <- model.matrix(~fac) else {
+    if(ncol(as.matrix(covs)) == 1) covs <- as.vector(covs)
+    X0 <- model.matrix(~covs+fac)
+  }
+  X <- X0*sqrt(pfit$weights)
+  if(!is.null(covs)){
+    Xcov.mean <- as.matrix(X[,1:ncol(model.matrix(~covs))])
+    Xcov.mean <- sapply(1:ncol(Xcov.mean), 
+                        function(j) rep(mean(Xcov.mean[,j]),nrow(Xcov.mean)))
+    Xnew <- cbind(Xcov.mean, X[,-(1:ncol(Xcov.mean))])
+  } else Xnew <- X
+  list(X0=X, X=Xnew, fac=fac)
+}
+
+quick.ls.means <- function(X0, X, Y, fac, Pcor=NULL){
+  if(!is.null(Pcor)) fit <- .lm.fit(Pcor%*%X0,Y)$coefficients else fit <- .lm.fit(X0,Y)$coefficients
+  lsm <- as.matrix(lm.fit(model.matrix(~fac+0),X%*%fit)$coefficients)
+  rownames(lsm) <- levels(fac)
+  lsm
+}
+
+apply.ls.means <- function(pfit, Yr, g=NULL, data=NULL, Pcor=NULL){
+  setup<-quick.ls.means.set.up(pfit, g=g, data=data)
+  X0 <- setup$X0; X <- setup$X; fac <- setup$fac
+  Map(function(y) quick.ls.means(X0,X, Y=y, fac=fac, Pcor=Pcor), Yr)
 }
 
 # slopes
 # estimates slopes from models with slopes and factors
 # advanced.procD.lm
-slopes = function(pfit, Y=NULL, g = NULL, slope=NULL, data = NULL){ 
+# THIS FUNCTION IS NO LONGER USED.  It is retained, however, for future debugging
+# purposes, in the event updates have errors
+slopes = function(pfit, Y=NULL, g = NULL, slope=NULL, data = NULL, Pcor = NULL){ 
+  if(!is.null(Pcor) && is.null(Y)) stop("If Pcor is provided, Y cannot be null")
   if(is.null(Y)) Y <- pfit$wY
   if(is.null(data)) dat <- pfit$data else dat <- data
   if(!is.null(g)) {
@@ -1482,7 +1561,9 @@ slopes = function(pfit, Y=NULL, g = NULL, slope=NULL, data = NULL){
   if(!is.null(slope)) covs <- as.matrix(slope) else covs <- as.matrix(cov.extract(pfit))
   if(ncol(covs) > 1) stop("Only one covariate can be used for slope-comparisons")
   if(ncol(covs) == 0) stop("No covariate for which to compare slopes")
-  B <- qr.coef(qr(model.matrix(~fac*covs)), Y)
+  if(!is.null(Pcor)) {
+    B <- qr.coef(qr(Pcor%*%model.matrix(~fac*covs)), Y)
+  } else B <- qr.coef(qr(model.matrix(~fac*covs)), Y)
   fac.p <- qr(model.matrix(~fac))$rank
   if(is.matrix(B)) {
     Bslopes <- as.matrix(B[-(1:fac.p),])
@@ -1500,14 +1581,48 @@ slopes = function(pfit, Y=NULL, g = NULL, slope=NULL, data = NULL){
 # apply.slopes
 # estimates slopes from models with slopes and factors across random outcomes in a list
 # advanced.procD.lm
-apply.slopes <- function(pfit, Yr, g=NULL, slope=NULL, data=NULL){
-  Y <- pfit$wY
+quick.slopes.set.up <- function(pfit, g=NULL, slope=NULL, data=NULL) {
   if(is.null(data)) dat <- pfit$data else dat <- data
-  if(!is.null(g)) 
-    slopes <- Map(function(y) slopes(pfit, Y=y, g=g, slope=slope, data=dat), Yr) else
-      slopes <- Map(function(y) slopes(pfit, Y=y, g=NULL, slope=slope, data=dat), Yr)
-    if(ncol(Y)==1) slopes <- Map(function(s) cbind(1,s), slopes)
-    slopes 
+  if(!is.null(g)) {
+    if(is.data.frame(g)){
+      fac.check <- sapply(g, is.factor)
+      facs <- g[,fac.check]
+    } else if(is.factor(g)) facs <- g else stop("groups input neither a factor nor factors")
+    if(ncol(as.matrix(facs)) > 1) fac <- factor(apply(facs, 1,function(x) paste(x, collapse=":"))) else 
+      fac <- as.factor(unlist(facs))
+  } else fac <- single.factor(pfit)
+  if(!is.null(slope)) covs <- as.matrix(slope) else covs <- as.matrix(cov.extract(pfit))
+  if(ncol(covs) > 1) stop("Only one covariate can be used for slope-comparisons")
+  if(ncol(covs) == 0) stop("No covariate for which to compare slopes")
+  list(covs=covs, fac=fac)
+}
+
+quick.slopes <- function(covs, fac, Y, Pcor=NULL){
+  if(!is.null(Pcor)) {
+    B <- qr.coef(qr(Pcor%*%model.matrix(~fac*covs)), Y)
+  } else B <- qr.coef(qr(model.matrix(~fac*covs)), Y)
+  fac.p <- qr(model.matrix(~fac))$rank
+  ones <- matrix(1,fac.p-1)
+  if(is.matrix(B)) {
+    Bslopes <- as.matrix(B[-(1:fac.p),])
+    Int <- Bslopes[1,]
+    Badjust <- rbind(0,ones%*%Int)
+    Bslopes <- Bslopes + Badjust} else {
+      Bslopes <- B[-(1:fac.p)]
+      Badjust <- c(0,rep(Bslopes[1],(fac.p-1)))
+      Bslopes <- matrix(Bslopes + Badjust)
+    }
+  if(ncol(Bslopes)==1) Bslopes <- cbind(1, Bslopes)
+  rownames(Bslopes) <- levels(fac)
+  Bslopes
+}
+
+apply.slopes <- function(pfit, Yr, g=NULL, slope=NULL, data=NULL, Pcor=NULL){
+  setup <- quick.slopes.set.up(pfit, g=g, slope=slope, data=data)
+  covs <- setup$covs; fac <- setup$fac
+  slopes <- Map(function(y) quick.slopes(covs, fac,y, Pcor=Pcor), Yr)
+  if(ncol(slopes[[1]])==1) slopes <- Map(function(s) cbind(1,s), slopes)
+  slopes 
 }
 
 # vec.cor.matrix
@@ -1540,12 +1655,11 @@ vec.ang.matrix <- function(M, type = c("rad", "deg", "r")){
 
 # pls
 # performs PLS analysis
-# Used in two.b.pls, integration.test, apply.pls
+# Used in two.b.pls, integration.test, phylo.integration, apply.pls
 pls <- function(x,y, RV=FALSE, verbose = FALSE){
   x <- as.matrix(x); y <- as.matrix(y)
   px <- ncol(x); py <- ncol(y); pmin <- min(px,py)
-  S <-var(cbind(x,y))
-  S12 <- matrix(S[1:px,-(1:px)], px,py)
+  S12 <- crossprod(center(x),center(y))/(dim(x)[1] - 1)
   pls <- La.svd(S12, pmin, pmin)
   U <- pls$u; V <- t(pls$vt)
   XScores <- x %*% U
@@ -1569,14 +1683,12 @@ pls <- function(x,y, RV=FALSE, verbose = FALSE){
 # quick.pls
 # a streamlines pls code
 # used in: apply.pls
-quick.pls <- function(x,y, px, py, pmin) {# no RV; no verbose output
-  # assume parameters already found
-  S12 <- crossprod(center(x),center(y))/(dim(x)[1] - 1)
-  pls <- La.svd(S12, pmin, pmin)
-  U<-pls$u; V <- t(pls$vt)
-  XScores <- x %*% U
-  YScores <- y %*% V
-  cor(XScores[,1],YScores[,1])
+quick.pls <- function(x,y) {# no RV; no verbose output
+  # assume parameters already found and assume x and y are centered
+  S12 <- crossprod(x,y)/(dim(x)[1] - 1)
+  pls <- La.svd(S12, 1, 1)
+  U<-pls$u; V <- as.vector(pls$vt)
+  cor(x%*%U,y%*%V)
 }
 
 # apply.pls 
@@ -1596,7 +1708,7 @@ apply.pls <- function(x,y, RV=FALSE, iter, seed = NULL){
     ind.j <- ind[j]
     y.rand <-lapply(1:length(j), function(i) y[ind.j[[i]],])
     if(RV == TRUE) RV.rand <- c(RV.rand,sapply(1:length(j), function(i) pls(x,y.rand[[i]], RV=TRUE, verbose = TRUE)$RV)) else
-      r.rand <- c(r.rand, sapply(1:length(j), function(i) quick.pls(x,y.rand[[i]], px,py,pmin)))
+      r.rand <- c(r.rand, sapply(1:length(j), function(i) quick.pls(x,y.rand[[i]])))
     jj <- jj-length(j)
     if(jj > 100) kk <- 1:100 else kk <- 1:jj
     j <- j[length(j)] +kk
@@ -1622,7 +1734,7 @@ apply.pls <- function(x,y, RV=FALSE, iter, seed = NULL){
     ind.j <- ind[j]
     y.rand <-lapply(1:length(j), function(i) y[ind.j[[i]],])
     if(RV == TRUE) RV.rand <- c(RV.rand,sapply(1:length(j), function(i) pls(x,y.rand[[i]], RV=TRUE, verbose = TRUE)$RV)) else
-      r.rand <- c(r.rand, sapply(1:length(j), function(i) quick.pls(x,y.rand[[i]], px,py,pmin)))
+      r.rand <- c(r.rand, sapply(1:length(j), function(i) quick.pls(x,y.rand[[i]])))
     jj <- jj-length(j)
     if(jj > 100) kk <- 1:100 else kk <- 1:jj
     j <- j[length(j)] +kk
@@ -1656,18 +1768,15 @@ plsmulti<-function(x,gps){
 # quick.plsmulti
 # a streamlined plsmulti
 # used in apply.plsmulti
-quick.plsmulti <- function(x,gps){
-  g<-factor(as.numeric(gps))
-  ngps<-nlevels(g)
-  S<-var(x)
-  gps.combo <- combn(ngps, 2)
+quick.plsmulti <- function(x,g,gps.combo){
+  # assumed x is already centered
   pls.gp <- sapply(1:ncol(gps.combo), function(j){ # no loops
-    S12<-S[which(g==gps.combo[1,j]),which(g==gps.combo[2,j])]
-    px <- nrow(S12); py <- ncol(S12); pmin <- min(px,py)
-    pls<-La.svd(S12, pmin, pmin)
-    U<-pls$u; V<-t(pls$vt)
-    XScores<-x[,which(g==gps.combo[1,j])]%*%U[,1]; YScores<-x[,which(g==gps.combo[2,j])]%*%V[,1]
-    cor(XScores,YScores)
+    xx <- x[,g==gps.combo[1,j]]
+    yy <- x[,g==gps.combo[2,j]]
+    S12<-crossprod(xx,yy)/(dim(xx)[1] - 1)
+    pls<-La.svd(S12, 1, 1)
+    U<-pls$u; V<-as.vector(pls$vt)
+    cor(xx%*%U, yy%*%V)
   })
   mean(pls.gp) 
 }
@@ -1676,10 +1785,9 @@ quick.plsmulti <- function(x,gps){
 # permutation for multipls
 # used in: integration.test
 apply.plsmulti <- function(x,gps, iter, seed = NULL){
-  g <- as.factor(gps)
+  g<-factor(as.numeric(gps))
   ngps<-nlevels(g)
-  S <-var(x)
-  r.obs <- plsmulti(x,gps)$r.pls
+  gps.combo <- combn(ngps, 2)
   ind <- perm.index(nrow(x), iter, seed=seed)
   pb <- txtProgressBar(min = 0, max = ceiling(iter/100), initial = 0, style=3) 
   jj <- iter+1
@@ -1688,9 +1796,9 @@ apply.plsmulti <- function(x,gps, iter, seed = NULL){
   r.rand <- NULL
   while(jj > 0){
     ind.j <- ind[j]
-    x.r<-lapply(1:length(j), function(i) x[ind.j[[i]],which(g==levels(g)[1])]) 
+    x.r<-lapply(1:length(j), function(i) x[ind.j[[i]], g==1]) 
     r.rand<-c(r.rand, sapply(1:length(j), function(i) quick.plsmulti(cbind(x.r[[i]],
-                                                                           x[,which(g!=levels(g)[1])]), gps=g))) 
+                                                                           x[,g!=1]), g, gps.combo))) 
     jj <- jj-length(j)
     if(jj > 100) kk <- 1:100 else kk <- 1:jj
     j <- j[length(j)] +kk
@@ -1705,19 +1813,18 @@ apply.plsmulti <- function(x,gps, iter, seed = NULL){
 # same as apply.plsmulti, but without progress bar option
 # used in: integration.test
 .apply.plsmulti <- function(x,gps, iter, seed = NULL){
-  g <- as.factor(gps)
+  g<-factor(as.numeric(gps))
   ngps<-nlevels(g)
-  S <-var(x)
-  r.obs <- plsmulti(x,gps)$r.pls
+  gps.combo <- combn(ngps, 2)
   ind <- perm.index(nrow(x), iter, seed=seed)
   jj <- iter+1
   if(jj > 100) j <- 1:100 else j <- 1:jj
   r.rand <- NULL
   while(jj > 0){
     ind.j <- ind[j]
-    x.r<-lapply(1:length(j), function(i) x[ind.j[[i]],which(g==levels(g)[1])]) 
+    x.r<-lapply(1:length(j), function(i) x[ind.j[[i]], g==1]) 
     r.rand<-c(r.rand, sapply(1:length(j), function(i) quick.plsmulti(cbind(x.r[[i]],
-                                                                           x[,which(g!=levels(g)[1])]), gps=g))) 
+                                                                           x[,g!=1]), g, gps.combo)))
     jj <- jj-length(j)
     if(jj > 100) kk <- 1:100 else kk <- 1:jj
     j <- j[length(j)] +kk
@@ -1769,7 +1876,6 @@ quick.CR <-function(x,gps){ # no CR.mat made
 # apply.CR
 # permutation for CR
 # used in: modularity.test
-
 apply.CR <- function(x,g,k, iter, seed = NULL){# g = partition.gp
   ind <- perm.CR.index(g,k, iter, seed=seed)
   pb <- txtProgressBar(min = 0, max = ceiling(iter/100), initial = 0, style=3) 
@@ -2025,21 +2131,16 @@ phylo.mat<-function(x,phy){
 # pls.phylo
 # phylogenetic pls
 # used in: phylo.integration, apply.pls.phylo
-pls.phylo <- function(x,y, invC,D.mat, verbose = FALSE){
+pls.phylo <- function(x,y, Ptrans, verbose = FALSE){
   x <- as.matrix(x); y <- as.matrix(y)
   px <- ncol(x); py <- ncol(y); pmin <- min(px,py)
-  data.all<-cbind(x,y)
-  one<-matrix(1,nrow(x),1)  
-  a<-t(t(one)%*%invC%*% data.all)*(sum(invC))^-1  
-  R<- crossprod((data.all-one%*%t(a)),invC)%*%(data.all-one%*%t(a))*(nrow(x)-1)^-1 
-  R12 <- matrix(R[1:px,-(1:px)], px,py)
+  x <- Ptrans%*%x
+  y <- Ptrans%*%y
+  R12<-  crossprod(x,y)/(nrow(x)-1)
   pls <- La.svd(R12, pmin, pmin)
   U <- pls$u; V <- t(pls$vt)
-  Phy.X<-D.mat%*%(data.all-one%*%t(a)) 
-  x.phy <- Phy.X[, c(1:dim(x)[2])] 
-  y.phy <- Phy.X[, c((dim(x)[2] + 1):(dim(x)[2] +  dim(y)[2]))] 
-  XScores <- x.phy %*% U 
-  YScores <- y.phy %*% V
+  XScores <- x %*% U 
+  YScores <- y %*% V
   r.pls <- cor(XScores[, 1], YScores[, 1]) 
   if(verbose==TRUE){
     XScores <- as.matrix(XScores); Y <- as.matrix(YScores)
@@ -2053,14 +2154,11 @@ pls.phylo <- function(x,y, invC,D.mat, verbose = FALSE){
 # apply.pls.phylo
 # permutation for phylo.pls
 # used in: phylo.integration
-apply.pls.phylo <- function(x,y,invC,D.mat, iter, seed = NULL){
-  n.x<-ncol(x)
-  data.all<-cbind(x,y)
-  one<-matrix(1,nrow(x),1)  
-  a<-t(t(one)%*%invC%*% data.all)*(sum(invC))^-1  
-  dat.trans<-D.mat%*%(data.all-(one%*%t(a)))
-  x<-dat.trans[,1:n.x];y<-dat.trans[,-(1:n.x)]
+# CURRENTLY NOT IN USE - USING apply.pls BECAUSE OF TYPE I ERROR ISSUES
+apply.pls.phylo <- function(x,y,Ptrans, iter, seed = NULL){
+  n.x <- dim(x)[2]
   ind <- perm.index(nrow(x), iter, seed=seed)
+  x <- Ptrans%*%x
   pb <- txtProgressBar(min = 0, max = ceiling(iter/100), initial = 0, style=3) 
   jj <- iter+1
   step <- 1
@@ -2069,7 +2167,10 @@ apply.pls.phylo <- function(x,y,invC,D.mat, iter, seed = NULL){
   while(jj > 0){
     ind.j <- ind[j]
     y.rand <-lapply(1:length(j), function(i) y[ind.j[[i]],])
-    r.rand <- c(r.rand, sapply(1:length(j), function(i) pls(x,y.rand[[i]], verbose = FALSE)))
+    r.rand <- c(r.rand, sapply(1:length(j), function(i) {
+      yy <- Ptrans%*%y.rand[[i]] 
+      quick.pls(x,yy)
+    }))
     jj <- jj-length(j)
     if(jj > 100) kk <- 1:100 else kk <- 1:jj
     j <- j[length(j)] +kk
@@ -2083,21 +2184,21 @@ apply.pls.phylo <- function(x,y,invC,D.mat, iter, seed = NULL){
 # .apply.pls.phylo
 # same as apply.phylo.pls, but without progress bar option
 # used in: phylo.integration
-.apply.pls.phylo <- function(x,y,invC,D.mat, iter, seed = NULL){
-  n.x<-ncol(x)
-  data.all<-cbind(x,y)
-  one<-matrix(1,nrow(x),1)  
-  a<-t(t(one)%*%invC%*% data.all)*(sum(invC))^-1  
-  dat.trans<-D.mat%*%(data.all-(one%*%t(a)))
-  x<-dat.trans[,1:n.x];y<-dat.trans[,-(1:n.x)]
+# CURRENTLY NOT IN USE - USING .apply.pls BECAUSE OF TYPE I ERROR ISSUES
+.apply.pls.phylo <- function(x,y,Ptrans,iter, seed = NULL){
+  n.x <- dim(x)[2]
   ind <- perm.index(nrow(x), iter, seed=seed)
+  x <- Ptrans%*%x
   jj <- iter+1
   if(jj > 100) j <- 1:100 else j <- 1:jj
   r.rand <- NULL
   while(jj > 0){
     ind.j <- ind[j]
     y.rand <-lapply(1:length(j), function(i) y[ind.j[[i]],])
-    r.rand <- c(r.rand, sapply(1:length(j), function(i) pls(x,y.rand[[i]], verbose = FALSE)))
+    r.rand <- c(r.rand, sapply(1:length(j), function(i) {
+      yy <- Ptrans%*%y.rand[[i]] 
+      quick.pls(x,yy)
+    }))
     jj <- jj-length(j)
     if(jj > 100) kk <- 1:100 else kk <- 1:jj
     j <- j[length(j)] +kk
@@ -2108,20 +2209,18 @@ apply.pls.phylo <- function(x,y,invC,D.mat, iter, seed = NULL){
 # plsmulti.phylo
 # average pairwise phylo.pls
 # used in: phylo.integration, apply.plsmulti.phylo
-plsmulti.phylo<-function(x,gps, invC, D.mat){
+plsmulti.phylo<-function(x,gps, Ptrans){
   g<-factor(as.numeric(gps))
   ngps<-nlevels(g)
-  one<-matrix(1,nrow(x),1)  
-  a<-t(t(one)%*%invC%*% x)*sum(invC)^-1  
-  R<- t(x-one%*%t(a))%*%invC%*%(x-one%*%t(a))*(nrow(x)-1)^-1 
+  x <- Ptrans%*%x
   gps.combo <- combn(ngps, 2)
+  R<-  crossprod(x) * (nrow(x)-1)^-1 
   pls.gp <- sapply(1:ncol(gps.combo), function(j){ 
     R12<-R[which(g==gps.combo[1,j]),which(g==gps.combo[2,j])]
     px <- nrow(R12); py <- ncol(R12); pmin <- min(px,py)
     pls<-La.svd(R12, pmin, pmin)
     U<-pls$u; V<-t(pls$vt)
-    Phy.X<-D.mat%*%(x-one%*%t(a)) 
-    XScores<-Phy.X[,which(g==gps.combo[1,j])]%*%U[,1]; YScores<-Phy.X[,which(g==gps.combo[2,j])]%*%V[,1]
+    XScores<-x[,which(g==gps.combo[1,j])]%*%U[,1]; YScores<-x[,which(g==gps.combo[2,j])]%*%V[,1]
     cor(XScores,YScores)
   })
   if(length(pls.gp) > 1) pls.mat <- dist(matrix(0, ngps,)) else 
@@ -2134,11 +2233,12 @@ plsmulti.phylo<-function(x,gps, invC, D.mat){
 # apply.plsmulti.phylo
 # permutations for plsmulti.phylo
 # used in: phylo.integration
-apply.plsmulti.phylo <- function(x,gps, invC,D.mat, iter, seed= NULL){
-  one<-matrix(1,nrow(x),1)  
-  a<-t(t(one)%*%invC%*% x)*(sum(invC))^-1  
-  x<-D.mat%*%(x-(one%*%t(a)))
-  gps<-factor(gps)
+# CURRENTLY NOT IN USE - USING apply.plsmulti BECAUSE OF TYPE I ERROR ISSUES
+apply.plsmulti.phylo <- function(x, gps,Ptrans, iter=iter, seed=seed){
+  g<-factor(as.numeric(gps))
+  ngps<-nlevels(g)
+  gps.combo <- combn(ngps, 2)
+  xx <- Ptrans%*%x[,g==1]; yy <- Ptrans%*%x[,g!=1]
   ind <- perm.index(nrow(x), iter, seed=seed)
   pb <- txtProgressBar(min = 0, max = ceiling(iter/100), initial = 0, style=3) 
   jj <- iter+1
@@ -2147,9 +2247,10 @@ apply.plsmulti.phylo <- function(x,gps, invC,D.mat, iter, seed= NULL){
   r.rand <- NULL
   while(jj > 0){
     ind.j <- ind[j]
-    x.r <-lapply(1:length(j), function(i) x[ind.j[[i]],which(gps==levels(gps)[1])])
-    r.rand <- c(r.rand, sapply(1:length(j), function(i) plsmulti(cbind(x.r[[i]],x[,which(gps!=levels(gps)[1])]), 
-                                                                 gps)$r.pls))
+    x.r <-lapply(1:length(j), function(i) xx[ind.j[[i]],])
+    r.rand <- c(r.rand, sapply(1:length(j), function(i) {
+      quick.pls(x.r[[i]],yy)
+    }))
     jj <- jj-length(j)
     if(jj > 100) kk <- 1:100 else kk <- 1:jj
     j <- j[length(j)] +kk
@@ -2163,20 +2264,22 @@ apply.plsmulti.phylo <- function(x,gps, invC,D.mat, iter, seed= NULL){
 # .apply.plsmulti.phylo
 # same as apply.plsmulti.phylo, but without progress bar option
 # used in: phylo.integration
-.apply.plsmulti.phylo <- function(x,gps, invC,D.mat, iter, seed= NULL){
-  one<-matrix(1,nrow(x),1)  
-  a<-t(t(one)%*%invC%*% x)*(sum(invC))^-1  
-  x<-D.mat%*%(x-(one%*%t(a)))
-  gps<-factor(gps)
+# CURRENTLY NOT IN USE - USING .apply.plsmulti BECAUSE OF TYPE I ERROR ISSUES
+.apply.plsmulti.phylo <- function(x, gps,Ptrans, iter=iter, seed=seed){
+  g<-factor(as.numeric(gps))
+  ngps<-nlevels(g)
+  gps.combo <- combn(ngps, 2)
+  xx <- Ptrans%*%x[,g==1]; yy <- Ptrans%*%x[,g!=1]
   ind <- perm.index(nrow(x), iter, seed=seed)
   jj <- iter+1
   if(jj > 100) j <- 1:100 else j <- 1:jj
   r.rand <- NULL
   while(jj > 0){
     ind.j <- ind[j]
-    x.r <-lapply(1:length(j), function(i) x[ind.j[[i]],which(gps==levels(gps)[1])])
-    r.rand <- c(r.rand, sapply(1:length(j), function(i) plsmulti(cbind(x.r[[i]],x[,which(gps!=levels(gps)[1])]), 
-                                                                 gps)$r.pls))
+    x.r <-lapply(1:length(j), function(i) xx[ind.j[[i]],])
+    r.rand <- c(r.rand, sapply(1:length(j), function(i) {
+      quick.pls(x.r[[i]],yy)
+    }))
     jj <- jj-length(j)
     if(jj > 100) kk <- 1:100 else kk <- 1:jj
     j <- j[length(j)] +kk
@@ -2188,22 +2291,20 @@ apply.plsmulti.phylo <- function(x,gps, invC,D.mat, iter, seed= NULL){
 # multivariate evolutionary rate
 # used in: compare.evol.rates
 sigma.d<-function(x,invC,D.mat,gp){
-  N<-nrow(x);p<-ncol(x)
+  N<-dim(x)[1];p<-dim(x)[2]
   g<-factor(as.numeric(gp))
   ngps<-nlevels(g)
-  gpsz<-table(g)   
-  ones<-matrix(1,N,1) 
-  a.obs<-colSums(invC)%*%x/sum(invC)  
-  R<-t(x-ones%*%a.obs)%*%invC%*%(x-ones%*%a.obs)/nrow(x)
-  dist.adj<-as.matrix(dist(rbind((D.mat%*%(x-(ones%*%a.obs))),0))) 
-  vec.d2<-dist.adj[N+1,1:N]^2
+  ones<-matrix(1,N,N) 
+  x.c<-x-crossprod(ones,invC)%*%x/sum(invC) 
+  R<-crossprod(x.c, crossprod(invC,x.c))/N
+  vec.d2<-diag(tcrossprod(D.mat%*%(x.c)))
   sigma.d.all<-sum(vec.d2)/N/p
-  sigma.d.gp<-tapply(vec.d2,gp,sum)/gpsz/p  
+  sigma.d.gp<-sapply(split(vec.d2, gp), mean)/p  
   sigma.d.ratio<-sigma.d.rat<-sigma.d.rat.mat<-rate.mat<-NULL
   if(ngps>1){
     gps.combo <- combn(ngps, 2)
     sigma.d.rat <- sapply(1:ncol(gps.combo), function(j){ 
-      rates<-c(sigma.d.gp[which(levels(g)==gps.combo[1,j])],sigma.d.gp[which(levels(g)==gps.combo[2,j])])
+      rates<-c(sigma.d.gp[levels(g)==gps.combo[1,j]],sigma.d.gp[levels(g)==gps.combo[2,j]])
       rate.rat<-max(rates)/min(rates)
     })
     if(length(sigma.d.rat) > 1) rate.mat <- dist(matrix(0, length(sigma.d.gp),)) else 
@@ -2215,40 +2316,75 @@ sigma.d<-function(x,invC,D.mat,gp){
        sigma.d.gp = sigma.d.gp, sigma.d.gp.ratio = rate.mat,R = R)  
 }
 
+# fast.sigma.d
+# same as sigma.d but only calculates sigma.d.ratio - fast in loops
+# used in: compare.evol.rates
+fast.sigma.d<-function(x,D.mat,g, ngps, gps.combo, N,p, Xadj){
+  x.c<-x -Xadj%*%x
+  vec.d2<-diag(tcrossprod(D.mat%*%(x.c)))
+  sigma.d.all<-sum(vec.d2)/N/p
+  sigma.d.gp<-sapply(split(vec.d2, g), mean)/p  
+  sigma.d.ratio<-sigma.d.rat<-sigma.d.rat.mat<-rate.mat<-NULL
+  sigma.d.rat <- sapply(1:ncol(gps.combo), function(j){ 
+    rates<-c(sigma.d.gp[levels(g)==gps.combo[1,j]],sigma.d.gp[levels(g)==gps.combo[2,j]])
+    max(rates)/min(rates)
+  })
+  sigma.d.rat
+}
+
 # sigma.d.multi
 # multiple trait multivariate evolutionary rates
 # used in: compare.multi.evol.rates
 sigma.d.multi<-function(x,invC,D.mat,gps,Subset){
   sig.calc<-function(x.i,invC.i,D.mat.i,Subset){
     x.i<-as.matrix(x.i)
-    N<-nrow(x.i);p<-ncol(x.i)
-    ones<-matrix(1,N,1) 
-    a.obs<-colSums(invC)%*%x.i/sum(invC)  
-    R<-t(x.i-ones%*%a.obs)%*%invC%*%(x.i-ones%*%a.obs)/N
-    dist.adj<-as.matrix(dist(rbind((D.mat.i%*%(x.i-(ones%*%a.obs))),0))) 
-    vec.d2<-dist.adj[N+1,1:N]^2
-    sigma<-sum(vec.d2)/N/p
-    if(Subset==FALSE){sigma<-sum(vec.d2)/N}
+    N<-dim(x.i)[1];p<-dim(x.i)[2]
+    ones<-matrix(1,N,N) 
+    x.c<- x.i - crossprod(ones,invC.i)%*%x.i/sum(invC.i) 
+    R<-crossprod(x.c, crossprod(invC.i,x.c))/N
+    if(Subset==FALSE) sigma<-sigma<-sum((D.mat.i%*%x.c)^2)/N  else 
+      sigma<-sum((D.mat.i%*%x.c)^2)/N/p
     return(list(sigma=sigma,R=R))
   }
-  global<-sig.calc(x,invC,D.mat,Subset)
-  rate.global<-global$sigma; R<-global$R
-  ngps<-nlevels(gps)
-  rate.gps<-sapply(1:ngps, function(j){ sig.calc(x[,which(gps==levels(gps)[j])],
-                                                 invC,D.mat,Subset)$sigma  })
-  sigma.d.ratio<-max(rate.gps)/min(rate.gps)
   g<-factor(as.numeric(gps))
   ngps<-nlevels(g)  
   gps.combo <- combn(ngps, 2)
+  global<-sig.calc(x,invC,D.mat,Subset)
+  rate.global<-global$sigma; R<-global$R
+  ngps<-nlevels(gps)
+  rate.gps<-sapply(1:ngps, function(j){ sig.calc(x[,g==j],
+                                                 invC,D.mat,Subset)$sigma  })
+  sigma.d.ratio<-max(rate.gps)/min(rate.gps)
   sigma.d.rat <- sapply(1:ncol(gps.combo), function(j){ 
-    rates<-c(rate.gps[which(levels(g)==gps.combo[1,j])],rate.gps[which(levels(g)==gps.combo[2,j])])
-    rate.rat<-max(rates)/min(rates)
+    rates<-c(rate.gps[levels(g)==gps.combo[1,j]],rate.gps[levels(g)==gps.combo[2,j]])
+    max(rates)/min(rates)
   })
   if(length(sigma.d.rat) > 1) rate.mat <- dist(matrix(0, length(rate.gps),)) else 
     rate.mat = 0 
   for(i in 1:length(rate.mat)) rate.mat[[i]] <- sigma.d.rat[i]
   list(sigma.d.ratio = sigma.d.ratio, rate.global = rate.global, 
        rate.gps = rate.gps, sigma.d.gp.ratio = rate.mat,R = R)  
+}
+
+
+##Fast version of compare.multi.rates for permutations
+
+sig.calc<-function(x.i,D.mat.i,Subset, N, p, Xadj.i){
+  x.i<-as.matrix(x.i)
+  x.c<-x.i -Xadj.i%*%x.i
+  if(Subset==FALSE) sigma<-sum((D.mat.i%*%x.c)^2)/N else 
+    sigma<-sum((D.mat.i%*%x.c)^2)/N/p
+  return(sigma)
+}
+
+fast.sigma.d.multi<-function(x,D.mat,Subset, gindx, ngps, gps.combo, N, p, Xadj){ 
+  rate.gps<-lapply(1:ngps, function(j){ sig.calc(x[,gindx[[j]]], D.mat,Subset, N, p, Xadj)})
+  sapply(1:ncol(gps.combo), function(j){ 
+    a <- gps.combo[1,j]
+    b <- gps.combo[2,j]
+    rates<-c(rate.gps[[a]],rate.gps[[b]])
+    max(rates)/min(rates)
+  })
 }
 
 # trajset.int

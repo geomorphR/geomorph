@@ -74,7 +74,7 @@
 #'
 #'# Example of a test of a factor interaction, plus pairwise comparisons 
 #'advanced.procD.lm(coords ~ site*species, ~ site + species, groups = ~site*species, 
-#'    iter=499, data = gdf)
+#'    iter=999, data = gdf)
 #'
 #'# Example of a test of a factor interaction, plus pairwise comparisons, 
 #'# accounting for a common allometry  
@@ -124,6 +124,7 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
       if(pc.shape == TRUE) pfit2= procD.fit(f2, pca = TRUE) else pfit2= procD.fit(f2, pca = FALSE)
     }
   }
+  phy <- NULL; Pcor <- NULL # placeholder for future PGLS (See Develop branch)
   k1 <- pfit1$QRs[[length(pfit1$QRs)]]$rank
   k2 <- pfit2$QRs[[length(pfit2$QRs)]]$rank
   if(k1 > k2) pfitf <- pfit1 else pfitf <- pfit2
@@ -135,15 +136,28 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
   dfr <- pfitr$QRs[[length(pfitr$QRs)]]$rank
   dff <- pfitf$QRs[[length(pfitf$QRs)]]$rank
   k.total <- kr+kf-2
+  k.unique <- length(unique(c(pfitf$term.labels, pfitr$term.labels)))
+  if(kr >1 & kf > 1 & k.unique == k.total) stop("Models are not nested")
   dfr <- nrow(pfitr$wResiduals[[kr]]) - dfr
   dff <- nrow(pfitf$wResiduals[[kf]]) - dff
   Xf <- as.matrix(pfitf$Xs[[kf]])
   Xr <- as.matrix(pfitr$Xs[[kr]])
   Qr <-qr.Q(qr(Xr*sqrt(w)))
   Qf <-qr.Q(qr(Xf*sqrt(w)))
-  SSEr <- sum(pfitr$wResiduals[[kr]]^2)
-  SSEf <- sum(pfitf$wResiduals[[kf]]^2)
-  SSY <- sum(.lm.fit(as.matrix(pfitf$wXs[[1]]),  pfitf$wY)$residuals^2)
+  if(!is.null(phy)){
+    PXf <- Pcor%*%Xf
+    PXr <- Pcor%*%Xr
+    PQr <-qr.Q(qr(PXr*sqrt(w)))
+    PQf <-qr.Q(qr(PXf*sqrt(w)))
+    PY <- Pcor%*%Y
+    SSEr <- sum(fastLM(PQr, PY*sqrt(w))$residuals^2)
+    SSEf <- sum(fastLM(PQf, PY*sqrt(w))$residuals^2)
+    SSY <- sum(.lm.fit(Pcor%*%as.matrix(pfitf$wXs[[1]]), PY*sqrt(w))$residuals^2)
+  } else {
+    SSEr <- sum(pfitr$wResiduals[[kr]]^2)
+    SSEf <- sum(pfitf$wResiduals[[kf]]^2)
+    SSY <- sum(.lm.fit(as.matrix(pfitf$wXs[[1]]),  pfitf$wY)$residuals^2)
+  }
   SSm <- SSEr - SSEf
   Fs <- (SSm/(dfr-dff))/(SSEf/dff)
   ind <- perm.index(n, iter, seed=seed)
@@ -178,8 +192,15 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
     while(jj > 0){
       ind.j <- ind[j]
       P <- sapply(1:length(j), function(i){
-        y <- (pfitr$residuals[[kr]][ind[[i]],] + pfitr$fitted[[kr]])*sqrt(w)
-        sum((fastFit(Qf, y,n,p)- fastFit(Qr, y,n,p))^2)
+        if(!is.null(phy)) {
+          y <- Pcor%*%(pfitr$residuals[[kr]][ind[[i]],] + pfitr$fitted[[kr]])*sqrt(w)
+          ssr <- sum(fastLM(PQr,y)$residuals^2)
+          ssf <- sum(fastLM(PQf,y)$residuals^2)
+          ((ssr-ssf)/(dfr-dff))/(ssf/dff)
+        } else {
+          y <- (pfitr$residuals[[kr]][ind[[i]],] + pfitr$fitted[[kr]])*sqrt(w)
+          sum((fastFit(Qf, y, n, p)- fastFit(Qr, y, n, p))^2)
+        }
       })
       jj <- jj-length(j)
       if(jj > 100) kk <- 1:100 else kk <- 1:jj
@@ -190,6 +211,7 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
     P.val <- pval(P) 
     Z.score <- effect.size(P)
   }
+  
   if(pairwise.cond == "means") {
     P <- lsms <- NULL
     if(print.progress)
@@ -200,9 +222,18 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
     while(jj > 0){
       ind.j <- ind[j]
       Yr <- lapply(1:length(j), function(i) (pfitr$residuals[[kr]][ind.j[[i]],] + pfitr$fitted[[kr]])*sqrt(w))
-      P <- c(P, lapply(1:length(j), function(i) 
-        sum((fastFit(Qf, Yr[[i]],n,p)- fastFit(Qr, Yr[[i]],n,p))^2)))
-      lsms <- c(lsms, apply.ls.means(pfitf, Yr, g = gps, data = dat2)) 
+      if(!is.null(phy)) {
+        Yr <- lapply(1:length(j), function(i) Pcor%*%Yr[[i]])
+        P <- c(P, lapply(1:length(j), function(i) {
+          y <- Yr[[i]]
+          ssr <- sum(fastLM(PQr,y)$residuals^2)
+          ssf <- sum(fastLM(PQf,y)$residuals^2)
+          ((ssr-ssf)/(dfr-dff))/(ssf/dff)
+        }))
+      } else 
+        P <- c(P, lapply(1:length(j), function(i) 
+          sum((fastFit(Qf, Yr[[i]], n, p)- fastFit(Qr, Yr[[i]], n, p))^2)))
+      lsms <- c(lsms, apply.ls.means(pfitf, Yr, g = gps, data = dat2, Pcor = Pcor)) 
       jj <- jj-length(j)
       if(jj > 100) kk <- 1:100 else kk <- 1:jj
       j <- j[length(j)] +kk
@@ -223,16 +254,24 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
   if(pairwise.cond == "slopes") {
     P <- g.slopes <- NULL
     if(print.progress)
-      pb <- txtProgressBar(min = 0, max = ceiling(iter/100), initial = 0, style=3) 
+      pb <- txtProgressBar(min = 0, max = ceiling(iter/100), initial = 0, style=3)
     jj <- iter+1
     step <- 1
     if(jj > 100) j <- 1:100 else j <- 1:jj
     while(jj > 0){
       ind.j <- ind[j]
       Yr <- lapply(1:length(j), function(i) (pfitr$residuals[[kr]][ind.j[[i]],] + pfitr$fitted[[kr]])*sqrt(w))
-      P <- c(P, lapply(1:length(j), function(i) 
+      if(!is.null(phy)) {
+        Yr <- lapply(1:length(j), function(i) Pcor%*%Yr[[i]])
+        P <- c(P, lapply(1:length(j), function(i) {
+          y <- Yr[[i]]
+          ssr <- sum(fastLM(PQr,y)$residuals^2)
+          ssf <- sum(fastLM(PQf,y)$residuals^2)
+          ((ssr-ssf)/(dfr-dff))/(ssf/dff)
+        }))
+      } else P <- c(P, lapply(1:length(j), function(i) 
         sum((fastFit(Qf, Yr[[i]],n,p)- fastFit(Qr, Yr[[i]],n,p))^2)))
-      g.slopes <- c(g.slopes, apply.slopes(pfitf, g=gps, slope=slp, Yr, data=dat2))
+      g.slopes <- c(g.slopes, apply.slopes(pfitf, g=gps, slope=slp, Yr, data=dat2, Pcor = if(is.null(Pcor)) NULL else Pcor)) 
       jj <- jj-length(j)
       if(jj > 100) kk <- 1:100 else kk <- 1:jj
       j <- j[length(j)] +kk
@@ -276,30 +315,52 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
     obs.slope.dist <- as.matrix(dist(obs.slope.lengths))
     dimnames(P.val.slopes.dist) <- dimnames(Z.slopes.dist) <- dimnames(obs.slope.dist)
   }
+  
   if(pairwise.cond == "none"){
+    if(is.null(phy)) {
+      random.SS = P 
+      random.F = NULL
+    } else {
+      random.SS = NULL
+      random.F = P
+    }
     out <- list(anova.table = anova.table, 
                 coefficients=pfitf$coefficients,
                 Y=pfitf$Y, X=pfitf$X,
                 QR = pfitf$QRs[[kf]], fitted=pfitf$fitted[[kf]],
                 residuals = pfitf$residuals[[kf]],
-                weights = w, data = dat2, random.SS = P, 
+                weights = w, data = dat2, random.SS = random.SS, random.F = random.F,
                 Terms = pfitf$Terms, term.labels = pfitf$term.labels, permutations = iter+1,
                 call= match.call()
     )
   }
   if(pairwise.cond == "means"){
+    if(is.null(phy)) {
+      random.SS = P 
+      random.F = NULL
+    } else {
+      random.SS = NULL
+      random.F = P
+    }
     out <- list(anova.table = anova.table, LS.means = lsms[[1]], 
                 LS.means.dist = Means.dist, Z.means.dist = Z.Means.dist, P.means.dist = P.Means.dist, 
                 coefficients=pfitf$coefficients, 
                 Y=pfitf$Y, X=pfitf$X, 
                 QR = pfitf$QR[[kf]], fitted=pfitf$fitted[[kf]], 
                 residuals = pfitf$residuals[[kf]], 
-                weights = w, data = dat2, random.SS = P, random.means.dist = P.dist,
+                weights = w, data = dat2, random.SS = random.SS, random.F = random.F, random.means.dist = P.dist,
                 Terms = pfitf$Terms, term.labels = pfitf$term.labels, permutations = iter+1,
                 call= match.call()
     )
   }
   if(pairwise.cond == "slopes"){
+    if(is.null(phy)) {
+      random.SS = P 
+      random.F = NULL
+    } else {
+      random.SS = NULL
+      random.F = P
+    }
     if(angle.type == "r"){
       out <- list(anova.table = anova.table, slopes = g.slopes[[1]], slope.lengths = obs.slope.lengths,
                   slopes.dist = obs.slope.dist, P.slopes.dist = P.val.slopes.dist,
@@ -310,7 +371,7 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
                   Y=pfitf$Y, X=pfitf$X, 
                   QR = pfitf$QR[[kf]], fitted=pfitf$fitted[[kf]], 
                   residuals = pfitf$residuals[[kf]], 
-                  weights = w, data = dat2, random.SS = P, 
+                  weights = w, data = dat2, random.SS = random.SS, random.F = random.F, 
                   Terms = pfitf$Terms, term.labels = pfitf$term.labels, permutations = iter+1,
                   call= match.call()
       )
@@ -324,7 +385,7 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
                   Y=pfitf$Y, X=pfitf$X, 
                   QR = pfitf$QR[[kf]], fitted=pfitf$fitted[[kf]], 
                   residuals = pfitf$residuals[[kf]], 
-                  weights = w, data = dat2, random.SS = P, 
+                  weights = w, data = dat2, random.SS = random.SS, random.F = random.F, 
                   Terms = pfitf$Terms, term.labels = pfitf$term.labels, permutations = iter+1,
                   call= match.call()
       )
