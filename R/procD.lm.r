@@ -53,7 +53,7 @@
 #' @param data A data frame for the function environment, see \code{\link{geomorph.data.frame}} 
 #' @param print.progress A logical value to indicate whether a progress bar should be printed to the screen.  
 #' This is helpful for long-running analyses.
-#' @param ... Arguments passed on to procD.fit (typically associated with the lm function)
+#' @param ... Arguments passed on to procD.fit (typically associated with the lm function). 
 #' @keywords analysis
 #' @export
 #' @author Dean Adams and Michael Collyer
@@ -71,6 +71,7 @@
 #' \item{Terms}{The results of the \code{\link{terms}} function applied to the model matrix}
 #' \item{term.labels}{The terms used in constructing the aov.table.}
 #' \item{SS}{The sums of squares for each term, model residuals, and the total.}
+#' \item{SS}{The type of sums of squares.  One of type I or type III.}
 #' \item{df}{The degrees of freedom for each SS.}
 #' \item{R2}{The coefficient of determination for each model term.}
 #' \item{F}{The F values for each model term.}
@@ -117,17 +118,20 @@
 procD.lm<- function(f1, iter = 999, seed=NULL, RRPP = TRUE, 
                         int.first = FALSE,  data=NULL, print.progress = TRUE, ...){
   if(int.first==TRUE) ko = TRUE else ko = FALSE
-  pfit <- procD.fit(f1, data=data, keep.order=ko)
+  dots <- list(...)
+  if(!is.null(dots$SS.type)) SS.type <- dots$SS.type else SS.type <- "I"
+  if(is.na(match(SS.type, c("I","III")))) SS.type <- "I"
+  pfit <- procD.fit(f1, data=data, keep.order=ko, SS.type=SS.type)
   k <- length(pfit$term.labels)
   if(print.progress == TRUE){
-    if(RRPP == TRUE) P <- SS.iter(pfit,Yalt="RRPP", iter=iter, seed=seed) else 
-      P <- SS.iter(pfit, Yalt="resample", iter=iter, seed=seed)
+    if(RRPP == TRUE) P <- SS.iter(pfit,Yalt="RRPP", iter=iter, seed=seed, SS.type = SS.type) else 
+      P <- SS.iter(pfit, Yalt="resample", iter=iter, seed=seed, SS.type = SS.type)
   } else {
-    if(RRPP == TRUE) P <- .SS.iter(pfit,Yalt="RRPP", iter=iter, seed=seed) else 
-      P <- .SS.iter(pfit, Yalt="resample", iter=iter, seed=seed)
+    if(RRPP == TRUE) P <- .SS.iter(pfit,Yalt="RRPP", iter=iter, seed=seed, SS.type = SS.type) else 
+      P <- .SS.iter(pfit, Yalt="resample", iter=iter, seed=seed, SS.type = SS.type)
   }
   
-  anova.parts.obs <- anova.parts(pfit, P)
+  anova.parts.obs <- anova.parts(pfit, P, SS.type=SS.type)
   anova.tab <-anova.parts.obs$anova.table 
   if(is.matrix(P)){
     P.val <- apply(P,1,pval)
@@ -150,7 +154,7 @@ procD.lm<- function(f1, iter = 999, seed=NULL, RRPP = TRUE,
               QR = pfit$QRs[[k+1]], fitted=pfit$fitted[[k+1]],
               residuals = pfit$residuals[[k+1]], 
               weights = pfit$weights, Terms = pfit$Terms, term.labels = pfit$term.labels,
-              SS = anova.parts.obs$SS, df = anova.parts.obs$df, 
+              SS = anova.parts.obs$SS, SS.type = SS.type, df = anova.parts.obs$df, 
               R2 = anova.parts.obs$R2[1:k], F = anova.parts.obs$Fs[1:k], permutations = iter+1,
               random.SS = P, perm.method = ifelse(RRPP==TRUE,"RRPP", "Raw"))
   class(out) <- "procD.lm"

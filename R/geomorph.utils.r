@@ -56,7 +56,7 @@ plot.gpagen <- function(x, ...){
 
 #' Print/Summary Function for geomorph
 #' 
-#' @param x print/summary object
+#' @param x print/summary object (from \code{\link{procD.lm}})
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
@@ -64,7 +64,8 @@ plot.gpagen <- function(x, ...){
 print.procD.lm <- function (x, ...) {
   cat("\nCall:\n")
   cat(deparse(x$call), fill=TRUE, "\n\n")
-  cat("\nType I (Sequential) Sums of Squares and Cross-products\n")
+  if(x$SS.type == "I") cat("\nType I (Sequential) Sums of Squares and Cross-products\n")
+  if(x$SS.type == "III") cat("\nType III (Marginal) Sums of Squares and Cross-products\n")
   if(x$perm.method == "RRPP") cat ("Randomized Residual Permutation Procedure Used\n") else
     cat("Randomization of Raw Values used\n")
   cat(paste(x$permutations, "Permutations"))
