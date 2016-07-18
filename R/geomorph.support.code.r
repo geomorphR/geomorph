@@ -1215,9 +1215,18 @@ Fpgls.iter = function(pfit,Pcor,iter, seed=NULL, Yalt="RRPP"){
   while(jj > 0){
     ind.j <- ind[j]
     if(Yalt=="RRPP") {
-      Yr = Map(function(x) (Map(function(y,e) crossprod(Pcor,as.matrix(e[x,]+y)*sqrt(w)), Yh[1:(k-1)], E[1:(k-1)])),ind.j) 
+      if(sum(w)==n) {
+        Yr = Map(function(x) (Map(function(y,e) crossprod(Pcor,as.matrix(e[x,]+y)), Yh[1:(k-1)], E[1:(k-1)])),ind.j)
+      } else
+      {
+        Yr = Map(function(x) (Map(function(y,e) crossprod(Pcor,as.matrix(e[x,]+y)*sqrt(w)), Yh[1:(k-1)], E[1:(k-1)])),ind.j) 
+      }
     } else {
-      Yr = Map(function(x) Map(function(y) crossprod(Pcor,as.matrix((y[x,])*sqrt(w))), lapply(1:(k-1),function(.) Y)),ind.j)
+      if(sum(w)==n) {
+        Yr = Map(function(x) Map(function(y) crossprod(Pcor,as.matrix(y[x,])), lapply(1:(k-1),function(.) Y)),ind.j)
+      } else {
+        Yr = Map(function(x) Map(function(y) crossprod(Pcor,as.matrix((y[x,])*sqrt(w))), lapply(1:(k-1),function(.) Y)),ind.j)
+      }
     }
     SS.temp <- lapply(1:length(j), function(j){ 
       mapply(function(ur,uf,y) sum((fastFit(uf,y,n,p) - fastFit(ur,y,n,p))^2), 
@@ -1263,9 +1272,18 @@ Fpgls.iter = function(pfit,Pcor,iter, seed=NULL, Yalt="RRPP"){
   while(jj > 0){
     ind.j <- ind[j]
     if(Yalt=="RRPP") {
-      Yr = Map(function(x) (Map(function(y,e) crossprod(Pcor,as.matrix(e[x,]+y)*sqrt(w)), Yh[1:(k-1)], E[1:(k-1)])),ind.j) 
+      if(sum(w)==n) {
+        Yr = Map(function(x) (Map(function(y,e) crossprod(Pcor,as.matrix(e[x,]+y)), Yh[1:(k-1)], E[1:(k-1)])),ind.j)
+      } else
+      {
+        Yr = Map(function(x) (Map(function(y,e) crossprod(Pcor,as.matrix(e[x,]+y)*sqrt(w)), Yh[1:(k-1)], E[1:(k-1)])),ind.j) 
+      }
     } else {
-      Yr = Map(function(x) Map(function(y) crossprod(Pcor,as.matrix((y[x,])*sqrt(w))), lapply(1:(k-1),function(.) Y)),ind.j)
+      if(sum(w)==n) {
+        Yr = Map(function(x) Map(function(y) crossprod(Pcor,as.matrix(y[x,])), lapply(1:(k-1),function(.) Y)),ind.j)
+      } else {
+        Yr = Map(function(x) Map(function(y) crossprod(Pcor,as.matrix((y[x,])*sqrt(w))), lapply(1:(k-1),function(.) Y)),ind.j)
+      }
     }
     SS.temp <- lapply(1:length(j), function(j){ 
       mapply(function(ur,uf,y) sum((fastFit(uf,y,n,p) - fastFit(ur,y,n,p))^2), 
