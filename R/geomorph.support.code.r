@@ -1208,6 +1208,7 @@ Fpgls.iter = function(pfit,Pcor,iter, seed=NULL, Yalt="RRPP"){
   Uf <- lapply(Xf, function(x) qr.Q(qr(x)))
   Ptransr <- lapply(Ur, function(x) tcrossprod(x)%*%Pcor)
   Ptransf <- lapply(Uf, function(x) tcrossprod(x)%*%Pcor)
+  Ptrans <- Map(function(r,f) f-r, Ptransr, Ptransf)
   ind = perm.index(n,iter, seed=seed)
   SS <- SSEs <-Fs <- NULL
   pb <- txtProgressBar(min = 0, max = ceiling(iter/100), initial = 0, style=3) 
@@ -1229,8 +1230,7 @@ Fpgls.iter = function(pfit,Pcor,iter, seed=NULL, Yalt="RRPP"){
         }
       }
     SS.temp <- lapply(1:length(j), function(j){ 
-      mapply(function(pr,pf,y) sum((pf%*%y-pr%*%y)^2), 
-             Ptransr, Ptransf,Yr[[j]])})
+      mapply(function(p,y) sum((p%*%y)^2), Ptrans,Yr[[j]])})
     SSEs.temp <- Map(function(y) sum((Pcor%*%y[[k-1]]-Ptransf[[k-1]]%*%y[[k-1]])^2), Yr)
     Fs.temp <- Map(function(s1,s2) (s1/df)/(s2/(n-k)), SS.temp, SSEs.temp)
     SS <- c(SS,SS.temp)
@@ -1267,6 +1267,7 @@ Fpgls.iter = function(pfit,Pcor,iter, seed=NULL, Yalt="RRPP"){
   Uf <- lapply(Xf, function(x) qr.Q(qr(x)))
   Ptransr <- lapply(Ur, function(x) tcrossprod(x)%*%Pcor)
   Ptransf <- lapply(Uf, function(x) tcrossprod(x)%*%Pcor)
+  Ptrans <- Map(function(r,f) f-r, Ptransr, Ptransf)
   ind = perm.index(n,iter, seed=seed)
   SS <- SSEs <-Fs <- NULL
   jj <- iter+1
@@ -1286,8 +1287,7 @@ Fpgls.iter = function(pfit,Pcor,iter, seed=NULL, Yalt="RRPP"){
         }
       }
     SS.temp <- lapply(1:length(j), function(j){ 
-      mapply(function(pr,pf,y) sum((pf%*%y-pr%*%y)^2), 
-             Ptransr, Ptransf,Yr[[j]])})
+      mapply(function(p,y) sum((p%*%y)^2), Ptrans,Yr[[j]])})
     SSEs.temp <- Map(function(y) sum(fastLM(Uf[[k-1]],Pcor%*%y[[k-1]])$residuals^2), Yr)
     Fs.temp <- Map(function(s1,s2) (s1/df)/(s2/(n-k)), SS.temp, SSEs.temp)
     SS <- c(SS,SS.temp)
