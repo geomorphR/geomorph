@@ -1206,6 +1206,9 @@ Fpgls.iter = function(pfit,Pcor,iter, seed=NULL, Yalt="RRPP"){
   Xf <- lapply(PwXs[2:k], function(x) as.matrix(x))
   Ur <- lapply(Xr, function(x) qr.Q(qr(x)))
   Uf <- lapply(Xf, function(x) qr.Q(qr(x)))
+  Ptransr <- lapply(Ur, function(x) tcrossprod(x)%*%Pcor)
+  Ptransf <- lapply(Uf, function(x) tcrossprod(x)%*%Pcor)
+  Ptrans <- Map(function(r,f) f-r, Ptransr, Ptransf)
   ind = perm.index(n,iter, seed=seed)
   SS <- SSEs <-Fs <- NULL
   pb <- txtProgressBar(min = 0, max = ceiling(iter/100), initial = 0, style=3) 
@@ -1216,22 +1219,19 @@ Fpgls.iter = function(pfit,Pcor,iter, seed=NULL, Yalt="RRPP"){
     ind.j <- ind[j]
     if(Yalt=="RRPP") {
       if(sum(w)==n) {
-        Yr = Map(function(x) (Map(function(y,e) crossprod(Pcor,as.matrix(e[x,]+y)), Yh[1:(k-1)], E[1:(k-1)])),ind.j)
-      } else
-      {
-        Yr = Map(function(x) (Map(function(y,e) crossprod(Pcor,as.matrix(e[x,]+y)*sqrt(w)), Yh[1:(k-1)], E[1:(k-1)])),ind.j) 
-      }
-    } else {
-      if(sum(w)==n) {
-        Yr = Map(function(x) Map(function(y) crossprod(Pcor,as.matrix(y[x,])), lapply(1:(k-1),function(.) Y)),ind.j)
+        Yr = Map(function(x) (Map(function(y,e) e[x,]+y, Yh[1:(k-1)], E[1:(k-1)])),ind.j)
       } else {
-        Yr = Map(function(x) Map(function(y) crossprod(Pcor,as.matrix((y[x,])*sqrt(w))), lapply(1:(k-1),function(.) Y)),ind.j)
+        Yr = Map(function(x) (Map(function(y,e) (e[x,]+y)*sqrt(w), Yh[1:(k-1)], E[1:(k-1)])),ind.j) 
+      }} else {
+        if(sum(w)==n) {
+          Yr = Map(function(x) Map(function(y) y[x,], lapply(1:(k-1),function(.) Y)),ind.j)
+        } else {
+          Yr = Map(function(x) Map(function(y) (y[x,])*sqrt(w), lapply(1:(k-1),function(.) Y)),ind.j)
+        }
       }
-    }
     SS.temp <- lapply(1:length(j), function(j){ 
-      mapply(function(ur,uf,y) sum((fastFit(uf,y,n,p) - fastFit(ur,y,n,p))^2), 
-             Ur, Uf,Yr[[j]])})
-    SSEs.temp <- Map(function(y) sum(fastLM(Uf[[k-1]],y[[k-1]])$residuals^2), Yr)
+      mapply(function(p,y) sum((p%*%y)^2), Ptrans,Yr[[j]])})
+    SSEs.temp <- Map(function(y) sum((Pcor%*%y[[k-1]]-Ptransf[[k-1]]%*%y[[k-1]])^2), Yr)
     Fs.temp <- Map(function(s1,s2) (s1/df)/(s2/(n-k)), SS.temp, SSEs.temp)
     SS <- c(SS,SS.temp)
     SSEs <- c(SSEs,SSEs.temp)
@@ -1265,6 +1265,9 @@ Fpgls.iter = function(pfit,Pcor,iter, seed=NULL, Yalt="RRPP"){
   Xf <- lapply(PwXs[2:k], function(x) as.matrix(x))
   Ur <- lapply(Xr, function(x) qr.Q(qr(x)))
   Uf <- lapply(Xf, function(x) qr.Q(qr(x)))
+  Ptransr <- lapply(Ur, function(x) tcrossprod(x)%*%Pcor)
+  Ptransf <- lapply(Uf, function(x) tcrossprod(x)%*%Pcor)
+  Ptrans <- Map(function(r,f) f-r, Ptransr, Ptransf)
   ind = perm.index(n,iter, seed=seed)
   SS <- SSEs <-Fs <- NULL
   jj <- iter+1
@@ -1273,22 +1276,19 @@ Fpgls.iter = function(pfit,Pcor,iter, seed=NULL, Yalt="RRPP"){
     ind.j <- ind[j]
     if(Yalt=="RRPP") {
       if(sum(w)==n) {
-        Yr = Map(function(x) (Map(function(y,e) crossprod(Pcor,as.matrix(e[x,]+y)), Yh[1:(k-1)], E[1:(k-1)])),ind.j)
-      } else
-      {
-        Yr = Map(function(x) (Map(function(y,e) crossprod(Pcor,as.matrix(e[x,]+y)*sqrt(w)), Yh[1:(k-1)], E[1:(k-1)])),ind.j) 
-      }
-    } else {
-      if(sum(w)==n) {
-        Yr = Map(function(x) Map(function(y) crossprod(Pcor,as.matrix(y[x,])), lapply(1:(k-1),function(.) Y)),ind.j)
+        Yr = Map(function(x) (Map(function(y,e) e[x,]+y, Yh[1:(k-1)], E[1:(k-1)])),ind.j)
       } else {
-        Yr = Map(function(x) Map(function(y) crossprod(Pcor,as.matrix((y[x,])*sqrt(w))), lapply(1:(k-1),function(.) Y)),ind.j)
+        Yr = Map(function(x) (Map(function(y,e) (e[x,]+y)*sqrt(w), Yh[1:(k-1)], E[1:(k-1)])),ind.j) 
+      }} else {
+        if(sum(w)==n) {
+          Yr = Map(function(x) Map(function(y) y[x,], lapply(1:(k-1),function(.) Y)),ind.j)
+        } else {
+          Yr = Map(function(x) Map(function(y) (y[x,])*sqrt(w), lapply(1:(k-1),function(.) Y)),ind.j)
+        }
       }
-    }
     SS.temp <- lapply(1:length(j), function(j){ 
-      mapply(function(ur,uf,y) sum((fastFit(uf,y,n,p) - fastFit(ur,y,n,p))^2), 
-             Ur, Uf,Yr[[j]])})
-    SSEs.temp <- Map(function(y) sum(fastLM(Uf[[k-1]],y[[k-1]])$residuals^2), Yr)
+      mapply(function(p,y) sum((p%*%y)^2), Ptrans,Yr[[j]])})
+    SSEs.temp <- Map(function(y) sum(fastLM(Uf[[k-1]],Pcor%*%y[[k-1]])$residuals^2), Yr)
     Fs.temp <- Map(function(s1,s2) (s1/df)/(s2/(n-k)), SS.temp, SSEs.temp)
     SS <- c(SS,SS.temp)
     SSEs <- c(SSEs,SSEs.temp)
