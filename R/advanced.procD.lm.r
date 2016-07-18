@@ -71,11 +71,11 @@
 #'
 #'# Example of a nested model comparison (as with ANOVA with RRPP)
 #'advanced.procD.lm(coords ~ log(Csize) + species, 
-#'~ log(Csize)*species*site, iter=999, data = gdf)
+#'~ log(Csize)*species*site, iter=499, data = gdf)
 #'
 #'# Example of a test of a factor interaction, plus pairwise comparisons 
 #'advanced.procD.lm(coords ~ site*species, ~ site + species, groups = ~site*species, 
-#'    iter=999, data = gdf)
+#'    iter=499, data = gdf)
 #'
 #'# Example of a test of a factor interaction, plus pairwise comparisons, 
 #'# accounting for a common allometry  
