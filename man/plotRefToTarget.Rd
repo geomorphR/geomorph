@@ -6,7 +6,7 @@
 \usage{
 plotRefToTarget(M1, M2, mesh = NULL, outline = NULL, method = c("TPS",
   "vector", "points", "surface"), mag = 1, links = NULL, label = FALSE,
-  gridPars = NULL, useRefPts = FALSE, ...)
+  axes = FALSE, gridPars = NULL, useRefPts = FALSE, ...)
 }
 \arguments{
 \item{M1}{Matrix of landmark coordinates for the first (reference) specimen}
@@ -24,6 +24,8 @@ plotRefToTarget(M1, M2, mesh = NULL, outline = NULL, method = c("TPS",
 \item{links}{An optional matrix defining for links between landmarks}
 
 \item{label}{A logical value indicating whether landmark numbers will be plotted}
+
+\item{axes}{A logical value indicating whether the box and axes should be plotted (points and vector only)}
 
 \item{gridPars}{An optional object made by \code{\link{gridPar}}}
 

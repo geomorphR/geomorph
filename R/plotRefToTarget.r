@@ -37,6 +37,7 @@
 #' @param mag The desired magnification to be used when visualizing the shape difference (e.g., mag=2)
 #' @param links An optional matrix defining for links between landmarks
 #' @param label A logical value indicating whether landmark numbers will be plotted
+#' @param axes A logical value indicating whether the box and axes should be plotted (points and vector only)
 #' @param gridPars An optional object made by \code{\link{gridPar}}
 #' @param useRefPts An option (logical value) to use reference configuration points rather than target configuration points (when {method = "TPS"})
 #' @param ... Additional parameters not covered by \code{\link{gridPar}} to be passed to \code{\link{plot}}, \code{\link{plot3d}} or \code{\link{shade3d}}
@@ -71,7 +72,7 @@
 #' # tar.link.lwd=2), method="points", links = scallinks)
 #' 
 plotRefToTarget<-function(M1,M2,mesh= NULL,outline=NULL,method=c("TPS","vector","points","surface"),
-                          mag=1.0,links=NULL, label=FALSE, gridPars = NULL, useRefPts=FALSE,...){
+                          mag=1.0,links=NULL,label=FALSE,axes=FALSE,gridPars=NULL,useRefPts=FALSE,...){
   method <- match.arg(method)
   if(any(is.na(M1))==TRUE){
     stop("Data contains missing values. Estimate these first (see 'estimate.missing').")  }
@@ -108,8 +109,12 @@ plotRefToTarget<-function(M1,M2,mesh= NULL,outline=NULL,method=c("TPS","vector",
       if(useRefPts==FALSE) points(M2,pch=21,cex=gP$tar.pt.size, bg=gP$tar.pt.bg) else points(M1,pch=21,cex=gP$pt.size, bg=gP$pt.bg)
     }
     if(method=="vector"){
-      plot(M1,asp=1,type="n",xlab="x",ylab="y",xlim=limits(M1[,1],1.25),
-           ylim=limits(M1[,2],1.25),...)
+      if(axes==TRUE){
+        plot(M1,asp=1,type="n",xlab="x",ylab="y",xlim=limits(M1[,1],1.25),
+             ylim=limits(M1[,2],1.25),...)}
+      if(axes==FALSE){
+        plot(M1,asp=1,type="n",xlab="",ylab="",xlim=limits(M1[,1],1.25),axes=FALSE,
+             ylim=limits(M1[,2],1.25),...)}
       if(is.null(links)==FALSE){
         linkcol <- rep(gP$link.col,nrow(links))[1:nrow(links)]
         linklwd <- rep(gP$link.lwd,nrow(links))[1:nrow(links)]
@@ -125,8 +130,12 @@ plotRefToTarget<-function(M1,M2,mesh= NULL,outline=NULL,method=c("TPS","vector",
       points(M1,pch=21,bg=gP$pt.bg,cex=gP$pt.size)
     }
     if(method=="points"){
-      plot(M1,asp=1,pch=21,type="n",xlim=limits(M1[,1],1.25),
-           ylim=limits(M1[,2],1.25),xlab="x",ylab="y",...)
+      if(axes==TRUE){
+        plot(M1,asp=1,pch=21,type="n",xlim=limits(M1[,1],1.25),
+             ylim=limits(M1[,2],1.25),xlab="x",ylab="y",...)}
+      if(axes==FALSE){
+        plot(M1,asp=1,pch=21,type="n",xlim=limits(M1[,1],1.25),axes=FALSE,
+             ylim=limits(M1[,2],1.25),xlab="",ylab="",...)}
       if(label == TRUE){text(M1, label=paste(1:dim(M1)[1]),adj=gP$txt.adj,
                              pos=gP$txt.pos,cex=gP$txt.cex,col=gP$txt.col)}
       if(!is.null(outline)){
@@ -193,7 +202,10 @@ plotRefToTarget<-function(M1,M2,mesh= NULL,outline=NULL,method=c("TPS","vector",
       on.exit(par(old.par))
     }
     if(method=="vector"){
-      plot3d(M1,type="s",col=gP$pt.bg,size=gP$pt.size,aspect=FALSE,...)
+      if(axes==TRUE){
+        plot3d(M1,type="s",col=gP$pt.bg,size=gP$pt.size,aspect=FALSE,...)}
+      if(axes==FALSE){
+        plot3d(M1,type="s",col=gP$pt.bg,size=gP$pt.size,aspect=FALSE,xlab="",ylab="",zlab="",axes=F,...)}
       if(label == TRUE){text3d(M1, texts = paste(1:dim(M1)[1]), adj=(gP$txt.adj+gP$pt.size),
                                pos=(gP$txt.pos+gP$pt.size),cex=gP$txt.cex,col=gP$txt.col)}
       for (i in 1:nrow(M1)){
@@ -210,9 +222,13 @@ plotRefToTarget<-function(M1,M2,mesh= NULL,outline=NULL,method=c("TPS","vector",
       }
     }
     if(method=="points"){
-      plot3d(M1,type="s",col=gP$pt.bg,size=gP$pt.size,aspect=FALSE,
-             xlab="x", ylab="y",zlab="z",...)
-      plot3d(M2,type="s", col=gP$tar.pt.bg,size=gP$tar.pt.size, add=TRUE)
+      if(axes==TRUE){
+        plot3d(M1,type="s",col=gP$pt.bg,size=gP$pt.size,aspect=FALSE,...)
+        plot3d(M2,type="s",col=gP$tar.pt.bg,size=gP$tar.pt.size,add=TRUE)}
+      if(axes==FALSE){
+        plot3d(M1,type="s",col=gP$pt.bg,size=gP$pt.size,aspect=FALSE,xlab="",ylab="",zlab="",axes=F,...)
+        plot3d(M2,type="s",col=gP$tar.pt.bg,size=gP$tar.pt.size,add=TRUE)}
+      
       if(label == TRUE){text3d(M1, texts = paste(1:dim(M1)[1]), adj=(gP$txt.adj+gP$pt.size),
                                pos=(gP$txt.pos+gP$pt.size),cex=gP$txt.cex,col=gP$txt.col)}
       if(is.null(links)==FALSE){
@@ -236,9 +252,10 @@ plotRefToTarget<-function(M1,M2,mesh= NULL,outline=NULL,method=c("TPS","vector",
       }
       warp.PLY <- mesh
       vb <- as.matrix(t(mesh$vb)[,-4])
+      cat("\nWarping mesh\n")
       warp <- tps2d3d(vb, M1, M2)
       warp.PLY$vb <- rbind(t(warp), 1)
-      open3d(); shade3d(warp.PLY, ...)
+      shade3d(warp.PLY, ...)
       return(warp.PLY)
     }
   }
