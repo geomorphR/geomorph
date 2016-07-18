@@ -8,10 +8,11 @@
 #' @param A An array (p x k x n) containing landmark coordinates for a set of specimens
 #' @param file Name of the *.tps file to be created
 #' @param scale An optional vector containing the length of the scale for each specimen
+#' @param specID A logical value stating whether specimen ID names should be saved to line ID=
 #' @export
 #' @keywords IO
 #' @author Dean Adams
-writeland.tps<-function(A, file, scale = NULL){
+writeland.tps<-function(A, file, scale = NULL, specID = TRUE){
   n<-dim(A)[3]
   k<-dim(A)[2]
   p<-dim(A)[1]
@@ -27,7 +28,8 @@ writeland.tps<-function(A, file, scale = NULL){
       if(length(scaleline) == 1){write(scaleline,file,append=TRUE)}
       if(length(scaleline) > 1){write(scaleline[i],file,append=TRUE)}
     }
-    if(is.null(dimnames(A)[[3]])==FALSE){
+    if(specID==TRUE){
+      if(is.null(dimnames(A)[[3]])) dimnames(A)[[3]] <- c(1:dim(A)[3])
       idline<-paste("ID=",dimnames(A)[[3]][i],sep="")
       write(idline,file,append = TRUE)  
     }
