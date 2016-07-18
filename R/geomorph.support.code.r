@@ -1231,7 +1231,7 @@ Fpgls.iter = function(pfit,Pcor,iter, seed=NULL, Yalt="RRPP"){
     SS.temp <- lapply(1:length(j), function(j){ 
       mapply(function(pr,pf,y) sum((pf%*%y-pr%*%y)^2), 
              Ptransr, Ptransf,Yr[[j]])})
-    SSEs.temp <- Map(function(y) sum(fastLM(Uf[[k-1]],Pcor%*%y[[k-1]])$residuals^2), Yr)
+    SSEs.temp <- Map(function(y) sum((Pcor%*%y[[k-1]]-Ptransf[[k-1]]%*%y[[k-1]])^2), Yr)
     Fs.temp <- Map(function(s1,s2) (s1/df)/(s2/(n-k)), SS.temp, SSEs.temp)
     SS <- c(SS,SS.temp)
     SSEs <- c(SSEs,SSEs.temp)
