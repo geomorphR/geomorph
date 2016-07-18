@@ -3,6 +3,7 @@ CHANGES IN GEOMORPH VERSION 3.0.2
   NEW FEATURES
     o Added return of min/max shape matrices to plot.procD.allometry() and plot.pls()
     o Added option to save specimen ID to ID= line in writeland.tps()
+    o Added option to hide axes in plotRefToTarget()
     
   OTHER CHANGES
     o Optimized analytical functions for faster computations
