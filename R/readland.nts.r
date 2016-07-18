@@ -21,8 +21,8 @@
 
 #'
 #' Function is for *.nts file containing landmark coordinates for multiple specimens. Note that *.dta files in the 
-#' nts format written by Landmark Editor \url{http://graphics.idav.ucdavis.edu/research/projects/EvoMorph},
-#' and *.nts files written by Stratovan Checkpoint \url{http://www.stratovan.com/} have incorrect 
+#' nts format written by Landmark Editor 
+#' and *.nts files written by Stratovan Checkpoint have incorrect 
 #' header notation; every header is 1 n p-x-k 1 9999 Dim=3, rather than 1 n p-x-k 0 Dim=3, which denotes
 #' that missing data is in the file even when it is not.
 #'
