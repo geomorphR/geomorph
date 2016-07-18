@@ -93,8 +93,9 @@ compare.evol.rates<-function(A,phy,gp,iter=999,print.progress=TRUE ){
   diag(rate.mat)<-sigma.obs$sigma.d.all
   rate.mat<-matrix(nearPD(rate.mat,corr=FALSE)$mat,nrow=ncol(rate.mat),ncol=ncol(rate.mat))
   x.sim<-sim.char(phy=phy,par=rate.mat,nsim=iter,model="BM") 
-  ones <- matrix(1,N,N)
-  Xadj <- crossprod(ones,invC)/sum(invC) 
+  ones <- matrix(1,N,N); I <- diag(1,N)
+  Xadj <- I -crossprod(ones,invC)/sum(invC) 
+  Ptrans <- D.mat%*%Xadj
   g<-factor(as.numeric(gp))
   ngps<-nlevels(g)
   gps.combo <- combn(ngps, 2)
@@ -103,11 +104,11 @@ compare.evol.rates<-function(A,phy,gp,iter=999,print.progress=TRUE ){
       pb <- txtProgressBar(min = 0, max = iter, initial = 0, style=3) 
       sigma.rand <- sapply(1:iter, function(j) {
         setTxtProgressBar(pb,j)
-        fast.sigma.d(as.matrix(x.sim[,,j]),D.mat,g, ngps, gps.combo, N,p, Xadj)
+        fast.sigma.d(as.matrix(x.sim[,,j]),Ptrans,g, ngps, gps.combo, N,p )
       })
       close(pb)
     } else sigma.rand <- sapply(1:(iter), 
-                function(j) fast.sigma.d(as.matrix(x.sim[,,j]),D.mat,g, ngps, gps.combo,N,p,Xadj))
+                                function(j) fast.sigma.d(as.matrix(x.sim[,,j]),Ptrans,g, ngps, gps.combo,N,p))
     if(nlevels(gp) == 2) 
       sigma.rand <- random.sigma <- c(sigma.obs$sigma.d.gp.ratio, sigma.rand) else {
         sigma.rand <- cbind(as.vector(sigma.obs$sigma.d.gp.ratio), sigma.rand)
@@ -130,7 +131,7 @@ compare.evol.rates<-function(A,phy,gp,iter=999,print.progress=TRUE ){
                 Ngroups = nlevels(gp))
     
     class(out) <- "evolrate1"
-    }
+  }
   if(nlevels(gp)>1){
     out <- list(sigma.d.ratio = sigma.obs$sigma.d.ratio, P.value=p.val,
                 sigma.d.all = sigma.obs$sigma.d.all,
