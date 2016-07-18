@@ -42,7 +42,7 @@
 #' plotTangentSpace(Y.gpa$coords, groups = gp) 
 #' 
 #' ## To save and use output
-#' PCA <- plotTangentSpace(Y.gpa$coords, groups = gp) 
+#' PCA <- plotTangentSpace(Y.gpa$coords, groups = gp, legend=TRUE) 
 #' summary(PCA)
 #' PCA$pc.shapes
 #' PCA$rotation
