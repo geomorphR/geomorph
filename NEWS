@@ -6,7 +6,7 @@ CHANGES IN GEOMORPH VERSION 3.0.2
     o Added option to hide axes in plotRefToTarget()
     
   OTHER CHANGES
-    o Optimized analytical functions for faster computations
+    o Continued optimization of analytical functions for faster computations
     o Added force match of specimen order between blocks in two.b.pls()
     o Updated A, Ahat, ref, p and k outputs when 2D matrix is used in procD.allometry()
     o Added option to plot group labels in plot.procD.allometry(method="PredLine")
