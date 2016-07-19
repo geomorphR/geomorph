@@ -1206,8 +1206,10 @@ Fpgls.iter = function(pfit,Pcor,iter, seed=NULL, Yalt="RRPP"){
   Xf <- lapply(PwXs[2:k], function(x) as.matrix(x))
   Ur <- lapply(Xr, function(x) qr.Q(qr(x)))
   Uf <- lapply(Xf, function(x) qr.Q(qr(x)))
-  Ptransr <- lapply(Ur, function(x) tcrossprod(x)%*%Pcor)
-  Ptransf <- lapply(Uf, function(x) tcrossprod(x)%*%Pcor)
+  if(p > n) Ptransr <- lapply(Ur, function(x) tcrossprod(x)%*%Pcor) else
+    Ptransr <- lapply(Ur, function(x) x%*%crossprod(x,Pcor)) 
+  if(p > n) Ptransf <- lapply(Uf, function(x) tcrossprod(x)%*%Pcor) else
+    Ptransf <- lapply(Uf, function(x) x%*%crossprod(x,Pcor)) 
   Ptrans <- Map(function(r,f) f-r, Ptransr, Ptransf)
   ind = perm.index(n,iter, seed=seed)
   SS <- SSEs <-Fs <- NULL
@@ -1265,8 +1267,10 @@ Fpgls.iter = function(pfit,Pcor,iter, seed=NULL, Yalt="RRPP"){
   Xf <- lapply(PwXs[2:k], function(x) as.matrix(x))
   Ur <- lapply(Xr, function(x) qr.Q(qr(x)))
   Uf <- lapply(Xf, function(x) qr.Q(qr(x)))
-  Ptransr <- lapply(Ur, function(x) tcrossprod(x)%*%Pcor)
-  Ptransf <- lapply(Uf, function(x) tcrossprod(x)%*%Pcor)
+  if(p > n) Ptransr <- lapply(Ur, function(x) tcrossprod(x)%*%Pcor) else
+    Ptransr <- lapply(Ur, function(x) x%*%crossprod(x,Pcor)) 
+  if(p > n) Ptransf <- lapply(Uf, function(x) tcrossprod(x)%*%Pcor) else
+    Ptransf <- lapply(Uf, function(x) x%*%crossprod(x,Pcor)) 
   Ptrans <- Map(function(r,f) f-r, Ptransr, Ptransf)
   ind = perm.index(n,iter, seed=seed)
   SS <- SSEs <-Fs <- NULL
