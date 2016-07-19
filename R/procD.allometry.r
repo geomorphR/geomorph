@@ -256,6 +256,7 @@ procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
     form4 <- update(form4, Y ~.)
     form5 <- update(form5, Y ~.)
     datHOS <- data.frame(dat, size=size, gps=gps)
+    cat("\nHomogeneity of Slopes Test\n")
     HOS <- advanced.procD.lm(form4, form5, data=datHOS, iter=iter, seed=seed, 
                              print.progress = print.progress)$anova.table
     rownames(HOS) = c("Common Allometry", "Group Allometries")
@@ -278,6 +279,7 @@ procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
   
   formfull <- update(formfull, Y~.)
   fitf <- procD.fit(formfull, data=dat, pca=FALSE)
+  cat("\nAllometry Model\n")
   anovafull <- procD.lm(formfull, data=dat, iter=iter, seed=seed, RRPP=RRPP,
                         print.progress = print.progress)$aov.table
   if(RRPP) perm.method = "RRPP" else perm.method = "raw"
