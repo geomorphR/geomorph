@@ -72,6 +72,7 @@ plotRefToTarget(M, preds$pred2)
 plotRefToTarget(M, preds$pred3)
 
 # allometry example - straight-up allometry
+
 preds <- shape.predictor(Y.gpa$coords, x= Y.gpa$Csize, Intercept = TRUE, 
                         predmin = min(Y.gpa$Csize), predmax = max(Y.gpa$Csize)) 
 
@@ -79,6 +80,7 @@ plotRefToTarget(M, preds$predmin, mag=3)
 plotRefToTarget(M, preds$predmax, mag=3)
 
 # allometry example - using RegScore or PredLine via procD.allometry
+
 gdf <- geomorph.data.frame(Y.gpa)
 plethAllometry <- procD.allometry(coords~Csize, data=gdf)
 plot(plethAllometry, method="RegScore")
@@ -117,6 +119,7 @@ plotRefToTarget(M, preds$pred3, mag=2)
 plotRefToTarget(M, preds$pred4, mag=2)
 
 # Using a design matrix for factors
+
 X <- pleth$X
 X # includes intercept; remove for better functioning
 X <- X[,-1]
@@ -128,6 +131,7 @@ plotRefToTarget(M, preds$symJord, mag=2)
 plotRefToTarget(M, preds$alloJord, mag=2)
 
 # PLS Example
+
 data(plethShapeFood) 
 Y.gpa<-gpagen(plethShapeFood$land)    #GPA-alignment    
 
