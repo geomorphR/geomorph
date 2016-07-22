@@ -96,6 +96,7 @@ f190c552c538c136892b43b4f6687850 *man/read.ply.Rd
 b955f557977eb493daf1b8003e715928 *man/readmulti.nts.Rd
 e8b532a5350f31210e60d6b765e3e24c *man/scallopPLY.Rd
 e10509185843df7113644e0018cc2419 *man/scallops.Rd
+f944abbe20687a14266b3e4700ec94d0 *man/shape.predictor.Rd
 ef64dab32fc6ca15ec28110603497926 *man/summary.advanced.procD.lm.Rd
 c4bb6be6a8d8f3101bba01ed3f4d9df7 *man/summary.bilat.symmetry.Rd
 5b28343a21a0e2fa3bca1bd7c2836dbe *man/summary.CR.phylo.Rd
@@ -116,7 +117,7 @@ e96c37b9aadabf2c8af65d9c4b282b89 *man/two.b.pls.Rd
 8653af77b4457ee283d6bbb2cf239c99 *man/warpRefMesh.Rd
 87a86c2e9b2d31119ab1883c54e092ec *man/warpRefOutline.Rd
 774e6229a8a66e87692c798a70c33525 *man/writeland.tps.Rd
-12024fc0604f52e175055662c2014f29 *NAMESPACE
+7e2cae0aeec8ab4f096d115b12c12bbf *NAMESPACE
 42ad18ed20faffd3ec8e256ec17370a8 *NEWS
 084ddd61d21678b22ebf2b9ed333d249 *R/advanced.procD.lm.r
 c3bf88c10dcae2eb5430025e36867d98 *R/arrayspecs.r
@@ -137,7 +138,7 @@ ddff41e987eac54d3500e2313799c3c6 *R/digitize2d.r
 da56107aec80b7583dc4a6b841b30c74 *R/findMeanSpec.r
 1e71d260e79093bb0d36f6ded44dd437 *R/fixed.angle.r
 203177efc30cc6fef4bd604b2fc2af01 *R/geomorph.data.frame.r
-65a9f136abb39ba8327677690b67aa59 *R/geomorph.support.code.r
+25099414a3d1b1762b1a3315abadb161 *R/geomorph.support.code.r
 74d7c8e81d735afedd6a9ef2891a6f21 *R/geomorph.utils.r
 0d9d88147f22cff2241b6e2e7396d57f *R/globalIntegration.r
 66d5ab19ac37f42838b211ff99a1c48c *R/gpagen.r
@@ -163,6 +164,7 @@ fc4b51c40969fd76353e442b335b7987 *R/procD.lm.r
 42b8ec9ece98e00b47ac14bd9e6bd43b *R/readland.nts.r
 2879f870b4da471037d5896d03de1a5c *R/readland.tps.r
 8b7193e5cbcdaf8153f3614834afc818 *R/readmulti.nts.r
+77c5e210957f9590858dc770dc239b74 *R/shape.predictor.r
 e71149e476c615fcc8df531bc2f52bd0 *R/trajectory.analysis.r
 8b4ee78567f5c05e98951619a589299a *R/two.b.pls.r
 cac4c94b232cb0da0e2faf26f9f07597 *R/two.d.array.r
