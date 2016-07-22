@@ -28,7 +28,9 @@ for defining prediction criteria (see below).}
 a vector (if more than one predictor or a prediciton matrix is provided); e.g., pred1 = c(0.1, -0.5), pred2 = c(-0.2, -0.1) (which
 would be the case if two predictors were provided).  It is essential that the number of elements in any prediction criterion matches
 the number of predictors.  Caution should be used when providing a design matrix to ensure that correct dummy variables are used in
-prediction criteria, and that an intercept is not TRUE if already included in the design matrix.}
+prediction criteria, and that either 1) an intercept is not included in the design and 2) is TRUE in the Intercept argument; or
+or 1) an intercept is included in the deisgn and 2) is FALSE in the Intercept argument; or 1) an intercept is not included in the design
+and 2) is FALSE in the Intercept argument, if no intercept is desired.}
 }
 \value{
 A list of predicted shapes matching the number of vectors of prediction criteria provides.  The predications 
@@ -116,10 +118,10 @@ plotRefToTarget(M, preds$pred4, mag=2)
 
 # Using a design matrix for factors
 X <- pleth$X
-X
+X 
 symJord <- c(1,0,1,0) # design for P. Jordani in sympatry
 alloJord <- c(1,0,0,0) # design for P. Jordani in allopatry
-preds <- shape.predictor(arrayspecs(pleth$Y, 12,2), x = X, Intercept = FALSE,
+preds <- shape.predictor(arrayspecs(pleth$fitted, 12,2), x = X, Intercept = FALSE,
                         symJord=symJord, alloJord=alloJord)
 plotRefToTarget(M, preds$symJord, mag=2)
 plotRefToTarget(M, preds$alloJord, mag=2)
