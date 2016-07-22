@@ -104,10 +104,11 @@
 #'
 #'# Using a design matrix for factors
 #'X <- pleth$X
-#'X 
-#'symJord <- c(1,0,1,0) # design for P. Jordani in sympatry
-#'alloJord <- c(1,0,0,0) # design for P. Jordani in allopatry
-#'preds <- shape.predictor(arrayspecs(pleth$fitted, 12,2), x = X, Intercept = FALSE,
+#'X # includes intercept; remove for better functioning
+#'X <- X[,-1]
+#'symJord <- c(0,1,0) # design for P. Jordani in sympatry
+#'alloJord <- c(0,0,0) # design for P. Jordani in allopatry
+#'preds <- shape.predictor(arrayspecs(pleth$fitted, 12,2), x = X, Intercept = TRUE, 
 #'                         symJord=symJord, alloJord=alloJord)
 #'plotRefToTarget(M, preds$symJord, mag=2)
 #'plotRefToTarget(M, preds$alloJord, mag=2)
@@ -181,7 +182,7 @@ shape.predictor <- function(A, x = NULL, Intercept = FALSE, method = c("LS", "PL
     add.int <- function(x) c(1,x)
     dots <- lapply(dots, add.int)
   }
-  pr.shape <- function(x) x%*%B
+  pr.shape <- function(x) crossprod(x,B)
   preds <- lapply(dots, pr.shape)
   M <- mshape(A)
   if(!Intercept) reshape <- function(x) M + arrayspecs(x,p,k)[,,1] else
