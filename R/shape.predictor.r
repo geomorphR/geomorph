@@ -107,6 +107,8 @@
 #'alloJord <- c(1,0,0,0) # design for P. Jordani in allopatry
 #'preds <- shape.predictor(arrayspecs(pleth$Y, 12,2), x = X, Intercept = FALSE,
 #'                         symJord=symJord, alloJord=alloJord)
+#'plotRefToTarget(M, preds$symJord, mag=2)
+#'plotRefToTarget(M, preds$alloJord, mag=2)
 #'
 #'# PLS Example
 #'data(plethShapeFood) 
