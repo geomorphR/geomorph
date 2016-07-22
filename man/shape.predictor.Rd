@@ -47,7 +47,8 @@ data("plethodon")
 Y.gpa <- gpagen(plethodon$land)    #GPA-alignment    
 plotTangentSpace(Y.gpa$coords)
 
-preds <- shape.predictor(Y.gpa$coords, x= NULL, Intercept = FALSE, pred1 = -0.1, pred2 = 0.1) # PC 1 extremes, sort of
+preds <- shape.predictor(Y.gpa$coords, x= NULL, Intercept = FALSE, 
+pred1 = -0.1, pred2 = 0.1) # PC 1 extremes, sort of
 M <- mshape(Y.gpa$coords)
 plotRefToTarget(M, preds$pred1)
 plotRefToTarget(M, preds[[1]]) # same result
@@ -55,7 +56,8 @@ plotRefToTarget(M, preds$pred2)
 
 PCA <- plotTangentSpace(Y.gpa$coords)
 PC <- PCA$pc.scores[,1]
-preds <- shape.predictor(Y.gpa$coords, x= PC, Intercept = FALSE, pred1 = min(PC), pred2 = max(PC)) # PC 1 extremes, more technically
+preds <- shape.predictor(Y.gpa$coords, x= PC, Intercept = FALSE, 
+pred1 = min(PC), pred2 = max(PC)) # PC 1 extremes, more technically
 plotRefToTarget(M, preds$pred1)
 plotRefToTarget(M, preds$pred2)
 
@@ -68,7 +70,7 @@ plotRefToTarget(M, preds$pred2)
 plotRefToTarget(M, preds$pred3)
 
 # allometry example - straight-up allometry
-preds <- shape.predictor(Y.gpa$coords, x= Y.gpa$Csize, Intercept = T, 
+preds <- shape.predictor(Y.gpa$coords, x= Y.gpa$Csize, Intercept = TRUE, 
                         predmin = min(Y.gpa$Csize), predmax = max(Y.gpa$Csize)) 
 
 plotRefToTarget(M, preds$predmin, mag=3)
