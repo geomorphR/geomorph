@@ -96,7 +96,7 @@ f190c552c538c136892b43b4f6687850 *man/read.ply.Rd
 b955f557977eb493daf1b8003e715928 *man/readmulti.nts.Rd
 e8b532a5350f31210e60d6b765e3e24c *man/scallopPLY.Rd
 e10509185843df7113644e0018cc2419 *man/scallops.Rd
-97100afadef39cfb7adaab92ad8f6253 *man/shape.predictor.Rd
+58abcbb72ca139e1ab4b438365a63a64 *man/shape.predictor.Rd
 ef64dab32fc6ca15ec28110603497926 *man/summary.advanced.procD.lm.Rd
 c4bb6be6a8d8f3101bba01ed3f4d9df7 *man/summary.bilat.symmetry.Rd
 5b28343a21a0e2fa3bca1bd7c2836dbe *man/summary.CR.phylo.Rd
@@ -164,7 +164,7 @@ fc4b51c40969fd76353e442b335b7987 *R/procD.lm.r
 42b8ec9ece98e00b47ac14bd9e6bd43b *R/readland.nts.r
 2879f870b4da471037d5896d03de1a5c *R/readland.tps.r
 8b7193e5cbcdaf8153f3614834afc818 *R/readmulti.nts.r
-f36204b74101be50031db88b89c2cc81 *R/shape.predictor.r
+66d3192ac5f0fc8109985bf7f142052d *R/shape.predictor.r
 e71149e476c615fcc8df531bc2f52bd0 *R/trajectory.analysis.r
 8b4ee78567f5c05e98951619a589299a *R/two.b.pls.r
 cac4c94b232cb0da0e2faf26f9f07597 *R/two.d.array.r
