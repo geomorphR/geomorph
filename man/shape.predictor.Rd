@@ -121,7 +121,7 @@ plotRefToTarget(M, preds$pred4, mag=2)
 # Using a design matrix for factors
 
 X <- pleth$X
-X # includes intercept; remove for better functioning
+X # includes intercept; remove for better functioning 
 X <- X[,-1]
 symJord <- c(0,1,0) # design for P. Jordani in sympatry
 alloJord <- c(0,0,0) # design for P. Jordani in allopatry
