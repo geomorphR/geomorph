@@ -141,12 +141,14 @@ shape.predictor <- function(A, x = NULL, Intercept = FALSE, method = c("LS", "PL
     if(N != n) (stop("Predictors and Shape variables do not match in length"))
     X <- matrix(unlist(x),N,)
   }
-  if(is.matrix(x) || is.vector(x)) {
-    if(is.factor(x)) stop("Predictors must be numeric.  Consider using model.matrix first.")
-    if(is.character(x)) stop("Predictors must be numeric.  Consider using model.matrix first.")
-    if(is.logical(x)) stop("Predictors must be numeric.  Consider using model.matrix first.")
-    X <-x    
+  if(!is.list(x)){
+    if(is.matrix(x) || is.vector(x)) {
+      if(is.factor(x)) stop("Predictors must be numeric.  Consider using model.matrix first.")
+      if(is.character(x)) stop("Predictors must be numeric.  Consider using model.matrix first.")
+      if(is.logical(x)) stop("Predictors must be numeric.  Consider using model.matrix first.")
+      X <-x    
     }
+  }
   if(is.null(x)) {
     pca <- prcomp(Y)
     X <- pca$x[,1]
