@@ -57,6 +57,7 @@ readland.tps <- function (file, specID = c("None", "ID", "imageID"),
     nland <- as.numeric(sub("LM3=", "", tpsfile[lmdata], ignore.case))
     k <- 3
   }
+  if(any(nland == 0)){ stop("No landmark data for some specimens.") }
   n <- nspecs <- length(lmdata)
   if (max(nland) - min(nland) != 0) {
     stop("Number of landmarks not the same for all specimens.")
