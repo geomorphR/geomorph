@@ -88,6 +88,7 @@
 procD.pgls<-function(f1, phy, iter=999, seed=NULL, int.first = FALSE, 
                      RRPP=TRUE, data=NULL, print.progress = TRUE, ...){
   if(int.first==TRUE) ko = TRUE else ko = FALSE
+  if(!is.null(data)) data <- droplevels(data)
   pfit <- procD.fit(f1, data=data, keep.order=ko, pca=FALSE)
   Terms <- pfit$Terms
   k <- length(pfit$term.labels) 

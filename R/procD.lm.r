@@ -121,6 +121,7 @@
 procD.lm<- function(f1, iter = 999, seed=NULL, RRPP = TRUE, 
                         int.first = FALSE,  data=NULL, print.progress = TRUE, ...){
   if(int.first==TRUE) ko = TRUE else ko = FALSE
+  if(!is.null(data)) data <- droplevels(data)
   dots <- list(...)
   if(!is.null(dots$SS.type)) SS.type <- dots$SS.type else SS.type <- "I"
   if(is.na(match(SS.type, c("I","III")))) SS.type <- "I"

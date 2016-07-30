@@ -131,6 +131,7 @@
 bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,land.pairs=NULL,
                          data = NULL, iter = 999, seed = NULL, RRPP = TRUE, print.progress = TRUE){
   if(!is.null(data)){
+    data <- droplevels(data)
     A.name <- deparse(substitute(A))
     A.name.match <- match(A.name, names(data))[1]
     if(is.na(A.name.match)) A.name.match <- NULL
