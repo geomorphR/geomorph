@@ -1027,7 +1027,7 @@ summary.trajectory.analysis <- function(object,
 trajplot.w.int<-function(Data, M, TM, groups, group.cols = NULL, 
 pattern = c("white", "gray", "black"), pt.scale = 1, ...){ # TM = trajectories from means
   n <- length(TM); tp<-dim(TM[[1]])[1]; p<-dim(TM[[1]])[2]
-  if(length(pattern) != 3) stop("Point sequence color pattern must conatin three values")
+  if(length(pattern) != 3) stop("Point sequence color pattern must contain three values")
   pmax <- max(Data[,1]); pmin <- min(Data[,1])
   plot(Data[,1:2],type="n",
        xlim = c(2*pmin, pmax),
@@ -1059,7 +1059,7 @@ pattern = c("white", "gray", "black"), pt.scale = 1, ...){ # TM = trajectories f
 trajplot.by.groups<-function(Data, TM, groups, group.cols = NULL, 
             pattern = c("white", "gray", "black"), pt.scale = 1, ...) {
   n <- length(TM); tp <- nrow(TM[[1]]); p <- ncol(TM[[1]])
-  if(length(pattern) != 3) stop("Point sequence color pattern must conatin three values")
+  if(length(pattern) != 3) stop("Point sequence color pattern must contain three values")
   Data2 <- t(matrix(matrix(t(Data)),p,))
   pmax <- max(Data[,1]); pmin <- min(Data2[,1])
   plot(Data2[,1:2], type="n",
@@ -1099,7 +1099,7 @@ trajplot.by.groups<-function(Data, TM, groups, group.cols = NULL,
 #' @param x plot object
 #' @param group.cols An optional vector of colors for group levels
 #' @param pt.seq.pattern The sequence of colors for starting, middle, and end points of 
-#' trajectories, respectivly.  E.g., c("green", "gray", "red") for gray points
+#' trajectories, respectively.  E.g., c("green", "gray", "red") for gray points
 #' but initial points with green color and end points with red color.
 #' @param pt.scale An optional value to magnify or reduce points (1 = no change)
 #' @param ... other arguments passed to plot

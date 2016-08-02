@@ -137,14 +137,14 @@ a20acee83da00bac7ea6738893dd4a70 *R/estimate.missing.r
 da56107aec80b7583dc4a6b841b30c74 *R/findMeanSpec.r
 1e71d260e79093bb0d36f6ded44dd437 *R/fixed.angle.r
 203177efc30cc6fef4bd604b2fc2af01 *R/geomorph.data.frame.r
-1b7e6759eb69dbdca92b0b062ad6ca09 *R/geomorph.support.code.r
-c537b91275f8152ec37354e48c520cde *R/geomorph.utils.r
+6734ba8ecae0ac6400e10ea6a2e5ef53 *R/geomorph.support.code.r
+dcf487936db6e77855c7f76ccf1bc3d5 *R/geomorph.utils.r
 0d9d88147f22cff2241b6e2e7396d57f *R/globalIntegration.r
 66d5ab19ac37f42838b211ff99a1c48c *R/gpagen.r
 2d8ab3c6fea452711a7cf091ffba8ff5 *R/gridPar.r
 61a8a7d16930dfa33514b38ce33ffba7 *R/integration.test.r
 f1142f5b78768f9f2f0affa8f471fcac *R/modularity.test.r
-becc1196a5ec267c9339e2b8f882d4b1 *R/morphol.disparity.r
+f7f10b25d5f3444923f455ae9058cbee *R/morphol.disparity.r
 084f845900f98683ff877ac399e822b3 *R/nested.update.r
 996b3cae7b24d50906e957a236183d15 *R/phylo.integration.r
 e1cb306b0d2dd762ad291bddaf2366e8 *R/phylo.modularity.r
@@ -161,7 +161,7 @@ dfed40869cac125e49a245f841b20abc *R/procD.lm.r
 2a39213ef1d6feae4571e44c09344bc1 *R/read.morphologika.r
 889d4562e4ff052f48091d9b739d10d8 *R/read.ply.r
 f2a4a49547e28b46e0609d537156dc15 *R/readland.nts.r
-a0b6f841b0ab7ea0c29a6d388e635ff0 *R/readland.tps.r
+41c07b62c199ab74b962cccb46c1c418 *R/readland.tps.r
 45ba1c3e7d8ddf5d039b6ae0b11dc47e *R/readmulti.nts.r
 e71149e476c615fcc8df531bc2f52bd0 *R/trajectory.analysis.r
 8b4ee78567f5c05e98951619a589299a *R/two.b.pls.r
