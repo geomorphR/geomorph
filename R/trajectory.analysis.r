@@ -171,6 +171,7 @@
 #' pt.seq.pattern = c("green", "gray30", "red"), pt.scale = 1.3)
 trajectory.analysis <- function(f1, f2=NULL, iter=999, seed=NULL, traj.pts = NULL, 
                                 data = NULL,print.progress=TRUE){
+  if(!is.null(data)) data <- droplevels(data)
   pfit1 <- procD.fit(f1, data=data, pca=FALSE)
   Terms <- pfit1$Terms
   dat <- pfit1$data

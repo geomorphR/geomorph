@@ -106,6 +106,7 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
                             seed = NULL, 
                             print.progress = TRUE,
                             data=NULL, ...){
+  if(!is.null(data)) data <- droplevels(data)
   if(pc.shape == TRUE) pfit1 <- procD.fit(f1, data=data, pca = TRUE) else pfit1 <- procD.fit(f1, data=data, pca=FALSE)
   if(!is.null(seed) && seed=="random") seed = sample(1:iter, 1)
   Y <- as.matrix(pfit1$Y)

@@ -158,6 +158,7 @@
 procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
                    iter = 999, seed=NULL, alpha = 0.05, RRPP = TRUE, 
                    print.progress = TRUE, data=NULL, ...){
+  if(!is.null(data)) data <- droplevels(data)
   pfit <- procD.fit(f1, data=data, pca=FALSE)
   dat <- pfit$data
   Y <- pfit$Y

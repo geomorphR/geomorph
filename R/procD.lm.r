@@ -117,6 +117,7 @@
 #' rat.anova$fitted # just the fitted values
 procD.lm<- function(f1, iter = 999, seed=NULL, RRPP = TRUE, 
                         int.first = FALSE,  data=NULL, print.progress = TRUE, ...){
+  if(!is.null(data)) data <- droplevels(data)
   if(int.first==TRUE) ko = TRUE else ko = FALSE
   dots <- list(...)
   if(!is.null(dots$SS.type)) SS.type <- dots$SS.type else SS.type <- "I"
