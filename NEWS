@@ -1,3 +1,15 @@
+PENDING CHANGES IN GEOMORPH VERSION 3.0.3 (updated on Stable Branch of Github)
+
+  NEW FEATURES
+    o droplevels.geomorph.data.frame added to support code
+
+  OTHER CHANGES
+    o Updated procD.fit to remove unused levels from factors.
+    o Updated all functions using geomorph.data.frame to drop unused factor levels
+    
+  BUG FIXES
+    o 
+    
 CHANGES IN GEOMORPH VERSION 3.0.2
 
   NEW FEATURES
