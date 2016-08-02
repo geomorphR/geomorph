@@ -43,7 +43,7 @@ c7cd4682be82bebdead0d5676e43e4ab *man/morphol.disparity.Rd
 3e6b41e0610382ad6dbb8830746f7cd8 *man/morphol.integr.Rd
 9c45e199ed444c6fe413617264f7d9db *man/mosquito.Rd
 ba1bc984d157f6a6e19ec1edf5d44d9d *man/motionpaths.Rd
-4c7fc634b47238bb67b1ef79de83d374 *man/mshape.Rd
+a308519b4311aee86158cf8c9f1097b2 *man/mshape.Rd
 0e35cc894e52fa670466653beda77ae2 *man/nested.update.Rd
 acdf6b4940ca49dcf3519bc41be109da *man/phylo.integration.Rd
 b23aabdaadfe70fe888098382b9a46fb *man/phylo.modularity.Rd
@@ -62,7 +62,7 @@ f38f14c3996294e7f78a82e99af2dad8 *man/plot.CR.phylo.Rd
 5a714190e7838157d5c6b1693e847622 *man/plot.pls.Rd
 ed13af2c1a9e7426c694b5ea86f9fc82 *man/plot.procD.allometry.Rd
 2ff351c38420fd409b7c505ab35f65aa *man/plot.procD.lm.Rd
-7ed28c1c7083866caf7bf48d1534e61f *man/plot.trajectory.analysis.Rd
+71be3dc7ad37a8eca2032f5280264404 *man/plot.trajectory.analysis.Rd
 6707b3ae828958503ea23cddc52173c1 *man/plotAllometry.Rd
 9f51c2758f229351f592e56810f60ff2 *man/plotAllSpecimens.Rd
 a7229f95c05edbeb149dd62dab69299c *man/plotGMPhyloMorphoSpace.Rd
@@ -138,7 +138,7 @@ ddff41e987eac54d3500e2313799c3c6 *R/digitize2d.r
 da56107aec80b7583dc4a6b841b30c74 *R/findMeanSpec.r
 1e71d260e79093bb0d36f6ded44dd437 *R/fixed.angle.r
 203177efc30cc6fef4bd604b2fc2af01 *R/geomorph.data.frame.r
-35ce0404e5c23cf122ecc8d3af8ccc77 *R/geomorph.support.code.r
+597d52f4ac3390f7f6bfcee2b565b502 *R/geomorph.support.code.r
 cbb88d22eb7f71b2e0f55840169c1730 *R/geomorph.utils.r
 0d9d88147f22cff2241b6e2e7396d57f *R/globalIntegration.r
 66d5ab19ac37f42838b211ff99a1c48c *R/gpagen.r
