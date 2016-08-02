@@ -146,6 +146,32 @@ NULL
 #' larval salamander morphology and swim speed. Biological Journal of the Linnean Society.  Accepted.
 NULL
 
+#' Estimate mean shape for a set of aligned specimens
+#'
+#' Estimate the mean shape for a set of aligned specimens
+#'
+#' The function estimates the average landmark coordinates for a set of aligned specimens. It is assumed 
+#' that the landmarks have previously been aligned using Generalized Procrustes Analysis (GPA) 
+#'  [e.g., with \code{\link{gpagen}}]. This function is described in Claude (2008).
+#'
+#' @param A Either a list (length n, ach p x k), an array (p x k x n), or a matrix (pk X n) containing GPA-aligned coordinates for a set of specimens
+#' @keywords utilities
+#' @export
+#' @author Julien Claude 
+#' @references Claude, J. 2008. Morphometrics with R. Springer, New York.
+#' @examples
+#' data(plethodon) 
+#' Y.gpa<-gpagen(plethodon$land)    #GPA-alignment   
+#'
+#' mshape(Y.gpa$coords)   #mean (consensus) configuration
+mshape<-function(A){
+  if(is.array(A)) res <- apply(A,c(1,2),mean)
+  if(is.list(A)) res <- Reduce("+", A)/length(A)
+  if(is.matrix(A)) res <- colMeans(A)
+  if(!is.array(A) && !is.list(A) && !is.matrix(A)) stop("There are not multiple configurations from which to obtain a mean.")
+  return(res)
+}	
+
 #####----------------------------------------------------------------------------------------------------
 
 # SUPPORT FUNCTIONS
@@ -2573,30 +2599,6 @@ refscan.to.spec<-function(refscan,refland,specland){ 	#DCA
   unwarp.scan<-tps2d3d(refscan,refland,specland)
   unwarp.scan}
 
-
-#' Estimate mean shape for a set of aligned specimens
-#'
-#' Estimate the mean shape for a set of aligned specimens
-#'
-#' The function estimates the average landmark coordinates for a set of aligned specimens. It is assumed 
-#' that the landmarks have previously been aligned using Generalized Procrustes Analysis (GPA) 
-#'  [e.g., with \code{\link{gpagen}}]. This function is described in Claude (2008).
-#'
-#' @param A An array (p x k x n) containing GPA-aligned coordinates for a set of specimens
-#' @keywords utilities
-#' @export
-#' @author Julien Claude 
-#' @references Claude, J. 2008. Morphometrics with R. Springer, New York.
-#' @examples
-#' data(plethodon) 
-#' Y.gpa<-gpagen(plethodon$land)    #GPA-alignment   
-#'
-#' mshape(Y.gpa$coords)   #mean (consensus) configuration
-mshape<-function(A){apply(A,c(1,2),mean)}	
-
-
-# Write .nts file for output of digitize2d(), buildtemplate() digit.fixed() and digitsurface()
-# A is an nx2 or nx3 matrix of the output coordinates. To be used internally only.
 
 writeland.nts <- function(A, spec.name, comment=NULL){
   ntsfile=paste(spec.name,".nts",sep="")
