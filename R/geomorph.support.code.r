@@ -1479,6 +1479,41 @@ Effect.size.matrix <- function(M, center=F){
 # single.factor
 # converts factorial designs to single-factor variables
 # advanced.procD.lm
+
+# helpers for single.factor
+leveler <- function(x){ # x = data.frame of 2 columns
+  a <-levels(x[,1])
+  b <- levels(x[,2])
+  na <- length(a); nb <- length(b)
+  res <- NULL
+  for(i in 1:na){
+    ab <- c(a[i],b)
+    res <- c(res, combn(ab, 2, simplify=FALSE)[1:nb])
+  }
+  res <- lapply(res, paste, collapse=":")
+  simplify2array(res)
+}
+
+multileveler <- function(x){ # x = data.frame o2 2 or more columns
+  if(NCOL(x) == 1) y <-levels(x)
+  if(NCOL(x) == 2) y<- leveler(x)
+  if(NCOL(x) > 2){
+    a <- leveler(x[,1:2])
+    for(i in 3:NCOL(x)){
+      b <- levels(x[,i])
+      na <- length(a); nb <- length(b)
+      res <- NULL
+      for(i in 1:na){
+        ab <- c(a[i],b)
+        res <- c(res, combn(ab, 2, simplify=FALSE)[1:nb])
+      }
+      res <- lapply(res, paste, collapse=":")
+      a <- simplify2array(res)
+    }
+    y <- a
+  }
+  y
+}
 single.factor <- function(pfit) {# pfit = Procrustes fit
   Terms <- pfit$Terms
   dat <- pfit$data
@@ -1487,12 +1522,15 @@ single.factor <- function(pfit) {# pfit = Procrustes fit
   facs <- as.data.frame(facs)
   if(ncol(facs) > 1) fac <- factor(apply(facs, 1,function(x) paste(x, collapse=":"))) else 
     fac <- as.factor(unlist(facs))
-  fac
+  faclevels <- multileveler(facs)
+  factor(fac, levels=faclevels)
 }
 
 # cov.extract
 # Extacts covariates from design matrices
 # advanced.procD.lm
+
+
 cov.extract <- function(pfit) {
   Terms <- pfit$Terms
   vars <- na.omit(match(pfit$term.labels,colnames(pfit$data)))

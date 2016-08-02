@@ -1034,7 +1034,7 @@ pattern = c("white", "gray", "black"), pt.scale = 1, ...){ # TM = trajectories f
        xlab="PC I", ylab="PC II",
        main="Two Dimensional View  of Phenotypic Trajectories",asp=1)
   
-  if(is.null(group.cols)) gp.cols <- 1:n else gp.cols <- group.cols
+  if(is.null(group.cols)) gp.cols <- unique(as.numeric(groups)) else gp.cols <- group.cols
   if(length(gp.cols) != nlevels(groups)) 
       stop("group.cols is not logical with respect to group levels") 
   
