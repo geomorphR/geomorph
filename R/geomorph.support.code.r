@@ -2,7 +2,7 @@
 #' @docType package
 #' @aliases geomorph
 #' @title Geometric morphometric analyses for 2D/3D data
-#' @author Dean C. Adams, Michael Collyer, & Emma Sherratt
+#' @author Dean C. Adams, Michael Collyer, Antigoni Kaliontzopoulou & Emma Sherratt
 #' 
 #' @description Functions in this package allow one to read, manipulate, and digitize landmark data; generate shape
 #'  variables via Procrustes analysis for points, curves and surface data, perform statistical analyses
@@ -145,6 +145,32 @@ NULL
 #' @references Levis, N.A, M.L. Schooler, J.R. Johnson, and M.L. Collyer. 2016. The effects of terrestrial and aquatic herbicides on 
 #' larval salamander morphology and swim speed. Biological Journal of the Linnean Society.  Accepted.
 NULL
+
+#' Estimate mean shape for a set of aligned specimens
+#'
+#' Estimate the mean shape for a set of aligned specimens
+#'
+#' The function estimates the average landmark coordinates for a set of aligned specimens. It is assumed 
+#' that the landmarks have previously been aligned using Generalized Procrustes Analysis (GPA) 
+#'  [e.g., with \code{\link{gpagen}}]. This function is described in Claude (2008).
+#'
+#' @param A Either a list (length n, each p x k), an array (p x k x n), or a matrix (pk X n) containing GPA-aligned coordinates for a set of specimens
+#' @keywords utilities
+#' @export
+#' @author Julien Claude 
+#' @references Claude, J. 2008. Morphometrics with R. Springer, New York.
+#' @examples
+#' data(plethodon) 
+#' Y.gpa<-gpagen(plethodon$land)    #GPA-alignment   
+#'
+#' mshape(Y.gpa$coords)   #mean (consensus) configuration
+mshape<-function(A){
+  if(is.array(A)) res <- apply(A,c(1,2),mean)
+  if(is.list(A)) res <- Reduce("+", A)/length(A)
+  if(is.matrix(A)) res <- colMeans(A)
+  if(!is.array(A) && !is.list(A) && !is.matrix(A)) stop("There are not multiple configurations from which to obtain a mean.")
+  return(res)
+}	
 
 #####----------------------------------------------------------------------------------------------------
 
@@ -918,13 +944,13 @@ procD.fit <- function(f1, keep.order=FALSE, pca=TRUE, data=NULL,
       Y <- eval(form.in[[2]], parent.frame())
       dat <- model.frame(form.in[-2])
     }
-    
+    dat <- droplevels(dat)
     if(class(Y) == "dist") Y <- pcoa(Y) else
       if(length(dim(Y)) == 3)  Y <- two.d.array(Y) else 
         Y <- as.matrix(Y)
-      weights <- NULL
-      contrasts <- NULL
-      offset <- NULL
+    weights <- NULL
+    contrasts <- NULL
+    offset <- NULL
   }
   n <- nrow(Y)
   if(ncol(Y) > n & pca==TRUE){
@@ -1007,7 +1033,7 @@ procD.fit <- function(f1, keep.order=FALSE, pca=TRUE, data=NULL,
   term.labels <- attr(Terms, "term.labels")
   if(length(term.labels) > 0) mf.out <- model.frame(Terms, data= mf) else
     mf.out <- data.frame(Int = rep(1,n))
-  mf.out <- data.frame(Y=Y, mf.out)
+  mf.out <- droplevels(data.frame(Y=Y, mf.out))
   out <- list(Y=Y, wY=wY, X=X, Xs=Xs, wX=wX, wXs=wXs,
               QRs = QRs, wQRs=wQRs, fitted=fitted, wFitted=wFitted,
               residuals = residuals, wResiduals=wResiduals,
@@ -2545,6 +2571,18 @@ is.geomorph.data.frame <- function(x) class(x) == "geomorph.data.frame"
 
 #####-----------------------------------------------------------------------------------
 
+### geomorph-specific S3 for internal use (copies of base functions)
+
+droplevels.geomorph.data.frame <- function (x, except = NULL, ...) {
+  ix <- vapply(x, is.factor, NA)
+  if (!is.null(except)) 
+    ix[except] <- FALSE
+  x[ix] <- lapply(x[ix], factor)
+  x
+}
+
+#####-----------------------------------------------------------------------------------
+
 ### retained from old geomorph support code
 ### need to update and merge, or replace with new functions
 
@@ -2556,28 +2594,6 @@ scan.to.ref<-function(scandata,specland,refland){  	#DCA
 refscan.to.spec<-function(refscan,refland,specland){ 	#DCA
   unwarp.scan<-tps2d3d(refscan,refland,specland)
   unwarp.scan}
-
-
-#' Estimate mean shape for a set of aligned specimens
-#'
-#' Estimate the mean shape for a set of aligned specimens
-#'
-#' The function estimates the average landmark coordinates for a set of aligned specimens. It is assumed 
-#' that the landmarks have previously been aligned using Generalized Procrustes Analysis (GPA) 
-#'  [e.g., with \code{\link{gpagen}}]. This function is described in Claude (2008).
-#'
-#' @param A An array (p x k x n) containing GPA-aligned coordinates for a set of specimens
-#' @keywords utilities
-#' @export
-#' @author Julien Claude 
-#' @references Claude, J. 2008. Morphometrics with R. Springer, New York.
-#' @examples
-#' data(plethodon) 
-#' Y.gpa<-gpagen(plethodon$land)    #GPA-alignment   
-#'
-#' mshape(Y.gpa$coords)   #mean (consensus) configuration
-mshape<-function(A){apply(A,c(1,2),mean)}	
-
 
 # Write .nts file for output of digitize2d(), buildtemplate() digit.fixed() and digitsurface()
 # A is an nx2 or nx3 matrix of the output coordinates. To be used internally only.
