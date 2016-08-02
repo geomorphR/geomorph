@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 PENDING CHANGES IN GEOMORPH VERSION 3.0.3 (updated on Stable Branch of Github)
 
   NEW FEATURES
@@ -11,6 +12,21 @@ PENDING CHANGES IN GEOMORPH VERSION 3.0.3 (updated on Stable Branch of Github)
   BUG FIXES
     o 
     
+||||||| merged common ancestors
+=======
+PENDING CHANGES IN GEOMORPH VERSION 3.0.3 (updated on Stable Branch of Github)
+
+  NEW FEATURES
+    o droplevels.geomorph.data.frame added to support code
+
+  OTHER CHANGES
+    o Updated procD.fit to remove unused levels from factors.
+    o Updated all functions using geomorph.data.frame to drop unused factor levels
+    
+  BUG FIXES
+    o 
+    
+>>>>>>> b8441db32bfe552afec4518c84c460905ea2ebc5
 CHANGES IN GEOMORPH VERSION 3.0.2
 
   NEW FEATURES
