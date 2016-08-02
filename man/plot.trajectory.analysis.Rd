@@ -13,7 +13,7 @@
 \item{group.cols}{An optional vector of colors for group levels}
 
 \item{pt.seq.pattern}{The sequence of colors for starting, middle, and end points of 
-trajectories, respectivly.  E.g., c("green", "gray", "red") for gray points
+trajectories, respectively.  E.g., c("green", "gray", "red") for gray points
 but initial points with green color and end points with red color.}
 
 \item{pt.scale}{An optional value to magnify or reduce points (1 = no change)}
