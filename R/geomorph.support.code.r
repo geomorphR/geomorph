@@ -918,7 +918,7 @@ procD.fit <- function(f1, keep.order=FALSE, pca=TRUE, data=NULL,
       Y <- eval(form.in[[2]], parent.frame())
       dat <- model.frame(form.in[-2])
     }
-    
+    dat <- droplevels(dat)
     if(class(Y) == "dist") Y <- pcoa(Y) else
       if(length(dim(Y)) == 3)  Y <- two.d.array(Y) else 
         Y <- as.matrix(Y)
@@ -1007,7 +1007,7 @@ procD.fit <- function(f1, keep.order=FALSE, pca=TRUE, data=NULL,
   term.labels <- attr(Terms, "term.labels")
   if(length(term.labels) > 0) mf.out <- model.frame(Terms, data= mf) else
     mf.out <- data.frame(Int = rep(1,n))
-  mf.out <- data.frame(Y=Y, mf.out)
+  mf.out <- droplevels(data.frame(Y=Y, mf.out))
   out <- list(Y=Y, wY=wY, X=X, Xs=Xs, wX=wX, wXs=wXs,
               QRs = QRs, wQRs=wQRs, fitted=fitted, wFitted=wFitted,
               residuals = residuals, wResiduals=wResiduals,
