@@ -1495,7 +1495,8 @@ leveler <- function(x){ # x = data.frame of 2 columns
 }
 
 multileveler <- function(x){ # x = data.frame of 2 or more columns
-  if(NCOL(x) <= 1) y <- levels(x)
+  if(NCOL(x) == 0) y <- levels(x)
+  if(NCOL(x) == 1) y <- levels(x[,1])
   if(NCOL(x) == 2) y <- leveler(x)
   if(NCOL(x) > 2){
     a <- leveler(x[,1:2])
