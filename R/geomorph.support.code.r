@@ -1494,9 +1494,9 @@ leveler <- function(x){ # x = data.frame of 2 columns
   simplify2array(res)
 }
 
-multileveler <- function(x){ # x = data.frame o2 2 or more columns
-  if(NCOL(x) == 1) y <-levels(x)
-  if(NCOL(x) == 2) y<- leveler(x)
+multileveler <- function(x){ # x = data.frame of 2 or more columns
+  if(NCOL(x) <= 1) y <- levels(x)
+  if(NCOL(x) == 2) y <- leveler(x)
   if(NCOL(x) > 2){
     a <- leveler(x[,1:2])
     for(i in 3:NCOL(x)){
@@ -1512,8 +1512,9 @@ multileveler <- function(x){ # x = data.frame o2 2 or more columns
     }
     y <- a
   }
-  y
+  return(y)
 }
+
 single.factor <- function(pfit) {# pfit = Procrustes fit
   Terms <- pfit$Terms
   dat <- pfit$data
