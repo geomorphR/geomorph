@@ -1025,7 +1025,7 @@ summary.trajectory.analysis <- function(object,
 
 # general plotting functions for phenotypic trajectories
 trajplot.w.int<-function(Data, M, TM, groups, group.cols = NULL, 
-pattern = c("white", "gray", "black"), pt.scale = 1, ...){ # TM = trajectories from means
+                         pattern = c("white", "gray", "black"), pt.scale = 1, ...){ # TM = trajectories from means
   n <- length(TM); tp<-dim(TM[[1]])[1]; p<-dim(TM[[1]])[2]
   if(length(pattern) != 3) stop("Point sequence color pattern must contain three values")
   pmax <- max(Data[,1]); pmin <- min(Data[,1])
@@ -1034,9 +1034,9 @@ pattern = c("white", "gray", "black"), pt.scale = 1, ...){ # TM = trajectories f
        xlab="PC I", ylab="PC II",
        main="Two Dimensional View  of Phenotypic Trajectories",asp=1)
   
-  if(is.null(group.cols)) gp.cols <- 1:n else gp.cols <- group.cols
+  if(is.null(group.cols)) gp.cols <- unique(as.numeric(groups)) else gp.cols <- group.cols
   if(length(gp.cols) != nlevels(groups)) 
-      stop("group.cols is not logical with respect to group levels") 
+    stop("group.cols is not logical with respect to group levels") 
   
   points(Data[,1:2],pch=21,bg=pattern[2],cex=.75*pt.scale)
   # Sequence lines
@@ -1049,10 +1049,10 @@ pattern = c("white", "gray", "black"), pt.scale = 1, ...){ # TM = trajectories f
   for(i in 1:n){
     y <- TM[[i]]
     k <- nrow(y)
-      points(y[1,1], y[1,2], pch=21, cex=1.5*pt.scale, bg=pattern[1])
-      points(y[k,1], y[k,2], pch=21, cex=1.5*pt.scale, bg=pattern[3])
+    points(y[1,1], y[1,2], pch=21, cex=1.5*pt.scale, bg=pattern[1])
+    points(y[k,1], y[k,2], pch=21, cex=1.5*pt.scale, bg=pattern[3])
   }
-
+  
   legend("topleft", levels(groups), lwd=2, col=gp.cols)
 }
 

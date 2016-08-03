@@ -8,7 +8,7 @@ CHANGES IN GEOMORPH VERSION 3.0.3
     o Updated mshape to be used on lists, arrays, or matrices
     
   BUG FIXES
-    o 
+    o Fixed single.factor function to properly maintain factor levels when combining factors
 
 CHANGES IN GEOMORPH VERSION 3.0.2
 
