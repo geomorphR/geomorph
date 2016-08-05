@@ -35,10 +35,11 @@ An object of class "trajectory.analysis" returns a list of the following:
   \item{means}{The observed least squares means based on the linear model.}
   \item{pc.means}{The observed least squares means rotated to their principal components.}
   \item{pc.data}{The observed data rotated to the principal components calculated from the 
-  covariance matrix among means.  In the case that trajectories are input as data, pc.data is a matrix of
+  covariance matrix among means. In the case that trajectories are input as data, pc.data is a matrix of
    the trajectories rotated to align with principal axes in the data space.}
+  \item{pc.summary}{A table summarizing the percent variation explained by each pc axis, equivalent to summary of \code{\link{prcomp}}.}
   \item{pc.trajectories}{The observed trajectories rotated to the principal components calculated from the 
-  covariance matrix among means.  In the case that trajectories are input as data, pc.trajectories is a list of the
+  covariance matrix among means. In the case that trajectories are input as data, pc.trajectories is a list of the
   the rows of pc.data as separate matrices.}
   \item{random.means}{A list of matrices of means calculated in the random permutations.}
   \item{random.trajectories}{A list of all random means reconfigured as trajectories. The observed

@@ -111,7 +111,7 @@ f853ee03af261ca58337b72dc009d9cf *man/summary.pls.Rd
 d972b00a4b3fed99a8fc278953b7fde3 *man/summary.procD.allometry.Rd
 4318053b22cfc57f9196f6422bbc6c85 *man/summary.procD.lm.Rd
 eb75ac344ef00bf0d68816c1e9c74cfe *man/summary.trajectory.analysis.Rd
-2d937ca658ed1b2eb85ad7fba09ae336 *man/trajectory.analysis.Rd
+cbbc4031111f2bc62e2abac7f05c4a0a *man/trajectory.analysis.Rd
 e96c37b9aadabf2c8af65d9c4b282b89 *man/two.b.pls.Rd
 8044aab3a35f1dee1ff421bdf27b2d25 *man/two.d.array.Rd
 8653af77b4457ee283d6bbb2cf239c99 *man/warpRefMesh.Rd
@@ -165,7 +165,7 @@ e1cb306b0d2dd762ad291bddaf2366e8 *R/phylo.modularity.r
 b63e5e849d36c0a4d3bdb6bfd0e379f0 *R/readland.tps.r
 8b7193e5cbcdaf8153f3614834afc818 *R/readmulti.nts.r
 7ead5fc9ae7796bcdf52d279ccffc336 *R/shape.predictor.r
-c0dec0eb5dcf86a7f6c832d9c97c1ae6 *R/trajectory.analysis.r
+eee4aff6169ce5be5340bb92e68fe336 *R/trajectory.analysis.r
 8b4ee78567f5c05e98951619a589299a *R/two.b.pls.r
 cac4c94b232cb0da0e2faf26f9f07597 *R/two.d.array.r
 f1f5593a1b064ad5aca4a410be375edc *R/warpRefMesh.r
