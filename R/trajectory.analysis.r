@@ -255,7 +255,7 @@ trajectory.analysis <- function(f1, f2=NULL, iter=999, seed=NULL, traj.pts = NUL
               trajectory.angle.deg = Tang*180/pi,
               trajectory.shape.dist = SD,
               P.magnitude.diff = P.MD,
-              P.angle = P.angle,
+              P.angle.diff = P.angle,
               P.shape.diff = P.SD,
               Z.magnitude.diff = Z.MD,
               Z.angle = Z.angle,
