@@ -80,7 +80,22 @@ The input 'landmarks' can be simply a vector of numbers corresponding to the "sl
 }
 }
 \author{
-Emma Sherratt, Dean Adams, Erik Otarola-Castillo
+Emma Sherratt, Dean Adams, Erik Otarola-Castillo 
+#' @example 
+## (not run) Use interactive function in rgl window
+ # data(scallops)
+ # define.sliders(scallops$coorddata[,,1], nsliders=11,surfsliders = scallops$surfslide) 
+ 
+## Examples of AUTO mode 
+ ## 1 curve of sliding semilandmark
+ # Define sliders for scallopdata
+ sliders = define.sliders(c(5:16,1))
+
+ ## 2 curves of sliding semilandmarks
+ # Define sliders for 10 landmarks, where LMs 1, 5, and 10 fixed
+ # 2, 3, and 4 are along a curve between 1 and 5
+ # and 6, 7, 8, and 9 are along a curve between 5 and 10.
+ sliders = rbind(define.sliders(1:5), define.sliders(5:10))
 }
 \references{
 Bookstein, F. J. 1997 Landmark Methods for Forms without Landmarks: Morphometrics of 
