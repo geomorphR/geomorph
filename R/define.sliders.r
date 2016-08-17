@@ -90,19 +90,22 @@
 define.sliders<-function(landmarks, nsliders, surfsliders=NULL, write.file = TRUE) {
   checkmat <- is.matrix(landmarks)
   if (checkmat==FALSE) { 
-    if(length(dim(landmarks)) == 3){stop("'landmarks' should be the shape matrix of a single specimen") }
-    nsliders <- length(landmarks)
-    CV <- matrix(NA, ncol=3, nrow=nsliders-2)
-    for (i in 1:(nsliders-2)){
-      CV[i,] <- landmarks[1:3]
-      landmarks <- landmarks[-1] }
-    colnames(CV)<-c("before","slide","after")
-    if(write.file == TRUE){write.table(CV,file="curveslide.csv",row.names=FALSE,col.names=TRUE,sep=",")}
-    return(CV)
+    if(length(dim(landmarks) == 3)){ spec <- as.matrix(landmarks[,,1]) }
+    # Auto Mode
+    if(is.null(dim(landmarks))){
+      nsliders <- length(landmarks)
+      CV <- matrix(NA, ncol=3, nrow=nsliders-2)
+      for (i in 1:(nsliders-2)){
+        CV[i,] <- landmarks[1:3]
+        landmarks <- landmarks[-1] }
+      colnames(CV)<-c("before","slide","after")
+      if(write.file == TRUE){write.table(CV,file="curveslide.csv",row.names=FALSE,col.names=TRUE,sep=",")}
+      return(CV)
+    }
   }
   if (checkmat == TRUE) { spec <- landmarks }
   checkdim <- dim(spec)[2]
-  # 2D routine
+  # 2D interactive routine
   if (checkdim==2) {
     plot(spec[,1],spec[,2],cex=1,pch=21,bg="white",xlim=range(spec[,1]),ylim=range(spec[,2]),asp=1)
     text(spec[,1],spec[,2],label=paste(1:dim(spec)[1]),adj=.5,pos=4)
@@ -130,14 +133,14 @@ define.sliders<-function(landmarks, nsliders, surfsliders=NULL, write.file = TRU
     if(write.file == TRUE){write.table(selected,file="curveslide.csv",row.names=FALSE,col.names=TRUE,sep=",")}
     return(selected)
   }
-  # 3D routine
+  # 3D interactive routine
   if (checkdim==3) {
     rownames(spec) <- c(1:nrow(spec)) 
     if(!is.null(surfsliders)){
-    if(is.logical(surfsliders)){
-      surf <- as.matrix(read.csv("surfslide.csv", header=T))
-      spec <- spec[-surf,]} else     
-    spec <- spec[-surfsliders,]
+      if(is.logical(surfsliders)){
+        surf <- as.matrix(read.csv("surfslide.csv", header=T))
+        spec <- spec[-surf,]} else     
+          spec <- spec[-surfsliders,]
     }
     n <- dim(spec)[1]
     index <- as.numeric(rownames(spec))
@@ -169,5 +172,5 @@ define.sliders<-function(landmarks, nsliders, surfsliders=NULL, write.file = TRU
     colnames(curveslide)<-c("before","slide","after")
     if(write.file == TRUE){write.table(curveslide,file="curveslide.csv",row.names=FALSE,col.names=TRUE,sep=",")}
     return(curveslide)  
-}
+  }
 }
