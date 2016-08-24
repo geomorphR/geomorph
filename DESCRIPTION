@@ -12,6 +12,7 @@ Description: Read, manipulate, and digitize landmark data, generate shape
     shape analyses, and provide graphical depictions of shapes and patterns of
     shape variation.
 License: GPL (>= 2)
+URL: http://geomorphr.github.io/geomorph/
 Packaged: 2016-01-26 08:44:02 UTC; Dean
 Repository: CRAN
 Date/Publication: 2015-12-15 00:00:00
