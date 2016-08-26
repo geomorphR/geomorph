@@ -1771,9 +1771,12 @@ pls <- function(x,y, RV=FALSE, verbose = FALSE){
 quick.pls <- function(x,y) {# no RV; no verbose output
   # assume parameters already found and assume x and y are centered
   S12 <- crossprod(x,y)/(dim(x)[1] - 1)
-  pls <- La.svd(S12, 1, 1)
-  U<-pls$u; V <- as.vector(pls$vt)
-  cor(x%*%U,y%*%V)
+  if(length(S12) == 1) res <- cor(x,y) else {
+    pls <- La.svd(S12, 1, 1)
+    U<-pls$u; V <- as.vector(pls$vt)
+    res <- cor(x%*%U,y%*%V)
+  }
+  res
 }
 
 # apply.pls 
