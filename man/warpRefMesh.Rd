@@ -39,6 +39,7 @@ specimen - do this by eye, or use \code{\link{findMeanSpec}} }
 \item{Warp this specimen into the mean shape using \code{\link{warpRefMesh}} }
 \item{Use this average mesh where it asks for a mesh= in the analysis functions and visualization functions  }
 }
+Users should ensure that their mesh and mesh.coord matrix are in the same scale (a common issue is that the mesh is in micrometers and coordinates are in mm or cm). Use range(mesh$vb[1:3,]) and range(mesh.coord) to check and adjust mesh.coord as necessary.
 
 For landmark coordinates digitized with geomorph digitizing functions, centered = TRUE. This refers to the
 specimen being centered prior to landmark acquisition in the RGL window. For landmark data collected outside

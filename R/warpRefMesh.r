@@ -16,6 +16,7 @@
 #' \item{Warp this specimen into the mean shape using \code{\link{warpRefMesh}} }
 #' \item{Use this average mesh where it asks for a mesh= in the analysis functions and visualization functions  }
 #' }
+#' Users should ensure that their mesh and mesh.coord matrix are in the same scale (a common issue is that the mesh is in micrometers and coordinates are in mm or cm). Use range(mesh$vb[1:3,]) and range(mesh.coord) to check and adjust mesh.coord as necessary.
 #' 
 #' For landmark coordinates digitized with geomorph digitizing functions, centered = TRUE. This refers to the
 #' specimen being centered prior to landmark acquisition in the RGL window. For landmark data collected outside
@@ -41,7 +42,7 @@
 warpRefMesh <- function(mesh, mesh.coord, ref, color=NULL, centered=FALSE){
   if (inherits(mesh, "mesh3d") == FALSE){
     stop ("File is not a mesh3d object or xyz matrix") }
-  open3d(); shade3d(mesh) ; title3d(main="Imported Mesh")
+  plotspec(mesh, mesh.coord, centered) ; title3d(main="Imported Mesh")
   mesh.vb <- as.matrix(t(mesh$vb)[,-4])
     if (centered == TRUE){ mesh.vb <- scale(mesh.vb, scale = FALSE) }
   checkmat <- is.matrix(mesh.coord)
