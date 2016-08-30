@@ -9,7 +9,7 @@ d8e8360c03c03fe45d2100e9c05d4a89 *data/plethodon.rda
 80c6fa53b642b23b378cf036d1b962f1 *data/ratland.rda
 9ba51ab9be03930a4acdcddde8169b33 *data/scallopPLY.rda
 6e5e71b242462e422b716800ffc3c464 *data/scallops.rda
-7329efe3156cbc36286ed8ef68c98794 *DESCRIPTION
+81ebffdeab8055404aedad62add8efb5 *DESCRIPTION
 32e740499950300161ec5b9a73a46d8d *geomorph.Rproj
 4bdde5c74d5d5ead8f87cd70b9f91250 *inst/CITATION
 d17bcbd7cead787698ef27706205cdff *man/advanced.procD.lm.Rd
@@ -166,7 +166,7 @@ f2a4a49547e28b46e0609d537156dc15 *R/readland.nts.r
 eee4aff6169ce5be5340bb92e68fe336 *R/trajectory.analysis.r
 8b4ee78567f5c05e98951619a589299a *R/two.b.pls.r
 cac4c94b232cb0da0e2faf26f9f07597 *R/two.d.array.r
-a2264d43e2a91c27eff12ef39cc2bd22 *R/warpRefMesh.r
+03ff0885609739dd6a42d0850575cc6c *R/warpRefMesh.r
 59d493f9cc61f036c40f49bf8b7bb3e0 *R/warpRefOutline.r
 d04371a474d97a6f7b09269f529f60bb *R/writeland.tps.r
 3d2f64489f95adcca65d8dccc8c6fb08 *README.md
