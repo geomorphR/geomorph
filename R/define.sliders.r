@@ -69,25 +69,43 @@
 #' @keywords utilities
 #' @seealso  \code{\link{digitize2d}}, \code{\link{digit.fixed}}, \code{\link{gpagen}}, \code{\link{digit.curves}}
 #' @author Emma Sherratt, Dean Adams, Erik Otarola-Castillo 
+#' #' @example 
+#' ## (not run) Use interactive function in rgl window
+#'  # data(scallops)
+#'  # define.sliders(scallops$coorddata[,,1], nsliders=11,surfsliders = scallops$surfslide) 
+#'  
+#' ## Examples of AUTO mode 
+#'  ## 1 curve of sliding semilandmark
+#'  # Define sliders for scallopdata
+#'  sliders = define.sliders(c(5:16,1))
+#' 
+#'  ## 2 curves of sliding semilandmarks
+#'  # Define sliders for 10 landmarks, where LMs 1, 5, and 10 fixed
+#'  # 2, 3, and 4 are along a curve between 1 and 5
+#'  # and 6, 7, 8, and 9 are along a curve between 5 and 10.
+#'  sliders = rbind(define.sliders(1:5), define.sliders(5:10)) 
 #' @references Bookstein, F. J. 1997 Landmark Methods for Forms without Landmarks: Morphometrics of 
 #' Group Differences in Outline Shape. Medical Image Analysis 1(3):225-243.
 
 define.sliders<-function(landmarks, nsliders, surfsliders=NULL, write.file = TRUE) {
   checkmat <- is.matrix(landmarks)
   if (checkmat==FALSE) { 
-    if(length(dim(landmarks)) == 3){stop("'landmarks' should be the shape matrix of a single specimen") }
-    nsliders <- length(landmarks)
-    CV <- matrix(NA, ncol=3, nrow=nsliders-2)
-    for (i in 1:(nsliders-2)){
-      CV[i,] <- landmarks[1:3]
-      landmarks <- landmarks[-1] }
-    colnames(CV)<-c("before","slide","after")
-    if(write.file == TRUE){write.table(CV,file="curveslide.csv",row.names=FALSE,col.names=TRUE,sep=",")}
-    return(CV)
+    if(length(dim(landmarks) == 3)){ spec <- as.matrix(landmarks[,,1]) }
+    # Auto Mode
+    if(is.null(dim(landmarks))){
+      nsliders <- length(landmarks)
+      CV <- matrix(NA, ncol=3, nrow=nsliders-2)
+      for (i in 1:(nsliders-2)){
+        CV[i,] <- landmarks[1:3]
+        landmarks <- landmarks[-1] }
+      colnames(CV)<-c("before","slide","after")
+      if(write.file == TRUE){write.table(CV,file="curveslide.csv",row.names=FALSE,col.names=TRUE,sep=",")}
+      return(CV)
+    }
   }
   if (checkmat == TRUE) { spec <- landmarks }
   checkdim <- dim(spec)[2]
-  # 2D routine
+  # 2D interactive routine
   if (checkdim==2) {
     plot(spec[,1],spec[,2],cex=1,pch=21,bg="white",xlim=range(spec[,1]),ylim=range(spec[,2]),asp=1)
     text(spec[,1],spec[,2],label=paste(1:dim(spec)[1]),adj=.5,pos=4)
@@ -115,7 +133,7 @@ define.sliders<-function(landmarks, nsliders, surfsliders=NULL, write.file = TRU
     if(write.file == TRUE){write.table(selected,file="curveslide.csv",row.names=FALSE,col.names=TRUE,sep=",")}
     return(selected)
   }
-  # 3D routine
+  # 3D interactive routine
   if (checkdim==3) {
     rownames(spec) <- c(1:nrow(spec)) 
     if(!is.null(surfsliders)){
