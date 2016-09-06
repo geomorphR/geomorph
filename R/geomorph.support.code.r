@@ -1128,6 +1128,9 @@ SS.iter = function(pfit,iter, seed = NULL, Yalt="RRPP", SS.type= NULL){
     Ur <- lapply(pfit$wQRs[1:(k-1)], function(x) qr.Q(x))
     Uf <- lapply(pfit$wQRs[2:k], function(x) qr.Q(x))
   }
+  q <- qr(Xf)$rank
+  if(q/n > 0.4) Pr <- Map(function(uf,ur) tcrossprod(uf) - tcrossprod(ur), Uf, Ur) else
+    Pr <- NULL
   ind = perm.index(n,iter, seed=seed)
   SS <- NULL
   pb <- txtProgressBar(min = 0, max = ceiling(iter/100), initial = 0, style=3) 
@@ -1148,6 +1151,11 @@ SS.iter = function(pfit,iter, seed = NULL, Yalt="RRPP", SS.type= NULL){
           Yr = Map(function(x) Map(function(y) (y[x,])*sqrt(w), lapply(1:(k-1),function(.) Y)),ind.j)
         }
       }
+    if(!is.null(Pr)) {
+      SS.temp <- lapply(1:length(j), function(j){ 
+        mapply(function(p,y) sum((p%*%y)^2), 
+               Pr,Yr[[j]])})
+    } else
     SS.temp <- lapply(1:length(j), function(j){ 
       mapply(function(ur,uf,y) sum((fastFit(uf,y,n,p) - fastFit(ur,y,n,p))^2), 
              Ur, Uf,Yr[[j]])})
@@ -1183,6 +1191,9 @@ SS.iter = function(pfit,iter, seed = NULL, Yalt="RRPP", SS.type= NULL){
     Ur <- lapply(pfit$wQRs[1:(k-1)], function(x) qr.Q(x))
     Uf <- lapply(pfit$wQRs[2:k], function(x) qr.Q(x))
   }
+  q <- qr(Xf)$rank
+  if(q/n > 0.4) Pr <- Map(function(uf,ur) tcrossprod(uf) - tcrossprod(ur), Uf, Ur) else
+    Pr <- NULL
   ind = perm.index(n,iter, seed=seed)
   SS <- NULL
   jj <- iter+1
@@ -1202,9 +1213,14 @@ SS.iter = function(pfit,iter, seed = NULL, Yalt="RRPP", SS.type= NULL){
         }
       }
     
-    SS.temp <- lapply(1:length(j), function(j){ 
-      mapply(function(ur,uf,y) sum((fastFit(uf,y,n,p) - fastFit(ur,y,n,p))^2), 
-             Ur, Uf,Yr[[j]])})
+    if(!is.null(Pr)) {
+      SS.temp <- lapply(1:length(j), function(j){ 
+        mapply(function(p,y) sum((p%*%y)^2), 
+               Pr,Yr[[j]])})
+    } else
+      SS.temp <- lapply(1:length(j), function(j){ 
+        mapply(function(ur,uf,y) sum((fastFit(uf,y,n,p) - fastFit(ur,y,n,p))^2), 
+               Ur, Uf,Yr[[j]])})
     SS <- c(SS, SS.temp)
     jj <- jj-length(j)
     if(jj > 100) kk <- 1:100 else kk <- 1:jj
