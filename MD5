@@ -121,7 +121,7 @@ e96c37b9aadabf2c8af65d9c4b282b89 *man/two.b.pls.Rd
 a608d75e0f84eaaacefeca646cb86bd2 *NEWS
 63072df79617d56f8eeefc9aff050633 *R/advanced.procD.lm.r
 c3bf88c10dcae2eb5430025e36867d98 *R/arrayspecs.r
-d8b55387303ebe17071d67505c585c7d *R/bilat.symmetry.r
+816a0a67e51b6b5f189b02c611fe855d *R/bilat.symmetry.r
 14713bbb2ad126d777d95e359c71bf1a *R/build.template.r
 cf28d567f0973920940ea94f65d66954 *R/compare.evol.rates.r
 27ef2a66d8ead85ab20cb8faf0dd717d *R/compare.multi.evol.rates.r
@@ -138,7 +138,7 @@ ddff41e987eac54d3500e2313799c3c6 *R/digitize2d.r
 da56107aec80b7583dc4a6b841b30c74 *R/findMeanSpec.r
 1e71d260e79093bb0d36f6ded44dd437 *R/fixed.angle.r
 203177efc30cc6fef4bd604b2fc2af01 *R/geomorph.data.frame.r
-24aa74bfa653a0095dd300c68de97c1f *R/geomorph.support.code.r
+492faf31d08739a2df0f5577e445fc97 *R/geomorph.support.code.r
 89e9903ca49bdfc3cfc0b6c2493c5196 *R/geomorph.utils.r
 0d9d88147f22cff2241b6e2e7396d57f *R/globalIntegration.r
 66d5ab19ac37f42838b211ff99a1c48c *R/gpagen.r
