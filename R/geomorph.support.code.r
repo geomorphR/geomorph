@@ -1128,16 +1128,9 @@ SS.iter = function(pfit,iter, seed = NULL, Yalt="RRPP", SS.type= NULL){
     Ur <- lapply(pfit$wQRs[1:(k-1)], function(x) qr.Q(x))
     Uf <- lapply(pfit$wQRs[2:k], function(x) qr.Q(x))
   }
-<<<<<<< HEAD
   q <- qr(Xf)$rank
   if(q/n > 0.4) Pr <- Map(function(uf,ur) tcrossprod(uf) - tcrossprod(ur), Uf, Ur) else
     Pr <- NULL
-||||||| merged common ancestors
-=======
-  q <- qr(Xf)$rank
-  if(q/n > 0.3) Pr <- Map(function(uf,ur) tcrossprod(uf) - tcrossprod(ur), Uf, Ur) else
-    Pr <- NULL
->>>>>>> fcf1b2d451b12a64e3c9ade3c5233a64e36952c0
   ind = perm.index(n,iter, seed=seed)
   SS <- NULL
   pb <- txtProgressBar(min = 0, max = ceiling(iter/100), initial = 0, style=3) 
@@ -1198,16 +1191,9 @@ SS.iter = function(pfit,iter, seed = NULL, Yalt="RRPP", SS.type= NULL){
     Ur <- lapply(pfit$wQRs[1:(k-1)], function(x) qr.Q(x))
     Uf <- lapply(pfit$wQRs[2:k], function(x) qr.Q(x))
   }
-<<<<<<< HEAD
   q <- qr(Xf)$rank
   if(q/n > 0.4) Pr <- Map(function(uf,ur) tcrossprod(uf) - tcrossprod(ur), Uf, Ur) else
     Pr <- NULL
-||||||| merged common ancestors
-=======
-  q <- qr(Xf)$rank
-  if(q/n > 0.3) Pr <- Map(function(uf,ur) tcrossprod(uf) - tcrossprod(ur), Uf, Ur) else
-    Pr <- NULL
->>>>>>> fcf1b2d451b12a64e3c9ade3c5233a64e36952c0
   ind = perm.index(n,iter, seed=seed)
   SS <- NULL
   jj <- iter+1
