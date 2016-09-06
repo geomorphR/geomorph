@@ -1224,16 +1224,19 @@ Fpgls.iter = function(pfit,Pcor,iter, seed=NULL, Yalt="RRPP"){
   E <- pfit$residuals
   w<- pfit$weights
   wQRs <- pfit$wQRs
-  dfE <- sapply(1:k, function(j) wQRs[[j]]$rank)
-  df <- dfE[-1] - dfE[1:(k-1)]
+  q <- sapply(1:k, function(j) wQRs[[j]]$rank)
+  df <- q[-1] - q[1:(k-1)]
+  q <- q[length(q)]
   Pcor <- Pcor[rownames(Y),rownames(Y)]
   PwXs <- lapply(pfit$wXs, function(x) crossprod(Pcor,as.matrix(x)))
   Xr <- lapply(PwXs[1:(k-1)], function(x) as.matrix(x))
   Xf <- lapply(PwXs[2:k], function(x) as.matrix(x))
   Ur <- lapply(Xr, function(x) qr.Q(qr(x)))
   Uf <- lapply(Xf, function(x) qr.Q(qr(x)))
-  Ptransr <- lapply(Ur, function(x) tcrossprod(x)%*%Pcor)
-  Ptransf <- lapply(Uf, function(x) tcrossprod(x)%*%Pcor)
+  if(p > n) Ptransr <- lapply(Ur, function(x) tcrossprod(x)%*%Pcor) else
+    Ptransr <- lapply(Ur, function(x) x%*%crossprod(x,Pcor)) 
+  if(p > n) Ptransf <- lapply(Uf, function(x) tcrossprod(x)%*%Pcor) else
+    Ptransf <- lapply(Uf, function(x) x%*%crossprod(x,Pcor)) 
   Ptrans <- Map(function(r,f) f-r, Ptransr, Ptransf)
   ind = perm.index(n,iter, seed=seed)
   SS <- SSEs <-Fs <- NULL
@@ -1258,7 +1261,7 @@ Fpgls.iter = function(pfit,Pcor,iter, seed=NULL, Yalt="RRPP"){
     SS.temp <- lapply(1:length(j), function(j){ 
       mapply(function(p,y) sum((p%*%y)^2), Ptrans,Yr[[j]])})
     SSEs.temp <- Map(function(y) sum((Pcor%*%y[[k-1]]-Ptransf[[k-1]]%*%y[[k-1]])^2), Yr)
-    Fs.temp <- Map(function(s1,s2) (s1/df)/(s2/(n-k)), SS.temp, SSEs.temp)
+    Fs.temp <- Map(function(s1,s2) (s1/df)/(s2/(n-q)), SS.temp, SSEs.temp)
     SS <- c(SS,SS.temp)
     SSEs <- c(SSEs,SSEs.temp)
     Fs <- c(Fs,Fs.temp)
@@ -1283,16 +1286,19 @@ Fpgls.iter = function(pfit,Pcor,iter, seed=NULL, Yalt="RRPP"){
   E <- pfit$residuals
   w<- pfit$weights
   wQRs <- pfit$wQRs
-  dfE <- sapply(1:k, function(j) wQRs[[j]]$rank)
-  df <- dfE[-1] - dfE[1:(k-1)]
+  q <- sapply(1:k, function(j) wQRs[[j]]$rank)
+  df <- q[-1] - q[1:(k-1)]
+  q <- q[length(q)]
   Pcor <- Pcor[rownames(Y),rownames(Y)]
   PwXs <- lapply(pfit$wXs, function(x) crossprod(Pcor,as.matrix(x)))
   Xr <- lapply(PwXs[1:(k-1)], function(x) as.matrix(x))
   Xf <- lapply(PwXs[2:k], function(x) as.matrix(x))
   Ur <- lapply(Xr, function(x) qr.Q(qr(x)))
   Uf <- lapply(Xf, function(x) qr.Q(qr(x)))
-  Ptransr <- lapply(Ur, function(x) tcrossprod(x)%*%Pcor)
-  Ptransf <- lapply(Uf, function(x) tcrossprod(x)%*%Pcor)
+  if(p > n) Ptransr <- lapply(Ur, function(x) tcrossprod(x)%*%Pcor) else
+    Ptransr <- lapply(Ur, function(x) x%*%crossprod(x,Pcor)) 
+  if(p > n) Ptransf <- lapply(Uf, function(x) tcrossprod(x)%*%Pcor) else
+    Ptransf <- lapply(Uf, function(x) x%*%crossprod(x,Pcor)) 
   Ptrans <- Map(function(r,f) f-r, Ptransr, Ptransf)
   ind = perm.index(n,iter, seed=seed)
   SS <- SSEs <-Fs <- NULL
@@ -1315,7 +1321,7 @@ Fpgls.iter = function(pfit,Pcor,iter, seed=NULL, Yalt="RRPP"){
     SS.temp <- lapply(1:length(j), function(j){ 
       mapply(function(p,y) sum((p%*%y)^2), Ptrans,Yr[[j]])})
     SSEs.temp <- Map(function(y) sum(fastLM(Uf[[k-1]],Pcor%*%y[[k-1]])$residuals^2), Yr)
-    Fs.temp <- Map(function(s1,s2) (s1/df)/(s2/(n-k)), SS.temp, SSEs.temp)
+    Fs.temp <- Map(function(s1,s2) (s1/df)/(s2/(n-q)), SS.temp, SSEs.temp)
     SS <- c(SS,SS.temp)
     SSEs <- c(SSEs,SSEs.temp)
     Fs <- c(Fs,Fs.temp)
@@ -1770,9 +1776,12 @@ pls <- function(x,y, RV=FALSE, verbose = FALSE){
 quick.pls <- function(x,y) {# no RV; no verbose output
   # assume parameters already found and assume x and y are centered
   S12 <- crossprod(x,y)/(dim(x)[1] - 1)
-  pls <- La.svd(S12, 1, 1)
-  U<-pls$u; V <- as.vector(pls$vt)
-  cor(x%*%U,y%*%V)
+  if(length(S12) == 1) res <- cor(x,y) else {
+    pls <- La.svd(S12, 1, 1)
+    U<-pls$u; V <- as.vector(pls$vt)
+    res <- cor(x%*%U,y%*%V)
+  }
+  res
 }
 
 # apply.pls 
