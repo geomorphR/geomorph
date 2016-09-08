@@ -14,7 +14,7 @@
 #' data(pupfish) 
 #' group <- factor(paste(pupfish$Pop, pupfish$Sex))
 #' levels(group)
-#' subset.coords(A = pupfish$coords, group = group)
+#' coords.subset(A = pupfish$coords, group = group)
 #'
 coords.subset <- function(A, group){
   dims <- dim(A)

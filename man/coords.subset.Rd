@@ -22,7 +22,7 @@ results is a list of separate sets of landmarks.
 data(pupfish) 
 group <- factor(paste(pupfish$Pop, pupfish$Sex))
 levels(group)
-subset.coords(A = pupfish$coords, group = group)
+coords.subset(A = pupfish$coords, group = group)
 
 }
 \author{
