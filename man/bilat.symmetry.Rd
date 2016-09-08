@@ -9,7 +9,9 @@ bilat.symmetry(A, ind = NULL, side = NULL, replicate = NULL,
   seed = NULL, RRPP = TRUE, print.progress = TRUE)
 }
 \arguments{
-\item{A}{An array (p x k x n) containing the landmark coordinates for a set of specimens [for "object.sym=FALSE, A is of dimension (n x k x 2n)]}
+\item{A}{Either an array (p x k x n) containing raw landmarks (requiring GPA to be performed) or a gpagen object (if GPA has been previously performed).  If one 
+wishes to incorporate semilandmarks, GPA should be performed first using \code{\link{gpagen}}.  Otherwise, bilat.symmetry can perform the initial GPA, assuming all landmarks
+are fixed.  For "object.sym = FALSE, landmarks should be of dimension (p x k x 2n), as each specimen is represented by both left and right configurations.}
 
 \item{ind}{A vector containing labels for each individual. For matching symmetry, the matched pairs receive the same 
 label (replicates also receive the same label).}
@@ -42,7 +44,7 @@ An object of class "bilat.symmetry" returns a list of the following
 \item{shape.anova}{An analysis of variance table for the shape data.}
 \item{size.anova}{An analysis of variance table for the shape data (when object.sym=FALSE).}
 \item{symm.shape}{The symmetric component of shape variation.}
-\item{asymm.shape}{The asymmetric component of shape variation.}
+\item{asym.shape}{The asymmetric component of shape variation.}
 \item{DA.component}{The directional asymmetry component, found as the mean shape for each side.}
 \item{FA.component}{The fluctuating asymmetry component for each specimen, found as the specimen-specific side deviation adjusted for the mean
  directional asymmetry in the dataset.}
@@ -57,62 +59,54 @@ An object of class "bilat.symmetry" returns a list of the following
 Function performs an analysis of directional and fluctuating asymmetry for bilaterally symmetric objects
 }
 \details{
-The function quantifies components of shape variation for a set of specimens as described by 
-their patterns of symmetry and asymmetry. Here, shape variation is decomposed into variation 
-among individuals, variation among sides (directional asymmetry), and variation due to an 
-individual x side interaction (fluctuating symmetry). These components are then statistically 
-evaluated using Procrustes ANOVA. Statistical assessment of model effects for shape variation 
-is accomplished using permutation procedures. Methods for both matching symmetry and object 
-symmetry can be implemented. Matching symmetry is when each object contains mirrored 
- pairs of structures (e.g., right and left hands) while object symmetry is when a single 
- object is symmetric about a midline (e.g., right and left sides of human faces). Details 
- on general approaches for the study of symmetry in geometric 
- morphometrics may be found in: Mardia et al. 2000; Klingenberg et al. 2002.
+The function quantifies components of shape variation for a set of specimens as described by their patterns of symmetry
+ and asymmetry. Here, shape variation is decomposed into variation among individuals, variation among sides (directional 
+ asymmetry), and variation due to an individual x side interaction (fluctuating symmetry). These components are then 
+ statistically evaluated using Procrustes ANOVA. Statistical assessment of model effects for shape variation is accomplished using permutation procedures. 
+ Methods for both matching symmetry and object symmetry can be implemented. Matching symmetry is when each object contains mirrored 
+ pairs of structures (e.g., right and left hands) while object symmetry is when a single object is symmetric 
+ about a midline (e.g., right and left sides of human faces). Details on general approaches for the study of symmetry in geometric 
+ morphometrics may be found in: Mardia et al. 2000; Klingenberg et al. 2002. 
  
-Analyses of symmetry for matched pairs of objects is implemented when {object.sym=FALSE}. Here, 
-a 3D array [p x k x 2n] contains the landmark coordinates for all pairs of structures 
-(2 structures for each of n specimens). Because the two sets of structures are on opposite sides, 
-they represent mirror images, and one set must be reflected prior to the analysis to 
- allow landmark correspondence. IT IS ASSUMED THAT THE USER HAS DONE THIS PRIOR TO 
- PERFORMING THE SYMMETRY ANALYSIS. Reflecting a set of specimens may be accomplished by 
- multiplying one coordinate dimension by '-1' for these structures (either the x-, the y-, or 
- the z-dimension). A vector containing information on individuals and sides must also be supplied. 
- Replicates of each specimen may also be included in the dataset, and when specified will be 
+ As input, the function receives either an array (p x k x n) containing raw landmarks (requiring 
+ GPA to be performed) or a gpagen object (if GPA has been previously performed). If one wishes 
+ to incorporate semilandmarks, GPA should be performed first using gpagen. Otherwise, 
+ bilat.symmetry can perform the initial GPA, assuming all landmarks are fixed. For 
+ "object.sym = FALSE, landmarks should be of dimension (p x k x 2n), as each specimen is 
+ represented by both left and right configurations.
+   
+Analyses of symmetry for matched pairs of objects is implemented when {object.sym=FALSE}. Here, a 3D array [p x k x 2n] 
+ contains the landmark coordinates for all pairs of structures (2 structures for each of n specimens). Because the two sets of 
+ structures are on opposite sides, they represent mirror images, and one set must be reflected prior to the analysis to 
+ allow landmark correspondence. IT IS ASSUMED THAT THE USER HAS DONE THIS PRIOR TO PERFORMING THE SYMMETRY ANALYSIS. 
+ Reflecting a set of specimens may be accomplished by multiplying one coordinate dimension 
+ by '-1' for these structures (either the x-, the y-, or the z-dimension). A vector containing information on individuals 
+ and sides must also be supplied. Replicates of each specimen may also be included in the dataset, and when specified will be 
  used as measurement error (see Klingenberg and McIntyre 1998).
 
-Analyses of object symmetry is implemented when {object.sym=TRUE}. Here, a 3D array [p x k x n] 
-contains the landmark coordinates for all n specimens. To obtain information about asymmetry, the 
-function generates a second set of objects by reflecting them about one of their coordinate axes. 
-The landmarks across the line of symmetry are then relabeled to obtain landmark correspondence. 
-The user must supply a list of landmark pairs. A vector containing information on individuals 
- must also be supplied. Replicates of each specimen may also be included in the dataset, and 
- when specified will be used as measurement error. 
- 
- For both matching and object symmetry, output includes estimates of the symmetric and asymmetric 
- shape components for each specimen, as well as the fluctuating shape component for each specimen.
- In all cases, specimen names for the output are based on the vector that specifies individuals.
+Analyses of object symmetry is implemented when {object.sym=TRUE}. Here, a 3D array [p x k x n] contains the landmark 
+ coordinates for all n specimens. To obtain information about asymmetry, the function generates a second set of objects 
+ by reflecting them about one of their coordinate axes. The landmarks across the line of symmetry are then relabeled to obtain
+ landmark correspondence. The user must supply a list of landmark pairs. A vector containing information on individuals 
+ must also be supplied. Replicates of each specimen may also be included in the dataset, and when specified will be 
+ used as measurement error. 
  
   \subsection{Notes for geomorph 3.0}{ 
- Compared to older versions of geomorph, some results can be expected to be slightly different.  
- Starting with geomorph 3.0, results use only type I sums of squares (SS) with either full 
- randomization of raw shape values or RRPP (preferred with nested terms) for analysis of variance 
- (ANOVA).  Older versions used a combination of parametric and non-parametric results, as well 
- as a combination of type I and type III SS.  While analytical conclusions should be consistent 
- (i.e., "significance" of effects is the same), these updates maintain consistency in analytical 
- philosophy.  This change will require longer computation time for large datasets, but the trade-off
+ Compared to older versions of geomorph, some results can be expected to be slightly different.  Starting with geomorph 3.0,
+ results use only type I sums of squares (SS) with either full randomization of raw shape values or RRPP (preferred with nested terms)
+ for analysis of variance (ANOVA).  Older versions used a combination of parametric and non-parametric results, as well as a combination
+ of type I and type III SS.  While analytical conclusions should be consistent (i.e., "significance" of effects is the same), these
+ updates maintain consistency in analytical philosophy.  This change will require longer computation time for large datasets, but the trade-off
  allows users to have more flexibility and eliminates combining disparate analytical philosophies. 
  
- Note also that significance of terms in the model are found by comparing F-values for each term 
- to those obtained via permutation.  F-ratios and df are not strictly necessary (a ratio of SS 
- would suffice), but they are reported as is standard for anova tables. Additionally, users will 
- notice that the df reported are based on the number of observations rather than a combination 
- of objects * coordinates * dimensions, as is sometimes found in morphometric studies of symmetry. 
- However, this change has no effect on hypothesis testing, as only SS vary among permutations 
- (df, coordinates, and dimensions are constants). 
+ Note also that significance of terms in the 
+ model are found by comparing F-values for each term to those obtained via permutation.  F-ratios and df are not strictly necessary (a ratio of SS would suffice), 
+ but they are reported as is standard for anova tables. Additionally, users will notice that the df reported are based on the number of observations rather than 
+ a combination of objects * coordinates * dimensions, as is sometimes found in morphometric studies of symmetry. However, this change has no effect 
+ on hypothesis testing, as only SS vary among permutations (df, coordinates, and dimensions are constants). 
  }
  
- The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all 
- work with \code{\link{bilat.symmetry}}.
+ The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{bilat.symmetry}}.
 }
 \examples{
 #Example of matching symmetry
@@ -126,11 +120,25 @@ summary(mosquito.sym)
 plot(mosquito.sym, warpgrids = TRUE)
 mosquito.sym$shape.anova # extract just the anova table on shape
 
+# Previous example, performing GPA first
+Y.gpa <- gpagen(mosquito$wingshape)
+mosquito.sym2 <- bilat.symmetry(A = Y.gpa, ind = ind, side = side,
+replicate = replicate, object.sym = FALSE, RRPP = TRUE, iter = 499, data = gdf)
+summary(mosquito.sym2)
+summary(mosquito.sym) # same results
+
 #Example of object symmetry
 
 data(scallops)
 gdf <- geomorph.data.frame(shape = scallops$coorddata, ind=scallops$ind)
 scallop.sym <- bilat.symmetry(A = shape, ind = ind, object.sym = TRUE, 
+land.pairs=scallops$land.pairs, data = gdf, RRPP = TRUE, iter = 499)
+summary(scallop.sym)
+
+# Previous example, incorporating semilandmarks (requires GPA to be performed first)
+
+Y.gpa <- gpagen(scallops$coorddata, curves= scallops$curvslide, surfaces = scallops$surfslide)
+scallop.sym <- bilat.symmetry(A = Y.gpa, ind = ind, object.sym = TRUE, 
 land.pairs=scallops$land.pairs, data = gdf, RRPP = TRUE, iter = 499)
 summary(scallop.sym)
 # NOTE one can also: plot(scallop.sym, warpgrids = TRUE, mesh = NULL)

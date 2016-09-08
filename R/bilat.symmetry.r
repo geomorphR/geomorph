@@ -2,64 +2,58 @@
 #'
 #' Function performs an analysis of directional and fluctuating asymmetry for bilaterally symmetric objects 
 #'
-#' The function quantifies components of shape variation for a set of specimens as described by 
-#' their patterns of symmetry and asymmetry. Here, shape variation is decomposed into variation 
-#' among individuals, variation among sides (directional asymmetry), and variation due to an 
-#' individual x side interaction (fluctuating symmetry). These components are then statistically 
-#' evaluated using Procrustes ANOVA. Statistical assessment of model effects for shape variation 
-#' is accomplished using permutation procedures. Methods for both matching symmetry and object 
-#' symmetry can be implemented. Matching symmetry is when each object contains mirrored 
-#'  pairs of structures (e.g., right and left hands) while object symmetry is when a single 
-#'  object is symmetric about a midline (e.g., right and left sides of human faces). Details 
-#'  on general approaches for the study of symmetry in geometric 
-#'  morphometrics may be found in: Mardia et al. 2000; Klingenberg et al. 2002.
+#' The function quantifies components of shape variation for a set of specimens as described by their patterns of symmetry
+#'  and asymmetry. Here, shape variation is decomposed into variation among individuals, variation among sides (directional 
+#'  asymmetry), and variation due to an individual x side interaction (fluctuating symmetry). These components are then 
+#'  statistically evaluated using Procrustes ANOVA. Statistical assessment of model effects for shape variation is accomplished using permutation procedures. 
+#'  Methods for both matching symmetry and object symmetry can be implemented. Matching symmetry is when each object contains mirrored 
+#'  pairs of structures (e.g., right and left hands) while object symmetry is when a single object is symmetric 
+#'  about a midline (e.g., right and left sides of human faces). Details on general approaches for the study of symmetry in geometric 
+#'  morphometrics may be found in: Mardia et al. 2000; Klingenberg et al. 2002. 
 #'  
-#' Analyses of symmetry for matched pairs of objects is implemented when {object.sym=FALSE}. Here, 
-#' a 3D array [p x k x 2n] contains the landmark coordinates for all pairs of structures 
-#' (2 structures for each of n specimens). Because the two sets of structures are on opposite sides, 
-#' they represent mirror images, and one set must be reflected prior to the analysis to 
-#'  allow landmark correspondence. IT IS ASSUMED THAT THE USER HAS DONE THIS PRIOR TO 
-#'  PERFORMING THE SYMMETRY ANALYSIS. Reflecting a set of specimens may be accomplished by 
-#'  multiplying one coordinate dimension by '-1' for these structures (either the x-, the y-, or 
-#'  the z-dimension). A vector containing information on individuals and sides must also be supplied. 
-#'  Replicates of each specimen may also be included in the dataset, and when specified will be 
+#'  As input, the function receives either an array (p x k x n) containing raw landmarks (requiring 
+#'  GPA to be performed) or a gpagen object (if GPA has been previously performed). If one wishes 
+#'  to incorporate semilandmarks, GPA should be performed first using gpagen. Otherwise, 
+#'  bilat.symmetry can perform the initial GPA, assuming all landmarks are fixed. For 
+#'  "object.sym = FALSE, landmarks should be of dimension (p x k x 2n), as each specimen is 
+#'  represented by both left and right configurations.
+#'    
+#' Analyses of symmetry for matched pairs of objects is implemented when {object.sym=FALSE}. Here, a 3D array [p x k x 2n] 
+#'  contains the landmark coordinates for all pairs of structures (2 structures for each of n specimens). Because the two sets of 
+#'  structures are on opposite sides, they represent mirror images, and one set must be reflected prior to the analysis to 
+#'  allow landmark correspondence. IT IS ASSUMED THAT THE USER HAS DONE THIS PRIOR TO PERFORMING THE SYMMETRY ANALYSIS. 
+#'  Reflecting a set of specimens may be accomplished by multiplying one coordinate dimension 
+#'  by '-1' for these structures (either the x-, the y-, or the z-dimension). A vector containing information on individuals 
+#'  and sides must also be supplied. Replicates of each specimen may also be included in the dataset, and when specified will be 
 #'  used as measurement error (see Klingenberg and McIntyre 1998). 
 #' 
-#' Analyses of object symmetry is implemented when {object.sym=TRUE}. Here, a 3D array [p x k x n] 
-#' contains the landmark coordinates for all n specimens. To obtain information about asymmetry, the 
-#' function generates a second set of objects by reflecting them about one of their coordinate axes. 
-#' The landmarks across the line of symmetry are then relabeled to obtain landmark correspondence. 
-#' The user must supply a list of landmark pairs. A vector containing information on individuals 
-#'  must also be supplied. Replicates of each specimen may also be included in the dataset, and 
-#'  when specified will be used as measurement error. 
-#'  
-#'  For both matching and object symmetry, output includes estimates of the symmetric and asymmetric 
-#'  shape components for each specimen, as well as the fluctuating shape component for each specimen.
-#'  In all cases, specimen names for the output are based on the vector that specifies individuals.
+#' Analyses of object symmetry is implemented when {object.sym=TRUE}. Here, a 3D array [p x k x n] contains the landmark 
+#'  coordinates for all n specimens. To obtain information about asymmetry, the function generates a second set of objects 
+#'  by reflecting them about one of their coordinate axes. The landmarks across the line of symmetry are then relabeled to obtain
+#'  landmark correspondence. The user must supply a list of landmark pairs. A vector containing information on individuals 
+#'  must also be supplied. Replicates of each specimen may also be included in the dataset, and when specified will be 
+#'  used as measurement error. 
 #'  
 #'   \subsection{Notes for geomorph 3.0}{ 
-#'  Compared to older versions of geomorph, some results can be expected to be slightly different.  
-#'  Starting with geomorph 3.0, results use only type I sums of squares (SS) with either full 
-#'  randomization of raw shape values or RRPP (preferred with nested terms) for analysis of variance 
-#'  (ANOVA).  Older versions used a combination of parametric and non-parametric results, as well 
-#'  as a combination of type I and type III SS.  While analytical conclusions should be consistent 
-#'  (i.e., "significance" of effects is the same), these updates maintain consistency in analytical 
-#'  philosophy.  This change will require longer computation time for large datasets, but the trade-off
+#'  Compared to older versions of geomorph, some results can be expected to be slightly different.  Starting with geomorph 3.0,
+#'  results use only type I sums of squares (SS) with either full randomization of raw shape values or RRPP (preferred with nested terms)
+#'  for analysis of variance (ANOVA).  Older versions used a combination of parametric and non-parametric results, as well as a combination
+#'  of type I and type III SS.  While analytical conclusions should be consistent (i.e., "significance" of effects is the same), these
+#'  updates maintain consistency in analytical philosophy.  This change will require longer computation time for large datasets, but the trade-off
 #'  allows users to have more flexibility and eliminates combining disparate analytical philosophies. 
 #'  
-#'  Note also that significance of terms in the model are found by comparing F-values for each term 
-#'  to those obtained via permutation.  F-ratios and df are not strictly necessary (a ratio of SS 
-#'  would suffice), but they are reported as is standard for anova tables. Additionally, users will 
-#'  notice that the df reported are based on the number of observations rather than a combination 
-#'  of objects * coordinates * dimensions, as is sometimes found in morphometric studies of symmetry. 
-#'  However, this change has no effect on hypothesis testing, as only SS vary among permutations 
-#'  (df, coordinates, and dimensions are constants). 
+#'  Note also that significance of terms in the 
+#'  model are found by comparing F-values for each term to those obtained via permutation.  F-ratios and df are not strictly necessary (a ratio of SS would suffice), 
+#'  but they are reported as is standard for anova tables. Additionally, users will notice that the df reported are based on the number of observations rather than 
+#'  a combination of objects * coordinates * dimensions, as is sometimes found in morphometric studies of symmetry. However, this change has no effect 
+#'  on hypothesis testing, as only SS vary among permutations (df, coordinates, and dimensions are constants). 
 #'  }
 #'  
-#'  The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all 
-#'  work with \code{\link{bilat.symmetry}}.
+#'  The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{bilat.symmetry}}.
 #'
-#' @param A An array (p x k x n) containing the landmark coordinates for a set of specimens [for "object.sym=FALSE, A is of dimension (n x k x 2n)]
+#' @param A Either an array (p x k x n) containing raw landmarks (requiring GPA to be performed) or a gpagen object (if GPA has been previously performed).  If one 
+#' wishes to incorporate semilandmarks, GPA should be performed first using \code{\link{gpagen}}.  Otherwise, bilat.symmetry can perform the initial GPA, assuming all landmarks
+#' are fixed.  For "object.sym = FALSE, landmarks should be of dimension (p x k x 2n), as each specimen is represented by both left and right configurations.
 #' @param ind A vector containing labels for each individual. For matching symmetry, the matched pairs receive the same 
 #' label (replicates also receive the same label).
 #' @param side An optional vector (for matching symmetry) designating which object belongs to which 'side-group'
@@ -83,7 +77,7 @@
 #' \item{shape.anova}{An analysis of variance table for the shape data.}
 #' \item{size.anova}{An analysis of variance table for the shape data (when object.sym=FALSE).}
 #' \item{symm.shape}{The symmetric component of shape variation.}
-#' \item{asymm.shape}{The asymmetric component of shape variation.}
+#' \item{asym.shape}{The asymmetric component of shape variation.}
 #' \item{DA.component}{The directional asymmetry component, found as the mean shape for each side.}
 #' \item{FA.component}{The fluctuating asymmetry component for each specimen, found as the specimen-specific side deviation adjusted for the mean
 #'  directional asymmetry in the dataset.}
@@ -109,6 +103,13 @@
 #' summary(mosquito.sym)
 #' plot(mosquito.sym, warpgrids = TRUE)
 #' mosquito.sym$shape.anova # extract just the anova table on shape
+#' 
+#' # Previous example, performing GPA first
+#' Y.gpa <- gpagen(mosquito$wingshape)
+#' mosquito.sym2 <- bilat.symmetry(A = Y.gpa, ind = ind, side = side,
+#' replicate = replicate, object.sym = FALSE, RRPP = TRUE, iter = 499, data = gdf)
+#' summary(mosquito.sym2)
+#' summary(mosquito.sym) # same results
 #'
 #' #Example of object symmetry
 #'
@@ -117,22 +118,46 @@
 #' scallop.sym <- bilat.symmetry(A = shape, ind = ind, object.sym = TRUE, 
 #' land.pairs=scallops$land.pairs, data = gdf, RRPP = TRUE, iter = 499)
 #' summary(scallop.sym)
+#' 
+#' # Previous example, incorporating semilandmarks (requires GPA to be performed first)
+#' 
+#' Y.gpa <- gpagen(scallops$coorddata, curves= scallops$curvslide, surfaces = scallops$surfslide)
+#' scallop.sym <- bilat.symmetry(A = Y.gpa, ind = ind, object.sym = TRUE, 
+#' land.pairs=scallops$land.pairs, data = gdf, RRPP = TRUE, iter = 499)
+#' summary(scallop.sym)
 #' # NOTE one can also: plot(scallop.sym, warpgrids = TRUE, mesh = NULL)
 #' # NOTE one can also: scallop.sym$data.type # recall the symmetry type
 
 bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,land.pairs=NULL,
                          data = NULL, iter = 999, seed = NULL, RRPP = TRUE, print.progress = TRUE){
-  if(!is.null(data)) {
+  if(!is.null(data)){
     data <- droplevels(data)
     A.name <- deparse(substitute(A))
-    A.name.match <- match(A.name, names(data))
-    if(all(is.na(A.name.match))) stop("Coordinates are not part of the data frame provided")
-    A <- data[[A.name.match]]
+    A.name.match <- match(A.name, names(data))[1]
+    if(is.na(A.name.match)) A.name.match <- NULL
+  } else A.name.match <- NULL
+  if(is.null(A.name.match) && is.gpagen(A)) {
+    size <- A$Csize
+    A <- A$coords
+  } else {
+    if(!is.null(data)) {
+      if(is.null(A.name.match)) stop("Coordinates are not part of the data frame provided")
+      A <- data[[A.name.match]]
+      if(any(is.na(A))==T) stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').") 
+      if (length(dim(A))!=3) stop("Data matrix not a 3D array (see 'arrayspecs').") 
+      if(print.progress) cat("\nInitial GPA\n")
+      A <- gpagen(A, print.progress = print.progress)
+      size <- A$Csize
+      A <- A$coords
+    } else {
+      if(any(is.na(A))==T) stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').") 
+      if (length(dim(A))!=3) stop("Data matrix not a 3D array (see 'arrayspecs').") 
+      if(print.progress) cat("\nInitial GPA\n")
+      A <- gpagen(A, print.progress = print.progress)
+      size <- A$Csize
+      A <- A$coords
+    }
   }
-  if (length(dim(A))!=3){
-    stop("Data matrix not a 3D array (see 'arrayspecs').")  }
-  if(any(is.na(A))==T){
-    stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').")  }
   if(is.null(data)){
     if(is.null(ind)) stop("Individuals not specified.") else ind <- factor(ind)
     if(!is.null(side)) side <- factor(side)
@@ -159,10 +184,11 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
     A2[,1,]<-A2[,1,]*-1
     A <- array(c(A,A2), c(p,k, 2*n))
     ind <- factor(rep(ind,2)); side <- gl(2,n); if(!is.null(replicate)) replicate <- rep(replicate,2)
+    if(print.progress) cat("\nObject Symmetry GPA\n")
+    gpa.res <- gpagen(A, print.progress = print.progress)
+    A <- gpa.res$coords
   }
-  if(print.progress) cat("\nGPA\n")
-  gpa.res <- gpagen(A, print.progress = print.progress)
-  Y <- two.d.array(gpa.res$coords)
+  Y <- two.d.array(A)
   if(!is.null(replicate)) {
     form.shape <- Y ~ ind*side + ind:side:replicate 
     dat.shape <- geomorph.data.frame(Y = Y, ind = ind, side = side, replicate = replicate)
@@ -175,11 +201,11 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
   if(!is.null(seed) && seed=="random") seed = sample(1:iter, 1)
   if(print.progress) cat("\nShape Analysis\n")
   if(print.progress) {
-    if(RRPP == TRUE) PSh <- SS.iter(pfitSh,Yalt="RRPP", iter=iter, seed=seed) else 
-      PSh <- SS.iter(pfitSh, Yalt="resample", iter=iter, seed=seed)
+    if(RRPP == TRUE) PSh <- SS.iter.bilat.symmetry(pfitSh,Yalt="RRPP", iter=iter, seed=seed) else 
+      PSh <- .SS.iter.bilat.symmetry(pfitSh, Yalt="resample", iter=iter, seed=seed)
   } else {
-    if(RRPP == TRUE) PSh <- .SS.iter(pfitSh,Yalt="RRPP", iter=iter, seed=seed) else 
-      PSh <- .SS.iter(pfitSh, Yalt="resample", iter=iter, seed=seed)
+    if(RRPP == TRUE) PSh <- .SS.iter.bilat.symmetry(pfitSh,Yalt="RRPP", iter=iter, seed=seed) else 
+      PSh <- .SS.iter.bilat.symmetry(pfitSh, Yalt="resample", iter=iter, seed=seed)
   }
   anova.parts.Sh <- anova.parts.symmetry(pfitSh, PSh, object.sym)
   anovaSh <-anova.parts.Sh$anova.table 
@@ -189,7 +215,6 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
       names(Sh.random.Fs) <-c("obs", paste("iter", 1:iter, sep=":"))
   
   if(object.sym==FALSE){  
-    size <- gpa.res$Csize
     if(!is.null(replicate)) {
       form.size <- size~ind*side+ind:side:replicate 
       dat.size <- geomorph.data.frame(size = size, ind = ind, side = side, replicate = replicate)
@@ -223,7 +248,7 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
     n.side <- nlevels(side)
     indsq <- seq(n.side, (n.ind*n.side), n.side)
     asymm.component <- avg.side.symm[indsq,] - avg.side.symm[-indsq,]
-    mn.shape <- gpa.res$consensus
+    mn.shape <- mshape(A)
     asymm.component<-simplify2array(lapply(1:n.ind, function(j) 
     {t(matrix(asymm.component[j,],k,p)) + mn.shape}))
     dimnames(asymm.component)[[3]] <- dimnames(symm.component)[[3]]
@@ -232,10 +257,10 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
   if(object.sym==TRUE){
     X.ind <- model.matrix(~ind + 0, data = as.data.frame(dat.shape[-1]))
     symm.component <- arrayspecs(coef(lm.fit(X.ind, Y)),p,k)
-    mn.shape<-gpa.res$consensus
+    mn.shape<-mshape(A)
     n.ind <- nlevels(ind)
     asymm.component <-simplify2array(lapply(1:n.ind, function(j) 
-    {mn.shape + gpa.res$coords[,,j] - symm.component[,,j]}))
+    {mn.shape + A[,,j] - symm.component[,,j]}))
     dimnames(asymm.component)[[3]] <- dimnames(symm.component)[[3]] 
   }
   X.side <- model.matrix(~side + 0, data = as.data.frame(dat.shape[-1]))
@@ -247,7 +272,7 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
   n.side <- nlevels(side)
   indsq <- seq(n.side, (n.ind*n.side), n.side)
   FA.component <- ind.mns[indsq,] - ind.mns[-indsq,]
-  mn.shape<-gpa.res$consensus
+  mn.shape<-mshape(A)
   FA.component<-simplify2array(lapply(1:n.ind, function(j) 
   {t(matrix(FA.component[j,],k,p)) + mn.shape - mn.DA}))
   dimnames(FA.component)[[3]] <- dimnames(symm.component)[[3]] 

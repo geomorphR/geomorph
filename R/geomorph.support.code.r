@@ -1128,6 +1128,9 @@ SS.iter = function(pfit,iter, seed = NULL, Yalt="RRPP", SS.type= NULL){
     Ur <- lapply(pfit$wQRs[1:(k-1)], function(x) qr.Q(x))
     Uf <- lapply(pfit$wQRs[2:k], function(x) qr.Q(x))
   }
+  q <- qr(Xf)$rank
+  if(q/n > 0.4) Pr <- Map(function(uf,ur) tcrossprod(uf) - tcrossprod(ur), Uf, Ur) else
+    Pr <- NULL
   ind = perm.index(n,iter, seed=seed)
   SS <- NULL
   pb <- txtProgressBar(min = 0, max = ceiling(iter/100), initial = 0, style=3) 
@@ -1148,9 +1151,14 @@ SS.iter = function(pfit,iter, seed = NULL, Yalt="RRPP", SS.type= NULL){
           Yr = Map(function(x) Map(function(y) (y[x,])*sqrt(w), lapply(1:(k-1),function(.) Y)),ind.j)
         }
       }
-    SS.temp <- lapply(1:length(j), function(j){ 
-      mapply(function(ur,uf,y) sum((fastFit(uf,y,n,p) - fastFit(ur,y,n,p))^2), 
-             Ur, Uf,Yr[[j]])})
+    if(!is.null(Pr)) {
+      SS.temp <- lapply(1:length(j), function(j){ 
+        mapply(function(p,y) sum((p%*%y)^2), 
+               Pr,Yr[[j]])})
+    } else
+      SS.temp <- lapply(1:length(j), function(j){ 
+        mapply(function(ur,uf,y) sum((fastFit(uf,y,n,p) - fastFit(ur,y,n,p))^2), 
+               Ur, Uf,Yr[[j]])})
     SS <- c(SS, SS.temp)
     jj <- jj-length(j)
     if(jj > 100) kk <- 1:100 else kk <- 1:jj
@@ -1183,6 +1191,122 @@ SS.iter = function(pfit,iter, seed = NULL, Yalt="RRPP", SS.type= NULL){
     Ur <- lapply(pfit$wQRs[1:(k-1)], function(x) qr.Q(x))
     Uf <- lapply(pfit$wQRs[2:k], function(x) qr.Q(x))
   }
+  q <- qr(Xf)$rank
+  if(q/n > 0.4) Pr <- Map(function(uf,ur) tcrossprod(uf) - tcrossprod(ur), Uf, Ur) else
+    Pr <- NULL
+  ind = perm.index(n,iter, seed=seed)
+  SS <- NULL
+  jj <- iter+1
+  if(jj > 100) j <- 1:100 else j <- 1:jj
+  while(jj > 0){
+    ind.j <- ind[j]
+    if(Yalt=="RRPP") {
+      if(sum(w)==n) {
+        Yr = Map(function(x) (Map(function(y,e) e[x,]+y, Yh[1:(k-1)], E[1:(k-1)])),ind.j)
+      } else {
+        Yr = Map(function(x) (Map(function(y,e) (e[x,]+y)*sqrt(w), Yh[1:(k-1)], E[1:(k-1)])),ind.j) 
+      }} else {
+        if(sum(w)==n) {
+          Yr = Map(function(x) Map(function(y) y[x,], lapply(1:(k-1),function(.) Y)),ind.j)
+        } else {
+          Yr = Map(function(x) Map(function(y) (y[x,])*sqrt(w), lapply(1:(k-1),function(.) Y)),ind.j)
+        }
+      }
+    
+    if(!is.null(Pr)) {
+      SS.temp <- lapply(1:length(j), function(j){ 
+        mapply(function(p,y) sum((p%*%y)^2), 
+               Pr,Yr[[j]])})
+    } else
+      SS.temp <- lapply(1:length(j), function(j){ 
+        mapply(function(ur,uf,y) sum((fastFit(uf,y,n,p) - fastFit(ur,y,n,p))^2), 
+               Ur, Uf,Yr[[j]])})
+    SS <- c(SS, SS.temp)
+    jj <- jj-length(j)
+    if(jj > 100) kk <- 1:100 else kk <- 1:jj
+    j <- j[length(j)] +kk
+  }
+  simplify2array(SS)
+}
+
+# SS.iter.bilat.symmetry
+# calculates SS in random iterations of a resmapling procedure
+# used in nearly all 'procD.lm' functions, unless pgls in used
+SS.iter.bilat.symmetry = function(pfit,iter, seed = NULL, Yalt="RRPP", SS.type= NULL){
+  Y <- as.matrix(pfit$Y)
+  Xf <- as.matrix(pfit$X)
+  k <- length(pfit$Xs)
+  n <- dim(Y)[1]; p <- dim(Y)[2]
+  Yh <- pfit$fitted
+  E <- pfit$residuals
+  w<- pfit$weights
+  if(is.null(SS.type)) SS.type <- "I"
+  if(is.na(match(SS.type, c("I","III")))) SS.type <- "I"
+  if(SS.type == "III") {
+    Ur <- lapply(pfit$wQRs[1:(k-1)], function(x) qr.Q(x))
+    Uf <- qr.Q(qr(Xf))
+    Uf <- lapply(1:(k-1), function(.) Uf)
+  } else {
+    Ur <- lapply(pfit$wQRs[1:(k-1)], function(x) qr.Q(x))
+    Uf <- lapply(pfit$wQRs[2:k], function(x) qr.Q(x))
+  }
+  Pr <- Map(function(uf,ur) tcrossprod(uf) - tcrossprod(ur), Uf, Ur)
+  ind = perm.index(n,iter, seed=seed)
+  SS <- NULL
+  pb <- txtProgressBar(min = 0, max = ceiling(iter/100), initial = 0, style=3) 
+  jj <- iter+1
+  step <- 1
+  if(jj > 100) j <- 1:100 else j <- 1:jj
+  while(jj > 0){
+    ind.j <- ind[j]
+    if(Yalt=="RRPP") {
+      if(sum(w)==n) {
+        Yr = Map(function(x) (Map(function(y,e) e[x,]+y, Yh[1:(k-1)], E[1:(k-1)])),ind.j)
+      } else {
+        Yr = Map(function(x) (Map(function(y,e) (e[x,]+y)*sqrt(w), Yh[1:(k-1)], E[1:(k-1)])),ind.j) 
+      }} else {
+        if(sum(w)==n) {
+          Yr = Map(function(x) Map(function(y) y[x,], lapply(1:(k-1),function(.) Y)),ind.j)
+        } else {
+          Yr = Map(function(x) Map(function(y) (y[x,])*sqrt(w), lapply(1:(k-1),function(.) Y)),ind.j)
+        }
+      }
+    SS.temp <- lapply(1:length(j), function(j){ 
+      mapply(function(p,y) sum((p%*%y)^2), 
+             Pr,Yr[[j]])})
+    SS <- c(SS, SS.temp)
+    jj <- jj-length(j)
+    if(jj > 100) kk <- 1:100 else kk <- 1:jj
+    j <- j[length(j)] +kk
+    setTxtProgressBar(pb,step)
+    step <- step+1
+  }
+  close(pb)
+  simplify2array(SS)
+}
+
+# .SS.iter.bilat.symmetry
+# same as SS.iter, but without progress bar option
+# used in nearly all 'procD.lm' functions, unless pgls in used
+.SS.iter.bilat.symmetry = function(pfit,iter, seed = NULL, Yalt="RRPP", SS.type=NULL){
+  Y <- as.matrix(pfit$Y)
+  Xf <- as.matrix(pfit$X)
+  k <- length(pfit$Xs)
+  n <- dim(Y)[1]; p <- dim(Y)[2]
+  Yh <- pfit$fitted
+  E <- pfit$residuals
+  w<- pfit$weights
+  if(is.null(SS.type)) SS.type <- "I"
+  if(is.na(match(SS.type, c("I","III")))) SS.type <- "I"
+  if(SS.type == "III") {
+    Ur <- lapply(pfit$wQRs[1:(k-1)], function(x) qr.Q(x))
+    Uf <- qr.Q(qr(Xf))
+    Uf <- lapply(1:(k-1), function(.) Uf)
+  } else {
+    Ur <- lapply(pfit$wQRs[1:(k-1)], function(x) qr.Q(x))
+    Uf <- lapply(pfit$wQRs[2:k], function(x) qr.Q(x))
+  }
+  Pr <- Map(function(uf,ur) tcrossprod(uf) - tcrossprod(ur), Uf, Ur)
   ind = perm.index(n,iter, seed=seed)
   SS <- NULL
   jj <- iter+1
@@ -1203,8 +1327,8 @@ SS.iter = function(pfit,iter, seed = NULL, Yalt="RRPP", SS.type= NULL){
       }
     
     SS.temp <- lapply(1:length(j), function(j){ 
-      mapply(function(ur,uf,y) sum((fastFit(uf,y,n,p) - fastFit(ur,y,n,p))^2), 
-             Ur, Uf,Yr[[j]])})
+      mapply(function(p,y) sum((p%*%y)^2), 
+             Pr,Yr[[j]])})
     SS <- c(SS, SS.temp)
     jj <- jj-length(j)
     if(jj > 100) kk <- 1:100 else kk <- 1:jj
@@ -1537,8 +1661,6 @@ single.factor <- function(pfit) {# pfit = Procrustes fit
 # cov.extract
 # Extacts covariates from design matrices
 # advanced.procD.lm
-
-
 cov.extract <- function(pfit) {
   Terms <- pfit$Terms
   vars <- na.omit(match(pfit$term.labels,colnames(pfit$data)))
