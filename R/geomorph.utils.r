@@ -508,8 +508,8 @@ plot.pls <- function(x, label = NULL, warpgrids=TRUE, shapes=FALSE, ...){
     A2.ref <- mshape(A2)
     preds <- shape.predictor(A2, x=YScores, method="LS", 
                               Intercept=TRUE, pred1 = Ymin, pred2 = Ymax)
-    pls1.min <- preds$pred1
-    pls1.max <- preds$pred2
+    pls2.min <- preds$pred1
+    pls2.max <- preds$pred2
   }
   if (length(dim(A1)) != 3 && length(dim(A2)) != 3) {
     plot(XScores, YScores, pch = 21, bg = "black", 
