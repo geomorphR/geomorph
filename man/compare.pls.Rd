@@ -21,13 +21,13 @@ Function performs an analysis to compare the effect sizes of two or more PLS eff
 }
 \details{
 The function statistically compares the effect sizes of two or more PLS analyses.  Typically, this
-function might be used to comapre levels of integration between two or more samples, each measuring morphological 
+function might be used to compare levels of integration between two or more samples, each measuring morphological 
 integration between different modules.  In such cases, the PLS correlation coefficient, r, is not a good
 measure of integration effect, as its expected value is dependent on both the number of specimens and number 
 of variables (Adams and Collyer 2016).  This analysis calculates effect sizes as standard deviates, z, and 
 performs two-sample z-tests, using the pooled standard error from the sampling distributions of the PLS analyses.
  
- To use thsi function, simply perform \code{\link{two.b.pls}}, \code{\link{integration.test}}, or 
+ To use this function, simply perform \code{\link{two.b.pls}}, \code{\link{integration.test}}, or 
  \code{\link{phylo.integration}} on as many samples as desired.  Any number of objects of class "pls" can be input.
  
  Similar versions of this function will designed for alternative test statistics, in the future.

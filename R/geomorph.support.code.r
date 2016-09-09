@@ -1657,6 +1657,7 @@ single.factor <- function(pfit) {# pfit = Procrustes fit
   faclevels <- multileveler(facs)
   factor(fac, levels=faclevels)
 }
+
 # cov.extract
 # Extacts covariates from design matrices
 # advanced.procD.lm
@@ -2765,6 +2766,8 @@ refscan.to.spec<-function(refscan,refland,specland){ 	#DCA
   unwarp.scan<-tps2d3d(refscan,refland,specland)
   unwarp.scan}
 
+# Write .nts file for output of digitize2d(), buildtemplate() digit.fixed() and digitsurface()
+# A is an nx2 or nx3 matrix of the output coordinates. To be used internally only.
 
 writeland.nts <- function(A, spec.name, comment=NULL){
   ntsfile=paste(spec.name,".nts",sep="")

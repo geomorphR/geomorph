@@ -19,7 +19,7 @@ b9147b10c8eecf58afdbdfd97871a1dc *man/arrayspecs.Rd
 4018b5634138ba87a93758b136d78bcc *man/compare.evol.rates.Rd
 9c8e6b36afc3fed78f5ee568f69cfa8c *man/compare.modular.partitions.Rd
 fbdd701188cfb1fd96fe3c4ad45be14d *man/compare.multi.evol.rates.Rd
-5e00d746cac1cf7aacbcf73b74f08d3f *man/compare.pls.Rd
+5d7ccc7ecb9dd930ee7e8b9c9546dea5 *man/compare.pls.Rd
 e734f8d495d108bddfc1180983dc1f19 *man/coords.subset.Rd
 ce3b5145255932743c01cd6bd2160bd6 *man/define.links.Rd
 72a15f91b816fc4a8b275f53509d3eb7 *man/define.modules.Rd
@@ -122,7 +122,7 @@ e96c37b9aadabf2c8af65d9c4b282b89 *man/two.b.pls.Rd
 87a86c2e9b2d31119ab1883c54e092ec *man/warpRefOutline.Rd
 774e6229a8a66e87692c798a70c33525 *man/writeland.tps.Rd
 77f04fbf4be722b26bfa7ff5ccdadd2a *NAMESPACE
-a608d75e0f84eaaacefeca646cb86bd2 *NEWS
+190b1fa41c516500ef90f1f42801adea *NEWS
 63072df79617d56f8eeefc9aff050633 *R/advanced.procD.lm.r
 c3bf88c10dcae2eb5430025e36867d98 *R/arrayspecs.r
 816a0a67e51b6b5f189b02c611fe855d *R/bilat.symmetry.r
@@ -144,7 +144,7 @@ ddff41e987eac54d3500e2313799c3c6 *R/digitize2d.r
 da56107aec80b7583dc4a6b841b30c74 *R/findMeanSpec.r
 1e71d260e79093bb0d36f6ded44dd437 *R/fixed.angle.r
 203177efc30cc6fef4bd604b2fc2af01 *R/geomorph.data.frame.r
-b136f692872d6f10a0d8b08e694d845a *R/geomorph.support.code.r
+86ad2c3bc0c1f6e50afaebbcc33a02dd *R/geomorph.support.code.r
 4b08a2d187c019ca66e6ae4cfa590c2b *R/geomorph.utils.r
 0d9d88147f22cff2241b6e2e7396d57f *R/globalIntegration.r
 66d5ab19ac37f42838b211ff99a1c48c *R/gpagen.r
