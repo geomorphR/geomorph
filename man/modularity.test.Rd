@@ -75,7 +75,7 @@ Y.gpa<-gpagen(pupfish$coords)    #GPA-alignment
  #landmarks on the body and operculum
 land.gps<-rep('a',56); land.gps[39:48]<-'b'
 
-MT <- modularity.test(Y.gpa$coords,land.gps,CI=FALSE,iter=299)
+MT <- modularity.test(Y.gpa$coords,land.gps,CI=FALSE,iter=199)
 summary(MT) # Test summary
 plot(MT) # Histogram of CR sampling distribution 
 # Result implies modularity present
@@ -85,7 +85,7 @@ Dean Adams
 }
 \references{
 Adams, D.C. 2016.Evaluating modularity in morphometric data: Challenges with the RV coefficient and a 
-new test measure. Methods in Ecology and Evolution. (Accepted).
+new test measure. Methods in Ecology and Evolution 7:565-572.
 }
 \seealso{
 \code{\link{two.b.pls}}, \code{\link{integration.test}}, \code{\link{phylo.modularity}}, and 

@@ -50,7 +50,7 @@ performs two-sample z-tests, using the pooled standard error from the sampling d
  tail.coords.gp <- coords.subset(tail.coords, group)
  head.coords.gp <- coords.subset(head.coords, group)
 
- integ.tests <- Map(function(x,y) integration.test(x, y), head.coords.gp, tail.coords.gp)
+ integ.tests <- Map(function(x,y) integration.test(x, y, iter=499), head.coords.gp, tail.coords.gp)
 
  integ.tests$Marsh.F
  integ.tests$Marsh.M
