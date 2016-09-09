@@ -8,9 +8,9 @@ CHANGES IN GEOMORPH VERSION 3.0.3
 
   OTHER CHANGES
     o Added a sensor to support code for procD.lm and its allies to 
-    chose the computationally fastest algorithms base don deisgn matrix xomplexity
-    and data simnesionality
-    o Updated procD.fit to remove unused levels from factors.
+    choose the computationally fastest algorithms based on design matrix complexity
+    and data dimnesionality
+    o Updated procD.fit to remove unused levels from factors
     o Updated all functions using geomorph.data.frame to drop unused factor levels
     o Updated mshape to be used on lists, arrays, or matrices
     
