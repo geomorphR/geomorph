@@ -112,6 +112,7 @@ procD.pgls<-function(f1, phy, iter=999, seed=NULL, int.first = FALSE,
   eigC.vect = eigC$vectors[,1:(length(lambda))]
   Pcor <- fast.solve(eigC.vect%*% diag(sqrt(lambda)) %*% t(eigC.vect)) 
   dimnames(Pcor) <- dimnames(C)
+  Pcor <- Pcor[rownames(Y),rownames(Y)]
   if(print.progress) {
     if(RRPP == TRUE) SSr <- Fpgls.iter(pfit, Yalt="RRPP", Pcor, iter=iter, seed=seed) else 
       SSr <- Fpgls.iter(pfit, Yalt="resample", Pcor, iter=iter, seed=seed)

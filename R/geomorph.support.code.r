@@ -1351,7 +1351,7 @@ Fpgls.iter = function(pfit,Pcor,iter, seed=NULL, Yalt="RRPP"){
   q <- sapply(1:k, function(j) wQRs[[j]]$rank)
   df <- q[-1] - q[1:(k-1)]
   q <- q[length(q)]
-  Pcor <- Pcor[rownames(Y),rownames(Y)]
+  if(any(rownames(Pcor) != rownames(Y))) Pcor <- Pcor[rownames(Y),rownames(Y)]
   PwXs <- lapply(pfit$wXs, function(x) crossprod(Pcor,as.matrix(x)))
   Xr <- lapply(PwXs[1:(k-1)], function(x) as.matrix(x))
   Xf <- lapply(PwXs[2:k], function(x) as.matrix(x))
@@ -1413,7 +1413,7 @@ Fpgls.iter = function(pfit,Pcor,iter, seed=NULL, Yalt="RRPP"){
   q <- sapply(1:k, function(j) wQRs[[j]]$rank)
   df <- q[-1] - q[1:(k-1)]
   q <- q[length(q)]
-  Pcor <- Pcor[rownames(Y),rownames(Y)]
+  if(any(rownames(Pcor) != rownames(Y))) Pcor <- Pcor[rownames(Y),rownames(Y)]
   PwXs <- lapply(pfit$wXs, function(x) crossprod(Pcor,as.matrix(x)))
   Xr <- lapply(PwXs[1:(k-1)], function(x) as.matrix(x))
   Xf <- lapply(PwXs[2:k], function(x) as.matrix(x))

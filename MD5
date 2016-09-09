@@ -19,7 +19,7 @@ b9147b10c8eecf58afdbdfd97871a1dc *man/arrayspecs.Rd
 4018b5634138ba87a93758b136d78bcc *man/compare.evol.rates.Rd
 9c8e6b36afc3fed78f5ee568f69cfa8c *man/compare.modular.partitions.Rd
 fbdd701188cfb1fd96fe3c4ad45be14d *man/compare.multi.evol.rates.Rd
-5d7ccc7ecb9dd930ee7e8b9c9546dea5 *man/compare.pls.Rd
+27ea86530ec53f57ea7c12e49fed0f02 *man/compare.pls.Rd
 e85f4f918e7817c4808cd5e3552bb765 *man/coords.subset.Rd
 ce3b5145255932743c01cd6bd2160bd6 *man/define.links.Rd
 fcfe03e3bbd9deb08fc90e6249613c74 *man/define.modules.Rd
@@ -40,7 +40,7 @@ d49189047d4d144a8f92a2987b1822c9 *man/gridPar.Rd
 9e21970bfa33baf0382079f559a00ebe *man/hummingbirds.Rd
 90334dd32d1d259f119d75e89e6b799b *man/integration.test.Rd
 03c8f034c267da9ca2bad0c0370613cc *man/larvalTails.Rd
-22bf0abde8a3c9791f3035e44f31abf0 *man/modularity.test.Rd
+7df6875616ef20b01348df9d200a3993 *man/modularity.test.Rd
 c7cd4682be82bebdead0d5676e43e4ab *man/morphol.disparity.Rd
 3e6b41e0610382ad6dbb8830746f7cd8 *man/morphol.integr.Rd
 9c45e199ed444c6fe413617264f7d9db *man/mosquito.Rd
@@ -129,7 +129,7 @@ c3bf88c10dcae2eb5430025e36867d98 *R/arrayspecs.r
 14713bbb2ad126d777d95e359c71bf1a *R/build.template.r
 d5471618e1e2fb5a8186df4b31caf677 *R/compare.evol.rates.r
 ed481c7f11754b04d7a500ae1095055b *R/compare.multi.evol.rates.r
-ed3c781d44d7463dac188a76672ab8ca *R/compare.pls.r
+c0cbc15b57ec1da17dea1c6fda3b78b1 *R/compare.pls.r
 39856065f652c717373ceb4c48f91c05 *R/coords.subset.R
 9c8853f5d9c9bb5a9b0b21bfea6ebab8 *R/define.links.r
 ce54e0082a7500c7a9ec4b443df968a8 *R/define.modules.r
@@ -150,7 +150,7 @@ da56107aec80b7583dc4a6b841b30c74 *R/findMeanSpec.r
 66d5ab19ac37f42838b211ff99a1c48c *R/gpagen.r
 2d8ab3c6fea452711a7cf091ffba8ff5 *R/gridPar.r
 61a8a7d16930dfa33514b38ce33ffba7 *R/integration.test.r
-f1142f5b78768f9f2f0affa8f471fcac *R/modularity.test.r
+8949e21f5af5c22a44da1955ba9556e8 *R/modularity.test.r
 ef39db76e48f43e0ff16acf55c783e59 *R/morphol.disparity.r
 084f845900f98683ff877ac399e822b3 *R/nested.update.r
 996b3cae7b24d50906e957a236183d15 *R/phylo.integration.r
