@@ -146,7 +146,7 @@ morphol.disparity <- function(f1, groups = NULL, iter = 999, seed = NULL,
       cat("\n\n
           Because either no groups were defined or no geomorph data frame was provided, 
           an attempt was made to define groups from the model design matrix.  Group levels are thus 
-          defined by design matrix levels in numrical order.  To be precise, rerun the anlaysis with 
+          defined by design matrix levels in numerical order.  To be precise, rerun the anlaysis with 
           groups defined and a geomorph data frame provided (see example in help file).
           \n\n\n.")
       
