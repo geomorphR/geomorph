@@ -97,6 +97,7 @@ morphol.disparity(coords ~ Csize + species*site, groups= ~ species, data = gdf, 
 MD <- morphol.disparity(coords ~ Csize + species*site, groups= ~ species, data = gdf, iter=999)
 MD$Procrustes.var # just the Procrustes variances
 
+
 ### Morphol.disparity can be used with procD.lm or advanced.procd.lm class objects
 
 data(plethspecies)

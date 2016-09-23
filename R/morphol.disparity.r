@@ -1,4 +1,4 @@
-#' Morphological disparity for one or more groups of specimens
+#' Morphological disparity for one or more groups of specimens 
 #'
 #' Function estimates morphological disparity and performs pairwise comparisons among groups. 
 #'
