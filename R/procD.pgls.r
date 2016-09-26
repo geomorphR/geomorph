@@ -112,6 +112,7 @@ procD.pgls<-function(f1, phy, iter=999, seed=NULL, int.first = FALSE,
   eigC.vect = eigC$vectors[,1:(length(lambda))]
   Pcor <- fast.solve(eigC.vect%*% diag(sqrt(lambda)) %*% t(eigC.vect)) 
   dimnames(Pcor) <- dimnames(C)
+  Pcor <- Pcor[rownames(Y),rownames(Y)]
   if(print.progress) {
     if(RRPP == TRUE) SSr <- Fpgls.iter(pfit, Yalt="RRPP", Pcor, iter=iter, seed=seed) else 
       SSr <- Fpgls.iter(pfit, Yalt="resample", Pcor, iter=iter, seed=seed)
@@ -139,7 +140,7 @@ procD.pgls<-function(f1, phy, iter=999, seed=NULL, int.first = FALSE,
   PY <- Pcor%*%pfit$Y; PX <- Pcor%*%pfit$X
   Pfit <- lm.wfit(PX, PY, pfit$weights)
   out = list(aov.table = tab, call = match.call(),
-             coefficients=pfit$coefficients, 
+             coefficients=pfit$coefficients,
              Y=pfit$Y,  X=pfit$X, 
              Pcor=Pcor, 
              QR = pfit$QRs[[k+1]], fitted=pfit$fitted[[k+1]], 
@@ -150,7 +151,7 @@ procD.pgls<-function(f1, phy, iter=999, seed=NULL, int.first = FALSE,
              pgls.coefficients = Pfit$coefficients, pgls.fitted = pfit$X%*%Pfit$coefficients, 
              pgls.residuals = Y - pfit$X%*%Pfit$coefficients,
              F = anova.parts.obs$Fs[1:k], permutations = iter+1,
-             random.SS = P, perm.method = ifelse(RRPP==TRUE,"RRPP", "Raw"))
+             random.F = P, perm.method = ifelse(RRPP==TRUE,"RRPP", "Raw"))
   class(out) <- "procD.lm"
   out
 }
