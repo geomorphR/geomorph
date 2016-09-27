@@ -23,7 +23,7 @@ fbdd701188cfb1fd96fe3c4ad45be14d *man/compare.multi.evol.rates.Rd
 e85f4f918e7817c4808cd5e3552bb765 *man/coords.subset.Rd
 ce3b5145255932743c01cd6bd2160bd6 *man/define.links.Rd
 fcfe03e3bbd9deb08fc90e6249613c74 *man/define.modules.Rd
-f773e44b702c4ce118006ecf77aa505f *man/define.sliders.Rd
+9aca3cbd2de06f434f41ea13fc7ef0b1 *man/define.sliders.Rd
 2ec208b5b581f803811b24eeeb9a7fef *man/digit.curves.Rd
 ad00c9c0d97cb550ae6c6e26853f6979 *man/digit.fixed.Rd
 b7803c0c9a4e442cccac223445866d52 *man/digitize2d.Rd
@@ -133,7 +133,7 @@ c0cbc15b57ec1da17dea1c6fda3b78b1 *R/compare.pls.r
 39856065f652c717373ceb4c48f91c05 *R/coords.subset.R
 9c8853f5d9c9bb5a9b0b21bfea6ebab8 *R/define.links.r
 ce54e0082a7500c7a9ec4b443df968a8 *R/define.modules.r
-005694e7b901afa563870af268bc5408 *R/define.sliders.r
+09db0ae850d1824f41df1205e7e90e1e *R/define.sliders.r
 334d262a465c55f7b5d66f378bae20f8 *R/deprecated.defunct.r
 be4b26adcacca7e3422c19761bf243c0 *R/digit.curves.r
 0c03428098d628c816597b70abc3ccd3 *R/digit.fixed.r
