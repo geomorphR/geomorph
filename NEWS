@@ -13,6 +13,7 @@ CHANGES IN GEOMORPH VERSION 3.0.3
     o Updated procD.fit to remove unused levels from factors
     o Updated all functions using geomorph.data.frame to drop unused factor levels
     o Updated mshape to be used on lists, arrays, or matrices
+    o Added data frame output to procD.lm
     
   BUG FIXES
     o Fixed single.factor function to properly maintain factor levels when combining factors
