@@ -156,7 +156,7 @@ procD.lm<- function(f1, iter = 999, seed=NULL, RRPP = TRUE,
               QR = pfit$QRs[[k+1]], fitted=pfit$fitted[[k+1]],
               residuals = pfit$residuals[[k+1]], 
               weights = pfit$weights, Terms = pfit$Terms, term.labels = pfit$term.labels,
-              SS = anova.parts.obs$SS, SS.type = SS.type, df = anova.parts.obs$df, 
+              data = pfit$data, SS = anova.parts.obs$SS, SS.type = SS.type, df = anova.parts.obs$df, 
               R2 = anova.parts.obs$R2[1:k], F = anova.parts.obs$Fs[1:k], permutations = iter+1,
               random.SS = P, perm.method = ifelse(RRPP==TRUE,"RRPP", "Raw"))
   class(out) <- "procD.lm"
