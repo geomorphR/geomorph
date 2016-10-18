@@ -73,8 +73,9 @@
 #' NULL is returned.}
 #' \item{Terms}{The results of the \code{\link{terms}} function applied to the model matrix}
 #' \item{term.labels}{The terms used in constructing the aov.table.}
+#' \item{data}{The data frame for the model.}
 #' \item{SS}{The sums of squares for each term, model residuals, and the total.}
-#' \item{SS}{The type of sums of squares.  One of type I or type III.}
+#' \item{SS.type}{The type of sums of squares.  One of type I or type III.}
 #' \item{df}{The degrees of freedom for each SS.}
 #' \item{R2}{The coefficient of determination for each model term.}
 #' \item{F}{The F values for each model term.}
@@ -158,6 +159,7 @@ procD.lm<- function(f1, iter = 999, seed=NULL, RRPP = TRUE,
               QR = pfit$QRs[[k+1]], fitted=pfit$fitted[[k+1]],
               residuals = pfit$residuals[[k+1]], 
               weights = pfit$weights, Terms = pfit$Terms, term.labels = pfit$term.labels,
+              data = pfit$data,
               SS = anova.parts.obs$SS, SS.type = SS.type, df = anova.parts.obs$df, 
               R2 = anova.parts.obs$R2[1:k], F = anova.parts.obs$Fs[1:k], permutations = iter+1,
               random.SS = P, perm.method = ifelse(RRPP==TRUE,"RRPP", "Raw"))
