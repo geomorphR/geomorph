@@ -5,7 +5,7 @@
 #' This function splits a set of landmark coordinates into subsets, as described by a factor.  The 
 #' results is a list of separate sets of landmarks.
 #'
-#' @param A An array of landmarks with dimensions p x k x n
+#' @param A A 3D array (p x k x n) containing landmark coordinates for a set of specimens
 #' @param group A grouping factor of length n, for splitting the array into sub-arrays
 #' @keywords utilities
 #' @export
@@ -14,7 +14,11 @@
 #' data(pupfish) 
 #' group <- factor(paste(pupfish$Pop, pupfish$Sex))
 #' levels(group)
-#' coords.subset(A = pupfish$coords, group = group)
+#' new.coords <- coords.subset(A = pupfish$coords, group = group)
+#' names(new.coords) # see the list levels
+#' # access any element by:
+#  # new.coords$`Marsh F` # Can be used in any analysis, just like pupfish$coords
+#  # NOTE: `` surrounds level name because it has a space in it
 #'
 coords.subset <- function(A, group){
   dims <- dim(A)

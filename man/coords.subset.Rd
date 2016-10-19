@@ -7,7 +7,7 @@
 coords.subset(A, group)
 }
 \arguments{
-\item{A}{An array of landmarks with dimensions p x k x n}
+\item{A}{A 3D array (p x k x n) containing landmark coordinates for a set of specimens}
 
 \item{group}{A grouping factor of length n, for splitting the array into sub-arrays}
 }
@@ -22,7 +22,9 @@ results is a list of separate sets of landmarks.
 data(pupfish) 
 group <- factor(paste(pupfish$Pop, pupfish$Sex))
 levels(group)
-coords.subset(A = pupfish$coords, group = group)
+new.coords <- coords.subset(A = pupfish$coords, group = group)
+names(new.coords) # see the list levels
+# access any element by:
 
 }
 \author{
