@@ -19,17 +19,17 @@ impact how prediction criteria need to be provided (see below).}
 this value will be FALSE for shape predictions made in ordination plots.  It should be TRUE in cases where the expected
 shape at the point the predictor has a value of 0 is not the mean shape.}
 
-\item{method}{A choice betwen least squares (LS) or partial least squares (PLS) regression for prediction.  The function defaults
+\item{method}{A choice between least squares (LS) or partial least squares (PLS) regression for prediction.  The function defaults
 to LS prediction.  PLS might be chosen in cases where correlation is preferred over linear regression.  If PLS is chosen, a two-block
-PLS analysis using  \code{\link{two.b.pls}} should be performed first, as only the first singular vector for pedictors will be used
+PLS analysis using  \code{\link{two.b.pls}} should be performed first, as only the first singular vector for predictors will be used
 for defining prediction criteria (see below).}
 
 \item{...}{Any number of prediction criteria.  Criteria should be presented as either a scalar (if one predictor is provided) or 
-a vector (if more than one predictor or a prediciton matrix is provided); e.g., pred1 = c(0.1, -0.5), pred2 = c(-0.2, -0.1) (which
+a vector (if more than one predictor or a prediction matrix is provided); e.g., pred1 = c(0.1, -0.5), pred2 = c(-0.2, -0.1) (which
 would be the case if two predictors were provided).  It is essential that the number of elements in any prediction criterion matches
 the number of predictors.  Caution should be used when providing a design matrix to ensure that correct dummy variables are used in
 prediction criteria, and that either 1) an intercept is not included in the design and 2) is TRUE in the Intercept argument; or
-or 1) an intercept is included in the deisgn and 2) is FALSE in the Intercept argument; or 1) an intercept is not included in the design
+or 1) an intercept is included in the design and 2) is FALSE in the Intercept argument; or 1) an intercept is not included in the design
 and 2) is FALSE in the Intercept argument, if no intercept is desired.}
 }
 \value{
@@ -39,7 +39,7 @@ also have names matching those of the prediction criteria.
 \description{
 Function estimates one or more configurations based on one or more linear predictors, such as PC scores
 allometric relationships, or any other least squares or partial least squares regression.  These configurations
-can be used with \code{\link{plotRefToTarget}} to generate gpaphical represntations of shape change, based on prediction criteria.
+can be used with \code{\link{plotRefToTarget}} to generate graphical representations of shape change, based on prediction criteria.
 }
 \examples{
 # Examples using Plethodon data
@@ -73,8 +73,8 @@ plotRefToTarget(M, preds$pred3)
 
 # allometry example - straight-up allometry
 
-preds <- shape.predictor(Y.gpa$coords, x= Y.gpa$Csize, Intercept = TRUE, 
-                        predmin = min(Y.gpa$Csize), predmax = max(Y.gpa$Csize)) 
+preds <- shape.predictor(Y.gpa$coords, x= log(Y.gpa$Csize), Intercept = TRUE, 
+                        predmin = min(log(Y.gpa$Csize)), predmax = max(log(Y.gpa$Csize))) 
 
 plotRefToTarget(M, preds$predmin, mag=3)
 plotRefToTarget(M, preds$predmax, mag=3)
@@ -82,7 +82,7 @@ plotRefToTarget(M, preds$predmax, mag=3)
 # allometry example - using RegScore or PredLine via procD.allometry
 
 gdf <- geomorph.data.frame(Y.gpa)
-plethAllometry <- procD.allometry(coords~Csize, data=gdf)
+plethAllometry <- procD.allometry(coords~Csize, data=gdf, logsz = TRUE)
 plot(plethAllometry, method="RegScore")
 preds <- shape.predictor(plethAllometry$Ahat, x= plethAllometry$Reg.proj, Intercept = FALSE, 
                         predmin = min(plethAllometry$Reg.proj), 
