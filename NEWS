@@ -18,6 +18,7 @@ CHANGES IN GEOMORPH VERSION 3.0.3
   BUG FIXES
     o Fixed single.factor function to properly maintain factor levels when combining factors
     o Fixed plotting issues with phylo.integration
+    o Fixed permutation issue with advanced.procD.lm
 
 CHANGES IN GEOMORPH VERSION 3.0.2
 
