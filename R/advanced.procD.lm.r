@@ -187,12 +187,13 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
   if(pairwise.cond == "none"){
     if(print.progress)
       pb <- txtProgressBar(min = 0, max = ceiling(iter/100), initial = 0, style=3) 
+    P <- NULL
     jj <- iter+1
     step <- 1
     if(jj > 100) j <- 1:100 else j <- 1:jj
     while(jj > 0){
       ind.j <- ind[j]
-      P <- sapply(1:length(j), function(i){
+      P <- c(P,lapply(1:length(j), function(i){
         if(!is.null(phy)) {
           y <- Pcor%*%(pfitr$residuals[[kr]][ind[[i]],] + pfitr$fitted[[kr]])*sqrt(w)
           ssr <- sum(fastLM(PQr,y)$residuals^2)
@@ -202,13 +203,14 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
           y <- (pfitr$residuals[[kr]][ind[[i]],] + pfitr$fitted[[kr]])*sqrt(w)
           sum((fastFit(Qf, y, n, p)- fastFit(Qr, y, n, p))^2)
         }
-      })
+      }))
       jj <- jj-length(j)
       if(jj > 100) kk <- 1:100 else kk <- 1:jj
       j <- j[length(j)] +kk
       if(print.progress) setTxtProgressBar(pb,step)
       step <- step+1
     }
+    P <- simplify2array(P)
     P.val <- pval(P) 
     Z.score <- effect.size(P)
   }
