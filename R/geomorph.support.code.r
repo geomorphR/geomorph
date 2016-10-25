@@ -208,7 +208,7 @@ center.scale <- function(x) {
 
 # orp
 # projection in GPA
-# used in gpagen functons
+# used in gpagen functions
 orp<-function(A){			
   if(is.array(A)) {
     n<-dim(A)[3]; k<-dim(A)[2]; p<-dim(A)[1]  
@@ -269,7 +269,7 @@ fast.ginv <- function(X, tol = sqrt(.Machine$double.eps)){
 
 # fast.solve
 # chooses between fast.ginv or qr.solve, when det might or might not be 0
-# used in any function requring a matrix inverse where the certainty of
+# used in any function requiring a matrix inverse where the certainty of
 # singular matrices is in doubt; mostly phylo. functions
 fast.solve <- function(x) if(det(x) > 1e-8) qr.solve(x) else fast.ginv(x)
 
@@ -789,7 +789,7 @@ pGpa.wSliders <- function(Y, curves, surf, ProcD = TRUE, PrinAxes = FALSE, Proj 
 }
 
 # .pGPA.wSliders
-# same as pGPA.wSliders, without option for porgress bar
+# same as pGPA.wSliders, without option for progress bar
 # used in gpagen
 .pGpa.wSliders <- function(Y, curves, surf, ProcD = TRUE, PrinAxes = FALSE, Proj = FALSE, max.iter = 5){
   n <- length(Y); p <- nrow(Y[[1]]); k <- ncol(Y[[1]])
@@ -898,7 +898,7 @@ tps2d3d<-function(M, matr, matt, PB=TRUE){		#DCA: altered from J. Claude 2008
 }
 
 # pcoa
-# acquires principal coordimates from distance matrices
+# acquires principal coordinates from distance matrices
 # used in all functions with 'procD.lm" via procD.fit
 pcoa <- function(D){
   options(warn=-1)
@@ -1061,7 +1061,7 @@ perm.index <-function(n, iter, seed=NULL){
 
 # perm.CR.index
 # creates a permutation index for resampling, shuffling landmarks
-# used in all functions utilizing CR (mdoularity)
+# used in all functions utilizing CR (modularity)
 
 perm.CR.index <- function(g, k, iter, seed=NULL){ # g is numeric partititon.gp
   if(is.null(seed)) seed = iter else
@@ -1108,7 +1108,7 @@ fastLM<- function(U,y){
 }
 
 # SS.iter
-# calculates SS in random iterations of a resmapling procedure
+# calculates SS in random iterations of a resampling procedure
 # used in nearly all 'procD.lm' functions, unless pgls in used
 SS.iter = function(pfit,iter, seed = NULL, Yalt="RRPP", SS.type= NULL){
   Y <- as.matrix(pfit$Y)
@@ -1230,7 +1230,7 @@ SS.iter = function(pfit,iter, seed = NULL, Yalt="RRPP", SS.type= NULL){
 }
 
 # SS.iter.bilat.symmetry
-# calculates SS in random iterations of a resmapling procedure
+# calculates SS in random iterations of a resampling procedure
 # used in nearly all 'procD.lm' functions, unless pgls in used
 SS.iter.bilat.symmetry = function(pfit,iter, seed = NULL, Yalt="RRPP", SS.type= NULL){
   Y <- as.matrix(pfit$Y)
@@ -1338,7 +1338,7 @@ SS.iter.bilat.symmetry = function(pfit,iter, seed = NULL, Yalt="RRPP", SS.type= 
 }
 
 # Fpgls.iter
-# calculates F values in random iterations of a resmapling procedure, with pgls involved
+# calculates F values in random iterations of a resampling procedure, with pgls involved
 # used in the 'procD.lm' functions where pgls is used
 Fpgls.iter = function(pfit,Pcor,iter, seed=NULL, Yalt="RRPP"){
   Y <- as.matrix(pfit$Y)
@@ -1659,7 +1659,7 @@ single.factor <- function(pfit) {# pfit = Procrustes fit
 }
 
 # cov.extract
-# Extacts covariates from design matrices
+# Extracts covariates from design matrices
 # advanced.procD.lm
 cov.extract <- function(pfit) {
   Terms <- pfit$Terms

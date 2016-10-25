@@ -231,9 +231,9 @@ printAllometry.HOS <- function(x){
   cat("\nHomogeneity of Slopes Test\n")
   print(x$HOS.test)
   if(x$HOS.test[2,7] > x$alpha) cat(paste("\nThe null hypothesis of parallel slopes is supported
-  based on a signficance criteron of alpha =", x$alpha,"\n")) 
+  based on a significance criterion of alpha =", x$alpha,"\n")) 
   if(x$HOS.test[2,7] <= x$alpha) cat(paste("\nThe null hypothesis of parallel slopes is rejected
-  based on a signficance criteron of alpha =", x$alpha,"\n"))
+  based on a significance criterion of alpha =", x$alpha,"\n"))
   cat("\nBased on the results of this test, the following ANOVA table is most appropriate\n")
   cat("\nType I (Sequential) Sums of Squares and Cross-products\n")
   if(x$perm.method == "RRPP") cat ("Randomized Residual Permutation Procedure Used\n") else
