@@ -1,4 +1,12 @@
 PENDING CHANGES IN GEOMORPH VERSION 3.0.4 (updated on Stable Branch of Github)
+  NEW FEATURES
+
+  OTHER CHANGES
+    
+  BUG FIXES
+    o Fixed permutation issues with advanced.procD.lm
+    o Fixed links not plotting in plotAllSpecimens if no colour specified
+
 
 CHANGES IN GEOMORPH VERSION 3.0.3
 
@@ -18,7 +26,6 @@ CHANGES IN GEOMORPH VERSION 3.0.3
   BUG FIXES
     o Fixed single.factor function to properly maintain factor levels when combining factors
     o Fixed plotting issues with phylo.integration
-    o Fixed permutation issues with advanced.procD.lm
 
 
 CHANGES IN GEOMORPH VERSION 3.0.2
