@@ -2,10 +2,10 @@ CHANGES IN GEOMORPH VERSION 3.0.4
   NEW FEATURES
 
   OTHER CHANGES
+    o Added data frame output to procD.lm
     
   BUG FIXES
     o Fixed permutation issues with advanced.procD.lm
-    o Added data frame output to procD.lm
     o Fixed links not plotting in plotAllSpecimens if no colour specified
 
 CHANGES IN GEOMORPH VERSION 3.0.3
