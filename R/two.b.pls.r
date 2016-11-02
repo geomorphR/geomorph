@@ -77,11 +77,21 @@ two.b.pls <- function (A1, A2,  iter = 999, seed = NULL, print.progress=TRUE){
   if (nrow(x) != nrow(y)) stop("Data matrices have different numbers of specimens.")
   if (!is.null(rownames(x))  && !is.null(rownames(y))) {y <- y[rownames(x), ] }
   n <- nrow(x)
-  if(print.progress) pls.rand <- apply.pls(center(x), center(y), RV=FALSE, iter=iter, seed=seed) else
-    pls.rand <- .apply.pls(center(x), center(y), RV=FALSE, iter=iter, seed=seed) 
   pls.obs <- pls(x, y, RV=FALSE, verbose=TRUE)
   rownames(pls.obs$pls.svd$u) <- colnames(x)
   rownames(pls.obs$pls.svd$v) <- colnames(pls.obs$pls.svd$vt) <- colnames(y)
+  if(NCOL(x) > n){
+    pcax <- prcomp(x)
+    d <- which(zapsmall(pcax$sdev) > 0)
+    x <- pcax$x[,d]
+  }
+  if(NCOL(y) > n){
+    pcay <- prcomp(y)
+    d <- which(zapsmall(pcay$sdev) > 0)
+    y <- pcay$x[,d]
+  }
+  if(print.progress) pls.rand <- apply.pls(center(x), center(y), RV=FALSE, iter=iter, seed=seed) else
+    pls.rand <- .apply.pls(center(x), center(y), RV=FALSE, iter=iter, seed=seed) 
   p.val <- pval(pls.rand)
   XScores <- pls.obs$XScores
   YScores <- pls.obs$YScores

@@ -142,6 +142,16 @@ phylo.integration <-function(A, A2=NULL, phy, partition.gp=NULL,iter=999, seed=N
   Ptrans<-D.mat%*%(I-one%*%crossprod(one,invC)/sum(invC))
   if(ngps==2){
     pls.obs <- pls.phylo(x, y, Ptrans,verbose=TRUE)
+    if(NCOL(x) > NROW(x)){
+      pcax <- prcomp(x)
+      d <- which(zapsmall(pcax$sdev) > 0)
+      x <- pcax$x[,d]
+    }
+    if(NCOL(y) > NROW(y)){
+      pcay <- prcomp(y)
+      d <- which(zapsmall(pcay$sdev) > 0)
+      y <- pcay$x[,d]
+    }
     x <- Ptrans%*%x
     y <- Ptrans%*%y
     if(print.progress) pls.rand <- apply.pls(x, y,  iter=iter, seed=seed) else
@@ -152,6 +162,7 @@ phylo.integration <-function(A, A2=NULL, phy, partition.gp=NULL,iter=999, seed=N
   }
   if(ngps>2){
     pls.obs <- plsmulti.phylo(x, gps, Ptrans)  
+    
     x <- Ptrans%*%x
     if(print.progress) pls.rand <- apply.plsmulti(x, gps, iter=iter, seed=seed) else
       pls.rand <- .apply.plsmulti(x, gps,iter=iter, seed=seed)

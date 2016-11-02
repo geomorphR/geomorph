@@ -111,9 +111,19 @@ integration.test<-function(A, A2=NULL,partition.gp=NULL,iter=999, seed=NULL, pri
     ngps=2; n<-dim(x)[2]
   }
   if(ngps==2){
+    pls.obs <- pls(x, y, verbose=TRUE)
+    if(NCOL(x) > NROW(x)){
+      pcax <- prcomp(x)
+      d <- which(zapsmall(pcax$sdev) > 0)
+      x <- pcax$x[,d]
+    }
+    if(NCOL(y) > NROW(y)){
+      pcay <- prcomp(y)
+      d <- which(zapsmall(pcay$sdev) > 0)
+      y <- pcay$x[,d]
+    }
     if(print.progress) pls.rand <- apply.pls(center(x), center(y), iter=iter, seed=seed) else
       pls.rand <- .apply.pls(center(x), center(y), iter=iter, seed=seed)
-    pls.obs <- pls(x, y, verbose=TRUE)
     p.val <- pval(pls.rand)
     XScores <- pls.obs$XScores
     YScores <- pls.obs$YScores
