@@ -24,7 +24,7 @@
 #' x2<-matrix(rnorm(18),ncol=2) # Random triangles (each landmark on its own row)
 #' arrayspecs(x2,3,2)
 arrayspecs<-function(A,p,k){  
-  names <- rownames(A)
+  if(is.matrix(A)) names <- rownames(A) else names <- names(A)
   n <- length(unlist(A))/(p * k)
   if(k < 2 ) stop("One-dimensional data cannot be used")
   if(abs(n)-round(abs(n)) > 0) stop("Matrix dimensions do not match input")
