@@ -149,11 +149,11 @@ d0ace19da4e207ac03a7ce7f7156179a *R/geomorph.utils.r
 0d9d88147f22cff2241b6e2e7396d57f *R/globalIntegration.r
 66d5ab19ac37f42838b211ff99a1c48c *R/gpagen.r
 2d8ab3c6fea452711a7cf091ffba8ff5 *R/gridPar.r
-bdfb756c63dbfdb2250f38c62ffb9906 *R/integration.test.r
+9cec9fc48ff54f19e22289b2d43dad95 *R/integration.test.r
 1d6c03681bdbedb0359634ccaa2e0229 *R/modularity.test.r
 4126e9607888f36956dffc1fc1b3d887 *R/morphol.disparity.r
 084f845900f98683ff877ac399e822b3 *R/nested.update.r
-996b3cae7b24d50906e957a236183d15 *R/phylo.integration.r
+10655bfc2b6abe03f2e58a733e690e3a *R/phylo.integration.r
 e1cb306b0d2dd762ad291bddaf2366e8 *R/phylo.modularity.r
 5e12723d8749bc8119410cd31dff7003 *R/physignal.r
 b2b85b4de1c6263d7c18dcf3a2c6ec04 *R/plotAllSpecimens.r
@@ -172,7 +172,7 @@ b63e5e849d36c0a4d3bdb6bfd0e379f0 *R/readland.tps.r
 8b7193e5cbcdaf8153f3614834afc818 *R/readmulti.nts.r
 dbe2e4f00e3ecee9b7cd78248f0c4a20 *R/shape.predictor.r
 eee4aff6169ce5be5340bb92e68fe336 *R/trajectory.analysis.r
-8b4ee78567f5c05e98951619a589299a *R/two.b.pls.r
+f6a8bec5a54bbef4ee7bac92a13a3b57 *R/two.b.pls.r
 cac4c94b232cb0da0e2faf26f9f07597 *R/two.d.array.r
 6cbbaa1e92e97d4ec742825a60d5e7ab *R/warpRefMesh.r
 59d493f9cc61f036c40f49bf8b7bb3e0 *R/warpRefOutline.r
