@@ -124,7 +124,7 @@ e96c37b9aadabf2c8af65d9c4b282b89 *man/two.b.pls.Rd
 77f04fbf4be722b26bfa7ff5ccdadd2a *NAMESPACE
 75855ddb4c755725b4655615e58a2bad *NEWS
 42d6d590cbdd703342f4e7e948e8676b *R/advanced.procD.lm.r
-c3bf88c10dcae2eb5430025e36867d98 *R/arrayspecs.r
+0d3550a7ca3f906370064165c10db8c6 *R/arrayspecs.r
 816a0a67e51b6b5f189b02c611fe855d *R/bilat.symmetry.r
 14713bbb2ad126d777d95e359c71bf1a *R/build.template.r
 d5471618e1e2fb5a8186df4b31caf677 *R/compare.evol.rates.r
@@ -164,7 +164,7 @@ cce37a8c4a8388e9ebcb3f6ba18b95f3 *R/plotGMPhyloMorphoSpace.r
 1b4edb4104bcd6a4d63aa4247f5d3a18 *R/plotTangentSpace.r
 2cc67a58753a22692cac6874dc86a365 *R/procD.allometry.r
 c8a47ab9aea9977065ca72d50a5fc281 *R/procD.lm.r
-8ade403caadbe3756cecdfe81efaae49 *R/procD.pgls.r
+eb06374050efe37b368c7c4e1d6f8cbb *R/procD.pgls.r
 2a39213ef1d6feae4571e44c09344bc1 *R/read.morphologika.r
 889d4562e4ff052f48091d9b739d10d8 *R/read.ply.r
 f2a4a49547e28b46e0609d537156dc15 *R/readland.nts.r
