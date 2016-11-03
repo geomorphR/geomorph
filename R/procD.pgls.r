@@ -151,7 +151,7 @@ procD.pgls<-function(f1, phy, iter=999, seed=NULL, int.first = FALSE,
              pgls.coefficients = Pfit$coefficients, pgls.fitted = pfit$X%*%Pfit$coefficients, 
              pgls.residuals = Y - pfit$X%*%Pfit$coefficients,
              F = anova.parts.obs$Fs[1:k], permutations = iter+1,
-             random.SS = P, perm.method = ifelse(RRPP==TRUE,"RRPP", "Raw"))
+             random.F = P, perm.method = ifelse(RRPP==TRUE,"RRPP", "Raw"))
   class(out) <- "procD.lm"
   out
 }
