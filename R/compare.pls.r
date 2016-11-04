@@ -9,7 +9,7 @@
 #' of variables (Adams and Collyer 2016).  This analysis calculates effect sizes as standard deviates, z, and 
 #' performs two-sample z-tests, using the pooled standard error from the sampling distributions of the PLS analyses.
 #'  
-#'  To use this function, simply perform \code{\link{two.b.pls}}, \code{\link{integration.test}}, or 
+#' To use this function, simply perform \code{\link{two.b.pls}}, \code{\link{integration.test}}, or 
 #'  \code{\link{phylo.integration}} on as many samples as desired.  Any number of objects of class "pls" can be input.
 #'  
 #'  Similar versions of this function will designed for alternative test statistics, in the future. 
@@ -21,12 +21,12 @@
 #' @return An object of class, "compare.pls", returns a list of the following
 #' \item{sample.z}{A vector of effect sizes for each sample.}
 #' \item{sample.r.sd}{A vector of standard deviations for each sampling distribution.}
-#' \item{pairwise.z}{A matrix of pariwise, two-sample z scores betwen all pairs of effect sizes.}
+#' \item{pairwise.z}{A matrix of pairwise, two-sample z scores between all pairs of effect sizes.}
 #' \item{pairwise.p}{A matrix of corresponding P-values.}
 #' @references Adams, D.C and M.L. Collyer. 2016. On the comparison of the strength of morphological 
 #' integration across morphometric datasets. Evolution (in press)
 #' @examples
-#' # Example of comparative morphological intgration between pupfish head and body shapes
+#' # Example of comparative morphological integration between pupfish head and body shapes
 #' 
 #'  data(pupfish) # GPA previously performed
 #'   
@@ -39,11 +39,12 @@
 #'  tail.coords <- pupfish$coords[tail.LM,,]
 #'  head.coords <- pupfish$coords[head.LM,,]
 #' 
-#'  # Subset by group
+#'  # Subset 3D array by group, returning a list of 3D arrays
 #'  tail.coords.gp <- coords.subset(tail.coords, group)
 #'  head.coords.gp <- coords.subset(head.coords, group)
 #' 
 #'  integ.tests <- Map(function(x,y) integration.test(x, y, iter=499), head.coords.gp, tail.coords.gp)
+#'	# the map function performs the integration test on each 3D array in the lists provided
 #' 
 #'  integ.tests$Marsh.F
 #'  integ.tests$Marsh.M
@@ -53,10 +54,10 @@
 #'  group.Z <- compare.pls(integ.tests)
 #'  summary(group.Z)
 #' 
-#'  # Sexual dimorphism in morpholigical intrgartion in one population
+#'  # Sexual dimorphism in morphological integration in one population
 #'  # but not the other
 #' 
-#'  # can also list different PLS analyses, seprately
+#'  # can also list different PLS analyses, separately
 #' 
 #'  compare.pls(MF = integ.tests$Marsh.F, MM = integ.tests$Marsh.M)
 #' 
