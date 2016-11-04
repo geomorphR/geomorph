@@ -19,7 +19,7 @@ b9147b10c8eecf58afdbdfd97871a1dc *man/arrayspecs.Rd
 4018b5634138ba87a93758b136d78bcc *man/compare.evol.rates.Rd
 9c8e6b36afc3fed78f5ee568f69cfa8c *man/compare.modular.partitions.Rd
 fbdd701188cfb1fd96fe3c4ad45be14d *man/compare.multi.evol.rates.Rd
-0d8763d656e79169fa3ac11fa8457fca *man/compare.pls.Rd
+738f9e32708ae03be8a3123e41d3065e *man/compare.pls.Rd
 a76609742135b3c263e498b81b2b90d2 *man/coords.subset.Rd
 ce3b5145255932743c01cd6bd2160bd6 *man/define.links.Rd
 72a15f91b816fc4a8b275f53509d3eb7 *man/define.modules.Rd
@@ -129,7 +129,7 @@ b4292860778d6ac5da0efd33b66c1fd3 *NEWS
 14713bbb2ad126d777d95e359c71bf1a *R/build.template.r
 cf28d567f0973920940ea94f65d66954 *R/compare.evol.rates.r
 27ef2a66d8ead85ab20cb8faf0dd717d *R/compare.multi.evol.rates.r
-f40a82f00df189883461f335036655d8 *R/compare.pls.r
+4c7a99055b0276ca9f361fadf6f89f5c *R/compare.pls.r
 b80b7afa9d4c1be7d4ca408e69c4d182 *R/coords.subset.r
 9c8853f5d9c9bb5a9b0b21bfea6ebab8 *R/define.links.r
 d16ddcc0cc85bf6a16a27faf592b0a6c *R/define.modules.r

@@ -24,7 +24,7 @@
 #' \item{pairwise.z}{A matrix of pairwise, two-sample z scores between all pairs of effect sizes.}
 #' \item{pairwise.p}{A matrix of corresponding P-values.}
 #' @references Adams, D.C and M.L. Collyer. 2016. On the comparison of the strength of morphological 
-#' integration across morphometric datasets. Evolution (in press)
+#' integration across morphometric datasets. Evolution. 70(11): 2623–2631.
 #' @examples
 #' # Example of comparative morphological integration between pupfish head and body shapes
 #' 
