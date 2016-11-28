@@ -185,6 +185,7 @@ phylo.integration <-function(A, A2=NULL, phy, partition.gp=NULL,iter=999, seed=N
   }
   if(ngps>2){
     out <- list(r.pls = pls.obs$r.pls, r.pls.mat = r.pls.mat, P.value = p.val,
+                random.r = pls.rand, 
                 permutations = iter+1, call=match.call(),
                 method = "PLS")
   }
