@@ -149,11 +149,11 @@ d0ace19da4e207ac03a7ce7f7156179a *R/geomorph.utils.r
 0d9d88147f22cff2241b6e2e7396d57f *R/globalIntegration.r
 66d5ab19ac37f42838b211ff99a1c48c *R/gpagen.r
 2d8ab3c6fea452711a7cf091ffba8ff5 *R/gridPar.r
-9cec9fc48ff54f19e22289b2d43dad95 *R/integration.test.r
+ac0c4ea8707f7c371b7c1ca00e0e81a6 *R/integration.test.r
 1d6c03681bdbedb0359634ccaa2e0229 *R/modularity.test.r
 4126e9607888f36956dffc1fc1b3d887 *R/morphol.disparity.r
 084f845900f98683ff877ac399e822b3 *R/nested.update.r
-10655bfc2b6abe03f2e58a733e690e3a *R/phylo.integration.r
+dd57fede752450459b7bdd59ad4572fb *R/phylo.integration.r
 e1cb306b0d2dd762ad291bddaf2366e8 *R/phylo.modularity.r
 5e12723d8749bc8119410cd31dff7003 *R/physignal.r
 b2b85b4de1c6263d7c18dcf3a2c6ec04 *R/plotAllSpecimens.r
