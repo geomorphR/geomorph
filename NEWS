@@ -7,6 +7,7 @@ CHANGES IN GEOMORPH VERSION 3.0.4
   BUG FIXES
     o Fixed permutation issues with advanced.procD.lm
     o Fixed links not plotting in plotAllSpecimens if no colour specified
+    o Added missing random.r output to integration.test and phylo.integration
 
 CHANGES IN GEOMORPH VERSION 3.0.3
   
