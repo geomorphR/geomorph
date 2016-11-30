@@ -71,7 +71,7 @@ f4ee3053b05f336d94e5d97861ef6d8b *man/plotGMPhyloMorphoSpace.Rd
 ba7dc45ca2256b16d7ce4bd256b97990 *man/plotOutliers.Rd
 fa4468bb69be6813d8b79237962f923f *man/plotRefToTarget.Rd
 40c078dd06edf142ed69e31a65508ae8 *man/plotspec.Rd
-ad983375c50ee63bebc4761de59dcffe *man/plotTangentSpace.Rd
+fde0a2f836fcc43ecad98018b86e74e5 *man/plotTangentSpace.Rd
 424f835a02f07fbf2c37777bcaa0a7c8 *man/print.advanced.procD.lm.Rd
 d6db377d469738a20b901b6b4149eb88 *man/print.bilat.symmetry.Rd
 2dde4377ad6ac3f2a8abbbbacc06d3c7 *man/print.compare.pls.Rd
@@ -161,7 +161,7 @@ cce37a8c4a8388e9ebcb3f6ba18b95f3 *R/plotGMPhyloMorphoSpace.r
 8db1f082de4f53ca8b704a8ff93a7b60 *R/plotOutliers.r
 17823521691004468e8ee016c3a60d9a *R/plotRefToTarget.r
 41db23cebd8d7be6c3decf781bd378e0 *R/plotspec.r
-1b4edb4104bcd6a4d63aa4247f5d3a18 *R/plotTangentSpace.r
+ebeb4d639d36bacf4c870240d711d2cc *R/plotTangentSpace.r
 2cc67a58753a22692cac6874dc86a365 *R/procD.allometry.r
 c8a47ab9aea9977065ca72d50a5fc281 *R/procD.lm.r
 eb06374050efe37b368c7c4e1d6f8cbb *R/procD.pgls.r
