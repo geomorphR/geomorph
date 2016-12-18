@@ -3,6 +3,7 @@ CHANGES IN GEOMORPH VERSION 3.0.4
 
   OTHER CHANGES
     o Added data frame output to procD.lm
+    o Change to plotGMPhyloMorphoSpace to center data by phylogenetic mean
     
   BUG FIXES
     o Fixed permutation issues with advanced.procD.lm

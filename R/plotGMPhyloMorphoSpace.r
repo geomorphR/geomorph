@@ -77,6 +77,7 @@ plotGMPhyloMorphoSpace<-function(phy,A,tip.labels=TRUE,node.labels=TRUE,ancState
   row.names(anc.states)<-1:length(tmp)
   all.data<-rbind(x,anc.states)  
   pcdata<-prcomp(all.data)$x 
+  pcdata<-pcdata-matrix(rep(pcdata[(N+1),],nrow(pcdata)), nrow=nrow(pcdata),byrow=T)  #phylogenetic mean adjustment
 #plotting  
   p.p <- plot.param
   if(is.null(p.p$t.bg)) p.p$t.bg="black" ; if(is.null(p.p$t.pch)) p.p$t.pch=21

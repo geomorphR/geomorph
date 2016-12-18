@@ -122,7 +122,7 @@ e96c37b9aadabf2c8af65d9c4b282b89 *man/two.b.pls.Rd
 87a86c2e9b2d31119ab1883c54e092ec *man/warpRefOutline.Rd
 774e6229a8a66e87692c798a70c33525 *man/writeland.tps.Rd
 77f04fbf4be722b26bfa7ff5ccdadd2a *NAMESPACE
-ce6c648133e12c0ec6810256ed5dbf4e *NEWS
+c8bd0cf59f1093324d92c0ab02c2856f *NEWS
 3439fc516f38b76b858104255bbbd866 *R/advanced.procD.lm.r
 0d3550a7ca3f906370064165c10db8c6 *R/arrayspecs.r
 816a0a67e51b6b5f189b02c611fe855d *R/bilat.symmetry.r
@@ -157,7 +157,7 @@ dd57fede752450459b7bdd59ad4572fb *R/phylo.integration.r
 e1cb306b0d2dd762ad291bddaf2366e8 *R/phylo.modularity.r
 5e12723d8749bc8119410cd31dff7003 *R/physignal.r
 b2b85b4de1c6263d7c18dcf3a2c6ec04 *R/plotAllSpecimens.r
-20d623eb14dcbbed5d16d5b17ec237fe *R/plotGMPhyloMorphoSpace.r
+70944e4cf2fe6dff3d190418b5003686 *R/plotGMPhyloMorphoSpace.r
 8db1f082de4f53ca8b704a8ff93a7b60 *R/plotOutliers.r
 47a64e289c14a0c94eb8a415c661c6d8 *R/plotRefToTarget.r
 41db23cebd8d7be6c3decf781bd378e0 *R/plotspec.r
