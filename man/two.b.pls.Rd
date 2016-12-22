@@ -24,7 +24,8 @@ This is helpful for long-running analyses.}
 \value{
 Object of class "pls" that returns a list of the following:
   \item{r.pls}{The correlation coefficient between scores of projected values on the first
-  singular vectors of left (x) and right (y) blocks of landmarks (or other variables)}
+  singular vectors of left (x) and right (y) blocks of landmarks (or other variables).  This value can only be negative
+  if single variables are input, as it reduces to the Pearson correlation coefficient.}
   \item{P.value}{The empirically calculated P-value from the resampling procedure.}
   \item{left.pls.vectors}{The singular vectors of the left (x) block}
   \item{right.pls.vectors}{The singular vectors of the right (y) block}
@@ -32,7 +33,7 @@ Object of class "pls" that returns a list of the following:
   resampling procedure.}
   \item{XScores}{Values of left (x) block projected onto singular vectors.}
   \item{YScores}{Values of right (y) block projected onto singular vectors.}
-  \item{svd}{The singular value decomposition of the cross-covariances.}
+  \item{svd}{The singular value decomposition of the cross-covariances.  See \code{\link{svd}} for further details.}
   \item{A1}{Input values for the left block.}
   \item{A2}{Input values for the right block.}
   \item{A1.matrix}{Left block (matrix) found from A1.}
@@ -59,6 +60,19 @@ The function quantifies the degree of association between two blocks of shape da
  include warpgrids, respectively.  Warpgrids can only be included for 3D arrays of Procrustes residuals. The plot is a plot of PLS scores from 
  Block1 versus Block2 performed for the first set of PLS axes. 
  
+ \subsection{For more than two blocks}{ 
+If one wishes to consider 3+ arrays or matrices, there are multiple options.  First, one could perform multiple two.b.pls analyses and use
+\code{\link{compare.pls}} to ascertain which blocks are more "integrated".  Second, one could use \code{\link{integration.test}} and perform a test that
+averages the amount of integration (correlations) across multiple pairwise blocks.  Note that \code{\link{integration.test}} performed on two matrices or
+arrays returns the same results as two.b.pls.  (Thus, \code{\link{integration.test}} is more flexible and thorough.)
+}
+
+\subsection{Using phylogenies and PGLS}{ 
+If one wishes to incorporate a phylogeny, \code{\link{phylo.integration}} is the function to use.  This function is exactly the same as \code{\link{integration.test}}
+but allows PGLS estimation of PLS vectors.  Because \code{\link{integration.test}} can be used on two blocks, \code{\link{phylo.integration}} likewise allows one to
+perform a phylogenetic two-block PLS analysis.
+}
+ 
  \subsection{Notes for geomorph 3.0}{ 
 There is a slight change in two.b.pls plots with geomorph 3.0.  Rather than use the shapes of specimens that matched minimum and maximum PLS
 scores, major-axis regression is used and the extreme fitted values are used to generate deformation grids.  This ensures that shape deformations
@@ -82,8 +96,8 @@ Rohlf, F.J., and M. Corti. 2000. The use of partial least-squares to study covar
 Systematic Biology 49: 740-753.
 }
 \seealso{
-\code{\link{integration.test}}, \code{\link{modularity.test}}, \code{\link{phylo.pls}}, and 
-\code{\link{phylo.integration}}
+\code{\link{integration.test}}, \code{\link{modularity.test}}, \code{\link{phylo.pls}},  
+\code{\link{phylo.integration}}, and \code{\link{compare.pls}}
 }
 \keyword{analysis}
 

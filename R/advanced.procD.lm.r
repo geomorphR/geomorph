@@ -31,10 +31,15 @@
 #'
 #' @param f1 A formula for a linear model, containing the response matrix (e.g., y ~ x1 + x2)
 #' @param f2 A formula for another linear model (e.g., ~ x1 + x2 + x3 + a*b). f1 and f2 should be nested.
-#' @param groups A formula for grouping factors (e.g., ~ a, or ~ a*b)
-#' @param slope A formula with one covariate (e.g., ~ x3)
-#' @param angle.type A value specifying whether differences between slopes should be represented by vector
-#' correlations (r), radians (rad) or degrees (deg)
+#' @param groups A formula for grouping factors (e.g., ~ a, or ~ a*b).  This argument should be left NULL unless one wishes to perform pairwise
+#' comparisons of different group levels.  Note that this argument is used in conjunction with the argument, slope.  If slope is NULL, a pairwise
+#' comparison test is performed on group least squares (LS) means.  If slope is not NULL, this argument will designate the group levels to compare
+#' in terms of their slopes.
+#' @param slope A formula with one - and only one - covariate (e.g., ~ x3).  This argument must be used in conjunction with the groups argument.  It 
+#' will not make sense if the groups argument is left NULL.  The groups argument defines the groups; the slope argument defines for which covariate group
+#' slopes are compared.  Group slopes can differ in their magnitude and direction of shape change.
+#' @param angle.type A value specifying whether directional differences between slopes should be represented by vector
+#' correlations (r), radians (rad) or degrees (deg).
 #' @param phy A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape (optional)
 #' @param pc.shape An argument for whether analysis should be performed on the principal component scores fo shape.  This is a useful
 #' option if the data are high-dimensional (many more variables that observations) but will not affect results

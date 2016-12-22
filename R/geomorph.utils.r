@@ -69,7 +69,7 @@ print.procD.lm <- function (x, ...) {
   if(x$perm.method == "RRPP") cat ("Randomized Residual Permutation Procedure Used\n") else
     cat("Randomization of Raw Values used\n")
   cat(paste(x$permutations, "Permutations"))
-  if(!is.null(x$random.F)) cat("\n\n*** F values, Z scores, and P values updated for nested effects")
+  if(!is.null(x$random.F)) cat("\n\n*** F values, Z scores, and P values updated for either PGLS or ?plotTannested effects")
   cat("\n\n")
   print(x$aov.table)
   invisible(x)

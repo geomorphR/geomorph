@@ -16,7 +16,7 @@
 #' transformed data, so that the probability of phylogenetic association of A vs. B is similar to that of B vs. A: 
 #' i.e., prob(A,B|phy)~prob(B,A|phy).  
 #' 
-#'   Input for the analysis can take one of two forms. First, one can input a single dataset (as a matrix or 3D array, along with 
+#'  Input for the analysis can take one of two forms. First, one can input a single dataset (as a matrix or 3D array, along with 
 #'  a vector describing which variables correspond to which partitions (for the case of a 3D array, which landmarks belong to which 
 #'  partitions is specified). Alternatively, when evaluating the integration between two structures or partitions, two datasets may be provided.
 #'
@@ -25,6 +25,14 @@
 #'  arguments (with defaults): label = NULL, warpgrids = TRUE.  These arguments allow one to include a vector to label points and a logical statement to
 #'  include warpgrids, respectively.  Warpgrids can only be included for 3D arrays of Procrustes residuals. The plot is a plot of PLS scores from 
 #'  Block1 versus Block2 performed for the first set of PLS axes. 
+#'  
+#' \subsection{Similarity to \code{\link{two.b.pls}} and \code{\link{compare.pls}} }{ 
+#' Note that \code{phylo.integration} performed on two matrices or arrays returns the same results as a phylogentic varion of
+#'  \code{\link{two.b.pls}}.  It might be of interest with 3+ modules to perform separate phylogenetic integration tests
+#' between all pairwise comaprisons of modules.  This can be done, test by test, and the levels of integration can be compared with
+#' \code{\link{compare.pls}}.  Such results are different than using the average amount of integration, as performed by \code{phylo.integration}
+#' when more than two modules are input.
+#' }
 #'  
 #' @param A A 2D array (n x [p1 x k1]) or 3D array (p1 x k1 x n) containing landmark coordinates for the first block
 #' @param A2 An optional 2D array (n x [p2 x k2]) or 3D array (p2 x k2 x n) containing landmark coordinates for the second block 
@@ -156,7 +164,7 @@ phylo.integration <-function(A, A2=NULL, phy, partition.gp=NULL,iter=999, seed=N
     y <- Ptrans%*%y
     if(print.progress) pls.rand <- apply.pls(x, y,  iter=iter, seed=seed) else
       pls.rand <- .apply.pls(x, y, iter=iter, seed=seed)
-    p.val <- pval(pls.rand)
+    p.val <- pval(abs(pls.rand))
     XScores <- pls.obs$XScores
     YScores <- pls.obs$YScores
   }
@@ -166,7 +174,7 @@ phylo.integration <-function(A, A2=NULL, phy, partition.gp=NULL,iter=999, seed=N
     x <- Ptrans%*%x
     if(print.progress) pls.rand <- apply.plsmulti(x, gps, iter=iter, seed=seed) else
       pls.rand <- .apply.plsmulti(x, gps,iter=iter, seed=seed)
-    p.val <- pval(pls.rand)
+    p.val <- pval(abs(pls.rand))
   } 
   ####OUTPUT
   if(ngps > 2) r.pls.mat <- pls.obs$r.pls.mat else r.pls.mat <- NULL

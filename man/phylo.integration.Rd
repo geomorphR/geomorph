@@ -74,7 +74,15 @@ The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\li
  The generic function, \code{\link{plot}}, produces a two-block.pls plot.  This function calls \code{\link{plot.pls}}, which has two additional
  arguments (with defaults): label = NULL, warpgrids = TRUE.  These arguments allow one to include a vector to label points and a logical statement to
  include warpgrids, respectively.  Warpgrids can only be included for 3D arrays of Procrustes residuals. The plot is a plot of PLS scores from 
- Block1 versus Block2 performed for the first set of PLS axes.
+ Block1 versus Block2 performed for the first set of PLS axes. 
+ 
+\subsection{Similarity to \code{\link{two.b.pls}} and \code{\link{compare.pls}} }{ 
+Note that \code{phylo.integration} performed on two matrices or arrays returns the same results as a phylogentic varion of
+ \code{\link{two.b.pls}}.  It might be of interest with 3+ modules to perform separate phylogenetic integration tests
+between all pairwise comaprisons of modules.  This can be done, test by test, and the levels of integration can be compared with
+\code{\link{compare.pls}}.  Such results are different than using the average amount of integration, as performed by \code{phylo.integration}
+when more than two modules are input.
+}
 }
 \examples{
 
