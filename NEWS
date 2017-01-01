@@ -2,10 +2,12 @@ CHANGES IN GEOMORPH VERSION 3.0.4
   NEW FEATURES
 
   OTHER CHANGES
+    o Updated Rd files for PLS functions to better cross-reference the similar functions.
     o Added data frame output to procD.lm
     o Change to plotGMPhyloMorphoSpace to center data by phylogenetic mean
     
   BUG FIXES
+    o Fixed univariate PLS to allow negative correlations
     o Fixed permutation issues with advanced.procD.lm
     o Fixed links not plotting in plotAllSpecimens if no colour specified
     o Added missing random.r output to integration.test and phylo.integration
