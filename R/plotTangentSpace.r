@@ -39,6 +39,7 @@
 #' Y.gpa<-gpagen(plethodon$land)    #GPA-alignment
 #' 
 #' gp <- as.factor(paste(plethodon$species, plethodon$site)) # group must be a factor
+#' gp <- interaction(plethodon$species, plethodon$site) # group must be a factor
 #' plotTangentSpace(Y.gpa$coords, groups = gp) 
 #' 
 #' ## To save and use output
