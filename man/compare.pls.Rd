@@ -7,10 +7,10 @@
 compare.pls(...)
 }
 \arguments{
-\item{...}{saved analyses of class, "pls"}
+\item{...}{saved analyses of class pls}
 }
 \value{
-An object of class, "compare.pls", returns a list of the following
+An object of class compare.pls, returns a list of the following
 \item{sample.z}{A vector of effect sizes for each sample.}
 \item{sample.r.sd}{A vector of standard deviations for each sampling distribution.}
 \item{pairwise.z}{A matrix of pairwise, two-sample z scores between all pairs of effect sizes.}
@@ -74,7 +74,7 @@ Michael Collyer
 }
 \references{
 Adams, D.C and M.L. Collyer. 2016. On the comparison of the strength of morphological 
-integration across morphometric datasets. Evolution. 70(11): 2623–2631.
+integration across morphometric datasets. Evolution. 70(11): 2623-2631.
 }
 \keyword{analysis}
 

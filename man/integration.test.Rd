@@ -38,7 +38,7 @@ Objects of class "pls" from integration.test return a list of the following:
   (for 2 modules only).}
    \item{YScores}{Values of right (y) block projected onto singular vectors
   (for 2 modules only).}
-  \item{svd}{The singular value decomposition of the cross-covariances (for 2 modules only).}
+   \item{svd}{The singular value decomposition of the cross-covariances (for 2 modules only).}
    \item{A1}{Input values for the left block (for 2 modules only).}
    \item{A2}{Input values for the right block (for 2 modules only).}
    \item{A1.matrix}{Left block (matrix) found from A1 (for 2 modules only).}
@@ -74,7 +74,21 @@ The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\li
  The generic function, \code{\link{plot}}, produces a two-block.pls plot.  This function calls \code{\link{plot.pls}}, which has two additional
  arguments (with defaults): label = NULL, warpgrids = TRUE.  These arguments allow one to include a vector to label points and a logical statement to
  include warpgrids, respectively.  Warpgrids can only be included for 3D arrays of Procrustes residuals. The plot is a plot of PLS scores from 
- Block1 versus Block2 performed for the first set of PLS axes.
+ Block1 versus Block2 performed for the first set of PLS axes. 
+ 
+\subsection{Similarity to \code{\link{two.b.pls}} and \code{\link{compare.pls}} }{ 
+Note that \code{integration.test} performed on two matrices or arrays returns the same results as \code{\link{two.b.pls}}.  
+However,  \code{\link{two.b.pls}} is limited to only two modules.  It might be of interest with 3+ modules to perform integration tests
+between all pairwise comaprisons of modules.  This can be done, test by test, and the levels of integration can be compared with
+\code{\link{compare.pls}}.  Such results are different than using the average amount of integration, as performed by \code{integration.test}
+when more than two modules are input.
+}
+
+\subsection{Using phylogenies and PGLS}{ 
+If one wishes to incorporate a phylogeny, \code{\link{phylo.integration}} is the function to use.  This function is exactly the same as \code{integration.test}
+but allows PGLS estimation of PLS vectors.  Because \code{\link{integration.test}} can be used on two blocks, \code{\link{phylo.integration}} likewise allows one to
+perform a phylogenetic two-block PLS analysis.
+}
 }
 \examples{
 data(plethodon) 
@@ -95,8 +109,8 @@ Bookstein, F. L., P. Gunz, P. Mitteroecker, H. Prossinger, K. Schaefer, and H. S
   evolution. J. Hum. Evol. 44:167-187.
 }
 \seealso{
-\code{\link{two.b.pls}}, \code{\link{modularity.test}}, \code{\link{phylo.pls}}, and 
-\code{\link{phylo.integration}}
+\code{\link{two.b.pls}}, \code{\link{modularity.test}}, \code{\link{phylo.pls}}, 
+\code{\link{phylo.integration}}, and \code{\link{compare.pls}}
 }
 \keyword{analysis}
 

@@ -7,7 +7,7 @@
 \method{summary}{gpagen}(object, ...)
 }
 \arguments{
-\item{object}{print/summary object}
+\item{object}{print/summary object (from \code{\link{gpagen}})}
 
 \item{...}{other arguments passed to print/summary}
 }

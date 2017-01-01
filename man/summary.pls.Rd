@@ -7,7 +7,7 @@
 \method{summary}{pls}(object, ...)
 }
 \arguments{
-\item{object}{print/summary object}
+\item{object}{print/summary object (from \code{\link{phylo.integration}} or \code{\link{two.b.pls}})}
 
 \item{...}{other arguments passed to print/summary}
 }

@@ -7,7 +7,7 @@
 \method{summary}{physignal}(object, ...)
 }
 \arguments{
-\item{object}{print/summary object}
+\item{object}{print/summary object (from \code{\link{physignal}})}
 
 \item{...}{other arguments passed to print/summary}
 }

@@ -7,7 +7,7 @@
 \method{plot}{procD.lm}(x, outliers = FALSE, ...)
 }
 \arguments{
-\item{x}{plot object}
+\item{x}{plot object (from \code{\link{procD.lm}})}
 
 \item{outliers}{Logical argument to include outliers plot}
 

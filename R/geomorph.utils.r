@@ -4,7 +4,7 @@
 
 #' Print/Summary Function for geomorph
 #' 
-#' @param x print/summary object
+#' @param x print/summary object (from \code{\link{gpagen}})
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
@@ -29,7 +29,7 @@ print.gpagen <- function (x, ...) {
 
 #' Print/Summary Function for geomorph
 #' 
-#' @param object print/summary object
+#' @param object print/summary object (from \code{\link{gpagen}})
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
@@ -41,14 +41,14 @@ summary.gpagen <- function(object, ...) {
 
 #' Plot Function for geomorph
 #' 
-#' @param x plot object
-#' @param ... other arguments passed to plot
+#' @param x plot object (from \code{\link{gpagen}})
+#' @param ... other arguments passed to plotAllSpecimens
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities
 #' @keywords visualization
 plot.gpagen <- function(x, ...){
-  plotAllSpecimens(x$coords)
+  plotAllSpecimens(x$coords, ...)
 }
 
 
@@ -69,7 +69,7 @@ print.procD.lm <- function (x, ...) {
   if(x$perm.method == "RRPP") cat ("Randomized Residual Permutation Procedure Used\n") else
     cat("Randomization of Raw Values used\n")
   cat(paste(x$permutations, "Permutations"))
-  if(!is.null(x$random.F)) cat("\n\n*** F values, Z scores, and P values updated for nested effects")
+  if(!is.null(x$random.F)) cat("\n\n*** F values, Z scores, and P values updated for either PGLS or ?plotTannested effects")
   cat("\n\n")
   print(x$aov.table)
   invisible(x)
@@ -77,7 +77,7 @@ print.procD.lm <- function (x, ...) {
 
 #' Print/Summary Function for geomorph
 #' 
-#' @param object print/summary object
+#' @param object print/summary object (from \code{\link{procD.lm}})
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
@@ -116,7 +116,7 @@ plot.QQ <- function(r){
 
 #' Plot Function for geomorph
 #' 
-#' @param x plot object
+#' @param x plot object (from \code{\link{procD.lm}})
 #' @param outliers Logical argument to include outliers plot
 #' @param ... other arguments passed to plot
 #' @export
@@ -165,7 +165,7 @@ plot.procD.lm <- function(x, outliers=FALSE, ...){
 
 #' Print/Summary Function for geomorph
 #' 
-#' @param x print/summary object
+#' @param x print/summary object (from \code{\link{advanced.procD.lm}})
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
@@ -197,7 +197,7 @@ print.advanced.procD.lm <- function (x, ...) {
 
 #' Print/Summary Function for geomorph
 #' 
-#' @param object print/summary object
+#' @param object print/summary object (from \code{\link{advanced.procD.lm}})
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
@@ -209,7 +209,7 @@ summary.advanced.procD.lm <- function(object, ...) {
 
 #' Plot Function for geomorph
 #' 
-#' @param x plot object
+#' @param x plot object (from \code{\link{advanced.procD.lm}})
 #' @param outliers Logical argument to include outliers plot
 #' @param ... other arguments passed to plot
 #' @export
@@ -217,7 +217,7 @@ summary.advanced.procD.lm <- function(object, ...) {
 #' @keywords utilities
 #' @keywords visualization
 plot.advanced.procD.lm <- function(x, outliers = FALSE, ...) {
-  plot.procD.lm(x,...)
+  plot.procD.lm(x, outliers, ...)
 }
 
 
@@ -231,9 +231,9 @@ printAllometry.HOS <- function(x){
   cat("\nHomogeneity of Slopes Test\n")
   print(x$HOS.test)
   if(x$HOS.test[2,7] > x$alpha) cat(paste("\nThe null hypothesis of parallel slopes is supported
-  based on a significance criterion of alpha =", x$alpha,"\n")) 
+                                          based on a significance criterion of alpha =", x$alpha,"\n")) 
   if(x$HOS.test[2,7] <= x$alpha) cat(paste("\nThe null hypothesis of parallel slopes is rejected
-  based on a significance criterion of alpha =", x$alpha,"\n"))
+                                           based on a significance criterion of alpha =", x$alpha,"\n"))
   cat("\nBased on the results of this test, the following ANOVA table is most appropriate\n")
   cat("\nType I (Sequential) Sums of Squares and Cross-products\n")
   if(x$perm.method == "RRPP") cat ("Randomized Residual Permutation Procedure Used\n") else
@@ -256,7 +256,7 @@ printAllometry.noHOS <- function(x){
 
 #' Print/Summary Function for geomorph
 #' 
-#' @param x print/summary object
+#' @param x print/summary object (from \code{\link{procD.allometry}})
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
@@ -268,7 +268,7 @@ print.procD.allometry <- function (x, ...) {
 
 #' Print/Summary Function for geomorph
 #' 
-#' @param object print/summary object
+#' @param object print/summary object (from \code{\link{procD.allometry}})
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
@@ -395,7 +395,7 @@ plot.procD.allometry <- function(x, method=c("CAC","RegScore","PredLine"),warpgr
 
 #' Print/Summary Function for geomorph
 #' 
-#' @param x print/summary object
+#' @param x print/summary object (from \code{\link{morphol.disparity}})
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
@@ -419,7 +419,7 @@ print.morphol.disparity <- function (x, ...) {
 
 #' Print/Summary Function for geomorph
 #' 
-#' @param object print/summary object
+#' @param object print/summary object (from \code{\link{morphol.disparity}})
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
@@ -433,7 +433,7 @@ summary.morphol.disparity <- function(object, ...) {
 
 #' Print/Summary Function for geomorph
 #' 
-#' @param x print/summary object
+#' @param x print/summary object (from \code{\link{phylo.integration}} or \code{\link{two.b.pls}})
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
@@ -456,7 +456,7 @@ print.pls <- function (x, ...) {
 
 #' Print/Summary Function for geomorph
 #' 
-#' @param object print/summary object
+#' @param object print/summary object (from \code{\link{phylo.integration}} or \code{\link{two.b.pls}})
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
@@ -585,7 +585,7 @@ plot.pls <- function(x, label = NULL, warpgrids=TRUE, shapes=FALSE, ...){
 
 #' Print/Summary Function for geomorph
 #' 
-#' @param x print/summary object
+#' @param x print/summary object (from \code{\link{bilat.symmetry}})
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
@@ -701,7 +701,7 @@ plot.bilat.symmetry <- function(x, warpgrids = TRUE, mesh= NULL, ...){
 
 #' Print/Summary Function for geomorph
 #' 
-#' @param x print/summary object
+#' @param x print/summary object (from \code{\link{phylo.modularity}})
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
@@ -719,7 +719,7 @@ print.CR <- function (x, ...) {
 
 #' Print/Summary Function for geomorph
 #' 
-#' @param object print/summary object
+#' @param object print/summary object (from \code{\link{phylo.modularity}})
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
@@ -731,7 +731,7 @@ summary.CR <- function(object, ...) {
 
 #' Plot Function for geomorph
 #' 
-#' @param x plot object
+#' @param x plot object (from \code{\link{phylo.modularity}})
 #' @param ... other arguments passed to plot
 #' @export
 #' @author Michael Collyer
@@ -752,7 +752,7 @@ plot.CR <- function(x, ...){
 
 #' Print/Summary Function for geomorph
 #' 
-#' @param x print/summary object
+#' @param x print/summary object (from \code{\link{phylo.modularity}})
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Dean Adams
@@ -769,7 +769,7 @@ print.CR.phylo <- function (x, ...) {
 
 #' Print/Summary Function for geomorph
 #' 
-#' @param object print/summary object
+#' @param object print/summary object (from \code{\link{phylo.modularity}})
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Dean Adams
@@ -781,7 +781,7 @@ summary.CR.phylo <- function(object, ...) {
 
 #' Plot Function for geomorph
 #' 
-#' @param x plot object
+#' @param x plot object (from \code{\link{phylo.modularity}})
 #' @param ... other arguments passed to plot
 #' @export
 #' @author Dean Adams
@@ -803,7 +803,7 @@ plot.CR.phylo <- function(x, ...){
 
 #' Print/Summary Function for geomorph
 #' 
-#' @param x print/summary object
+#' @param x print/summary object (from \code{\link{physignal}})
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
@@ -819,7 +819,7 @@ print.physignal <- function(x, ...){
 
 #' Print/Summary Function for geomorph
 #' 
-#' @param object print/summary object
+#' @param object print/summary object (from \code{\link{physignal}})
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
@@ -831,7 +831,7 @@ summary.physignal <- function(object, ...) {
 
 #' Plot Function for geomorph
 #' 
-#' @param x plot object
+#' @param x plot object (from \code{\link{physignal}})
 #' @param ... other arguments passed to plot
 #' @export
 #' @author Michael Collyer
@@ -941,7 +941,7 @@ plot.evolrate <- function(x, ...){
 #' @author Michael Collyer
 #' @keywords utilities
 print.trajectory.analysis <- function(x, 
-                angle.type = c("r", "rad", "deg"), ...) {
+                                      angle.type = c("r", "rad", "deg"), ...) {
   angle.type = match.arg(angle.type)
   cat(deparse(x$call), fill=TRUE, "\n\n")
   cat("\nType I (Sequential) Sums of Squares and Cross-products\n")
@@ -1013,7 +1013,7 @@ print.trajectory.analysis <- function(x,
 #' @author Michael Collyer
 #' @keywords utilities
 summary.trajectory.analysis <- function(object,
-                  angle.type = c("r", "rad", "deg"), ...) {
+                                        angle.type = c("r", "rad", "deg"), ...) {
   x <- object
   angle.type <- match.arg(angle.type)
   print.trajectory.analysis(x, angle.type=angle.type, ...)
@@ -1021,7 +1021,7 @@ summary.trajectory.analysis <- function(object,
 
 # general plotting functions for phenotypic trajectories
 trajplot.w.int<-function(Data, M, TM, groups, group.cols = NULL, 
-pattern = c("white", "gray", "black"), pt.scale = 1, ...){ # TM = trajectories from means
+                         pattern = c("white", "gray", "black"), pt.scale = 1, ...){ # TM = trajectories from means
   n <- length(TM); tp<-dim(TM[[1]])[1]; p<-dim(TM[[1]])[2]
   if(length(pattern) != 3) stop("Point sequence color pattern must contain three values")
   pmax <- max(Data[,1]); pmin <- min(Data[,1])
@@ -1032,7 +1032,7 @@ pattern = c("white", "gray", "black"), pt.scale = 1, ...){ # TM = trajectories f
   
   if(is.null(group.cols)) gp.cols <- unique(as.numeric(groups)) else gp.cols <- group.cols
   if(length(gp.cols) != nlevels(groups)) 
-      stop("group.cols is not logical with respect to group levels") 
+    stop("group.cols is not logical with respect to group levels") 
   
   points(Data[,1:2],pch=21,bg=pattern[2],cex=.75*pt.scale)
   # Sequence lines
@@ -1045,15 +1045,15 @@ pattern = c("white", "gray", "black"), pt.scale = 1, ...){ # TM = trajectories f
   for(i in 1:n){
     y <- TM[[i]]
     k <- nrow(y)
-      points(y[1,1], y[1,2], pch=21, cex=1.5*pt.scale, bg=pattern[1])
-      points(y[k,1], y[k,2], pch=21, cex=1.5*pt.scale, bg=pattern[3])
+    points(y[1,1], y[1,2], pch=21, cex=1.5*pt.scale, bg=pattern[1])
+    points(y[k,1], y[k,2], pch=21, cex=1.5*pt.scale, bg=pattern[3])
   }
-
+  
   legend("topleft", levels(groups), lwd=2, col=gp.cols)
 }
 
 trajplot.by.groups<-function(Data, TM, groups, group.cols = NULL, 
-            pattern = c("white", "gray", "black"), pt.scale = 1, ...) {
+                             pattern = c("white", "gray", "black"), pt.scale = 1, ...) {
   n <- length(TM); tp <- nrow(TM[[1]]); p <- ncol(TM[[1]])
   if(length(pattern) != 3) stop("Point sequence color pattern must contain three values")
   Data2 <- t(matrix(matrix(t(Data)),p,))
@@ -1067,8 +1067,8 @@ trajplot.by.groups<-function(Data, TM, groups, group.cols = NULL,
     if(length(gp.cols) != nlevels(groups)) 
       stop("group.cols is not logical with respect to either groups or group levels") else
       {
-         new.gp.cols <-array(,n)
-         for(i in 1:n) new.gp.cols[i] <- gp.cols[match(groups[i], levels(groups))]
+        new.gp.cols <-array(,n)
+        for(i in 1:n) new.gp.cols[i] <- gp.cols[match(groups[i], levels(groups))]
       } 
     gp.cols <- new.gp.cols
   }
@@ -1092,7 +1092,7 @@ trajplot.by.groups<-function(Data, TM, groups, group.cols = NULL,
 
 #' Plot Function for geomorph
 #' 
-#' @param x plot object
+#' @param x plot object (from \code{\link{trajectory.analysis}})
 #' @param group.cols An optional vector of colors for group levels
 #' @param pt.seq.pattern The sequence of colors for starting, middle, and end points of 
 #' trajectories, respectively.  E.g., c("green", "gray", "red") for gray points
@@ -1104,15 +1104,15 @@ trajplot.by.groups<-function(Data, TM, groups, group.cols = NULL,
 #' @keywords utilities
 #' @keywords visualization
 plot.trajectory.analysis <- function(x, group.cols = NULL, 
-            pt.seq.pattern  = c("white", "gray", "black"), pt.scale = 1,...){
+                                     pt.seq.pattern  = c("white", "gray", "black"), pt.scale = 1,...){
   if(x$trajectory.type == 2)
-  trajplot.w.int(Data=x$pc.data, M =x$pc.means,
-           TM = x$pc.trajectories, groups = x$groups, 
-           group.cols=group.cols, pattern = pt.seq.pattern, pt.scale=pt.scale)
+    trajplot.w.int(Data=x$pc.data, M =x$pc.means,
+                   TM = x$pc.trajectories, groups = x$groups, 
+                   group.cols=group.cols, pattern = pt.seq.pattern, pt.scale=pt.scale)
   if(x$trajectory.type == 1)
     trajplot.by.groups(Data=x$pc.data, 
-           TM = x$pc.trajectories, groups = x$groups, 
-           group.cols=group.cols, pattern = pt.seq.pattern, pt.scale=pt.scale)
+                       TM = x$pc.trajectories, groups = x$groups, 
+                       group.cols=group.cols, pattern = pt.seq.pattern, pt.scale=pt.scale)
 }
 
 # plotTangentSpace

@@ -1870,14 +1870,24 @@ vec.ang.matrix <- function(M, type = c("rad", "deg", "r")){
 # Used in two.b.pls, integration.test, phylo.integration, apply.pls
 pls <- function(x,y, RV=FALSE, verbose = FALSE){
   x <- as.matrix(x); y <- as.matrix(y)
-  px <- ncol(x); py <- ncol(y); pmin <- min(px,py)
+  px <- dim(x)[2]; py <- dim(y)[2]; pmin <- min(px,py)
   S12 <- crossprod(center(x),center(y))/(dim(x)[1] - 1)
-  pls <- La.svd(S12, pmin, pmin)
-  U <- pls$u; V <- t(pls$vt)
-  XScores <- x %*% U
-  YScores <- y %*% V
-  r.pls <- cor(XScores[,1],YScores[,1])
-  if(RV==TRUE){
+  if(length(S12) == 1) {
+    r.pls <- cor(x,y) 
+    pls <- NULL
+    U <- NULL
+    V <- NULL
+    XScores <- x 
+    YScores <- y 
+  }
+  else {
+    pls <- La.svd(S12, pmin, pmin)
+    U <- pls$u; V <- t(pls$vt)
+    XScores <- x %*% U
+    YScores <- y %*% V
+    r.pls <- cor(XScores[,1],YScores[,1])
+  }
+  if(RV == TRUE){
     S11 <- var(x)
     S22 <- var(y)
     RV <- sum(colSums(S12^2))/sqrt(sum(S11^2)*sum(S22^2))

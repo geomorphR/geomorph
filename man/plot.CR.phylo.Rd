@@ -7,7 +7,7 @@
 \method{plot}{CR.phylo}(x, ...)
 }
 \arguments{
-\item{x}{plot object}
+\item{x}{plot object (from \code{\link{phylo.modularity}})}
 
 \item{...}{other arguments passed to plot}
 }

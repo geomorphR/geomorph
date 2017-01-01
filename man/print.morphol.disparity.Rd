@@ -7,7 +7,7 @@
 \method{print}{morphol.disparity}(x, ...)
 }
 \arguments{
-\item{x}{print/summary object}
+\item{x}{print/summary object (from \code{\link{morphol.disparity}})}
 
 \item{...}{other arguments passed to print/summary}
 }

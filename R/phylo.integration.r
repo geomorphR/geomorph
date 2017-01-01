@@ -26,6 +26,14 @@
 #'  include warpgrids, respectively.  Warpgrids can only be included for 3D arrays of Procrustes residuals. The plot is a plot of PLS scores from 
 #'  Block1 versus Block2 performed for the first set of PLS axes. 
 #'  
+#' \subsection{Similarity to \code{\link{two.b.pls}} and \code{\link{compare.pls}} }{ 
+#' Note that \code{phylo.integration} performed on two matrices or arrays returns the same results as a phylogentic varion of
+#'  \code{\link{two.b.pls}}.  It might be of interest with 3+ modules to perform separate phylogenetic integration tests
+#' between all pairwise comaprisons of modules.  This can be done, test by test, and the levels of integration can be compared with
+#' \code{\link{compare.pls}}.  Such results are different than using the average amount of integration, as performed by \code{phylo.integration}
+#' when more than two modules are input.
+#' }
+#'  
 #' @param A A 2D array (n x [p1 x k1]) or 3D array (p1 x k1 x n) containing landmark coordinates for the first block
 #' @param A2 An optional 2D array (n x [p2 x k2]) or 3D array (p2 x k2 x n) containing landmark coordinates for the second block 
 #' @param phy A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape
@@ -137,27 +145,38 @@ phylo.integration <-function(A, A2=NULL, phy, partition.gp=NULL,iter=999, seed=N
 #PhyloPrep  
   phy.parts<-phylo.mat(x,phy)
   invC<-phy.parts$invC; D.mat<-phy.parts$D.mat
-#Analysis  
+  #Analysis  
   one<-matrix(1,nrow(x)); I = diag(1,nrow(x),) 
   Ptrans<-D.mat%*%(I-one%*%crossprod(one,invC)/sum(invC))
   if(ngps==2){
     pls.obs <- pls.phylo(x, y, Ptrans,verbose=TRUE)
+    if(NCOL(x) > NROW(x)){
+      pcax <- prcomp(x)
+      d <- which(zapsmall(pcax$sdev) > 0)
+      x <- pcax$x[,d]
+    }
+    if(NCOL(y) > NROW(y)){
+      pcay <- prcomp(y)
+      d <- which(zapsmall(pcay$sdev) > 0)
+      y <- pcay$x[,d]
+    }
     x <- Ptrans%*%x
     y <- Ptrans%*%y
     if(print.progress) pls.rand <- apply.pls(x, y,  iter=iter, seed=seed) else
       pls.rand <- .apply.pls(x, y, iter=iter, seed=seed)
-    p.val <- pval(pls.rand)
+    p.val <- pval(abs(pls.rand))
     XScores <- pls.obs$XScores
     YScores <- pls.obs$YScores
   }
   if(ngps>2){
     pls.obs <- plsmulti.phylo(x, gps, Ptrans)  
+    
     x <- Ptrans%*%x
     if(print.progress) pls.rand <- apply.plsmulti(x, gps, iter=iter, seed=seed) else
       pls.rand <- .apply.plsmulti(x, gps,iter=iter, seed=seed)
-    p.val <- pval(pls.rand)
+    p.val <- pval(abs(pls.rand))
   } 
-  ####OUTPUT
+  #### OUTPUT
   if(ngps > 2) r.pls.mat <- pls.obs$r.pls.mat else r.pls.mat <- NULL
   if(ngps==2){
     out <- list(r.pls = pls.obs$r.pls, r.pls.mat = r.pls.mat, P.value = p.val,
