@@ -2,6 +2,7 @@ PENDING CHANGES IN GEOMORPH VERSION 3.0.4 (updated on Stable Branch of Github)
   NEW FEATURES
 
   OTHER CHANGES
+    o Created transferability of dimnames between arraysepcs and two.d.array.
     o Updated Rd files for PLS functions to better cross-reference the similar functions.
     o Added data frame output to procD.lm
     o Change to plotGMPhyloMorphoSpace to center data by phylogenetic mean

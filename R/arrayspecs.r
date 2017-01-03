@@ -25,10 +25,21 @@
 #' arrayspecs(x2,3,2)
 arrayspecs<-function(A,p,k){  
   if(is.matrix(A)) names <- rownames(A) else names <- names(A)
+  if(is.matrix(A)) col.names <- colnames(A) else col.names <- NULL
   n <- length(unlist(A))/(p * k)
   if(k < 2 ) stop("One-dimensional data cannot be used")
   if(abs(n)-round(abs(n)) > 0) stop("Matrix dimensions do not match input")
   specimens <- aperm(array(t(A), c(k,p,n)), c(2,1,3)) 
   if (length(names) == n) {dimnames(specimens)[[3]] <- names}
+  if(!is.null(col.names)){
+    a <- strsplit(col.names, split = "[.]")
+    if(length(unlist(a)) == 2*k*p){
+      b <- simplify2array(a)
+      rn <- unique(b[1,])
+      cn <- unique(b[2,])
+    }  else b <- rn <- cn <- NULL
+    dimnames(specimens)[[1]] <- rn
+    dimnames(specimens)[[2]] <- cn
+  }
   return(specimens)
 }
