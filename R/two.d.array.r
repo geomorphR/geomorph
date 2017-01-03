@@ -23,6 +23,9 @@ two.d.array<-function(A){
   n <- dim(A)[3]
   tmp <- aperm(A, c(3,2,1))
   dim(tmp) <- c(n,pxk)
-  rownames(tmp)<-dimnames(A)[[3]]  
+  rownames(tmp)<-dimnames(A)[[3]] 
+  colnames(tmp)<-as.vector(t(outer(dimnames(A)[[1]], 
+                                   dimnames(A)[[2]], 
+                                   FUN = paste, sep=".")))
   return(tmp)
 }
