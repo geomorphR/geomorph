@@ -9,7 +9,8 @@ interlmkdist(A, dists)
 \arguments{
 \item{A}{A 3D array (p x k x n) containing landmark coordinates for a set of specimens}
 
-\item{dists}{A matrix or dataframe of landmark addresses for the start and end landmarks defining m linear measurements (can be either 2-x-m or m-x-2)}
+\item{dists}{A matrix or dataframe of landmark addresses for the start and end landmarks defining m linear measurements (can be either 2-x-m or m-x-2).
+Either the rows or the columns should have names 'start' and 'end' to define landmarks.}
 }
 \value{
 Function returns a matrix (n x m) of m linear distances for n specimens
@@ -28,7 +29,7 @@ these for column names (see example). If only two interlandmark distances, 'dist
  
 data(plethodon)
 # Make a matrix defining three interlandmark distances 
-dists <- matrix(c(8,9,6,12,4,2), ncol=2, byrow=T, 
+dists <- matrix(c(8,9,6,12,4,2), ncol=2, byrow=TRUE, 
 dimnames = list(c("eyeW", "headL", "mouthL"),c("start", "end")))
 # where 8-9 is eye width; 6-12 is head length; 4-2 is mouth length
 # or alternatively

@@ -9,7 +9,8 @@
 #' these for column names (see example). If only two interlandmark distances, 'dists' input must be m x 2.
 #' 
 #' @param A A 3D array (p x k x n) containing landmark coordinates for a set of specimens
-#' @param dists A matrix or dataframe of landmark addresses for the start and end landmarks defining m linear measurements (can be either 2-x-m or m-x-2)
+#' @param dists A matrix or dataframe of landmark addresses for the start and end landmarks defining m linear measurements (can be either 2-x-m or m-x-2).
+#' Either the rows or the columns should have names 'start' and 'end' to define landmarks.  
 #' @export
 #' @keywords utilities
 #' @author Emma Sherratt
@@ -17,7 +18,7 @@
 #' @examples  
 #' data(plethodon)
 #' # Make a matrix defining three interlandmark distances 
-#' dists <- matrix(c(8,9,6,12,4,2), ncol=2, byrow=T, 
+#' dists <- matrix(c(8,9,6,12,4,2), ncol=2, byrow=TRUE, 
 #' dimnames = list(c("eyeW", "headL", "mouthL"),c("start", "end")))
 #' # where 8-9 is eye width; 6-12 is head length; 4-2 is mouth length
 #' # or alternatively
@@ -29,10 +30,37 @@
 interlmkdist <- function(A, dists){
   if(!is.array(A)) {
     stop("Data matrix not a 3D array (see 'arrayspecs').") }
-  dist <- as.matrix(dists)
-  if(ncol(dists) != 2 && nrow(dists) == 2) dists <- t(dists)
-  if(ncol(dists) == 2 && nrow(dists) == 2) {
-    cat("'dists' input assumed to be m x 2","\n") }
+  dists <- as.matrix(dists)
+  if(ncol(dists) != 2 && nrow(dists) != 2) 
+    stop("Only one start and one end point are required to calculate distances")
+  row.match <- match(c("start", "end"), rownames(dists))
+  col.match <- match(c("start", "end"), colnames(dists))
+  if(any(is.na(col.match)) && all(!is.na(row.match))) {
+    dists <- t(dists)
+    dists <- dists[,order(colnames(dists), decreasing = TRUE)]
+  }
+  if(any(is.na(col.match)) && any(is.na(row.match))) {
+    if(ncol(dists) != 2 && nrow(dists) == 2) {
+      dists <- t(dists)
+      cat("\nNo 'start' and 'end' points were defined.",
+          "\nIt is assumed that matrix rows are appropriately ordered.\n","\n") 
+    }
+    if(ncol(dists) == 2 && nrow(dists) == 2) {
+      if(is.null(rownames(dists)) && is.null(colnames(dists)))
+        cat("\nNo 'start' and 'end' points were defined.",
+            "\nNo names for distances were provided.",
+            "\n'dists' input assumed to be m x 2","\n\n") 
+      if(!is.null(rownames(dists)) && is.null(colnames(dists))) {
+        dists <- t(dists)
+        cat("\nNo 'start' and 'end' points were defined.",
+            "\nIt is assumed that matrix rows are appropriately ordered.","\n\n")
+      }
+      if(is.null(rownames(dists)) && !is.null(colnames(dists))) {
+        cat("\nNo 'start' and 'end' points were defined.",
+            "\nIt is assumed that matrix rows are appropriately ordered.","\n\n")
+      } 
+    }
+  }
   lindist <- matrix(NA,ncol=nrow(dists), nrow=dim(A)[3])
   if(!is.null(rownames(dists))) colnames(lindist) <- rownames(dists)   
   if(!is.null(dimnames(A)[[3]])) rownames(lindist) <- dimnames(A)[[3]] 
