@@ -8,7 +8,7 @@ plotAllSpecimens(A, mean = TRUE, links = NULL, label = FALSE,
   plot.param = list())
 }
 \arguments{
-\item{A}{An array (p x k x n) containing GPA-aligned coordinates for a set of specimens}
+\item{A}{A 3D array (p x k x n) containing GPA-aligned coordinates for a set of specimens}
 
 \item{mean}{A logical value indicating whether the mean shape should be included in the plot}
 

@@ -18,7 +18,7 @@ Function returns a matrix (n x m) of m linear distances for n specimens
 A function to calculate linear distances between a set of landmark coordinates (interlandmark distances)
 }
 \details{
-Function takes an array of landmark coordinates from a set of specimens and a matrix 
+Function takes a 3D array of landmark coordinates from a set of specimens and a matrix 
 of addresses for the start and end landmarks defining linear measurements and then
 calculates the interlandmark distances. The function returns a matrix of linear distances for all specimens.
 If the 'dists' matrix has row names defining the name of the linear measurements, the returned matrix will use

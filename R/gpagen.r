@@ -42,7 +42,7 @@
 #' inferential analyses using Procrustes residuals. 
 #' }
 
-#' @param A An array (p x k x n) containing landmark coordinates for a set of specimens
+#' @param A A 3D array (p x k x n) containing landmark coordinates for a set of specimens
 #' @param Proj A logical value indicating whether or not the aligned Procrustes residuals should be projected 
 #'   into tangent space 
 #' @param ProcD A logical value indicating whether or not Procrustes distance should be used as the criterion
@@ -130,7 +130,7 @@ gpagen = function(A, curves=NULL, surfaces=NULL, PrinAxes = TRUE,
                   max.iter = NULL, ProcD=TRUE, Proj = TRUE,
                   print.progress = TRUE){
   n <- dim(A)[[3]]; p <- dim(A)[[1]]; k <- dim(A)[[2]]
-  if(!is.array(A)) stop("Coordinates must be an array")
+  if(!is.array(A)) stop("Coordinates must be a 3D array")
   if(length(dim(A)) != 3) stop("Coordinates array does not have proper dimensions")
   Y <- lapply(1:n, function(j) A[,,j])
   if(!is.logical(ProcD)) prD <- TRUE else prD <- ProcD

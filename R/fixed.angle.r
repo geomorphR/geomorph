@@ -8,7 +8,7 @@
 #'  this may be augmented. 
 #' 
 #' Presently, the function is only implemented for two-dimensional landmark data. 
-#' @param A An array (p x k x n) containing landmark coordinates for a set of specimens
+#' @param A A 3D array (p x k x n) containing landmark coordinates for a set of specimens
 #' @param art.pt A number specifying which landmark is the articulation point between the two landmark subsets
 #' @param angle.pts A vector containing numbers specifying which two points used to define the angle (one per subset)
 #' @param rot.pts A vector containing numbers specifying which landmarks are in the subset to be rotated

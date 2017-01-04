@@ -9,7 +9,7 @@
 #'  designates the two landmarks to be connected by that link. The function will plot either two- or 
 #'  three-dimensional data (e.g. see \code{\link{define.links}}).
 #'
-#' @param A An array (p x k x n) containing GPA-aligned coordinates for a set of specimens
+#' @param A A 3D array (p x k x n) containing GPA-aligned coordinates for a set of specimens
 #' @param mean A logical value indicating whether the mean shape should be included in the plot
 #' @param links An optional matrix defining for links between landmarks (only if mean=TRUE)
 #' @param label A logical value indicating whether landmark numbers will be plotted (only if mean=TRUE)

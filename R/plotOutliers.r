@@ -10,7 +10,7 @@
 #' If the data have strong group structure and there is reasonable belief that the whole sample mean should not be used,
 #' then a factor defining the groups can be used.
 #' 
-#' @param A An array (p x k x n) containing GPA-aligned coordinates for a set of specimens
+#' @param A A 3D array (p x k x n) containing GPA-aligned coordinates for a set of specimens
 #' @param groups An optional factor defining groups
 #' @export
 #' @keywords utilities
