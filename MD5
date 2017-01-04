@@ -13,7 +13,7 @@ d8e8360c03c03fe45d2100e9c05d4a89 *data/plethodon.rda
 1d90d3f2b01906fcf92cbd927743b16e *geomorph.Rproj
 4bdde5c74d5d5ead8f87cd70b9f91250 *inst/CITATION
 908ff37316d815bd2174d31750ca7db1 *man/advanced.procD.lm.Rd
-b9147b10c8eecf58afdbdfd97871a1dc *man/arrayspecs.Rd
+81a4e04843eb1dc4a043e339283957e1 *man/arrayspecs.Rd
 5d5e3f58e3766ae07e2ce4298f020e2f *man/bilat.symmetry.Rd
 98905c1726ae4f9391195460634be5dd *man/buildtemplate.Rd
 4018b5634138ba87a93758b136d78bcc *man/compare.evol.rates.Rd
@@ -118,14 +118,14 @@ d972b00a4b3fed99a8fc278953b7fde3 *man/summary.procD.allometry.Rd
 eb75ac344ef00bf0d68816c1e9c74cfe *man/summary.trajectory.analysis.Rd
 cbbc4031111f2bc62e2abac7f05c4a0a *man/trajectory.analysis.Rd
 6d12a45c53c86b1489b421c89f5c53f5 *man/two.b.pls.Rd
-8044aab3a35f1dee1ff421bdf27b2d25 *man/two.d.array.Rd
+18532f34721e70b0737a4d31edab1fa2 *man/two.d.array.Rd
 63a9d1ca2d64a7b7edb43b2dccfa987b *man/warpRefMesh.Rd
 87a86c2e9b2d31119ab1883c54e092ec *man/warpRefOutline.Rd
 774e6229a8a66e87692c798a70c33525 *man/writeland.tps.Rd
 3f1435fd25f61cda55d671b2cda06149 *NAMESPACE
 3f87c0d03e6e8ad69cd58c691c8140ee *NEWS
 ef7af2e4ef3411c627351cc79d690680 *R/advanced.procD.lm.r
-81fc64b7cae4202d544308531ce832a3 *R/arrayspecs.r
+7574292caee620e8d01b2c6bd495e29c *R/arrayspecs.r
 816a0a67e51b6b5f189b02c611fe855d *R/bilat.symmetry.r
 14713bbb2ad126d777d95e359c71bf1a *R/build.template.r
 cf28d567f0973920940ea94f65d66954 *R/compare.evol.rates.r
@@ -175,7 +175,7 @@ ff7c5bf6d13e30a9cf396affb5afa484 *R/readmulti.nts.r
 dbe2e4f00e3ecee9b7cd78248f0c4a20 *R/shape.predictor.r
 eee4aff6169ce5be5340bb92e68fe336 *R/trajectory.analysis.r
 075468499df1787e805118710e5e05a0 *R/two.b.pls.r
-3bfb7be77c664735276258b1be113f55 *R/two.d.array.r
+358c18788e9e1a9a4e221d9938037767 *R/two.d.array.r
 6cbbaa1e92e97d4ec742825a60d5e7ab *R/warpRefMesh.r
 59d493f9cc61f036c40f49bf8b7bb3e0 *R/warpRefOutline.r
 2cc7b38bd4e75f2d4a33d09281adbfad *R/writeland.tps.r
