@@ -8,7 +8,7 @@ fixed.angle(A, art.pt = NULL, angle.pts = NULL, rot.pts = NULL,
   angle = 0, degrees = FALSE)
 }
 \arguments{
-\item{A}{An array (p x k x n) containing landmark coordinates for a set of specimens}
+\item{A}{A 3D array (p x k x n) containing landmark coordinates for a set of specimens}
 
 \item{art.pt}{A number specifying which landmark is the articulation point between the two landmark subsets}
 

@@ -5,7 +5,7 @@
 #' This function writes a *.tps file from a 3-dimensional array (p x k x n) 
 #'  of landmark coordinates. 
 #'
-#' @param A An array (p x k x n) containing landmark coordinates for a set of specimens
+#' @param A A 3D array (p x k x n) containing landmark coordinates for a set of specimens
 #' @param file Name of the *.tps file to be created
 #' @param scale An optional vector containing the length of the scale for each specimen
 #' @param specID A logical value stating whether specimen ID names should be saved to line ID=

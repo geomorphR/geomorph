@@ -7,7 +7,7 @@
 writeland.tps(A, file, scale = NULL, specID = TRUE)
 }
 \arguments{
-\item{A}{An array (p x k x n) containing landmark coordinates for a set of specimens}
+\item{A}{A 3D array (p x k x n) containing landmark coordinates for a set of specimens}
 
 \item{file}{Name of the *.tps file to be created}
 

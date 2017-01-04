@@ -7,7 +7,7 @@
 plotOutliers(A, groups = NULL)
 }
 \arguments{
-\item{A}{An array (p x k x n) containing GPA-aligned coordinates for a set of specimens}
+\item{A}{A 3D array (p x k x n) containing GPA-aligned coordinates for a set of specimens}
 
 \item{groups}{An optional factor defining groups}
 }

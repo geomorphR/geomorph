@@ -8,7 +8,7 @@ gpagen(A, curves = NULL, surfaces = NULL, PrinAxes = TRUE,
   max.iter = NULL, ProcD = TRUE, Proj = TRUE, print.progress = TRUE)
 }
 \arguments{
-\item{A}{An array (p x k x n) containing landmark coordinates for a set of specimens}
+\item{A}{A 3D array (p x k x n) containing landmark coordinates for a set of specimens}
 
 \item{curves}{An optional matrix defining which landmarks should be treated as semilandmarks on boundary 
 curves, and which landmarks specify the tangent directions for their sliding}

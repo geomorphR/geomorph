@@ -8,7 +8,7 @@ plotTangentSpace(A, axis1 = 1, axis2 = 2, warpgrids = TRUE, mesh = NULL,
   label = NULL, groups = NULL, legend = FALSE)
 }
 \arguments{
-\item{A}{An array (p x k x n) containing landmark coordinates for a set of aligned specimens}
+\item{A}{A 3D array (p x k x n) containing landmark coordinates for a set of aligned specimens}
 
 \item{axis1}{A value indicating which PC axis should be displayed as the X-axis (default = PC1)}
 

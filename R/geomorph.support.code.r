@@ -154,7 +154,7 @@ NULL
 #' that the landmarks have previously been aligned using Generalized Procrustes Analysis (GPA) 
 #'  [e.g., with \code{\link{gpagen}}]. This function is described in Claude (2008).
 #'
-#' @param A Either a list (length n, each p x k), an array (p x k x n), or a matrix (pk X n) containing GPA-aligned coordinates for a set of specimens
+#' @param A Either a list (length n, each p x k), A 3D array (p x k x n), or a matrix (pk X n) containing GPA-aligned coordinates for a set of specimens
 #' @keywords utilities
 #' @export
 #' @author Julien Claude 
