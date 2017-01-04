@@ -1,9 +1,10 @@
 #' Read landmark data matrix from nts file
 #'
-#' Read *.nts file to obtain landmark coordinates for a set of specimens
+#' Read single *.nts file to obtain landmark coordinates for a set of specimens
 #'
-#' Function reads a *.nts file containing a matrix of two- or three-dimensional landmark coordinates. 
-#'   NTS files are text files in one of the standard formats for geometric morphometrics (see Rohlf 2012). 
+#' Function reads a *.nts file containing two- or three-dimensional landmark coordinates for multiple specimens. 
+#'  
+#' NTS files are text files in one of the standard formats for geometric morphometrics (see Rohlf 2012). 
 #'   The parameter line contains 5 or 6 elements, and must begin with a "1" to designate a rectangular 
 #'   matrix. The second and third values designate how many specimens (n) and how many total variables 
 #'   (p x k) are in the data matrix. The fourth value is a "0" if the data matrix is complete and a "1" 
@@ -20,8 +21,7 @@
 #'   The positions of missing landmarks may then be estimated using estimate.missing.
 
 #'
-#' Function is for *.nts file containing landmark coordinates for multiple specimens. Note that *.dta files in the 
-#' nts format written by Landmark Editor \url{http://graphics.idav.ucdavis.edu/research/projects/EvoMorph},
+#' NOTE: *.dta files in the nts format written by Landmark Editor \url{http://graphics.idav.ucdavis.edu/research/projects/EvoMorph}, 
 #' and *.nts files written by Stratovan Checkpoint \url{http://www.stratovan.com/} have incorrect 
 #' header notation; every header is 1 n p-x-k 1 9999 Dim=3, rather than 1 n p-x-k 0 Dim=3, which denotes
 #' that missing data is in the file even when it is not.
@@ -30,9 +30,10 @@
 #' @keywords IO
 #' @export
 #' @author Dean Adams & Emma Sherratt
-#' @return Function returns a (p x k x n) array, where p is the number of landmark points, k is the number 
+#' @seealso \code{\link{readmulti.nts}}
+#' @return Function returns a 3D array (p x k x n), where p is the number of landmark points, k is the number 
 #'   of landmark dimensions (2 or 3), and n is the number of specimens. The third dimension of this array 
-#'   contains names for each specimen, which are obtained from the image names in the *.nts file. 
+#'   contains names for each specimen, which are obtained from the names in the *.nts file (if included). 
 #' @references  Rohlf, F. J. 2012 NTSYSpc: Numerical taxonomy and multivariate analysis system. Version 
 #'   2.2. Exeter Software, New York.
 readland.nts<-function(file){    	

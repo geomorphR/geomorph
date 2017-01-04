@@ -95,9 +95,9 @@ fab2e4890b14751837ccb1fd36a0c347 *man/procD.lm.Rd
 2b83372fef83bcf914c5ed1b2ee97b0b *man/ratland.Rd
 0dfac709d59b17873faba5acd4cdb694 *man/read.morphologika.Rd
 f190c552c538c136892b43b4f6687850 *man/read.ply.Rd
-91b67177a9d1541c33e05cdbfe880d7f *man/readland.nts.Rd
+b709fc747b5be2b7219dc8f3e8a50c34 *man/readland.nts.Rd
 809fffe1fa50ea24ae2a2a78e4ffbf32 *man/readland.tps.Rd
-b955f557977eb493daf1b8003e715928 *man/readmulti.nts.Rd
+2bd0328b47c4b6958b7fb0910bf44c3e *man/readmulti.nts.Rd
 e8b532a5350f31210e60d6b765e3e24c *man/scallopPLY.Rd
 e10509185843df7113644e0018cc2419 *man/scallops.Rd
 d96b4959fe15600779c6e64a177a50b5 *man/shape.predictor.Rd
@@ -123,7 +123,7 @@ cbbc4031111f2bc62e2abac7f05c4a0a *man/trajectory.analysis.Rd
 87a86c2e9b2d31119ab1883c54e092ec *man/warpRefOutline.Rd
 774e6229a8a66e87692c798a70c33525 *man/writeland.tps.Rd
 3f1435fd25f61cda55d671b2cda06149 *NAMESPACE
-c1b7892e7c13ac3ce8fd8e3cc0dad0ee *NEWS
+3f87c0d03e6e8ad69cd58c691c8140ee *NEWS
 ef7af2e4ef3411c627351cc79d690680 *R/advanced.procD.lm.r
 81fc64b7cae4202d544308531ce832a3 *R/arrayspecs.r
 816a0a67e51b6b5f189b02c611fe855d *R/bilat.symmetry.r
@@ -169,9 +169,9 @@ aa64f854bda495c11a08d1f5f9f8c98f *R/procD.lm.r
 5060a018216fbea246b50ce6259a6a69 *R/procD.pgls.r
 9aa2aef1cebc0b1b2f27a2fb9906a2b4 *R/read.morphologika.r
 9c3c828f71a413b5437d45228a3bf9b7 *R/read.ply.r
-42b8ec9ece98e00b47ac14bd9e6bd43b *R/readland.nts.r
+2b3d89d3680fa609a99c4b72fa92f31d *R/readland.nts.r
 b63e5e849d36c0a4d3bdb6bfd0e379f0 *R/readland.tps.r
-8b7193e5cbcdaf8153f3614834afc818 *R/readmulti.nts.r
+ff7c5bf6d13e30a9cf396affb5afa484 *R/readmulti.nts.r
 dbe2e4f00e3ecee9b7cd78248f0c4a20 *R/shape.predictor.r
 eee4aff6169ce5be5340bb92e68fe336 *R/trajectory.analysis.r
 075468499df1787e805118710e5e05a0 *R/two.b.pls.r

@@ -1,6 +1,6 @@
 CHANGES IN GEOMORPH VERSION 3.0.4
   NEW FEATURES
-    o New function interlmkdist() to calculate linear distances between landmarks (interlandmark distances)
+    o New function interlmkdist to calculate linear distances between landmarks (interlandmark distances)
 
   OTHER CHANGES
     o Created transferability of dimnames between arraysepcs and two.d.array.
@@ -8,6 +8,7 @@ CHANGES IN GEOMORPH VERSION 3.0.4
     o Added data frame output to procD.lm
     o Change to plotGMPhyloMorphoSpace to center data by phylogenetic mean
     o read.morphologika now supports lists of file names to return a single data object
+    o Updated Rd files for readland.nts and readmulti.nts to avoid ambiguity and resolve misinformation in previous versions
         
   BUG FIXES
     o Fixed univariate PLS to allow negative correlations
