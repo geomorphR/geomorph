@@ -160,25 +160,29 @@ gpagen = function(A, curves=NULL, surfaces=NULL, PrinAxes = TRUE,
   }
   
   coords <- gpa$coords
+  M <- gpa$consensus
   if (Proj == TRUE) {
     coords <- orp(coords)
     M <- Reduce("+",coords)/n
+    colnames(M) <- dimnames(A)[[2]]
+    rownames(M) <- dimnames(A)[[1]]
   }
   Csize <- gpa$CS
   iter <- gpa$iter
-  M <- gpa$consensus
-  pt.VCV <- var(two.d.array(simplify2array(coords)))
   pt.var <- Reduce("+",Map(function(y) y^2/n, coords))
+  coords <- simplify2array(coords)
+  dimnames(coords)<- dimnames(A)
+  pt.VCV <- var(two.d.array(coords))
+  rownames(pt.var) <- dimnames(coords)[[1]]
   colnames(pt.var) <- if(k==3) c("Var.X", "Var.Y", "Var.Z") else 
     c("Var.X", "Var.Y") 
   pt.names <- if(k==3) paste(c("X","Y","Z"), sort(rep(1:p,k)), sep=".") else
     paste(c("X","Y"), sort(rep(1:p,k)), sep=".")
-  rownames(pt.VCV) <- colnames(pt.VCV) <- pt.names
-  colnames(M) <- if(k==3) c("X", "Y", "Z") else c("X", "Y")
-  coords <- simplify2array(coords)
-  dimnames(coords)<- dimnames(A)
+  if(is.null(colnames(pt.VCV))) rownames(pt.VCV) <- 
+    colnames(pt.VCV) <- pt.names
+  if(is.null(colnames(M))) colnames(M) <- if(k==3) c("X", "Y", "Z") else c("X", "Y")
   two.d.coords = two.d.array(coords)
-  colnames(two.d.coords) <- pt.names
+  if(is.null(colnames(two.d.coords))) colnames(two.d.coords) <- pt.names
   names(Csize) <- dimnames(A)[[3]]
   if(!is.null(curves) || !is.null(surf)) {
     nsliders <- nrow(curves)
