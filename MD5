@@ -142,7 +142,7 @@ ddff41e987eac54d3500e2313799c3c6 *R/digitize2d.r
 6ee66fc21bc5f6391b02c890d2313575 *R/digitsurface.r
 05f8cee04bf9faaab3fda006fbd3efbe *R/editTemplate.r
 4b33ac63527cbc3afaef07d7e0e70c4b *R/estimate.missing.r
-da56107aec80b7583dc4a6b841b30c74 *R/findMeanSpec.r
+0ba595e1cb0fdb40abe357d5814e2951 *R/findMeanSpec.r
 1e71d260e79093bb0d36f6ded44dd437 *R/fixed.angle.r
 203177efc30cc6fef4bd604b2fc2af01 *R/geomorph.data.frame.r
 fe83dd46d7e9c2d116ef2d515e3f25e9 *R/geomorph.support.code.r

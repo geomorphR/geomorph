@@ -16,7 +16,7 @@
 #' @return Function returns the name and address of the specimen closest to the mean of the set of 
 #' aligned specimens.
 findMeanSpec <- function(A){
-  if (length(dim(A)) != 3) {
+  if(!is.array(A)) {
     stop("Data matrix not a 3D array (see 'arrayspecs').") }
   ref <- mshape(A)
   x <- two.d.array(A)
