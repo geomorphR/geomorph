@@ -149,46 +149,50 @@ gpagen = function(A, curves=NULL, surfaces=NULL, PrinAxes = TRUE,
   if(!is.null(surfaces)) surf <- as.vector(surfaces) else surf <- NULL
   if(print.progress == TRUE){
     if(!is.null(curves) || !is.null(surf)) gpa <- pGpa.wSliders(Y, curves = curves, surf=surf,
-              PrinAxes = PrinAxes, max.iter=max.it, 
-              ProcD=prD) else
-              gpa <- pGpa(Y, PrinAxes = PrinAxes, max.iter=max.it)
+                                                                PrinAxes = PrinAxes, max.iter=max.it, 
+                                                                ProcD=prD) else
+                                                                  gpa <- pGpa(Y, PrinAxes = PrinAxes, max.iter=max.it)
   } else {
     if(!is.null(curves) || !is.null(surf)) gpa <- .pGpa.wSliders(Y, curves = curves, surf=surf,
-              PrinAxes = PrinAxes, max.iter=max.it, 
-              ProcD=prD) else
-              gpa <- .pGpa(Y, PrinAxes = PrinAxes, max.iter=max.it)
+                                                                 PrinAxes = PrinAxes, max.iter=max.it, 
+                                                                 ProcD=prD) else
+                                                                   gpa <- .pGpa(Y, PrinAxes = PrinAxes, max.iter=max.it)
   }
   
   coords <- gpa$coords
+  M <- gpa$consensus
   if (Proj == TRUE) {
     coords <- orp(coords)
     M <- Reduce("+",coords)/n
+    colnames(M) <- dimnames(A)[[2]]
+    rownames(M) <- dimnames(A)[[1]]
   }
   Csize <- gpa$CS
   iter <- gpa$iter
-  M <- gpa$consensus
-  pt.VCV <- var(two.d.array(simplify2array(coords)))
   pt.var <- Reduce("+",Map(function(y) y^2/n, coords))
+  coords <- simplify2array(coords)
+  dimnames(coords)<- dimnames(A)
+  pt.VCV <- var(two.d.array(coords))
+  rownames(pt.var) <- dimnames(coords)[[1]]
   colnames(pt.var) <- if(k==3) c("Var.X", "Var.Y", "Var.Z") else 
     c("Var.X", "Var.Y") 
   pt.names <- if(k==3) paste(c("X","Y","Z"), sort(rep(1:p,k)), sep=".") else
     paste(c("X","Y"), sort(rep(1:p,k)), sep=".")
-  rownames(pt.VCV) <- colnames(pt.VCV) <- pt.names
-  colnames(M) <- if(k==3) c("X", "Y", "Z") else c("X", "Y")
-  coords <- simplify2array(coords)
-  dimnames(coords)<- dimnames(A)
+  if(is.null(colnames(pt.VCV))) rownames(pt.VCV) <- 
+    colnames(pt.VCV) <- pt.names
+  if(is.null(colnames(M))) colnames(M) <- if(k==3) c("X", "Y", "Z") else c("X", "Y")
   two.d.coords = two.d.array(coords)
-  colnames(two.d.coords) <- pt.names
+  if(is.null(colnames(two.d.coords))) colnames(two.d.coords) <- pt.names
   names(Csize) <- dimnames(A)[[3]]
   if(!is.null(curves) || !is.null(surf)) {
     nsliders <- nrow(curves)
     nsurf <- length(surf)
     if(ProcD == TRUE) smeth <- "ProcD" else smeth <- "BE"
-    } else {
-        nsliders <- 0
-        nsurf <- 0
-        smeth <- NULL
-    }
+  } else {
+    nsliders <- 0
+    nsurf <- 0
+    smeth <- NULL
+  }
   if(is.null(nsliders)) nsliders <- 0; if(is.null(nsurf)) nsurf <- 0
   out <- list(coords=coords, Csize=Csize, 
               iter=iter, 
