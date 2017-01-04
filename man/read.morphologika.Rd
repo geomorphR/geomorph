@@ -2,12 +2,13 @@
 % Please edit documentation in R/read.morphologika.r
 \name{read.morphologika}
 \alias{read.morphologika}
-\title{Read landmark data from Morphologika file}
+\title{Read landmark data from Morphologika file(s)}
 \usage{
-read.morphologika(file)
+read.morphologika(filelist)
 }
 \arguments{
-\item{file}{A Morphologika *.txt file containing two- or three-dimensional landmark data.}
+\item{filelist}{The name of a Morphologika *.txt file containing two- or three-dimensional landmark data.
+Alternatively, a character vector of names of Morphologika *.txt file (such as made using \code{\link{list.files}})}
 }
 \value{
 Function returns a (p x k x n) array of the coordinate data. If other optional headers are present in
@@ -20,13 +21,18 @@ Read Morphologika file (*.txt) to obtain landmark coordinates and specimen infor
 \details{
 This function reads a *.txt file in the Morphologika format containing two- or three-dimensional 
  landmark coordinates. Morphologika files are text files in one of the standard formats for 
- geometric morphometrics (see O'Higgins and Jones 1998,2006).
+ geometric morphometrics (see O'Higgins and Jones 1998,2006). If multiple morphologika files 
+ are specified (containing the same number of landmarks for all specimens), function returns a single object for files.
 
 If the headers "[labels]", "[labelvalues]" and "[groups]" are present, then a data matrix containing all 
  individual specimen information is returned.
  If the header "[wireframe]" is present, then a matrix of the landmark addresses for the wireframe is
  returned (see \code{\link{plotRefToTarget}} option 'links'). 
- If the header "[polygon]" is present, then a matrix of the landmark addresses for the polygon wireframe is returned (see \code{\link[rgl]{polygon3d}} or \code{\link[graphics]{polygon}}).
+ If the header "[polygon]" is present, then a matrix of the landmark addresses for the polygon wireframe is returned (see \code{\link[rgl]{polygon3d}} or \code{\link[graphics]{polygon}}). 
+ 
+ NOTE: For multiple morphologika files that each contain only a single specimen (such as those exported from
+ Stratovan Checkpoint software https://www.stratovan.com/products/checkpoint), one can add specimen names to 
+ the returned 3D array by: dimnames(mydata)[[3]] <- gsub (".txt", "", filelist)).
 }
 \author{
 Emma Sherratt & Erik Otarola-Castillo

@@ -7,7 +7,8 @@ CHANGES IN GEOMORPH VERSION 3.0.4
     o Updated Rd files for PLS functions to better cross-reference the similar functions.
     o Added data frame output to procD.lm
     o Change to plotGMPhyloMorphoSpace to center data by phylogenetic mean
-    
+    o read.morphologika now supports lists of file names to return a single data object
+        
   BUG FIXES
     o Fixed univariate PLS to allow negative correlations
     o Fixed permutation issues with advanced.procD.lm
