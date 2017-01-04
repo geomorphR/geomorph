@@ -39,6 +39,7 @@ e0b9730864863a7b5c42449de9db877a *man/geomorph.data.frame.Rd
 d49189047d4d144a8f92a2987b1822c9 *man/gridPar.Rd
 9e21970bfa33baf0382079f559a00ebe *man/hummingbirds.Rd
 80f3d5c0162b06cd1734e20b7860bb0a *man/integration.test.Rd
+44ced67148a46481c0bb3f060f6f2566 *man/interlmkdist.Rd
 03c8f034c267da9ca2bad0c0370613cc *man/larvalTails.Rd
 7df6875616ef20b01348df9d200a3993 *man/modularity.test.Rd
 d7fb86800024c409e680ae927ff8b2b7 *man/morphol.disparity.Rd
@@ -121,8 +122,8 @@ cbbc4031111f2bc62e2abac7f05c4a0a *man/trajectory.analysis.Rd
 63a9d1ca2d64a7b7edb43b2dccfa987b *man/warpRefMesh.Rd
 87a86c2e9b2d31119ab1883c54e092ec *man/warpRefOutline.Rd
 774e6229a8a66e87692c798a70c33525 *man/writeland.tps.Rd
-77f04fbf4be722b26bfa7ff5ccdadd2a *NAMESPACE
-76fc9127c34a65cdb5eda53ee60fa97a *NEWS
+3f1435fd25f61cda55d671b2cda06149 *NAMESPACE
+91e129694cf45bad0da3a8192654008e *NEWS
 ef7af2e4ef3411c627351cc79d690680 *R/advanced.procD.lm.r
 81fc64b7cae4202d544308531ce832a3 *R/arrayspecs.r
 816a0a67e51b6b5f189b02c611fe855d *R/bilat.symmetry.r
@@ -150,6 +151,7 @@ e5cc85289df23d2b18da156a537fc280 *R/geomorph.utils.r
 fdbb644d8b519bae638ac0113c9e7aa8 *R/gpagen.r
 2d8ab3c6fea452711a7cf091ffba8ff5 *R/gridPar.r
 b8002f4bf70cd9c21f65b71610e9b8eb *R/integration.test.r
+5b5acab3797cb93a351bc843069d6648 *R/interlmkdist.r
 1d6c03681bdbedb0359634ccaa2e0229 *R/modularity.test.r
 4126e9607888f36956dffc1fc1b3d887 *R/morphol.disparity.r
 084f845900f98683ff877ac399e822b3 *R/nested.update.r
