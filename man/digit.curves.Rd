@@ -9,7 +9,7 @@ digit.curves(start, curve, nPoints, closed = TRUE)
 \arguments{
 \item{start}{A numeric vector of x,y,(z) coordinates for the landmark defining the start of the curve (can be simply first point on open outline: curve[1,])}
 
-\item{curve}{A p-x-k matrix of 2D or 3D coordinates for a set of ordered points defining a curve}
+\item{curve}{A matrix (p x k) of 2D or 3D coordinates for a set of ordered points defining a curve}
 
 \item{nPoints}{Numeric how many semilandmarks to place equidistantly along the curve}
 
@@ -19,10 +19,10 @@ digit.curves(start, curve, nPoints, closed = TRUE)
 Function returns a matrix of coordinates for nPoints equally spaced semilandmarks sampled along the curve (plus start and end if 'closed = F', or only including start if 'closed = T')
 }
 \description{
-A function to calculate equidistant two-dimensional and three-dimensional semilandmarks along a curve. These landmarks will be treated as "sliders" in Generalized Procrustes analysis \code{\link{gpagen}}. This type of semilandmark "slides" along curves lacking known landmarks (see Bookstein 1997 for algorithm details). Each sliding semilandmark ("sliders") will slide between two designated points, along a line tangent to the specified curvature, as specified by \code{\link{define.sliders}}.
+A function that "digitizes curves" by calculating equidistant two-dimensional or three-dimensional semilandmarks along a curve. These landmarks will be treated as "sliders" in Generalized Procrustes analysis \code{\link{gpagen}}. This type of semilandmark "slides" along curves lacking known landmarks (see Bookstein 1997 for algorithm details). Each sliding semilandmark ("sliders") will slide between two designated points, along a line tangent to the specified curvature, as specified by \code{\link{define.sliders}}.
 }
 \details{
-The function is based upon tpsDig2 'resample curve by length' for 2D data by James Rohlf.
+The function is based upon tpsDig2 'resample curve by length' for 2D data by James Rohlf (Rohlf 2015).
 The start of the curve is a fixed landmark on the curve that is equivalent (homologous) in each specimen in the sample (and will be treated as a fixed point during Procrustes Superimposition using \code{\link{gpagen}}). Then nPoints are calculated along the curve at equidistant points from the start to the end.
 
 'curve' is a p-x-k matrix of 2D or 3D coordinates for a set of ordered points defining a curve. This can be the pixels of an outline calculated in ImageJ (save xy coordinates) or any other reasonable way of obtaining ordered coordinates along a curve (including sampling by hand using 
@@ -38,6 +38,8 @@ Emma Sherratt
 \references{
 Bookstein, F. J. 1997 Landmark Methods for Forms without Landmarks: Morphometrics of 
 Group Differences in Outline Shape. Medical Image Analysis 1(3):225-243.
+
+Rohlf, F.J., 2015. The tps series of software. Hystrix 26(1):9-12.
 }
 \seealso{
 \code{\link{digit.fixed}} \code{\link{digitize2d}}
