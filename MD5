@@ -24,7 +24,7 @@ acd9ef79ce7224aa999b948145c6d87a *man/coords.subset.Rd
 ce3b5145255932743c01cd6bd2160bd6 *man/define.links.Rd
 fcfe03e3bbd9deb08fc90e6249613c74 *man/define.modules.Rd
 9aca3cbd2de06f434f41ea13fc7ef0b1 *man/define.sliders.Rd
-2ec208b5b581f803811b24eeeb9a7fef *man/digit.curves.Rd
+5c6354f4ce23c3de45478704c28dd055 *man/digit.curves.Rd
 ad00c9c0d97cb550ae6c6e26853f6979 *man/digit.fixed.Rd
 b7803c0c9a4e442cccac223445866d52 *man/digitize2d.Rd
 ed9997afc646ad04016d7364cf16118f *man/digitsurface.Rd
@@ -135,7 +135,7 @@ b80b7afa9d4c1be7d4ca408e69c4d182 *R/coords.subset.R
 ce54e0082a7500c7a9ec4b443df968a8 *R/define.modules.r
 09db0ae850d1824f41df1205e7e90e1e *R/define.sliders.r
 334d262a465c55f7b5d66f378bae20f8 *R/deprecated.defunct.r
-be4b26adcacca7e3422c19761bf243c0 *R/digit.curves.r
+9a3fec78c4d445264ba2bb3c0a0c5681 *R/digit.curves.r
 0c03428098d628c816597b70abc3ccd3 *R/digit.fixed.r
 c04d7ce1ae7e1876db190a6c01c36089 *R/digitize2d.r
 fd266fb3d96223dbb9c1f39f701c8e75 *R/digitsurface.r
