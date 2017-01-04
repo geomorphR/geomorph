@@ -1,9 +1,9 @@
 #' Convert landmark data matrix into array (p x k x n)
 #'
-#' Convert a matrix of landmark coordinates into a 3-dimensional array 
+#' Convert a matrix of landmark coordinates into a three-dimensional array 
 #'
-#' This function converts a matrix of landmark coordinates into a (p x k x n) 
-#'  array, which is the required input format for many functions in geomorph. 
+#' This function converts a matrix of landmark coordinates into a 3D array (p x k x n), 
+#'  which is the required input format for many functions in geomorph. 
 #'  The input matrix can be arranged such that the coordinates
 #'  of each landmark are found on a separate row, or that each row contains all landmark 
 #'  coordinates for a single specimen.
@@ -14,7 +14,8 @@
 #' @export
 #' @keywords utilities
 #' @author Dean Adams & Mike Collyer
-#' @return Function returns a (p x k x n) array, where p is the number of landmark points, k is the
+#' @seealso \code{\link{two.d.array}}
+#' @return Function returns a 3D array (p x k x n), where p is the number of landmark points, k is the
 #' number of landmark dimensions (2 or 3), and n is the number of specimens. The third dimension of
 #' this array contains names for each specimen if specified in the original input matrix.
 #' @examples 
