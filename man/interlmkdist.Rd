@@ -4,12 +4,12 @@
 \alias{interlmkdist}
 \title{Calculate linear distances between landmarks}
 \usage{
-interlmkdist(A, dists)
+interlmkdist(A, lmks)
 }
 \arguments{
 \item{A}{A 3D array (p x k x n) containing landmark coordinates for a set of specimens}
 
-\item{dists}{A matrix or dataframe of landmark addresses for the start and end landmarks defining m linear measurements (can be either 2-x-m or m-x-2).
+\item{lmks}{A matrix or dataframe of landmark addresses for the start and end landmarks defining m linear measurements (can be either 2-x-m or m-x-2).
 Either the rows or the columns should have names 'start' and 'end' to define landmarks.}
 }
 \value{
@@ -22,24 +22,24 @@ A function to calculate linear distances between a set of landmark coordinates (
 Function takes a 3D array of landmark coordinates from a set of specimens and the addresses for the start 
 and end landmarks defining linear measurements and then
 calculates the interlandmark distances. The function returns a matrix of linear distances for all specimens.
-If the 'dists' matrix has row or column names defining the name of the linear measurements, the returned matrix will use
-these for column names (see example). If only two interlandmark distances, 'dists' input must be m x 2.
+If the 'lmks' matrix has row or column names defining the name of the linear measurements, the returned matrix will use
+these for column names (see example). If only two interlandmark distances, 'lmks' input must be m x 2.
 }
 \examples{
  
 data(plethodon)
 # Make a matrix defining three interlandmark distances 
-dists <- matrix(c(8,9,6,12,4,2), ncol=2, byrow=TRUE, 
+lmks <- matrix(c(8,9,6,12,4,2), ncol=2, byrow=TRUE, 
 dimnames = list(c("eyeW", "headL", "mouthL"),c("start", "end")))
 # where 8-9 is eye width; 6-12 is head length; 4-2 is mouth length
 # or alternatively
-dists <- data.frame(eyeW = c(8,9), headL = c(6,12), mouthL = c(4,2), 
+lmks <- data.frame(eyeW = c(8,9), headL = c(6,12), mouthL = c(4,2), 
 row.names = c("start", "end")) 
 A <- plethodon$land
-lineardists <- interlmkdist(A, dists)
+lineardists <- interlmkdist(A, lmks)
 }
 \author{
-Emma Sherratt
+Emma Sherratt & Michael Collyer
 }
 \keyword{utilities}
 

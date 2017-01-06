@@ -39,7 +39,7 @@ e0b9730864863a7b5c42449de9db877a *man/geomorph.data.frame.Rd
 d49189047d4d144a8f92a2987b1822c9 *man/gridPar.Rd
 9e21970bfa33baf0382079f559a00ebe *man/hummingbirds.Rd
 80f3d5c0162b06cd1734e20b7860bb0a *man/integration.test.Rd
-eac7b824d6bf04e88060b849e114366e *man/interlmkdist.Rd
+375cdd8148f6b60e7b7f532e9309345f *man/interlmkdist.Rd
 03c8f034c267da9ca2bad0c0370613cc *man/larvalTails.Rd
 7df6875616ef20b01348df9d200a3993 *man/modularity.test.Rd
 d7fb86800024c409e680ae927ff8b2b7 *man/morphol.disparity.Rd
@@ -151,7 +151,7 @@ e5cc85289df23d2b18da156a537fc280 *R/geomorph.utils.r
 17bbdf1769466f17742de952fb612cc4 *R/gpagen.r
 2d8ab3c6fea452711a7cf091ffba8ff5 *R/gridPar.r
 b8002f4bf70cd9c21f65b71610e9b8eb *R/integration.test.r
-2289c3e3a50f98715addfbdf4244cc64 *R/interlmkdist.r
+35be504c05b399f5a7fb71e835461041 *R/interlmkdist.r
 1d6c03681bdbedb0359634ccaa2e0229 *R/modularity.test.r
 4126e9607888f36956dffc1fc1b3d887 *R/morphol.disparity.r
 084f845900f98683ff877ac399e822b3 *R/nested.update.r
