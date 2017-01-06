@@ -51,13 +51,13 @@ interlmkdist <- function(A, lmks){
             "\nNo names for distances were provided.",
             "\n'lmks' input assumed to be m x 2","\n\n") 
       if(!is.null(rownames(lmks)) && is.null(colnames(lmks))) {
-        lmks <- t(lmks)
         cat("\nNo 'start' and 'end' points were defined.",
             "\nIt is assumed that matrix rows are appropriately ordered.","\n\n")
       }
       if(is.null(rownames(lmks)) && !is.null(colnames(lmks))) {
+        lmks <- t(lmks)
         cat("\nNo 'start' and 'end' points were defined.",
-            "\nIt is assumed that matrix rows are appropriately ordered.","\n\n")
+            "\nIt is assumed that matrix columns are appropriately ordered.","\n\n")
       } 
     }
   }
