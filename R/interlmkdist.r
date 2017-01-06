@@ -1,4 +1,4 @@
-#' Calculate linear distances between landmarks
+#' Calculate linear distances between landmarks 
 #' 
 #' A function to calculate linear distances between a set of landmark coordinates (interlandmark distances)
 #' 
@@ -52,12 +52,12 @@ interlmkdist <- function(A, lmks){
             "\n'lmks' input assumed to be m x 2","\n\n") 
       if(!is.null(rownames(lmks)) && is.null(colnames(lmks))) {
         cat("\nNo 'start' and 'end' points were defined.",
-            "\nIt is assumed that matrix rows are appropriately ordered.","\n\n")
+            "\nIt is assumed that matrix columns are appropriately ordered.","\n\n")
       }
       if(is.null(rownames(lmks)) && !is.null(colnames(lmks))) {
         lmks <- t(lmks)
         cat("\nNo 'start' and 'end' points were defined.",
-            "\nIt is assumed that matrix columns are appropriately ordered.","\n\n")
+            "\nIt is assumed that matrix rows are appropriately ordered.","\n\n")
       } 
     }
   }
