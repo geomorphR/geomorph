@@ -57,7 +57,7 @@ interlmkdist <- function(A, lmks){
       }
       if(is.null(rownames(lmks)) && !is.null(colnames(lmks))) {
         cat("\nNo 'start' and 'end' points were defined.",
-            "\nIt is assumed that matrix rows are appropriately ordered.","\n\n")
+            "\nIt is assumed that matrix columns are appropriately ordered.","\n\n")
       } 
     }
   }
