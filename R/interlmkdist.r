@@ -1,4 +1,4 @@
-#' Calculate linear distances between landmarks 
+#' Calculate linear distances between landmarks
 #' 
 #' A function to calculate linear distances between a set of landmark coordinates (interlandmark distances)
 #' 
