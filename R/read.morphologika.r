@@ -14,7 +14,7 @@
 #'  If the header "[polygon]" is present, then a matrix of the landmark addresses for the polygon wireframe is returned (see \code{\link[rgl]{polygon3d}} or \code{\link[graphics]{polygon}}). 
 #'  
 #'  NOTE: For multiple morphologika files that each contain only a single specimen (such as those exported from
-#'  Stratovan Checkpoint software https://www.stratovan.com/products/checkpoint), one can add specimen names to 
+#'  Stratovan Checkpoint software), one can add specimen names to 
 #'  the returned 3D array by: dimnames(mydata)[[3]] <- gsub (".txt", "", filelist)).
 #' 
 #' @param filelist The name of a Morphologika *.txt file containing two- or three-dimensional landmark data.

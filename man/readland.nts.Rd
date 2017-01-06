@@ -36,8 +36,8 @@ NTS files are text files in one of the standard formats for geometric morphometr
   this case, the standard NTSYS header is used with no numeric designation for missing data (i.e. the fourth value is '0').
   The positions of missing landmarks may then be estimated using estimate.missing.
 
-NOTE: *.dta files in the nts format written by Landmark Editor \url{http://graphics.idav.ucdavis.edu/research/projects/EvoMorph}, 
-and *.nts files written by Stratovan Checkpoint \url{http://www.stratovan.com/} have incorrect 
+NOTE: *.dta files in the nts format written by IDAV Landmark Editor, 
+and *.nts files written by Stratovan Checkpoint have incorrect 
 header notation; every header is 1 n p-x-k 1 9999 Dim=3, rather than 1 n p-x-k 0 Dim=3, which denotes
 that missing data is in the file even when it is not.
 }

@@ -93,10 +93,10 @@ fab2e4890b14751837ccb1fd36a0c347 *man/procD.lm.Rd
 4682149ec41df7514b66bb4afbcd4bfa *man/procD.pgls.Rd
 34923fc68c6ffd6f20d5b40c9a751940 *man/pupfish.Rd
 2b83372fef83bcf914c5ed1b2ee97b0b *man/ratland.Rd
-0dfac709d59b17873faba5acd4cdb694 *man/read.morphologika.Rd
+26c1fab016e6ef45ef1d150d9081cc3d *man/read.morphologika.Rd
 f190c552c538c136892b43b4f6687850 *man/read.ply.Rd
-b709fc747b5be2b7219dc8f3e8a50c34 *man/readland.nts.Rd
-809fffe1fa50ea24ae2a2a78e4ffbf32 *man/readland.tps.Rd
+8ef912a119a039a91245c8734ad09a61 *man/readland.nts.Rd
+c2edd11bce2ea7265a2883f3a1d01796 *man/readland.tps.Rd
 2bd0328b47c4b6958b7fb0910bf44c3e *man/readmulti.nts.Rd
 e8b532a5350f31210e60d6b765e3e24c *man/scallopPLY.Rd
 e10509185843df7113644e0018cc2419 *man/scallops.Rd
@@ -167,9 +167,9 @@ b8814f9a047a63c586c6e472bc17d6d5 *R/plotOutliers.r
 6d65f52aa745612d59500712d517dd01 *R/procD.allometry.r
 aa64f854bda495c11a08d1f5f9f8c98f *R/procD.lm.r
 5060a018216fbea246b50ce6259a6a69 *R/procD.pgls.r
-9aa2aef1cebc0b1b2f27a2fb9906a2b4 *R/read.morphologika.r
+df3f4cc6406dc0c737ee2ff08c2a0e3d *R/read.morphologika.r
 9c3c828f71a413b5437d45228a3bf9b7 *R/read.ply.r
-2b3d89d3680fa609a99c4b72fa92f31d *R/readland.nts.r
+ba8e5a0b07f0f9530f430c626b83ead1 *R/readland.nts.r
 5ebf176cfc8ae244daf8fd42a8a7d413 *R/readland.tps.r
 ff7c5bf6d13e30a9cf396affb5afa484 *R/readmulti.nts.r
 bb92986b568b7e9176ff879b2e0ce9d9 *R/shape.predictor.r
