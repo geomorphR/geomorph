@@ -127,11 +127,8 @@ plot.procD.lm <- function(x, outliers=FALSE, ...){
   r <- x$residuals
   f <- x$fitted
   if(!is.null(x$Pcor)) {
-    y <- x$Pcor%*%x$Y
-    X <- x$Pcor%*%x$X
-    fit <- lm.fit(X,y)
-    f <- fit$fitted.values
-    r <- fit$residuals
+    r <- x$pgls.residuals
+    f <- x$pgls.fitted
   }
   if(!is.null(x$weights)) {r <- r*sqrt(x$weights); f <- f*sqrt(x$weights)}
   pca.r <- prcomp(r)
