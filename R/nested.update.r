@@ -1,3 +1,4 @@
+
 #' Update procD.lm objects with nested effects
 #' 
 #' This function is used to update \code{\link{procD.lm}} objects for fixed effects with 
@@ -114,13 +115,13 @@ nested.update <- function(P, f1){
   AT[fixedrow,7] <- newP
   AT[fixedrow,6] <- newZ
   P$aov.table <- AT
-if(is.null(P$randomF))
-     {Fs <- matrix(Fs,1,length(Fs)); rownames(Fs) <- term.lbls[1]} else
-     {
-       newnames <- c(rownames(P$randomF), term.lbls[1])
-       Fs <- rbind(P$randomF, Fs)
-       rownames(Fs) <- newnames
-     }
+  if(is.null(P$randomF))
+  {Fs <- matrix(Fs,1,length(Fs)); rownames(Fs) <- term.lbls[1]} else
+  {
+    newnames <- c(rownames(P$randomF), term.lbls[1])
+    Fs <- rbind(P$randomF, Fs)
+    rownames(Fs) <- newnames
+  }
   P$random.F <- Fs
   return(P)
 }

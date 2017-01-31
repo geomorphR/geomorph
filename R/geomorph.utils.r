@@ -61,6 +61,7 @@ plot.gpagen <- function(x, ...){
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities
+#' @keywords utilities
 print.procD.lm <- function (x, ...) {
   cat("\nCall:\n")
   cat(deparse(x$call), fill=TRUE, "\n\n")
