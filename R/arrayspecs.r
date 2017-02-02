@@ -25,13 +25,14 @@
 #' x2<-matrix(rnorm(18),ncol=2) # Random triangles (each landmark on its own row)
 #' arrayspecs(x2,3,2)
 arrayspecs<-function(A,p,k){  
-  if(is.matrix(A)) names <- rownames(A) else names <- names(A)
-  if(is.matrix(A)) col.names <- colnames(A) else col.names <- NULL
+  if(!is.matrix(A) && !is.data.frame(A)) stop("A must be a data frame or matrix")
+  dnames <- dimnames(A)
   n <- length(unlist(A))/(p * k)
   if(k < 2 ) stop("One-dimensional data cannot be used")
-  if(abs(n)-round(abs(n)) > 0) stop("Matrix dimensions do not match input")
+  if(n != NROW(A)) stop("Matrix dimensions do not match input")
   specimens <- aperm(array(t(A), c(k,p,n)), c(2,1,3)) 
-  if (length(names) == n) {dimnames(specimens)[[3]] <- names}
+  dimnames(specimens)[[3]] <- dnames[[1]]
+  col.names <- dnames[[2]]
   if(!is.null(col.names)){
     a <- strsplit(col.names, split = "[.]")
     if(length(unlist(a)) == 2*k*p){
@@ -39,8 +40,8 @@ arrayspecs<-function(A,p,k){
       rn <- unique(b[1,])
       cn <- unique(b[2,])
     }  else b <- rn <- cn <- NULL
-    dimnames(specimens)[[1]] <- rn
-    dimnames(specimens)[[2]] <- cn
+    dnames2 <- list(rn=rn, cn = cn)
   }
+  dimnames(specimens)[1:2] <- dnames2
   return(specimens)
 }
