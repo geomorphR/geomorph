@@ -36,7 +36,7 @@ arrayspecs<-function(A, p, k, sep = NULL){
   dnames <- dimnames(A)
   n <- length(unlist(A))/(p * k)
   if(k < 2 ) stop("One-dimensional data cannot be used")
-  if(n != NROW(A)) stop("Matrix dimensions do not match input")
+  if(all(is.na(match(c(n, n*p), NROW(A))))) stop("Matrix dimensions do not match input")
   specimens <- aperm(array(t(A), c(k,p,n)), c(2,1,3)) 
   dimnames(specimens)[[3]] <- dnames[[1]]
   col.names <- dnames[[2]]
