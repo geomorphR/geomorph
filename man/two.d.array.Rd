@@ -4,10 +4,15 @@
 \alias{two.d.array}
 \title{Convert (p x k x n) data array into 2D data matrix}
 \usage{
-two.d.array(A)
+two.d.array(A, sep = ".")
 }
 \arguments{
 \item{A}{A 3D array (p x k x n) containing landmark coordinates for a set of specimens}
+
+\item{sep}{An optional argument for variable labeling, combining landmark labels (e.g., 1, 2, 3, ...)
+and partial dimension labels (e.g., "x", "y", and "z"), much like the \code{\link{paste}} function.  
+The default is sep = ".", but this can be changed to any separator.  
+One should make sure to match separators with \code{\link{arrayspecs}} if switching between matrices and arrays.}
 }
 \value{
 Function returns a two-dimensional matrix of dimension (n x [p x k]), where rows 
