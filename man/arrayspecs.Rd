@@ -4,7 +4,7 @@
 \alias{arrayspecs}
 \title{Convert landmark data matrix into array (p x k x n)}
 \usage{
-arrayspecs(A, p, k)
+arrayspecs(A, p, k, sep = NULL)
 }
 \arguments{
 \item{A}{A matrix containing landmark coordinates for a set of specimens}
@@ -12,6 +12,14 @@ arrayspecs(A, p, k)
 \item{p}{Number of landmarks}
 
 \item{k}{Number of dimensions (2 or 3)}
+
+\item{sep}{An optional argument to attempt to separate variable names into landmark dimension
+and landmark number variables.  For example, X.1, Y.1, Z.1, X.2, Y.2, Z.2, ..., can be separated 
+with sep = ".", such that rows of landmark configurations are labeled 1, 2, 3, ..., and columns
+are labeled X, Y, Z. Note, for variables, X1, Y1, Z1, X2, Y2, Z2, ...,
+where no separator is evident, use sep = "".  Any illogical separation argument will result in unlabeled
+variables.  If sep = NULL (the default), unlabeled variables are forced.  This is a good idea if the original matrix
+has landmarks out of order (as the the landmark labels might not sort as expected).}
 }
 \value{
 Function returns a 3D array (p x k x n), where p is the number of landmark points, k is the
