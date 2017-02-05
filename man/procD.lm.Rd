@@ -4,8 +4,9 @@
 \alias{procD.lm}
 \title{Procrustes ANOVA/regression for shape data}
 \usage{
-procD.lm(f1, iter = 999, seed = NULL, RRPP = TRUE, int.first = FALSE,
-  data = NULL, print.progress = TRUE, ...)
+procD.lm(f1, iter = 999, seed = NULL, RRPP = TRUE,
+  effect.type = c("cohen", "SS", "F"), int.first = FALSE, data = NULL,
+  print.progress = TRUE, ...)
 }
 \arguments{
 \item{f1}{A formula for the linear model (e.g., y~x1+x2)}
@@ -18,6 +19,10 @@ If seed = "random", a random seed will be used, and P-values will vary.  One can
 which might be of interest for advanced users.}
 
 \item{RRPP}{A logical value indicating whether residual randomization should be used for significance testing}
+
+\item{effect.type}{One of "cohen", "SS", or "F", to choose from which random distribution to estimate effect size.
+(The default, "cohen", is for Cohen's f-squared values.  Values are log-transformed before z-score calculation to
+assure normally distributed data.)}
 
 \item{int.first}{A logical value to indicate if interactions of first main effects should precede subsequent main effects}
 
@@ -53,6 +58,11 @@ NULL is returned.}
 \item{F}{The F values for each model term.}
 \item{permutations}{The number of random permutations (including observed) used.}
 \item{random.SS}{A matrix or vector of random SS found via the resampling procedure used.}
+\item{random.F}{A matrix or vector of random F values found via the resampling procedure used.}
+\item{random.cohenf}{A matrix or vector of random Cohen's f-squared values
+ found via the resampling procedure used.}
+\item{permutations}{The number of random permutations (including observed) used.}
+\item{effect.type}{The distribution used to estimate effect-size.}
 \item{perm.method}{A value indicating whether "Raw" values were shuffled or "RRPP" performed.}
 }
 \description{
@@ -91,9 +101,17 @@ The function performs statistical assessment of the terms in the model using Pro
   predicted values from the remaining effects to obtain pseudo-values from which SS are calculated. NOTE: for
   single-factor designs, the two approaches are identical.  However, when evaluating factorial models it has been
   shown that RRPP attains higher statistical power and thus has greater ability to identify patterns in data should
-  they be present (see Anderson and terBraak 2003). Effect-sizes (Z-scores) are computed as standard deviates of the SS sampling 
-  distributions generated, which might be more intuitive for P-values than F-values (see Collyer et al. 2015).  In the case that multiple 
-  factor or factor-covariate interactions are used in the model formula, one can specify whether all main effects should be added to the 
+  they be present (see Anderson and terBraak 2003). 
+  
+  Effect-sizes (Z scores) are computed as standard deviates of either the SS, 
+  F, or Cohen's f-squared sampling distributions generated, which might be more intuitive for P-values than F-values 
+  (see Collyer et al. 2015).  Values from these distributions are log-transformed prior to effect size estimation,
+  to assure normally distributed data.  The SS type will influence how Cohen's f-squared values are calculated.  
+  Cohen's f-squared values are based on partial eta-squared values that can be calculated sequentially or marginally, as with SS.
+  
+  
+  In the case that multiple factor or factor-covariate interactions are used in the model 
+  formula, one can specify whether all main effects should be added to the 
   model first, or interactions should precede subsequent main effects 
   (i.e., Y ~ a + b + c + a:b + ..., or Y ~ a + b + a:b + c + ..., respectively.)
 

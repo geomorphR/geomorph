@@ -80,8 +80,10 @@ The function performs statistical assessment of the terms in the model using Pro
   of two nested models. (Use of \code{\link{procD.lm}} will be more suitable in most cases.)  
   A residual randomization permutation procedure (RRPP) is utilized 
   for reduced model residuals to evaluate the SS between models (Collyer et al. 2015).  Effect-sizes (Z-scores) are 
-  computed as standard deviates of the SS sampling 
-  distributions generated, which might be more intuitive for P-values than F-values (see Collyer et al. 2015).  
+  computed as standard deviates of the SS or pairwise statistic sampling 
+  distributions generated, which might be more intuitive for P-values than F-values (see Collyer et al. 2015).  If a phylogeny is 
+  used, the ANOVA Z-score is calculated from the sampling distributions of the F value, as the total SS will vary among permutations.
+  For ANOVA Z-scores, a log-transformation is performed first, to assure a norammly distributed sampling distribution.
   
   Pairwise tests are only performed if formulae are provided to compute such results.
   The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{advanced.procD.lm}}.

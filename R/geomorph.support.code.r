@@ -1337,10 +1337,11 @@ SS.iter.bilat.symmetry = function(pfit,iter, seed = NULL, Yalt="RRPP", SS.type= 
   simplify2array(SS)
 }
 
-# Fpgls.iter
+# SS.pgls.iter
 # calculates F values in random iterations of a resampling procedure, with pgls involved
 # used in the 'procD.lm' functions where pgls is used
-Fpgls.iter = function(pfit,Pcor,iter, seed=NULL, Yalt="RRPP"){
+# Formerly Fpgls.iter
+SS.pgls.iter = function(pfit,Pcor,iter, seed=NULL, Yalt="RRPP"){
   Y <- as.matrix(pfit$Y)
   k <- length(pfit$QRs)
   n <- dim(Y)[1]; p <- dim(Y)[2]
@@ -1363,7 +1364,7 @@ Fpgls.iter = function(pfit,Pcor,iter, seed=NULL, Yalt="RRPP"){
     Ptransf <- lapply(Uf, function(x) x%*%crossprod(x,Pcor)) 
   Ptrans <- Map(function(r,f) f-r, Ptransr, Ptransf)
   ind = perm.index(n,iter, seed=seed)
-  SS <- SSEs <-Fs <- NULL
+  SS <- SSEs <- NULL
   pb <- txtProgressBar(min = 0, max = ceiling(iter/100), initial = 0, style=3) 
   jj <- iter+1
   step <- 1
@@ -1385,10 +1386,8 @@ Fpgls.iter = function(pfit,Pcor,iter, seed=NULL, Yalt="RRPP"){
     SS.temp <- lapply(1:length(j), function(j){ 
       mapply(function(p,y) sum((p%*%y)^2), Ptrans,Yr[[j]])})
     SSEs.temp <- Map(function(y) sum((Pcor%*%y[[k-1]]-Ptransf[[k-1]]%*%y[[k-1]])^2), Yr)
-    Fs.temp <- Map(function(s1,s2) (s1/df)/(s2/(n-q)), SS.temp, SSEs.temp)
     SS <- c(SS,SS.temp)
     SSEs <- c(SSEs,SSEs.temp)
-    Fs <- c(Fs,Fs.temp)
     jj <- jj-length(j)
     if(jj > 100) kk <- 1:100 else kk <- 1:jj
     j <- j[length(j)] +kk
@@ -1396,13 +1395,15 @@ Fpgls.iter = function(pfit,Pcor,iter, seed=NULL, Yalt="RRPP"){
     step <- step+1
   }
   close(pb)
-  list(SS=simplify2array(SS), SSE = SSEs[[1]], Fs=simplify2array(Fs))
+  SS <- as.matrix(rbind(simplify2array(SS), unlist(SSEs)))
+  SS
 }
 
-# .Fpgls.iter
+# .SS.pgls.iter
 # same as Fpgls.iter, but without progress bar option
 # used in the 'procD.lm' functions where pgls is used
-.Fpgls.iter = function(pfit,Pcor,iter, seed=NULL, Yalt="RRPP"){
+# Formerly .Fpgls.iter
+.SS.pgls.iter = function(pfit,Pcor,iter, seed=NULL, Yalt="RRPP"){
   Y <- as.matrix(pfit$Y)
   k <- length(pfit$QRs)
   n <- dim(Y)[1]; p <- dim(Y)[2]
@@ -1425,7 +1426,7 @@ Fpgls.iter = function(pfit,Pcor,iter, seed=NULL, Yalt="RRPP"){
     Ptransf <- lapply(Uf, function(x) x%*%crossprod(x,Pcor)) 
   Ptrans <- Map(function(r,f) f-r, Ptransr, Ptransf)
   ind = perm.index(n,iter, seed=seed)
-  SS <- SSEs <-Fs <- NULL
+  SS <- SSEs <- NULL
   jj <- iter+1
   if(jj > 100) j <- 1:100 else j <- 1:jj
   while(jj > 0){
@@ -1445,15 +1446,14 @@ Fpgls.iter = function(pfit,Pcor,iter, seed=NULL, Yalt="RRPP"){
     SS.temp <- lapply(1:length(j), function(j){ 
       mapply(function(p,y) sum((p%*%y)^2), Ptrans,Yr[[j]])})
     SSEs.temp <- Map(function(y) sum(fastLM(Uf[[k-1]],Pcor%*%y[[k-1]])$residuals^2), Yr)
-    Fs.temp <- Map(function(s1,s2) (s1/df)/(s2/(n-q)), SS.temp, SSEs.temp)
     SS <- c(SS,SS.temp)
     SSEs <- c(SSEs,SSEs.temp)
-    Fs <- c(Fs,Fs.temp)
     jj <- jj-length(j)
     if(jj > 100) kk <- 1:100 else kk <- 1:jj
     j <- j[length(j)] +kk
   }
-  list(SS=simplify2array(SS), SSE = SSEs[[1]], Fs=simplify2array(Fs))
+  SS <- as.matrix(rbind(simplify2array(SS), unlist(SSEs)))
+  SS
 }
 
 # anova.parts
@@ -1462,6 +1462,7 @@ Fpgls.iter = function(pfit,Pcor,iter, seed=NULL, Yalt="RRPP"){
 anova.parts <- function(pfit, SS, SS.type = NULL){ # SS from SS.iter
   Y <- pfit$wY
   k <- length(pfit$term.labels)
+  if(is.matrix(SS) && NROW(SS) > k) SS <- SS[1:k,]
   if(is.null(SS.type)) SS.type <- "I"
   if(is.na(match(SS.type, c("I","III")))) SS.type <- "I"
   dfe <-sapply(pfit$wQRs, function(x) x$rank)
@@ -1491,13 +1492,17 @@ anova.parts <- function(pfit, SS, SS.type = NULL){ # SS from SS.iter
 # anova.parts.pgls
 # makes an ANOVA table based on SS from Fpgls.iter
 # used in nearly only in procD.pgls
-anova.parts.pgls <- function(pfit, Fpgls){ # Fpgls from Fpgls.iter
+anova.parts.pgls <- function(pfit, SS, SS.type = NULL){
   Y <- pfit$wY
   k <- length(pfit$term.labels)
-  dfe <- sapply(pfit$wQRs, function(x) x$rank)
-  df <- dfe[2:(k+1)] - dfe[1:k]
-  SSE <- Fpgls$SSE
-  if(k==1) SS <- Fpgls$SS[1] else SS <- Fpgls$SS[,1]
+  SSE <- SS[nrow(SS),][1]
+  SS <- SS[1:k,]
+  if(is.matrix(SS)) SS <- SS[,1] else SS <- SS[1]
+  if(is.null(SS.type)) SS.type <- "I"
+  if(is.na(match(SS.type, c("I","III")))) SS.type <- "I"
+  dfe <-sapply(pfit$wQRs, function(x) x$rank)
+  if(SS.type == "III") df <- dfe[length(dfe)] - dfe[1:(length(dfe)-1)] else
+    df <- dfe[2:(k+1)] - dfe[1:k]
   anova.terms <- pfit$term.labels
   SSY <- sum(SS)+SSE
   MS <- SS/df
@@ -1582,7 +1587,7 @@ Pval.matrix = function(M){
 # effect.size
 # Effect sizes (standard deviates) form random outcomes
 # any analytical function
-effect.size <- function(x, center = FALSE) {
+effect.size <- function(x, center = TRUE) {
   z = scale(x, center=center)
   n <- length(z)
   z[1]*sqrt((n-1)/(n))
@@ -1591,7 +1596,7 @@ effect.size <- function(x, center = FALSE) {
 # Effect.size.matrix
 # Effect sizes form random outcomes that comprise matrices
 # any analytical function with results in matrices
-Effect.size.matrix <- function(M, center=F){
+Effect.size.matrix <- function(M, center=TRUE){
   Z = matrix(0,dim(M)[1],dim(M)[2])
   for(i in 1:dim(M)[1]){
     for(j in 1:dim(M)[2]){
@@ -1663,8 +1668,7 @@ single.factor <- function(pfit) {# pfit = Procrustes fit
 # advanced.procD.lm
 cov.extract <- function(pfit) {
   Terms <- pfit$Terms
-  vars <- na.omit(match(pfit$term.labels,colnames(pfit$data)))
-  mf <- pfit$data[,vars]
+  mf <- model.frame(Terms, data = pfit$data)
   if(is.null(.getXlevels(Terms, mf))) covs <- NULL else
   {
     datClasses <- sapply(mf, function(x) data.class(x))

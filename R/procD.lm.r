@@ -34,9 +34,17 @@
 #'   predicted values from the remaining effects to obtain pseudo-values from which SS are calculated. NOTE: for
 #'   single-factor designs, the two approaches are identical.  However, when evaluating factorial models it has been
 #'   shown that RRPP attains higher statistical power and thus has greater ability to identify patterns in data should
-#'   they be present (see Anderson and terBraak 2003). Effect-sizes (Z-scores) are computed as standard deviates of the SS sampling 
-#'   distributions generated, which might be more intuitive for P-values than F-values (see Collyer et al. 2015).  In the case that multiple 
-#'   factor or factor-covariate interactions are used in the model formula, one can specify whether all main effects should be added to the 
+#'   they be present (see Anderson and terBraak 2003). 
+#'   
+#'   Effect-sizes (Z scores) are computed as standard deviates of either the SS, 
+#'   F, or Cohen's f-squared sampling distributions generated, which might be more intuitive for P-values than F-values 
+#'   (see Collyer et al. 2015).  Values from these distributions are log-transformed prior to effect size estimation,
+#'   to assure normally distributed data.  The SS type will influence how Cohen's f-squared values are calculated.  
+#'   Cohen's f-squared values are based on partial eta-squared values that can be calculated sequentially or marginally, as with SS.
+#'   
+#'   
+#'   In the case that multiple factor or factor-covariate interactions are used in the model 
+#'   formula, one can specify whether all main effects should be added to the 
 #'   model first, or interactions should precede subsequent main effects 
 #'   (i.e., Y ~ a + b + c + a:b + ..., or Y ~ a + b + a:b + c + ..., respectively.)
 #'
@@ -49,6 +57,9 @@
 #' If seed = "random", a random seed will be used, and P-values will vary.  One can also specify an integer for specific seed values,
 #' which might be of interest for advanced users.
 #' @param RRPP A logical value indicating whether residual randomization should be used for significance testing
+#' @param effect.type One of "cohen", "SS", or "F", to choose from which random distribution to estimate effect size.
+#' (The default, "cohen", is for Cohen's f-squared values.  Values are log-transformed before z-score calculation to
+#' assure normally distributed data.)
 #' @param int.first A logical value to indicate if interactions of first main effects should precede subsequent main effects
 #' @param data A data frame for the function environment, see \code{\link{geomorph.data.frame}} 
 #' @param print.progress A logical value to indicate whether a progress bar should be printed to the screen.  
@@ -81,8 +92,12 @@
 #' \item{F}{The F values for each model term.}
 #' \item{permutations}{The number of random permutations (including observed) used.}
 #' \item{random.SS}{A matrix or vector of random SS found via the resampling procedure used.}
+#' \item{random.F}{A matrix or vector of random F values found via the resampling procedure used.}
+#' \item{random.cohenf}{A matrix or vector of random Cohen's f-squared values
+#'  found via the resampling procedure used.}
+#'\item{permutations}{The number of random permutations (including observed) used.}
+#' \item{effect.type}{The distribution used to estimate effect-size.}
 #' \item{perm.method}{A value indicating whether "Raw" values were shuffled or "RRPP" performed.}
-#' 
 #' @references Anderson MJ. 2001. A new method for non-parametric multivariate analysis of variance. 
 #'    Austral Ecology 26: 32-46.
 #' @references Anderson MJ. and C.J.F. terBraak. 2003. Permutation tests for multi-factorial analysis of variance.
@@ -119,7 +134,7 @@
 #' plot(rat.anova, outliers = TRUE) # diagnostic plots, including plotOutliers
 #' attributes(rat.anova)
 #' rat.anova$fitted # just the fitted values
-procD.lm<- function(f1, iter = 999, seed=NULL, RRPP = TRUE, 
+procD.lm<- function(f1, iter = 999, seed=NULL, RRPP = TRUE, effect.type = c("cohen", "SS", "F"),
                         int.first = FALSE,  data=NULL, print.progress = TRUE, ...){
   if(int.first==TRUE) ko = TRUE else ko = FALSE
   if(!is.null(data)) data <- droplevels(data)
@@ -128,6 +143,7 @@ procD.lm<- function(f1, iter = 999, seed=NULL, RRPP = TRUE,
   if(is.na(match(SS.type, c("I","III")))) SS.type <- "I"
   pfit <- procD.fit(f1, data=data, keep.order=ko, SS.type=SS.type)
   k <- length(pfit$term.labels)
+  n <- NROW(pfit$Y)
   if(print.progress == TRUE){
     if(RRPP == TRUE) P <- SS.iter(pfit,Yalt="RRPP", iter=iter, seed=seed, SS.type = SS.type) else 
       P <- SS.iter(pfit, Yalt="resample", iter=iter, seed=seed, SS.type = SS.type)
@@ -135,18 +151,42 @@ procD.lm<- function(f1, iter = 999, seed=NULL, RRPP = TRUE,
     if(RRPP == TRUE) P <- .SS.iter(pfit,Yalt="RRPP", iter=iter, seed=seed, SS.type = SS.type) else 
       P <- .SS.iter(pfit, Yalt="resample", iter=iter, seed=seed, SS.type = SS.type)
   }
-  
   anova.parts.obs <- anova.parts(pfit, P, SS.type=SS.type)
   anova.tab <-anova.parts.obs$anova.table 
+  df <- anova.parts.obs$df
+  SSY <- sum(center(pfit$Y)^2)
+  effect.type <- match.arg(effect.type)
   if(is.matrix(P)){
-    P.val <- apply(P,1,pval)
-    Z <- apply(P,1,effect.size) 
-    rownames(P) <- pfit$term.labels
-    colnames(P) <- c("obs", paste("iter", 1:iter, sep=":"))
+    SSE <- SSY - colSums(P)
+    MSE <- SSE/df[k+1]
+    SSE.mat <- matrix(SSE, k, length(SSE), byrow = TRUE)
+    MSE.mat <- matrix(MSE, k, length(MSE), byrow = TRUE)
+    Fs <- (P[1:k,]/df[1:k])/MSE.mat
+    if(SS.type == "III") {
+      etas <- P/(P+SSE.mat)
+      cohenf <- etas/(1-etas)
+    } else {
+      etas <- P/SSY
+      unexp <- 1 - apply(etas, 2, cumsum)
+      cohenf <- etas/unexp
+      }
+    P.val <- apply(Fs, 1, pval)
+    if(effect.type == "SS") Z <- apply(log(P), 1, effect.size) else
+      if(effect.type == "F") Z <- apply(log(Fs), 1, effect.size) else
+        Z <- apply(log(cohenf), 1, effect.size) 
+    rownames(P) <- rownames(Fs) <- rownames(cohenf) <- pfit$term.labels
+    colnames(P) <- colnames(Fs) <- colnames(cohenf) <- c("obs", paste("iter", 1:iter, sep=":"))
   } else {
-    P.val <- pval(P)
-    Z <- effect.size(P) 
-    names(P) <-c("obs", paste("iter", 1:iter, sep=":"))
+    SSE <- SSY - P
+    MSE <- SSE/df[2]
+    Fs <- (P/df[1])/MSE
+    etas <- P/SSE
+    cohenf <- etas/(1-etas)
+    P.val <- pval(Fs)
+    if(effect.type == "SS") Z <- effect.size(log(P)) else
+      if(effect.type == "F") Z <- effect.size(log(Fs)) else
+        Z <- effect.size(log(cohenf)) 
+    names(P) <- names(Fs) <- names(cohenf) <- c("obs", paste("iter", 1:iter, sep=":"))
   }
   tab <- data.frame(anova.tab, Z = c(Z, NA, NA), Pr = c(P.val, NA, NA))
   colnames(tab)[1] <- "Df"
@@ -162,7 +202,8 @@ procD.lm<- function(f1, iter = 999, seed=NULL, RRPP = TRUE,
               data = pfit$data,
               SS = anova.parts.obs$SS, SS.type = SS.type, df = anova.parts.obs$df, 
               R2 = anova.parts.obs$R2[1:k], F = anova.parts.obs$Fs[1:k], permutations = iter+1,
-              random.SS = P, perm.method = ifelse(RRPP==TRUE,"RRPP", "Raw"))
+              random.SS = P, random.F = Fs, random.cohenf = cohenf, effect.type=effect.type,
+              perm.method = ifelse(RRPP==TRUE,"RRPP", "Raw"))
   class(out) <- "procD.lm"
   out
 }

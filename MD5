@@ -12,8 +12,8 @@ d8e8360c03c03fe45d2100e9c05d4a89 *data/plethodon.rda
 9fe39655d30e9591263442167983cfdd *DESCRIPTION
 1d90d3f2b01906fcf92cbd927743b16e *geomorph.Rproj
 4bdde5c74d5d5ead8f87cd70b9f91250 *inst/CITATION
-908ff37316d815bd2174d31750ca7db1 *man/advanced.procD.lm.Rd
-81a4e04843eb1dc4a043e339283957e1 *man/arrayspecs.Rd
+a44793df0da1dccd888ee533be654ea0 *man/advanced.procD.lm.Rd
+b8e81e9b8ef195d4646864ba1354707f *man/arrayspecs.Rd
 821c2a16a58f08524c85b140f66a3d75 *man/bilat.symmetry.Rd
 98905c1726ae4f9391195460634be5dd *man/buildtemplate.Rd
 4018b5634138ba87a93758b136d78bcc *man/compare.evol.rates.Rd
@@ -47,7 +47,7 @@ d7fb86800024c409e680ae927ff8b2b7 *man/morphol.disparity.Rd
 9c45e199ed444c6fe413617264f7d9db *man/mosquito.Rd
 ba1bc984d157f6a6e19ec1edf5d44d9d *man/motionpaths.Rd
 4acc4cd130b777a587f27a3636ad2f2d *man/mshape.Rd
-0e35cc894e52fa670466653beda77ae2 *man/nested.update.Rd
+11c67950f48b32763001fb3690b58499 *man/nested.update.Rd
 9d4bc5e33c8fb4154a237bb8a30b80e6 *man/phylo.integration.Rd
 b23aabdaadfe70fe888098382b9a46fb *man/phylo.modularity.Rd
 bf7d0d9da67337471defb77bb108380c *man/phylo.pls.Rd
@@ -89,8 +89,8 @@ b50d9f7fd76c777b60601a9b7a3296c0 *man/print.evolrate.Rd
 724d376dabd273c08934c7a290e3020f *man/print.procD.lm.Rd
 debfbaa1a8edfbef3b4ec0254f5213ef *man/print.trajectory.analysis.Rd
 3529eae9bbd2e7cdc18e2eab3fdc5db3 *man/procD.allometry.Rd
-fab2e4890b14751837ccb1fd36a0c347 *man/procD.lm.Rd
-4682149ec41df7514b66bb4afbcd4bfa *man/procD.pgls.Rd
+b0ce72c03a6de4bd07287ae7231b912b *man/procD.lm.Rd
+fde54fc494739bb817498b3cbcb0eca9 *man/procD.pgls.Rd
 34923fc68c6ffd6f20d5b40c9a751940 *man/pupfish.Rd
 2b83372fef83bcf914c5ed1b2ee97b0b *man/ratland.Rd
 26c1fab016e6ef45ef1d150d9081cc3d *man/read.morphologika.Rd
@@ -123,9 +123,9 @@ cbbc4031111f2bc62e2abac7f05c4a0a *man/trajectory.analysis.Rd
 87a86c2e9b2d31119ab1883c54e092ec *man/warpRefOutline.Rd
 23993fe0d6016ec4b16fc4af9c7040e5 *man/writeland.tps.Rd
 3f1435fd25f61cda55d671b2cda06149 *NAMESPACE
-3f87c0d03e6e8ad69cd58c691c8140ee *NEWS
-ef7af2e4ef3411c627351cc79d690680 *R/advanced.procD.lm.r
-7574292caee620e8d01b2c6bd495e29c *R/arrayspecs.r
+7855192b2ed4ff7c04997ec046f161ad *NEWS
+05baa9438c451aa807ba1251619006ad *R/advanced.procD.lm.r
+311a910118a6b60a5ab89a58349e1f69 *R/arrayspecs.r
 60e3ddc399a847fd9141973423dbc1ff *R/bilat.symmetry.r
 14713bbb2ad126d777d95e359c71bf1a *R/build.template.r
 cf28d567f0973920940ea94f65d66954 *R/compare.evol.rates.r
@@ -145,8 +145,8 @@ ddff41e987eac54d3500e2313799c3c6 *R/digitize2d.r
 9cfff0013db7a8c0e4aca770b5d9ea25 *R/findMeanSpec.r
 b56e53ac307d84a05efee9525dd6868a *R/fixed.angle.r
 203177efc30cc6fef4bd604b2fc2af01 *R/geomorph.data.frame.r
-405a13cb0204c8cbb565df75165ce9a1 *R/geomorph.support.code.r
-25a140ca25e25a4c72583b15bece18f2 *R/geomorph.utils.r
+ce96de5f627fc9db60b042568bac0bfc *R/geomorph.support.code.r
+70983c5a367031bcb46df1642214bbca *R/geomorph.utils.r
 0d9d88147f22cff2241b6e2e7396d57f *R/globalIntegration.r
 17bbdf1769466f17742de952fb612cc4 *R/gpagen.r
 2d8ab3c6fea452711a7cf091ffba8ff5 *R/gridPar.r
@@ -154,7 +154,7 @@ b8002f4bf70cd9c21f65b71610e9b8eb *R/integration.test.r
 c35bcae1a6ea59c924cf7dc9eec3e013 *R/interlmkdist.r
 1d6c03681bdbedb0359634ccaa2e0229 *R/modularity.test.r
 4126e9607888f36956dffc1fc1b3d887 *R/morphol.disparity.r
-084f845900f98683ff877ac399e822b3 *R/nested.update.r
+e6cbf50b0b3cb59913bc7adf854f12f1 *R/nested.update.r
 be6af162c61c25032f3e662bdc65b70d *R/phylo.integration.r
 e1cb306b0d2dd762ad291bddaf2366e8 *R/phylo.modularity.r
 5e12723d8749bc8119410cd31dff7003 *R/physignal.r
@@ -165,8 +165,8 @@ b8814f9a047a63c586c6e472bc17d6d5 *R/plotOutliers.r
 41db23cebd8d7be6c3decf781bd378e0 *R/plotspec.r
 85934a9888e5b1e021d5565fed4a5687 *R/plotTangentSpace.r
 6d65f52aa745612d59500712d517dd01 *R/procD.allometry.r
-aa64f854bda495c11a08d1f5f9f8c98f *R/procD.lm.r
-5060a018216fbea246b50ce6259a6a69 *R/procD.pgls.r
+d21db9f390b2d4e8dfa9bc4e564d10f7 *R/procD.lm.r
+e763cdcf252e9ad425f2e7e3ef3b986a *R/procD.pgls.r
 df3f4cc6406dc0c737ee2ff08c2a0e3d *R/read.morphologika.r
 9c3c828f71a413b5437d45228a3bf9b7 *R/read.ply.r
 ba8e5a0b07f0f9530f430c626b83ead1 *R/readland.nts.r

@@ -5,7 +5,8 @@
 \title{Phylogenetic ANOVA/regression for shape data}
 \usage{
 procD.pgls(f1, phy, iter = 999, seed = NULL, int.first = FALSE,
-  RRPP = TRUE, data = NULL, print.progress = TRUE, ...)
+  effect.type = c("cohen", "F"), RRPP = TRUE, data = NULL,
+  print.progress = TRUE, ...)
 }
 \arguments{
 \item{f1}{A formula for the linear model (e.g., y~x1+x2)}
@@ -20,6 +21,10 @@ If seed = "random", a random seed will be used, and P-values will vary.  One can
 which might be of interest for advanced users.}
 
 \item{int.first}{A logical value to indicate if interactions of first main effects should precede subsequent main effects}
+
+\item{effect.type}{One of "cohen", "SS", or "F", to choose from which random distribution to estimate effect size.
+(The default, "cohen", is for Cohen's f-squared values.  Values are log-transformed before z-score calculation to
+assure normally distributed data.)}
 
 \item{RRPP}{a logical value indicating whether residual randomization should be used for significance testing}
 
@@ -75,8 +80,15 @@ The function \code{\link{two.d.array}} can be used to obtain a two-dimensional d
   predicted values from the remaining effects to obtain pseudo-values from which SS are calculated. NOTE: for
   single-factor designs, the two approaches are identical.  However, when evaluating factorial models it has been
   shown that RRPP attains higher statistical power and thus has greater ability to identify patterns in data should
-  they be present (see Anderson and terBraak 2003). Effect-sizes (Z-scores) are computed as standard deviates of the sampling 
-  distributions (of F values) generated, which might be more intuitive for P-values than F-values (see Collyer et al. 2015).  In the case  
+  they be present (see Anderson and terBraak 2003). 
+  
+  Effect-sizes (Z scores) are computed as standard deviates of either the 
+  F or Cohen's f-squared sampling distributions generated, which might be more intuitive for P-values than F-values 
+  (see Collyer et al. 2015).  Values from these distributions are log-transformed prior to effect size estimation,
+  to assure normally distributed data.  The SS type will influence how Cohen's f-squared values are calculated.  
+  Cohen's f-squared values are based on partial eta-squared values that can be calculated sequentially or marginally, as with SS.
+  
+  In the case  
   that multiple factor or factor-covariate interactions are used in the model formula, one can specify whether all main effects should be  
    added to the model first, or interactions should precede subsequent main effects 
   (i.e., Y ~ a + b + c + a:b + ..., or Y ~ a + b + a:b + c + ..., respectively.)

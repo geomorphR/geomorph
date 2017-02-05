@@ -38,8 +38,15 @@
 #'   predicted values from the remaining effects to obtain pseudo-values from which SS are calculated. NOTE: for
 #'   single-factor designs, the two approaches are identical.  However, when evaluating factorial models it has been
 #'   shown that RRPP attains higher statistical power and thus has greater ability to identify patterns in data should
-#'   they be present (see Anderson and terBraak 2003). Effect-sizes (Z-scores) are computed as standard deviates of the sampling 
-#'   distributions (of F values) generated, which might be more intuitive for P-values than F-values (see Collyer et al. 2015).  In the case  
+#'   they be present (see Anderson and terBraak 2003). 
+#'   
+#'   Effect-sizes (Z scores) are computed as standard deviates of either the 
+#'   F or Cohen's f-squared sampling distributions generated, which might be more intuitive for P-values than F-values 
+#'   (see Collyer et al. 2015).  Values from these distributions are log-transformed prior to effect size estimation,
+#'   to assure normally distributed data.  The SS type will influence how Cohen's f-squared values are calculated.  
+#'   Cohen's f-squared values are based on partial eta-squared values that can be calculated sequentially or marginally, as with SS.
+#'   
+#'   In the case  
 #'   that multiple factor or factor-covariate interactions are used in the model formula, one can specify whether all main effects should be  
 #'    added to the model first, or interactions should precede subsequent main effects 
 #'   (i.e., Y ~ a + b + c + a:b + ..., or Y ~ a + b + a:b + c + ..., respectively.)
@@ -56,6 +63,9 @@
 #' which might be of interest for advanced users.
 #' @param int.first A logical value to indicate if interactions of first main effects should precede subsequent main effects
 #' @param RRPP a logical value indicating whether residual randomization should be used for significance testing
+#' @param effect.type One of "cohen", "SS", or "F", to choose from which random distribution to estimate effect size.
+#' (The default, "cohen", is for Cohen's f-squared values.  Values are log-transformed before z-score calculation to
+#' assure normally distributed data.)
 #' @param data A data frame for the function environment, see \code{\link{geomorph.data.frame}} 
 #' @param print.progress A logical value to indicate whether a progress bar should be printed to the screen.  
 #' This is helpful for long-running analyses.
@@ -86,10 +96,14 @@
 #' plot(pleth.pgls)
 #' pleth.pgls$Pcor # the phylogenetic transformation (correction) matrix
 procD.pgls<-function(f1, phy, iter=999, seed=NULL, int.first = FALSE, 
+                     effect.type = c("cohen", "F"),
                      RRPP=TRUE, data=NULL, print.progress = TRUE, ...){
   if(int.first==TRUE) ko = TRUE else ko = FALSE
   if(!is.null(data)) data <- droplevels(data)
-  pfit <- procD.fit(f1, data=data, keep.order=ko, pca=FALSE)
+  dots <- list(...)
+  if(!is.null(dots$SS.type)) SS.type <- dots$SS.type else SS.type <- "I"
+  if(is.na(match(SS.type, c("I","III")))) SS.type <- "I"
+  pfit <- procD.fit(f1, data=data, keep.order=ko, pca=FALSE, SS.type=SS.type)
   Terms <- pfit$Terms
   k <- length(pfit$term.labels) 
   Y <- as.matrix(pfit$wY)
@@ -114,25 +128,56 @@ procD.pgls<-function(f1, phy, iter=999, seed=NULL, int.first = FALSE,
   dimnames(Pcor) <- dimnames(C)
   Pcor <- Pcor[rownames(Y),rownames(Y)]
   if(print.progress) {
-    if(RRPP == TRUE) SSr <- Fpgls.iter(pfit, Yalt="RRPP", Pcor, iter=iter, seed=seed) else 
-      SSr <- Fpgls.iter(pfit, Yalt="resample", Pcor, iter=iter, seed=seed)
+    if(RRPP == TRUE) SSr <- SS.pgls.iter(pfit, Yalt="RRPP", Pcor, iter=iter, seed=seed) else 
+      SSr <- SS.pgls.iter(pfit, Yalt="resample", Pcor, iter=iter, seed=seed)
   } else {
-    if(RRPP == TRUE) SSr <- .Fpgls.iter(pfit, Yalt="RRPP", Pcor, iter=iter, seed=seed) else 
-      SSr <- .Fpgls.iter(pfit, Yalt="resample", Pcor, iter=iter, seed=seed)
+    if(RRPP == TRUE) SSr <- .SS.pgls.iter(pfit, Yalt="RRPP", Pcor, iter=iter, seed=seed) else 
+      SSr <- .SS.pgls.iter(pfit, Yalt="resample", Pcor, iter=iter, seed=seed)
   }
-  anova.parts.obs <- anova.parts.pgls(pfit, SSr)
+  anova.parts.obs <- anova.parts.pgls(pfit, SSr, SS.type=SS.type)
   anova.tab <-anova.parts.obs$anova.table 
-  P <- SSr$Fs
-  if(is.matrix(P)){
-    P.val <- apply(P,1,pval)
-    Z <- apply(P,1,effect.size) 
-    rownames(P) <- pfit$term.labels
-    colnames(P) <- c("obs", paste("iter", 1:iter, sep=":"))
+  df <- anova.parts.obs$df
+  P <- SSr[1:k,]
+  SSE <- SSr[k+1,]
+  MS <- P/df[1:k]
+  MSE <- SSE/df[k+1]
+  SSE.mat <- matrix(SSE, k, length(SSE), byrow = TRUE)
+  MSE.mat <- matrix(MSE, k, length(MSE), byrow = TRUE)
+  if(is.matrix(P)) {
+    SSY <- colSums(P) + SSE
+    SSY.mat <- matrix(SSY, k, length(SSY), byrow = TRUE)
+    Fs <- (P/df[1:k])/MSE.mat
   } else {
-    P.val <- pval(P)
-    Z <- effect.size(P) 
-    names(P) <-c("obs", paste("iter", 1:iter, sep=":"))
+     SSY <- P + SSE
+     Fs <- (P/df[1])/(SSE/df[2])
+     }
+  effect.type <- match.arg(effect.type)
+  if(is.matrix(P)){
+    if(SS.type == "III") {
+      etas <- P/(P+SSE.mat)
+      cohenf <- etas/(1-etas)
+    } else {
+      etas <- P/SSY.mat
+      unexp <- 1 - apply(etas, 2, cumsum)
+      cohenf <- etas/unexp
+    }
+    P.val <- apply(Fs, 1, pval)
+    if(effect.type == "F") Z <- apply(log(Fs), 1, effect.size) else
+      Z <- apply(log(cohenf), 1, effect.size) 
+    rownames(P) <- rownames(Fs) <- rownames(cohenf) <- pfit$term.labels
+    colnames(P) <- colnames(Fs) <- colnames(cohenf) <- c("obs", paste("iter", 1:iter, sep=":"))
+  } else {
+    SSE <- SSY - P
+    MSE <- SSE/df[2]
+    Fs <- (P/df[1])/MSE
+    etas <- P/SSE
+    cohenf <- etas/(1-etas)
+    P.val <- pval(Fs)
+    if(effect.type == "F") Z <- effect.size(log(Fs)) else
+        Z <- effect.size(log(cohenf)) 
+    names(P) <- names(Fs) <- names(cohenf) <- c("obs", paste("iter", 1:iter, sep=":"))
   }
+  if(effect.type == "SS") effect.type <- "cohen"
   tab <- data.frame(anova.tab, Z = c(Z, NA, NA), Pr = c(P.val, NA, NA))
   colnames(tab)[1] <- "Df"
   colnames(tab)[ncol(tab)] <- "Pr(>F)"
@@ -150,8 +195,10 @@ procD.pgls<-function(f1, phy, iter=999, seed=NULL, int.first = FALSE,
              df = anova.parts.obs$df, R2 = anova.parts.obs$R2[1:k], 
              pgls.coefficients = Pfit$coefficients, pgls.fitted = pfit$X%*%Pfit$coefficients, 
              pgls.residuals = Y - pfit$X%*%Pfit$coefficients,
-             F = anova.parts.obs$Fs[1:k], permutations = iter+1,
-             random.F = P, perm.method = ifelse(RRPP==TRUE,"RRPP", "Raw"))
+             F = anova.parts.obs$Fs[1:k], permutations = iter+1, random.SS = P,
+             random.SSE <- SSE,
+             random.F = Fs, random.cohenf = cohenf, effect.type=effect.type,
+             perm.method = ifelse(RRPP==TRUE,"RRPP", "Raw"), PGLS = TRUE)
   class(out) <- "procD.lm"
   out
 }
