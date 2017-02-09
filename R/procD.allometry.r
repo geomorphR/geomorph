@@ -162,10 +162,14 @@ procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
                    print.progress = TRUE, data=NULL, ...){
   if(!is.null(data)) data <- droplevels(data)
   pfit <- procD.fit(f1, data=data, pca=FALSE)
+  if(!is.null(data)) Ain <- eval(f1[[2]], data) else {
+    Ain <- try(eval(f1[[2]]), silent = TRUE)
+    if(!is.matrix(Ain) || !is.array(Ain)) Ain <- NULL 
+    }
   dat <- pfit$data
   Y <- pfit$Y
   if(!is.null(seed) && seed=="random") seed = sample(1:iter, 1)
-  if((ncol(dat) - ncol(Y)) != 1) stop("Only a single covariate for size is permitted") 
+  if((NCOL(dat) - NCOL(Y)) != 1) stop("Only a single covariate for size is permitted") 
   dat <- data.frame(Y=Y, size = dat[,ncol(dat)])
   size <- dat$size
   if(logsz) {
@@ -296,23 +300,20 @@ procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
   RSC<-prcomp(resid)$x
   Reg.proj<-Y%*%B[2,]%*%sqrt(solve(t(B[2,])%*%B[2,])) 
   pred.val<-prcomp(yhat)$x[,1] 
-  if(!is.null(data)) lm.dim <- dim(data[[match(as.character(f1[[2]]), names(data))]]) else {
-    Z <- eval(f1[[2]], parent.frame())
-    lm.dim <- dim(Z)
-  }
-  if(lm.dim[[2]] == 2 || lm.dim[[2]] == 3){
-    Ahat <- arrayspecs(yhat, lm.dim[[1]], lm.dim[[2]])
+  if(length(dim(Ain)) == 3){
+    Adim <- dim(Ain)
+    Ahat <- arrayspecs(yhat, Adim[[1]], Adim[[2]])
     Ahat.at.min <- Ahat[,,which.min(sz)]
     Ahat.at.max <- Ahat[,,which.max(sz)]
-    A <- arrayspecs(Y, lm.dim[[1]], lm.dim[[2]])
+    A <- arrayspecs(Y, Adim[[1]], Adim[[2]])
     ref<-mshape(A)
-    p=lm.dim[[1]] ; k= lm.dim[[2]]
+    p=Adim[[1]] ; k= Adim[[2]]
   } else {
     Ahat <- yhat ; A <- Y
     Ahat.at.min <- Ahat[which.min(sz),]
     Ahat.at.max <- Ahat[which.max(sz),]
     ref<-apply(A, 2, mean)
-    p= lm.dim[[2]] ; k=NULL
+    p= NULL ; k=NULL
   }
   if(is.null(f2)) gps <- NULL
   out <- list(HOS.test = HOS, aov.table =anovafull, call = match.call(),
