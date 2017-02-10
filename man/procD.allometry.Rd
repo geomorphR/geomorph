@@ -5,8 +5,8 @@
 \title{Procrustes ANOVA/regression, specifically for shape-size covariation (allometry)}
 \usage{
 procD.allometry(f1, f2 = NULL, f3 = NULL, logsz = TRUE, iter = 999,
-  seed = NULL, alpha = 0.05, RRPP = TRUE, print.progress = TRUE,
-  data = NULL, ...)
+  seed = NULL, alpha = 0.05, RRPP = TRUE, effect.type = c("cohen", "SS",
+  "F"), print.progress = TRUE, data = NULL, ...)
 }
 \arguments{
 \item{f1}{A formula for the relationship of shape and size; e.g., Y ~ X.}
@@ -28,6 +28,10 @@ which might be of interest for advanced users.}
 
 \item{RRPP}{A logical value indicating whether residual randomization should be used for significance testing}
 
+\item{effect.type}{One of "cohen", "SS", or "F", to choose from which random distribution to estimate effect size.
+(The default, "cohen", is for Cohen's f-squared values.  Values are log-transformed before z-score calculation to
+assure normally distributed data.)}
+
 \item{print.progress}{A logical value to indicate whether a progress bar should be printed to the screen.
 This is helpful for long-running analyses.}
 
@@ -42,6 +46,11 @@ An object of class "procD.allometry" is a list containing the following:
 \item{alpha}{The significance level criterion for the homogeneity of slopes test.}
 \item{perm.method}{A value indicating whether "RRPP" or randomization of "raw" vales was used.}
 \item{permutations}{The number of random permutations used in the resampling procedure.}
+\item{data}{The data frame for the model.}
+\item{random.SS}{A matrix or vector of random SS found via the resampling procedure used.}
+\item{random.F}{A matrix or vector of random F values found via the resampling procedure used.}
+\item{random.cohenf}{A matrix or vector of random Cohen's f-squared values
+ found via the resampling procedure used.}
 \item{call}{The matched call.}
 \item{formula}{The resulting formula, which can be used in follow-up analyses.  Irrespective of input, shape = Y
 in the formula, and the variable used for size is called "size".}

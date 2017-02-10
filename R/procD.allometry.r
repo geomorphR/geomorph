@@ -81,6 +81,9 @@
 #' @param alpha The significance level for the homegeneity of slopes test
 #' @param RRPP A logical value indicating whether residual randomization should be used for significance testing
 #' @param data A data frame for the function environment, see \code{\link{geomorph.data.frame}} 
+#' @param effect.type One of "cohen", "SS", or "F", to choose from which random distribution to estimate effect size.
+#' (The default, "cohen", is for Cohen's f-squared values.  Values are log-transformed before z-score calculation to
+#' assure normally distributed data.)
 #' @param print.progress A logical value to indicate whether a progress bar should be printed to the screen.  
 #' This is helpful for long-running analyses.
 #' @param ... Arguments passed on to procD.fit (typically associated with the lm function)
@@ -93,6 +96,11 @@
 #' \item{alpha}{The significance level criterion for the homogeneity of slopes test.}
 #' \item{perm.method}{A value indicating whether "RRPP" or randomization of "raw" vales was used.}
 #' \item{permutations}{The number of random permutations used in the resampling procedure.}
+#' \item{data}{The data frame for the model.}
+#' \item{random.SS}{A matrix or vector of random SS found via the resampling procedure used.}
+#' \item{random.F}{A matrix or vector of random F values found via the resampling procedure used.}
+#' \item{random.cohenf}{A matrix or vector of random Cohen's f-squared values
+#'  found via the resampling procedure used.}
 #' \item{call}{The matched call.}
 #' \item{formula}{The resulting formula, which can be used in follow-up analyses.  Irrespective of input, shape = Y
 #' in the formula, and the variable used for size is called "size".}
@@ -159,6 +167,7 @@
 #' plot(plethANOVA) # diagnostic plot instead of allometry plot
 procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
                    iter = 999, seed=NULL, alpha = 0.05, RRPP = TRUE, 
+                   effect.type = c("cohen", "SS", "F"),
                    print.progress = TRUE, data=NULL, ...){
   if(!is.null(data)) data <- droplevels(data)
   pfit <- procD.fit(f1, data=data, pca=FALSE)
@@ -285,8 +294,10 @@ procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
   formfull <- update(formfull, Y~.)
   fitf <- procD.fit(formfull, data=dat, pca=FALSE)
   cat("\nAllometry Model\n")
+  effect.type <- match.arg(effect.type)
   anovafull <- procD.lm(formfull, data=dat, iter=iter, seed=seed, RRPP=RRPP,
-                        print.progress = print.progress)$aov.table
+                        effect.type=effect.type, 
+                        print.progress = print.progress)
   if(RRPP) perm.method = "RRPP" else perm.method = "raw"
   
   # Plot set-up
@@ -316,9 +327,11 @@ procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
     p= NULL ; k=NULL
   }
   if(is.null(f2)) gps <- NULL
-  out <- list(HOS.test = HOS, aov.table =anovafull, call = match.call(),
+  out <- list(HOS.test = HOS, aov.table = anovafull$aov.table, call = match.call(),
               alpha = alpha, perm.method = perm.method, permutations=iter+1,
               formula = formfull, data=dat,
+              random.SS = anovafull$random.SS, random.F = anovafull$random.F,
+              random.cohenf = anovafull$random.cohenf,
               CAC = CAC, RSC=RSC, Reg.proj = Reg.proj,
               pred.val=pred.val,
               ref=ref, gps=gps, size=size, logsz=logsz, 
