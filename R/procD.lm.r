@@ -180,7 +180,7 @@ procD.lm<- function(f1, iter = 999, seed=NULL, RRPP = TRUE, effect.type = c("coh
     SSE <- SSY - P
     MSE <- SSE/df[2]
     Fs <- (P/df[1])/MSE
-    etas <- P/SSE
+    etas <- P/SSY
     cohenf <- etas/(1-etas)
     P.val <- pval(Fs)
     if(effect.type == "SS") Z <- effect.size(log(P)) else

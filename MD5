@@ -165,8 +165,8 @@ b8814f9a047a63c586c6e472bc17d6d5 *R/plotOutliers.r
 41db23cebd8d7be6c3decf781bd378e0 *R/plotspec.r
 85934a9888e5b1e021d5565fed4a5687 *R/plotTangentSpace.r
 b793a6b9a48ef6ca571a357fc6ba25aa *R/procD.allometry.r
-d21db9f390b2d4e8dfa9bc4e564d10f7 *R/procD.lm.r
-e763cdcf252e9ad425f2e7e3ef3b986a *R/procD.pgls.r
+b4d67de2d3fbc426ede215fde9b61f4b *R/procD.lm.r
+ae3ed84ccf3f763ce574b861782684bd *R/procD.pgls.r
 df3f4cc6406dc0c737ee2ff08c2a0e3d *R/read.morphologika.r
 9c3c828f71a413b5437d45228a3bf9b7 *R/read.ply.r
 ba8e5a0b07f0f9530f430c626b83ead1 *R/readland.nts.r

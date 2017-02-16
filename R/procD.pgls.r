@@ -170,7 +170,7 @@ procD.pgls<-function(f1, phy, iter=999, seed=NULL, int.first = FALSE,
     SSE <- SSY - P
     MSE <- SSE/df[2]
     Fs <- (P/df[1])/MSE
-    etas <- P/SSE
+    etas <- P/SSY
     cohenf <- etas/(1-etas)
     P.val <- pval(Fs)
     if(effect.type == "F") Z <- effect.size(log(Fs)) else
