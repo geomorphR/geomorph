@@ -3,6 +3,7 @@ CHANGES IN GEOMORPH VERSION 3.0.4
     o New function interlmkdist to calculate linear distances between landmarks (interlandmark distances)
 
   OTHER CHANGES
+    o Added ellipsis programming to plotTangentSpace to pass arguments to prcomp.  Also, adjusted default tolerance to remove redundant PC dimensions.
     o Enhanced landmark labeling in arrayspecs.
     o Created transferability of dimnames between arraysepcs and two.d.array.
     o Updated Rd files for PLS functions to better cross-reference the similar functions.
