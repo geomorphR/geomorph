@@ -250,8 +250,7 @@ apply.pPsup<-function(M, Ya) {	# M = mean (reference); Ya all Y targets
     MY <- crossprod(M,y)
     sv <- La.svd(MY,k,k)
     u <- sv$u; u[,k] <- u[,k]*determinant(MY)$sign
-    v <- t(sv$vt)
-    y%*%tcrossprod(t(sv$vt),u)
+    tcrossprod(y,u%*%sv$vt)
   })
 }
 
