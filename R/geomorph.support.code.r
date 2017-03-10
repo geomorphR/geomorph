@@ -819,10 +819,10 @@ pGpa.wSliders <- function(Y, curves, surf, ProcD = TRUE, PrinAxes = FALSE, Proj 
 #
 tps<-function(matr, matt, n,sz=1.5, pt.bg="black",
               grid.col="black", grid.lwd=1, grid.lty=1, refpts=FALSE){		#DCA: altered from J. Claude: 2D only	
-  xm<-min(matt[,1])
-  ym<-min(matt[,2])
-  xM<-max(matt[,1])
-  yM<-max(matt[,2])
+  xm<-min(matr[,1])
+  ym<-min(matr[,2])
+  xM<-max(matr[,1])
+  yM<-max(matr[,2])
   rX<-xM-xm; rY<-yM-ym
   a<-seq(xm-1/5*rX, xM+1/5*rX, length=n)
   b<-seq(ym-1/5*rX, yM+1/5*rX,by=(xM-xm)*7/(5*(n-1)))
