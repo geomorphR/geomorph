@@ -13,6 +13,7 @@ CHANGES IN GEOMORPH VERSION 3.0.4
     o Updated Rd files for readland.nts and readmulti.nts to avoid ambiguity and resolve misinformation in previous versions
         
   BUG FIXES
+    o Fixed grids in tps to match reference not target, so that points are in the correct cells
     o Fixed univariate PLS to allow negative correlations
     o Fixed permutation issues with advanced.procD.lm
     o Fixed links not plotting in plotAllSpecimens if no colour specified
