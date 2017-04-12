@@ -140,7 +140,7 @@ procD.lm<- function(f1, iter = 999, seed=NULL, RRPP = TRUE, effect.type = c("coh
   if(!is.null(data)) data <- droplevels(data)
   dots <- list(...)
   if(!is.null(dots$SS.type)) SS.type <- dots$SS.type else SS.type <- "I"
-  if(is.na(match(SS.type, c("I","III")))) SS.type <- "I"
+  if(is.na(match(SS.type, c("I","II", "III")))) SS.type <- "I"
   pfit <- procD.fit(f1, data=data, keep.order=ko, SS.type=SS.type)
   k <- length(pfit$term.labels)
   n <- NROW(pfit$Y)

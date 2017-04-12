@@ -927,7 +927,7 @@ model.matrix.g <- function(f1, data = NULL) {
 # general workhorse for all 'procD.lm' functions
 # used in all 'procD.lm' functions
 procD.fit <- function(f1, keep.order=FALSE, pca=TRUE, data=NULL, 
-                      SS.type = c("I", "III"), ...){
+                      SS.type = c("I", "II", "III"), ...){
   form.in <- formula(f1)
   if(any(class(f1)=="lm")) {
     weights <- f1$weights
@@ -1000,8 +1000,20 @@ procD.fit <- function(f1, keep.order=FALSE, pca=TRUE, data=NULL,
   if(SS.type == "III"){
     Xs <- lapply(1:length(uk), function(j)  Xj <- X[, X.k %in% uk[-j]])
     Xs <- c(Xs[-1], list(X))
-  }
-     else
+  } else if(SS.type == "II") {
+    factors <- attr(Terms, "factors")
+    fac.guide <- colSums(factors)
+    Xs <- lapply(1:length(fac.guide), function(j){
+      x <- fac.guide[j]
+      if(x == 1){
+        fc <- which(fac.guide == 1)
+        model.matrix(Terms[fc[fc != j]])
+      } else {
+        model.matrix(Terms[fac.guide < x])
+      }
+    })
+    Xs <- c(Xs, list(X))
+  } else
       Xs <- lapply(1:length(uk), function(j)  Xj <- X[, X.k %in% uk[1:j]])
   QRs <- lapply(Xs, function(x) qr(x))
   fitted <- lapply(QRs, function(x) qr.fitted(x,Y))
@@ -1116,17 +1128,33 @@ SS.iter = function(pfit,iter, seed = NULL, Yalt="RRPP", SS.type= NULL){
   n <- dim(Y)[1]; p <- dim(Y)[2]
   Yh <- pfit$fitted
   E <- pfit$residuals
-  w<- pfit$weights
+  w <- pfit$weights
   if(is.null(SS.type)) SS.type <- "I"
   if(is.na(match(SS.type, c("I","III")))) SS.type <- "I"
   if(SS.type == "III") {
     Ur <- lapply(pfit$wQRs[1:(k-1)], function(x) qr.Q(x))
     Uf <- qr.Q(qr(Xf))
     Uf <- lapply(1:(k-1), function(.) Uf)
-  } else {
+  } else if(SS.type == "II") {
     Ur <- lapply(pfit$wQRs[1:(k-1)], function(x) qr.Q(x))
-    Uf <- lapply(pfit$wQRs[2:k], function(x) qr.Q(x))
-  }
+    Terms <- pfit$Terms
+    factors <- attr(Terms, "factors")
+    fac.guide <- colSums(factors)
+    Xfs <- lapply(1:length(fac.guide), function(j){
+      x <- fac.guide[j]
+      if(x == 1){
+        model.matrix(Terms[fac.guide==1])
+      } else {
+        fc <- c(which(fac.guide < x), j)
+        model.matrix(Terms[fc])
+      }
+    })
+    if(sum(w) == n) wXs <- Xs else wXs <- lapply(Xfs, function(x) x*sqrt(w))
+    Uf <- lapply(wXs[2:k], function(x) qr.Q(qr(x)))
+    } else {
+      Ur <- lapply(pfit$wQRs[1:(k-1)], function(x) qr.Q(x))
+      Uf <- lapply(pfit$wQRs[2:k], function(x) qr.Q(x))
+      }
   q <- qr(Xf)$rank
   if(q/n > 0.4) Pr <- Map(function(uf,ur) tcrossprod(uf) - tcrossprod(ur), Uf, Ur) else
     Pr <- NULL
@@ -1186,6 +1214,22 @@ SS.iter = function(pfit,iter, seed = NULL, Yalt="RRPP", SS.type= NULL){
     Ur <- lapply(pfit$wQRs[1:(k-1)], function(x) qr.Q(x))
     Uf <- qr.Q(qr(Xf))
     Uf <- lapply(1:(k-1), function(.) Uf)
+  } else if(SS.type == "II") {
+    Ur <- lapply(pfit$wQRs[1:(k-1)], function(x) qr.Q(x))
+    Terms <- pfit$Terms
+    factors <- attr(Terms, "factors")
+    fac.guide <- colSums(factors)
+    Xfs <- lapply(1:length(fac.guide), function(j){
+      x <- fac.guide[j]
+      if(x == 1){
+        model.matrix(Terms[fac.guide==1])
+      } else {
+        fc <- c(which(fac.guide < x), j)
+        model.matrix(Terms[fc])
+      }
+    })
+    if(sum(w) == n) wXs <- Xs else wXs <- lapply(Xfs, function(x) x*sqrt(w))
+    Uf <- lapply(wXs[2:k], function(x) qr.Q(x))
   } else {
     Ur <- lapply(pfit$wQRs[1:(k-1)], function(x) qr.Q(x))
     Uf <- lapply(pfit$wQRs[2:k], function(x) qr.Q(x))
