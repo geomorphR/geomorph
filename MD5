@@ -145,7 +145,7 @@ ddff41e987eac54d3500e2313799c3c6 *R/digitize2d.r
 9cfff0013db7a8c0e4aca770b5d9ea25 *R/findMeanSpec.r
 b56e53ac307d84a05efee9525dd6868a *R/fixed.angle.r
 203177efc30cc6fef4bd604b2fc2af01 *R/geomorph.data.frame.r
-dd243c5530767030a238b0a9b06752e8 *R/geomorph.support.code.r
+8d9d844ffdb63f628835ac19cd3ff477 *R/geomorph.support.code.R
 70983c5a367031bcb46df1642214bbca *R/geomorph.utils.r
 0d9d88147f22cff2241b6e2e7396d57f *R/globalIntegration.r
 17bbdf1769466f17742de952fb612cc4 *R/gpagen.r
@@ -165,7 +165,7 @@ b8814f9a047a63c586c6e472bc17d6d5 *R/plotOutliers.r
 41db23cebd8d7be6c3decf781bd378e0 *R/plotspec.r
 1f6d6dd7deb37d5920c9addb55bf7c3f *R/plotTangentSpace.r
 b793a6b9a48ef6ca571a357fc6ba25aa *R/procD.allometry.r
-b4d67de2d3fbc426ede215fde9b61f4b *R/procD.lm.r
+6dcd8a6e0ebba759999f30b10cfd5fd2 *R/procD.lm.r
 ae3ed84ccf3f763ce574b861782684bd *R/procD.pgls.r
 df3f4cc6406dc0c737ee2ff08c2a0e3d *R/read.morphologika.r
 9c3c828f71a413b5437d45228a3bf9b7 *R/read.ply.r
