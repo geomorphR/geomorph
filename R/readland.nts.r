@@ -60,10 +60,10 @@ readland.nts<-function(file){
   tmp<-unlist(strsplit(ntsfile[-1],"\\s+"))
   speclab<-NULL; 
   if(r.lab==TRUE){
-    #     speclab<-ntsfile[2:(1+n)]
-    #     tmp <- tmp[c((length(tmp)-(p*k)+1):length(tmp))]
-    speclab<-tmp[1:n]
-    tmp<-tmp[-(1:length(speclab))]  
+    speclab<-ntsfile[2:(1+n)]
+    tmp <- tmp[c((length(tmp)-(n*p*k)+1):length(tmp))]
+    # speclab<-tmp[1:n]
+    # tmp<-tmp[-(1:length(speclab))]  
   }
   if(c.lab==TRUE){ tmp<-tmp[-(1:(p*k))] }
   if(missdata==TRUE){tmp[grep(missval,as.integer(tmp))] <- NA}
@@ -71,6 +71,6 @@ readland.nts<-function(file){
   landdata<-matrix(as.numeric(tmp),ncol=k,byrow=TRUE)
   if(sum(which(is.na(landdata)==TRUE))>0){cat("NOTE.  Missing data identified.")}
   coords <- aperm(array(t(landdata), c(k,p,n)), c(2,1,3))
-  dimnames(coords)[[3]]<-as.list(speclab)
+  dimnames(coords)[[3]]<-speclab
   return(coords=coords)
 }
