@@ -63,9 +63,9 @@
 #' which might be of interest for advanced users.
 #' @param int.first A logical value to indicate if interactions of first main effects should precede subsequent main effects
 #' @param RRPP a logical value indicating whether residual randomization should be used for significance testing
-#' @param effect.type One of "cohen", "SS", or "F", to choose from which random distribution to estimate effect size.
-#' (The default, "cohen", is for Cohen's f-squared values.  Values are log-transformed before z-score calculation to
-#' assure normally distributed data.)
+#' @param effect.type One of "F" or "ochen", to choose from which random distribution to estimate effect size.
+#' (The default is "F".  Values are log-transformed before z-score calculation to
+#' assure normally distributed effect sizes.)
 #' @param data A data frame for the function environment, see \code{\link{geomorph.data.frame}} 
 #' @param print.progress A logical value to indicate whether a progress bar should be printed to the screen.  
 #' This is helpful for long-running analyses.
