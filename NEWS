@@ -17,6 +17,7 @@ CHANGES IN GEOMORPH VERSION 3.0.4
     o Updated readland.nts to accept specimen labels with spaces in name
         
   BUG FIXES
+    o Fixed problem with incoporating lm arguments in procD.fit
     o Fixed univariate PLS to allow negative correlations
     o Fixed permutation issues with advanced.procD.lm
     o Fixed links not plotting in plotAllSpecimens if no colour specified
