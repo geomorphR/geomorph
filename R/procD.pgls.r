@@ -177,10 +177,15 @@ procD.pgls<-function(f1, phy, iter=999, seed=NULL, int.first = FALSE,
       etas <- SS/SSY
       cohenf <- etas/(1-etas)
       P.val <- pval(Fs)
+      if(effect.type != "F" && effect.type != "cohen") {
+        effect.type <- "F"
+        cat("Warning: only F or Cohen's f-squared can be used for effect sizes
+            with PGLS.  Effect type has been changed to "F"".)
+      }
       if(effect.type == "F") Z <- effect.size(log(Fs)) else
         Z <- effect.size(log(cohenf)) 
       names(SS) <- names(Fs) <- names(cohenf) <- c("obs", paste("iter", 1:iter, sep=":"))
-    }
+      }
     if(effect.type == "SS") effect.type <- "F"
     tab <- data.frame(anova.tab, Z = c(Z, NA, NA), Pr = c(P.val, NA, NA))
     colnames(tab)[1] <- "Df"
@@ -192,14 +197,14 @@ procD.pgls<-function(f1, phy, iter=999, seed=NULL, int.first = FALSE,
                coefficients=pfit$coefficients.full[[k]],
                Y=pfit$Y,  X=pfit$X, 
                Pcor=Pcor, 
-               QR = pfit$QRs[[k]], fitted=pfit$fitted.full[[k]], 
-               residuals = pfit$residuals.full[[k]], 
+               QR = pfit$QRs[[k]], fitted=pfit$wFitted.full[[k]], 
+               residuals = pfit$wResiduals.full[[k]], 
                weights = pfit$weights, Terms = pfit$Terms, term.labels = pfit$term.labels,
                SS = anova.parts.obs$SS, SS.type = SS.type,
                df = anova.parts.obs$df, R2 = anova.parts.obs$R2[1:k], 
-               pgls.coefficients = Pfit$coefficients, 
-               pgls.fitted = pfit$X%*%Pfit$coefficients, 
-               pgls.residuals = Y - pfit$X%*%Pfit$coefficients,
+               pgls.coefficients = Pfit$wCoefficients, 
+               pgls.fitted = pfit$X%*%Pfit$wCoefficients, 
+               pgls.residuals = Y - pfit$X%*%Pfit$wCoefficients,
                phylo.mean = apply(PY, 2, mean),
                F = anova.parts.obs$Fs[1:k], permutations = iter+1, random.SS = SS,
                random.SSE <- SSE,
@@ -221,15 +226,15 @@ procD.pgls<-function(f1, phy, iter=999, seed=NULL, int.first = FALSE,
     class(tab) = c("anova", class(tab))
     Pfit <- lm.wfit(PX, PY, w = pfit$weights)
     out <- list(aov.table = tab, call = match.call(),
-                coefficients=pfit$coefficients.full[[1]],
+                coefficients=pfit$wCoefficients.full[[1]],
                 Y=pfit$Y,  X=pfit$X, 
                 Pcor=Pcor, 
-                QR = pfit$QRs[[1]], fitted=pfit$fitted.full[[1]], 
-                residuals = pfit$residuals.full[[1]], 
+                QR = pfit$QRs[[1]], fitted=pfit$wFitted.full[[1]], 
+                residuals = pfit$wResiduals.full[[1]], 
                 weights = pfit$weights, Terms = pfit$Terms, term.labels = pfit$term.labels,
-                pgls.coefficients = Pfit$coefficients, 
-                pgls.fitted = X%*%Pfit$coefficients,
-                pgls.residuals = Y - X%*%Pfit$coefficients,
+                pgls.coefficients = Pfit$wCoefficients, 
+                pgls.fitted = X%*%Pfit$wCoefficients,
+                pgls.residuals = Y - X%*%Pfit$wCoefficients,
                 phylo.mean = apply(PY, 2, mean)
     )
   }

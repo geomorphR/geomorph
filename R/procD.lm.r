@@ -198,10 +198,10 @@ procD.lm<- function(f1, iter = 999, seed=NULL, RRPP = TRUE, effect.type = c("F",
     colnames(tab)[ncol(tab)] <- "Pr(>F)"
     class(tab) <- c("anova", class(tab))
     out <- list(aov.table = tab, call = match.call(),
-                coefficients=pfit$coefficients.full[[k]], 
+                coefficients=pfit$wCoefficients.full[[k]], 
                 Y=pfit$Y,  X=pfit$X, 
-                QR = pfit$QRs.full[[k]], fitted=pfit$fitted.full[[k]],
-                residuals = pfit$residuals.full[[k]], 
+                QR = pfit$wQRs.full[[k]], fitted=pfit$wFitted.full[[k]],
+                residuals = pfit$wResiduals.full[[k]], 
                 weights = pfit$weights, Terms = pfit$Terms, term.labels = pfit$term.labels,
                 data = pfit$data,
                 SS = anova.parts.obs$SS, SS.type = SS.type, df = anova.parts.obs$df, 
@@ -220,10 +220,10 @@ procD.lm<- function(f1, iter = 999, seed=NULL, RRPP = TRUE, effect.type = c("F",
     colnames(tab)[NCOL(tab)] <- "Pr(>F)"
     class(tab) = c("anova", class(tab))
     out <- list(aov.table = tab, call = match.call(),
-                coefficients=pfit$coefficients.full[[1]], 
+                coefficients=pfit$wCoefficients.full[[1]], 
                 Y=pfit$Y,  X=pfit$X, 
-                QR = pfit$QRs.full[[1]], fitted=pfit$fitted.full[[1]],
-                residuals = pfit$residuals.full[[1]], 
+                QR = pfit$wQRs.full[[1]], fitted=pfit$wFitted.full[[1]],
+                residuals = pfit$wResiduals.full[[1]], 
                 weights = pfit$weights, Terms = pfit$Terms, term.labels = pfit$term.labels,
                 data = pfit$data)
   }
