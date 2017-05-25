@@ -1195,7 +1195,7 @@ procD.fit.w.data <- function(f1, keep.order=FALSE, pca=TRUE, data,
                  SS.type = SS.type)
 }
 
-# procD.fit.w.data
+# procD.fit.wo.data
 # uses formula as a start
 # relies on a geomorph data frame
 procD.fit.wo.data <- function(f1, keep.order=FALSE, pca=TRUE, 
