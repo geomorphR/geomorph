@@ -22,9 +22,9 @@ which might be of interest for advanced users.}
 
 \item{int.first}{A logical value to indicate if interactions of first main effects should precede subsequent main effects}
 
-\item{effect.type}{One of "cohen", "SS", or "F", to choose from which random distribution to estimate effect size.
-(The default, "cohen", is for Cohen's f-squared values.  Values are log-transformed before z-score calculation to
-assure normally distributed data.)}
+\item{effect.type}{One of "F" or "ochen", to choose from which random distribution to estimate effect size.
+(The default is "F".  Values are log-transformed before z-score calculation to
+assure normally distributed effect sizes.)}
 
 \item{RRPP}{a logical value indicating whether residual randomization should be used for significance testing}
 
