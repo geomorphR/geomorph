@@ -1216,8 +1216,19 @@ procD.fit.wo.data <- function(f1, keep.order=FALSE, pca=TRUE,
   form.new <- f1[-2]
   form.new <- update(form.new, Y ~.)
   Terms <- terms(form.new)
-  dat <- model.frame(Terms)
-  dat <- data.frame(dat, wts, os)
+  n <- NROW(Y)
+  tl <- attr(Terms, "term.labels")
+  if(length(tl) >0){
+    dat <- lapply(1:length(tl), function(j) try(get(as.character(tl[j]), 
+                                                    parent.frame()), silent = TRUE))
+    check <- (sapply(dat, NROW) == n)
+    dat <- dat[check]
+    tl <- tl[check]
+    names(dat) <- tl
+    dat <- as.data.frame(dat)
+    dat <- data.frame(Y=Y,dat, wts, os)
+  } else dat <- as.data.frame(Y=Y, wts, os)
+  rownames(dat) <- rownames(Y)
   fit <- lm(form.new,
             weights = wts, contrasts = conts, offset = os, data=dat)
   if(length(fit$assign) == 1) procD.fit.int(fit, pca = pca) else

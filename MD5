@@ -145,7 +145,7 @@ ddff41e987eac54d3500e2313799c3c6 *R/digitize2d.r
 9cfff0013db7a8c0e4aca770b5d9ea25 *R/findMeanSpec.r
 b56e53ac307d84a05efee9525dd6868a *R/fixed.angle.r
 203177efc30cc6fef4bd604b2fc2af01 *R/geomorph.data.frame.r
-b8c392ce3e74922cdc5e9c71bdd45103 *R/geomorph.support.code.r
+103af9f7bbe71385258094260121c430 *R/geomorph.support.code.r
 d38dcf8f4d4c47f05f0fc096b64f4c7e *R/geomorph.utils.r
 0d9d88147f22cff2241b6e2e7396d57f *R/globalIntegration.r
 17bbdf1769466f17742de952fb612cc4 *R/gpagen.r
