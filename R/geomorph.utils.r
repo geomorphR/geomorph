@@ -77,7 +77,7 @@ print.procD.lm <- function (x, ...) {
   }
   if(!is.null(x$SS.type)){
     if(x$SS.type == "I") cat("\nType I (Sequential) Sums of Squares and Cross-products\n")
-    if(x$SS.type == "I") cat("\nType II Sums of Squares and Cross-products\n")
+    if(x$SS.type == "II") cat("\nType II Sums of Squares and Cross-products\n")
     if(x$SS.type == "III") cat("\nType III (Marginal) Sums of Squares and Cross-products\n")
     if(x$perm.method == "RRPP") cat ("Randomized Residual Permutation Procedure Used\n") else
       cat("Randomization of Raw Values used\n")
