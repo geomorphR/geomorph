@@ -204,9 +204,9 @@ procD.lm<- function(f1, iter = 999, seed=NULL, RRPP = TRUE, effect.type = c("F",
                 residuals = pfit$residuals.full[[k]], 
                 weights = pfit$weights, Terms = pfit$Terms, term.labels = pfit$term.labels,
                 data = pfit$data,
-                SS = SS, SS.type = SS.type, df = anova.parts.obs$df, 
+                SS = anova.parts.obs$SS, SS.type = SS.type, df = anova.parts.obs$df, 
                 R2 = anova.parts.obs$R2[1:k], F = anova.parts.obs$Fs[1:k], permutations = iter+1,
-                random.SS = P$SS, random.F = Fs, random.cohenf = cohenf, effect.type=effect.type,
+                random.SS = SS, random.F = Fs, random.cohenf = cohenf, effect.type=effect.type,
                 perm.method = ifelse(RRPP==TRUE,"RRPP", "Raw"))
   } else {
     Y <- pfit$wY
