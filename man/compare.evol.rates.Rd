@@ -65,9 +65,6 @@ ER<-compare.evol.rates(A=Y.gpa$coords, phy=plethspecies$phy,gp=gp.end,iter=999)
 summary(ER)
 plot(ER)
 }
-\author{
-Dean Adams & Emma Sherratt
-}
 \references{
 Adams, D.C. 2014. Quantifying and comparing phylogenetic evolutionary rates for 
  shape and other high-dimensional phenotypic data. Syst. Biol. 63:166-177.
@@ -76,5 +73,7 @@ Denton, J.S.S., and D.C. Adams. 2015. A new phylogenetic test for comparing
 multiple high-dimensional evolutionary rates suggests interplay of evolutionary rates and 
 modularity in lanternfishes (Myctophiformes; Myctophidae). Evolution. 69:2425-2440.
 }
+\author{
+Dean Adams & Emma Sherratt
+}
 \keyword{analysis}
-

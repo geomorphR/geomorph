@@ -31,4 +31,3 @@ names(new.coords) # see the list levels
 Michael Collyer
 }
 \keyword{utilities}
-

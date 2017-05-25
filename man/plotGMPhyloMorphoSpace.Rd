@@ -55,9 +55,6 @@ plotGMPhyloMorphoSpace(plethspecies$phy,Y.gpa$coords,
 #NOTE: 3D plot also available: plotGMPhyloMorphoSpace(plethspecies$phy,Y.gpa$coords, zaxis= "time",
 #                 plot.param=list(n.cex=2, n.bg="blue"), shadow=TRUE)
 }
-\author{
-Dean Adams & Emma Sherratt
-}
 \references{
 Klingenberg, C. P., and N. A. Gidaszewski. 2010. Testing and quantifying phylogenetic 
   signals and homoplasy in morphometric data. Syst. Biol. 59:245-261.
@@ -68,5 +65,7 @@ Rohlf, F. J. 2002. Geometric morphometrics and phylogeny. Pp.175-193 in N. Macle
 Sakamoto, M. and Ruta, M. 2012. Convergence and Divergence in the Evolution of Cat
 Skulls: Temporal and Spatial Patterns of Morphological Diversity. PLoSONE 7(7): e39752.
 }
+\author{
+Dean Adams & Emma Sherratt
+}
 \keyword{visualization}
-

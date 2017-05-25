@@ -43,7 +43,8 @@ This is helpful for long-running analyses.}
 \item{data}{A data frame for the function environment; see \code{\link{geomorph.data.frame}}.  If variables
 are transformed in formulae, they should also be transformed in the geomorph data frame.  (See examples.)}
 
-\item{...}{Arguments passed on to procD.fit (typically associated with the lm function)}
+\item{...}{Arguments passed on to procD.fit (typically associated with the lm function,
+such as weights or offset).}
 }
 \value{
 Function returns an ANOVA table of statistical results for model comparison: error df (for each model), SS, MS,
@@ -125,9 +126,6 @@ summary(aov.pleth) # ANOVA plus pairwise tests
 plot(aov.pleth) # diagnostic plots
 aov.pleth$slopes # extract the slope vectors
 }
-\author{
-Michael Collyer
-}
 \references{
 Collyer, M.L., D.J. Sekora, and D.C. Adams. 2015. A method for analysis of phenotypic change for phenotypes described 
 by high-dimensional data. Heredity. 115:357-365.
@@ -135,5 +133,7 @@ by high-dimensional data. Heredity. 115:357-365.
 \seealso{
 \code{\link{procD.lm}}
 }
+\author{
+Michael Collyer
+}
 \keyword{analysis}
-

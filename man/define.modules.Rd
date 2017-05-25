@@ -39,11 +39,10 @@ Selected landmarks will be colored yellow. Then type into the console a letter (
 to this module. Repeat until all landmarks are assigned to modules.
 }
 }
-\author{
-Emma Sherratt
-}
 \seealso{
 \code{\link{modularity.test}} and \code{\link{integration.test}}
 }
+\author{
+Emma Sherratt
+}
 \keyword{utilities}
-

@@ -4,9 +4,9 @@
 \alias{procD.lm}
 \title{Procrustes ANOVA/regression for shape data}
 \usage{
-procD.lm(f1, iter = 999, seed = NULL, RRPP = TRUE,
-  effect.type = c("cohen", "SS", "F"), int.first = FALSE, data = NULL,
-  print.progress = TRUE, ...)
+procD.lm(f1, iter = 999, seed = NULL, RRPP = TRUE, effect.type = c("F",
+  "SS", "cohen"), int.first = FALSE, data = NULL, print.progress = TRUE,
+  ...)
 }
 \arguments{
 \item{f1}{A formula for the linear model (e.g., y~x1+x2)}
@@ -20,7 +20,7 @@ which might be of interest for advanced users.}
 
 \item{RRPP}{A logical value indicating whether residual randomization should be used for significance testing}
 
-\item{effect.type}{One of "cohen", "SS", or "F", to choose from which random distribution to estimate effect size.
+\item{effect.type}{One of "F", "SS", or "cohen", to choose from which random distribution to estimate effect size.
 (The default, "cohen", is for Cohen's f-squared values.  Values are log-transformed before z-score calculation to
 assure normally distributed data.)}
 
@@ -31,10 +31,11 @@ assure normally distributed data.)}
 \item{print.progress}{A logical value to indicate whether a progress bar should be printed to the screen.
 This is helpful for long-running analyses.}
 
-\item{...}{Arguments passed on to procD.fit (typically associated with the lm function).  The function procD.fit can also currently
-handle either type I or type III sums of squares and cross-products (SSCP) calculations.  Choice of SSCP type can be made with the argument,
+\item{...}{Arguments passed on to procD.fit (typically associated with the lm function,
+such as weights or offset).  The function procD.fit can also currently
+handle either type I, type II, or type III sums of squares and cross-products (SSCP) calculations.  Choice of SSCP type can be made with the argument,
 SS.type; i.e., SS.type = "I" or SS.type = "III".  Only advanced users should consider using these additional arguments, as such arguments
-can be experimental.}
+are experimental in nature.}
 }
 \value{
 An object of class "procD.lm" is a list containing the following
@@ -145,9 +146,6 @@ plot(rat.anova, outliers = TRUE) # diagnostic plots, including plotOutliers
 attributes(rat.anova)
 rat.anova$fitted # just the fitted values
 }
-\author{
-Dean Adams and Michael Collyer
-}
 \references{
 Anderson MJ. 2001. A new method for non-parametric multivariate analysis of variance. 
    Austral Ecology 26: 32-46.
@@ -165,5 +163,7 @@ Goodall, C. R. 1991. Procrustes methods in the statistical analysis of shape. Jo
 \code{\link{advanced.procD.lm}}, \code{\link{procD.pgls}}, and 
 \code{\link{nested.update}} within geomorph; \code{\link[stats]{lm}} for more on linear model fits
 }
+\author{
+Dean Adams and Michael Collyer
+}
 \keyword{analysis}
-

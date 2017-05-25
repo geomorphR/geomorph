@@ -82,4 +82,3 @@ plotTangentSpace(arrayspecs(resid(lm(two.d.array(Y.gpa$coords)~Y.gpa$Csize))+
 Dean Adams & Emma Sherratt
 }
 \keyword{visualization}
-

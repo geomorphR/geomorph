@@ -88,9 +88,6 @@ PLS <-two.b.pls(Y.gpa$coords,plethShapeFood$food,iter=999)
 summary(PLS)
 plot(PLS)
 }
-\author{
-Dean Adams and Michael Collyer
-}
 \references{
 Rohlf, F.J., and M. Corti. 2000. The use of partial least-squares to study covariation in shape. 
 Systematic Biology 49: 740-753.
@@ -99,5 +96,7 @@ Systematic Biology 49: 740-753.
 \code{\link{integration.test}}, \code{\link{modularity.test}}, \code{\link{phylo.pls}},  
 \code{\link{phylo.integration}}, and \code{\link{compare.pls}}
 }
+\author{
+Dean Adams and Michael Collyer
+}
 \keyword{analysis}
-

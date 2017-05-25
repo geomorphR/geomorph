@@ -35,12 +35,11 @@ Y.gpa<-gpagen(plethodon$land)    #GPA-alignment
 
 globalIntegration(Y.gpa$coords)
 }
-\author{
-Dean Adams
-}
 \references{
 Bookstein, F. L. 2015. Integration, disintegration, and self-similarity: 
 Characterizing the scales of shape variation in landmark data. Evol. Biol.42(4): 395-426.
 }
+\author{
+Dean Adams
+}
 \keyword{analysis}
-

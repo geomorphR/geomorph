@@ -32,13 +32,12 @@ to be used by \code{\link{plotAllSpecimens}} & \code{\link{plotRefToTarget}} opt
  For 3D data in rgl window, use RIGHT mouse button (or command+LEFT for mac) to select landmarks.
 }
 }
-\author{
-Emma Sherratt
-}
 \seealso{
 \code{\link{plotAllSpecimens}}
 
 \code{\link{plotRefToTarget}}
 }
+\author{
+Emma Sherratt
+}
 \keyword{utilities}
-

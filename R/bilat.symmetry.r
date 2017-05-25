@@ -201,11 +201,11 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
   if(!is.null(seed) && seed=="random") seed = sample(1:iter, 1)
   if(print.progress) cat("\nShape Analysis\n")
   if(print.progress) {
-    if(RRPP == TRUE) PSh <- SS.iter.bilat.symmetry(pfitSh,Yalt="RRPP", iter=iter, seed=seed) else 
-      PSh <- .SS.iter.bilat.symmetry(pfitSh, Yalt="resample", iter=iter, seed=seed)
+    if(RRPP == TRUE) PSh <- SS.iter(pfitSh,Yalt="RRPP", iter=iter, seed=seed) else 
+      PSh <- .SS.iter(pfitSh, Yalt="resample", iter=iter, seed=seed)
   } else {
-    if(RRPP == TRUE) PSh <- .SS.iter.bilat.symmetry(pfitSh,Yalt="RRPP", iter=iter, seed=seed) else 
-      PSh <- .SS.iter.bilat.symmetry(pfitSh, Yalt="resample", iter=iter, seed=seed)
+    if(RRPP == TRUE) PSh <- .SS.iter(pfitSh,Yalt="RRPP", iter=iter, seed=seed) else 
+      PSh <- .SS.iter(pfitSh, Yalt="resample", iter=iter, seed=seed)
   }
   anova.parts.Sh <- anova.parts.symmetry(pfitSh, PSh, object.sym)
   anovaSh <-anova.parts.Sh$anova.table 
@@ -231,7 +231,7 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
       if(RRPP == TRUE) PSz <- .SS.iter(pfitSz,Yalt="RRPP", iter=iter, seed=seed) else 
         PSz <- .SS.iter(pfitSz, Yalt="resample", iter=iter, seed=seed)
     }
-    anova.parts.Sz <- anova.parts.symmetry(pfitSz, PSz,object.sym)
+    anova.parts.Sz <- anova.parts.symmetry(pfitSz, PSz, object.sym)
     anovaSz <-anova.parts.Sz$anova.table 
     Sz.random.Fs <-anova.parts.Sz$random.Fs
     if(is.matrix(Sz.random.Fs))

@@ -33,9 +33,6 @@ Missing data may be present in the file by designating them using 'NA'. In
   this case, the standard NTSYS header is used with no numeric designation for missing data (i.e. the fourth value is '0').
   The positions of missing landmarks may then be estimated using estimate.missing.
 }
-\author{
-Dean Adams & Emma Sherratt
-}
 \references{
 Rohlf, F. J. 2012 NTSYSpc: Numerical taxonomy and multivariate analysis system. Version 
   2.2. Exeter Software, New York.
@@ -43,5 +40,7 @@ Rohlf, F. J. 2012 NTSYSpc: Numerical taxonomy and multivariate analysis system. 
 \seealso{
 \code{\link{readland.nts}}
 }
+\author{
+Dean Adams & Emma Sherratt
+}
 \keyword{IO}
-

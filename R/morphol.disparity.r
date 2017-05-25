@@ -119,8 +119,8 @@ morphol.disparity <- function(f1, groups = NULL, iter = 999, seed = NULL,
       if(ncol(gps) > 1) gps <- factor(apply(gps, 1,function(x) paste(x, collapse=":"))) else 
         gps <- as.factor(unlist(gps))
     }
-    k <- length(pfit$wResiduals)
-    R <- as.matrix(pfit$wResiduals[[k]])
+    k <- length(pfit$wResiduals.full)
+    R <- as.matrix(pfit$wResiduals.full[[k]])
     if(length(gps) == 0) pv = sum(R^2)/nrow(R) else 
       pv = sapply(1:nlevels(gps), function(j){
         x <- R[gps==levels(gps)[j],]
@@ -169,7 +169,6 @@ morphol.disparity <- function(f1, groups = NULL, iter = 999, seed = NULL,
         })
     }
   }
-  
   names(pv) <- levels(gps)
   if(length(gps) == 0) {
     cat("No factor in formula from which to define groups.\n")

@@ -33,12 +33,16 @@ assure normally distributed data.)}
 \item{print.progress}{A logical value to indicate whether a progress bar should be printed to the screen.
 This is helpful for long-running analyses.}
 
-\item{...}{Arguments passed on to procD.fit (typically associated with the lm function)}
+\item{...}{Arguments passed on to procD.fit (typically associated with the lm function,
+such as weights or offset).  The function procD.fit can also currently
+handle either type I, type II, or type III sums of squares and cross-products (SSCP) calculations.  Choice of SSCP type can be made with the argument,
+SS.type; i.e., SS.type = "I" or SS.type = "III".  Only advanced users should consider using these additional arguments, as such arguments
+are experimental in nature.}
 }
 \value{
 procD.lm.pgls returns an object of class "procD.lm".  
 See \code{\link{procD.lm}} for a description of the list of results generated.  Additionally, procD.pgls provides
-the phylogenetic correction matrix, Pcor, plus "pgls" adjusted coefficients, fitted values, and residuals.
+the phylogenetic correction matrix, Pcor, plus "pgls" adjusted coefficients, fitted values, residuals, and mean.
 }
 \description{
 Function performs Procrustes ANOVA in a phylogenetic framework and uses  permutation procedures to assess 
@@ -110,9 +114,6 @@ summary(pleth.pgls)
 plot(pleth.pgls)
 pleth.pgls$Pcor # the phylogenetic transformation (correction) matrix
 }
-\author{
-Dean Adams and Michael Collyer
-}
 \references{
 Adams, D.C. 2014. A method for assessing phylogenetic least squares models for shape and other high-dimensional 
 multivariate data. Evolution. 68:2675-2688.
@@ -123,5 +124,7 @@ shape data: what you shuffle matters. Evolution. 69:823-829.
 Collyer, M.L., D.J. Sekora, and D.C. Adams. 2015. A method for analysis of phenotypic change for phenotypes described 
 by high-dimensional data. Heredity. 115:357-365.
 }
+\author{
+Dean Adams and Michael Collyer
+}
 \keyword{analysis}
-

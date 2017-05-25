@@ -5,7 +5,7 @@
 \title{Quantify and compare shape change trajectories}
 \usage{
 trajectory.analysis(f1, f2 = NULL, iter = 999, seed = NULL,
-  traj.pts = NULL, data = NULL, print.progress = TRUE)
+  traj.pts = NULL, data = NULL, print.progress = TRUE, ...)
 }
 \arguments{
 \item{f1}{A formula for the linear model, for trajectories (e.g., Y ~ A or Y ~ A * B).
@@ -27,7 +27,11 @@ which might be of interest for advanced users.}
 \item{print.progress}{A logical value to indicate whether a progress bar should be printed to the screen.
 This is helpful for long-running analyses.}
 
-\item{...}{Arguments passed on to procD.fit (typically associated with the \code{\link{lm}} function)}
+\item{...}{Arguments passed on to procD.fit (typically associated with the lm function,
+such as weights or offset).  The function procD.fit can also currently
+handle either type I, type II, or type III sums of squares and cross-products (SSCP) calculations.  Choice of SSCP type can be made with the argument,
+SS.type; i.e., SS.type = "I" or SS.type = "III".  Only advanced users should consider using these additional arguments, as such arguments
+are experimental in nature.}
 }
 \value{
 An object of class "trajectory.analysis" returns a list of the following:
@@ -176,9 +180,6 @@ plot(TA, group.cols = c("dark red", "dark blue", "dark green", "yellow"), pt.sca
 plot(TA, group.cols = c("dark red", "dark blue", "dark green", "yellow"), 
 pt.seq.pattern = c("green", "gray30", "red"), pt.scale = 1.3)
 }
-\author{
-Dean Adams and Michael Collyer
-}
 \references{
 Collyer, M.L., and D.C. Adams. 2013. Phenotypic trajectory analysis: Comparison of 
  shape change patterns in evolution and ecology. Hystrix. 24:75-83.
@@ -198,5 +199,7 @@ Adams, D. C., and M. L. Collyer. 2009. A general framework for the analysis of p
 Collyer, M. L., and D. C. Adams. 2007. Analysis of two-state multivariate phenotypic change 
   in ecological studies. Ecology 88:683-692.
 }
+\author{
+Dean Adams and Michael Collyer
+}
 \keyword{analysis}
-

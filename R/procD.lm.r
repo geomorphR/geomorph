@@ -57,17 +57,18 @@
 #' If seed = "random", a random seed will be used, and P-values will vary.  One can also specify an integer for specific seed values,
 #' which might be of interest for advanced users.
 #' @param RRPP A logical value indicating whether residual randomization should be used for significance testing
-#' @param effect.type One of "cohen", "SS", or "F", to choose from which random distribution to estimate effect size.
+#' @param effect.type One of "F", "SS", or "cohen", to choose from which random distribution to estimate effect size.
 #' (The default, "cohen", is for Cohen's f-squared values.  Values are log-transformed before z-score calculation to
 #' assure normally distributed data.)
 #' @param int.first A logical value to indicate if interactions of first main effects should precede subsequent main effects
 #' @param data A data frame for the function environment, see \code{\link{geomorph.data.frame}} 
 #' @param print.progress A logical value to indicate whether a progress bar should be printed to the screen.  
 #' This is helpful for long-running analyses.
-#' @param ... Arguments passed on to procD.fit (typically associated with the lm function).  The function procD.fit can also currently
-#' handle either type I or type III sums of squares and cross-products (SSCP) calculations.  Choice of SSCP type can be made with the argument,
+#' @param ... Arguments passed on to procD.fit (typically associated with the lm function,
+#' such as weights or offset).  The function procD.fit can also currently
+#' handle either type I, type II, or type III sums of squares and cross-products (SSCP) calculations.  Choice of SSCP type can be made with the argument,
 #' SS.type; i.e., SS.type = "I" or SS.type = "III".  Only advanced users should consider using these additional arguments, as such arguments
-#' can be experimental. 
+#' are experimental in nature. 
 #' @keywords analysis
 #' @export
 #' @author Dean Adams and Michael Collyer
@@ -134,76 +135,98 @@
 #' plot(rat.anova, outliers = TRUE) # diagnostic plots, including plotOutliers
 #' attributes(rat.anova)
 #' rat.anova$fitted # just the fitted values
-procD.lm<- function(f1, iter = 999, seed=NULL, RRPP = TRUE, effect.type = c("cohen", "SS", "F"),
-                        int.first = FALSE,  data=NULL, print.progress = TRUE, ...){
+procD.lm<- function(f1, iter = 999, seed=NULL, RRPP = TRUE, effect.type = c("F", "SS", "cohen"),
+                    int.first = FALSE,  data=NULL, print.progress = TRUE, ...){
   if(int.first==TRUE) ko = TRUE else ko = FALSE
   if(!is.null(data)) data <- droplevels(data)
   dots <- list(...)
+  weights <- dots$weights 
+  contrasts <- dots$contrasts
+  offset <- dots$offset
   if(!is.null(dots$SS.type)) SS.type <- dots$SS.type else SS.type <- "I"
   if(is.na(match(SS.type, c("I","II", "III")))) SS.type <- "I"
-  pfit <- procD.fit(f1, data=data, keep.order=ko, SS.type=SS.type)
+  pfit <- procD.fit(f1, data=data, keep.order=ko, SS.type=SS.type, pca=FALSE,
+                    weights = weights, contrasts = contrasts, offset = offset)
   k <- length(pfit$term.labels)
-  n <- NROW(pfit$Y)
-  if(print.progress == TRUE){
-    if(RRPP == TRUE) P <- SS.iter(pfit,Yalt="RRPP", iter=iter, seed=seed, SS.type = SS.type) else 
-      P <- SS.iter(pfit, Yalt="resample", iter=iter, seed=seed, SS.type = SS.type)
-  } else {
-    if(RRPP == TRUE) P <- .SS.iter(pfit,Yalt="RRPP", iter=iter, seed=seed, SS.type = SS.type) else 
-      P <- .SS.iter(pfit, Yalt="resample", iter=iter, seed=seed, SS.type = SS.type)
-  }
-  anova.parts.obs <- anova.parts(pfit, P, SS.type=SS.type)
-  anova.tab <-anova.parts.obs$anova.table 
-  df <- anova.parts.obs$df
-  SSY <- sum(center(pfit$Y)^2)
-  effect.type <- match.arg(effect.type)
-  if(is.matrix(P)){
-    SSE <- SSY - colSums(P)
-    MSE <- SSE/df[k+1]
-    SSE.mat <- matrix(SSE, k, length(SSE), byrow = TRUE)
-    MSE.mat <- matrix(MSE, k, length(MSE), byrow = TRUE)
-    Fs <- (P[1:k,]/df[1:k])/MSE.mat
-    if(SS.type == "III") {
-      etas <- P/(P+SSE.mat)
-      cohenf <- etas/(1-etas)
+  if(k > 0) {
+    if(print.progress == TRUE){
+      if(RRPP == TRUE) P <- SS.iter(pfit,Yalt="RRPP", iter=iter, seed=seed) else 
+        P <- SS.iter(pfit, Yalt="resample", iter=iter, seed=seed)
     } else {
-      etas <- P/SSY
-      unexp <- 1 - apply(etas, 2, cumsum)
-      cohenf <- etas/unexp
+      if(RRPP == TRUE) P <- .SS.iter(pfit,Yalt="RRPP", iter=iter, seed=seed) else 
+        P <- .SS.iter(pfit, Yalt="resample", iter=iter, seed=seed)
+    }
+    SS <-P$SS
+    SSE <- P$SSE
+    SSY <- P$SSY
+    anova.parts.obs <- anova.parts(pfit, P)
+    anova.tab <-anova.parts.obs$anova.table 
+    df <- anova.parts.obs$df
+    effect.type <- match.arg(effect.type)
+    if(is.matrix(SS)){
+      MSE <- SSE/df[k+1]
+      SSE.mat <- matrix(SSE, k, length(SSE), byrow = TRUE)
+      MSE.mat <- matrix(MSE, k, length(MSE), byrow = TRUE)
+      Fs <- (SS[1:k,]/df[1:k])/MSE.mat
+      if(SS.type == "III") {
+        etas <- SS/(SS+SSE.mat)
+        cohenf <- etas/(1-etas)
+      } else {
+        etas <- SS/SSY
+        unexp <- 1 - apply(etas, 2, cumsum)
+        cohenf <- etas/unexp
       }
-    P.val <- apply(Fs, 1, pval)
-    if(effect.type == "SS") Z <- apply(log(P), 1, effect.size) else
-      if(effect.type == "F") Z <- apply(log(Fs), 1, effect.size) else
-        Z <- apply(log(cohenf), 1, effect.size) 
-    rownames(P) <- rownames(Fs) <- rownames(cohenf) <- pfit$term.labels
-    colnames(P) <- colnames(Fs) <- colnames(cohenf) <- c("obs", paste("iter", 1:iter, sep=":"))
+      P.val <- apply(Fs, 1, pval)
+      if(effect.type == "SS") Z <- apply(log(SS), 1, effect.size) else
+        if(effect.type == "F") Z <- apply(log(Fs), 1, effect.size) else
+          Z <- apply(log(cohenf), 1, effect.size) 
+      rownames(SS) <- rownames(Fs) <- rownames(cohenf) <- pfit$term.labels
+      colnames(SS) <- colnames(Fs) <- colnames(cohenf) <- c("obs", paste("iter", 1:iter, sep=":"))
+    } else {
+      MSE <- SSE/df[2]
+      Fs <- (SS/df[1])/MSE
+      etas <- SS/SSY
+      cohenf <- etas/(1-etas)
+      P.val <- pval(Fs)
+      if(effect.type == "SS") Z <- effect.size(log(P)) else
+        if(effect.type == "F") Z <- effect.size(log(Fs)) else
+          Z <- effect.size(log(cohenf)) 
+      names(SS) <- names(Fs) <- names(cohenf) <- c("obs", paste("iter", 1:iter, sep=":"))
+    }
+    tab <- data.frame(anova.tab, Z = c(Z, NA, NA), Pr = c(P.val, NA, NA))
+    colnames(tab)[1] <- "Df"
+    colnames(tab)[ncol(tab)] <- "Pr(>F)"
+    class(tab) <- c("anova", class(tab))
+    out <- list(aov.table = tab, call = match.call(),
+                coefficients=pfit$coefficients.full[[k]], 
+                Y=pfit$Y,  X=pfit$X, 
+                QR = pfit$QRs.full[[k]], fitted=pfit$fitted.full[[k]],
+                residuals = pfit$residuals.full[[k]], 
+                weights = pfit$weights, Terms = pfit$Terms, term.labels = pfit$term.labels,
+                data = pfit$data,
+                SS = anova.parts.obs$SS, SS.type = SS.type, df = anova.parts.obs$df, 
+                R2 = anova.parts.obs$R2[1:k], F = anova.parts.obs$Fs[1:k], permutations = iter+1,
+                random.SS = P$SS, random.F = Fs, random.cohenf = cohenf, effect.type=effect.type,
+                perm.method = ifelse(RRPP==TRUE,"RRPP", "Raw"))
   } else {
-    SSE <- SSY - P
-    MSE <- SSE/df[2]
-    Fs <- (P/df[1])/MSE
-    etas <- P/SSY
-    cohenf <- etas/(1-etas)
-    P.val <- pval(Fs)
-    if(effect.type == "SS") Z <- effect.size(log(P)) else
-      if(effect.type == "F") Z <- effect.size(log(Fs)) else
-        Z <- effect.size(log(cohenf)) 
-    names(P) <- names(Fs) <- names(cohenf) <- c("obs", paste("iter", 1:iter, sep=":"))
+    Y <- pfit$wY
+    SSY <- sum(center(Y)^2)
+    n <- NROW(Y)
+    df <- n - 1
+    tab <- data.frame(Df = df,SS = SSY,
+                      MS = SSY/df, Rsq = NA,
+                      F = NA, P = NA)
+    rownames(tab) <- "Residuals"
+    colnames(tab)[NCOL(tab)] <- "Pr(>F)"
+    class(tab) = c("anova", class(tab))
+    out <- list(aov.table = tab, call = match.call(),
+                coefficients=pfit$coefficients.full[[1]], 
+                Y=pfit$Y,  X=pfit$X, 
+                QR = pfit$QRs.full[[1]], fitted=pfit$fitted.full[[1]],
+                residuals = pfit$residuals.full[[1]], 
+                weights = pfit$weights, Terms = pfit$Terms, term.labels = pfit$term.labels,
+                data = pfit$data)
   }
-  tab <- data.frame(anova.tab, Z = c(Z, NA, NA), Pr = c(P.val, NA, NA))
-  colnames(tab)[1] <- "Df"
-  colnames(tab)[ncol(tab)] <- "Pr(>F)"
-  class(tab) <- c("anova", class(tab))
-  pfit <- procD.fit(f1, data=data, keep.order=ko, pca=FALSE)
-  out <- list(aov.table = tab, call = match.call(),
-              coefficients=pfit$coefficients[[k+1]], 
-              Y=pfit$Y,  X=pfit$X, 
-              QR = pfit$QRs[[k+1]], fitted=pfit$fitted[[k+1]],
-              residuals = pfit$residuals[[k+1]], 
-              weights = pfit$weights, Terms = pfit$Terms, term.labels = pfit$term.labels,
-              data = pfit$data,
-              SS = anova.parts.obs$SS, SS.type = SS.type, df = anova.parts.obs$df, 
-              R2 = anova.parts.obs$R2[1:k], F = anova.parts.obs$Fs[1:k], permutations = iter+1,
-              random.SS = P, random.F = Fs, random.cohenf = cohenf, effect.type=effect.type,
-              perm.method = ifelse(RRPP==TRUE,"RRPP", "Raw"))
   class(out) <- "procD.lm"
   out
 }

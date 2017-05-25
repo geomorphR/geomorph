@@ -81,12 +81,15 @@
 #' @param alpha The significance level for the homegeneity of slopes test
 #' @param RRPP A logical value indicating whether residual randomization should be used for significance testing
 #' @param data A data frame for the function environment, see \code{\link{geomorph.data.frame}} 
-#' @param effect.type One of "cohen", "SS", or "F", to choose from which random distribution to estimate effect size.
-#' (The default, "cohen", is for Cohen's f-squared values.  Values are log-transformed before z-score calculation to
-#' assure normally distributed data.)
+#' @param effect.type One of "F", "SS", or "cohen", to choose from which random distribution to estimate effect size.
+#' (The default is "F").
 #' @param print.progress A logical value to indicate whether a progress bar should be printed to the screen.  
 #' This is helpful for long-running analyses.
-#' @param ... Arguments passed on to procD.fit (typically associated with the lm function)
+#' @param ... Arguments passed on to procD.fit (typically associated with the lm function,
+#' such as weights or offset).  The function procD.fit can also currently
+#' handle either type I, type II, or type III sums of squares and cross-products (SSCP) calculations.  Choice of SSCP type can be made with the argument,
+#' SS.type; i.e., SS.type = "I" or SS.type = "III".  Only advanced users should consider using these additional arguments, as such arguments
+#' are experimental in nature. 
 #' @keywords analysis
 #' @export
 #' @author Michael Collyer
@@ -166,20 +169,30 @@
 #' summary(plethANOVA) # Same ANOVA
 #' plot(plethANOVA) # diagnostic plot instead of allometry plot
 procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
-                   iter = 999, seed=NULL, alpha = 0.05, RRPP = TRUE, 
-                   effect.type = c("cohen", "SS", "F"),
-                   print.progress = TRUE, data=NULL, ...){
+                           iter = 999, seed=NULL, alpha = 0.05, RRPP = TRUE, 
+                           effect.type = c("F", "SS", "cohen"),
+                           print.progress = TRUE, data=NULL, ...){
   if(!is.null(data)) data <- droplevels(data)
-  pfit <- procD.fit(f1, data=data, pca=FALSE)
+  dots <- list(...)
+  weights <- dots$weights 
+  contrasts <- dots$contrasts
+  offset <- dots$offset
+  if(!is.null(dots$SS.type)) SS.type <- dots$SS.type else SS.type <- "I"
+  if(is.na(match(SS.type, c("I","II", "III")))) SS.type <- "I"
+  pfit <- procD.fit(f1, data=data, pca=FALSE, weights = weights,
+                    contrasts = contrasts, offset = offset,
+                    SS.type = SS.type)
   if(!is.null(data)) Ain <- eval(f1[[2]], data) else {
     Ain <- try(eval(f1[[2]]), silent = TRUE)
     if(!is.matrix(Ain) || !is.array(Ain)) Ain <- NULL 
-    }
+  }
   dat <- pfit$data
   Y <- pfit$Y
+  if(!is.vector(eval(f1[[3]], envir = dat))) stop("Only a single covariate for size is permitted") 
+  datnm <- names(dat)
+  nmmatch <- match(datnm, c("Y", "(weights)","(offset)"))
+  names(dat)[is.na(nmmatch)] <- "size"
   if(!is.null(seed) && seed=="random") seed = sample(1:iter, 1)
-  if((NCOL(dat) - NCOL(Y)) != 1) stop("Only a single covariate for size is permitted") 
-  dat <- data.frame(Y=Y, size = dat[,ncol(dat)])
   size <- dat$size
   if(logsz) {
     dat <- model.frame(Y ~ log(size), data = dat) 
@@ -194,8 +207,8 @@ procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
       data.types <- lapply(data, class)
       keep = sapply(data.types, function(x) x != "array" & x != "phylo" & x != "dist")
       dat2 <- as.data.frame(data[keep])
-      } else dat2 <- NULL
-      
+    } else dat2 <- NULL
+    
     if(!is.null(f2)) {
       if(length(f2) > 2) f2 <- f2[-2]
       dat.g <- model.frame(f2, data=dat2) 
@@ -211,7 +224,7 @@ procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
       gps <- NULL
       form2 <- form1
     }
-  
+    
     if(!is.null(f3)) {
       if(length(f3) > 2) f3 <- f3[-2]
       dat.o <- model.frame(f3, data=dat2) 
@@ -222,18 +235,18 @@ procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
       o.Terms <- NULL
     }
   }
-
+  
   if(is.null(f2) && is.null(f3)) form2 <- form1 
-    if(!is.null(f2) & !is.null(f3)) {
-      if(!logsz){
-        form4 <- update(f3, ~. + size + gps)
-        form5 <- update(f3, ~. + size * gps)
-      }
-      if(logsz){
-        form4 <- update(f3, ~. + log(size) + gps)
-        form5 <- update(f3, ~. + log(size) * gps)
-      }
+  if(!is.null(f2) & !is.null(f3)) {
+    if(!logsz){
+      form4 <- update(f3, ~. + size + gps)
+      form5 <- update(f3, ~. + size * gps)
     }
+    if(logsz){
+      form4 <- update(f3, ~. + log(size) + gps)
+      form5 <- update(f3, ~. + log(size) * gps)
+    }
+  }
   
   if(!is.null(f2) & is.null(f3)) {
     form4 <- form2
@@ -253,7 +266,7 @@ procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
         formfull <-as.formula(c("~",paste(unique(
           c(c("log(size)", attr(g.Terms, "term.labels"), paste("log(size)", attr(g.Terms, "term.labels"), sep=":")))),
           collapse="+")))
-    form.type <- "g"
+      form.type <- "g"
   } else if(is.null(f2) & !is.null(f3)) {
     if(!logsz) formfull <-as.formula(c("~",paste(unique(
       c(c("size", attr(o.Terms, "term.labels"), paste("size", attr(o.Terms, "term.labels"), sep=":")))),
@@ -261,7 +274,7 @@ procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
         formfull <-as.formula(c("~",paste(unique(
           c(c("log(size)", attr(o.Terms, "term.labels"), paste("log(size)", attr(o.Terms, "term.labels"), sep=":")))),
           collapse="+")))
-    form.type <- "o"
+      form.type <- "o"
   } else {
     formfull <- form2
     form.type <- NULL}
@@ -279,9 +292,9 @@ procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
       if(form.type == "go") {
         if(!logsz) rhs.formfull <- paste(c("size", attr(g.Terms, "term.labels"), 
                                            attr(o.Terms, "term.labels")), collapse="+") else
-                   rhs.formfull <- paste(c("log(size)", attr(g.Terms, "term.labels"), 
-                                           attr(o.Terms, "term.labels")), collapse="+")  
-        formfull <- as.formula(c("Y ~", rhs.formfull))
+                                             rhs.formfull <- paste(c("log(size)", attr(g.Terms, "term.labels"), 
+                                                                     attr(o.Terms, "term.labels")), collapse="+")  
+                                           formfull <- as.formula(c("Y ~", rhs.formfull))
       }
       if(form.type == "g") {
         if(!logsz) rhs.formfull <- paste(c("size", attr(g.Terms, "term.labels")),  collapse="+") else
@@ -292,7 +305,9 @@ procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
   } else HOS <- NULL
   
   formfull <- update(formfull, Y~.)
-  fitf <- procD.fit(formfull, data=dat, pca=FALSE)
+  fitf <- procD.fit(formfull, data=dat, pca=FALSE, weights = weights,
+                    contrasts = contrasts, offset = offset,
+                    SS.type = SS.type)
   cat("\nAllometry Model\n")
   effect.type <- match.arg(effect.type)
   anovafull <- procD.lm(formfull, data=dat, iter=iter, seed=seed, RRPP=RRPP,
@@ -301,16 +316,17 @@ procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
   if(RRPP) perm.method = "RRPP" else perm.method = "raw"
   
   # Plot set-up
-  yhat <- fitf$wFitted[[length(fitf$wFitted)]]
-  B <- fitf$wCoefficients[[length(fitf$wCoefficients)]]
-  y.cent <- fitf$wResiduals[[1]]
+  k <- length(fitf$Xfs)
+  yhat <- fitf$wFitted.full[[k]]
+  B <- fitf$wCoefficients.full[[k]]
+  y.cent <- fitf$wResiduals.full[[1]]
   if(logsz) sz <- log(size) else sz = size
-  a<-(t(y.cent)%*%sz)%*%(1/(t(sz)%*%sz)); a<-a%*%(1/sqrt(t(a)%*%a))
-  CAC<-y.cent%*%a  
-  resid<-y.cent%*%(diag(dim(y.cent)[2])-a%*%t(a))
-  RSC<-prcomp(resid)$x
-  Reg.proj<-Y%*%B[2,]%*%sqrt(solve(t(B[2,])%*%B[2,])) 
-  pred.val<-prcomp(yhat)$x[,1] 
+  a <- (t(y.cent)%*%sz)%*%(1/(t(sz)%*%sz)); a <- a%*%(1/sqrt(t(a)%*%a))
+  CAC <- y.cent%*%a  
+  resid <- y.cent%*%(diag(dim(y.cent)[2]) - a%*%t(a))
+  RSC <- prcomp(resid)$x
+  Reg.proj <- Y%*%B[2,]%*%sqrt(solve(t(B[2,])%*%B[2,])) 
+  pred.val <- prcomp(yhat)$x[,1] 
   if(length(dim(Ain)) == 3){
     Adim <- dim(Ain)
     Ahat <- arrayspecs(yhat, Adim[[1]], Adim[[2]])
@@ -332,12 +348,12 @@ procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
               formula = formfull, data=dat,
               random.SS = anovafull$random.SS, random.F = anovafull$random.F,
               random.cohenf = anovafull$random.cohenf,
-              CAC = CAC, RSC=RSC, Reg.proj = Reg.proj,
-              pred.val=pred.val,
-              ref=ref, gps=gps, size=size, logsz=logsz, 
-              A=A, Ahat=Ahat, 
+              CAC = CAC, RSC = RSC, Reg.proj = Reg.proj,
+              pred.val = pred.val,
+              ref = ref, gps = gps, size = size, logsz = logsz, 
+              A = A, Ahat = Ahat, 
               Ahat.at.min = Ahat.at.min, Ahat.at.max = Ahat.at.max,
-              p=p, k=k)
+              p = p, k = k)
   class(out) <- "procD.allometry"
   out
 }

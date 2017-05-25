@@ -80,9 +80,6 @@ summary(MT) # Test summary
 plot(MT) # Histogram of CR sampling distribution 
 # Result implies modularity present
 }
-\author{
-Dean Adams
-}
 \references{
 Adams, D.C. 2016.Evaluating modularity in morphometric data: Challenges with the RV coefficient and a 
 new test measure. Methods in Ecology and Evolution 7:565-572.
@@ -91,5 +88,7 @@ new test measure. Methods in Ecology and Evolution 7:565-572.
 \code{\link{two.b.pls}}, \code{\link{integration.test}}, \code{\link{phylo.modularity}}, and 
 \code{\link{phylo.integration}}
 }
+\author{
+Dean Adams
+}
 \keyword{analysis}
-

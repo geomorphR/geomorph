@@ -61,35 +61,31 @@ plot.gpagen <- function(x, ...){
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities
+#' @keywords utilities
 print.procD.lm <- function (x, ...) {
   cat("\nCall:\n")
-  cat(deparse(x$call), fill=TRUE, "\n\n")
-  if(x$SS.type == "I") cat("\nType I (Sequential) Sums of Squares and Cross-products\n")
-  if(x$SS.type == "III") cat("\nType III (Marginal) Sums of Squares and Cross-products\n")
-  if(x$perm.method == "RRPP") cat ("Randomized Residual Permutation Procedure Used\n") else
-    cat("Randomization of Raw Values used\n")
-  cat(paste(x$permutations, "Permutations"))
-  if(!is.null(x$nested.update) || !is.null(x$PGLS)) {
-    cat("\n\n*** F values, Z scores, and P values updated for either PGLS or nested effects")
-    cat("\n*** ")
-    if(x$effect.type == "F") effect.fill <- "F values" else effect.fill <- "Cohen's f-squared values"
-    if(is.null(x$nested.update) && !is.null(x$PGLS)) {
-      if(effect.fill == "SS") cat("Z scores are calculated from the distribution of (log) random Cohen's f-squared values 
-          (Z-scores cannot be calculated from SS for PGLS)") else
-            cat(paste("Z scores are calculated from the distribution of (log) random", effect.fill))
-    } else
-      cat(paste("Z scores are calculated from the distribution of (log) random", effect.fill, 
-              "\n(which might differ from the original analysis)"))
-  } else {
-    if(x$effect.type == "F") effect.fill <- "F values" else 
-      if(x$effect.type == "SS") effect.fill <- "SS values" else 
-        effect.fill <- "Cohen's f-squared values"
-    cat("\n\n*** ")
-    cat(paste("Z scores are calculated from the distribution of (log) random", effect.fill))
+  cat(deparse(x$call), fill=TRUE)
+  if(is.null(x$SS.type)){
+    cat("\n\n")
+    print(x$aov.table)
+    cat("\n")
+    if(!is.null(x$phylo.mean)){
+      cat("\nPhylogenetically-corrected mean vector\n\n")
+      print(x$phylo.mean)
+      cat("\n")
+    }
   }
-    
-  cat("\n\n")
-  print(x$aov.table)
+  if(!is.null(x$SS.type)){
+    if(x$SS.type == "I") cat("\nType I (Sequential) Sums of Squares and Cross-products\n")
+    if(x$SS.type == "I") cat("\nType II Sums of Squares and Cross-products\n")
+    if(x$SS.type == "III") cat("\nType III (Marginal) Sums of Squares and Cross-products\n")
+    if(x$perm.method == "RRPP") cat ("Randomized Residual Permutation Procedure Used\n") else
+      cat("Randomization of Raw Values used\n")
+    cat(paste(x$permutations, "Permutations"))
+    if(!is.null(x$random.F)) cat("\n\n*** F values, Z scores, and P values updated for either PGLS or nested effects")
+    cat("\n\n")
+    print(x$aov.table)
+  }
   invisible(x)
 }
 

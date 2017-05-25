@@ -42,4 +42,3 @@ lineardists <- interlmkdist(A, lmks)
 Emma Sherratt & Michael Collyer
 }
 \keyword{utilities}
-

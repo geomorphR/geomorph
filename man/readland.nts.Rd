@@ -41,9 +41,6 @@ and *.nts files written by Stratovan Checkpoint have incorrect
 header notation; every header is 1 n p-x-k 1 9999 Dim=3, rather than 1 n p-x-k 0 Dim=3, which denotes
 that missing data is in the file even when it is not.
 }
-\author{
-Dean Adams & Emma Sherratt
-}
 \references{
 Rohlf, F. J. 2012 NTSYSpc: Numerical taxonomy and multivariate analysis system. Version 
   2.2. Exeter Software, New York.
@@ -51,5 +48,7 @@ Rohlf, F. J. 2012 NTSYSpc: Numerical taxonomy and multivariate analysis system. 
 \seealso{
 \code{\link{readmulti.nts}}
 }
+\author{
+Dean Adams & Emma Sherratt
+}
 \keyword{IO}
-

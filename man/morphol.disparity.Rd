@@ -119,12 +119,11 @@ morphol.disparity(f1 = pleth.ols, groups = ~ gp.end, data = gdf, iter = 999)
 morphol.disparity(f1 = pleth.pgls, groups = ~ gp.end, data = gdf, iter = 999)
 
 }
-\author{
-Emma Sherratt and Michael Collyer
-}
 \references{
 Zelditch, M. L., D. L. Swiderski, H. D. Sheets, and W. L. Fink. 2012. Geometric morphometrics 
   for biologists: a primer. 2nd edition. Elsevier/Academic Press, Amsterdam.
 }
+\author{
+Emma Sherratt and Michael Collyer
+}
 \keyword{analysis}
-

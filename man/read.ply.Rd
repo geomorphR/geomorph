@@ -41,4 +41,3 @@ myply$material <- "#FCE6C9" # using RGB code
 Dean Adams & Emma Sherratt
 }
 \keyword{IO}
-

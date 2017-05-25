@@ -75,7 +75,11 @@
 #' @param data A data frame for the function environment, see \code{\link{geomorph.data.frame}} 
 #' @param print.progress A logical value to indicate whether a progress bar should be printed to the screen.  
 #' This is helpful for long-running analyses.
-#' @param ... Arguments passed on to procD.fit (typically associated with the \code{\link{lm}} function)
+#' @param ... Arguments passed on to procD.fit (typically associated with the lm function,
+#' such as weights or offset).  The function procD.fit can also currently
+#' handle either type I, type II, or type III sums of squares and cross-products (SSCP) calculations.  Choice of SSCP type can be made with the argument,
+#' SS.type; i.e., SS.type = "I" or SS.type = "III".  Only advanced users should consider using these additional arguments, as such arguments
+#' are experimental in nature. 
 #' @export
 #' @keywords analysis
 #' @author Dean Adams and Michael Collyer
@@ -171,19 +175,29 @@
 #' plot(TA, group.cols = c("dark red", "dark blue", "dark green", "yellow"), 
 #' pt.seq.pattern = c("green", "gray30", "red"), pt.scale = 1.3)
 trajectory.analysis <- function(f1, f2=NULL, iter=999, seed=NULL, traj.pts = NULL, 
-                                data = NULL,print.progress=TRUE){
+                                data = NULL,print.progress=TRUE,
+                                ...){
+  dots <- list(...)
+  weights <- dots$weights 
+  contrasts <- dots$contrasts
+  offset <- dots$offset
   if(!is.null(data)) data <- droplevels(data)
-  pfit1 <- procD.fit(f1, data=data, pca=FALSE)
+  if(!is.null(dots$SS.type)) SS.type <- dots$SS.type else SS.type <- "I"
+  if(is.na(match(SS.type, c("I","II", "III")))) SS.type <- "I"
+  pfit1 <- procD.fit(f1, data=data, pca=FALSE, weights = weights,
+                     contrasts = contrasts, offset = offset,
+                     SS.type = SS.type)
   Terms <- pfit1$Terms
   dat <- pfit1$data
-  datClasses <- sapply(model.frame(Terms, data=dat), function(x) data.class(x))
+  rTerms <- terms(f1[-2])
+  datClasses <- sapply(model.frame(rTerms, data=dat), function(x) data.class(x))
   if(any(datClasses != "factor")) stop("Only factors can be used on right hand side of first formula")
   if(length(datClasses) > 2 | length(datClasses) < 1) stop("Only one or two factors can be uesed in the first formula")
-  if(length(datClasses) == 2 & ncol(attr(Terms, "factors")) != 3) stop("Two factors provided but no interaction is indicated in forst formula")
+  if(length(datClasses) == 2 & ncol(attr(rTerms, "factors")) != 3) stop("Two factors provided but no interaction is indicated in first formula")
   if(length(datClasses) == 1 & is.null(traj.pts)) stop("If data are trajectories, the number of trajectory points must be defined")
   Y <- as.matrix(pfit1$Y)
   if(!is.null(data)) data <- geomorph.data.frame(data, Y=Y) else 
-    data <- geomorph.data.frame(dat[,-(1:ncol(Y))], Y=Y)
+    data <- geomorph.data.frame(dat[,-(1:NCOL(Y))], Y=Y)
   f1 <- update(f1, Y~.)
   if(!is.null(f2)) {
     f2 <- update(f2, Y~.)
@@ -200,11 +214,18 @@ trajectory.analysis <- function(f1, f2=NULL, iter=999, seed=NULL, traj.pts = NUL
     fr <- as.formula(paste("Y~", paste(red.terms, collapse = "+"), sep=""))
   }
   if(!is.null(seed) && seed=="random") seed = sample(1:iter, 1)
-  pda <- procD.lm(ff, data=data, iter=iter, RRPP = TRUE, seed=seed, print.progress = print.progress)
-  if(length(datClasses) == 1) pta <- traj.by.groups(ff, fr, traj.pts, data=data, iter=iter, seed=seed) else
-    pta <- traj.w.int(ff, fr, data=data, iter=iter, seed=seed)
-  if(length(datClasses) == 1) gp.names <- levels(pfit1$data[[length(pfit1$data)]]) else
-    gp.names <- levels(pfit1$data[[length(pfit1$data)-1]]) 
+  pda <- procD.lm(ff, data=data, iter=iter, RRPP = TRUE, 
+                  seed=seed, print.progress = print.progress, SS.type=SS.type,
+                  weights=weights, contrasts=contrasts, offset=offset)
+  if(length(datClasses) == 1) pta <- traj.by.groups(ff, fr, traj.pts, data=data, iter=iter, seed=seed,
+                                                    SS.type=SS.type,
+                                                    weights=weights, contrasts=contrasts, 
+                                                    offset=offset) else
+                                                      pta <- traj.w.int(ff, fr, data=data, iter=iter, seed=seed, 
+                                                                        SS.type=SS.type,
+                                                                        weights=weights, contrasts=contrasts, 
+                                                                        offset=offset)
+  gp.names <- levels(pfit1$data[[2]]) 
   PD <- pta$PD[[1]]; names(PD) <- gp.names
   MD <- pta$MD[[1]]; Tcor <- pta$Tcor[[1]]; Tang <- pta$Tang[[1]]; SD <- pta$SD[[1]]
   diag(Tcor) <- 1; diag(Tang) <- 0; diag(SD) <- 0
@@ -220,7 +241,7 @@ trajectory.analysis <- function(f1, f2=NULL, iter=999, seed=NULL, traj.pts = NUL
   npoints <- pta$npoints
   means <- pta$means[[1]]
   if(length(datClasses) == 1) {
-    p <- ncol(means)/npoints
+    p <- NCOL(means)/npoints
     means2 <- t(matrix(matrix(t(means)),p,length(means)/p))
     Y2 <- t(matrix(matrix(t(Y)),p,length(Y)/p))
     pca.means <- prcomp(means2)
@@ -263,10 +284,10 @@ trajectory.analysis <- function(f1, f2=NULL, iter=999, seed=NULL, traj.pts = NUL
               Z.angle = Z.angle,
               Z.shape.diff = Z.SD,              
               call = match.call(),
-              groups = pfit1$data[,(ncol(Y)+1)],
+              groups = pfit1$data[[2]],
               permutations = iter+1,
               trajectory.type = length(datClasses)
-              )
+  )
   class(out) <- "trajectory.analysis"
   out
 }

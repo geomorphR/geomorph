@@ -34,9 +34,6 @@ If the headers "[labels]", "[labelvalues]" and "[groups]" are present, then a da
  Stratovan Checkpoint software), one can add specimen names to 
  the returned 3D array by: dimnames(mydata)[[3]] <- gsub (".txt", "", filelist)).
 }
-\author{
-Emma Sherratt & Erik Otarola-Castillo
-}
 \references{
 O'Higgins P and Jones N (1998) Facial growth in Cercocebus torquatus: An application of three 
 dimensional geometric morphometric techniques to the study of morphological  variation. Journal of Anatomy. 
@@ -44,5 +41,7 @@ dimensional geometric morphometric techniques to the study of morphological  var
 
 O'Higgins P and Jones N (2006) Tools for statistical shape analysis. Hull York Medical School.
 }
+\author{
+Emma Sherratt & Erik Otarola-Castillo
+}
 \keyword{IO}
-
