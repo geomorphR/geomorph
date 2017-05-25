@@ -192,7 +192,7 @@ procD.pgls<-function(f1, phy, iter=999, seed=NULL, int.first = FALSE,
     PY <- Pcor%*%pfit$Y; PX <- Pcor%*%pfit$X
     Pfit <- lm.wfit(PX, PY, pfit$weights)
     out = list(aov.table = tab, call = match.call(),
-               coefficients=pfit$coefficients.full[[k]],
+               coefficients=pfit$wCoefficients.full[[k]],
                Y=pfit$Y,  X=pfit$X, 
                Pcor=Pcor, 
                QR = pfit$QRs[[k]], fitted=pfit$wFitted.full[[k]], 
