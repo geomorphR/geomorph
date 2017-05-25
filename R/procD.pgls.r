@@ -136,8 +136,6 @@ procD.pgls<-function(f1, phy, iter=999, seed=NULL, int.first = FALSE,
   Pcor <- Pcor[rownames(Y),rownames(Y)]
   
   if(k > 0) {
-    
-    
     if(print.progress) {
       if(RRPP == TRUE) P <- SS.pgls.iter(pfit, Yalt="RRPP", Pcor, iter=iter, seed=seed) else 
         P <- SS.pgls.iter(pfit, Yalt="resample", Pcor, iter=iter, seed=seed)
@@ -202,9 +200,9 @@ procD.pgls<-function(f1, phy, iter=999, seed=NULL, int.first = FALSE,
                weights = pfit$weights, Terms = pfit$Terms, term.labels = pfit$term.labels,
                SS = anova.parts.obs$SS, SS.type = SS.type,
                df = anova.parts.obs$df, R2 = anova.parts.obs$R2[1:k], 
-               pgls.coefficients = Pfit$wCoefficients, 
-               pgls.fitted = pfit$X%*%Pfit$wCoefficients, 
-               pgls.residuals = Y - pfit$X%*%Pfit$wCoefficients,
+               pgls.coefficients = Pfit$coefficients, 
+               pgls.fitted = pfit$X%*%Pfit$coefficients, 
+               pgls.residuals = Y - pfit$X%*%Pfit$coefficients,
                phylo.mean = apply(PY, 2, mean),
                F = anova.parts.obs$Fs[1:k], permutations = iter+1, random.SS = SS,
                random.SSE <- SSE,
@@ -232,9 +230,9 @@ procD.pgls<-function(f1, phy, iter=999, seed=NULL, int.first = FALSE,
                 QR = pfit$QRs[[1]], fitted=pfit$wFitted.full[[1]], 
                 residuals = pfit$wResiduals.full[[1]], 
                 weights = pfit$weights, Terms = pfit$Terms, term.labels = pfit$term.labels,
-                pgls.coefficients = Pfit$wCoefficients, 
-                pgls.fitted = X%*%Pfit$wCoefficients,
-                pgls.residuals = Y - X%*%Pfit$wCoefficients,
+                pgls.coefficients = Pfit$coefficients, 
+                pgls.fitted = X%*%Pfit$coefficients,
+                pgls.residuals = Y - X%*%Pfit$coefficients,
                 phylo.mean = apply(PY, 2, mean)
     )
   }
