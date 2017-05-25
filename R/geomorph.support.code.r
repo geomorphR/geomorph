@@ -1201,7 +1201,7 @@ procD.fit.w.data <- function(f1, keep.order=FALSE, pca=TRUE, data,
 procD.fit.wo.data <- function(f1, keep.order=FALSE, pca=TRUE, 
                               SS.type, ...){
   cat("\nWarning: no geomorph data frame provided.  
-      If an error occurs, this might be probably the reason.\n")
+      If an error occurs, this might be the reason.\n")
   form.in <- formula(f1)
   dots <- list(...)
   wts <- dots$weights
