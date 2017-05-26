@@ -1396,7 +1396,7 @@ SS.iter = function(pfit,iter, seed = NULL, Yalt="RRPP"){
         }
       }
     if(sum(w)==n) SSY.temp <- unlist(Map(function(j) Y[j,], ind.j)) else
-      SSY.temp <- unlist(Map(function(j) Y[j,]*sqrt(w), ind.j))0
+      SSY.temp <- unlist(Map(function(j) Y[j,]*sqrt(w), ind.j))
     if(!is.null(Pr)) {
       SS.temp <- lapply(1:length(j), function(j){ 
         mapply(function(p,y) sum((p%*%y)^2), 
@@ -1459,7 +1459,7 @@ SS.iter = function(pfit,iter, seed = NULL, Yalt="RRPP"){
         }
       }
     if(sum(w)==n) SSY.temp <- unlist(Map(function(j) Y[j,], ind.j)) else
-      SSY.temp <- unlist(Map(function(j) Y[j,]*sqrt(w), ind.j))0
+      SSY.temp <- unlist(Map(function(j) Y[j,]*sqrt(w), ind.j))
     if(!is.null(Pr)) {
       SS.temp <- lapply(1:length(j), function(j){ 
         mapply(function(p,y) sum((p%*%y)^2), 
