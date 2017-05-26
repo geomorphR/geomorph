@@ -1176,18 +1176,20 @@ procD.fit.w.data <- function(f1, keep.order=FALSE, pca=TRUE, data,
   wts <- dots$weights
   conts <- dots$contrasts
   os <- dots$offset
-  Y <- eval(form.in[[2]], envir = data)
-  if(class(Y) == "dist") Y <- pcoa(Y) else
-    if(length(dim(Y)) == 3)  Y <- two.d.array(Y) else 
-      Y <- as.matrix(Y)
-  if(is.null(wts)) wts <- rep(1, NROW(Y))
-  if(is.null(os)) os <- rep(0, NROW(Y))
+  d <- list()
+  d$Y <- eval(form.in[[2]], envir = data)
+  n <- NROW(d$Y)
+  if(class(dat2$Y) == "dist") d$Y <- pcoa(d$Y) else
+    if(length(dim(d$Y)) == 3)  d$Y <- two.d.array(d$Y) else 
+      d$Y <- as.matrix(d$Y)
+  if(is.null(wts)) wts <- rep(1, n)
+  if(is.null(os)) os <- rep(0, n)
   form.new <- f1[-2]
   form.new <- update(form.new, Y ~.)
   Terms <- terms(form.new)
   data <- c(data, list( wts=wts, os=os))
   dat <- gdf.to.df(data)
-  dat <- data.frame(model.frame(Y~1), dat)
+  dat$Y <- d$Y
   fit <- lm(form.new, data = dat, 
             weights = wts, contrasts = conts, offset = os)
   if(length(fit$assign) == 1) procD.fit.int(fit, pca = pca) else
@@ -1207,16 +1209,18 @@ procD.fit.wo.data <- function(f1, keep.order=FALSE, pca=TRUE,
   wts <- dots$weights
   conts <- dots$contrasts
   os <- dots$offset
-  Y <- eval(form.in[[2]], envir = parent.frame())
-  if(class(Y) == "dist") Y <- pcoa(Y) else
-    if(length(dim(Y)) == 3)  Y <- two.d.array(Y) else 
-      Y <- as.matrix(Y)
-  if(is.null(wts)) wts <- rep(1, NROW(Y))
-  if(is.null(os)) os <- rep(0, NROW(Y))
+  d <- list()
+  d$Y <- eval(form.in[[2]], envir = parent.frame())
+  n <- NROW(d$Y)
+  if(class(d$Y) == "dist") d$Y <- pcoa(d$Y) else
+    if(length(dim(d$Y)) == 3)  d$Y <- two.d.array(d$Y) else 
+      d$Y <- as.matrix(d$Y)
+  if(is.null(wts)) wts <- rep(1, n)
+  if(is.null(os)) os <- rep(0, n)
   form.new <- f1[-2]
   form.new <- update(form.new, Y ~.)
   Terms <- terms(form.new)
-  n <- NROW(Y)
+  n <- NROW(d$Y)
   tl <- attr(Terms, "term.labels")
   if(length(tl) >0){
     dat <- lapply(1:length(tl), function(j) try(get(as.character(tl[j]), 
@@ -1226,9 +1230,14 @@ procD.fit.wo.data <- function(f1, keep.order=FALSE, pca=TRUE,
     tl <- tl[check]
     names(dat) <- tl
     dat <- as.data.frame(dat)
-    dat <- data.frame(Y=Y,dat, wts, os)
-  } else dat <- as.data.frame(Y=Y, wts, os)
-  rownames(dat) <- rownames(Y)
+    dat$Y <- d$Y
+  } else {
+    dat <- list()
+    dat$wts <- wts
+    dat$os <- os
+    dat <- as.dat.frame(dat)
+    dat$Y <- d$Y
+  }
   fit <- lm(form.new,
             weights = wts, contrasts = conts, offset = os, data=dat)
   if(length(fit$assign) == 1) procD.fit.int(fit, pca = pca) else
