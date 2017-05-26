@@ -1395,7 +1395,8 @@ SS.iter = function(pfit,iter, seed = NULL, Yalt="RRPP"){
           Yr = Map(function(x) Map(function(y) (y[x,])*sqrt(w), lapply(1:k,function(.) Y)),ind.j)
         }
       }
-    SSY.temp <- unlist(Map(function(y) sum(center(y[[k]])^2), Yr))
+    if(sum(w)==n) SSY.temp <- unlist(Map(function(j) Y[j,], ind.j)) else
+      SSY.temp <- unlist(Map(function(j) Y[j,]*sqrt(w), ind.j))0
     if(!is.null(Pr)) {
       SS.temp <- lapply(1:length(j), function(j){ 
         mapply(function(p,y) sum((p%*%y)^2), 
@@ -1457,7 +1458,8 @@ SS.iter = function(pfit,iter, seed = NULL, Yalt="RRPP"){
           Yr = Map(function(x) Map(function(y) (y[x,])*sqrt(w), lapply(1:k,function(.) Y)),ind.j)
         }
       }
-    SSY.temp <- unlist(Map(function(y) sum(center(y[[k]])^2), Yr))
+    if(sum(w)==n) SSY.temp <- unlist(Map(function(j) Y[j,], ind.j)) else
+      SSY.temp <- unlist(Map(function(j) Y[j,]*sqrt(w), ind.j))0
     if(!is.null(Pr)) {
       SS.temp <- lapply(1:length(j), function(j){ 
         mapply(function(p,y) sum((p%*%y)^2), 
@@ -1618,7 +1620,8 @@ SS.pgls.iter = function(pfit,Pcor,iter, seed=NULL, Yalt="RRPP"){
       }
     SS.temp <- lapply(1:length(j), function(j){ 
       mapply(function(p,y) sum((p%*%y)^2), Ptrans,Yr[[j]])})
-    SSY.temp <- unlist(Map(function(y) sum(center(y[[k]])^2), Yr))
+    if(sum(w)==n) SSY.temp <- unlist(Map(function(j) Pcor%*%Y[j,], ind.j)) else
+      SSY.temp <- unlist(Map(function(j) Pcor%*%Y[j,]*sqrt(w), ind.j))
     SSE.temp <- unlist(Map(function(y) sum(fastLM(Uf[[k]], Pcor%*%y[[k]])$residuals^2), Yr))
     SS <- c(SS,SS.temp)
     SSE <- c(SSE, SSE.temp)
@@ -1677,7 +1680,8 @@ SS.pgls.iter = function(pfit,Pcor,iter, seed=NULL, Yalt="RRPP"){
       }
     SS.temp <- lapply(1:length(j), function(j){ 
       mapply(function(p,y) sum((p%*%y)^2), Ptrans,Yr[[j]])})
-    SSY.temp <- unlist(Map(function(y) sum(center(y[[k]])^2), Yr))
+    if(sum(w)==n) SSY.temp <- unlist(Map(function(j) Pcor%*%Y[j,], ind.j)) else
+      SSY.temp <- unlist(Map(function(j) Pcor%*%Y[j,]*sqrt(w), ind.j))
     SSE.temp <- unlist(Map(function(y) sum(fastLM(Uf[[k]], Pcor%*%y[[k]])$residuals^2), Yr))
     SS <- c(SS,SS.temp)
     SSE <- c(SSE, SSE.temp)
