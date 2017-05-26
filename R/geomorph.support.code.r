@@ -1175,7 +1175,6 @@ procD.fit.w.data <- function(f1, keep.order=FALSE, pca=TRUE, data,
   dots <- list(...)
   d <- list()
   d$wts <- dots$weights
-  d$conts <- dots$contrasts
   d$os <- dots$offset
   d$Y <- eval(form.in[[2]], envir = data)
   if(class(d$Y) == "dist") d$Y <- pcoa(d$Y) else
@@ -1191,9 +1190,8 @@ procD.fit.w.data <- function(f1, keep.order=FALSE, pca=TRUE, data,
   dat$Y <- d$Y
   dat$wts <- d$wts
   dat$os <- d$os
-  dat$conts <- d$conts
   fit <- lm(form.new, data = dat, 
-            weights = wts, contrasts = conts, offset = os)
+            weights = wts, contrasts = dots$conts, offset = os)
   if(length(fit$assign) == 1) procD.fit.int(fit, pca = pca) else
     procD.fit.lm(fit, keep.order = keep.order, pca = pca, 
                  SS.type = SS.type)
@@ -1210,7 +1208,6 @@ procD.fit.wo.data <- function(f1, keep.order=FALSE, pca=TRUE,
   dots <- list(...)
   d <- list()
   d$wts <- dots$weights
-  d$conts <- dots$contrasts
   d$os <- dots$offset
   wts <- dots$weights
   d$Y <- eval(form.in[[2]], envir = parent.frame())
@@ -1235,7 +1232,6 @@ procD.fit.wo.data <- function(f1, keep.order=FALSE, pca=TRUE,
     dat$Y <- d$Y
     dat$wts <- d$wts
     dat$os <- d$os
-    dat$conts <- d$conts
   } else {
     dat <- list()
     dat$wts <- wts
@@ -1244,7 +1240,7 @@ procD.fit.wo.data <- function(f1, keep.order=FALSE, pca=TRUE,
     dat$Y <- d$Y
   }
   fit <- lm(form.new,
-            weights = wts, contrasts = conts, offset = os, data=dat)
+            weights = wts, contrasts = dots$conts, offset = os, data=dat)
   if(length(fit$assign) == 1) procD.fit.int(fit, pca = pca) else
     procD.fit.lm(fit, keep.order = keep.order, pca = pca, 
                  SS.type = SS.type)
