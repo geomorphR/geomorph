@@ -110,7 +110,7 @@ morphol.disparity <- function(f1, groups = NULL, iter = 999, seed = NULL,
   if(!is.null(data)) data <- droplevels(data)
   if(!is.null(groups) & class(groups) != "formula") stop("groups must be a formula; e.g., groups = ~ X")
   if(class(f1) == "formula") {
-    pfit <- procD.fit(f1, data=data)
+    pfit <- procD.fit(f1, data=data, pca=TRUE, ...)
     if(is.null(groups)) gps <- single.factor(pfit) else {
       data.types <- lapply(data, class)
       keep = sapply(data.types, function(x) x != "array" & x != "phylo" & x != "dist")
@@ -127,7 +127,6 @@ morphol.disparity <- function(f1, groups = NULL, iter = 999, seed = NULL,
         sum(x^2)/nrow(x)
       })
   }
-  
   if(class(f1) == "procD.lm" || class(f1) == "advanced.procD.lm"){
     if(is.null(f1$pgls.residuals)) R <- as.matrix(f1$residuals) else 
       R <- as.matrix(f1$pgls.residuals)

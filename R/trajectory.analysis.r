@@ -177,16 +177,7 @@
 trajectory.analysis <- function(f1, f2=NULL, iter=999, seed=NULL, traj.pts = NULL, 
                                 data = NULL,print.progress=TRUE,
                                 ...){
-  dots <- list(...)
-  weights <- dots$weights 
-  contrasts <- dots$contrasts
-  offset <- dots$offset
-  if(!is.null(data)) data <- droplevels(data)
-  if(!is.null(dots$SS.type)) SS.type <- dots$SS.type else SS.type <- "I"
-  if(is.na(match(SS.type, c("I","II", "III")))) SS.type <- "I"
-  pfit1 <- procD.fit(f1, data=data, pca=FALSE, weights = weights,
-                     contrasts = contrasts, offset = offset,
-                     SS.type = SS.type)
+  pfit1 <- procD.fit(f1, data=data, pca=FALSE, ...)
   Terms <- pfit1$Terms
   dat <- pfit1$data
   rTerms <- terms(f1[-2])
@@ -196,6 +187,9 @@ trajectory.analysis <- function(f1, f2=NULL, iter=999, seed=NULL, traj.pts = NUL
   if(length(datClasses) == 2 & ncol(attr(rTerms, "factors")) != 3) stop("Two factors provided but no interaction is indicated in first formula")
   if(length(datClasses) == 1 & is.null(traj.pts)) stop("If data are trajectories, the number of trajectory points must be defined")
   Y <- as.matrix(pfit1$Y)
+  SS.type <- pfit1$SS.type
+  weights <- pfit1$weights
+  offset <- pfit1$offset
   if(!is.null(data)) data <- geomorph.data.frame(data, Y=Y) else 
     data <- geomorph.data.frame(dat[,-(1:NCOL(Y))], Y=Y)
   f1 <- update(f1, Y~.)
@@ -215,15 +209,14 @@ trajectory.analysis <- function(f1, f2=NULL, iter=999, seed=NULL, traj.pts = NUL
   }
   if(!is.null(seed) && seed=="random") seed = sample(1:iter, 1)
   pda <- procD.lm(ff, data=data, iter=iter, RRPP = TRUE, 
-                  seed=seed, print.progress = print.progress, SS.type=SS.type,
-                  weights=weights, contrasts=contrasts, offset=offset)
+                  seed=seed, print.progress = print.progress, ...)
   if(length(datClasses) == 1) pta <- traj.by.groups(ff, fr, traj.pts, data=data, iter=iter, seed=seed,
                                                     SS.type=SS.type,
-                                                    weights=weights, contrasts=contrasts, 
+                                                    weights=weights, 
                                                     offset=offset) else
                                                       pta <- traj.w.int(ff, fr, data=data, iter=iter, seed=seed, 
                                                                         SS.type=SS.type,
-                                                                        weights=weights, contrasts=contrasts, 
+                                                                        weights=weights, 
                                                                         offset=offset)
   gp.names <- levels(pfit1$data[[2]]) 
   PD <- pta$PD[[1]]; names(PD) <- gp.names
@@ -284,7 +277,7 @@ trajectory.analysis <- function(f1, f2=NULL, iter=999, seed=NULL, traj.pts = NUL
               Z.angle = Z.angle,
               Z.shape.diff = Z.SD,              
               call = match.call(),
-              groups = pfit1$data[[2]],
+              groups = pfit1$data[[1]],
               permutations = iter+1,
               trajectory.type = length(datClasses)
   )

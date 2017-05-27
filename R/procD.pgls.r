@@ -104,14 +104,7 @@ procD.pgls<-function(f1, phy, iter=999, seed=NULL, int.first = FALSE,
                      RRPP=TRUE, data=NULL, print.progress = TRUE, ...){
   if(int.first==TRUE) ko = TRUE else ko = FALSE
   if(!is.null(data)) data <- droplevels(data)
-  dots <- list(...)
-  weights <- dots$weights 
-  contrasts <- dots$contrasts
-  offset <- dots$offset
-  if(!is.null(dots$SS.type)) SS.type <- dots$SS.type else SS.type <- "I"
-  if(is.na(match(SS.type, c("I","II", "III")))) SS.type <- "I"
-  pfit <- procD.fit(f1, data=data, keep.order=ko, SS.type=SS.type, pca=FALSE,
-                    weights = weights, contrasts = contrasts, offset = offset)
+  pfit <- procD.fit(f1, data=data, keep.order=ko, pca=FALSE, ... )
   k <- length(pfit$term.labels)
   Y <- as.matrix(pfit$wY)
   phy.name <- deparse(substitute(phy))
@@ -154,6 +147,7 @@ procD.pgls<-function(f1, phy, iter=999, seed=NULL, int.first = FALSE,
     MSE.mat <- matrix(MSE, k, length(MSE), byrow = TRUE)
     SSY <- P$SSY
     effect.type <- match.arg(effect.type)
+    SS.type <- pfit$SS.type
     if(is.matrix(SS)){
       Fs <- (SS/df[1:k])/MSE.mat
       if(SS.type == "III") {

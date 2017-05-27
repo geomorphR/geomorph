@@ -116,35 +116,19 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
                             seed = NULL, 
                             print.progress = TRUE,
                             data=NULL, ...){
-  dots <- list(...)
-  weights <- dots$weights 
-  contrasts <- dots$contrasts
-  offset <- dots$offset
   if(!is.null(data)) data <- droplevels(data)
-  if(pc.shape == TRUE) pfit1 <- procD.fit(f1, data=data, pca = TRUE, 
-                                          SS.type = "I", weights = weights,
-                                          contrasts = contrasts,
-                                          offset = offset) else 
-    pfit1 <- procD.fit(f1, data=data, pca=FALSE, SS.type = "I",
-                       weights = weights,
-                       contrasts = contrasts,
-                       offset = offset)
+  if(pc.shape) pfit1 <- procD.fit(f1, data=data, pca = TRUE, ...) else 
+    pfit1 <- procD.fit(f1, data=data, pca=FALSE, ...)
   if(!is.null(seed) && seed=="random") seed = sample(1:iter, 1)
   Y <- as.matrix(pfit1$Y)
   n <- dim(Y)[1]; p <- dim(Y)[2]
   if(!is.null(data)) dat.temp <- gdf.to.df(data) else 
-    dat.temp <- data.frame(Int = rep(1,n))
-  dat.temp <- data.frame(model.frame(Y~1), dat.temp)
+    dat.temp <- pfit1$data
+  dat.temp$Y <- Y
   if(class(f2) == "formula" && length(f2) == 3) f2 <- f2[-2]
   if(class(f2) == "formula") f2 <- update(f2, Y ~.) 
-  if(pc.shape == TRUE) pfit2 = procD.fit(f2, pca = TRUE, SS.type = "I",
-                                         data = dat.temp, weights = weights,
-                                         contrasts = contrasts,
-                                         offset = offset) else 
-    pfit2 = procD.fit(f2, pca = FALSE, SS.type = "I", data = dat.temp,
-                      weights = weights,
-                      contrasts = contrasts,
-                      offset = offset)
+  if(pc.shape) pfit2 = procD.fit(f2, pca = TRUE, data = dat.temp, ...) else 
+    pfit2 = procD.fit(f2, pca = FALSE, data = dat.temp, ...)
   if(!is.null(phy)){
     phy.name <- deparse(substitute(phy))
     phy.match <- match(phy.name, names(data))

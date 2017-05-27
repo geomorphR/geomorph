@@ -96,7 +96,7 @@
 #' \item{random.F}{A matrix or vector of random F values found via the resampling procedure used.}
 #' \item{random.cohenf}{A matrix or vector of random Cohen's f-squared values
 #'  found via the resampling procedure used.}
-#'\item{permutations}{The number of random permutations (including observed) used.}
+#' \item{permutations}{The number of random permutations (including observed) used.}
 #' \item{effect.type}{The distribution used to estimate effect-size.}
 #' \item{perm.method}{A value indicating whether "Raw" values were shuffled or "RRPP" performed.}
 #' @references Anderson MJ. 2001. A new method for non-parametric multivariate analysis of variance. 
@@ -137,16 +137,9 @@
 #' rat.anova$fitted # just the fitted values
 procD.lm<- function(f1, iter = 999, seed=NULL, RRPP = TRUE, effect.type = c("F", "SS", "cohen"),
                     int.first = FALSE,  data=NULL, print.progress = TRUE, ...){
-  if(int.first==TRUE) ko = TRUE else ko = FALSE
+  if(int.first) ko = TRUE else ko = FALSE
   if(!is.null(data)) data <- droplevels(data)
-  dots <- list(...)
-  weights <- dots$weights 
-  contrasts <- dots$contrasts
-  offset <- dots$offset
-  if(!is.null(dots$SS.type)) SS.type <- dots$SS.type else SS.type <- "I"
-  if(is.na(match(SS.type, c("I","II", "III")))) SS.type <- "I"
-  pfit <- procD.fit(f1, data=data, keep.order=ko, SS.type=SS.type, pca=FALSE,
-                    weights = weights, contrasts = contrasts, offset = offset)
+  pfit <- procD.fit(f1, data=data, keep.order=ko,  pca=FALSE, ...)
   k <- length(pfit$term.labels)
   if(k > 0) {
     if(print.progress == TRUE){
@@ -163,6 +156,7 @@ procD.lm<- function(f1, iter = 999, seed=NULL, RRPP = TRUE, effect.type = c("F",
     anova.tab <-anova.parts.obs$anova.table 
     df <- anova.parts.obs$df
     effect.type <- match.arg(effect.type)
+    SS.type <- pfit$SS.type
     if(is.matrix(SS)){
       MSE <- SSE/df[k+1]
       SSE.mat <- matrix(SSE, k, length(SSE), byrow = TRUE)

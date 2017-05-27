@@ -173,15 +173,7 @@ procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
                            effect.type = c("F", "SS", "cohen"),
                            print.progress = TRUE, data=NULL, ...){
   if(!is.null(data)) data <- droplevels(data)
-  dots <- list(...)
-  weights <- dots$weights 
-  contrasts <- dots$contrasts
-  offset <- dots$offset
-  if(!is.null(dots$SS.type)) SS.type <- dots$SS.type else SS.type <- "I"
-  if(is.na(match(SS.type, c("I","II", "III")))) SS.type <- "I"
-  pfit <- procD.fit(f1, data=data, pca=FALSE, weights = weights,
-                    contrasts = contrasts, offset = offset,
-                    SS.type = SS.type)
+  pfit <- procD.fit(f1, data=data, pca=FALSE, ...)
   if(!is.null(data)) Ain <- eval(f1[[2]], data) else {
     Ain <- try(eval(f1[[2]]), silent = TRUE)
     if(!is.matrix(Ain) || !is.array(Ain)) Ain <- NULL 
@@ -195,13 +187,7 @@ procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
   if(!is.null(seed) && seed=="random") seed = sample(1:iter, 1)
   size <- dat$size
   if(any(size <= 0)) stop("Size cannot be negative if using log-transformation")
-  if(logsz) {
-    dat <- model.frame(Y ~ log(size), data = dat) 
-    form1 <- Y ~ log(size)
-  } else {
-    dat <- model.frame(Y ~ size, data = dat)
-    form1 <- Y ~ size
-  }
+  if(logsz) form1 <- Y ~ log(size) else form1 <- Y ~ size
   
   if(!is.null(f2) || !is.null(f3)){
     if(!is.null(data)) {
@@ -306,9 +292,7 @@ procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
   } else HOS <- NULL
   
   formfull <- update(formfull, Y~.)
-  fitf <- procD.fit(formfull, data=dat, pca=FALSE, weights = weights,
-                    contrasts = contrasts, offset = offset,
-                    SS.type = SS.type)
+  fitf <- procD.fit(formfull, data=dat, pca=FALSE, ...)
   cat("\nAllometry Model\n")
   effect.type <- match.arg(effect.type)
   anovafull <- procD.lm(formfull, data=dat, iter=iter, seed=seed, RRPP=RRPP,

@@ -124,7 +124,7 @@ da1241dd835f95675cc7126b2a7ec61a *man/two.d.array.Rd
 550c6adc8cd9bf90f6be30819dad83fc *man/writeland.tps.Rd
 3f1435fd25f61cda55d671b2cda06149 *NAMESPACE
 46fe4bd1dbd6601bf6458b155e47fcf3 *NEWS
-600b1c7c4d136f5e73d5b8a23cfa3990 *R/advanced.procD.lm.r
+e64fb90879b93891b600fd0c16cc4f7e *R/advanced.procD.lm.r
 311a910118a6b60a5ab89a58349e1f69 *R/arrayspecs.r
 6ee7d808d31ce1749bd503a3a8012091 *R/bilat.symmetry.r
 14713bbb2ad126d777d95e359c71bf1a *R/build.template.r
@@ -145,7 +145,7 @@ ddff41e987eac54d3500e2313799c3c6 *R/digitize2d.r
 9cfff0013db7a8c0e4aca770b5d9ea25 *R/findMeanSpec.r
 b56e53ac307d84a05efee9525dd6868a *R/fixed.angle.r
 203177efc30cc6fef4bd604b2fc2af01 *R/geomorph.data.frame.r
-5f4e1ae0e56af20b17ea31edbc3c68b1 *R/geomorph.support.code.r
+dc4a3d89d6f5915d138c3b1c62db0904 *R/geomorph.support.code.r
 d38dcf8f4d4c47f05f0fc096b64f4c7e *R/geomorph.utils.r
 0d9d88147f22cff2241b6e2e7396d57f *R/globalIntegration.r
 17bbdf1769466f17742de952fb612cc4 *R/gpagen.r
@@ -153,7 +153,7 @@ d38dcf8f4d4c47f05f0fc096b64f4c7e *R/geomorph.utils.r
 b8002f4bf70cd9c21f65b71610e9b8eb *R/integration.test.r
 c35bcae1a6ea59c924cf7dc9eec3e013 *R/interlmkdist.r
 1d6c03681bdbedb0359634ccaa2e0229 *R/modularity.test.r
-2d10a315170728c6b0168f2ae18bae06 *R/morphol.disparity.r
+dbe95e9230b3aed02b0e250655435a65 *R/morphol.disparity.r
 e6cbf50b0b3cb59913bc7adf854f12f1 *R/nested.update.r
 be6af162c61c25032f3e662bdc65b70d *R/phylo.integration.r
 e1cb306b0d2dd762ad291bddaf2366e8 *R/phylo.modularity.r
@@ -164,16 +164,16 @@ b8814f9a047a63c586c6e472bc17d6d5 *R/plotOutliers.r
 47a64e289c14a0c94eb8a415c661c6d8 *R/plotRefToTarget.r
 41db23cebd8d7be6c3decf781bd378e0 *R/plotspec.r
 1f6d6dd7deb37d5920c9addb55bf7c3f *R/plotTangentSpace.r
-8b04639e518c9b1e06cf9f412c831cb4 *R/procD.allometry.r
-bbe6efc9ef2a8d6b7d10dc79c02f92b9 *R/procD.lm.r
-31f2fac8a3301449c629a00d1b6a7f8b *R/procD.pgls.r
+9e5adffea501a4f1f5ebfa219e783a8a *R/procD.allometry.r
+472b665280a0f795439b644ca4ae7799 *R/procD.lm.r
+c4686f728a7c7e17edde236fdebb8db9 *R/procD.pgls.r
 df3f4cc6406dc0c737ee2ff08c2a0e3d *R/read.morphologika.r
 9c3c828f71a413b5437d45228a3bf9b7 *R/read.ply.r
 c78d6ab345f92d45ae5f5326dde76561 *R/readland.nts.r
 5ebf176cfc8ae244daf8fd42a8a7d413 *R/readland.tps.r
 ff7c5bf6d13e30a9cf396affb5afa484 *R/readmulti.nts.r
 bb92986b568b7e9176ff879b2e0ce9d9 *R/shape.predictor.r
-2ffd880a580701605a6ea6d273990936 *R/trajectory.analysis.r
+64c35cafca016505dffc4c2155f06a1a *R/trajectory.analysis.r
 075468499df1787e805118710e5e05a0 *R/two.b.pls.r
 a14464bdaab9da24955793e0c62e6893 *R/two.d.array.r
 6cbbaa1e92e97d4ec742825a60d5e7ab *R/warpRefMesh.r
