@@ -25,26 +25,29 @@
 #' Group Differences in Outline Shape. Medical Image Analysis 1(3):225-243.
 #' @references Rohlf, F.J., 2015. The tps series of software. Hystrix 26(1):9-12.
 
-digit.curves <- function(start, curve, nPoints, closed=TRUE){
+digit.curves <- function(start, curve, nPoints, closed=T){
   nPoints=nPoints+2
   checkmat <- is.matrix(curve)
-  if (checkmat==FALSE) { stop("Input must be a p-x-k matrix of curve coordinates")}
+  if (checkmat==FALSE) { stop("Input must be a p-x-k matrix of landmark coordinates")}
   checkdim <- dim(curve)[2]
   nCurvePoints = nrow(curve)
-  start <- as.numeric(start)
-  newPoints <- matrix(NA, ncol=checkdim, nrow = nPoints)
-  if (checkdim==2) {start <- which.min(sqrt((start[1]-curve[,1])^2+
-                                              (start[2]-curve[,2])^2))}
+  if (checkdim==2) {  newPoints <- matrix(NA, ncol=2, nrow = nPoints)
+                      start <- as.numeric(start)
+                      start <- which.min(sqrt((start[1]-curve[,1])^2+
+                                              (start[2]-curve[,2])^2))
+                    }
   
-  if (checkdim==3) {start <- which.min(sqrt((start[1]-curve[,1])^2+
+  if (checkdim==3) {  newPoints <- matrix(NA, ncol=3, nrow = nPoints) 
+                      start <- as.numeric(start)
+                      start <- which.min(sqrt((start[1]-curve[,1])^2+
                                               (start[2]-curve[,2])^2+
-                                              (start[3]-curve[,3])^2))}
+                                              (start[3]-curve[,3])^2))
+                      }
   newPoints[1,] <- curve[start,]
-  if(start!=1 && start!= nCurvePoints){curve <- rbind(curve[start:nCurvePoints,],
+  if(start!=1){curve <- rbind(curve[start:nCurvePoints,],
                                curve[1:(start-1),])} 
-  if(start == nCurvePoints){curve <-curve[nCurvePoints:1,]  }
-  if(closed==FALSE){newPoints[nPoints,] <- curve[nrow(curve),]}
-  if(closed==TRUE){curve <- rbind(curve, curve[1,])
+  if(closed==F){newPoints[nPoints,] <- curve[nrow(curve),]}
+  if(closed==T){curve <- rbind(curve, curve[1,])
                 nCurvePoints <- nCurvePoints+1
                 newPoints[nPoints,] <- curve[nCurvePoints,]}
   B <- rep(0, nCurvePoints) 
@@ -68,6 +71,6 @@ digit.curves <- function(start, curve, nPoints, closed=TRUE){
     newPoints[i,2] <- round((1 - p) * xy0[2] + p * xy[2], digits=4) 
     if (checkdim==3) {newPoints[i,3] <- round((1 - p) * xy0[3] + p * xy[3], digits=4)}
   }
-  if (closed==TRUE){return(newPoints[1:(nPoints-1),])}
-  if (closed==FALSE){return(newPoints[1:nPoints,])}
+  if (closed==T){return(newPoints[1:(nPoints-1),])}
+  if (closed==F){return(newPoints[1:nPoints,])}
 }
