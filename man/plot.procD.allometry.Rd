@@ -47,6 +47,9 @@ The following are brief descriptions of the different plotting methods, with ref
   allometric trend (Adams and Nistri 2010). }
   }
 }
+\author{
+Michael Collyer
+}
 \references{
 Adams, D.C., F.J. Rohlf, and D.E. Slice. 2013. A field comes of age: geometric morphometrics 
   in the 21st century. Hystrix. 24:7-14.
@@ -60,8 +63,6 @@ Drake, A. G., and C. P. Klingenberg. 2008. The pace of morphological change: His
 Mitteroecker, P., P. Gunz, M. Bernhard, K. Schaefer, and F. L. Bookstein. 2004. 
   Comparison of cranial ontogenetic trajectories among great apes and humans. J. Hum. Evol. 46:679-698.
 }
-\author{
-Michael Collyer
-}
 \keyword{utilities}
 \keyword{visualization}
+

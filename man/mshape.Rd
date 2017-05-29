@@ -23,10 +23,11 @@ Y.gpa<-gpagen(plethodon$land)    #GPA-alignment
 
 mshape(Y.gpa$coords)   #mean (consensus) configuration
 }
-\references{
-Claude, J. 2008. Morphometrics with R. Springer, New York.
-}
 \author{
 Julien Claude
 }
+\references{
+Claude, J. 2008. Morphometrics with R. Springer, New York.
+}
 \keyword{utilities}
+

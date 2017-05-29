@@ -4,7 +4,7 @@
 \alias{digit.curves}
 \title{Calculate semilandmarks along a curve}
 \usage{
-digit.curves(start, curve, nPoints, closed = TRUE)
+digit.curves(start, curve, nPoints, closed = T)
 }
 \arguments{
 \item{start}{A numeric vector of x,y,(z) coordinates for the landmark defining the start of the curve (can be simply first point on open outline: curve[1,])}
@@ -32,6 +32,9 @@ If 'closed = T', the function returns the coordinates of the 'start' landmark pl
 
 If unsure if the points defining the curve are ordered, then plot and colour them using the rainbow function, e.g. plot(curve, pch=19, cex=0.1, col=rainbow(nrow(outline))), and it should be easy to visualise.
 }
+\author{
+Emma Sherratt
+}
 \references{
 Bookstein, F. J. 1997 Landmark Methods for Forms without Landmarks: Morphometrics of 
 Group Differences in Outline Shape. Medical Image Analysis 1(3):225-243.
@@ -41,7 +44,5 @@ Rohlf, F.J., 2015. The tps series of software. Hystrix 26(1):9-12.
 \seealso{
 \code{\link{digit.fixed}} \code{\link{digitize2d}}
 }
-\author{
-Emma Sherratt
-}
 \keyword{digitizing}
+

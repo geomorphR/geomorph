@@ -26,3 +26,4 @@ This function writes a *.tps file from a 3-dimensional array (p x k x n)
 Dean Adams
 }
 \keyword{IO}
+

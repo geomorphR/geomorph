@@ -91,11 +91,12 @@ outline=plethodon$outline, method="TPS")
 GP5 <- gridPar(txt.pos = 3, txt.col = "red") 
 plotRefToTarget(ref,Y.gpa$coords[,,39], gridPars=GP5, mag=3, method="vector", label=TRUE)
 }
-\seealso{
-\code{\link{plotRefToTarget}}
-}
 \author{
 Michael Collyer & Emma Sherratt
 }
+\seealso{
+\code{\link{plotRefToTarget}}
+}
 \keyword{utilities}
 \keyword{visualization}
+

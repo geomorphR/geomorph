@@ -14,3 +14,4 @@ This function has been deprecated. Below shows the original function and the rep
 
 compare.modular.partitions now deprecated: use \code{\link{modularity.test}} instead
 }
+

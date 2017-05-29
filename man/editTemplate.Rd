@@ -45,3 +45,4 @@ specific single button mice, XQuartz must be configured: go to Preferences > Inp
 Erik Otarola-Castillo & Emma Sherratt
 }
 \keyword{digitizing}
+

@@ -43,10 +43,11 @@ arrayspecs(x,3,2)
 x2<-matrix(rnorm(18),ncol=2) # Random triangles (each landmark on its own row)
 arrayspecs(x2,3,2)
 }
-\seealso{
-\code{\link{two.d.array}}
-}
 \author{
 Dean Adams & Mike Collyer
 }
+\seealso{
+\code{\link{two.d.array}}
+}
 \keyword{utilities}
+

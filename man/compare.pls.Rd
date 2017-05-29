@@ -69,11 +69,12 @@ To use this function, simply perform \code{\link{two.b.pls}}, \code{\link{integr
  compare.pls(MF = integ.tests$Marsh.F, MM = integ.tests$Marsh.M)
 
 }
+\author{
+Michael Collyer
+}
 \references{
 Adams, D.C and M.L. Collyer. 2016. On the comparison of the strength of morphological 
 integration across morphometric datasets. Evolution. 70(11): 2623-2631.
 }
-\author{
-Michael Collyer
-}
 \keyword{analysis}
+

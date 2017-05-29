@@ -124,6 +124,9 @@ plot(rat.anova, outliers = TRUE) # diagnostic plots, including plotOutliers
 attributes(rat.anova)
 rat.anova$fitted # just the fitted values
 }
+\author{
+Dean Adams and Michael Collyer
+}
 \references{
 Anderson MJ. 2001. A new method for non-parametric multivariate analysis of variance. 
    Austral Ecology 26: 32-46.
@@ -141,7 +144,5 @@ Goodall, C. R. 1991. Procrustes methods in the statistical analysis of shape. Jo
 \code{\link{advanced.procD.lm}}, \code{\link{procD.pgls}}, and 
 \code{\link{nested.update}} within geomorph; \code{\link[stats]{lm}} for more on linear model fits
 }
-\author{
-Dean Adams and Michael Collyer
-}
 \keyword{analysis}
+

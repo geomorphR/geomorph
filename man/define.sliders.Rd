@@ -97,6 +97,9 @@ The input 'landmarks' can be simply a vector of numbers corresponding to the "sl
  # and 6, 7, 8, and 9 are along a curve between 5 and 10.
  sliders = rbind(define.sliders(1:5), define.sliders(5:10)) 
 }
+\author{
+Emma Sherratt, Dean Adams, Erik Otarola-Castillo
+}
 \references{
 Bookstein, F. J. 1997 Landmark Methods for Forms without Landmarks: Morphometrics of 
 Group Differences in Outline Shape. Medical Image Analysis 1(3):225-243.
@@ -104,7 +107,5 @@ Group Differences in Outline Shape. Medical Image Analysis 1(3):225-243.
 \seealso{
 \code{\link{digitize2d}}, \code{\link{digit.fixed}}, \code{\link{gpagen}}, \code{\link{digit.curves}}
 }
-\author{
-Emma Sherratt, Dean Adams, Erik Otarola-Castillo
-}
 \keyword{utilities}
+

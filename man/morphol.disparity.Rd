@@ -86,11 +86,12 @@ morphol.disparity(coords ~ Csize + species*site, groups= ~ species, data = gdf, 
 MD <- morphol.disparity(coords ~ Csize + species*site, groups= ~ species, data = gdf, iter=999)
 MD$Procrustes.var # just the Procrustes variances
 }
+\author{
+Emma Sherratt and Michael Collyer
+}
 \references{
 Zelditch, M. L., D. L. Swiderski, H. D. Sheets, and W. L. Fink. 2012. Geometric morphometrics 
   for biologists: a primer. 2nd edition. Elsevier/Academic Press, Amsterdam.
 }
-\author{
-Emma Sherratt and Michael Collyer
-}
 \keyword{analysis}
+

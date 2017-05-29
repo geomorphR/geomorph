@@ -39,6 +39,9 @@ plotRefToTarget(mshape(Y$coords), Y$coords[,,out[1]], method="vector", label=TRU
 plotRefToTarget(mshape(Y$coords), Y$coords[,,out[2]], method="vector", label=TRUE)
 
 }
+\author{
+Emma Sherratt
+}
 \seealso{
 \code{\link{gpagen}}
 
@@ -46,7 +49,5 @@ plotRefToTarget(mshape(Y$coords), Y$coords[,,out[2]], method="vector", label=TRU
 
 \code{\link{plotAllSpecimens}}
 }
-\author{
-Emma Sherratt
-}
 \keyword{utilities}
+

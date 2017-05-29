@@ -23,10 +23,11 @@ calculates the distance of each to the estimated mean shape, and returns the nam
 address of the closest specimen. This function can be used
 to identify the specimen to be used by \code{\link{warpRefMesh}}.
 }
-\seealso{
-\code{\link{warpRefMesh}}
-}
 \author{
 Emma Sherratt
 }
+\seealso{
+\code{\link{warpRefMesh}}
+}
 \keyword{utilities}
+

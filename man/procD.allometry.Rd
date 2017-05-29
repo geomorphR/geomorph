@@ -166,6 +166,9 @@ data = plethAllometry$data, iter = 499, RRPP=TRUE)
 summary(plethANOVA) # Same ANOVA
 plot(plethANOVA) # diagnostic plot instead of allometry plot
 }
+\author{
+Michael Collyer
+}
 \references{
 Adams, D.C., F.J. Rohlf, and D.E. Slice. 2013. A field comes of age: geometric morphometrics 
   in the 21st century. Hystrix. 24:7-14.
@@ -183,7 +186,5 @@ Mitteroecker, P., P. Gunz, M. Bernhard, K. Schaefer, and F. L. Bookstein. 2004.
 \code{\link{procD.lm}} and \code{\link{advanced.procD.lm}} within geomorph;
 \code{\link[stats]{lm}} for more on linear model fits
 }
-\author{
-Michael Collyer
-}
 \keyword{analysis}
+
