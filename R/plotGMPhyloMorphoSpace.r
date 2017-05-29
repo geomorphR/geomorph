@@ -5,7 +5,7 @@
 #' The function creates a plot of the principal dimensions of tangent space for a set of Procrustes-aligned 
 #'   specimens. Default is a plot of PC axis 1 and 2. The phylogenetic tree for these specimens is superimposed in this plot revealing how shape 
 #'   evolves (e.g., Rohlf 2002; Klingenberg and Gidaszewski 2010). The plot also displays the ancestral 
-#'   states for each node of the phylogenetic tree (analogous to from \code{\link[phytools]{fastAnc}} from phytools), whose values can optionally be returned. 
+#'   states for each node of the phylogenetic tree (analagous to \code{\link[phytools]{fastAnc}} from phytools), whose values can optionally be returned. 
 #'   If a tree with branch lengths scaled by time is used, with the option zaxis = "time", the function plots a 3D phylomorphospace, with internal nodes positioned along the Z-axis scaled 
 #'   to time (a.k.a. Chronophylomorphospace, Sakamoto & Ruta 2012).
 #'
@@ -17,7 +17,7 @@
 #' @param yaxis A numeric value indicating which PC axis should be displayed as the Y-axis (default = PC2)
 #' @param zaxis Optional, a numeric value indicating which PC axis should be displayed as the Z-axis (e.g. PC3) or if zaxis="time", 
 #' internal nodes are plotted along the Z-axis relative to time
-#' @param ancStates Either a logical value indicating whether ancestral state values should be returned, or a matrix of ancestral states (i.e. calculated with \code{\link[phytools]{fastAnc}} or \code{\link[ape]{ace}})
+#' @param ancStates A logical value indicating whether ancestral state values should be returned
 #' @param plot.param A list of plotting parameters for the tips (t.bg, t.pch, t.cex), nodes (n.bg, n.pch, n.cex), 
 #' branches (l.col, lwd), taxa labels (txt.cex, txt.adj, txt.col) and node labels (n.txt.cex, n.txt.adj, n.txt.col)
 #' @param shadow A logical value indicating whether a 2D phylomorphospace should be plotted at the base when zaxis="time"
@@ -40,7 +40,8 @@
 #'                  plot.param=list(t.bg="blue",txt.col="red",n.cex=1))
 #' #NOTE: 3D plot also available: plotGMPhyloMorphoSpace(plethspecies$phy,Y.gpa$coords, zaxis= "time",
 #' #                 plot.param=list(n.cex=2, n.bg="blue"), shadow=TRUE)
-plotGMPhyloMorphoSpace<-function(phy,A,tip.labels=TRUE,node.labels=TRUE,ancStates=TRUE, xaxis=1, yaxis=2, zaxis=NULL, plot.param = list(), shadow=FALSE){
+plotGMPhyloMorphoSpace<-function(phy,A,tip.labels=TRUE,node.labels=TRUE,ancStates=TRUE, xaxis=1, yaxis=2, zaxis=NULL, 
+                                 plot.param = list(), shadow=FALSE){
   if(any(is.na(A))==T){
     stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').")  }
   if (length(dim(A))==3){ 
@@ -54,7 +55,7 @@ plotGMPhyloMorphoSpace<-function(phy,A,tip.labels=TRUE,node.labels=TRUE,ancState
   if (!inherits(phy, "phylo"))
     stop("tree must be of class 'phylo.'")
   if (!is.binary.tree(phy)) 
-    stop("tree is not fully bifurcating (consider 'multi2di' in ape.")
+    stop("tree is not fully bifurcating. Consider 'multi2di' in ape.")
   N<-length(phy$tip.label)
   Nnode <- phy$Nnode
   if(N!=dim(x)[1]){
@@ -78,7 +79,7 @@ plotGMPhyloMorphoSpace<-function(phy,A,tip.labels=TRUE,node.labels=TRUE,ancState
   all.data<-rbind(x,anc.states)  
   pcdata<-prcomp(all.data)$x 
   pcdata<-pcdata-matrix(rep(pcdata[(N+1),],nrow(pcdata)), nrow=nrow(pcdata),byrow=T)  #phylogenetic mean adjustment
-#plotting  
+#plotting 
   p.p <- plot.param
   if(is.null(p.p$t.bg)) p.p$t.bg="black" ; if(is.null(p.p$t.pch)) p.p$t.pch=21
   if(is.null(p.p$t.cex)) p.p$t.cex=2 ; if(is.null(p.p$n.bg)) p.p$n.bg="white"
@@ -135,11 +136,10 @@ plotGMPhyloMorphoSpace<-function(phy,A,tip.labels=TRUE,node.labels=TRUE,ancState
   if(is.character(zaxis)){
     zaxis <- node.depth.edgelength(phy)
     zaxis <- abs(node.depth.edgelength(phy) - max(zaxis))
-    view3d(phi=90, fov=30)
     plot3d(pcdata[,xaxis],pcdata[,yaxis],zaxis,type="n",xlim=limits(pcdata[,xaxis],1.5),
              ylim=limits(pcdata[,yaxis],1.5),
              zlim=c(max(zaxis), min(zaxis)),
-             asp=c(1,1,1),
+             asp=c(1,1,1), view3d(phi=90, fov=30),
            xlab= paste("PC",xaxis), ylab= paste("PC",yaxis), zlab="Time")
     points3d(pcdata[1:N,xaxis], pcdata[1:N,yaxis], zaxis[1:N],
              col= p.p$t.bg, size=p.p$t.cex*4)
