@@ -82,16 +82,16 @@ readland.tps <- function (file, specID = c("None", "ID", "imageID"),
     if (readcurves == TRUE && length(crvs) == 0){ stop("No CURVES= field present in file") } 
     ncurve <- as.numeric(sub("CURVES=", "", tpsfile[crvs], ignore.case))
     ncurvepts <- as.numeric(sub("POINTS=", "", tpsfile[grep("POINTS=", tpsfile, ignore.case)], ignore.case))
-      if (max(ncurve) - min(ncurve) != 0) {
-        stop("Number of curves not the same for all specimens.") }
-      if (warnmsg == TRUE && readcurves==TRUE) {cat(paste("Landmarks 1:", p, " are fixed landmarks.\n", sep=""))
-                         cat(paste("Landmarks ", p+1, ":", p+sum(ncurvepts[1:ncurve[1]]), " are semilandmarks.\n", sep=""))}
-      p <- nland[1] + sum(ncurvepts[1:ncurve[1]]) 
+    if (max(ncurve) - min(ncurve) != 0) {
+      stop("Number of curves not the same for all specimens.") }
+    if (warnmsg == TRUE && readcurves==TRUE) {cat(paste("Landmarks 1:", p, " are fixed landmarks.\n", sep=""))
+      cat(paste("Landmarks ", p+1, ":", p+sum(ncurvepts[1:ncurve[1]]), " are semilandmarks.\n", sep=""))}
+    p <- nland[1] + sum(ncurvepts[1:ncurve[1]]) 
   }    
   tmp <- tpsfile[-(grep("=", tpsfile))]
   options(warn = -1)
   tmp <- matrix(as.numeric(unlist(strsplit(tmp,"\\s+"))),ncol = k, byrow = TRUE)
- 
+  
   if (warnmsg == TRUE) {
     if (sum(which(is.na(tmp) == TRUE)) > 0) {
       cat("Missing data identified.\n")
@@ -102,9 +102,9 @@ readland.tps <- function (file, specID = c("None", "ID", "imageID"),
                    c(3, 2, 1))
   coords <- coords * imscale
   if (readcurves==F){coords<-coords[1:nland,,] 
-      if(n==1) coords <- array(coords, c(nland,k,n))}
+  if(n==1) coords <- array(coords, c(nland,k,n))}
   if (specID == "None") {
-      if (warnmsg == TRUE) {cat("No Specimen names extracted.\n")
+    if (warnmsg == TRUE) {cat("No Specimen names extracted.\n")
     }
   }
   if (specID == "imageID") {
@@ -133,8 +133,8 @@ readland.tps <- function (file, specID = c("None", "ID", "imageID"),
     if (length(ID) == 0) {
       if(warnmsg ==TRUE){
         cat("No name given under 'ID='. Specimen names not extracted.\n")
-        }
       }
+    }
     if (length(ID) != 0) {
       dimnames(coords)[[3]] <- as.list(ID)
       if (warnmsg == TRUE) {
@@ -142,5 +142,5 @@ readland.tps <- function (file, specID = c("None", "ID", "imageID"),
       }
     }
   }
-return(coords = coords)                    
+  return(coords = coords)                    
 }
