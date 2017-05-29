@@ -98,9 +98,6 @@ summary(pleth.pgls)
 plot(pleth.pgls)
 pleth.pgls$Pcor # the phylogenetic transformation (correction) matrix
 }
-\author{
-Dean Adams and Michael Collyer
-}
 \references{
 Adams, D.C. 2014. A method for assessing phylogenetic least squares models for shape and other high-dimensional 
 multivariate data. Evolution. 68:2675-2688.
@@ -111,5 +108,7 @@ shape data: what you shuffle matters. Evolution. 69:823-829.
 Collyer, M.L., D.J. Sekora, and D.C. Adams. 2015. A method for analysis of phenotypic change for phenotypes described 
 by high-dimensional data. Heredity. 115:357-365.
 }
+\author{
+Dean Adams and Michael Collyer
+}
 \keyword{analysis}
-

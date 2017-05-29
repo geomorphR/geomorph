@@ -71,9 +71,6 @@ PS.size <- physignal(A=Y.gpa$Csize,phy=plethspecies$phy,iter=999)
 summary(PS.size)
 plot(PS.size)
 }
-\author{
-Dean Adams
-}
 \references{
 Blomberg SP, Garland T, Ives AR. 2003. Testing for phylogenetic signal in comparative 
 data: behavioral traits are more labile. Evolution, 57:717-745.
@@ -81,5 +78,7 @@ data: behavioral traits are more labile. Evolution, 57:717-745.
 Adams, D.C. 2014. A generalized K statistic for estimating phylogenetic signal from shape and 
 other high-dimensional multivariate data. Systematic Biology.  63:685-697.
 }
+\author{
+Dean Adams
+}
 \keyword{analysis}
-

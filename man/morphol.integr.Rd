@@ -14,4 +14,3 @@ This function has been deprecated. Below shows the original function and the rep
 
 morphol.integr now deprecated: use \code{\link{integration.test}} instead
 }
-

@@ -17,7 +17,7 @@ plotGMPhyloMorphoSpace(phy, A, tip.labels = TRUE, node.labels = TRUE,
 
 \item{node.labels}{A logical value indicating whether node labels (ancestors) should be included}
 
-\item{ancStates}{A logical value indicating whether ancestral state values should be returned}
+\item{ancStates}{Either a logical value indicating whether ancestral state values should be returned, or a matrix of ancestral states (i.e. calculated with \code{\link[phytools]{fastAnc}} or \code{\link[ape]{ace}})}
 
 \item{xaxis}{A numeric value indicating which PC axis should be displayed as the X-axis (default = PC1)}
 
@@ -41,7 +41,7 @@ Function plots a phylogenetic tree and a set of Procrustes-aligned specimens in 
 The function creates a plot of the principal dimensions of tangent space for a set of Procrustes-aligned 
   specimens. Default is a plot of PC axis 1 and 2. The phylogenetic tree for these specimens is superimposed in this plot revealing how shape 
   evolves (e.g., Rohlf 2002; Klingenberg and Gidaszewski 2010). The plot also displays the ancestral 
-  states for each node of the phylogenetic tree (analagous to \code{\link[phytools]{fastAnc}} from phytools), whose values can optionally be returned. 
+  states for each node of the phylogenetic tree (analogous to from \code{\link[phytools]{fastAnc}} from phytools), whose values can optionally be returned. 
   If a tree with branch lengths scaled by time is used, with the option zaxis = "time", the function plots a 3D phylomorphospace, with internal nodes positioned along the Z-axis scaled 
   to time (a.k.a. Chronophylomorphospace, Sakamoto & Ruta 2012).
 }
@@ -55,9 +55,6 @@ plotGMPhyloMorphoSpace(plethspecies$phy,Y.gpa$coords,
 #NOTE: 3D plot also available: plotGMPhyloMorphoSpace(plethspecies$phy,Y.gpa$coords, zaxis= "time",
 #                 plot.param=list(n.cex=2, n.bg="blue"), shadow=TRUE)
 }
-\author{
-Dean Adams & Emma Sherratt
-}
 \references{
 Klingenberg, C. P., and N. A. Gidaszewski. 2010. Testing and quantifying phylogenetic 
   signals and homoplasy in morphometric data. Syst. Biol. 59:245-261.
@@ -68,5 +65,7 @@ Rohlf, F. J. 2002. Geometric morphometrics and phylogeny. Pp.175-193 in N. Macle
 Sakamoto, M. and Ruta, M. 2012. Convergence and Divergence in the Evolution of Cat
 Skulls: Temporal and Spatial Patterns of Morphological Diversity. PLoSONE 7(7): e39752.
 }
+\author{
+Dean Adams & Emma Sherratt
+}
 \keyword{visualization}
-

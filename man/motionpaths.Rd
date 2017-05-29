@@ -7,12 +7,11 @@
 \description{
 Simulated motion paths
 }
-\author{
-Dean Adams
-}
 \references{
 Adams, D. C., and M. L. Collyer. 2009. A general framework for the analysis of phenotypic 
   trajectories in evolutionary studies. Evolution 63:1143-1154.
 }
+\author{
+Dean Adams
+}
 \keyword{datasets}
-

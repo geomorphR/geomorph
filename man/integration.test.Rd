@@ -100,9 +100,6 @@ summary(IT) # Test summary
 plot(IT) # PLS plot
 IT$left.pls.vectors # extracting just the left (first block) singular vectors
 }
-\author{
-Dean Adams
-}
 \references{
 Bookstein, F. L., P. Gunz, P. Mitteroecker, H. Prossinger, K. Schaefer, and H. Seidler. 
   2003. Cranial integration in Homo: singular warps analysis of the midsagittal plane in ontogeny and 
@@ -112,5 +109,7 @@ Bookstein, F. L., P. Gunz, P. Mitteroecker, H. Prossinger, K. Schaefer, and H. S
 \code{\link{two.b.pls}}, \code{\link{modularity.test}}, \code{\link{phylo.pls}}, 
 \code{\link{phylo.integration}}, and \code{\link{compare.pls}}
 }
+\author{
+Dean Adams
+}
 \keyword{analysis}
-

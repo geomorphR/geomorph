@@ -38,13 +38,12 @@ the coordinate matrix ({digitspec}).
 # digitdat <- scallopPLY$coords
 # plotspec(spec=ply,digitspec=digitdat,fixed=16, centered =TRUE)
 }
-\author{
-Erik Otarola-Castillo & Emma Sherratt
-}
 \seealso{
 \code{\link{warpRefMesh}}
 
 \code{\link{read.ply}}
 }
+\author{
+Erik Otarola-Castillo & Emma Sherratt
+}
 \keyword{visualization}
-

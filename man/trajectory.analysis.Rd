@@ -176,9 +176,6 @@ plot(TA, group.cols = c("dark red", "dark blue", "dark green", "yellow"), pt.sca
 plot(TA, group.cols = c("dark red", "dark blue", "dark green", "yellow"), 
 pt.seq.pattern = c("green", "gray30", "red"), pt.scale = 1.3)
 }
-\author{
-Dean Adams and Michael Collyer
-}
 \references{
 Collyer, M.L., and D.C. Adams. 2013. Phenotypic trajectory analysis: Comparison of 
  shape change patterns in evolution and ecology. Hystrix. 24:75-83.
@@ -198,5 +195,7 @@ Adams, D. C., and M. L. Collyer. 2009. A general framework for the analysis of p
 Collyer, M. L., and D. C. Adams. 2007. Analysis of two-state multivariate phenotypic change 
   in ecological studies. Ecology 88:683-692.
 }
+\author{
+Dean Adams and Michael Collyer
+}
 \keyword{analysis}
-

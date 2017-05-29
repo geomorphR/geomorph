@@ -89,9 +89,6 @@ method="vector",mag=3)
 # tar.link.lwd=2), method="points", links = scallinks)
 
 }
-\author{
-Dean Adams, Emma Sherratt & Michael Collyer
-}
 \references{
 Claude, J. 2008. Morphometrics with R. Springer, New York.
 }
@@ -104,5 +101,7 @@ Claude, J. 2008. Morphometrics with R. Springer, New York.
 
 \code{\link{warpRefOutline}}
 }
+\author{
+Dean Adams, Emma Sherratt & Michael Collyer
+}
 \keyword{visualization}
-

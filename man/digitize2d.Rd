@@ -70,4 +70,3 @@ If verbose = FALSE the digitizing of landmarks is continuous and uninterrupted. 
 Dean Adams, Erik Otarola-Castillo and Emma Sherratt
 }
 \keyword{digitizing}
-

@@ -12,12 +12,11 @@ Population from which fish were sampled (Marsh or Sinkhole).
 These data were previously aligned 
 with GPA.  Centroid size (CS) is also provided.
 }
-\author{
-Michael Collyer
-}
 \references{
 Collyer, M.L., D.J. Sekora, and D.C. Adams. 2015. A method for analysis of phenotypic 
 change for phenotypes described by high-dimensional data. Heredity. 113: doi:10.1038/hdy.2014.75.
 }
+\author{
+Michael Collyer
+}
 \keyword{datasets}
-

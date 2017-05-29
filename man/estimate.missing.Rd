@@ -56,9 +56,6 @@ plethland<-plethodon$land
 estimate.missing(plethland,method="TPS")
 estimate.missing(plethland,method="Reg")
 }
-\author{
-Dean Adams
-}
 \references{
 Claude, J. 2008. Morphometrics with R. Springer, New York.
 
@@ -69,5 +66,7 @@ frontal cranial profiles in archaic and modern Homo by morphometric analysis. An
 Gunz, P., P. Mitteroecker, S. Neubauer, G. W. Weber, and F. L. Bookstein. 2009. Principles for 
 the virtual reconstruction of hominin crania. J. Hum. Evol. 57:48-62.
 }
+\author{
+Dean Adams
+}
 \keyword{utilities}
-

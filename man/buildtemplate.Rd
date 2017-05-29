@@ -77,9 +77,6 @@ parameter 'fixed' can be a p-x-k matrix of 3D coordinates. In this case, the fun
 template of sliding semilandmarks.
 }
 }
-\author{
-Erik Otarola-Castillo & Emma Sherratt
-}
 \references{
 Gunz P, Mitteroecker P, & Bookstein FJ (2005) Semilandmarks in Three Dimensions. Modern Morphometrics in Physical 
 Anthropology, ed Slice DE (Springer-Verlag, New York), pp 73-98.
@@ -93,5 +90,7 @@ Mitteroecker P & Gunz P (2009) Advances in Geometric Morphometrics. Evolutionary
 
 \code{\link{digitsurface}}
 }
+\author{
+Erik Otarola-Castillo & Emma Sherratt
+}
 \keyword{digitizing}
-

@@ -36,4 +36,3 @@ procD.lm(coords ~ Csize + species * site, data = gdf)
 Michael Collyer
 }
 \keyword{utilities}
-

@@ -33,11 +33,10 @@ plethodon$land    #original data in the form of 3D array
 
 two.d.array(plethodon$land)   # Convert to a 2D data matrix
 }
-\author{
-Dean Adams and Emma Sherratt
-}
 \seealso{
 \code{\link{arrayspecs}}
 }
+\author{
+Dean Adams and Emma Sherratt
+}
 \keyword{utilities}
-
