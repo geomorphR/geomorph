@@ -178,8 +178,8 @@ procD.pgls<-function(f1, phy, iter=999, seed=NULL, int.first = FALSE,
         cat("\nWarning: only F or Cohen's f-squared can be used for effect sizes
             with PGLS.  Effect type has been changed to F.\n")
       }
-      if(effect.type == "F") Z <- effect.size(log(Fs)) else
-        Z <- effect.size(log(cohenf)) 
+      if(effect.type == "cohen") Z <- effect.size(log(cohenf)) else
+        Z <- effect.size(log(Fs)) 
       names(SS) <- names(Fs) <- names(cohenf) <- c("obs", paste("iter", 1:iter, sep=":"))
       }
     if(effect.type == "SS") effect.type <- "F"
