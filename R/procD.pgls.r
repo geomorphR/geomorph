@@ -110,7 +110,7 @@ procD.pgls<-function(f1, phy, iter=999, seed=NULL, int.first = FALSE,
   k <- length(pfit$term.labels)
   Y <- as.matrix(pfit$wY)
   if(p > n) pfitr <- procD.fit(f1, data=data, keep.order=ko,  pca=TRUE, ...) else
-    pftr <- pfit
+    pfitr <- pfit
   phy.name <- deparse(substitute(phy))
   phy.match <- match(phy.name, names(data))
   if(length(phy.match) > 1) stop("More than one object of class phylo in data frame")
