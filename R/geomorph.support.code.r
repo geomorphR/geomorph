@@ -1682,7 +1682,7 @@ anova.parts <- function(pfit, P){ # P(ermutations) from SS.iter
   k <- length(QRf)
   n <- dim(Y)[1]; p <- dim(Y)[2]
   df <- sapply(1:k, function(j) QRf[[j]]$rank - QRr[[j]]$rank)
-  dfE <- n- k -1
+  dfE <- n- sum(df) -1
   SSE.model <- P$SSE[1]
   SSY <- P$SSY[1]
   if(k==1) SS <- P$SS[1] else SS <- P$SS[,1]
