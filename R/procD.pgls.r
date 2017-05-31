@@ -96,7 +96,7 @@
 #' 
 #' ### Extracting objects
 #' pleth.pgls <- procD.pgls(coords ~ Csize, phy = phy, data = gdf, iter = 999, RRPP = TRUE)
-#' summary(pleth.pgls)
+#' summary(pleth.pgls) 
 #' plot(pleth.pgls)
 #' pleth.pgls$Pcor # the phylogenetic transformation (correction) matrix
 procD.pgls<-function(f1, phy, iter=999, seed=NULL, int.first = FALSE, 
