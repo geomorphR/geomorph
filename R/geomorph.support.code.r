@@ -1379,8 +1379,6 @@ SS.iter = function(pfit,iter, seed = NULL, Yalt="RRPP"){
         mapply(function(ur,uf,y) sum((fastFit(uf,y,n,p) - fastFit(ur,y,n,p))^2), 
                Ur, Uf,Yr[[j]])})
     SS <- c(SS, SS.temp)
-    SSE <- c(SSE, SSE.temp)
-    SSY <- c(SSY, SSY.temp)
     jj <- jj-length(j)
     if(jj > 100) kk <- 1:100 else kk <- 1:jj
     j <- j[length(j)] +kk

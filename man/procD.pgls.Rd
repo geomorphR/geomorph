@@ -5,7 +5,7 @@
 \title{Phylogenetic ANOVA/regression for shape data}
 \usage{
 procD.pgls(f1, phy, iter = 999, seed = NULL, int.first = FALSE,
-  effect.type = c("cohen", "F"), RRPP = TRUE, data = NULL,
+  effect.type = c("F", "cohen"), RRPP = TRUE, data = NULL,
   print.progress = TRUE, ...)
 }
 \arguments{
@@ -110,7 +110,7 @@ procD.pgls(coords ~ Csize, phy = phy, data = gdf, iter = 999, RRPP = TRUE) # ran
 
 ### Extracting objects
 pleth.pgls <- procD.pgls(coords ~ Csize, phy = phy, data = gdf, iter = 999, RRPP = TRUE)
-summary(pleth.pgls)
+summary(pleth.pgls) 
 plot(pleth.pgls)
 pleth.pgls$Pcor # the phylogenetic transformation (correction) matrix
 }
