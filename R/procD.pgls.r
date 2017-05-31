@@ -105,8 +105,12 @@ procD.pgls<-function(f1, phy, iter=999, seed=NULL, int.first = FALSE,
   if(int.first==TRUE) ko = TRUE else ko = FALSE
   if(!is.null(data)) data <- droplevels(data)
   pfit <- procD.fit(f1, data=data, keep.order=ko, pca=FALSE, ... )
+  n <- dim(pfit$Y)[[1]]
+  p <- dim(pfit$Y)[[2]]
   k <- length(pfit$term.labels)
   Y <- as.matrix(pfit$wY)
+  if(p > n) pfitr <- procD.fit(f1, data=data, keep.order=ko,  pca=TRUE, ...) else
+    pftr <- pfit
   phy.name <- deparse(substitute(phy))
   phy.match <- match(phy.name, names(data))
   if(length(phy.match) > 1) stop("More than one object of class phylo in data frame")
@@ -130,13 +134,13 @@ procD.pgls<-function(f1, phy, iter=999, seed=NULL, int.first = FALSE,
   
   if(k > 0) {
     if(print.progress) {
-      if(RRPP == TRUE) P <- SS.pgls.iter(pfit, Yalt="RRPP", Pcor, iter=iter, seed=seed) else 
-        P <- SS.pgls.iter(pfit, Yalt="resample", Pcor, iter=iter, seed=seed)
+      if(RRPP == TRUE) P <- SS.pgls.iter(pfitr, Yalt="RRPP", Pcor, iter=iter, seed=seed) else 
+        P <- SS.pgls.iter(pfitr, Yalt="resample", Pcor, iter=iter, seed=seed)
     } else {
-      if(RRPP == TRUE) P <- .SS.pgls.iter(pfit, Yalt="RRPP", Pcor, iter=iter, seed=seed) else 
-        P <- .SS.pgls.iter(pfit, Yalt="resample", Pcor, iter=iter, seed=seed)
+      if(RRPP == TRUE) P <- .SS.pgls.iter(pfitr, Yalt="RRPP", Pcor, iter=iter, seed=seed) else 
+        P <- .SS.pgls.iter(pfitr, Yalt="resample", Pcor, iter=iter, seed=seed)
     }
-    anova.parts.obs <- anova.parts(pfit, P)
+    anova.parts.obs <- anova.parts(pfitr, P)
     anova.tab <-anova.parts.obs$anova.table 
     df <- anova.parts.obs$df
     SS <- P$SS
