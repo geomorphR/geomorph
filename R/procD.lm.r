@@ -140,14 +140,19 @@ procD.lm<- function(f1, iter = 999, seed=NULL, RRPP = TRUE, effect.type = c("F",
   if(int.first) ko = TRUE else ko = FALSE
   if(!is.null(data)) data <- droplevels(data)
   pfit <- procD.fit(f1, data=data, keep.order=ko,  pca=FALSE, ...)
+  Y <- pfit$Y
+  n <- dim(pfit$Y)[[1]]
+  p <- dim(pfit$Y)[[2]]
   k <- length(pfit$term.labels)
+  if(p > n) pfitr <- procD.fit(f1, data=data, keep.order=ko,  pca=TRUE, ...) else
+    pftr <- pfit
   if(k > 0) {
     if(print.progress == TRUE){
-      if(RRPP == TRUE) P <- SS.iter(pfit,Yalt="RRPP", iter=iter, seed=seed) else 
-        P <- SS.iter(pfit, Yalt="resample", iter=iter, seed=seed)
+      if(RRPP == TRUE) P <- SS.iter(pfitr, Yalt="RRPP", iter=iter, seed=seed) else 
+        P <- SS.iter(pfitr, Yalt="resample", iter=iter, seed=seed)
     } else {
-      if(RRPP == TRUE) P <- .SS.iter(pfit,Yalt="RRPP", iter=iter, seed=seed) else 
-        P <- .SS.iter(pfit, Yalt="resample", iter=iter, seed=seed)
+      if(RRPP == TRUE) P <- .SS.iter(pfitr, Yalt="RRPP", iter=iter, seed=seed) else 
+        P <- .SS.iter(pfitr, Yalt="resample", iter=iter, seed=seed)
     }
     SS <-P$SS
     SSE <- P$SSE

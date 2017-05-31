@@ -1351,7 +1351,7 @@ SS.iter = function(pfit,iter, seed = NULL, Yalt="RRPP"){
   if(q/n > 0.4) Pr <- Map(function(uf,ur) tcrossprod(uf) - tcrossprod(ur), Uf, Ur) else
     Pr <- NULL
   ind = perm.index(n, iter, seed=seed)
-  SS <- SSE <- SSY <- NULL
+  SS <- NULL
   pb <- txtProgressBar(min = 0, max = ceiling(iter/100), initial = 0, style=3) 
   jj <- iter+1
   step <- 1
@@ -1370,8 +1370,6 @@ SS.iter = function(pfit,iter, seed = NULL, Yalt="RRPP"){
           Yr = Map(function(x) Map(function(y) (y[x,])*sqrt(w), lapply(1:k,function(.) Y)),ind.j)
         }
       }
-    if(sum(w)==n) SSY.temp <- unlist(Map(function(x) sum(center(Y[x,])^2), ind.j)) else
-      SSY.temp <- unlist(Map(function(x) sum(center(Y[x,]*sqrt(w))^2), ind.j))
     if(!is.null(Pr)) {
       SS.temp <- lapply(1:length(j), function(j){ 
         mapply(function(p,y) sum((p%*%y)^2), 
@@ -1380,7 +1378,6 @@ SS.iter = function(pfit,iter, seed = NULL, Yalt="RRPP"){
       SS.temp <- lapply(1:length(j), function(j){ 
         mapply(function(ur,uf,y) sum((fastFit(uf,y,n,p) - fastFit(ur,y,n,p))^2), 
                Ur, Uf,Yr[[j]])})
-    SSE.temp <- unlist(Map(function(y) sum(fastLM(Uf[[k]], y[[k]])$residuals^2), Yr))
     SS <- c(SS, SS.temp)
     SSE <- c(SSE, SSE.temp)
     SSY <- c(SSY, SSY.temp)
@@ -1390,6 +1387,23 @@ SS.iter = function(pfit,iter, seed = NULL, Yalt="RRPP"){
     setTxtProgressBar(pb,step)
     step <- step+1
   }
+  if(sum(w) == n) {
+    SSY <- sum(center(Y)^2)
+    SSY <- rep(SSY, iter+1)
+    uf <- Uf[[k]]
+    SSE <- sapply(1:(iter+1), function(j){
+      y <- Y[ind[[j]],]
+      sum((y - fastFit(uf, y, n, p))^2)
+    })
+  } else {
+      SSY <- unlist(Map(function(x) sum(center(Y[x,]*sqrt(w))^2), ind))
+      uf <- Uf[[k]]
+      SSE <- sapply(1:(iter+1), function(j){
+        y <- Y[ind[[j]],]*sqrt(w)
+        sum((y - fastFit(uf, y, n, p))^2)
+      })
+    }
+  step <- step + 1
   close(pb)
   out <- list(SS = simplify2array(SS), 
               SSE = SSE,
@@ -1416,7 +1430,7 @@ SS.iter = function(pfit,iter, seed = NULL, Yalt="RRPP"){
   if(q/n > 0.4) Pr <- Map(function(uf,ur) tcrossprod(uf) - tcrossprod(ur), Uf, Ur) else
     Pr <- NULL
   ind = perm.index(n, iter, seed=seed)
-  SS <- SSE <- SSY <- NULL
+  SS <- NULL
   jj <- iter+1
   if(jj > 100) j <- 1:100 else j <- 1:jj
   while(jj > 0){
@@ -1433,8 +1447,6 @@ SS.iter = function(pfit,iter, seed = NULL, Yalt="RRPP"){
           Yr = Map(function(x) Map(function(y) (y[x,])*sqrt(w), lapply(1:k,function(.) Y)),ind.j)
         }
       }
-    if(sum(w)==n) SSY.temp <- unlist(Map(function(x) sum(center(Y[x,])^2), ind.j)) else
-      SSY.temp <- unlist(Map(function(x) sum(center(Y[x,]*sqrt(w))^2), ind.j))
     if(!is.null(Pr)) {
       SS.temp <- lapply(1:length(j), function(j){ 
         mapply(function(p,y) sum((p%*%y)^2), 
@@ -1443,16 +1455,27 @@ SS.iter = function(pfit,iter, seed = NULL, Yalt="RRPP"){
       SS.temp <- lapply(1:length(j), function(j){ 
         mapply(function(ur,uf,y) sum((fastFit(uf,y,n,p) - fastFit(ur,y,n,p))^2), 
                Ur, Uf,Yr[[j]])})
-    SSE.temp <- unlist(Map(function(y) sum(fastLM(Uf[[k]], y[[k]])$residuals^2), Yr))
     SS <- c(SS, SS.temp)
-    SSE <- c(SSE, SSE.temp)
-    SSY <- c(SSY, SSY.temp)
     jj <- jj-length(j)
     if(jj > 100) kk <- 1:100 else kk <- 1:jj
     j <- j[length(j)] +kk
-    step <- step+1
   }
-  
+  if(sum(w) == n) {
+    SSY <- sum(center(Y)^2)
+    SSY <- rep(SSY, iter+1)
+    uf <- Uf[[k]]
+    SSE <- sapply(1:(iter+1), function(j){
+      y <- Y[ind[[j]],]
+      sum((y - fastFit(uf, y, n, p))^2)
+    })
+  } else {
+    SSY <- unlist(Map(function(x) sum(center(Y[x,]*sqrt(w))^2), ind))
+    uf <- Uf[[k]]
+    SSE <- sapply(1:(iter+1), function(j){
+      y <- Y[ind[[j]],]*sqrt(w)
+      sum((y - fastFit(uf, y, n, p))^2)
+    })
+  }
   out <- list(SS = simplify2array(SS), 
               SSE = SSE,
               SSY = SSY)
