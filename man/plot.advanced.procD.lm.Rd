@@ -4,14 +4,12 @@
 \alias{plot.advanced.procD.lm}
 \title{Plot Function for geomorph}
 \usage{
-\method{plot}{advanced.procD.lm}(x, outliers = FALSE, ...)
+\method{plot}{advanced.procD.lm}(x, ...)
 }
 \arguments{
 \item{x}{plot object (from \code{\link{advanced.procD.lm}})}
 
-\item{outliers}{Logical argument to include outliers plot}
-
-\item{...}{other arguments passed to plot}
+\item{...}{other arguments passed to  \code{\link{plot.procD.lm}}}
 }
 \description{
 Plot Function for geomorph

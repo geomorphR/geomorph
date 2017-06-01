@@ -287,16 +287,14 @@ summary.advanced.procD.lm <- function(object, ...) {
 #' Plot Function for geomorph
 #' 
 #' @param x plot object (from \code{\link{advanced.procD.lm}})
-#' @param outliers Logical argument to include outliers plot
-#' @param ... other arguments passed to plot
+#' @param ... other arguments passed to  \code{\link{plot.procD.lm}}
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities
 #' @keywords visualization
-plot.advanced.procD.lm <- function(x, outliers = FALSE, ...) {
-  plot.procD.lm(x, outliers, ...)
+plot.advanced.procD.lm <- function(x, ...) {
+  plot.procD.lm(x,  ...)
 }
-
 
 ## procD.allometry
 
