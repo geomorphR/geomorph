@@ -89,6 +89,16 @@ If one wishes to incorporate a phylogeny, \code{\link{phylo.integration}} is the
 but allows PGLS estimation of PLS vectors.  Because \code{\link{integration.test}} can be used on two blocks, \code{\link{phylo.integration}} likewise allows one to
 perform a phylogenetic two-block PLS analysis.
 }
+ 
+ \subsection{Notes for geomorph 3.0.4 and subsequent versions}{ 
+ Compared to previous versions of geomorph, users might notice differences in effect sizes.  Previous versions used z-scores calculated with 
+ expected values of statistics from null hypotheses (sensu Collyer et al. 2015); however Adams and Collyer (2016) showed that expected values 
+ for some statistics can vary with sample size and variable number, and recommended finding the expected value, empirically, as the mean from the set 
+ of random outcomes.  Geomorph 3.0.4 and subsequent versions now center z-scores on their empirically estimated expected values and where appropriate, 
+ log-transform values to assure statistics are normally distributed.  This can result in negative effect sizes, when statistics are smaller than 
+ expected compared to the avergae random outcome.  For ANOVA-based functions, the option to choose among different statistics to measure effect size 
+ is now a function argument.
+}
 }
 \examples{
 data(plethodon) 
@@ -104,6 +114,12 @@ IT$left.pls.vectors # extracting just the left (first block) singular vectors
 Bookstein, F. L., P. Gunz, P. Mitteroecker, H. Prossinger, K. Schaefer, and H. Seidler. 
   2003. Cranial integration in Homo: singular warps analysis of the midsagittal plane in ontogeny and 
   evolution. J. Hum. Evol. 44:167-187.
+
+Collyer, M.L., D.J. Sekora, and D.C. Adams. 2015. A method for analysis of phenotypic change for phenotypes described 
+by high-dimensional data. Heredity. 115:357-365.
+
+Adams, D.C. and M.L. Collyer. 2016.  On the comparison of the strength of morphological integration across morphometric 
+datasets. Evolution. 70:2623-2631.
 }
 \seealso{
 \code{\link{two.b.pls}}, \code{\link{modularity.test}}, \code{\link{phylo.pls}}, 

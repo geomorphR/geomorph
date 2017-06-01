@@ -163,11 +163,14 @@ Anderson MJ. 2001. A new method for non-parametric multivariate analysis of vari
 Anderson MJ. and C.J.F. terBraak. 2003. Permutation tests for multi-factorial analysis of variance.
    Journal of Statistical Computation and Simulation 73: 85-113.
 
+Goodall, C.R. 1991. Procrustes methods in the statistical analysis of shape. Journal of the 
+   Royal Statistical Society B 53:285-339.
+
 Collyer, M.L., D.J. Sekora, and D.C. Adams. 2015. A method for analysis of phenotypic change for phenotypes described 
 by high-dimensional data. Heredity. 115:357-365.
 
-Goodall, C. R. 1991. Procrustes methods in the statistical analysis of shape. Journal of the 
-   Royal Statistical Society B 53:285-339.
+Adams, D.C. and M.L. Collyer. 2016.  On the comparison of the strength of morphological integration across morphometric 
+datasets. Evolution. 70:2623-2631.
 }
 \seealso{
 \code{\link{advanced.procD.lm}}, \code{\link{procD.pgls}}, and 

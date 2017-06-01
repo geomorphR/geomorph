@@ -144,6 +144,10 @@
 #'   transformation of skull shape in St Bernard dogs. Proc. R. Soc. B. 275:71-76.
 #' @references Mitteroecker, P., P. Gunz, M. Bernhard, K. Schaefer, and F. L. Bookstein. 2004. 
 #'   Comparison of cranial ontogenetic trajectories among great apes and humans. J. Hum. Evol. 46:679-698.
+#' @references Collyer, M.L., D.J. Sekora, and D.C. Adams. 2015. A method for analysis of phenotypic change for phenotypes described 
+#' by high-dimensional data. Heredity. 115:357-365.
+#' @references Adams, D.C. and M.L. Collyer. 2016.  On the comparison of the strength of morphological integration across morphometric 
+#' datasets. Evolution. 70:2623-2631.
 #' @seealso \code{\link{procD.lm}} and \code{\link{advanced.procD.lm}} within geomorph;
 #' \code{\link[stats]{lm}} for more on linear model fits
 #' @examples

@@ -34,6 +34,16 @@
 #' when more than two modules are input.
 #' }
 #'  
+#'  \subsection{Notes for geomorph 3.0.4 and subsequent versions}{ 
+#'  Compared to previous versions of geomorph, users might notice differences in effect sizes.  Previous versions used z-scores calculated with 
+#'  expected values of statistics from null hypotheses (sensu Collyer et al. 2015); however Adams and Collyer (2016) showed that expected values 
+#'  for some statistics can vary with sample size and variable number, and recommended finding the expected value, empirically, as the mean from the set 
+#'  of random outcomes.  Geomorph 3.0.4 and subsequent versions now center z-scores on their empirically estimated expected values and where appropriate, 
+#'  log-transform values to assure statistics are normally distributed.  This can result in negative effect sizes, when statistics are smaller than 
+#'  expected compared to the avergae random outcome.  For ANOVA-based functions, the option to choose among different statistics to measure effect size 
+#'  is now a function argument.
+#' }
+#' 
 #' @param A A 2D array (n x [p1 x k1]) or 3D array (p1 x k1 x n) containing landmark coordinates for the first block
 #' @param A2 An optional 2D array (n x [p2 x k2]) or 3D array (p2 x k2 x n) containing landmark coordinates for the second block 
 #' @param phy A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape
@@ -71,6 +81,10 @@
 #' @references  Adams, D.C. and R. Felice. 2014. Assessing phylogenetic morphological 
 #' integration and trait covariation in morphometric data using evolutionary covariance 
 #' matrices. PLOS ONE. 9(4):e94335.
+#' @references Collyer, M.L., D.J. Sekora, and D.C. Adams. 2015. A method for analysis of phenotypic change for phenotypes described 
+#' by high-dimensional data. Heredity. 115:357-365.
+#' @references Adams, D.C. and M.L. Collyer. 2016.  On the comparison of the strength of morphological integration across morphometric 
+#' datasets. Evolution. 70:2623-2631.
 #' @seealso \code{\link{integration.test}}, \code{\link{modularity.test}}, \code{\link{phylo.pls}}, and 
 #' \code{\link{two.b.pls}}
 #' @examples

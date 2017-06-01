@@ -139,6 +139,9 @@ aov.pleth$slopes # extract the slope vectors
 \references{
 Collyer, M.L., D.J. Sekora, and D.C. Adams. 2015. A method for analysis of phenotypic change for phenotypes described 
 by high-dimensional data. Heredity. 115:357-365.
+
+Adams, D.C. and M.L. Collyer. 2016.  On the comparison of the strength of morphological integration across morphometric 
+datasets. Evolution. 70:2623-2631.
 }
 \seealso{
 \code{\link{procD.lm}}

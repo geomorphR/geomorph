@@ -63,6 +63,16 @@
 #' by providing pairwise statistics and P-values.
 #' }
 #'
+#'  \subsection{Notes for geomorph 3.0.4 and subsequent versions}{ 
+#'  Compared to previous versions of geomorph, users might notice differences in effect sizes.  Previous versions used z-scores calculated with 
+#'  expected values of statistics from null hypotheses (sensu Collyer et al. 2015); however Adams and Collyer (2016) showed that expected values 
+#'  for some statistics can vary with sample size and variable number, and recommended finding the expected value, empirically, as the mean from the set 
+#'  of random outcomes.  Geomorph 3.0.4 and subsequent versions now center z-scores on their empirically estimated expected values and where appropriate, 
+#'  log-transform values to assure statistics are normally distributed.  This can result in negative effect sizes, when statistics are smaller than 
+#'  expected compared to the avergae random outcome.  For ANOVA-based functions, the option to choose among different statistics to measure effect size 
+#'  is now a function argument.
+#' }
+#' 
 #' @param f1 A formula for the linear model, for trajectories (e.g., Y ~ A or Y ~ A * B).
 #' The right hand side of this formula can contain only one or two factors.
 #' @param f2 A formula for additional covariates  (e.g.,  ~ x1 + x2)
@@ -126,6 +136,10 @@
 #'   trajectories in evolutionary studies. Evolution 63:1143-1154.
 #' @references Collyer, M. L., and D. C. Adams. 2007. Analysis of two-state multivariate phenotypic change 
 #'   in ecological studies. Ecology 88:683-692.
+#' @references Collyer, M.L., D.J. Sekora, and D.C. Adams. 2015. A method for analysis of phenotypic change for phenotypes described 
+#' by high-dimensional data. Heredity. 115:357-365.
+#' @references Adams, D.C. and M.L. Collyer. 2016.  On the comparison of the strength of morphological integration across morphometric 
+#' datasets. Evolution. 70:2623-2631.
 #' @examples
 #' # Estimate trajectories from LS means in 2-factor model
 #' 
