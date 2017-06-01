@@ -945,11 +945,6 @@ gdf.to.df <- function(L){
 # general workhorse for all 'procD.lm' functions
 # used in all 'procD.lm' functions
 
-# procD.fit + subfunctions
-# lm-like fit modified for Procrustes residuals 
-# general workhorse for all 'procD.lm' functions
-# used in all 'procD.lm' functions
-
 # procD.fit.lm
 # base for procD.fit
 # uses lm object as a start
