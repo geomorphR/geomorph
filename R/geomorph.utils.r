@@ -130,43 +130,104 @@ plot.QQ <- function(r){
 #' Plot Function for geomorph
 #' 
 #' @param x plot object (from \code{\link{procD.lm}})
-#' @param outliers Logical argument to include outliers plot
-#' @param ... other arguments passed to plot
+#' @param type Indicates which type of plot, choosing among diagnostics,
+#' regression, or principal component plots.  Diagnostic plots are similar to 
+#' \code{\link{procD.lm}} diagnostic plots, but for multivariate data.  Regression plots
+#' plot multivariate dispersion in some fashion against predictor values. PC plots
+#' project data onto the eigenvectors of the coavriance matrix for fitted values.
+#' @param outliers Logical argument to include outliers plot, if diagnostics
+#' are performed
+#' @param predictor An optional vector, likely used in \code{\link{procD.lm}}.
+#' This vector is a vector of covariate values equal to the number of observations.
+#' @param reg.type If "regression" is chosen for plot type, this argument
+#' indicates whether a common regression component (CRC) plot, prediction line 
+#' (Predline) plot, or regression score (RegScore) plotting is performed.  These plots
+#' are the same as those available from \code{\link{procD.allometry}} without the constraint
+#' that the predictor is size.
+#' @param ... other arguments passed to plot (helpful to employ
+#' different colors or symbols for different groups).  See
+#' \code{\link{plot.defualt}} and \code{\link{par}}
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities
 #' @keywords visualization
-plot.procD.lm <- function(x, outliers=FALSE, ...){
-  r <- x$residuals
-  f <- x$fitted
+plot.procD.lm <- function(x, type = c("diagnostics", "regression",
+                                      "PC"), outliers=FALSE, predictor = NULL,
+                          reg.type = c("CRC", "PredLine", "RegScore"), ...){
+  r <- as.matrix(x$residuals)
+  f <- as.matrix(x$fitted)
   if(!is.null(x$Pcor)) {
-    r <- x$pgls.residuals
-    f <- x$pgls.fitted
+    r <- as.matrix(x$pgls.residuals)
+    f <- as.matrix(x$pgls.fitted)
   }
-  if(!is.null(x$weights)) {r <- r*sqrt(x$weights); f <- f*sqrt(x$weights)}
-  pca.r <- prcomp(r)
-  var.r <- round(pca.r$sdev^2/sum(pca.r$sdev^2)*100,2)
-  plot(pca.r$x, pch=19, asp =1,
-       xlab = paste("PC 1", var.r[1],"%"),
-       ylab = paste("PC 2", var.r[2],"%"),
-       main = "PCA Residuals")
-  pca.f <- prcomp(f)
-  var.f <- round(pca.f$sdev^2/sum(pca.f$sdev^2)*100,2)
-  dr <- sqrt(diag(tcrossprod(center(r))))
-  plot.QQ(r)
-  plot(pca.f$x[,1], dr, pch=19, asp =1,
-       xlab = paste("PC 1", var.f[1],"%"),
-       ylab = "Procrustes Distance Residuals",
-       main = "Residuals vs. PC 1 fitted")
-  lfr <- loess(dr~pca.f$x[,1])
-  lfr <- cbind(lfr$x, lfr$fitted); lfr <- lfr[order(lfr[,1]),]
-  points(lfr, type="l", col="red")
-  plot.het(r,f)
-  p <- ncol(r)
-  if(outliers==TRUE){
-    if(p/3 == round(p/3)) ra <- arrayspecs(r,p/3,3) else 
-      ra <- arrayspecs(r,p/2,2)
-    plotOutliers(ra)
+  type <- match.arg(type)
+  if(is.na(match(type, c("diagnostics", "regression", "PC")))) 
+    type <- "diagnostics"
+  if(type == "diagnostics") {
+    pca.r <- prcomp(r)
+    var.r <- round(pca.r$sdev^2/sum(pca.r$sdev^2)*100,2)
+    plot(pca.r$x, pch=19, asp =1,
+         xlab = paste("PC 1", var.r[1],"%"),
+         ylab = paste("PC 2", var.r[2],"%"),
+         main = "PCA Residuals")
+    pca.f <- prcomp(f)
+    var.f <- round(pca.f$sdev^2/sum(pca.f$sdev^2)*100,2)
+    dr <- sqrt(diag(tcrossprod(center(r))))
+    plot.QQ(r)
+    plot(pca.f$x[,1], dr, pch=19, asp =1,
+         xlab = paste("PC 1", var.f[1],"%"),
+         ylab = "Procrustes Distance Residuals",
+         main = "Residuals vs. PC 1 fitted")
+    lfr <- loess(dr~pca.f$x[,1])
+    lfr <- cbind(lfr$x, lfr$fitted); lfr <- lfr[order(lfr[,1]),]
+    points(lfr, type="l", col="red")
+    plot.het(r,f)
+    p <- ncol(r)
+    if(outliers==TRUE){
+      if(p/3 == round(p/3)) ra <- arrayspecs(r,p/3,3) else 
+        ra <- arrayspecs(r,p/2,2)
+      plotOutliers(ra)
+    }
+  }
+  if(type == "regression"){
+    reg.type <- match.arg(reg.type)
+    if(is.na(match(reg.type, c("CRC", "PredLine", "RegScore")))) 
+      if(is.null(x$predictor))
+        stop("This plot type is not available without a predictor.")
+    n <- NROW(r); p <- NCOL(r)
+    if(!is.vector(predictor)) stop("Predictor must be a vector")
+    if(length(predictor) != n) 
+      stop("Observations in predictor must equal observations if procD.lm fit")
+    xc <- predictor
+    b <- lm(f ~ xc)$coefficients
+    if(is.matrix(b)) b <- b[2,] else b <- b[2]
+    a <- crossprod(r, xc)/sum(xc^2)
+    a <- a/sqrt(sum(a^2))
+    CRC <- r%*%a  
+    resid <- r%*%(diag(p) - matrix(crossprod(a),p,p))
+    RSC <- prcomp(resid)$x
+    Reg.proj <- x$Y%*%b%*%sqrt(solve(crossprod(b)))
+    PL <- prcomp(f)$x[,1]
+    if(reg.type == "CRC"){
+      layout(matrix(c(3,1,1,1,1,1,1,1,4,2,2,2,2,2,2,2,2,2),3,6))
+      plot(predictor, CRC, xlab = deparse(substitute(predictor)), ...)
+      plot(CRC, RSC[,1], asp=1, xlab = "CRC", ylab = "RSC 1", ...)
+    } else if(reg.type == "RegScore") {
+      plot(predictor, Reg.proj, 
+           xlab = deparse(substitute(predictor)), 
+           ylab = "Regression Score", ...)
+    } else {
+      plot(predictor, PL, 
+           xlab = deparse(substitute(predictor)), 
+           ylab = "PC 1 for fitted values", ...)
+    }
+  }
+  if(type == "PC"){
+    eigs <- prcomp(f)$rotation
+    P <- x$Y%*%eigs
+    plot(P, asp=1,
+         xlab = "PC 1 for fitted values",
+         ylab = "PC 2 for fitted values", ...)
   }
 }
 

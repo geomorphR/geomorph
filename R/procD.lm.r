@@ -42,14 +42,18 @@
 #'   to assure normally distributed data.  The SS type will influence how Cohen's f-squared values are calculated.  
 #'   Cohen's f-squared values are based on partial eta-squared values that can be calculated sequentially or marginally, as with SS.
 #'   
-#'   
 #'   In the case that multiple factor or factor-covariate interactions are used in the model 
 #'   formula, one can specify whether all main effects should be added to the 
 #'   model first, or interactions should precede subsequent main effects 
 #'   (i.e., Y ~ a + b + c + a:b + ..., or Y ~ a + b + a:b + c + ..., respectively.)
 #'
 #'   The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{procD.lm}}.
-#'   The generic function, \code{\link{plot}}, produces diagnostic plots for Procrustes residuals of the linear fit.
+#'   The generic function, \code{\link{plot}} has several options for plotting, using \code{\link{plot.procD.lm}}.  Diagnostics plots, 
+#'   principal component plots (rotated to first PC of covariance matrix of fitted values), and regression plots can be performed.  The
+#'   latter is fundamentally similar to the plotting options for \code{\link{procD.allometry}}.  One must provide a linear predictor, and
+#'   can choose among common regression component (CRC), predicted values (PredLine), or regression scores (RegScore.  See \code{\link{procD.allometry}} 
+#'   for details. In these plotting optons, teh predictor does not need to be size, and fitted values and residuals from the procD.lm fit are used rather 
+#'   than mean-centered values. 
 #'   
 #'  \subsection{Notes for geomorph 3.0.4 and subsequent versions}{ 
 #'  Compared to previous versions of geomorph, users might notice differences in effect sizes.  Previous versions used z-scores calculated with 
@@ -141,11 +145,16 @@
 #' procD.lm(coords ~ Csize, data = gdf, iter = 999, RRPP = TRUE) # randomize raw values
 #' # Outcomes should be exactly the same
 #' 
-#' ### Extracting objects and plotting residuals
+#' ### Extracting objects and plotting options
 #' rat.anova <- procD.lm(coords ~ Csize, data = gdf, iter = 999, RRPP = TRUE)
 #' summary(rat.anova)
-#' plot(rat.anova) # diagnostic plots
-#' plot(rat.anova, outliers = TRUE) # diagnostic plots, including plotOutliers
+#' plot(rat.anova, type = "diagnostics") # diagnostic plots
+#' plot(rat.anova, type = "diagnostics", outliers = TRUE) # diagnostic plots, including plotOutliers
+#' plot(rat.anova, type = "PC") # PC plot rotated to major axis of fitted values
+#' plot(rat.anova, type = "regression", predictor = gdf$Csize,
+#' reg.type = "CRC") # Uses residuals from model to find the commonom regression component for a predictor from the model
+#' plot(rat.anova, type = "regression", predictor = gdf$Csize,
+#' reg.type = "RegScore") # Uses residuals from model to find the projected regression scores
 #' attributes(rat.anova)
 #' rat.anova$fitted # just the fitted values
 procD.lm<- function(f1, iter = 999, seed=NULL, RRPP = TRUE, effect.type = c("F", "SS", "cohen"),

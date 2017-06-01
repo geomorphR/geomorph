@@ -4,14 +4,34 @@
 \alias{plot.procD.lm}
 \title{Plot Function for geomorph}
 \usage{
-\method{plot}{procD.lm}(x, outliers = FALSE, ...)
+\method{plot}{procD.lm}(x, type = c("diagnostics", "regression", "PC"),
+  outliers = FALSE, predictor = NULL, reg.type = c("CRC", "PredLine",
+  "RegScore"), ...)
 }
 \arguments{
 \item{x}{plot object (from \code{\link{procD.lm}})}
 
-\item{outliers}{Logical argument to include outliers plot}
+\item{type}{Indicates which type of plot, choosing among diagnostics,
+regression, or principal component plots.  Diagnostic plots are similar to 
+\code{\link{procD.lm}} diagnostic plots, but for multivariate data.  Regression plots
+plot multivariate dispersion in some fashion against predictor values. PC plots
+project data onto the eigenvectors of the coavriance matrix for fitted values.}
 
-\item{...}{other arguments passed to plot}
+\item{outliers}{Logical argument to include outliers plot, if diagnostics
+are performed}
+
+\item{predictor}{An optional vector, likely used in \code{\link{procD.lm}}.
+This vector is a vector of covariate values equal to the number of observations.}
+
+\item{reg.type}{If "regression" is chosen for plot type, this argument
+indicates whether a common regression component (CRC) plot, prediction line 
+(Predline) plot, or regression score (RegScore) plotting is performed.  These plots
+are the same as those available from \code{\link{procD.allometry}} without the constraint
+that the predictor is size.}
+
+\item{...}{other arguments passed to plot (helpful to employ
+different colors or symbols for different groups).  See
+\code{\link{plot.defualt}} and \code{\link{par}}}
 }
 \description{
 Plot Function for geomorph
