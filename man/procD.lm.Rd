@@ -119,7 +119,7 @@ The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\li
   The generic function, \code{\link{plot}} has several options for plotting, using \code{\link{plot.procD.lm}}.  Diagnostics plots, 
   principal component plots (rotated to first PC of covariance matrix of fitted values), and regression plots can be performed.  The
   latter is fundamentally similar to the plotting options for \code{\link{procD.allometry}}.  One must provide a linear predictor, and
-  can choose among common regression component (CRC), predicted values (PredLine), or regression scores (RegScore.  See \code{\link{procD.allometry}} 
+  can choose among common regression component (CRC), predicted values (PredLine), or regression scores (RegScore).  See \code{\link{procD.allometry}} 
   for details. In these plotting optons, teh predictor does not need to be size, and fitted values and residuals from the procD.lm fit are used rather 
   than mean-centered values. 
   
@@ -132,6 +132,38 @@ The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\li
  expected compared to the avergae random outcome.  For ANOVA-based functions, the option to choose among different statistics to measure effect size 
  is now a function argument.
 }
+}
+\examples{
+### MANOVA example for Goodall's F test (multivariate shape vs. factors)
+data(plethodon) 
+Y.gpa <- gpagen(plethodon$land)    #GPA-alignment  
+gdf <- geomorph.data.frame(shape = Y.gpa$coords, 
+site = plethodon$site, species = plethodon$species) # geomorph data frame
+
+procD.lm(shape ~ species * site, data = gdf, iter = 999, RRPP = FALSE) # randomize raw values
+procD.lm(shape ~ species * site, data = gdf, iter = 999, RRPP = TRUE) # randomize residuals
+
+### Regression example
+data(ratland)
+rat.gpa<-gpagen(ratland)         #GPA-alignment
+gdf <- geomorph.data.frame(rat.gpa) # geomorph data frame is easy without additional input
+
+procD.lm(coords ~ Csize, data = gdf, iter = 999, RRPP = FALSE) # randomize raw values
+procD.lm(coords ~ Csize, data = gdf, iter = 999, RRPP = TRUE) # randomize raw values
+# Outcomes should be exactly the same
+
+### Extracting objects and plotting options
+rat.anova <- procD.lm(coords ~ Csize, data = gdf, iter = 999, RRPP = TRUE)
+summary(rat.anova)
+plot(rat.anova, type = "diagnostics") # diagnostic plots
+plot(rat.anova, type = "diagnostics", outliers = TRUE) # diagnostic plots, including plotOutliers
+plot(rat.anova, type = "PC", pch = 19, col = "blue") # PC plot rotated to major axis of fitted values
+plot(rat.anova, type = "regression", predictor = gdf$Csize, reg.type = "CRC", 
+pch = 19, col = "green") # Uses residuals from model to find the commonom regression component for a predictor from the model
+plot(rat.anova, type = "regression", predictor = gdf$Csize, reg.type = "RegScore", 
+pch = 21, bg = "yellow") # Uses residuals from model to find the projected regression scores
+attributes(rat.anova)
+rat.anova$fitted # just the fitted values
 }
 \references{
 Anderson MJ. 2001. A new method for non-parametric multivariate analysis of variance. 
@@ -151,7 +183,7 @@ datasets. Evolution. 70:2623-2631.
 }
 \seealso{
 \code{\link{advanced.procD.lm}}, \code{\link{procD.pgls}}, and 
-\code{\link{nested.update}} within geomorph; \code{\link[stats]{lm}} for more on linear model fits
+\code{\link{nested.update}} within geomorph; \code{\link[stats]{lm}} for more on linear model fits.
 }
 \author{
 Dean Adams and Michael Collyer

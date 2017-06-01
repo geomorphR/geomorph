@@ -132,12 +132,13 @@ plot.QQ <- function(r){
 #' @param x plot object (from \code{\link{procD.lm}})
 #' @param type Indicates which type of plot, choosing among diagnostics,
 #' regression, or principal component plots.  Diagnostic plots are similar to 
-#' \code{\link{procD.lm}} diagnostic plots, but for multivariate data.  Regression plots
+#' \code{\link{lm}} diagnostic plots, but for multivariate data.  Regression plots
 #' plot multivariate dispersion in some fashion against predictor values. PC plots
 #' project data onto the eigenvectors of the coavriance matrix for fitted values.
 #' @param outliers Logical argument to include outliers plot, if diagnostics
 #' are performed
-#' @param predictor An optional vector, likely used in \code{\link{procD.lm}}.
+#' @param predictor An optional vector if "regression" plot type is chose, 
+#' and is a variable likely used in \code{\link{procD.lm}}.
 #' This vector is a vector of covariate values equal to the number of observations.
 #' @param reg.type If "regression" is chosen for plot type, this argument
 #' indicates whether a common regression component (CRC) plot, prediction line 

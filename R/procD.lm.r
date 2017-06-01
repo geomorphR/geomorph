@@ -51,7 +51,7 @@
 #'   The generic function, \code{\link{plot}} has several options for plotting, using \code{\link{plot.procD.lm}}.  Diagnostics plots, 
 #'   principal component plots (rotated to first PC of covariance matrix of fitted values), and regression plots can be performed.  The
 #'   latter is fundamentally similar to the plotting options for \code{\link{procD.allometry}}.  One must provide a linear predictor, and
-#'   can choose among common regression component (CRC), predicted values (PredLine), or regression scores (RegScore.  See \code{\link{procD.allometry}} 
+#'   can choose among common regression component (CRC), predicted values (PredLine), or regression scores (RegScore).  See \code{\link{procD.allometry}} 
 #'   for details. In these plotting optons, teh predictor does not need to be size, and fitted values and residuals from the procD.lm fit are used rather 
 #'   than mean-centered values. 
 #'   
@@ -125,7 +125,7 @@
 #' @references Adams, D.C. and M.L. Collyer. 2016.  On the comparison of the strength of morphological integration across morphometric 
 #' datasets. Evolution. 70:2623-2631.
 #' @seealso \code{\link{advanced.procD.lm}}, \code{\link{procD.pgls}}, and 
-#' \code{\link{nested.update}} within geomorph; \code{\link[stats]{lm}} for more on linear model fits
+#' \code{\link{nested.update}} within geomorph; \code{\link[stats]{lm}} for more on linear model fits.
 #' @examples
 #' ### MANOVA example for Goodall's F test (multivariate shape vs. factors)
 #' data(plethodon) 
@@ -151,10 +151,10 @@
 #' plot(rat.anova, type = "diagnostics") # diagnostic plots
 #' plot(rat.anova, type = "diagnostics", outliers = TRUE) # diagnostic plots, including plotOutliers
 #' plot(rat.anova, type = "PC", pch = 19, col = "blue") # PC plot rotated to major axis of fitted values
-#' plot(rat.anova, type = "regression", predictor = gdf$Csize,
-#' reg.type = "CRC", pch = 19, col = "green) # Uses residuals from model to find the commonom regression component for a predictor from the model
-#' plot(rat.anova, type = "regression", predictor = gdf$Csize,
-#' reg.type = "RegScore", pch = 21, bg = "yellow") # Uses residuals from model to find the projected regression scores
+#' plot(rat.anova, type = "regression", predictor = gdf$Csize, reg.type = "CRC", 
+#' pch = 19, col = "green") # Uses residuals from model to find the commonom regression component for a predictor from the model
+#' plot(rat.anova, type = "regression", predictor = gdf$Csize, reg.type = "RegScore", 
+#' pch = 21, bg = "yellow") # Uses residuals from model to find the projected regression scores
 #' attributes(rat.anova)
 #' rat.anova$fitted # just the fitted values
 procD.lm<- function(f1, iter = 999, seed=NULL, RRPP = TRUE, effect.type = c("F", "SS", "cohen"),

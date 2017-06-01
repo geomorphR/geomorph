@@ -64,7 +64,7 @@ d975879b9cfb692a95bd331d298d79d2 *man/plethspecies.Rd
 c243df60434118dddca6904f3d6de9b0 *man/plot.physignal.Rd
 e32d1f343638d0daa60e63f95698a9c1 *man/plot.pls.Rd
 d7f72ea7dd30cf0af885781ad389cdb3 *man/plot.procD.allometry.Rd
-f26df3d3e4d6000ce4f63bae167fd74c *man/plot.procD.lm.Rd
+928d43fe78ccec849685c830a78b80cb *man/plot.procD.lm.Rd
 21d89ace20ae5cc0f35b744a10157075 *man/plot.trajectory.analysis.Rd
 f8c9c6bd7531c038f32e8e16b70d3074 *man/plotAllometry.Rd
 0907a5bb638b6428e56cdb5fc4be0b67 *man/plotAllSpecimens.Rd
@@ -89,7 +89,7 @@ c9459503ec13f843f971edda31289dc6 *man/print.pls.Rd
 e186bde97e98a204b53457a14eb0a52d *man/print.procD.lm.Rd
 82db8052b9e73e447b14cb5844a0cd26 *man/print.trajectory.analysis.Rd
 dd4d9682893677462197301333539f22 *man/procD.allometry.Rd
-1fe617b5e85908dd15c66a5387c7e0b8 *man/procD.lm.Rd
+8cffe08dc502ae0201dfc09bcab22cb5 *man/procD.lm.Rd
 aa05559403cdfbb5db1b36f61276cb01 *man/procD.pgls.Rd
 5af95dfa1f3eca058660677087344463 *man/pupfish.Rd
 f6cb9acd4041322264e9f26158957dc1 *man/ratland.Rd
@@ -146,7 +146,7 @@ ddff41e987eac54d3500e2313799c3c6 *R/digitize2d.r
 b56e53ac307d84a05efee9525dd6868a *R/fixed.angle.r
 203177efc30cc6fef4bd604b2fc2af01 *R/geomorph.data.frame.r
 c6789d4646932b633405e314dd64672e *R/geomorph.support.code.r
-d9d4646a2e683bf0730e286734a99784 *R/geomorph.utils.r
+8ea3ea8096c39d3df139702d5a1295bc *R/geomorph.utils.r
 0d9d88147f22cff2241b6e2e7396d57f *R/globalIntegration.r
 17bbdf1769466f17742de952fb612cc4 *R/gpagen.r
 2d8ab3c6fea452711a7cf091ffba8ff5 *R/gridPar.r
@@ -165,7 +165,7 @@ b8814f9a047a63c586c6e472bc17d6d5 *R/plotOutliers.r
 41db23cebd8d7be6c3decf781bd378e0 *R/plotspec.r
 1f6d6dd7deb37d5920c9addb55bf7c3f *R/plotTangentSpace.r
 b8296e52246b38cbb671c0f20129b783 *R/procD.allometry.r
-9ee3d3c842153cacc8354f2974e6230c *R/procD.lm.r
+545aff4577d7fe83a90f3e11c4ee9a2e *R/procD.lm.r
 22c3628134c20bb918d8c7805a6048c5 *R/procD.pgls.r
 df3f4cc6406dc0c737ee2ff08c2a0e3d *R/read.morphologika.r
 9c3c828f71a413b5437d45228a3bf9b7 *R/read.ply.r

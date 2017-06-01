@@ -13,14 +13,15 @@
 
 \item{type}{Indicates which type of plot, choosing among diagnostics,
 regression, or principal component plots.  Diagnostic plots are similar to 
-\code{\link{procD.lm}} diagnostic plots, but for multivariate data.  Regression plots
+\code{\link{lm}} diagnostic plots, but for multivariate data.  Regression plots
 plot multivariate dispersion in some fashion against predictor values. PC plots
 project data onto the eigenvectors of the coavriance matrix for fitted values.}
 
 \item{outliers}{Logical argument to include outliers plot, if diagnostics
 are performed}
 
-\item{predictor}{An optional vector, likely used in \code{\link{procD.lm}}.
+\item{predictor}{An optional vector if "regression" plot type is chose, 
+and is a variable likely used in \code{\link{procD.lm}}.
 This vector is a vector of covariate values equal to the number of observations.}
 
 \item{reg.type}{If "regression" is chosen for plot type, this argument
