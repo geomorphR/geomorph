@@ -153,8 +153,17 @@
 #' plot(rat.anova, type = "PC", pch = 19, col = "blue") # PC plot rotated to major axis of fitted values
 #' plot(rat.anova, type = "regression", predictor = gdf$Csize, reg.type = "CRC", 
 #' pch = 19, col = "green") # Uses residuals from model to find the commonom regression component for a predictor from the model
-#' plot(rat.anova, type = "regression", predictor = gdf$Csize, reg.type = "RegScore", 
+#' rat.plot <- plot(rat.anova, type = "regression", predictor = gdf$Csize, reg.type = "RegScore", 
 #' pch = 21, bg = "yellow") # Uses residuals from model to find the projected regression scores
+#' 
+#' # TPS grids for min and max scores in previous plot
+#' preds <- shape.predictor(gdf$coords, x = rat.plot$RegScore, 
+#'                         predmin = min(rat.plot$RegScore), 
+#'                         predmax = max(rat.plot$RegScore))
+#' M <- rat.gpa$consensus
+#' plotRefToTarget(M, preds$predmin, mag=3)
+#' plotRefToTarget(M, preds$predmax, mag=3)
+#'                         
 #' attributes(rat.anova)
 #' rat.anova$fitted # just the fitted values
 procD.lm<- function(f1, iter = 999, seed=NULL, RRPP = TRUE, effect.type = c("F", "SS", "cohen"),

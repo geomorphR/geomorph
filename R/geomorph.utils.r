@@ -233,6 +233,8 @@ plot.procD.lm <- function(x, type = c("diagnostics", "regression",
          xlab = "PC 1 for fitted values",
          ylab = "PC 2 for fitted values", ...)
   }
+  out <- list(CRC = CRC, PredLine = PL, RegScore = Reg.proj)
+  invisible(out)
 }
 
 
