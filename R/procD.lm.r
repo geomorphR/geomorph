@@ -150,11 +150,11 @@
 #' summary(rat.anova)
 #' plot(rat.anova, type = "diagnostics") # diagnostic plots
 #' plot(rat.anova, type = "diagnostics", outliers = TRUE) # diagnostic plots, including plotOutliers
-#' plot(rat.anova, type = "PC") # PC plot rotated to major axis of fitted values
+#' plot(rat.anova, type = "PC", pch = 19, col = "blue") # PC plot rotated to major axis of fitted values
 #' plot(rat.anova, type = "regression", predictor = gdf$Csize,
-#' reg.type = "CRC") # Uses residuals from model to find the commonom regression component for a predictor from the model
+#' reg.type = "CRC", pch = 19, col = "green) # Uses residuals from model to find the commonom regression component for a predictor from the model
 #' plot(rat.anova, type = "regression", predictor = gdf$Csize,
-#' reg.type = "RegScore") # Uses residuals from model to find the projected regression scores
+#' reg.type = "RegScore", pch = 21, bg = "yellow") # Uses residuals from model to find the projected regression scores
 #' attributes(rat.anova)
 #' rat.anova$fitted # just the fitted values
 procD.lm<- function(f1, iter = 999, seed=NULL, RRPP = TRUE, effect.type = c("F", "SS", "cohen"),

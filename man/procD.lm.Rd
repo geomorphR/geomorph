@@ -133,38 +133,6 @@ The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\li
  is now a function argument.
 }
 }
-\examples{
-### MANOVA example for Goodall's F test (multivariate shape vs. factors)
-data(plethodon) 
-Y.gpa <- gpagen(plethodon$land)    #GPA-alignment  
-gdf <- geomorph.data.frame(shape = Y.gpa$coords, 
-site = plethodon$site, species = plethodon$species) # geomorph data frame
-
-procD.lm(shape ~ species * site, data = gdf, iter = 999, RRPP = FALSE) # randomize raw values
-procD.lm(shape ~ species * site, data = gdf, iter = 999, RRPP = TRUE) # randomize residuals
-
-### Regression example
-data(ratland)
-rat.gpa<-gpagen(ratland)         #GPA-alignment
-gdf <- geomorph.data.frame(rat.gpa) # geomorph data frame is easy without additional input
-
-procD.lm(coords ~ Csize, data = gdf, iter = 999, RRPP = FALSE) # randomize raw values
-procD.lm(coords ~ Csize, data = gdf, iter = 999, RRPP = TRUE) # randomize raw values
-# Outcomes should be exactly the same
-
-### Extracting objects and plotting options
-rat.anova <- procD.lm(coords ~ Csize, data = gdf, iter = 999, RRPP = TRUE)
-summary(rat.anova)
-plot(rat.anova, type = "diagnostics") # diagnostic plots
-plot(rat.anova, type = "diagnostics", outliers = TRUE) # diagnostic plots, including plotOutliers
-plot(rat.anova, type = "PC") # PC plot rotated to major axis of fitted values
-plot(rat.anova, type = "regression", predictor = gdf$Csize,
-reg.type = "CRC") # Uses residuals from model to find the commonom regression component for a predictor from the model
-plot(rat.anova, type = "regression", predictor = gdf$Csize,
-reg.type = "RegScore") # Uses residuals from model to find the projected regression scores
-attributes(rat.anova)
-rat.anova$fitted # just the fitted values
-}
 \references{
 Anderson MJ. 2001. A new method for non-parametric multivariate analysis of variance. 
    Austral Ecology 26: 32-46.
