@@ -209,9 +209,12 @@ plot.procD.lm <- function(x, type = c("diagnostics", "regression",
     Reg.proj <- x$Y%*%b%*%sqrt(solve(crossprod(b)))
     PL <- prcomp(f)$x[,1]
     if(reg.type == "CRC"){
-      layout(matrix(c(3,1,1,1,1,1,1,1,4,2,2,2,2,2,2,2,2,2),3,6))
+      par(mfcol = c(1,2))
+      par(mar = c(4,4,1,1))
       plot(predictor, CRC, xlab = deparse(substitute(predictor)), ...)
       plot(CRC, RSC[,1], asp=1, xlab = "CRC", ylab = "RSC 1", ...)
+      par(mar = c(5,4,4,2) + 0.1)
+      par(mfcol=c(1,1))
     } else if(reg.type == "RegScore") {
       plot(predictor, Reg.proj, 
            xlab = deparse(substitute(predictor)), 
