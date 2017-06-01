@@ -137,7 +137,7 @@ plot.QQ <- function(r){
 #' project data onto the eigenvectors of the coavriance matrix for fitted values.
 #' @param outliers Logical argument to include outliers plot, if diagnostics
 #' are performed
-#' @param predictor An optional vector if "regression" plot type is chose, 
+#' @param predictor An optional vector if "regression" plot type is chosen, 
 #' and is a variable likely used in \code{\link{procD.lm}}.
 #' This vector is a vector of covariate values equal to the number of observations.
 #' @param reg.type If "regression" is chosen for plot type, this argument

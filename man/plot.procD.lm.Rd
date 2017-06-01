@@ -20,7 +20,7 @@ project data onto the eigenvectors of the coavriance matrix for fitted values.}
 \item{outliers}{Logical argument to include outliers plot, if diagnostics
 are performed}
 
-\item{predictor}{An optional vector if "regression" plot type is chose, 
+\item{predictor}{An optional vector if "regression" plot type is chosen, 
 and is a variable likely used in \code{\link{procD.lm}}.
 This vector is a vector of covariate values equal to the number of observations.}
 
