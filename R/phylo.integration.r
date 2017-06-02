@@ -14,8 +14,8 @@
 #' utilized as the test statistic. The observed value is statistically assessed using permutation, where data for 
 #' one partition are permuted relative to the other partitions. Note that this permutation is performed on phylogenetically-
 #' transformed data, so that the probability of phylogenetic association of A vs. B is similar to that of B vs. A: 
-#' i.e., prob(A,B|phy)~prob(B,A|phy).  This procedure has been shown to shuffle the correct exchangeable units under the null 
-#' hypothesis of no integration (Adams and Collyer 2017).
+#' i.e., prob(A,B|phy)~prob(B,A|phy); thus, shuffling the correct exchangeable units under the null 
+#' hypothesis of no integration (Adams and Collyer 2017). 
 #' 
 #'  Input for the analysis can take one of two forms. First, one can input a single dataset (as a matrix or 3D array, along with 
 #'  a vector describing which variables correspond to which partitions (for the case of a 3D array, which landmarks belong to which 
