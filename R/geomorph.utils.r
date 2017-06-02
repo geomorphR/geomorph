@@ -147,7 +147,7 @@ plot.QQ <- function(r){
 #' that the predictor is size.
 #' @param ... other arguments passed to plot (helpful to employ
 #' different colors or symbols for different groups).  See
-#' \code{\link{plot.defualt}} and \code{\link{par}}
+#' \code{\link{plot.default}} and \code{\link{par}}
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities
