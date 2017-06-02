@@ -40,7 +40,7 @@
 #'  expected compared to the avergae random outcome.  For ANOVA-based functions, the option to choose among different statistics to measure effect size 
 #'  is now a function argument.
 #'  
-#'  An optional argument for including a phylogenetic tree of {class phylo} is included in this function.  ANOVA performed on separate PGLS models in analagous
+#'  An optional argument for including a phylogenetic tree of {class phylo} is included in this function.  ANOVA performed on separate PGLS models is analagous
 #'  to a likelihood ratio test between models (Adams and Collyer 2017).  Pairwise tests can also be performed after PGLS estimation of coefficients but users
 #'  should be aware that no formal research on the statistical properties (type I error rates and statistical power) of pairwise statistics with PGLS has yet 
 #'  been performed.  Using PGLS and analysis of pairwise statistics, therefore, assumes some risk.
@@ -58,8 +58,8 @@
 #' @param angle.type A value specifying whether directional differences between slopes should be represented by vector
 #' correlations (r), radians (rad) or degrees (deg).
 #' @param phy A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape (optional)
-#' @param pc.shape An argument for whether analysis should be performed on the principal component scores fo shape.  This is a useful
-#' option if the data are high-dimensional (many more variables that observations) but will not affect results
+#' @param pc.shape An argument for whether analysis should be performed on the principal component scores of shape.  This is a useful
+#' option if the data are high-dimensional (many more variables than observations) but will not affect results
 #' @param iter Number of iterations for significance testing
 #' @param seed An optional argument for setting the seed for random permutations of the resampling procedure.  
 #' If left NULL (the default), the exact same P-values will be found for repeated runs of the analysis (with the same number of iterations).
@@ -90,7 +90,7 @@
 #' @references Adams, D.C. and M.L. Collyer. 2016.  On the comparison of the strength of morphological integration across morphometric 
 #' datasets. Evolution. 70:2623-2631.
 #' @references Adams, D.C. and M.L. Collyer. 2017. Multivariate comparative methods: evaluations, comparisons, and
-#' recommendations. In press.
+#' recommendations. Systematic Biology. In press.
 #' 
 #' @examples
 #'data(plethodon)
