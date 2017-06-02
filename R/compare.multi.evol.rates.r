@@ -1,14 +1,14 @@
-#' Comparing rates of shape evolution among traits on phylogenies 
+#' Comparing net rates of shape evolution among traits on phylogenies 
 #'
-#' Function calculates rates of shape evolution for two or more multi-dimensional traits on a 
+#' Function calculates net rates of shape evolution for two or more multi-dimensional traits on a 
 #' phylogeny from a set of Procrustes-aligned specimens
 #'
-#' The function compares rates of morphological evolution for two or more multi-dimensional traits
+#' The function compares net rates of morphological evolution for two or more multi-dimensional traits
 #' on a phylogeny, under a Brownian motion model of evolution following the procedure of Denton and 
 #' Adams (2015). It is assumed that the landmarks for all traits have previously been aligned using
 #' Generalized Procrustes Analysis (GPA) [e.g., with \code{\link{gpagen}}]. The approach calculates
-#' multivariate evolutionary rates found from the distances between species in morphospace after 
-#' phylogenetic transformation (sensu Adams 2014). From the data the rate of shape evolution for 
+#' multivariate net evolutionary rates found from the outer-product matrix of between species differences 
+#' in morphospace after phylogenetic transformation (sensu Adams 2014). From the data the net rate of shape evolution for 
 #' each multi-dimensional trait is calculated, and a ratio of rates is obtained. If three or more 
 #' traits are used, the ratio of the maximum to minimum rate is used as a test statistic (see 
 #' Denton and Adams 2015). Significance testing is accomplished by phylogenetic simulation in 
@@ -26,7 +26,7 @@
 #' of n rows of species and p columns of variables. In this case, the grouping factor should 
 #' have each variable assigned to a trait group. 
 #' 
-#' Comparisons of evolutionary rates between traits may be accomplished in one of two ways. First, 
+#' Comparisons of net evolutionary rates between traits may be accomplished in one of two ways. First, 
 #' if the traits are are part of a single shape that was subjected to a single Procrustes 
 #' superimposition (i.e., they are subsets of landmarks in the configuration), then the procedure
 #' is performed without alteration as described above. However, if the shapes are derived from 
@@ -122,9 +122,9 @@ compare.multi.evol.rates<-function(A,gp,phy,Subset=TRUE,iter=999, print.progress
     fast.sigma.d.multi(x=as.matrix(x.sim[,,j]),Ptrans,Subset, gindx, ngps, gps.combo, N, p))
   if(ngps == 2) random.sigma<-c(sigma.obs$sigma.d.ratio, unlist(sigma.rand)) else
     random.sigma<-c(sigma.obs$sigma.d.ratio,
-                    sapply(1:iter, function(j){
-                      max(sigma.rand[[j]])
-                    }))
+                  sapply(1:iter, function(j){
+                    max(sigma.rand[[j]])
+                  }))
   p.val <- pval(random.sigma)
   ratio.vals<-matrix(NA,nrow=(iter+1),ncol=length(unlist(sigma.obs[4])))
   ratio.vals[1,]<-as.vector(sigma.obs$sigma.d.gp.ratio)

@@ -7,13 +7,12 @@
 \description{
 Landmark data from hummingbird bills (includes sliding semilandmarks on curves)
 }
-\author{
-Chelsea Berns and Dean Adams
-}
 \references{
 Berns, C.M., and Adams, D.C. 2010. Bill shape and sexual shape dimorphism between two species 
 of temperate hummingbirds: Archilochus alexandri (black-chinned hummingbirds) and Archilochus colubris 
 (ruby-throated hummingbirds). The Auk. 127:626-635.
 }
+\author{
+Chelsea Berns and Dean Adams
+}
 \keyword{datasets}
-

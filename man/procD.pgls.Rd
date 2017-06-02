@@ -5,7 +5,8 @@
 \title{Phylogenetic ANOVA/regression for shape data}
 \usage{
 procD.pgls(f1, phy, iter = 999, seed = NULL, int.first = FALSE,
-  RRPP = TRUE, data = NULL, print.progress = TRUE, ...)
+  effect.type = c("F", "cohen"), RRPP = TRUE, data = NULL,
+  print.progress = TRUE, ...)
 }
 \arguments{
 \item{f1}{A formula for the linear model (e.g., y~x1+x2)}
@@ -21,6 +22,10 @@ which might be of interest for advanced users.}
 
 \item{int.first}{A logical value to indicate if interactions of first main effects should precede subsequent main effects}
 
+\item{effect.type}{One of "F" or "ochen", to choose from which random distribution to estimate effect size.
+(The default is "F".  Values are log-transformed before z-score calculation to
+assure normally distributed effect sizes.)}
+
 \item{RRPP}{a logical value indicating whether residual randomization should be used for significance testing}
 
 \item{data}{A data frame for the function environment, see \code{\link{geomorph.data.frame}}}
@@ -28,12 +33,16 @@ which might be of interest for advanced users.}
 \item{print.progress}{A logical value to indicate whether a progress bar should be printed to the screen.
 This is helpful for long-running analyses.}
 
-\item{...}{Arguments passed on to procD.fit (typically associated with the lm function)}
+\item{...}{Arguments passed on to procD.fit (typically associated with the lm function,
+such as weights or offset).  The function procD.fit can also currently
+handle either type I, type II, or type III sums of squares and cross-products (SSCP) calculations.  Choice of SSCP type can be made with the argument,
+SS.type; i.e., SS.type = "I" or SS.type = "III".  Only advanced users should consider using these additional arguments, as such arguments
+are experimental in nature.}
 }
 \value{
 procD.lm.pgls returns an object of class "procD.lm".  
 See \code{\link{procD.lm}} for a description of the list of results generated.  Additionally, procD.pgls provides
-the phylogenetic correction matrix, Pcor, plus "pgls" adjusted coefficients, fitted values, and residuals.
+the phylogenetic correction matrix, Pcor, plus "pgls" adjusted coefficients, fitted values, residuals, and mean.
 }
 \description{
 Function performs Procrustes ANOVA in a phylogenetic framework and uses  permutation procedures to assess 
@@ -75,14 +84,41 @@ The function \code{\link{two.d.array}} can be used to obtain a two-dimensional d
   predicted values from the remaining effects to obtain pseudo-values from which SS are calculated. NOTE: for
   single-factor designs, the two approaches are identical.  However, when evaluating factorial models it has been
   shown that RRPP attains higher statistical power and thus has greater ability to identify patterns in data should
-  they be present (see Anderson and terBraak 2003). Effect-sizes (Z-scores) are computed as standard deviates of the sampling 
-  distributions (of F values) generated, which might be more intuitive for P-values than F-values (see Collyer et al. 2015).  In the case  
+  they be present (see Anderson and terBraak 2003). 
+  
+  Effect-sizes (Z scores) are computed as standard deviates of either the 
+  F or Cohen's f-squared sampling distributions generated, which might be more intuitive for P-values than F-values 
+  (see Collyer et al. 2015).  Values from these distributions are log-transformed prior to effect size estimation,
+  to assure normally distributed data.  The SS type will influence how Cohen's f-squared values are calculated.  
+  Cohen's f-squared values are based on partial eta-squared values that can be calculated sequentially or marginally, as with SS.
+  
+  In the case  
   that multiple factor or factor-covariate interactions are used in the model formula, one can specify whether all main effects should be  
    added to the model first, or interactions should precede subsequent main effects 
   (i.e., Y ~ a + b + c + a:b + ..., or Y ~ a + b + a:b + c + ..., respectively.)
 
 The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{procD.pgls}}.
   The generic function, \code{\link{plot}}, produces diagnostic plots for Procrustes residuals of the linear fit.
+  
+ \subsection{Notes for geomorph 3.0.4 and subsequent versions}{ 
+ Compared to previous versions of geomorph, users might notice differences in effect sizes.  Previous versions used z-scores calculated with 
+ expected values of statistics from null hypotheses (sensu Collyer et al. 2015); however Adams and Collyer (2016) showed that expected values 
+ for some statistics can vary with sample size and variable number, and recommended finding the expected value, empirically, as the mean from the set 
+ of random outcomes.  Geomorph 3.0.4 and subsequent versions now center z-scores on their empirically estimated expected values and where appropriate, 
+ log-transform values to assure statistics are normally distributed.  This can result in negative effect sizes, when statistics are smaller than 
+ expected compared to the avergae random outcome.  For ANOVA-based functions, the option to choose among different statistics to measure effect size 
+ is now a function argument.
+}
+
+\subsection{Notes for geomorph 3.0.4 and subsequent versions}{ 
+ Compared to previous versions of geomorph, users might notice differences in effect sizes.  Previous versions used z-scores calculated with 
+ expected values of statistics from null hypotheses (sensu Collyer et al. 2015); however Adams and Collyer (2016) showed that expected values 
+ for some statistics can vary with sample size and variable number, and recommended finding the expected value, empirically, as the mean from the set 
+ of random outcomes.  Geomorph 3.0.4 and subsequent versions now center z-scores on their empirically estimated expected values and where appropriate, 
+ log-transform values to assure statistics are normally distributed.  This can result in negative effect sizes, when statistics are smaller than 
+ expected compared to the avergae random outcome.  For ANOVA-based functions, the option to choose among different statistics to measure effect size 
+ is now a function argument.
+}
 }
 \examples{
 ### Example of D-PGLS for high-dimensional data 
@@ -94,12 +130,9 @@ procD.pgls(coords ~ Csize, phy = phy, data = gdf, iter = 999, RRPP = TRUE) # ran
 
 ### Extracting objects
 pleth.pgls <- procD.pgls(coords ~ Csize, phy = phy, data = gdf, iter = 999, RRPP = TRUE)
-summary(pleth.pgls)
+summary(pleth.pgls) 
 plot(pleth.pgls)
 pleth.pgls$Pcor # the phylogenetic transformation (correction) matrix
-}
-\author{
-Dean Adams and Michael Collyer
 }
 \references{
 Adams, D.C. 2014. A method for assessing phylogenetic least squares models for shape and other high-dimensional 
@@ -110,6 +143,11 @@ shape data: what you shuffle matters. Evolution. 69:823-829.
 
 Collyer, M.L., D.J. Sekora, and D.C. Adams. 2015. A method for analysis of phenotypic change for phenotypes described 
 by high-dimensional data. Heredity. 115:357-365.
+
+Adams, D.C. and M.L. Collyer. 2016.  On the comparison of the strength of morphological integration across morphometric 
+datasets. Evolution. 70:2623-2631.
+}
+\author{
+Dean Adams and Michael Collyer
 }
 \keyword{analysis}
-

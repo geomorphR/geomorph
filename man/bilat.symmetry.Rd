@@ -144,9 +144,6 @@ summary(scallop.sym)
 # NOTE one can also: plot(scallop.sym, warpgrids = TRUE, mesh = NULL)
 # NOTE one can also: scallop.sym$data.type # recall the symmetry type
 }
-\author{
-Dean Adams, Emma Sherratt, and Michael Collyer
-}
 \references{
 Klingenberg, C.P. and G.S. McIntyre. 1998. Quantitative genetics of geometric shape in the mouse mandible. Evolution. 55:2342-2352.
 
@@ -155,5 +152,7 @@ Mardia, K.V., F.L. Bookstein, and I.J. Moreton. 2000. Statistical assessment of 
 Klingenberg, C.P., M. Barluenga, and A. Meyer. 2002. Shape analysis of symmetric structures: quantifying variation among
 individuals and asymmetry. Evolution. 56:1909-1920.
 }
+\author{
+Dean Adams, Emma Sherratt, and Michael Collyer
+}
 \keyword{analysis}
-

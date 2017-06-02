@@ -39,4 +39,3 @@ plotAllSpecimens(Y.gpa$coords,links=plethodon$links)
 Dean Adams
 }
 \keyword{visualization}
-

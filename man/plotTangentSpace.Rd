@@ -5,7 +5,7 @@
 \title{Plot specimens in tangent space}
 \usage{
 plotTangentSpace(A, axis1 = 1, axis2 = 2, warpgrids = TRUE, mesh = NULL,
-  label = NULL, groups = NULL, legend = FALSE)
+  label = NULL, groups = NULL, legend = FALSE, ...)
 }
 \arguments{
 \item{A}{A 3D array (p x k x n) containing landmark coordinates for a set of aligned specimens}
@@ -25,6 +25,10 @@ as described in \code{\link{plotRefToTarget}}.}
 \item{groups}{An optional factor vector specifying group identity for each specimen (see example)}
 
 \item{legend}{A logical value for whether to add a legend to the plot (only when groups are assigned).}
+
+\item{...}{Arguments passed on to \code{\link{prcomp}}.  By default, \code{\link{plotTangentSpace}}
+will attempt to remove redundant axes (eigen values effectively 0).  To override this, adjust the 
+argument, tol, from \code{\link{prcomp}}.}
 }
 \value{
 If user assigns function to object, returned is a list of the following components:
@@ -78,4 +82,3 @@ plotTangentSpace(arrayspecs(resid(lm(two.d.array(Y.gpa$coords)~Y.gpa$Csize))+
 Dean Adams & Emma Sherratt
 }
 \keyword{visualization}
-

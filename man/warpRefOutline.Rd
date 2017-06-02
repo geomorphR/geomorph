@@ -37,9 +37,6 @@ The returned outline object is for use in geomorph
 functions where shape deformations are plotted (\code{\link{plotTangentSpace}}, 
 \code{\link{two.b.pls}}, \code{\link{bilat.symmetry}}, and \code{\link{plotRefToTarget}}).
 }
-\author{
-Emma Sherratt
-}
 \references{
 Bookstein, F. L. 1989 Principal Warps: Thin-Plate Splines and the Decomposition
 of Deformations. IEEE Transactions on Pattern Analysis and Machine Intelligence 11(6):567-585.
@@ -49,6 +46,8 @@ Rohlf, F. J. 1998. On Applications of Geometric Morphometrics to Studies of Onto
 \seealso{
 \code{\link{findMeanSpec}}
 }
+\author{
+Emma Sherratt
+}
 \keyword{utilities}
 \keyword{visualization}
-

@@ -5,7 +5,7 @@
 \title{Quantify and compare shape change trajectories}
 \usage{
 trajectory.analysis(f1, f2 = NULL, iter = 999, seed = NULL,
-  traj.pts = NULL, data = NULL, print.progress = TRUE)
+  traj.pts = NULL, data = NULL, print.progress = TRUE, ...)
 }
 \arguments{
 \item{f1}{A formula for the linear model, for trajectories (e.g., Y ~ A or Y ~ A * B).
@@ -27,7 +27,11 @@ which might be of interest for advanced users.}
 \item{print.progress}{A logical value to indicate whether a progress bar should be printed to the screen.
 This is helpful for long-running analyses.}
 
-\item{...}{Arguments passed on to procD.fit (typically associated with the \code{\link{lm}} function)}
+\item{...}{Arguments passed on to procD.fit (typically associated with the lm function,
+such as weights or offset).  The function procD.fit can also currently
+handle either type I, type II, or type III sums of squares and cross-products (SSCP) calculations.  Choice of SSCP type can be made with the argument,
+SS.type; i.e., SS.type = "I" or SS.type = "III".  Only advanced users should consider using these additional arguments, as such arguments
+are experimental in nature.}
 }
 \value{
 An object of class "trajectory.analysis" returns a list of the following:
@@ -126,6 +130,16 @@ of trajectories, a general ANOVA is provided with pairwise statistics for the sa
 does not compromise any interpretations made with previous versions of geomorph, but enhances inferential capacity
 by providing pairwise statistics and P-values.
 }
+
+\subsection{Notes for geomorph 3.0.4 and subsequent versions}{ 
+ Compared to previous versions of geomorph, users might notice differences in effect sizes.  Previous versions used z-scores calculated with 
+ expected values of statistics from null hypotheses (sensu Collyer et al. 2015); however Adams and Collyer (2016) showed that expected values 
+ for some statistics can vary with sample size and variable number, and recommended finding the expected value, empirically, as the mean from the set 
+ of random outcomes.  Geomorph 3.0.4 and subsequent versions now center z-scores on their empirically estimated expected values and where appropriate, 
+ log-transform values to assure statistics are normally distributed.  This can result in negative effect sizes, when statistics are smaller than 
+ expected compared to the avergae random outcome.  For ANOVA-based functions, the option to choose among different statistics to measure effect size 
+ is now a function argument.
+}
 }
 \examples{
 # Estimate trajectories from LS means in 2-factor model
@@ -176,9 +190,6 @@ plot(TA, group.cols = c("dark red", "dark blue", "dark green", "yellow"), pt.sca
 plot(TA, group.cols = c("dark red", "dark blue", "dark green", "yellow"), 
 pt.seq.pattern = c("green", "gray30", "red"), pt.scale = 1.3)
 }
-\author{
-Dean Adams and Michael Collyer
-}
 \references{
 Collyer, M.L., and D.C. Adams. 2013. Phenotypic trajectory analysis: Comparison of 
  shape change patterns in evolution and ecology. Hystrix. 24:75-83.
@@ -197,6 +208,14 @@ Adams, D. C., and M. L. Collyer. 2009. A general framework for the analysis of p
 
 Collyer, M. L., and D. C. Adams. 2007. Analysis of two-state multivariate phenotypic change 
   in ecological studies. Ecology 88:683-692.
+
+Collyer, M.L., D.J. Sekora, and D.C. Adams. 2015. A method for analysis of phenotypic change for phenotypes described 
+by high-dimensional data. Heredity. 115:357-365.
+
+Adams, D.C. and M.L. Collyer. 2016.  On the comparison of the strength of morphological integration across morphometric 
+datasets. Evolution. 70:2623-2631.
+}
+\author{
+Dean Adams and Michael Collyer
 }
 \keyword{analysis}
-

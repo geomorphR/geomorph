@@ -64,11 +64,10 @@ specific single button mice, XQuartz must be configured: go to Preferences > Inp
 NOTE: there is no pan (translate) functionality in rgl library for all platforms at this time.
 }
 }
-\author{
-Erik Otarola-Castillo & Emma Sherratt
-}
 \seealso{
 \code{\link{read.ply}}
 }
+\author{
+Erik Otarola-Castillo & Emma Sherratt
+}
 \keyword{digitizing}
-

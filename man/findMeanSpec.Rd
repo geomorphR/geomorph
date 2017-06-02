@@ -18,16 +18,15 @@ A function to identify which specimen lies closest to the estimated mean
 shape for a set of aligned specimens.
 }
 \details{
-Function takes an array of aligned specimens (such as made by \code{\link{gpagen}}, 
+Function takes a 3D array of aligned specimens (such as made by \code{\link{gpagen}}, 
 calculates the distance of each to the estimated mean shape, and returns the name and 
 address of the closest specimen. This function can be used
 to identify the specimen to be used by \code{\link{warpRefMesh}}.
 }
-\author{
-Emma Sherratt
-}
 \seealso{
 \code{\link{warpRefMesh}}
 }
+\author{
+Emma Sherratt
+}
 \keyword{utilities}
-

@@ -7,7 +7,7 @@
 define.modules(spec, nmodules)
 }
 \arguments{
-\item{spec}{Name of specimen, as an object matrix containing 2D or 3D landmark coordinates}
+\item{spec}{A p x k matrix containing landmark coordinates of a single specimen (2D or 3D)}
 
 \item{nmodules}{Number of modules to be defined}
 }
@@ -39,11 +39,10 @@ Selected landmarks will be colored yellow. Then type into the console a letter (
 to this module. Repeat until all landmarks are assigned to modules.
 }
 }
-\author{
-Emma Sherratt
-}
 \seealso{
 \code{\link{modularity.test}} and \code{\link{integration.test}}
 }
+\author{
+Emma Sherratt
+}
 \keyword{utilities}
-

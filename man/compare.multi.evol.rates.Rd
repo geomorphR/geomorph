@@ -2,7 +2,7 @@
 % Please edit documentation in R/compare.multi.evol.rates.r
 \name{compare.multi.evol.rates}
 \alias{compare.multi.evol.rates}
-\title{Comparing rates of shape evolution among traits on phylogenies}
+\title{Comparing net rates of shape evolution among traits on phylogenies}
 \usage{
 compare.multi.evol.rates(A, gp, phy, Subset = TRUE, iter = 999,
   print.progress = TRUE)
@@ -31,16 +31,16 @@ An object of class "evolrate" returns a list of the following:
   \item{call}{The matched call.}
 }
 \description{
-Function calculates rates of shape evolution for two or more multi-dimensional traits on a 
+Function calculates net rates of shape evolution for two or more multi-dimensional traits on a 
 phylogeny from a set of Procrustes-aligned specimens
 }
 \details{
-The function compares rates of morphological evolution for two or more multi-dimensional traits
+The function compares net rates of morphological evolution for two or more multi-dimensional traits
 on a phylogeny, under a Brownian motion model of evolution following the procedure of Denton and 
 Adams (2015). It is assumed that the landmarks for all traits have previously been aligned using
 Generalized Procrustes Analysis (GPA) [e.g., with \code{\link{gpagen}}]. The approach calculates
-multivariate evolutionary rates found from the distances between species in morphospace after 
-phylogenetic transformation (sensu Adams 2014). From the data the rate of shape evolution for 
+multivariate net evolutionary rates found from the outer-product matrix of between species differences 
+in morphospace after phylogenetic transformation (sensu Adams 2014). From the data the net rate of shape evolution for 
 each multi-dimensional trait is calculated, and a ratio of rates is obtained. If three or more 
 traits are used, the ratio of the maximum to minimum rate is used as a test statistic (see 
 Denton and Adams 2015). Significance testing is accomplished by phylogenetic simulation in 
@@ -58,7 +58,7 @@ used with other data (i.e., a set of length measurements), the input A should be
 of n rows of species and p columns of variables. In this case, the grouping factor should 
 have each variable assigned to a trait group.
 
-Comparisons of evolutionary rates between traits may be accomplished in one of two ways. First, 
+Comparisons of net evolutionary rates between traits may be accomplished in one of two ways. First, 
 if the traits are are part of a single shape that was subjected to a single Procrustes 
 superimposition (i.e., they are subsets of landmarks in the configuration), then the procedure
 is performed without alteration as described above. However, if the shapes are derived from 
@@ -82,9 +82,6 @@ EMR<-compare.multi.evol.rates(A=Y.gpa$coords,gp=land.gp,
 summary(EMR)
 plot(EMR)
 }
-\author{
-Dean Adams
-}
 \references{
 Adams, D.C. 2014. Quantifying and comparing phylogenetic evolutionary rates for 
  shape and other high-dimensional phenotypic data. Syst. Biol. 63:166-177.
@@ -93,5 +90,7 @@ Denton, J.S.S., and D.C. Adams. 2015. A new phylogenetic test for comparing
 multiple high-dimensional evolutionary rates suggests interplay of evolutionary rates and 
 modularity in lanternfishes (Myctophiformes; Myctophidae). Evolution. 69:2425-2440.
 }
+\author{
+Dean Adams
+}
 \keyword{analysis}
-

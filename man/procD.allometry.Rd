@@ -5,8 +5,8 @@
 \title{Procrustes ANOVA/regression, specifically for shape-size covariation (allometry)}
 \usage{
 procD.allometry(f1, f2 = NULL, f3 = NULL, logsz = TRUE, iter = 999,
-  seed = NULL, alpha = 0.05, RRPP = TRUE, print.progress = TRUE,
-  data = NULL, ...)
+  seed = NULL, alpha = 0.05, RRPP = TRUE, effect.type = c("F", "SS",
+  "cohen"), print.progress = TRUE, data = NULL, ...)
 }
 \arguments{
 \item{f1}{A formula for the relationship of shape and size; e.g., Y ~ X.}
@@ -28,12 +28,19 @@ which might be of interest for advanced users.}
 
 \item{RRPP}{A logical value indicating whether residual randomization should be used for significance testing}
 
+\item{effect.type}{One of "F", "SS", or "cohen", to choose from which random distribution to estimate effect size.
+(The default is "F").}
+
 \item{print.progress}{A logical value to indicate whether a progress bar should be printed to the screen.
 This is helpful for long-running analyses.}
 
 \item{data}{A data frame for the function environment, see \code{\link{geomorph.data.frame}}}
 
-\item{...}{Arguments passed on to procD.fit (typically associated with the lm function)}
+\item{...}{Arguments passed on to procD.fit (typically associated with the lm function,
+such as weights or offset).  The function procD.fit can also currently
+handle either type I, type II, or type III sums of squares and cross-products (SSCP) calculations.  Choice of SSCP type can be made with the argument,
+SS.type; i.e., SS.type = "I" or SS.type = "III".  Only advanced users should consider using these additional arguments, as such arguments
+are experimental in nature.}
 }
 \value{
 An object of class "procD.allometry" is a list containing the following:
@@ -42,6 +49,11 @@ An object of class "procD.allometry" is a list containing the following:
 \item{alpha}{The significance level criterion for the homogeneity of slopes test.}
 \item{perm.method}{A value indicating whether "RRPP" or randomization of "raw" vales was used.}
 \item{permutations}{The number of random permutations used in the resampling procedure.}
+\item{data}{The data frame for the model.}
+\item{random.SS}{A matrix or vector of random SS found via the resampling procedure used.}
+\item{random.F}{A matrix or vector of random F values found via the resampling procedure used.}
+\item{random.cohenf}{A matrix or vector of random Cohen's f-squared values
+ found via the resampling procedure used.}
 \item{call}{The matched call.}
 \item{formula}{The resulting formula, which can be used in follow-up analyses.  Irrespective of input, shape = Y
 in the formula, and the variable used for size is called "size".}
@@ -58,7 +70,9 @@ in the formula, and the variable used for size is called "size".}
 \item{size}{A vector of size scores.}
 \item{logsz}{A logical value to indicate if size values were log=transformed for analysis.}
 \item{A}{Procrustes (aligned) residuals.}
-\item{Ahat}{Predicted Procrustes residuals(if input coordinates are in a 3D array).}
+\item{Ahat}{Predicted Procrustes residuals(matching array or matrix, as input).}
+\item{Ahat.at.min}{Predicted Procrustes residuals, specifically at minimum size.}
+\item{Ahat.at.max}{Predicted Procrustes residuals, specifically at maximum size.}
 \item{p}{landmark number}
 \item{k}{landmark dimensions}
 }
@@ -132,6 +146,16 @@ descriptions of the different plotting methods using \code{\link{plot}}, with re
   allometric trend (Adams and Nistri 2010). }
   }
   }
+  
+ \subsection{Notes for geomorph 3.0.4 and subsequent versions}{ 
+ Compared to previous versions of geomorph, users might notice differences in effect sizes.  Previous versions used z-scores calculated with 
+ expected values of statistics from null hypotheses (sensu Collyer et al. 2015); however Adams and Collyer (2016) showed that expected values 
+ for some statistics can vary with sample size and variable number, and recommended finding the expected value, empirically, as the mean from the set 
+ of random outcomes.  Geomorph 3.0.4 and subsequent versions now center z-scores on their empirically estimated expected values and where appropriate, 
+ log-transform values to assure statistics are normally distributed.  This can result in negative effect sizes, when statistics are smaller than 
+ expected compared to the avergae random outcome.  For ANOVA-based functions, the option to choose among different statistics to measure effect size 
+ is now a function argument.
+}
 }
 \examples{
 # Simple allometry
@@ -166,9 +190,6 @@ data = plethAllometry$data, iter = 499, RRPP=TRUE)
 summary(plethANOVA) # Same ANOVA
 plot(plethANOVA) # diagnostic plot instead of allometry plot
 }
-\author{
-Michael Collyer
-}
 \references{
 Adams, D.C., F.J. Rohlf, and D.E. Slice. 2013. A field comes of age: geometric morphometrics 
   in the 21st century. Hystrix. 24:7-14.
@@ -181,10 +202,18 @@ Drake, A. G., and C. P. Klingenberg. 2008. The pace of morphological change: His
 
 Mitteroecker, P., P. Gunz, M. Bernhard, K. Schaefer, and F. L. Bookstein. 2004. 
   Comparison of cranial ontogenetic trajectories among great apes and humans. J. Hum. Evol. 46:679-698.
+
+Collyer, M.L., D.J. Sekora, and D.C. Adams. 2015. A method for analysis of phenotypic change for phenotypes described 
+by high-dimensional data. Heredity. 115:357-365.
+
+Adams, D.C. and M.L. Collyer. 2016.  On the comparison of the strength of morphological integration across morphometric 
+datasets. Evolution. 70:2623-2631.
 }
 \seealso{
 \code{\link{procD.lm}} and \code{\link{advanced.procD.lm}} within geomorph;
 \code{\link[stats]{lm}} for more on linear model fits
 }
+\author{
+Michael Collyer
+}
 \keyword{analysis}
-

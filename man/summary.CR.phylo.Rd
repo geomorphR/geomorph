@@ -18,4 +18,3 @@ Print/Summary Function for geomorph
 Dean Adams
 }
 \keyword{utilities}
-

@@ -149,14 +149,14 @@ gpagen = function(A, curves=NULL, surfaces=NULL, PrinAxes = TRUE,
   if(!is.null(surfaces)) surf <- as.vector(surfaces) else surf <- NULL
   if(print.progress == TRUE){
     if(!is.null(curves) || !is.null(surf)) gpa <- pGpa.wSliders(Y, curves = curves, surf=surf,
-              PrinAxes = PrinAxes, max.iter=max.it, 
-              ProcD=prD) else
-              gpa <- pGpa(Y, PrinAxes = PrinAxes, max.iter=max.it)
+                                                                PrinAxes = PrinAxes, max.iter=max.it, 
+                                                                ProcD=prD) else
+                                                                  gpa <- pGpa(Y, PrinAxes = PrinAxes, max.iter=max.it)
   } else {
     if(!is.null(curves) || !is.null(surf)) gpa <- .pGpa.wSliders(Y, curves = curves, surf=surf,
-              PrinAxes = PrinAxes, max.iter=max.it, 
-              ProcD=prD) else
-              gpa <- .pGpa(Y, PrinAxes = PrinAxes, max.iter=max.it)
+                                                                 PrinAxes = PrinAxes, max.iter=max.it, 
+                                                                 ProcD=prD) else
+                                                                   gpa <- .pGpa(Y, PrinAxes = PrinAxes, max.iter=max.it)
   }
   
   coords <- gpa$coords
@@ -188,11 +188,11 @@ gpagen = function(A, curves=NULL, surfaces=NULL, PrinAxes = TRUE,
     nsliders <- nrow(curves)
     nsurf <- length(surf)
     if(ProcD == TRUE) smeth <- "ProcD" else smeth <- "BE"
-    } else {
-        nsliders <- 0
-        nsurf <- 0
-        smeth <- NULL
-    }
+  } else {
+    nsliders <- 0
+    nsurf <- 0
+    smeth <- NULL
+  }
   if(is.null(nsliders)) nsliders <- 0; if(is.null(nsurf)) nsurf <- 0
   out <- list(coords=coords, Csize=Csize, 
               iter=iter, 

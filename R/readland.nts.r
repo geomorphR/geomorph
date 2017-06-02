@@ -1,9 +1,13 @@
 #' Read landmark data matrix from nts file
 #'
-#' Read *.nts file to obtain landmark coordinates for a set of specimens
+#' Read single *.nts file containing landmark coordinates for a set of specimens
 #'
-#' Function reads a *.nts file containing a matrix of two- or three-dimensional landmark coordinates. 
-#'   NTS files are text files in one of the standard formats for geometric morphometrics (see Rohlf 2012). 
+#' Function reads a single *.nts file containing two- or three-dimensional landmark coordinates for multiple specimens. 
+#' 
+#' This is for NTS files of the "multiple specimen format" (details below), which is not the same as \code{\link{readmulti.nts}}.  
+#'  
+#' NTS files are text files in one of the standard formats for geometric morphometrics (see Rohlf 2012).
+#' Multiple specimen format: 
 #'   The parameter line contains 5 or 6 elements, and must begin with a "1" to designate a rectangular 
 #'   matrix. The second and third values designate how many specimens (n) and how many total variables 
 #'   (p x k) are in the data matrix. The fourth value is a "0" if the data matrix is complete and a "1" 
@@ -20,19 +24,19 @@
 #'   The positions of missing landmarks may then be estimated using estimate.missing.
 
 #'
-#' Function is for *.nts file containing landmark coordinates for multiple specimens. Note that *.dta files in the 
-#' nts format written by Landmark Editor 
+#' Special NTS files: *.dta files in the written by IDAV Landmark Editor, 
 #' and *.nts files written by Stratovan Checkpoint have incorrect 
 #' header notation; every header is 1 n p-x-k 1 9999 Dim=3, rather than 1 n p-x-k 0 Dim=3, which denotes
-#' that missing data is in the file even when it is not.
+#' that missing data is in the file even when it is not. Users must change manually the header (in a text editor) before using this function
 #'
-#' @param file A *.nts file containing two- or three-dimensional landmark data
+#' @param file the name of a *.nts file containing two- or three-dimensional landmark data to be read in
 #' @keywords IO
 #' @export
 #' @author Dean Adams & Emma Sherratt
-#' @return Function returns a (p x k x n) array, where p is the number of landmark points, k is the number 
+#' @seealso \code{\link{readmulti.nts}}
+#' @return Function returns a 3D array (p x k x n), where p is the number of landmark points, k is the number 
 #'   of landmark dimensions (2 or 3), and n is the number of specimens. The third dimension of this array 
-#'   contains names for each specimen, which are obtained from the image names in the *.nts file. 
+#'   contains names for each specimen, which are obtained from the names in the *.nts file (if included). 
 #' @references  Rohlf, F. J. 2012 NTSYSpc: Numerical taxonomy and multivariate analysis system. Version 
 #'   2.2. Exeter Software, New York.
 readland.nts<-function(file){    	
@@ -59,17 +63,17 @@ readland.nts<-function(file){
   tmp<-unlist(strsplit(ntsfile[-1],"\\s+"))
   speclab<-NULL; 
   if(r.lab==TRUE){
-    #     speclab<-ntsfile[2:(1+n)]
-    #     tmp <- tmp[c((length(tmp)-(p*k)+1):length(tmp))]
-    speclab<-tmp[1:n]
-    tmp<-tmp[-(1:length(speclab))]  
+    speclab<-ntsfile[2:(1+n)]
+    tmp <- tmp[c((length(tmp)-(n*p*k)+1):length(tmp))]
+    # speclab<-tmp[1:n]
+    # tmp<-tmp[-(1:length(speclab))]  
   }
   if(c.lab==TRUE){ tmp<-tmp[-(1:(p*k))] }
   if(missdata==TRUE){tmp[grep(missval,as.integer(tmp))] <- NA}
   options(warn=-1)
   landdata<-matrix(as.numeric(tmp),ncol=k,byrow=TRUE)
-  if(sum(which(is.na(landdata)==TRUE))>0){print("NOTE.  Missing data identified.")}
+  if(sum(which(is.na(landdata)==TRUE))>0){cat("NOTE.  Missing data identified.")}
   coords <- aperm(array(t(landdata), c(k,p,n)), c(2,1,3))
-  dimnames(coords)[[3]]<-as.list(speclab)
+  dimnames(coords)[[3]]<-speclab
   return(coords=coords)
 }

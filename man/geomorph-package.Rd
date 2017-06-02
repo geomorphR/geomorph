@@ -2,8 +2,8 @@
 % Please edit documentation in R/geomorph.support.code.r
 \docType{package}
 \name{geomorph-package}
-\alias{geomorph}
 \alias{geomorph-package}
+\alias{geomorph}
 \title{Geometric morphometric analyses for 2D/3D data}
 \description{
 Functions in this package allow one to read, manipulate, and digitize landmark data; generate shape
@@ -15,7 +15,7 @@ Functions in this package allow one to read, manipulate, and digitize landmark d
 
 geomorph-package
 }
-\author{
-Dean Adams, Michael Collyer, Antigoni Kaliontzopoulou, & Emma Sherratt
-}
 
+\author{
+Dean C. Adams, Michael Collyer, Antigoni Kaliontzopoulou & Emma Sherratt
+}

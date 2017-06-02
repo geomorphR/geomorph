@@ -4,8 +4,9 @@
 \alias{procD.lm}
 \title{Procrustes ANOVA/regression for shape data}
 \usage{
-procD.lm(f1, iter = 999, seed = NULL, RRPP = TRUE, int.first = FALSE,
-  data = NULL, print.progress = TRUE, ...)
+procD.lm(f1, iter = 999, seed = NULL, RRPP = TRUE, effect.type = c("F",
+  "SS", "cohen"), int.first = FALSE, data = NULL, print.progress = TRUE,
+  ...)
 }
 \arguments{
 \item{f1}{A formula for the linear model (e.g., y~x1+x2)}
@@ -19,6 +20,10 @@ which might be of interest for advanced users.}
 
 \item{RRPP}{A logical value indicating whether residual randomization should be used for significance testing}
 
+\item{effect.type}{One of "F", "SS", or "cohen", to choose from which random distribution to estimate effect size.
+(The default, "cohen", is for Cohen's f-squared values.  Values are log-transformed before z-score calculation to
+assure normally distributed data.)}
+
 \item{int.first}{A logical value to indicate if interactions of first main effects should precede subsequent main effects}
 
 \item{data}{A data frame for the function environment, see \code{\link{geomorph.data.frame}}}
@@ -26,7 +31,11 @@ which might be of interest for advanced users.}
 \item{print.progress}{A logical value to indicate whether a progress bar should be printed to the screen.
 This is helpful for long-running analyses.}
 
-\item{...}{Arguments passed on to procD.fit (typically associated with the lm function).}
+\item{...}{Arguments passed on to procD.fit (typically associated with the lm function,
+such as weights or offset).  The function procD.fit can also currently
+handle either type I, type II, or type III sums of squares and cross-products (SSCP) calculations.  Choice of SSCP type can be made with the argument,
+SS.type; i.e., SS.type = "I" or SS.type = "III".  Only advanced users should consider using these additional arguments, as such arguments
+are experimental in nature.}
 }
 \value{
 An object of class "procD.lm" is a list containing the following
@@ -50,6 +59,11 @@ NULL is returned.}
 \item{F}{The F values for each model term.}
 \item{permutations}{The number of random permutations (including observed) used.}
 \item{random.SS}{A matrix or vector of random SS found via the resampling procedure used.}
+\item{random.F}{A matrix or vector of random F values found via the resampling procedure used.}
+\item{random.cohenf}{A matrix or vector of random Cohen's f-squared values
+ found via the resampling procedure used.}
+\item{permutations}{The number of random permutations (including observed) used.}
+\item{effect.type}{The distribution used to estimate effect-size.}
 \item{perm.method}{A value indicating whether "Raw" values were shuffled or "RRPP" performed.}
 }
 \description{
@@ -88,14 +102,36 @@ The function performs statistical assessment of the terms in the model using Pro
   predicted values from the remaining effects to obtain pseudo-values from which SS are calculated. NOTE: for
   single-factor designs, the two approaches are identical.  However, when evaluating factorial models it has been
   shown that RRPP attains higher statistical power and thus has greater ability to identify patterns in data should
-  they be present (see Anderson and terBraak 2003). Effect-sizes (Z-scores) are computed as standard deviates of the SS sampling 
-  distributions generated, which might be more intuitive for P-values than F-values (see Collyer et al. 2015).  In the case that multiple 
-  factor or factor-covariate interactions are used in the model formula, one can specify whether all main effects should be added to the 
+  they be present (see Anderson and terBraak 2003). 
+  
+  Effect-sizes (Z scores) are computed as standard deviates of either the SS, 
+  F, or Cohen's f-squared sampling distributions generated, which might be more intuitive for P-values than F-values 
+  (see Collyer et al. 2015).  Values from these distributions are log-transformed prior to effect size estimation,
+  to assure normally distributed data.  The SS type will influence how Cohen's f-squared values are calculated.  
+  Cohen's f-squared values are based on partial eta-squared values that can be calculated sequentially or marginally, as with SS.
+  
+  In the case that multiple factor or factor-covariate interactions are used in the model 
+  formula, one can specify whether all main effects should be added to the 
   model first, or interactions should precede subsequent main effects 
   (i.e., Y ~ a + b + c + a:b + ..., or Y ~ a + b + a:b + c + ..., respectively.)
 
 The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{procD.lm}}.
-  The generic function, \code{\link{plot}}, produces diagnostic plots for Procrustes residuals of the linear fit.
+  The generic function, \code{\link{plot}} has several options for plotting, using \code{\link{plot.procD.lm}}.  Diagnostics plots, 
+  principal component plots (rotated to first PC of covariance matrix of fitted values), and regression plots can be performed.  The
+  latter is fundamentally similar to the plotting options for \code{\link{procD.allometry}}.  One must provide a linear predictor, and
+  can choose among common regression component (CRC), predicted values (PredLine), or regression scores (RegScore).  See \code{\link{procD.allometry}} 
+  for details. In these plotting optons, teh predictor does not need to be size, and fitted values and residuals from the procD.lm fit are used rather 
+  than mean-centered values. 
+  
+ \subsection{Notes for geomorph 3.0.4 and subsequent versions}{ 
+ Compared to previous versions of geomorph, users might notice differences in effect sizes.  Previous versions used z-scores calculated with 
+ expected values of statistics from null hypotheses (sensu Collyer et al. 2015); however Adams and Collyer (2016) showed that expected values 
+ for some statistics can vary with sample size and variable number, and recommended finding the expected value, empirically, as the mean from the set 
+ of random outcomes.  Geomorph 3.0.4 and subsequent versions now center z-scores on their empirically estimated expected values and where appropriate, 
+ log-transform values to assure statistics are normally distributed.  This can result in negative effect sizes, when statistics are smaller than 
+ expected compared to the avergae random outcome.  For ANOVA-based functions, the option to choose among different statistics to measure effect size 
+ is now a function argument.
+}
 }
 \examples{
 ### MANOVA example for Goodall's F test (multivariate shape vs. factors)
@@ -116,16 +152,33 @@ procD.lm(coords ~ Csize, data = gdf, iter = 999, RRPP = FALSE) # randomize raw v
 procD.lm(coords ~ Csize, data = gdf, iter = 999, RRPP = TRUE) # randomize raw values
 # Outcomes should be exactly the same
 
-### Extracting objects and plotting residuals
+### Extracting objects and plotting options
 rat.anova <- procD.lm(coords ~ Csize, data = gdf, iter = 999, RRPP = TRUE)
 summary(rat.anova)
-plot(rat.anova) # diagnostic plots
-plot(rat.anova, outliers = TRUE) # diagnostic plots, including plotOutliers
+# diagnostic plots
+plot(rat.anova, type = "diagnostics") 
+# diagnostic plots, including plotOutliers
+plot(rat.anova, type = "diagnostics", outliers = TRUE) 
+# PC plot rotated to major axis of fitted values
+plot(rat.anova, type = "PC", pch = 19, col = "blue") 
+# Uses residuals from model to find the commonom regression component 
+# for a predictor from the model
+plot(rat.anova, type = "regression", predictor = gdf$Csize, reg.type = "CRC", 
+pch = 19, col = "green")
+# Uses residuals from model to find the projected regression scores
+rat.plot <- plot(rat.anova, type = "regression", predictor = gdf$Csize, reg.type = "RegScore", 
+pch = 21, bg = "yellow") 
+
+# TPS grids for min and max scores in previous plot
+preds <- shape.predictor(gdf$coords, x = rat.plot$RegScore, 
+                        predmin = min(rat.plot$RegScore), 
+                        predmax = max(rat.plot$RegScore))
+M <- rat.gpa$consensus
+plotRefToTarget(M, preds$predmin, mag=3)
+plotRefToTarget(M, preds$predmax, mag=3)
+                        
 attributes(rat.anova)
 rat.anova$fitted # just the fitted values
-}
-\author{
-Dean Adams and Michael Collyer
 }
 \references{
 Anderson MJ. 2001. A new method for non-parametric multivariate analysis of variance. 
@@ -134,15 +187,20 @@ Anderson MJ. 2001. A new method for non-parametric multivariate analysis of vari
 Anderson MJ. and C.J.F. terBraak. 2003. Permutation tests for multi-factorial analysis of variance.
    Journal of Statistical Computation and Simulation 73: 85-113.
 
+Goodall, C.R. 1991. Procrustes methods in the statistical analysis of shape. Journal of the 
+   Royal Statistical Society B 53:285-339.
+
 Collyer, M.L., D.J. Sekora, and D.C. Adams. 2015. A method for analysis of phenotypic change for phenotypes described 
 by high-dimensional data. Heredity. 115:357-365.
 
-Goodall, C. R. 1991. Procrustes methods in the statistical analysis of shape. Journal of the 
-   Royal Statistical Society B 53:285-339.
+Adams, D.C. and M.L. Collyer. 2016.  On the comparison of the strength of morphological integration across morphometric 
+datasets. Evolution. 70:2623-2631.
 }
 \seealso{
 \code{\link{advanced.procD.lm}}, \code{\link{procD.pgls}}, and 
-\code{\link{nested.update}} within geomorph; \code{\link[stats]{lm}} for more on linear model fits
+\code{\link{nested.update}} within geomorph; \code{\link[stats]{lm}} for more on linear model fits.
+}
+\author{
+Dean Adams and Michael Collyer
 }
 \keyword{analysis}
-

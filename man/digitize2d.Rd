@@ -12,7 +12,7 @@ digitize2d(filelist, nlandmarks, scale = NULL, tpsfile, MultScale = FALSE,
 
 \item{nlandmarks}{Number of landmarks to be digitized.}
 
-\item{scale}{An vector containing the length of the scale to be placed on each image.}
+\item{scale}{A vector containing the length of the scale to be placed on each image.}
 
 \item{tpsfile}{The name of a TPS file to be created or read}
 
@@ -70,4 +70,3 @@ If verbose = FALSE the digitizing of landmarks is continuous and uninterrupted. 
 Dean Adams, Erik Otarola-Castillo and Emma Sherratt
 }
 \keyword{digitizing}
-

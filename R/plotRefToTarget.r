@@ -110,8 +110,8 @@ plotRefToTarget<-function(M1,M2,mesh= NULL,outline=NULL,method=c("TPS","vector",
     }
     if(method=="vector"){
       if(axes==TRUE){
-        plot(M1,asp=1,type="n",xlab="x",ylab="y",xlim=limits(M1[,1],1.25),
-             ylim=limits(M1[,2],1.25),...)}
+      plot(M1,asp=1,type="n",xlab="x",ylab="y",xlim=limits(M1[,1],1.25),
+           ylim=limits(M1[,2],1.25),...)}
       if(axes==FALSE){
         plot(M1,asp=1,type="n",xlab="",ylab="",xlim=limits(M1[,1],1.25),axes=FALSE,
              ylim=limits(M1[,2],1.25),...)}
@@ -131,8 +131,8 @@ plotRefToTarget<-function(M1,M2,mesh= NULL,outline=NULL,method=c("TPS","vector",
     }
     if(method=="points"){
       if(axes==TRUE){
-        plot(M1,asp=1,pch=21,type="n",xlim=limits(M1[,1],1.25),
-             ylim=limits(M1[,2],1.25),xlab="x",ylab="y",...)}
+      plot(M1,asp=1,pch=21,type="n",xlim=limits(M1[,1],1.25),
+           ylim=limits(M1[,2],1.25),xlab="x",ylab="y",...)}
       if(axes==FALSE){
         plot(M1,asp=1,pch=21,type="n",xlim=limits(M1[,1],1.25),axes=FALSE,
              ylim=limits(M1[,2],1.25),xlab="",ylab="",...)}
@@ -203,7 +203,7 @@ plotRefToTarget<-function(M1,M2,mesh= NULL,outline=NULL,method=c("TPS","vector",
     }
     if(method=="vector"){
       if(axes==TRUE){
-        plot3d(M1,type="s",col=gP$pt.bg,size=gP$pt.size,aspect=FALSE,...)}
+      plot3d(M1,type="s",col=gP$pt.bg,size=gP$pt.size,aspect=FALSE,...)}
       if(axes==FALSE){
         plot3d(M1,type="s",col=gP$pt.bg,size=gP$pt.size,aspect=FALSE,xlab="",ylab="",zlab="",axes=F,...)}
       if(label == TRUE){text3d(M1, texts = paste(1:dim(M1)[1]), adj=(gP$txt.adj+gP$pt.size),
@@ -223,8 +223,8 @@ plotRefToTarget<-function(M1,M2,mesh= NULL,outline=NULL,method=c("TPS","vector",
     }
     if(method=="points"){
       if(axes==TRUE){
-        plot3d(M1,type="s",col=gP$pt.bg,size=gP$pt.size,aspect=FALSE,...)
-        plot3d(M2,type="s",col=gP$tar.pt.bg,size=gP$tar.pt.size,add=TRUE)}
+      plot3d(M1,type="s",col=gP$pt.bg,size=gP$pt.size,aspect=FALSE,...)
+      plot3d(M2,type="s",col=gP$tar.pt.bg,size=gP$tar.pt.size,add=TRUE)}
       if(axes==FALSE){
         plot3d(M1,type="s",col=gP$pt.bg,size=gP$pt.size,aspect=FALSE,xlab="",ylab="",zlab="",axes=F,...)
         plot3d(M2,type="s",col=gP$tar.pt.bg,size=gP$tar.pt.size,add=TRUE)}

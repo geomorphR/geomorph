@@ -44,7 +44,7 @@
 #' 
 #' @param filelist A list of names of jpeg images to be digitized. 
 #' @param nlandmarks Number of landmarks to be digitized.
-#' @param scale An vector containing the length of the scale to be placed on each image.
+#' @param scale A vector containing the length of the scale to be placed on each image.
 #' @param tpsfile The name of a TPS file to be created or read
 #' @param MultScale A logical option indicating if the coordinates should be pre-multiplied by scale
 #' @param verbose logical. User decides whether to digitize in verbose or silent format (see details), default is verbose
@@ -92,7 +92,7 @@ digitize2d <- function (filelist, nlandmarks, scale=NULL, tpsfile, MultScale=FAL
          ylab = "y", asp = 1, tck = 0, xaxt = "n", yaxt = "n")
     rasterImage(specimen, 1, 1, dim(specimen)[2], dim(specimen)[1])
     if (is.null(scale)) {
-      cat("Scale not provided! Proceed with caution.\n") 
+     cat("Scale not provided! Proceed with caution.\n") 
       scalebar = NULL
     }
     if (!is.null(scale)) {
@@ -146,15 +146,15 @@ digitize2d <- function (filelist, nlandmarks, scale=NULL, tpsfile, MultScale=FAL
         selected[ii, 2] <- fix$y
       }
     }
-    
-    newdata[, , i] <- selected
+
+   newdata[, , i] <- selected
     if(MultScale==TRUE){newdata[,,i]<-selected*scalebar[i]}
     if(is.null(scalebar)){writeland.tps(newdata, tpsfile)}
     if(!is.null(scalebar) && MultScale==FALSE){
       writeland.tps(newdata, tpsfile, scale = scalebar)}
     if(!is.null(scalebar) && MultScale==TRUE){
       writeland.tps(newdata, tpsfile)}
-    
+
     if (i < length(filelist)) {
       cat(paste("Continue to next specimen (y/n)?"), "\n")
       ans <- readLines(n = 1)

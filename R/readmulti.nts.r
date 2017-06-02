@@ -1,14 +1,16 @@
 #' Read landmark data from multiple nts files
 #'
-#' Read a list of names for several *.nts files to obtain landmark coordinates for a set of specimens
-#'
-#' This function reads a list containing the names of multiple *.nts files, where each contains the 
-#'   landmark coordinates for a single specimen. For these files, the number of variables (columns) of 
-#'   the data matrix will equal the number of dimensions of the landmark data (k=2 or 3). When the function 
-#'   is called a dialog box is opened, from which the user may select multiple *.nts files. These are then read 
-#'   and concatenated into a single matrix for all specimens. The parameter line contains 5 or 6 elements, 
-#'   and must begin with a "1" to designate a rectangular matrix. The second and third values designate how 
-#'   many specimens (n) and how many total variables (p x k) are in the data matrix.
+#' Read multiple *.nts files, each containing landmark coordinates for a single specimen
+#' 
+#' Function reads a character vector of filenames for a set of *.nts files that each contain two- or 
+#' three-dimensional landmark coordinates for a single specimen (e.g., exported from \code{\link{digit.fixed}} and \code{\link{digitsurface}}).
+#' 
+#' This is for NTS files of the "single specimen format" (details below), which is not the same as \code{\link{readland.nts}}. 
+#'   
+#' NTS files are text files in one of the standard formats for geometric morphometrics (see Rohlf 2012). 
+#' Single specimen format: 
+#'   The parameter line contains 5 or 6 elements, and must begin with a "1" to designate a rectangular matrix. 
+#'   The second and third values designate how many landmarks (p) and the dimensions (k) of the data matrix.
 #'   The fourth value is a "0" if the data matrix is complete and a "1" 
 #'   if there are missing values. If missing values are present, the '1' is followed by the arbitrary 
 #'   numeric code used to represent missing values (e.g., -999). These values will be replaced with "NA" 
@@ -17,16 +19,17 @@
 #'   Missing data may be present in the file by designating them using 'NA'. In
 #'   this case, the standard NTSYS header is used with no numeric designation for missing data (i.e. the fourth value is '0').
 #'   The positions of missing landmarks may then be estimated using estimate.missing.
-
 #'
-#' @param filelist A list of names for the *.nts files to be read by the function. The names in the list
-#'   require quotes (") and .nts/.NTS suffix.
+#' @param filelist a character vector of file names for the *.nts files to be read in
 #' @keywords IO
 #' @export
 #' @author Dean Adams & Emma Sherratt
-#' @return Function returns a (p x k x n) array, where p is the number of landmark points, k is 
+#' @seealso \code{\link{readland.nts}}
+#' @return Function returns a 3D array (p x k x n), where p is the number of landmark points, k is 
 #'   the number of landmark dimensions (2 or 3), and n is the number of specimens. The third dimension 
-#'   of this array contains names for each specimen, which are obtained from the original file names. 
+#'   of this array contains names for each specimen, which are obtained from the file names. 
+#' @references  Rohlf, F. J. 2012 NTSYSpc: Numerical taxonomy and multivariate analysis system. Version 
+#'   2.2. Exeter Software, New York.
 readmulti.nts<-function(filelist){   
   n<-length(filelist)
   names<-gsub(".nts","",filelist, ignore.case=T)
@@ -67,7 +70,7 @@ readmulti.nts<-function(filelist){
     landdata<-rbind(landdata,data)
   }
   coords<-arrayspecs(landdata,p,k)
-  if(sum(which(is.na(landdata)==TRUE))>0){print("NOTE.  Missing data identified.")}
+  if(sum(which(is.na(landdata)==TRUE))>0){cat("NOTE.  Missing data identified.")}
   dimnames(coords)[[3]]<- as.list(names)
   return(coords=coords)
 }

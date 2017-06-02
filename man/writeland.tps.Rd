@@ -11,7 +11,7 @@ writeland.tps(A, file, scale = NULL, specID = TRUE)
 
 \item{file}{Name of the *.tps file to be created}
 
-\item{scale}{An optional vector containing the length of the scale for each specimen}
+\item{scale}{A logical value stating whether warnings should be printedAn optional vector containing the length of the scale for each specimen}
 
 \item{specID}{A logical value stating whether specimen ID names should be saved to line ID=}
 }
@@ -26,4 +26,3 @@ This function writes a *.tps file from a 3-dimensional array (p x k x n)
 Dean Adams
 }
 \keyword{IO}
-

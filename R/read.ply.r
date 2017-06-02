@@ -54,7 +54,7 @@ read.ply <- function (file, ShowSpecimen = TRUE, addNormals = TRUE)
   ypts <- points[,y]
   zpts <- points[,z]
   vertices <- rbind(xpts, ypts, zpts, 1)
-  if (yline[3] == 0) {print("Object has zero faces")}
+  if (yline[3] == 0) {cat("Object has zero faces")}
   if (yline[3] != 0) {
     face <- as.matrix(as.numeric(unlist(strsplit(plyfile[(headerend + 
                                                             nvertices + 1):(headerend + nvertices + nface)], " "))))

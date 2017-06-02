@@ -10,9 +10,19 @@
 #' performs two-sample z-tests, using the pooled standard error from the sampling distributions of the PLS analyses.
 #'  
 #' To use this function, simply perform \code{\link{two.b.pls}}, \code{\link{integration.test}}, or 
-#'  \code{\link{phylo.integration}} on as many samples as desired.  Any number of objects of class "pls" can be input.
+#'  \code{\link{phylo.integration}} on as many samples as desired.  Any number of objects of class pls can be input.
 #'  
-#'  Similar versions of this function will designed for alternative test statistics, in the future. 
+#'  Similar versions of this function will be designed for alternative test statistics, in the future. 
+#' 
+#'  \subsection{Notes for geomorph 3.0.4 and subsequent versions}{ 
+#'  Compared to previous versions of geomorph, users might notice differences in effect sizes.  Previous versions used z-scores calculated with 
+#'  expected values of statistics from null hypotheses (sensu Collyer et al. 2015); however Adams and Collyer (2016) showed that expected values 
+#'  for some statistics can vary with sample size and variable number, and recommended finding the expected value, empirically, as the mean from the set 
+#'  of random outcomes.  Geomorph 3.0.4 and subsequent versions now center z-scores on their empirically estimated expected values and where appropriate, 
+#'  log-transform values to assure statistics are normally distributed.  This can result in negative effect sizes, when statistics are smaller than 
+#'  expected compared to the avergae random outcome.  For ANOVA-based functions, the option to choose among different statistics to measure effect size 
+#'  is now a function argument.
+#' }
 #' 
 #' @param ... saved analyses of class pls
 #' @keywords analysis
@@ -23,8 +33,10 @@
 #' \item{sample.r.sd}{A vector of standard deviations for each sampling distribution.}
 #' \item{pairwise.z}{A matrix of pairwise, two-sample z scores between all pairs of effect sizes.}
 #' \item{pairwise.p}{A matrix of corresponding P-values.}
-#' @references Adams, D.C and M.L. Collyer. 2016. On the comparison of the strength of morphological 
-#' integration across morphometric datasets. Evolution. 70(11): 2623-2631.
+#' @references Collyer, M.L., D.J. Sekora, and D.C. Adams. 2015. A method for analysis of phenotypic change for phenotypes described 
+#' by high-dimensional data. Heredity. 115:357-365.
+#' @references Adams, D.C. and M.L. Collyer. 2016.  On the comparison of the strength of morphological integration across morphometric 
+#' datasets. Evolution. 70:2623-2631.
 #' @examples
 #' # Example of comparative morphological integration between pupfish head and body shapes
 #' 
@@ -38,7 +50,7 @@
 #' 
 #'  tail.coords <- pupfish$coords[tail.LM,,]
 #'  head.coords <- pupfish$coords[head.LM,,]
-#' 
+#'  
 #'  # Subset 3D array by group, returning a list of 3D arrays
 #'  tail.coords.gp <- coords.subset(tail.coords, group)
 #'  head.coords.gp <- coords.subset(head.coords, group)

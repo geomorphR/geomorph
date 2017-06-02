@@ -9,7 +9,11 @@ morphol.disparity(f1, groups = NULL, iter = 999, seed = NULL,
 }
 \arguments{
 \item{f1}{A formula describing the linear model used.  The left-hand portion of the formula should be
-a 3D array (p x k x n) containing GPA-aligned coordinates for a set of specimens, or a matrix (n x variables). The right-hand portion of the formula should be " ~1" to use the overall mean, or "~ x1 + x2 + x3 +...", where each x is a covariate or factor.  (Interactions and nested terms also work.)}
+a 3D array (p x k x n) containing GPA-aligned coordinates for a set of specimens, or a matrix (n x variables). 
+The right-hand portion of the formula should be " ~1" to use the overall mean, or "~ x1 + x2 + x3 +...", where each x is a 
+covariate or factor.  (Interactions and nested terms also work.)  Alternatively, one can use an object of class "procD.lm" or
+"advanced.procD.lm", which already has a formula defined.  This is especially helpful for analyses performed with \code{\link{procD.pgls}},
+as residuals from PGLS will be used for analysis (see examples).}
 
 \item{groups}{A formula designating groups, e.g., groups = ~ groups.  If NULL, morphol.disparity
 will attempt to define groups based on the linear model formula, f1.  If there are no groups inherently
@@ -52,7 +56,7 @@ The function takes as input a formula to describe the linear model fit,
 plus a formulaic indication of groups (e.g., ~ groups).  It is assumed that the formula describes shape data that 
 have been GPA-aligned [e.g., \code{\link{gpagen}}], although the function can work with any multivariate data.
 
-Absoluted differences in Procrustes variances are test statistics that can be used to test differences
+Absolute differences in Procrustes variances are test statistics that can be used to test differences
 in morphological disparity among groups.  These differences are  statistically evaluated through permutation, 
 where the vectors of residuals are randomized among groups. The function can be used to obtain disparity for the whole
 dataset by using "a dummy group factor "~ 1" as the right-hand portion of the formula, in which case only Procrustes 
@@ -61,6 +65,13 @@ e.g., "~ Csize", Procrustes variance will be calculated for the whole data set o
 linear regression described.  Finally, different factors can be indicated in the formula and for groups, if one wishes to 
 compare morphological disparities for groups comprising only a portion of or collapsing of the groups in a more complex model 
 (see examples).
+
+This function can be used with an object of class "procD.lm" or "advanced.procD.lm", if such analyses have already been performed.  This is especially helpful for analyses performed with \code{\link{gpagen}},
+This is specially useful for analyses performed with  \code{\link{procD.pgls}}.  In this case, residuals obtained from PGLS estimation
+of coefficients, rather than OLS estimation, will be used in the analysis.  Thus, one can account for phylogeny when comparing
+morphological disparity among groups.  However, one should be aware that this approach only adjusts expected values because of phylogeny
+and does not assert a null hypothesis of equal variances based on phylogenetic relatedness.  (For example, specials means can be adjusted
+because of phylogenetic relatedness, but the null hypothesis of equal variances is conditioned on the estimation of means.)
 }
 \examples{
 data(plethodon)
@@ -85,13 +96,34 @@ morphol.disparity(coords ~ Csize + species*site, groups= ~ species, data = gdf, 
 # Extracting components
 MD <- morphol.disparity(coords ~ Csize + species*site, groups= ~ species, data = gdf, iter=999)
 MD$Procrustes.var # just the Procrustes variances
-}
-\author{
-Emma Sherratt and Michael Collyer
+
+
+### Morphol.disparity can be used with procD.lm or advanced.procd.lm class objects
+
+data(plethspecies)
+Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment
+gp.end<-factor(c(0,0,1,0,0,1,1,0,0))  #endangered species vs. rest
+names(gp.end)<-plethspecies$phy$tip
+
+gdf <- geomorph.data.frame(Y.gpa, phy = plethspecies$phy, gp.end = gp.end)
+
+pleth.ols <- procD.lm(coords ~ Csize + gp.end, 
+data = gdf, iter = 999) # ordinary least squares
+pleth.pgls <- procD.pgls(coords ~ Csize + gp.end, phy = phy, 
+data = gdf, iter = 999) # phylogenetic generalized least squares
+
+summary(pleth.ols)
+summary(pleth.pgls)
+
+morphol.disparity(f1 = pleth.ols, groups = ~ gp.end, data = gdf, iter = 999)
+morphol.disparity(f1 = pleth.pgls, groups = ~ gp.end, data = gdf, iter = 999)
+
 }
 \references{
 Zelditch, M. L., D. L. Swiderski, H. D. Sheets, and W. L. Fink. 2012. Geometric morphometrics 
   for biologists: a primer. 2nd edition. Elsevier/Academic Press, Amsterdam.
 }
+\author{
+Emma Sherratt and Michael Collyer
+}
 \keyword{analysis}
-

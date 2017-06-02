@@ -26,9 +26,14 @@ generating random values for each iteration previously used in the \code{\link{p
 This function can be used recursively for multiple updates, when multiple nested effects are used.  The function can
 currently only handle single factors nested within other single factors.
 
-Function returns the same list as \code{\link{procD.lm}} but with random F values appended.  The 
-ANOVA table is updated in terms of F-values, Z-scores, and P-values.  It is important that the formula is input correctly.  
-It can be input as one of the following four styles:
+Function returns the same list as \code{\link{procD.lm}} but with new random F values and Cohen's f-squared values
+substituted  The ANOVA table is updated in terms of F-values, Z-scores, and P-values.  Z-scores are re-calculated 
+for all effects to be consistent with the type of distribution used.  If either Cohen's f-squared values or F values 
+were originally chosen, the same distributions are used in the update; if SS values were originally chosen, the 
+distribution is changed to Cohen's f-squared to calculate Z-scores. This change assures consistency in effect size 
+estimation, as the effectthat is updated cannot have an effect size based on SS.
+
+It is important that the formula is input correctly. It can be input as one of the following four styles:
 
 ~ fixed/random
 
@@ -42,11 +47,18 @@ The two formulae above achieve the same model terms for the expanded model: ~ fi
 
 The two formulae above achieve the same model terms for the expanded model: ~ random + fixed + random:fixed
 
-The \code{\link{procD.lm}} object will be updated in the same way with either of the approached.  First, the F-value
+The \code{\link{procD.lm}} object will be updated in the same way with either of the approaches.  First, the F-value
 for the fixed term will be adjusted as MS-fixed/MS-interaction for every random permutation.  Second, the P-value for the fixed
 effect will be estimated from this new distribution of F-values.  Although the function will try to catch improper 
 formulae and alert the user, it is possible the function will work with an improper formula.  Thus, adherence to one of the 
 formulae above is recommended for best results.
+
+Effect sizes (Z scores) are based on either the distribution of random F values or a distribution of
+Cohen's f-squared values, calculated in every pemutation.  An attempt will be made to preserve the effect size
+type used in the previous \code{\link{procD.lm}} or \code{\link{procD.pgls}} analysis.  However, an analysis
+performed in \code{\link{procD.lm}} using effect size calculated from random SS values will be updated
+to use random Cohen's f-squared values for all effects, to avoid having effect sizes measured from different
+distributions in the same analysis.
 }
 \examples{
 
@@ -86,9 +98,6 @@ tailANOVA <- nested.update(tailANOVA, ~ Treatment/Family)
 
 summary(tailANOVA)
 }
-\author{
-Michael Collyer
-}
 \references{
 Collyer, M.L., D.J. Sekora, and D.C. Adams. 2015. A method for analysis of phenotypic change for phenotypes described 
 by high-dimensional data. Heredity. 115:357-365.
@@ -96,5 +105,7 @@ by high-dimensional data. Heredity. 115:357-365.
 \seealso{
 \code{\link{procD.lm}}
 }
+\author{
+Michael Collyer
+}
 \keyword{utilities}
-

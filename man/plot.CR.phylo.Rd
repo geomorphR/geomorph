@@ -19,4 +19,3 @@ Dean Adams
 }
 \keyword{utilities}
 \keyword{visualization}
-

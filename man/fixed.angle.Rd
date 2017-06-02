@@ -41,11 +41,10 @@ Presently, the function is only implemented for two-dimensional landmark data.
 data(plethspecies) 
 fixed.angle(plethspecies$land,art.pt=1,angle.pts=c(5,6),rot.pts=c(2,3,4,5))
 }
-\author{
-Dean Adams
-}
 \references{
 Adams, D. C. 1999. Methods for shape analysis of landmark data from articulated structures. Evolutionary Ecology Research. 1:959-970.
 }
+\author{
+Dean Adams
+}
 \keyword{utilities}
-

@@ -28,7 +28,7 @@ plotAllSpecimens<-function(A,mean=TRUE,links=NULL,label=FALSE,plot.param = list(
   if(any(is.na(A))==T){
     stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').")  }
   k<-dim(A)[2]
-  if(mean==TRUE){mn<-mshape(A)}
+  if(mean==TRUE){ mn<-mshape(A) }
   
   p.p <- plot.param
   if(is.null(p.p$pt.bg)) p.p$pt.bg="gray" ; if(is.null(p.p$pt.cex)) p.p$pt.cex=1 ; 

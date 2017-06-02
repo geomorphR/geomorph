@@ -120,9 +120,6 @@ Y.gpa <- gpagen(A=scallops$coorddata, curves=scallops$curvslide, surfaces=scallo
 # NOTE can summarize as: summary(Y.gpa)
 # NOTE can plot as: plot(Y.gpa) 
 }
-\author{
-Dean Adams and Michael Collyer
-}
 \references{
 Adams, D. C., F. J. Rohlf, and D. E. Slice. 2004. Geometric morphometrics: ten years of 
    progress following the 'revolution'. It. J. Zool. 71:5-16.
@@ -162,5 +159,7 @@ Rohlf, F. J. 2010. tpsRelw: Relative warps analysis. Version 1.49. Department of
 Zelditch, M. L., D. L. Swiderski, H. D. Sheets, and W. L. Fink. 2012. Geometric morphometrics 
   for biologists: a primer. 2nd edition. Elsevier/Academic Press, Amsterdam.
 }
+\author{
+Dean Adams and Michael Collyer
+}
 \keyword{analysis}
-

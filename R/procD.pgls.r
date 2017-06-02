@@ -38,8 +38,15 @@
 #'   predicted values from the remaining effects to obtain pseudo-values from which SS are calculated. NOTE: for
 #'   single-factor designs, the two approaches are identical.  However, when evaluating factorial models it has been
 #'   shown that RRPP attains higher statistical power and thus has greater ability to identify patterns in data should
-#'   they be present (see Anderson and terBraak 2003). Effect-sizes (Z-scores) are computed as standard deviates of the sampling 
-#'   distributions (of F values) generated, which might be more intuitive for P-values than F-values (see Collyer et al. 2015).  In the case  
+#'   they be present (see Anderson and terBraak 2003). 
+#'   
+#'   Effect-sizes (Z scores) are computed as standard deviates of either the 
+#'   F or Cohen's f-squared sampling distributions generated, which might be more intuitive for P-values than F-values 
+#'   (see Collyer et al. 2015).  Values from these distributions are log-transformed prior to effect size estimation,
+#'   to assure normally distributed data.  The SS type will influence how Cohen's f-squared values are calculated.  
+#'   Cohen's f-squared values are based on partial eta-squared values that can be calculated sequentially or marginally, as with SS.
+#'   
+#'   In the case  
 #'   that multiple factor or factor-covariate interactions are used in the model formula, one can specify whether all main effects should be  
 #'    added to the model first, or interactions should precede subsequent main effects 
 #'   (i.e., Y ~ a + b + c + a:b + ..., or Y ~ a + b + a:b + c + ..., respectively.)
@@ -47,6 +54,26 @@
 #'   The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{procD.pgls}}.
 #'   The generic function, \code{\link{plot}}, produces diagnostic plots for Procrustes residuals of the linear fit.
 #'   
+#'  \subsection{Notes for geomorph 3.0.4 and subsequent versions}{ 
+#'  Compared to previous versions of geomorph, users might notice differences in effect sizes.  Previous versions used z-scores calculated with 
+#'  expected values of statistics from null hypotheses (sensu Collyer et al. 2015); however Adams and Collyer (2016) showed that expected values 
+#'  for some statistics can vary with sample size and variable number, and recommended finding the expected value, empirically, as the mean from the set 
+#'  of random outcomes.  Geomorph 3.0.4 and subsequent versions now center z-scores on their empirically estimated expected values and where appropriate, 
+#'  log-transform values to assure statistics are normally distributed.  This can result in negative effect sizes, when statistics are smaller than 
+#'  expected compared to the avergae random outcome.  For ANOVA-based functions, the option to choose among different statistics to measure effect size 
+#'  is now a function argument.
+#' }
+#' 
+#'  \subsection{Notes for geomorph 3.0.4 and subsequent versions}{ 
+#'  Compared to previous versions of geomorph, users might notice differences in effect sizes.  Previous versions used z-scores calculated with 
+#'  expected values of statistics from null hypotheses (sensu Collyer et al. 2015); however Adams and Collyer (2016) showed that expected values 
+#'  for some statistics can vary with sample size and variable number, and recommended finding the expected value, empirically, as the mean from the set 
+#'  of random outcomes.  Geomorph 3.0.4 and subsequent versions now center z-scores on their empirically estimated expected values and where appropriate, 
+#'  log-transform values to assure statistics are normally distributed.  This can result in negative effect sizes, when statistics are smaller than 
+#'  expected compared to the avergae random outcome.  For ANOVA-based functions, the option to choose among different statistics to measure effect size 
+#'  is now a function argument.
+#' }
+#' 
 #' @param f1 A formula for the linear model (e.g., y~x1+x2)
 #' @param phy A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape
 #' @param iter Number of iterations for significance testing
@@ -56,22 +83,31 @@
 #' which might be of interest for advanced users.
 #' @param int.first A logical value to indicate if interactions of first main effects should precede subsequent main effects
 #' @param RRPP a logical value indicating whether residual randomization should be used for significance testing
+#' @param effect.type One of "F" or "ochen", to choose from which random distribution to estimate effect size.
+#' (The default is "F".  Values are log-transformed before z-score calculation to
+#' assure normally distributed effect sizes.)
 #' @param data A data frame for the function environment, see \code{\link{geomorph.data.frame}} 
 #' @param print.progress A logical value to indicate whether a progress bar should be printed to the screen.  
 #' This is helpful for long-running analyses.
-#' @param ... Arguments passed on to procD.fit (typically associated with the lm function)
+#' @param ... Arguments passed on to procD.fit (typically associated with the lm function,
+#' such as weights or offset).  The function procD.fit can also currently
+#' handle either type I, type II, or type III sums of squares and cross-products (SSCP) calculations.  Choice of SSCP type can be made with the argument,
+#' SS.type; i.e., SS.type = "I" or SS.type = "III".  Only advanced users should consider using these additional arguments, as such arguments
+#' are experimental in nature. 
 #' @keywords analysis
 #' @export
 #' @author Dean Adams and Michael Collyer
 #' @return procD.lm.pgls returns an object of class "procD.lm".  
 #' See \code{\link{procD.lm}} for a description of the list of results generated.  Additionally, procD.pgls provides
-#' the phylogenetic correction matrix, Pcor, plus "pgls" adjusted coefficients, fitted values, and residuals.
+#' the phylogenetic correction matrix, Pcor, plus "pgls" adjusted coefficients, fitted values, residuals, and mean.
 #' @references Adams, D.C. 2014. A method for assessing phylogenetic least squares models for shape and other high-dimensional 
 #' multivariate data. Evolution. 68:2675-2688. 
 #' @references Adams, D.C., and M.L. Collyer. 2015. Permutation tests for phylogenetic comparative analyses of high-dimensional 
 #' shape data: what you shuffle matters. Evolution. 69:823-829.
 #' @references Collyer, M.L., D.J. Sekora, and D.C. Adams. 2015. A method for analysis of phenotypic change for phenotypes described 
 #' by high-dimensional data. Heredity. 115:357-365.
+#' @references Adams, D.C. and M.L. Collyer. 2016.  On the comparison of the strength of morphological integration across morphometric 
+#' datasets. Evolution. 70:2623-2631.
 #' @examples
 #' ### Example of D-PGLS for high-dimensional data 
 #' data(plethspecies)
@@ -82,17 +118,21 @@
 #' 
 #' ### Extracting objects
 #' pleth.pgls <- procD.pgls(coords ~ Csize, phy = phy, data = gdf, iter = 999, RRPP = TRUE)
-#' summary(pleth.pgls)
+#' summary(pleth.pgls) 
 #' plot(pleth.pgls)
 #' pleth.pgls$Pcor # the phylogenetic transformation (correction) matrix
 procD.pgls<-function(f1, phy, iter=999, seed=NULL, int.first = FALSE, 
+                     effect.type = c("F", "cohen"),
                      RRPP=TRUE, data=NULL, print.progress = TRUE, ...){
-  if(!is.null(data)) data <- droplevels(data)
   if(int.first==TRUE) ko = TRUE else ko = FALSE
-  pfit <- procD.fit(f1, data=data, keep.order=ko, pca=FALSE)
-  Terms <- pfit$Terms
-  k <- length(pfit$term.labels) 
+  if(!is.null(data)) data <- droplevels(data)
+  pfit <- procD.fit(f1, data=data, keep.order=ko, pca=FALSE, ... )
+  n <- dim(pfit$Y)[[1]]
+  p <- dim(pfit$Y)[[2]]
+  k <- length(pfit$term.labels)
   Y <- as.matrix(pfit$wY)
+  if(p > n) pfitr <- procD.fit(f1, data=data, keep.order=ko,  pca=TRUE, ...) else
+    pfitr <- pfit
   phy.name <- deparse(substitute(phy))
   phy.match <- match(phy.name, names(data))
   if(length(phy.match) > 1) stop("More than one object of class phylo in data frame")
@@ -113,45 +153,109 @@ procD.pgls<-function(f1, phy, iter=999, seed=NULL, int.first = FALSE,
   Pcor <- fast.solve(eigC.vect%*% diag(sqrt(lambda)) %*% t(eigC.vect)) 
   dimnames(Pcor) <- dimnames(C)
   Pcor <- Pcor[rownames(Y),rownames(Y)]
-  if(print.progress) {
-    if(RRPP == TRUE) SSr <- Fpgls.iter(pfit, Yalt="RRPP", Pcor, iter=iter, seed=seed) else 
-      SSr <- Fpgls.iter(pfit, Yalt="resample", Pcor, iter=iter, seed=seed)
+  
+  if(k > 0) {
+    if(print.progress) {
+      if(RRPP == TRUE) P <- SS.pgls.iter(pfitr, Yalt="RRPP", Pcor, iter=iter, seed=seed) else 
+        P <- SS.pgls.iter(pfitr, Yalt="resample", Pcor, iter=iter, seed=seed)
+    } else {
+      if(RRPP == TRUE) P <- .SS.pgls.iter(pfitr, Yalt="RRPP", Pcor, iter=iter, seed=seed) else 
+        P <- .SS.pgls.iter(pfitr, Yalt="resample", Pcor, iter=iter, seed=seed)
+    }
+    anova.parts.obs <- anova.parts(pfitr, P)
+    anova.tab <-anova.parts.obs$anova.table 
+    df <- anova.parts.obs$df
+    SS <- P$SS
+    SSE <- P$SSE
+    MS <- SS/df[1:k]
+    MSE <- SSE/df[k+1]
+    SSE.mat <- matrix(SSE, k, length(SSE), byrow = TRUE)
+    MSE.mat <- matrix(MSE, k, length(MSE), byrow = TRUE)
+    SSY <- P$SSY
+    effect.type <- match.arg(effect.type)
+    SS.type <- pfit$SS.type
+    if(is.matrix(SS)){
+      Fs <- (SS/df[1:k])/MSE.mat
+      if(SS.type == "III") {
+        etas <- SS/(SS+SSE.mat)
+        cohenf <- etas/(1-etas)
+      } else {
+        etas <- SS/SSY
+        unexp <- 1 - apply(etas, 2, cumsum)
+        cohenf <- etas/unexp
+      }
+      P.val <- apply(Fs, 1, pval)
+      if(effect.type == "F") Z <- apply(log(Fs), 1, effect.size) else
+        Z <- apply(log(cohenf), 1, effect.size) 
+      rownames(SS) <- rownames(Fs) <- rownames(cohenf) <- pfit$term.labels
+      colnames(SS) <- colnames(Fs) <- colnames(cohenf) <- c("obs", paste("iter", 1:iter, sep=":"))
+    } else {
+      MSE <- SSE/df[2]
+      Fs <- (SS/df[1])/MSE
+      etas <- SS/SSY
+      cohenf <- etas/(1-etas)
+      P.val <- pval(Fs)
+      if(effect.type != "F" && effect.type != "cohen") {
+        effect.type <- "F"
+        cat("\nWarning: only F or Cohen's f-squared can be used for effect sizes
+            with PGLS.  Effect type has been changed to F.\n")
+      }
+      if(effect.type == "cohen") Z <- effect.size(log(cohenf)) else
+        Z <- effect.size(log(Fs)) 
+      names(SS) <- names(Fs) <- names(cohenf) <- c("obs", paste("iter", 1:iter, sep=":"))
+      }
+    if(effect.type == "SS") effect.type <- "F"
+    tab <- data.frame(anova.tab, Z = c(Z, NA, NA), Pr = c(P.val, NA, NA))
+    colnames(tab)[1] <- "Df"
+    colnames(tab)[ncol(tab)] <- "Pr(>F)"
+    class(tab) <- c("anova", class(tab))
+    PY <- Pcor%*%pfit$Y; PX <- Pcor%*%pfit$X
+    Pfit <- lm.wfit(PX, PY, pfit$weights)
+    out = list(aov.table = tab, call = match.call(),
+               coefficients=pfit$wCoefficients.full[[k]],
+               Y=pfit$Y,  X=pfit$X, 
+               Pcor=Pcor, 
+               QR = pfit$QRs[[k]], fitted=pfit$wFitted.full[[k]], 
+               residuals = pfit$wResiduals.full[[k]], 
+               weights = pfit$weights, Terms = pfit$Terms, term.labels = pfit$term.labels,
+               SS = anova.parts.obs$SS, SS.type = SS.type,
+               df = anova.parts.obs$df, R2 = anova.parts.obs$R2[1:k], 
+               pgls.coefficients = Pfit$coefficients, 
+               pgls.fitted = pfit$X%*%Pfit$coefficients, 
+               pgls.residuals = Y - pfit$X%*%Pfit$coefficients,
+               phylo.mean = apply(PY, 2, mean),
+               F = anova.parts.obs$Fs[1:k], permutations = iter+1, random.SS = SS,
+               random.SSE <- SSE,
+               random.F = Fs, random.cohenf = cohenf, effect.type=effect.type,
+               perm.method = ifelse(RRPP==TRUE,"RRPP", "Raw"), PGLS = TRUE)
   } else {
-    if(RRPP == TRUE) SSr <- .Fpgls.iter(pfit, Yalt="RRPP", Pcor, iter=iter, seed=seed) else 
-      SSr <- .Fpgls.iter(pfit, Yalt="resample", Pcor, iter=iter, seed=seed)
+    Y <- pfit$wY
+    PY <- Pcor%*%Y
+    X <- pfit$wY
+    PX <- Pcor%*%X
+    SSY <- sum(center(PY)^2)
+    n <- NROW(Y)
+    df <- n - 1
+    tab <- data.frame(Df = df,SS = SSY,
+                      MS = SSY/df, Rsq = NA,
+                      F = NA, P = NA)
+    rownames(tab) <- "Residuals"
+    colnames(tab)[NCOL(tab)] <- "Pr(>F)"
+    class(tab) = c("anova", class(tab))
+    Pfit <- lm.wfit(PX, PY, w = pfit$weights)
+    out <- list(aov.table = tab, call = match.call(),
+                coefficients=pfit$wCoefficients.full[[1]],
+                Y=pfit$Y,  X=pfit$X, 
+                Pcor=Pcor, 
+                QR = pfit$QRs[[1]], fitted=pfit$wFitted.full[[1]], 
+                residuals = pfit$wResiduals.full[[1]], 
+                weights = pfit$weights, Terms = pfit$Terms, term.labels = pfit$term.labels,
+                pgls.coefficients = Pfit$coefficients, 
+                pgls.fitted = X%*%Pfit$coefficients,
+                pgls.residuals = Y - X%*%Pfit$coefficients,
+                phylo.mean = apply(PY, 2, mean)
+    )
   }
-  anova.parts.obs <- anova.parts.pgls(pfit, SSr)
-  anova.tab <-anova.parts.obs$anova.table 
-  P <- SSr$Fs
-  if(is.matrix(P)){
-    P.val <- apply(P,1,pval)
-    Z <- apply(P,1,effect.size) 
-    rownames(P) <- pfit$term.labels
-    colnames(P) <- c("obs", paste("iter", 1:iter, sep=":"))
-  } else {
-    P.val <- pval(P)
-    Z <- effect.size(P) 
-    names(P) <-c("obs", paste("iter", 1:iter, sep=":"))
-  }
-  tab <- data.frame(anova.tab, Z = c(Z, NA, NA), Pr = c(P.val, NA, NA))
-  colnames(tab)[1] <- "Df"
-  colnames(tab)[ncol(tab)] <- "Pr(>F)"
-  class(tab) <- c("anova", class(tab))
-  PY <- Pcor%*%pfit$Y; PX <- Pcor%*%pfit$X
-  Pfit <- lm.wfit(PX, PY, pfit$weights)
-  out = list(aov.table = tab, call = match.call(),
-             coefficients=pfit$coefficients, 
-             Y=pfit$Y,  X=pfit$X, 
-             Pcor=Pcor, 
-             QR = pfit$QRs[[k+1]], fitted=pfit$fitted[[k+1]], 
-             residuals = pfit$residuals[[k+1]], 
-             weights = pfit$weights, Terms = pfit$Terms, term.labels = pfit$term.labels,
-             SS = anova.parts.obs$SS, SS.type = "I",
-             df = anova.parts.obs$df, R2 = anova.parts.obs$R2[1:k], 
-             pgls.coefficients = Pfit$coefficients, pgls.fitted = pfit$X%*%Pfit$coefficients, 
-             pgls.residuals = Y - pfit$X%*%Pfit$coefficients,
-             F = anova.parts.obs$Fs[1:k], permutations = iter+1,
-             random.F = P, perm.method = ifelse(RRPP==TRUE,"RRPP", "Raw"))
   class(out) <- "procD.lm"
   out
 }

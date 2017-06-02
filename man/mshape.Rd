@@ -7,7 +7,7 @@
 mshape(A)
 }
 \arguments{
-\item{A}{Either a list (length n, each p x k), A 3D array (p x k x n), or a matrix (pk X n) containing GPA-aligned coordinates for a set of specimens}
+\item{A}{Either a list (length n, ach p x k), A 3D array (p x k x n), or a matrix (pk X n) containing GPA-aligned coordinates for a set of specimens}
 }
 \description{
 Estimate the mean shape for a set of aligned specimens
@@ -23,11 +23,10 @@ Y.gpa<-gpagen(plethodon$land)    #GPA-alignment
 
 mshape(Y.gpa$coords)   #mean (consensus) configuration
 }
-\author{
-Julien Claude
-}
 \references{
 Claude, J. 2008. Morphometrics with R. Springer, New York.
 }
+\author{
+Julien Claude
+}
 \keyword{utilities}
-

@@ -36,6 +36,16 @@
 #' are exactly along the major axis of shape covariation.  This axis is also shown as a best-fit line in the plot.
 #' }
 #' 
+#'  \subsection{Notes for geomorph 3.0.4 and subsequent versions}{ 
+#'  Compared to previous versions of geomorph, users might notice differences in effect sizes.  Previous versions used z-scores calculated with 
+#'  expected values of statistics from null hypotheses (sensu Collyer et al. 2015); however Adams and Collyer (2016) showed that expected values 
+#'  for some statistics can vary with sample size and variable number, and recommended finding the expected value, empirically, as the mean from the set 
+#'  of random outcomes.  Geomorph 3.0.4 and subsequent versions now center z-scores on their empirically estimated expected values and where appropriate, 
+#'  log-transform values to assure statistics are normally distributed.  This can result in negative effect sizes, when statistics are smaller than 
+#'  expected compared to the avergae random outcome.  For ANOVA-based functions, the option to choose among different statistics to measure effect size 
+#'  is now a function argument.
+#' }
+#' 
 #' @param A1 A 3D array (p x k x n) containing GPA-aligned coordinates for the first block, or a matrix (n x variables)
 #' @param A2 A 3D array (p x k x n) containing GPA-aligned coordinates for the second block, or a matrix (n x variables)
 #' @param iter Number of iterations for significance testing
@@ -71,6 +81,10 @@
 #' \code{\link{phylo.integration}}, and \code{\link{compare.pls}}
 #' @references  Rohlf, F.J., and M. Corti. 2000. The use of partial least-squares to study covariation in shape. 
 #' Systematic Biology 49: 740-753.
+#' @references Collyer, M.L., D.J. Sekora, and D.C. Adams. 2015. A method for analysis of phenotypic change for phenotypes described 
+#' by high-dimensional data. Heredity. 115:357-365.
+#' @references Adams, D.C. and M.L. Collyer. 2016.  On the comparison of the strength of morphological integration across morphometric 
+#' datasets. Evolution. 70:2623-2631.
 #' @examples
 #' data(plethShapeFood) 
 #' Y.gpa<-gpagen(plethShapeFood$land)    #GPA-alignment    
@@ -81,10 +95,10 @@
 #' plot(PLS)
 
 two.b.pls <- function (A1, A2,  iter = 999, seed = NULL, print.progress=TRUE){
-  if (any(is.na(A1)) == T) 
-    stop("Data matrix 1 contains missing values. Estimate these first (see 'estimate.missing').")
-  if (any(is.na(A2)) == T) 
-    stop("Data matrix 2 contains missing values. Estimate these first (see 'estimate.missing').")
+    if (any(is.na(A1)) == T) 
+      stop("Data matrix 1 contains missing values. Estimate these first (see 'estimate.missing').")
+    if (any(is.na(A2)) == T) 
+      stop("Data matrix 2 contains missing values. Estimate these first (see 'estimate.missing').")
   if (is.null(dim(A1))) A1 <- as.matrix(A1); if (is.null(dim(A2))) A2 <- as.matrix(A2)
   if (length(dim(A1)) == 3) x <- two.d.array(A1) else x <- as.matrix(A1)
   if (length(dim(A2)) == 3) y <- two.d.array(A2) else y <- as.matrix(A2)
@@ -122,4 +136,4 @@ two.b.pls <- function (A1, A2,  iter = 999, seed = NULL, print.progress=TRUE){
               method="PLS")
   class(out) <- "pls"
   out
-}
+  }

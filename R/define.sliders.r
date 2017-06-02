@@ -72,8 +72,8 @@
 #' @examples  
 #' ## (not run) Use interactive function in rgl window
 #'  # data(scallops)
-#'  # define.sliders(scallops$coorddata[,,1], nsliders=11,surfsliders = scallops$surfslide)
-#'  # here the first specimen is used for plotting purposes only 
+#'  # define.sliders(scallops$coorddata[,,1], nsliders=11,surfsliders = scallops$surfslide) 
+#'  # here the first specimen is used for plotting purposes only
 #'  
 #' ## Examples of AUTO mode 
 #'  ## 1 curve of sliding semilandmark
@@ -138,10 +138,10 @@ define.sliders<-function(landmarks, nsliders, surfsliders=NULL, write.file = TRU
   if (checkdim==3) {
     rownames(spec) <- c(1:nrow(spec)) 
     if(!is.null(surfsliders)){
-    if(is.logical(surfsliders)){
-      surf <- as.matrix(read.csv("surfslide.csv", header=T))
-      spec <- spec[-surf,]} else     
-    spec <- spec[-surfsliders,]
+      if(is.logical(surfsliders)){
+        surf <- as.matrix(read.csv("surfslide.csv", header=T))
+        spec <- spec[-surf,]} else     
+          spec <- spec[-surfsliders,]
     }
     n <- dim(spec)[1]
     index <- as.numeric(rownames(spec))
@@ -173,5 +173,5 @@ define.sliders<-function(landmarks, nsliders, surfsliders=NULL, write.file = TRU
     colnames(curveslide)<-c("before","slide","after")
     if(write.file == TRUE){write.table(curveslide,file="curveslide.csv",row.names=FALSE,col.names=TRUE,sep=",")}
     return(curveslide)  
-}
+  }
 }

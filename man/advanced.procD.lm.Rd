@@ -5,7 +5,7 @@
 \title{Procrustes ANOVA and pairwise tests for shape data, using complex linear models}
 \usage{
 advanced.procD.lm(f1, f2, groups = NULL, slope = NULL, angle.type = c("r",
-  "deg", "rad"), pc.shape = FALSE, iter = 999, seed = NULL,
+  "deg", "rad"), phy = NULL, pc.shape = FALSE, iter = 999, seed = NULL,
   print.progress = TRUE, data = NULL, ...)
 }
 \arguments{
@@ -25,6 +25,8 @@ slopes are compared.  Group slopes can differ in their magnitude and direction o
 \item{angle.type}{A value specifying whether directional differences between slopes should be represented by vector
 correlations (r), radians (rad) or degrees (deg).}
 
+\item{phy}{A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape (optional)}
+
 \item{pc.shape}{An argument for whether analysis should be performed on the principal component scores fo shape.  This is a useful
 option if the data are high-dimensional (many more variables that observations) but will not affect results}
 
@@ -41,7 +43,8 @@ This is helpful for long-running analyses.}
 \item{data}{A data frame for the function environment; see \code{\link{geomorph.data.frame}}.  If variables
 are transformed in formulae, they should also be transformed in the geomorph data frame.  (See examples.)}
 
-\item{...}{Arguments passed on to procD.fit (typically associated with the lm function)}
+\item{...}{Arguments passed on to procD.fit (typically associated with the lm function,
+such as weights or offset).}
 }
 \value{
 Function returns an ANOVA table of statistical results for model comparison: error df (for each model), SS, MS,
@@ -78,12 +81,29 @@ The function performs statistical assessment of the terms in the model using Pro
   of two nested models. (Use of \code{\link{procD.lm}} will be more suitable in most cases.)  
   A residual randomization permutation procedure (RRPP) is utilized 
   for reduced model residuals to evaluate the SS between models (Collyer et al. 2015).  Effect-sizes (Z-scores) are 
-  computed as standard deviates of the SS sampling 
-  distributions generated, which might be more intuitive for P-values than F-values (see Collyer et al. 2015).  
+  computed as standard deviates of the SS or pairwise statistic sampling 
+  distributions generated, which might be more intuitive for P-values than F-values (see Collyer et al. 2015).  If a phylogeny is 
+  used, the ANOVA Z-score is calculated from the sampling distributions of the F value, as the total SS will vary among permutations.
+  For ANOVA Z-scores, a log-transformation is performed first, to assure a norammly distributed sampling distribution.
   
   Pairwise tests are only performed if formulae are provided to compute such results.
   The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{advanced.procD.lm}}.
   The generic function, \code{\link{plot}}, produces diagnostic plots for Procrustes residuals of the linear fit.
+  
+ \subsection{Notes for geomorph 3.0.4 and subsequent versions}{ 
+ Compared to previous versions of geomorph, users might notice differences in effect sizes.  Previous versions used z-scores calculated with 
+ expected values of statistics from null hypotheses (sensu Collyer et al. 2015); however Adams and Collyer (2016) showed that expected values 
+ for some statistics can vary with sample size and variable number, and recommended finding the expected value, empirically, as the mean from the set 
+ of random outcomes.  Geomorph 3.0.4 and subsequent versions now center z-scores on their empirically estimated expected values and where appropriate, 
+ log-transform values to assure statistics are normally distributed.  This can result in negative effect sizes, when statistics are smaller than 
+ expected compared to the avergae random outcome.  For ANOVA-based functions, the option to choose among different statistics to measure effect size 
+ is now a function argument.
+ 
+ An optional argument for including a phylogenetic tree of {class phylo} is included in this function.  ANOVA performed on separate PGLS models in analagous
+ to a likelihood ratio test between models (Adams and Collyer 2017).  Pairwise tests can also be performed after PGLS estimation of coefficients but users
+ should be aware that no formal research on the statistical properties (type I error rates and statistical power) of pairwise statistics with PGLS has yet 
+ been performed.  Using PGLS and analysis of pairwise statistics, therefore, assumes some risk.
+}
 }
 \examples{
 data(plethodon)
@@ -121,15 +141,20 @@ summary(aov.pleth) # ANOVA plus pairwise tests
 plot(aov.pleth) # diagnostic plots
 aov.pleth$slopes # extract the slope vectors
 }
-\author{
-Michael Collyer
-}
 \references{
 Collyer, M.L., D.J. Sekora, and D.C. Adams. 2015. A method for analysis of phenotypic change for phenotypes described 
 by high-dimensional data. Heredity. 115:357-365.
+
+Adams, D.C. and M.L. Collyer. 2016.  On the comparison of the strength of morphological integration across morphometric 
+datasets. Evolution. 70:2623-2631.
+
+Adams, D.C. and M.L. Collyer. 2017. Multivariate comparative methods: evaluations, comparisons, and
+recommendations. In press.
 }
 \seealso{
 \code{\link{procD.lm}}
 }
+\author{
+Michael Collyer
+}
 \keyword{analysis}
-

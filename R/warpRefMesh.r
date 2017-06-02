@@ -52,6 +52,7 @@ warpRefMesh <- function(mesh, mesh.coord, ref, color=NULL, centered=FALSE){
   coord <- scale(mesh.coord, scale=F) 
   sc.mat <- matrix(rep(1,nrow(mesh.vb)), ncol=1) %*% apply(mesh.coord,2,mean)
   mesh.vb <- mesh.vb - sc.mat 
+  cat("\nWarping mesh\n")
   warp <- tps2d3d(mesh.vb, coord, ref)
   mesh$vb[1:3,] <- t(warp)
      if(is.null(color)==FALSE){ mesh$material <- color }
