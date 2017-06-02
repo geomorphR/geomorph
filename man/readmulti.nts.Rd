@@ -7,21 +7,24 @@
 readmulti.nts(filelist)
 }
 \arguments{
-\item{filelist}{A character vector of file names for the *.nts files to be read by the function.}
+\item{filelist}{a character vector of file names for the *.nts files to be read in}
 }
 \value{
 Function returns a 3D array (p x k x n), where p is the number of landmark points, k is 
   the number of landmark dimensions (2 or 3), and n is the number of specimens. The third dimension 
-  of this array contains names for each specimen, which are obtained from the original file names.
+  of this array contains names for each specimen, which are obtained from the file names.
 }
 \description{
-Read multiple *.nts files to obtain landmark coordinates for a set of specimens
+Read multiple *.nts files, each containing landmark coordinates for a single specimen
 }
 \details{
 Function reads a character vector of filenames for a set of *.nts files that each contain two- or 
 three-dimensional landmark coordinates for a single specimen (e.g., exported from \code{\link{digit.fixed}} and \code{\link{digitsurface}}).
+
+This is for NTS files of the "single specimen format" (details below), which is not the same as \code{\link{readland.nts}}. 
   
 NTS files are text files in one of the standard formats for geometric morphometrics (see Rohlf 2012). 
+Single specimen format: 
   The parameter line contains 5 or 6 elements, and must begin with a "1" to designate a rectangular matrix. 
   The second and third values designate how many landmarks (p) and the dimensions (k) of the data matrix.
   The fourth value is a "0" if the data matrix is complete and a "1" 

@@ -1,10 +1,13 @@
 #' Read landmark data matrix from nts file
 #'
-#' Read single *.nts file to obtain landmark coordinates for a set of specimens
+#' Read single *.nts file containing landmark coordinates for a set of specimens
 #'
-#' Function reads a *.nts file containing two- or three-dimensional landmark coordinates for multiple specimens. 
+#' Function reads a single *.nts file containing two- or three-dimensional landmark coordinates for multiple specimens. 
+#' 
+#' This is for NTS files of the "multiple specimen format" (details below), which is not the same as \code{\link{readmulti.nts}}.  
 #'  
-#' NTS files are text files in one of the standard formats for geometric morphometrics (see Rohlf 2012). 
+#' NTS files are text files in one of the standard formats for geometric morphometrics (see Rohlf 2012).
+#' Multiple specimen format: 
 #'   The parameter line contains 5 or 6 elements, and must begin with a "1" to designate a rectangular 
 #'   matrix. The second and third values designate how many specimens (n) and how many total variables 
 #'   (p x k) are in the data matrix. The fourth value is a "0" if the data matrix is complete and a "1" 
@@ -21,12 +24,12 @@
 #'   The positions of missing landmarks may then be estimated using estimate.missing.
 
 #'
-#' NOTE: *.dta files in the nts format written by IDAV Landmark Editor, 
+#' Special NTS files: *.dta files in the written by IDAV Landmark Editor, 
 #' and *.nts files written by Stratovan Checkpoint have incorrect 
 #' header notation; every header is 1 n p-x-k 1 9999 Dim=3, rather than 1 n p-x-k 0 Dim=3, which denotes
-#' that missing data is in the file even when it is not.
+#' that missing data is in the file even when it is not. Users must change manually the header (in a text editor) before using this function
 #'
-#' @param file A *.nts file containing two- or three-dimensional landmark data
+#' @param file the name of a *.nts file containing two- or three-dimensional landmark data to be read in
 #' @keywords IO
 #' @export
 #' @author Dean Adams & Emma Sherratt
