@@ -95,9 +95,9 @@ aa05559403cdfbb5db1b36f61276cb01 *man/procD.pgls.Rd
 f6cb9acd4041322264e9f26158957dc1 *man/ratland.Rd
 cb46da06afb9b58e54ad31f7a7a02f4c *man/read.morphologika.Rd
 264a8a7606d0f550aa7cc4c9abdb76cb *man/read.ply.Rd
-adca23217d8e7ef1929546c421cf9b7d *man/readland.nts.Rd
+64f811957932c1d67cc8324ee2f706e5 *man/readland.nts.Rd
 966f9d68d5bb1cb659253fcbf7462b05 *man/readland.tps.Rd
-71bd9fea3878d159ac7aa0750817b891 *man/readmulti.nts.Rd
+d7ab7b16621a488c2daa709d10af488b *man/readmulti.nts.Rd
 8be198584c10582597e98c6cecbb26f7 *man/scallopPLY.Rd
 c4f3fe2e244677c2504bbe0283590d1c *man/scallops.Rd
 e4fdb6f6b3b745da511f75b30228340d *man/shape.predictor.Rd
@@ -123,7 +123,7 @@ da1241dd835f95675cc7126b2a7ec61a *man/two.d.array.Rd
 4678254db827c8ff8caf6c5beb8157be *man/warpRefOutline.Rd
 550c6adc8cd9bf90f6be30819dad83fc *man/writeland.tps.Rd
 3f1435fd25f61cda55d671b2cda06149 *NAMESPACE
-60131a513c2a076c54b09a346edf6a57 *NEWS
+8ba324fb4c28c80a8744d7f3f60ea4d9 *NEWS
 ad8e5c5fb07b1b65991fa60232ec0de8 *R/advanced.procD.lm.r
 311a910118a6b60a5ab89a58349e1f69 *R/arrayspecs.r
 6ee7d808d31ce1749bd503a3a8012091 *R/bilat.symmetry.r
@@ -169,9 +169,9 @@ b8296e52246b38cbb671c0f20129b783 *R/procD.allometry.r
 22c3628134c20bb918d8c7805a6048c5 *R/procD.pgls.r
 df3f4cc6406dc0c737ee2ff08c2a0e3d *R/read.morphologika.r
 9c3c828f71a413b5437d45228a3bf9b7 *R/read.ply.r
-c78d6ab345f92d45ae5f5326dde76561 *R/readland.nts.r
+e154be96be0e57782efccc5efbe6d5fa *R/readland.nts.r
 5ebf176cfc8ae244daf8fd42a8a7d413 *R/readland.tps.r
-ff7c5bf6d13e30a9cf396affb5afa484 *R/readmulti.nts.r
+945534fe7f30c519cd5a6663a9b882a3 *R/readmulti.nts.r
 bb92986b568b7e9176ff879b2e0ce9d9 *R/shape.predictor.r
 4438c994eed2a7ee510e22174d076f4d *R/trajectory.analysis.r
 777657ac8b0ee3fdc4f033de5015df12 *R/two.b.pls.r
@@ -179,4 +179,4 @@ a14464bdaab9da24955793e0c62e6893 *R/two.d.array.r
 6cbbaa1e92e97d4ec742825a60d5e7ab *R/warpRefMesh.r
 59d493f9cc61f036c40f49bf8b7bb3e0 *R/warpRefOutline.r
 59d7c08ac596b9218ae66b34e67bd5a7 *R/writeland.tps.r
-3d2f64489f95adcca65d8dccc8c6fb08 *README.md
+d691845cae69c90cdb9b39aa3420ab5f *README.md
