@@ -32,7 +32,7 @@ that the predictor is size.}
 
 \item{...}{other arguments passed to plot (helpful to employ
 different colors or symbols for different groups).  See
-\code{\link{plot.defualt}} and \code{\link{par}}}
+\code{\link{plot.default}} and \code{\link{par}}}
 }
 \description{
 Plot Function for geomorph
