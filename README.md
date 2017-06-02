@@ -31,4 +31,4 @@ This installs a stable release of the current version of geomorph on CRAN, allow
 
 <code> devtools::install_github("geomorphR/geomorph",ref = "Develop")</code>
 
-##NOTE FOR THE PRE-RELEASE (BETA) VERSION: We strongly discourage you from publishing results with this version, unless you check with the authors first.
+## NOTE FOR THE PRE-RELEASE (BETA) VERSION: We strongly discourage you from publishing results with this version, unless you check with the authors first.
