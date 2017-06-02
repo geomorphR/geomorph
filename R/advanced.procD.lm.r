@@ -39,6 +39,11 @@
 #'  log-transform values to assure statistics are normally distributed.  This can result in negative effect sizes, when statistics are smaller than 
 #'  expected compared to the avergae random outcome.  For ANOVA-based functions, the option to choose among different statistics to measure effect size 
 #'  is now a function argument.
+#'  
+#'  An optional argument for including a phylogenetic tree of {class phylo} is included in this function.  ANOVA performed on separate PGLS models in analagous
+#'  to a likelihood ratio test between models (Adams and Collyer 2017).  Pairwise tests can also be performed after PGLS estimation of coefficients but users
+#'  should be aware that no formal research on the statistical properties (type I error rates and statistical power) of pairwise statistics with PGLS has yet 
+#'  been performed.  Using PGLS and analysis of pairwise statistics, therefore, assumes some risk.
 #' }
 #'
 #' @param f1 A formula for a linear model, containing the response matrix (e.g., y ~ x1 + x2)
@@ -84,6 +89,9 @@
 #' by high-dimensional data. Heredity. 115:357-365.
 #' @references Adams, D.C. and M.L. Collyer. 2016.  On the comparison of the strength of morphological integration across morphometric 
 #' datasets. Evolution. 70:2623-2631.
+#' @references Adams, D.C. and M.L. Collyer. 2017. Multivariate comparative methods: evaluations, comparisons, and
+#' recommendations. In press.
+#' 
 #' @examples
 #'data(plethodon)
 #'Y.gpa<-gpagen(plethodon$land)    #GPA-alignment
