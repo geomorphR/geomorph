@@ -2,6 +2,8 @@
 Geomorph is a software package for performing all stages of geometric morphometric shape analysis of landmark points and curves in 2-and-3-dimensions as well as 3D surfaces in the R statistical computing environment. This repository is dedicated to providing beta versions between CRAN uploads.
 Details of the installion can be found here: <url> http://geomorphpackage.blogspot.com.au/p/installing-geomorph.html </url>. 
 
+[![Downloads](http://cranlogs.r-pkg.org/badges/geomorph?color=red)](http://www.r-pkg.org/pkg/geomorph)
+
 ### To install the current geomorph R-package from CRAN:
 
 <i> Within R:</i>
