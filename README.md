@@ -19,7 +19,7 @@ Details on how to get started can be found on the geomorph wiki: <url> https://g
 
 <code> install.packages("devtools")</code>
 
-<code> devtools::install_github("geomorphR/geomorph")</code>
+<code> devtools::install_github("geomorphR/geomorph",ref = "Stable")</code>
 
 This installs a stable release of the current version of geomorph on CRAN, allowing us to quickly fix errors that slip thorugh the cracks and are uploaded with the CRAN version.
 
