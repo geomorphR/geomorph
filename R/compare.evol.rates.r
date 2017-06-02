@@ -95,7 +95,7 @@ compare.evol.rates<-function(A,phy,gp,iter=999,method=c("simulation","permutatio
   diag(rate.mat)<-sigma.obs$sigma.d.all
   rate.mat<-matrix(nearPD(rate.mat,corr=FALSE)$mat,nrow=ncol(rate.mat),ncol=ncol(rate.mat))
   if(method == "permutation"){
-    ind<-geomorph:::perm.index(N,iter)
+    ind<-perm.index(N,iter)
     x.r <-simplify2array(lapply(1:iter, function(i) x[ind[[i]],]))
   }
   if(method != "permutation") {x.r<-sim.char(phy=phy,par=rate.mat,nsim=iter,model="BM") }
