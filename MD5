@@ -48,7 +48,7 @@ b6748023f1102734ebb1f42991964558 *man/morphol.integr.Rd
 3f32b5f7d939d2f44cd4b9bd9b323399 *man/motionpaths.Rd
 8a4683d36dff0b661f8f0f21f095ab0c *man/mshape.Rd
 a190099f67237f9e2ca2b10f16e98bfd *man/nested.update.Rd
-91d8fcca40e38452759f2f714711db1b *man/phylo.integration.Rd
+7b971f950f5d77cb168c868c254b4b21 *man/phylo.integration.Rd
 65c5f399076475ee3f850a1b1a46152a *man/phylo.modularity.Rd
 8cfe1b3d2b190e86b7717a8fef4d6726 *man/phylo.pls.Rd
 e65dbb16700b9c7d4531176ff3a6b13c *man/physignal.Rd
@@ -155,7 +155,7 @@ c35bcae1a6ea59c924cf7dc9eec3e013 *R/interlmkdist.r
 1d6c03681bdbedb0359634ccaa2e0229 *R/modularity.test.r
 dbe95e9230b3aed02b0e250655435a65 *R/morphol.disparity.r
 e6cbf50b0b3cb59913bc7adf854f12f1 *R/nested.update.r
-3c1ee8ced361c6dd8d2bc54e4c63d83c *R/phylo.integration.r
+d26edc545c692991314bb5d6e32215b9 *R/phylo.integration.r
 e1cb306b0d2dd762ad291bddaf2366e8 *R/phylo.modularity.r
 5e12723d8749bc8119410cd31dff7003 *R/physignal.r
 ce94a8e9f425fb976e0ef0ecbf5096ae *R/plotAllSpecimens.r
