@@ -52,7 +52,7 @@
 #'   principal component plots (rotated to first PC of covariance matrix of fitted values), and regression plots can be performed.  The
 #'   latter is fundamentally similar to the plotting options for \code{\link{procD.allometry}}.  One must provide a linear predictor, and
 #'   can choose among common regression component (CRC), predicted values (PredLine), or regression scores (RegScore).  See \code{\link{procD.allometry}} 
-#'   for details. In these plotting optons, teh predictor does not need to be size, and fitted values and residuals from the procD.lm fit are used rather 
+#'   for details. In these plotting optons, the predictor does not need to be size, and fitted values and residuals from the procD.lm fit are used rather 
 #'   than mean-centered values. 
 #'   
 #'  \subsection{Notes for geomorph 3.0.4 and subsequent versions}{ 

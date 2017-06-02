@@ -12,7 +12,7 @@ d8e8360c03c03fe45d2100e9c05d4a89 *data/plethodon.rda
 44eca9acf2e2b87c5847f4eeb0a175c9 *DESCRIPTION
 32e740499950300161ec5b9a73a46d8d *geomorph.Rproj
 4bdde5c74d5d5ead8f87cd70b9f91250 *inst/CITATION
-c511650d10c614f96feab9270b7bfee8 *man/advanced.procD.lm.Rd
+c553474272f2b049f7a93fc2da89788c *man/advanced.procD.lm.Rd
 5e099c6268d251bf5c98595d9566385a *man/arrayspecs.Rd
 55bbc2e312be50d9891e81de07d98605 *man/bilat.symmetry.Rd
 5a3e03eb2accf1269a9cf8c049adae78 *man/buildtemplate.Rd
@@ -89,7 +89,7 @@ c9459503ec13f843f971edda31289dc6 *man/print.pls.Rd
 e186bde97e98a204b53457a14eb0a52d *man/print.procD.lm.Rd
 82db8052b9e73e447b14cb5844a0cd26 *man/print.trajectory.analysis.Rd
 dd4d9682893677462197301333539f22 *man/procD.allometry.Rd
-77630d140970ddbdc2fcea2a8560b942 *man/procD.lm.Rd
+568bdb972038cf2ab6241af6b63f7601 *man/procD.lm.Rd
 aa05559403cdfbb5db1b36f61276cb01 *man/procD.pgls.Rd
 5af95dfa1f3eca058660677087344463 *man/pupfish.Rd
 f6cb9acd4041322264e9f26158957dc1 *man/ratland.Rd
@@ -124,7 +124,7 @@ da1241dd835f95675cc7126b2a7ec61a *man/two.d.array.Rd
 550c6adc8cd9bf90f6be30819dad83fc *man/writeland.tps.Rd
 3f1435fd25f61cda55d671b2cda06149 *NAMESPACE
 00a701d529d97b8e4981c2d265b83193 *NEWS
-876fe6fb84f61a54fb05314d864f81b0 *R/advanced.procD.lm.r
+f7f475941b7a8ba49ce601ab898f5cca *R/advanced.procD.lm.r
 311a910118a6b60a5ab89a58349e1f69 *R/arrayspecs.r
 6ee7d808d31ce1749bd503a3a8012091 *R/bilat.symmetry.r
 14713bbb2ad126d777d95e359c71bf1a *R/build.template.r
@@ -165,7 +165,7 @@ b8814f9a047a63c586c6e472bc17d6d5 *R/plotOutliers.r
 41db23cebd8d7be6c3decf781bd378e0 *R/plotspec.r
 1f6d6dd7deb37d5920c9addb55bf7c3f *R/plotTangentSpace.r
 b8296e52246b38cbb671c0f20129b783 *R/procD.allometry.r
-321143e37552f7a9cfca8fa322c971b6 *R/procD.lm.r
+ee735895e70980665b4f4087856b9126 *R/procD.lm.r
 22c3628134c20bb918d8c7805a6048c5 *R/procD.pgls.r
 df3f4cc6406dc0c737ee2ff08c2a0e3d *R/read.morphologika.r
 9c3c828f71a413b5437d45228a3bf9b7 *R/read.ply.r
