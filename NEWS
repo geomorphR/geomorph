@@ -1,6 +1,7 @@
 CHANGES IN GEOMORPH VERSION 3.0.4
   NEW FEATURES
     o New function: interlmkdist() to calculate linear distances between landmarks (interlandmark distances)
+    o PGLS option for advanced.procD.lm
     o An option to use types I, II, or III sums of squares and cross-products for ANOVA analyses (e.g., procD.lm(), procD.pgls())
     o An option to choose between SS, F-values, or Cohen's f-squared to calculate effect sizes for ANOVA analyses
     o Effect sizes are now centered on mean values from distributions of random statistics.  Statistics are also log-transformed in certain cases to normalize distributions.
