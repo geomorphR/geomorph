@@ -3,7 +3,7 @@ Geomorph is a software package for performing all stages of geometric morphometr
 
 Details of the installion can be found here: <url> https://github.com/geomorphR/geomorph/wiki/Installing-geomorph </url>. 
 
-Details on how to get started can be found on the geomporph wiki: <url> https://github.com/geomorphR/geomorph/wiki </url>. 
+Details on how to get started can be found on the geomorph wiki: <url> https://github.com/geomorphR/geomorph/wiki </url>. 
 
 [![Downloads](http://cranlogs.r-pkg.org/badges/geomorph?color=blue)](http://www.r-pkg.org/pkg/geomorph)
 
