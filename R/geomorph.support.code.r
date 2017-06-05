@@ -971,7 +971,7 @@ procD.fit.lm <- function(a){
   uk <- unique(X.k)
   k <- length(uk) - 1
   # SS types: reduced and full X matrices
-  if(SS.type == "III"){
+  if(SS.type == "III"){ 
     Xrs <- lapply(2:length(uk), function(j)  Xj <- X[, X.k %in% uk[-j]])
     Xfs <- lapply(2:length(uk), function(j)  X)
   } 
