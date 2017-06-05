@@ -963,38 +963,30 @@ procD.fit.lm <- function(a){
   # data and design matrix
   Terms <- a$terms
   X.k <- attr(X, "assign")
-  k <- length(X.k)
+  k <- length(X.k) - 1
   QRx <- qr(X)
   X <- X[, QRx$pivot, drop = FALSE]
   X <- X[, 1:QRx$rank, drop = FALSE]
   X.k <- X.k[QRx$pivot][1:QRx$rank]
   uk <- unique(X.k)
-  k <- length(uk) - 1
   # SS types: reduced and full X matrices
   if(SS.type == "III"){
-    Xrs <- lapply(2:length(uk), function(j)  Xj <- X[, X.k %in% uk[-j]])
+    Xrs <- lapply(2:length(uk), function(j)  X[, X.k %in% uk[-j]])
     Xfs <- lapply(2:length(uk), function(j)  X)
   } 
   if(SS.type == "II") {
-    factors <- attr(Terms, "factors")
-    fac.guide <- colSums(factors)
-    Xrs <- lapply(1:length(fac.guide), function(j){
-      x <- fac.guide[j]
-      xn <- names(x)
-      if(x == 1){
-        fc <- which(fac.guide == 1)
-        model.matrix(Terms[fc[names(fc) != xn]], data=dat)
-      } else {
-        model.matrix(Terms[fac.guide < x], data=dat)
-      }
+    fac <- attr(Terms, "factor")
+    fac <- crossprod(fac[-1,])
+    Xrs <- lapply(1:NROW(fac), function(j){
+      ind <- ifelse(fac[j,] < fac[j,j], 1, 0)
+      if(int == 1) ind <- c(1, ind)
+      X[,which(ind == 1)]
     })
-    Xfs <- lapply(1:length(fac.guide), function(j){
-      x <- fac.guide[j]
-      if(x == 1) model.matrix(Terms[which(fac.guide == 1)], data=dat) else {
-        keep <- names(c(fac.guide[fac.guide < x], fac.guide[j]))
-        keep <- as.numeric(na.omit(match(keep, names(fac.guide))))
-        model.matrix(Terms[keep], data=dat)
-      }
+    Xfs <- lapply(1:NROW(fac), function(j){
+      ind <- ifelse(fac[j,] < fac[j,j], 1, 0)
+      ind[j] <- 1
+      if(int == 1) ind <- c(1, ind)
+      X[,which(ind == 1)]
     })
   } 
   if(SS.type == "I") {
