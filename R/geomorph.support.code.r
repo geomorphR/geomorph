@@ -976,25 +976,18 @@ procD.fit.lm <- function(a){
     Xfs <- lapply(2:length(uk), function(j)  X)
   } 
   if(SS.type == "II") {
-    factors <- attr(Terms, "factors")
-    fac.guide <- colSums(factors)
-    Xrs <- lapply(1:length(fac.guide), function(j){
-      x <- fac.guide[j]
-      xn <- names(x)
-      if(x == 1){
-        fc <- which(fac.guide == 1)
-        model.matrix(Terms[fc[names(fc) != xn]], data=dat)
-      } else {
-        model.matrix(Terms[fac.guide < x], data=dat)
-      }
+    fac <- attr(Terms, "factor")
+    fac <- crossprod(fac[-1,])
+    Xrs <- lapply(1:NROW(fac), function(j){
+      ind <- ifelse(fac[j,] < fac[j,j], 1, 0)
+      if(int == 1) ind <- c(1, ind)
+      X[,which(ind == 1)]
     })
-    Xfs <- lapply(1:length(fac.guide), function(j){
-      x <- fac.guide[j]
-      if(x == 1) model.matrix(Terms[which(fac.guide == 1)], data=dat) else {
-        keep <- names(c(fac.guide[fac.guide < x], fac.guide[j]))
-        keep <- as.numeric(na.omit(match(keep, names(fac.guide))))
-        model.matrix(Terms[keep], data=dat)
-      }
+    Xfs <- lapply(1:NROW(fac), function(j){
+      ind <- ifelse(fac[j,] < fac[j,j], 1, 0)
+      ind[j] <- 1
+      if(int == 1) ind <- c(1, ind)
+      X[,which(ind == 1)]
     })
   } 
   if(SS.type == "I") {
