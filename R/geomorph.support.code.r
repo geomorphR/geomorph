@@ -963,12 +963,12 @@ procD.fit.lm <- function(a){
   # data and design matrix
   Terms <- a$terms
   X.k <- attr(X, "assign")
-  k <- length(X.k) - 1
   QRx <- qr(X)
   X <- X[, QRx$pivot, drop = FALSE]
   X <- X[, 1:QRx$rank, drop = FALSE]
   X.k <- X.k[QRx$pivot][1:QRx$rank]
-  uk <- unique(X.k)
+  uk <- unique(c(0,X.k))
+  k <- length(attr(Terms, "term.labels"))
   # SS types: reduced and full X matrices
   if(SS.type == "III"){
     Xrs <- lapply(2:length(uk), function(j)  X[, X.k %in% uk[-j]])
@@ -977,17 +977,16 @@ procD.fit.lm <- function(a){
   if(SS.type == "II") {
     fac <- attr(Terms, "factor")
     fac <- crossprod(fac[-1,])
-    int <- attr(Terms, "intercept")
     Xrs <- lapply(1:NROW(fac), function(j){
       ind <- ifelse(fac[j,] < fac[j,j], 1, 0)
-      if(int == 1) ind <- c(1, ind)
-      X[,which(ind == 1)]
+      ind <- as.logical(c(1,ind))
+      X[, X.k %in% uk[ind]]
     })
     Xfs <- lapply(1:NROW(fac), function(j){
       ind <- ifelse(fac[j,] < fac[j,j], 1, 0)
       ind[j] <- 1
-      if(int == 1) ind <- c(1, ind)
-      X[,which(ind == 1)]
+      ind <- as.logical(c(1,ind))
+      X[, X.k %in% uk[ind]]
     })
   } 
   if(SS.type == "I") {
