@@ -115,18 +115,18 @@ modularity.test<-function(A,partition.gp,iter=999, CI=FALSE,seed=NULL, print.pro
     if(print.progress){
       cat("\nFinding the optimal rotation for CR\n")
       pb <- txtProgressBar(min = 0, max = length(rot.mat), initial = 0, style=3) 
-      rotatedCRs <-sapply(1:length(rot.mat), function(j) {
+     rotatedCRs <- sapply(1:length(rot.mat), function(j) {
         r <- rot.mat[[j]]
         rotA <- t(mapply(function(a) matrix(t(a%*%r)), Alist))
         setTxtProgressBar(pb,j)
-        CR(rotA, gps=gps.obs)$CR
+        quick.CR(rotA, gps=gps.obs)
       })
       close(pb)
     } else {
       rotatedCRs <-sapply(1:length(rot.mat), function(j) {
         r <- rot.mat[[j]]
         rotA <- t(mapply(function(a) matrix(t(a%*%r)), Alist))
-        CR(rotA, gps=gps.obs)$CR
+        quick.CR(rotA, gps=gps.obs)
       })
     }
     avgCR <- mean(rotatedCRs)

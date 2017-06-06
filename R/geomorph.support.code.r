@@ -2256,22 +2256,26 @@ apply.plsmulti <- function(x,gps, iter, seed = NULL){
 # CR
 # Function to estimate CR coefficient
 # used in: modularity.test, apply.CR
-CR<-function(x,gps){
+CR <-function(x,gps){
+  x <- center(x)
   g <- gps
-  ngps <- length(unique(g))
-  S<-var(x)
-  diag(S)<-0
+  gl <- unique(g)
+  ngps <- length(gl)
   gps.combo <- combn(ngps, 2)
+  Xs<- lapply(1:ngps, function(j) {
+    x[, g %in% gl[j]]
+  })
   CR.gp <- sapply(1:ncol(gps.combo), function(j){ # no loops
-    S11<-S[which(g==gps.combo[1,j]),which(g==gps.combo[1,j])]
-    S22<-S[which(g==gps.combo[2,j]),which(g==gps.combo[2,j])]
-    S12<-S[which(g==gps.combo[1,j]),which(g==gps.combo[2,j])]
-    sqrt(sum(colSums(S12^2))/sqrt(sum(S11^2)*sum(S22^2)))
+    ind <- gps.combo[,j]; a <- ind[1]; b <- ind[2]
+    S11 <- crossprod(Xs[[a]]); diag(S11) <- 0
+    S22 <- crossprod(Xs[[b]]); diag(S22) <- 0
+    S12 <- crossprod(Xs[[a]], Xs[[b]])
+    sqrt(sum(S12^2)/sqrt(sum(S11^2)*sum(S22^2)))
   })
   if(length(CR.gp) > 1) CR.mat <- dist(matrix(0, ngps,)) else 
     CR.mat = 0 # may not be necessary
   for(i in 1:length(CR.mat)) CR.mat[[i]] <- CR.gp[i]
-
+  
   CR.obs <- mean(CR.gp) 
   list(CR = CR.obs, CR.mat=CR.mat)
 }
@@ -2280,17 +2284,21 @@ CR<-function(x,gps){
 # streamlined CR
 # used in: apply.CR, boot.CR
 quick.CR <-function(x,gps){ # no CR.mat made
+  x <- center(x)
   g <- gps
-  ngps <- length(unique(g))
-  S<-var(x)
-  diag(S)<-0
+  gl <- unique(g)
+  ngps <- length(gl)
   gps.combo <- combn(ngps, 2)
-  CR.gp <- sapply(1:ncol(gps.combo), function(j){
-    S11<-S[which(g==gps.combo[1,j]),which(g==gps.combo[1,j])]
-    S22<-S[which(g==gps.combo[2,j]),which(g==gps.combo[2,j])]
-    S12<-S[which(g==gps.combo[1,j]),which(g==gps.combo[2,j])]
-    sqrt(sum(colSums(S12^2))/sqrt(sum(S11^2)*sum(S22^2)))
+  Xs<- lapply(1:ngps, function(j) {
+    x[, g %in% gl[j]]
   })
+    CR.gp <- sapply(1:ncol(gps.combo), function(j){ # no loops
+      ind <- gps.combo[,j]; a <- ind[1]; b <- ind[2]
+      S11 <- crossprod(Xs[[a]]); diag(S11) <- 0
+      S22 <- crossprod(Xs[[b]]); diag(S22) <- 0
+      S12 <- crossprod(Xs[[a]], Xs[[b]])
+      sqrt(sum(S12^2)/sqrt(sum(S11^2)*sum(S22^2)))
+    })
   mean(CR.gp)
 }
 
