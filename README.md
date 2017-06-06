@@ -5,8 +5,6 @@ Details of the installion can be found here: <url> https://github.com/geomorphR/
 
 Details on how to get started can be found on the geomorph wiki: <url> https://github.com/geomorphR/geomorph/wiki </url>. 
 
-[![Downloads](http://cranlogs.r-pkg.org/badges/geomorph?color=blue)](http://www.r-pkg.org/pkg/geomorph) [![License](http://img.shields.io/badge/license-GPL%20%28%3E=%202%29-blue.svg?style=flat)](http://www.gnu.org/licenses/gpl-2.0.html) 
-
 ### To install the current geomorph R-package from CRAN:
 
 <i> Within R:</i>
