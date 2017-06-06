@@ -977,13 +977,14 @@ procD.fit.lm <- function(a){
   if(SS.type == "II") {
     fac <- crossprod(attr(Terms, "factor"))
     Xrs <- lapply(1:NROW(fac), function(j){
-      ind <- as.logical(ifelse(fac[j,] < fac[j,j], 1, 0))
+      ind <- ifelse(fac[j,] < fac[j,j], 1, 0)
+      ind <- as.logical(c(1,ind))
       X[, X.k %in% uk[ind]]
     })
     Xfs <- lapply(1:NROW(fac), function(j){
       ind <- ifelse(fac[j,] < fac[j,j], 1, 0)
       ind[j] <- 1
-      ind <- as.logical(ind)
+      ind <- as.logical(c(1,ind))
       X[, X.k %in% uk[ind]]
     })
   } 
