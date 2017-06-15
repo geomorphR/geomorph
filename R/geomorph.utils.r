@@ -1246,3 +1246,38 @@ print.compare.pls <- function(x,...){
 #' @author Michael Collyer
 #' @keywords utilities
 summary.compare.pls <- function(object, ...) print.compare.pls(object,...)
+
+#' Print/Summary Function for geomorph
+#' 
+#' @param x print/summary object
+#' @param ... other arguments passed to print/summary
+#' @export
+#' @author Michael Collyer
+#' @keywords utilities
+#' 
+print.combined.set <- function(x,...){
+  p <- x$points.by.set
+  g <- length(p)
+  cs <- x$CS
+  css <- colMeans(cs)
+  rcs <- css/sum(css)
+  cat(paste("\nA total of", g, "subsets were combined\n\n"))
+  y <- matrix(0, 3, g)
+  if(!is.null(names(p))) colnames(y) <- names(p)
+  y[1, ] <- p
+  y[2, ] <- css
+  y[3, ] <- rcs
+  y <- as.data.frame(y)
+  rownames(y) <- c("Number of points in subset", "Mean centroid size", "Mean relative size")
+  print(y)
+}
+
+#' Print/Summary Function for geomorph
+#' 
+#' @param object print/summary object
+#' @param ... other arguments passed to print/summary
+#' @export
+#' @author Michael Collyer
+#' @keywords utilities
+#'
+summary.combined.set <- function(object, ...) print.combined.set(object, ...)

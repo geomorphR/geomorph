@@ -1,4 +1,5 @@
 247b6e5658356e87edfd560687b239fc *data/hummingbirds.rda
+56558754725fea156eb0820f67a4f508 *data/larvalMorph.rda
 a1d85459f2687dee40e0523ea3c5a2f4 *data/larvalTails.rda
 2abf7b7d088204662abf4c6acf673ff5 *data/mosquito.rda
 0033a37910a893b33a05c44e405022e0 *data/motionpaths.rda
@@ -16,6 +17,7 @@ c553474272f2b049f7a93fc2da89788c *man/advanced.procD.lm.Rd
 5e099c6268d251bf5c98595d9566385a *man/arrayspecs.Rd
 55bbc2e312be50d9891e81de07d98605 *man/bilat.symmetry.Rd
 5a3e03eb2accf1269a9cf8c049adae78 *man/buildtemplate.Rd
+7ef350e592549f75cd6dd2504cf8ce8d *man/combine.subsets.Rd
 d2bd7a9e8a84055d53c9e141a80d0f70 *man/compare.evol.rates.Rd
 e343a7c313d31037d94a472247478652 *man/compare.modular.partitions.Rd
 f34e88de5ae95bf5fdee9b1e45455110 *man/compare.multi.evol.rates.Rd
@@ -40,6 +42,7 @@ dab207265e691bfdd77ed11b54c1ec10 *man/gridPar.Rd
 2f8c3ec65293d99f9bbf5c7d212d921d *man/hummingbirds.Rd
 4c9c40763983a27b2b32f1c3588c6802 *man/integration.test.Rd
 9ab40cb3c3d8ccec94850abe377bd773 *man/interlmkdist.Rd
+874ad96ab30e7e0c6f637f1eeeaa0be6 *man/larvalMorph.Rd
 1ca0185dc9ca59a6b7b361bf1cbc0c6a *man/larvalTails.Rd
 2fcf77ab09382be75ada704c91b96552 *man/modularity.test.Rd
 5761da39540fdbe135e5bea60b6de933 *man/morphol.disparity.Rd
@@ -75,6 +78,7 @@ c11594184973d71eed9b7653cdf78b32 *man/plotspec.Rd
 b9b0dbe5282ae3ef08702a05f4c0521b *man/plotTangentSpace.Rd
 f55937e615337f8407f31095e6977c19 *man/print.advanced.procD.lm.Rd
 bf735457c885585781fa8dd86e2671b8 *man/print.bilat.symmetry.Rd
+61b3a2b02fa0a9976973470034a6f9d6 *man/print.combined.set.Rd
 ca57792d17c1d3960b672f2fd093064e *man/print.compare.pls.Rd
 c046c994e533bf55f4cad27e218e887f *man/print.CR.phylo.Rd
 d25053abfbafbd828758c0ce1be25de5 *man/print.CR.Rd
@@ -103,6 +107,7 @@ c4f3fe2e244677c2504bbe0283590d1c *man/scallops.Rd
 e4fdb6f6b3b745da511f75b30228340d *man/shape.predictor.Rd
 b995ac02e52763378040ea46a0781637 *man/summary.advanced.procD.lm.Rd
 35068c84146bc696b201169eb0009e0e *man/summary.bilat.symmetry.Rd
+8289c419e5231edfdfe9db2cd1ea4bc4 *man/summary.combined.set.Rd
 b1e22f76b9e8ba3abc2f107ec599b6a7 *man/summary.compare.pls.Rd
 b855ab3d098d9c88761b8c74e60836c4 *man/summary.CR.phylo.Rd
 50a7fd2834ae11fb8fb4cdbe52ceb477 *man/summary.CR.Rd
@@ -122,12 +127,13 @@ da1241dd835f95675cc7126b2a7ec61a *man/two.d.array.Rd
 8193dd10d2d3422240d788b5e404ee21 *man/warpRefMesh.Rd
 4678254db827c8ff8caf6c5beb8157be *man/warpRefOutline.Rd
 550c6adc8cd9bf90f6be30819dad83fc *man/writeland.tps.Rd
-3f1435fd25f61cda55d671b2cda06149 *NAMESPACE
+8db431fcd5f4f0c788393a3cc00ed327 *NAMESPACE
 79006b2860d88b018c4d6bc887daafd8 *NEWS
 f7f475941b7a8ba49ce601ab898f5cca *R/advanced.procD.lm.r
 311a910118a6b60a5ab89a58349e1f69 *R/arrayspecs.r
 6ee7d808d31ce1749bd503a3a8012091 *R/bilat.symmetry.r
 14713bbb2ad126d777d95e359c71bf1a *R/build.template.r
+70263e85cf3e33a40e5c2c530fb04e32 *R/combine.subsets.R
 09ac0d13b34c4c35690e48e446c1a636 *R/compare.evol.rates.r
 e9263a77f715848d8d0c4c01943d1cd3 *R/compare.multi.evol.rates.r
 e871f663e8ee857793742c6f4adaed54 *R/compare.pls.r
@@ -145,8 +151,8 @@ ddff41e987eac54d3500e2313799c3c6 *R/digitize2d.r
 9cfff0013db7a8c0e4aca770b5d9ea25 *R/findMeanSpec.r
 b56e53ac307d84a05efee9525dd6868a *R/fixed.angle.r
 203177efc30cc6fef4bd604b2fc2af01 *R/geomorph.data.frame.r
-888699cc6776dbeb35ea54130baf84a3 *R/geomorph.support.code.r
-8ed5e88c4661deea886fab21f2c68057 *R/geomorph.utils.r
+339a00e3ce8f763328c7830617d40a59 *R/geomorph.support.code.r
+dc88ed5c8de07a73809c88ee7a88235d *R/geomorph.utils.r
 0d9d88147f22cff2241b6e2e7396d57f *R/globalIntegration.r
 17bbdf1769466f17742de952fb612cc4 *R/gpagen.r
 2d8ab3c6fea452711a7cf091ffba8ff5 *R/gridPar.r

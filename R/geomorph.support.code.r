@@ -146,6 +146,22 @@ NULL
 #' larval salamander morphology and swim speed. Biological Journal of the Linnean Society.  Accepted.
 NULL
 
+#' Head and tail shapes of larval salamanders
+#'
+#' @name larvalMorph
+#' @docType data
+#' @author Michael Collyer
+#' @keywords datasets
+#' @description Landmark data from heads and tails of larval Salamanders exposed to different treatments of herbicides. 
+#' @details  
+#' Data set includes tail landmarks (coords), index for identifying semilandmarks (sliders), and vectors 
+#' for variables including herbicide treatment (Treatment) and Family (Family).  The latter variable indicates
+#' the egg masses (clutches) sampled in the wild from which individual eggs were randomly assigned to treatment.  
+#' See Levis et al. (2016) for more experimental details.
+#' @references Levis, N.A, M.L. Schooler, J.R. Johnson, and M.L. Collyer. 2016. The effects of terrestrial and aquatic herbicides on 
+#' larval salamander morphology and swim speed. Biological Journal of the Linnean Society.  Accepted.
+NULL
+
 #' Estimate mean shape for a set of aligned specimens
 #'
 #' Estimate the mean shape for a set of aligned specimens
