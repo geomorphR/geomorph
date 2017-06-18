@@ -108,6 +108,8 @@ combine.subsets <- function(..., gpa = TRUE, CS.sets = NULL){
     sets <- sets[keep]
   }
   g <- length(sets)
+  if(g < 2) stop(paste("At least two subsets are required. 
+                 You have", g, "subset(s)."))
 	if(gpa) {
 		all.coords <- all.CS <- GPA <- as.list(array(0,g))
 		dim.n.check <-  dim.k.check <- array(0,g)
@@ -151,20 +153,22 @@ combine.subsets <- function(..., gpa = TRUE, CS.sets = NULL){
 	p <- array(0,g)
 	for(i in 1:g) p[i] <- dim(all.coords[[i]][,,1])[1]
 	k <- dim(all.coords[[1]][,,1])[2]
-	CS.tot <- simplify2array(all.CS)
-	CS.part <- t(as.matrix(apply(CS.tot, 1, function(x) x/sum(x))))
-	coords.part <- all.coords
+	CS.tot <- as.matrix(simplify2array(all.CS))
+	CS.part <- CS.tot/rowSums(CS.tot)
 	coords.part <- lapply(1:g, function(j){
 	  all.coords[[j]]*CS.part[,j]
 	})
 	new.coords <- array(0, c(sum(p),k,n))
-	for(i in 1:n){
-		x <- coords.part[[1]][,,i]
-		for(ii in 2:g){
-			x <- rbind(x,coords.part[[ii]][,,i])
-		}
-		new.coords[,,i] <- x
-	}
+	if(g > 1) {
+	  for(i in 1:n){
+	    x <- coords.part[[1]][,,i]
+	    for(ii in 2:g){
+	      x <- rbind(x,coords.part[[ii]][,,i])
+	    }
+	    new.coords[,,i] <- x
+	  }  
+	} else new.coords <- all.coords[[1]]
+
 	pnames <- unlist(lapply(1:g, function(j){
 	  s <- names(sets)[[j]]
 	  paste(s, 1:p[j], sep=".")
