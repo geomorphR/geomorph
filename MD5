@@ -17,7 +17,7 @@ c553474272f2b049f7a93fc2da89788c *man/advanced.procD.lm.Rd
 5e099c6268d251bf5c98595d9566385a *man/arrayspecs.Rd
 55bbc2e312be50d9891e81de07d98605 *man/bilat.symmetry.Rd
 5a3e03eb2accf1269a9cf8c049adae78 *man/buildtemplate.Rd
-7ef350e592549f75cd6dd2504cf8ce8d *man/combine.subsets.Rd
+9de566b3b435c84bad8066baa7e62b1a *man/combine.subsets.Rd
 d2bd7a9e8a84055d53c9e141a80d0f70 *man/compare.evol.rates.Rd
 e343a7c313d31037d94a472247478652 *man/compare.modular.partitions.Rd
 f34e88de5ae95bf5fdee9b1e45455110 *man/compare.multi.evol.rates.Rd
@@ -133,7 +133,7 @@ f7f475941b7a8ba49ce601ab898f5cca *R/advanced.procD.lm.r
 311a910118a6b60a5ab89a58349e1f69 *R/arrayspecs.r
 6ee7d808d31ce1749bd503a3a8012091 *R/bilat.symmetry.r
 14713bbb2ad126d777d95e359c71bf1a *R/build.template.r
-535dc164f840057ba3210888f117c6b8 *R/combine.subsets.R
+603f900c9ff3d59e6ed512f6b916f722 *R/combine.subsets.R
 09ac0d13b34c4c35690e48e446c1a636 *R/compare.evol.rates.r
 e9263a77f715848d8d0c4c01943d1cd3 *R/compare.multi.evol.rates.r
 e871f663e8ee857793742c6f4adaed54 *R/compare.pls.r
@@ -151,7 +151,7 @@ ddff41e987eac54d3500e2313799c3c6 *R/digitize2d.r
 9cfff0013db7a8c0e4aca770b5d9ea25 *R/findMeanSpec.r
 b56e53ac307d84a05efee9525dd6868a *R/fixed.angle.r
 203177efc30cc6fef4bd604b2fc2af01 *R/geomorph.data.frame.r
-339a00e3ce8f763328c7830617d40a59 *R/geomorph.support.code.r
+c3992aa7747bd9e96040ff38e22c5777 *R/geomorph.support.code.r
 dc88ed5c8de07a73809c88ee7a88235d *R/geomorph.utils.r
 0d9d88147f22cff2241b6e2e7396d57f *R/globalIntegration.r
 17bbdf1769466f17742de952fb612cc4 *R/gpagen.r
@@ -172,7 +172,7 @@ b8814f9a047a63c586c6e472bc17d6d5 *R/plotOutliers.r
 1f6d6dd7deb37d5920c9addb55bf7c3f *R/plotTangentSpace.r
 b8296e52246b38cbb671c0f20129b783 *R/procD.allometry.r
 ee735895e70980665b4f4087856b9126 *R/procD.lm.r
-22c3628134c20bb918d8c7805a6048c5 *R/procD.pgls.r
+8165f61dd28b550509fe3db762387209 *R/procD.pgls.r
 df3f4cc6406dc0c737ee2ff08c2a0e3d *R/read.morphologika.r
 9c3c828f71a413b5437d45228a3bf9b7 *R/read.ply.r
 e154be96be0e57782efccc5efbe6d5fa *R/readland.nts.r

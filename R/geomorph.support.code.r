@@ -1173,7 +1173,7 @@ procD.fit <- function(f1, keep.order=FALSE, pca=TRUE, data = NULL, ...){
     Terms <- terms(form, keep.order = keep.order)
     tl <- attr(Terms, "term.labels")
     if(length(tl) == 0){
-      dat <- as.data.frame(list())
+      dat <- data.frame(Y = 1:n)
       dat$Y <- d$Y
     } else {
       dat <- lapply(1:length(tl), 
@@ -1621,7 +1621,8 @@ SS.pgls.iter = function(pfit,Pcor,iter, seed=NULL, Yalt="RRPP"){
     if(sum(w)==n)
       SSY.temp <- unlist(Map(function(j) sum(center(Pcor%*%Y[j,])^2), ind.j)) else
         SSY.temp <- unlist(Map(function(j) sum(center(Pcor%*%Y[j,]*sqrt(w))^2), ind.j))
-    SSE.temp <- unlist(Map(function(y) sum(fastLM(Uf[[k]], Pcor%*%y[[k]])$residuals^2), Yr))
+    SSE.temp <- unlist(Map(function(j) 
+      sum(fastLM(Uf[[k]], Pcor%*%Y[j,]*sqrt(w))$residuals^2), ind.j))
     SS <- c(SS,SS.temp)
     SSE <- c(SSE, SSE.temp)
     SSY <- c(SSY, SSY.temp)
@@ -1682,7 +1683,8 @@ SS.pgls.iter = function(pfit,Pcor,iter, seed=NULL, Yalt="RRPP"){
     if(sum(w)==n) 
       SSY.temp <- unlist(Map(function(j) sum(center(Pcor%*%Y[j,])^2), ind.j)) else
         SSY.temp <- unlist(Map(function(j) sum(center(Pcor%*%Y[j,]*sqrt(w))^2), ind.j))
-    SSE.temp <- unlist(Map(function(y) sum(fastLM(Uf[[k]], Pcor%*%y[[k]])$residuals^2), Yr))
+    SSE.temp <- unlist(Map(function(j) 
+      sum(fastLM(Uf[[k]], Pcor%*%Y[j,]*sqrt(w))$residuals^2), ind.j))
     SS <- c(SS,SS.temp)
     SSE <- c(SSE, SSE.temp)
     SSY <- c(SSY, SSY.temp)

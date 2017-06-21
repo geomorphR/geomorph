@@ -28,7 +28,7 @@
 #' the input is an object of class \code{gpagen}, and if not, perfom GPA.  If FALSE, landmarks will be unchanged.
 #' (One would choose gpa = FALSE if inputting aligned coordiantes and centroid size, separately.  There might be
 #' little reason to do this, unless one wishes to intentionally not scale configurations.)
-#' @param CS.set A list, array, or matrix of centroid sizes to use for scaling.  The default is NULL and should be
+#' @param CS.sets A list, array, or matrix of centroid sizes to use for scaling.  The default is NULL and should be
 #' left so if gpa = TRUE.  If gpa = FALSE and CS.set is null, all centroid sizes become 1.0, meaning no scaling of
 #' of configurations by relative size is performed.  If gpa = FALSE and CS.set is provided, scalng by relative 
 #' size is performed according to the data input  (One could weight configurations via this method.).  If the 
