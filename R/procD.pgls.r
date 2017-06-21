@@ -231,7 +231,7 @@ procD.pgls<-function(f1, phy, iter=999, seed=NULL, int.first = FALSE,
   } else {
     Y <- pfit$wY
     PY <- Pcor%*%Y
-    X <- pfit$wY
+    X <- pfit$wX
     PX <- Pcor%*%X
     SSY <- sum(center(PY)^2)
     n <- NROW(Y)
