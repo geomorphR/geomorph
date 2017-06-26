@@ -8,9 +8,9 @@
 Head shape and food use data from Plethodon salamanders
 }
 \references{
-Adams, D. C., and F. J. Rohlf. 2000. Ecological character 
-displacement in Plethodon: biomechanical differences found from a geometric 
-morphometric study. Proceedings of the National Academy of Sciences, 
+Adams, D. C., and F. J. Rohlf. 2000. Ecological character
+displacement in Plethodon: biomechanical differences found from a geometric
+morphometric study. Proceedings of the National Academy of Sciences,
 U.S.A. 97:4106-4111
 }
 \author{
