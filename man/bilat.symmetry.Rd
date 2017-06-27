@@ -44,7 +44,7 @@ An object of class "bilat.symmetry" returns a list of the following
 \item{shape.anova}{An analysis of variance table for the shape data.}
 \item{size.anova}{An analysis of variance table for the shape data (when object.sym=FALSE).}
 \item{symm.shape}{The symmetric component of shape variation.}
-\item{asym.shape}{The asymmetric component of shape variation.}
+\item{asymm.shape}{The asymmetric component of shape variation.}
 \item{DA.component}{The directional asymmetry component, found as the mean shape for each side.}
 \item{FA.component}{The fluctuating asymmetry component for each specimen, found as the specimen-specific side deviation adjusted for the mean
  directional asymmetry in the dataset.}

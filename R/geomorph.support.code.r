@@ -227,16 +227,17 @@ center.scale <- function(x) {
 # used in gpagen functions
 orp<-function(A){
   if(is.array(A)) {
-    n<-dim(A)[3]; k<-dim(A)[2]; p<-dim(A)[1]
+    dims <- dim(A)
+    n <- dims[3]; k <- dims[2]; p <- dims[1]
     Y <- lapply(1:n, function(j) A[,,j])
   } else
     if(is.list(A)){
       Y <- A
-      n <- length(A); k <- ncol(A[[1]]); p <- nrow(A[[1]])
+      n <- length(A); dims <- dim(A[[1]]); k <- dims[2]; p <- dims[1]
     } else stop("Input must be either a list or array")
 
-  Y1<-as.vector(center.scale((Reduce("+", Y)/n))$coords)
-  oo<-as.matrix(rep(1,n))%*%Y1
+  Y1 <- as.vector(center.scale((Reduce("+", Y)/n))$coords)
+  oo <- as.matrix(crossprod(rep(1,n), Y1))
   mat <- t(matrix(unlist(Y),k*p,n))
   Xp <- (mat%*%(diag(1,p*k) - (tcrossprod(Y1)))) +oo
   lapply(1:n, function(j) matrix(Xp[j,],p,k))
@@ -259,7 +260,8 @@ rotate.mat <- function(M,Y){
 # applies a partial Procrustes superimposition to matrices in a list
 # used in gpagen functions
 apply.pPsup<-function(M, Ya) {	# M = mean (reference); Ya all Y targets
-  k <- ncol(Ya[[1]]); p <- nrow(Ya[[1]]); n <- length(Ya)
+  dims <- dim(Ya[[1]])
+  k <- dims[2]; p <- dims[1]; n <- length(Ya)
   M <- cs.scale(M)
   lapply(1:n, function(j){
     y <- Ya[[j]]
@@ -342,7 +344,7 @@ getU <- function(y,tn, surf){
 # Ltemplate
 # calculates inverse of bending energy matrix
 # used in any function that calculates bending energy
-# currently not used but retained for posterity
+# used in BE.slide
 Ltemplate <-function(Mr, Mt=NULL){
   p <-nrow(Mr); k <- ncol(Mr)
   if(!is.null(Mt)) P <- as.matrix(dist(Mr-Mt)) else P <- as.matrix(dist(Mr))
@@ -378,7 +380,7 @@ pGpa <- function(Y, PrinAxes = FALSE, Proj = FALSE, max.iter = 5){
   iter <- 0
   pb <- txtProgressBar(min = 0, max = max.iter, initial = 0, style=3)
   setTxtProgressBar(pb,iter)
-  n <- length(Y); p <- nrow(Y[[1]]); k <- ncol(Y[[1]])
+  n <- length(Y); dims <- dim(Y[[1]]); p <- dims[1]; k <- dims[2]
   Yc <- Map(function(y) center.scale(y), Y)
   CS <- sapply(Yc,"[[","CS")
   Ya <- lapply(Yc,"[[","coords")
