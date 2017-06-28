@@ -237,7 +237,7 @@ orp<-function(A){
     } else stop("Input must be either a list or array")
 
   Y1 <- as.vector(center.scale((Reduce("+", Y)/n))$coords)
-  oo <- as.matrix(crossprod(rep(1,n), Y1))
+  oo <- matrix(1,n)%*%Y1
   mat <- t(matrix(unlist(Y),k*p,n))
   Xp <- (mat%*%(diag(1,p*k) - (tcrossprod(Y1)))) +oo
   lapply(1:n, function(j) matrix(Xp[j,],p,k))
