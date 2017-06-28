@@ -187,7 +187,7 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
   dfr <- NROW(pfitr$wResiduals.full[[kr]]) - dfr
   dff <- NROW(pfitf$wResiduals.full[[kf]]) - dff
   Xf <- as.matrix(pfitf$Xfs[[kf]])
-  Xr <- as.matrix(pfitr$Xrs[[kr]])
+  if(is.null(pfitr$Xrs)) Xr <- matrix(1, n) else Xr <- as.matrix(pfitr$Xrs[[kr]])
   Er <- pfitr$residuals.full[[kr]]
   Ef <- pfitf$residuals.full[[kf]]
   wEr <- pfitr$wResiduals.full[[kr]]
