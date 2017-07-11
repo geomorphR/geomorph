@@ -46,7 +46,7 @@ readland.tps <- function (file, specID = c("None", "ID", "imageID"),
 {
   ignore.case = TRUE
   specID <- match.arg(specID)
-  tpsfile <- scan(file = file, what = "char", sep = "\n", quiet = TRUE)
+  tpsfile <- scan(file = file, what = "char", sep = "", quiet = TRUE)
   lmdata <- grep("LM=", tpsfile, ignore.case)
   if (length(lmdata !=0)) {
     nland <- as.numeric(sub("LM=", "", tpsfile[lmdata], ignore.case))
