@@ -24,7 +24,8 @@ group <- factor(paste(pupfish$Pop, pupfish$Sex))
 levels(group)
 new.coords <- coords.subset(A = pupfish$coords, group = group)
 names(new.coords) # see the list levels
-# access any element by:
+# group shape means
+lapply(new.coords, mshape)
 
 }
 \author{

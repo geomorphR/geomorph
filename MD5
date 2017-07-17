@@ -13,7 +13,7 @@ d8e8360c03c03fe45d2100e9c05d4a89 *data/plethodon.rda
 44eca9acf2e2b87c5847f4eeb0a175c9 *DESCRIPTION
 1d90d3f2b01906fcf92cbd927743b16e *geomorph.Rproj
 4bdde5c74d5d5ead8f87cd70b9f91250 *inst/CITATION
-c553474272f2b049f7a93fc2da89788c *man/advanced.procD.lm.Rd
+6fb5306da32450ba17bdf214e058408c *man/advanced.procD.lm.Rd
 5e099c6268d251bf5c98595d9566385a *man/arrayspecs.Rd
 6da04ae160b4a67e664fe3ed474fe822 *man/bilat.symmetry.Rd
 5a3e03eb2accf1269a9cf8c049adae78 *man/buildtemplate.Rd
@@ -22,7 +22,7 @@ d2bd7a9e8a84055d53c9e141a80d0f70 *man/compare.evol.rates.Rd
 e343a7c313d31037d94a472247478652 *man/compare.modular.partitions.Rd
 f34e88de5ae95bf5fdee9b1e45455110 *man/compare.multi.evol.rates.Rd
 b0dfaa9419bd53267e03cbec1eba8f9e *man/compare.pls.Rd
-88d852eb7d51952235a145ee416940aa *man/coords.subset.Rd
+96fcaca3a8fe712cff5ab7d1a451d47c *man/coords.subset.Rd
 fab11ba70acfdd0f4b5a2030019d383a *man/define.links.Rd
 5f4ece10c8c082f7bc3d09973f33bdb1 *man/define.modules.Rd
 021f3dbce32d98b214cbb7bd50687ac6 *man/define.sliders.Rd
@@ -137,7 +137,7 @@ c6e6fd3f2fd601f76e9fd87206bcb435 *R/bilat.symmetry.r
 09ac0d13b34c4c35690e48e446c1a636 *R/compare.evol.rates.r
 e9263a77f715848d8d0c4c01943d1cd3 *R/compare.multi.evol.rates.r
 e871f663e8ee857793742c6f4adaed54 *R/compare.pls.r
-b80b7afa9d4c1be7d4ca408e69c4d182 *R/coords.subset.r
+c5d08c5836ea9e72bbca344b6327493a *R/coords.subset.r
 9c8853f5d9c9bb5a9b0b21bfea6ebab8 *R/define.links.r
 d16ddcc0cc85bf6a16a27faf592b0a6c *R/define.modules.r
 d72b92f391a07ef6b899ef26e9a7244b *R/define.sliders.r

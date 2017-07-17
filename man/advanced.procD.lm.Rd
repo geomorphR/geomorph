@@ -18,7 +18,7 @@ comparisons of different group levels.  Note that this argument is used in conju
 comparison test is performed on group least squares (LS) means.  If slope is not NULL, this argument will designate the group levels to compare
 in terms of their slopes.}
 
-\item{slope}{A formula with one - and only one - covariate (e.g., ~ x3).  This argument must be used in conjunction with the groups argument.  It 
+\item{slope}{A formula with one - and only one - covariate (e.g., ~ x3).  This argument must be used in conjunction with the groups argument.  It
 will not make sense if the groups argument is left NULL.  The groups argument defines the groups; the slope argument defines for which covariate group
 slopes are compared.  Group slopes can differ in their magnitude and direction of shape change.}
 
@@ -50,58 +50,58 @@ such as weights or offset).}
 Function returns an ANOVA table of statistical results for model comparison: error df (for each model), SS, MS,
 F ratio, Z, and Prand.  A list of essentially the same components as \code{\link{procD.lm}} is also returned, and additionally
 LS means or slopes, pairwise differences comparisons of these, effect sizes, and P-values may also be returned.  If a group formula
-is provided but slope formula is null, pairwise differences are Procrustes distances between least squares (LS) means for the 
-defined groups.  If a slope formula is provided, two sets of pairwise differences, plus effect sizes and P-values, are provided.  
+is provided but slope formula is null, pairwise differences are Procrustes distances between least squares (LS) means for the
+defined groups.  If a slope formula is provided, two sets of pairwise differences, plus effect sizes and P-values, are provided.
 The first is for differences in slope vector length (magnitude).  The length of the slope vector corresponds to the amount of shape
-change per unit of covariate change.  Large differences correspond to differences in the amount of shape change between groups.  
+change per unit of covariate change.  Large differences correspond to differences in the amount of shape change between groups.
 The second is for slope vector orientation differences.  Differences in the direction of shape change (covariance of shape variables)
 can be summarized as a vector correlation or angle between vectors.  See \code{\link{summary.advanced.procD.lm}} for summary options.
 }
 \description{
 The function quantifies the relative amount of shape variation explained by a suite of factors
-and covariates in a "full" model, after accounting for variation in a "reduced" model. Inputs are 
-formulae for full and reduced models (order is not important, but it is better to list the model 
-with the most terms first or use a geomorph data frame), plus indication if means or slopes 
+and covariates in a "full" model, after accounting for variation in a "reduced" model. Inputs are
+formulae for full and reduced models (order is not important, but it is better to list the model
+with the most terms first or use a geomorph data frame), plus indication if means or slopes
 are to be compared among groups, with appropriate formulae to define how they should be compared.
 }
 \details{
-The response matrix 'y' can be in the form of a two-dimensional data 
-  matrix of dimension (n x [p x k]) or a 3D array (p x k x n). It is assumed that the landmarks have previously 
-  been aligned using Generalized Procrustes Analysis (GPA) [e.g., with \code{\link{gpagen}}]. The names specified for the 
-  independent (x) variables in the formula represent one or more 
-  vectors containing continuous data or factors. It is assumed that the order of the specimens in the 
+The response matrix 'y' can be in the form of a two-dimensional data
+  matrix of dimension (n x [p x k]) or a 3D array (p x k x n). It is assumed that the landmarks have previously
+  been aligned using Generalized Procrustes Analysis (GPA) [e.g., with \code{\link{gpagen}}]. The names specified for the
+  independent (x) variables in the formula represent one or more
+  vectors containing continuous data or factors. It is assumed that the order of the specimens in the
   shape matrix matches the order of values in the independent variables. Linear model fits (using the  \code{\link{lm}} function)
   can also be input in place of a formula.  Arguments for \code{\link{lm}} can also be passed on via this function.
 
-The function performs statistical assessment of the terms in the model using Procrustes distances among 
-  specimens, rather than explained covariance matrices among variables. With this approach, the sum-of-squared 
-  Procrustes distances are used as a measure of SS (see Goodall 1991). The SS between models is evaluated through 
+The function performs statistical assessment of the terms in the model using Procrustes distances among
+  specimens, rather than explained covariance matrices among variables. With this approach, the sum-of-squared
+  Procrustes distances are used as a measure of SS (see Goodall 1991). The SS between models is evaluated through
   permutation. In morphometrics this approach is known as a Procrustes ANOVA (Goodall 1991), which is equivalent
   to distance-based anova designs (Anderson 2001). Unlike \code{\link{procD.lm}}, this function is strictly for comparison
-  of two nested models. (Use of \code{\link{procD.lm}} will be more suitable in most cases.)  
-  A residual randomization permutation procedure (RRPP) is utilized 
-  for reduced model residuals to evaluate the SS between models (Collyer et al. 2015).  Effect-sizes (Z-scores) are 
-  computed as standard deviates of the SS or pairwise statistic sampling 
-  distributions generated, which might be more intuitive for P-values than F-values (see Collyer et al. 2015).  If a phylogeny is 
+  of two nested models. (Use of \code{\link{procD.lm}} will be more suitable in most cases.)
+  A residual randomization permutation procedure (RRPP) is utilized
+  for reduced model residuals to evaluate the SS between models (Collyer et al. 2015).  Effect-sizes (Z-scores) are
+  computed as standard deviates of the SS or pairwise statistic sampling
+  distributions generated, which might be more intuitive for P-values than F-values (see Collyer et al. 2015).  If a phylogeny is
   used, the ANOVA Z-score is calculated from the sampling distributions of the F value, as the total SS will vary among permutations.
   For ANOVA Z-scores, a log-transformation is performed first, to assure a norammly distributed sampling distribution.
-  
-  Pairwise tests are only performed if formulae are provided to compute such results.
+
+Pairwise tests are only performed if formulae are provided to compute such results.
   The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{advanced.procD.lm}}.
   The generic function, \code{\link{plot}}, produces diagnostic plots for Procrustes residuals of the linear fit.
-  
- \subsection{Notes for geomorph 3.0.4 and subsequent versions}{ 
- Compared to previous versions of geomorph, users might notice differences in effect sizes.  Previous versions used z-scores calculated with 
- expected values of statistics from null hypotheses (sensu Collyer et al. 2015); however Adams and Collyer (2016) showed that expected values 
- for some statistics can vary with sample size and variable number, and recommended finding the expected value, empirically, as the mean from the set 
- of random outcomes.  Geomorph 3.0.4 and subsequent versions now center z-scores on their empirically estimated expected values and where appropriate, 
- log-transform values to assure statistics are normally distributed.  This can result in negative effect sizes, when statistics are smaller than 
- expected compared to the avergae random outcome.  For ANOVA-based functions, the option to choose among different statistics to measure effect size 
+
+\subsection{Notes for geomorph 3.0.4 and subsequent versions}{
+ Compared to previous versions of geomorph, users might notice differences in effect sizes.  Previous versions used z-scores calculated with
+ expected values of statistics from null hypotheses (sensu Collyer et al. 2015); however Adams and Collyer (2016) showed that expected values
+ for some statistics can vary with sample size and variable number, and recommended finding the expected value, empirically, as the mean from the set
+ of random outcomes.  Geomorph 3.0.4 and subsequent versions now center z-scores on their empirically estimated expected values and where appropriate,
+ log-transform values to assure statistics are normally distributed.  This can result in negative effect sizes, when statistics are smaller than
+ expected compared to the avergae random outcome.  For ANOVA-based functions, the option to choose among different statistics to measure effect size
  is now a function argument.
- 
- An optional argument for including a phylogenetic tree of {class phylo} is included in this function.  ANOVA performed on separate PGLS models is analagous
+
+An optional argument for including a phylogenetic tree of {class phylo} is included in this function.  ANOVA performed on separate PGLS models is analagous
  to a likelihood ratio test between models (Adams and Collyer 2017).  Pairwise tests can also be performed after PGLS estimation of coefficients but users
- should be aware that no formal research on the statistical properties (type I error rates and statistical power) of pairwise statistics with PGLS has yet 
+ should be aware that no formal research on the statistical properties (type I error rates and statistical power) of pairwise statistics with PGLS has yet
  been performed.  Using PGLS and analysis of pairwise statistics, therefore, assumes some risk.
 }
 }
@@ -111,30 +111,30 @@ Y.gpa<-gpagen(plethodon$land)    #GPA-alignment
 gdf <- geomorph.data.frame(Y.gpa, species = plethodon$species, site = plethodon$site)
 
 # Example of a nested model comparison (as with ANOVA with RRPP)
-advanced.procD.lm(coords ~ log(Csize) + species, 
+advanced.procD.lm(coords ~ log(Csize) + species,
 ~ log(Csize)*species*site, iter=499, data = gdf)
 
-# Example of a test of a factor interaction, plus pairwise comparisons 
-advanced.procD.lm(coords ~ site*species, ~ site + species, groups = ~site*species, 
+# Example of a test of a factor interaction, plus pairwise comparisons
+advanced.procD.lm(coords ~ site*species, ~ site + species, groups = ~site*species,
    iter=499, data = gdf)
 
-# Example of a test of a factor interaction, plus pairwise comparisons, 
-# accounting for a common allometry  
-advanced.procD.lm(coords ~ Csize + site*species, 
-~ log(Csize) + site + species, 
+# Example of a test of a factor interaction, plus pairwise comparisons,
+# accounting for a common allometry
+advanced.procD.lm(coords ~ Csize + site*species,
+~ log(Csize) + site + species,
 groups = ~ site*species, slope = ~log(Csize), iter = 499, data = gdf)
 
 # Example of a test of homogeneity of slopes, plus pairwise slopes comparisons
 gdf$group <- factor(paste(gdf$species, gdf$site, sep="."))
-advanced.procD.lm(coords ~ log(Csize) + group, 
-~ log(Csize) * group, 
-groups = ~ group, 
+advanced.procD.lm(coords ~ log(Csize) + group,
+~ log(Csize) * group,
+groups = ~ group,
 slope = ~ log(Csize), angle.type = "deg", iter = 499, data = gdf)
 
 # Example of partial pairwise comparisons, given greater model complexity.
 # Plus, working with class advanced.procD.lm objects.
-aov.pleth <- advanced.procD.lm(coords ~ log(Csize)*site*species, 
-~ log(Csize) + site*species, 
+aov.pleth <- advanced.procD.lm(coords ~ log(Csize)*site*species,
+~ log(Csize) + site*species,
 groups = ~ species, slope = ~ log(Csize), angle.type = "deg", iter = 499, data = gdf)
 
 summary(aov.pleth) # ANOVA plus pairwise tests
@@ -142,10 +142,10 @@ plot(aov.pleth) # diagnostic plots
 aov.pleth$slopes # extract the slope vectors
 }
 \references{
-Collyer, M.L., D.J. Sekora, and D.C. Adams. 2015. A method for analysis of phenotypic change for phenotypes described 
+Collyer, M.L., D.J. Sekora, and D.C. Adams. 2015. A method for analysis of phenotypic change for phenotypes described
 by high-dimensional data. Heredity. 115:357-365.
 
-Adams, D.C. and M.L. Collyer. 2016.  On the comparison of the strength of morphological integration across morphometric 
+Adams, D.C. and M.L. Collyer. 2016.  On the comparison of the strength of morphological integration across morphometric
 datasets. Evolution. 70:2623-2631.
 
 Adams, D.C. and M.L. Collyer. 2017. Multivariate comparative methods: evaluations, comparisons, and
