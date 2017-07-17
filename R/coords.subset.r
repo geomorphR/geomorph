@@ -16,9 +16,8 @@
 #' levels(group)
 #' new.coords <- coords.subset(A = pupfish$coords, group = group)
 #' names(new.coords) # see the list levels
-#' # access any element by:
-#  # new.coords$`Marsh F` # Can be used in any analysis, just like pupfish$coords
-#  # NOTE: `` surrounds level name because it has a space in it
+#' # group shape means
+#' lapply(new.coords, mshape)
 #'
 coords.subset <- function(A, group){
   dims <- dim(A)
