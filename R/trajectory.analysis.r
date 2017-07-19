@@ -232,7 +232,8 @@ trajectory.analysis <- function(f1, f2=NULL, iter=999, seed=NULL, traj.pts = NUL
                                                                         SS.type=SS.type,
                                                                         weights=weights, 
                                                                         offset=offset)
-  gp.names <- levels(pfit1$data[[2]]) 
+  gp.loc <- match(pfit1$term.labels[1], names(pfit1$data))
+  gp.names <- levels(pfit1$data[[gp.loc]]) 
   PD <- pta$PD[[1]]; names(PD) <- gp.names
   MD <- pta$MD[[1]]; Tcor <- pta$Tcor[[1]]; Tang <- pta$Tang[[1]]; SD <- pta$SD[[1]]
   diag(Tcor) <- 1; diag(Tang) <- 0; diag(SD) <- 0
