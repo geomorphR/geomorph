@@ -1,3 +1,13 @@
+PENDING CHANGES IN GEOMORPH VERSION 3.0.5
+  NEW FEATURES
+    o 
+    
+  OTHER CHANGES
+    o 
+    
+  BUG FIXES
+    o Fixed dimnames error in readland.nts when file contained a single specimen's data
+
 CHANGES IN GEOMORPH VERSION 3.0.4
   NEW FEATURES
     o New function: interlmkdist() to calculate linear distances between landmarks (interlandmark distances)
