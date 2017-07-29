@@ -98,7 +98,7 @@ MD <- morphol.disparity(coords ~ Csize + species*site, groups= ~ species, data =
 MD$Procrustes.var # just the Procrustes variances
 
 
-### Morphol.disparity can be used with procD.lm or advanced.procd.lm class objects
+### Morphol.disparity can be used with procD.lm or advanced.procD.lm class objects
 
 data(plethspecies)
 Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment

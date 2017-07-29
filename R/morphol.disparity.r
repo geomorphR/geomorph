@@ -85,7 +85,7 @@
 #' MD$Procrustes.var # just the Procrustes variances
 #' 
 #' 
-#' ### Morphol.disparity can be used with procD.lm or advanced.procd.lm class objects
+#' ### Morphol.disparity can be used with procD.lm or advanced.procD.lm class objects
 #' 
 #' data(plethspecies)
 #' Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment
@@ -121,15 +121,17 @@ morphol.disparity <- function(f1, groups = NULL, iter = 999, seed = NULL,
     }
     k <- length(pfit$wResiduals.full)
     R <- as.matrix(pfit$wResiduals.full[[k]])
-    if(length(gps) == 0) pv = sum(R^2)/nrow(R) else 
-      pv = sapply(1:nlevels(gps), function(j){
-        x <- R[gps==levels(gps)[j],]
-        sum(x^2)/nrow(x)
-      })
+    w <- sqrt(pfit$weights)
+    if(length(gps) == 0) pv = sum(R^2)/nrow(R) else {
+      Xgps <- model.matrix(~ gps + 0) * w
+      d <- diag(tcrossprod(R))
+      pv <- coef(lm.fit(Xgps, d))
+    }
   }
   if(class(f1) == "procD.lm" || class(f1) == "advanced.procD.lm"){
     if(is.null(f1$pgls.residuals)) R <- as.matrix(f1$residuals) else 
       R <- as.matrix(f1$pgls.residuals)
+    w <- sqrt(f1$weights)
     k <- length(f1$term.labels) + 1
     if(is.null(groups) || is.null(data)){
       X <- f1$X
@@ -148,12 +150,12 @@ morphol.disparity <- function(f1, groups = NULL, iter = 999, seed = NULL,
           defined by design matrix levels in numerical order.  To be precise, rerun the anlaysis with 
           groups defined and a geomorph data frame provided (see example in help file).
           \n\n\n.")
-      
-      if(length(levels(gps)) == 1) pv = sum(R^2)/nrow(R) else 
-        pv = sapply(1:nlevels(gps), function(j){
-          x <- R[gps==levels(gps)[j],]
-          sum(x^2)/nrow(x)
-        })
+      if(length(gps) == 0) pv = sum(R^2)/nrow(R) else {
+        Xgps <- model.matrix(~ gps + 0, data =) * w
+        if(!is.null(f1$pgls.residuals)) Xgps <- crossprod(f1$Pcor, Xgps)
+        d <- diag(tcrossprod(R))
+        pv <- coef(lm.fit(Xgps, d))
+      }
     } else {
       data.types <- lapply(data, class)
       keep = sapply(data.types, function(x) x != "array" & x != "phylo" & x != "dist")
@@ -161,11 +163,12 @@ morphol.disparity <- function(f1, groups = NULL, iter = 999, seed = NULL,
       gps <- model.frame(groups, data= dat2)
       if(ncol(gps) > 1) gps <- factor(apply(gps, 1,function(x) paste(x, collapse=":"))) else 
         gps <- as.factor(unlist(gps))
-      if(length(gps) == 0) pv = sum(R^2)/nrow(R) else 
-        pv = sapply(1:nlevels(gps), function(j){
-          x <- R[gps==levels(gps)[j],]
-          sum(x^2)/nrow(x)
-        })
+      if(length(gps) == 0) pv = sum(R^2)/nrow(R) else {
+        Xgps <- model.matrix(~ gps + 0) * w
+        if(!is.null(f1$pgls.residuals)) Xgps <- crossprod(f1$Pcor, Xgps)
+        d <- diag(tcrossprod(R))
+        pv <- coef(lm.fit(Xgps, d))
+      }
     }
   }
   names(pv) <- levels(gps)
@@ -180,10 +183,8 @@ morphol.disparity <- function(f1, groups = NULL, iter = 999, seed = NULL,
       P <- lapply(1:(iter+1), function(j){
         r <- R[ind[[j]],]
         setTxtProgressBar(pb,j)
-        pvr <- sapply(1:nlevels(gps), function(j){
-          x <- r[gps==levels(gps)[j],]
-          sum(x^2)/nrow(x)
-        })
+        d <- diag(tcrossprod(r))
+        pvr <- coef(lm.fit(Xgps, d))
         names(pvr)<-levels(gps)
         as.matrix(dist(pvr))
       } )
@@ -197,12 +198,10 @@ morphol.disparity <- function(f1, groups = NULL, iter = 999, seed = NULL,
       ind <- perm.index(nrow(R),iter, seed=seed)
       P <- lapply(1:(iter+1), function(j){
         r <- R[ind[[j]],]
-        pvr <- sapply(1:nlevels(gps), function(j){
-          x <- r[gps==levels(gps)[j],]
-          sum(x^2)/nrow(x)
-        })
-        names(pvr)<-levels(gps)
-        as.matrix(dist(pvr))
+        d <- diag(tcrossprod(r))
+        pvr <- coef(lm.fit(Xgps, d))
+      names(pvr)<-levels(gps)
+      as.matrix(dist(pvr))
       } )
       if(iter > 0) names(P) <- c("obs", 1:iter)
       p.val <- Pval.matrix(simplify2array(P))
