@@ -85,7 +85,7 @@
 #' MD$Procrustes.var # just the Procrustes variances
 #' 
 #' 
-#' ### Morphol.disparity can be used with procD.lm or advanced.procd.lm class objects
+#' ### Morphol.disparity can be used with procD.lm or advanced.procD.lm class objects
 #' 
 #' data(plethspecies)
 #' Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment
@@ -122,8 +122,8 @@ morphol.disparity <- function(f1, groups = NULL, iter = 999, seed = NULL,
     k <- length(pfit$wResiduals.full)
     R <- as.matrix(pfit$wResiduals.full[[k]])
     w <- sqrt(pfit$weights)
-    Xgps <- model.matrix(~ gps + 0) * w
     if(length(gps) == 0) pv = sum(R^2)/nrow(R) else {
+      Xgps <- model.matrix(~ gps + 0) * w
       d <- diag(tcrossprod(R))
       pv <- coef(lm.fit(Xgps, d))
     }
