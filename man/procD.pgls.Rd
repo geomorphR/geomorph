@@ -133,6 +133,7 @@ pleth.pgls <- procD.pgls(coords ~ Csize, phy = phy, data = gdf, iter = 999, RRPP
 summary(pleth.pgls) 
 plot(pleth.pgls)
 pleth.pgls$Pcor # the phylogenetic transformation (correction) matrix
+pleth.pgls$pgls.fitted #the PGLS fitted values 
 }
 \references{
 Adams, D.C. 2014. A method for assessing phylogenetic least squares models for shape and other high-dimensional 

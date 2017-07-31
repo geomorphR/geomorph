@@ -121,6 +121,7 @@
 #' summary(pleth.pgls) 
 #' plot(pleth.pgls)
 #' pleth.pgls$Pcor # the phylogenetic transformation (correction) matrix
+#' pleth.pgls$pgls.fitted #the PGLS fitted values 
 procD.pgls<-function(f1, phy, iter=999, seed=NULL, int.first = FALSE, 
                      effect.type = c("F", "cohen"),
                      RRPP=TRUE, data=NULL, print.progress = TRUE, ...){
