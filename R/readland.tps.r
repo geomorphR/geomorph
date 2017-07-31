@@ -46,65 +46,78 @@ readland.tps <- function (file, specID = c("None", "ID", "imageID"),
 {
   ignore.case = TRUE
   specID <- match.arg(specID)
-  tpsfile <- scan(file = file, what = "char", sep = "", quiet = TRUE)
-  lmdata <- grep("LM=", tpsfile, ignore.case)
-  if (length(lmdata !=0)) {
-    nland <- as.numeric(sub("LM=", "", tpsfile[lmdata], ignore.case))
+  # tpsfile <- scan(file = file, what = "char", sep = "", quiet = TRUE) # whitespace delimited
+  # tpsfile <- scan(file = file, what = "char", sep = "\n", quiet = TRUE) # tab delimited
+  tpsfile <- scan(file = file, what = "char", sep = "\t", quiet = TRUE) # line delimited
+  
+  commline <- grep("COMMENT=", tpsfile, ignore.case)
+  if(length(commline) != 0){
+    tpsfile <- tpsfile[-commline]
+  } # removes COMMENT= lines
+  
+  lmline <- grep("LM=", tpsfile, ignore.case)
+  if (length(lmline !=0)) {
+    nland <- as.numeric(sub("LM=", "", tpsfile[lmline], ignore.case))
     k <- 2
-  }
-  if (length(lmdata) == 0) {
-    lmdata <- grep("LM3=", tpsfile, ignore.case)
-    nland <- as.numeric(sub("LM3=", "", tpsfile[lmdata], ignore.case))
+  } 
+  if (length(lmline) == 0) {
+    lmline <- grep("LM3=", tpsfile, ignore.case)
+    nland <- as.numeric(sub("LM3=", "", tpsfile[lmline], ignore.case))
     k <- 3
   }
   if(any(nland == 0)){ stop("No landmark data for specimens: ", paste(which(nland==0), collapse=",")) }
-  n <- nspecs <- length(lmdata)
+  
   if (max(nland) - min(nland) != 0) {
     print(t(data.frame(specimens = summary(factor(nland)) )))
     stop("Number of landmarks not the same for all specimens.")
   }
+  n <- length(lmline)
   p <- nland[1]
   imscale <- as.numeric(sub("SCALE=", "", tpsfile[grep("SCALE", 
                                                        tpsfile, ignore.case)], ignore.case))
   if (is.null(imscale)) {
-    imscale = array(1, nspecs)
+    imscale = array(1, n)
   }
   if (warnmsg == TRUE) {
-    if (length(imscale) != nspecs) {
-      cat(paste("Not all specimens have scale. File contains:", length(imscale), "SCALE lines,", nspecs, "Specimens.", "Assuming landmarks have been previously scaled.", sep= " ","\n"))
+    if (length(imscale) != n) {
+      cat(paste("Not all specimens have scale. File contains:", length(imscale), 
+                "SCALE lines,", n, "Specimens.", "Assuming landmarks have been previously scaled.", sep= " ","\n"))
     }
   }
-  if (length(imscale) != nspecs) {
-    imscale = array(1, nspecs)
+  if (length(imscale) != n) {
+    imscale = array(1, n)
   }
+  # Extracting CURVE= information
   crvs <- grep("CURVES=", tpsfile, ignore.case)
   if(length(crvs)>0){
     if (readcurves == TRUE && length(crvs) == 0){ stop("No CURVES= field present in file") } 
     ncurve <- as.numeric(sub("CURVES=", "", tpsfile[crvs], ignore.case))
     ncurvepts <- as.numeric(sub("POINTS=", "", tpsfile[grep("POINTS=", tpsfile, ignore.case)], ignore.case))
-      if (max(ncurve) - min(ncurve) != 0) {
-        stop("Number of curves not the same for all specimens.") }
-      if (warnmsg == TRUE && readcurves==TRUE) {cat(paste("Landmarks 1:", p, " are fixed landmarks.\n", sep=""))
-                         cat(paste("Landmarks ", p+1, ":", p+sum(ncurvepts[1:ncurve[1]]), " are semilandmarks.\n", sep=""))}
-      p <- nland[1] + sum(ncurvepts[1:ncurve[1]]) 
-  }    
-  tmp <- tpsfile[-(grep("=", tpsfile))]
+    if (max(ncurve) - min(ncurve) != 0){
+      stop("Number of curves not the same for all specimens.") }
+    if (warnmsg == TRUE && readcurves==TRUE){
+      cat(paste("Landmarks 1:", p, " are fixed landmarks.\n", sep=""))
+      cat(paste("Landmarks ", p+1, ":", p+sum(ncurvepts[1:ncurve[1]]), " are semilandmarks.\n", sep=""))}
+    p <- nland[1] + sum(ncurvepts[1:ncurve[1]]) 
+  } 
+  
+  coordata <- tpsfile[-(grep("=", tpsfile))] # extract just coordinate data
   options(warn = -1)
-  tmp <- matrix(as.numeric(unlist(strsplit(tmp,"\\s+"))),ncol = k, byrow = TRUE)
- 
+  coordata <- matrix(as.numeric(unlist(strsplit(coordata,"\\s+"))),ncol = k, byrow = TRUE)
+  
   if (warnmsg == TRUE) {
-    if (sum(which(is.na(tmp) == TRUE)) > 0) {
+    if (sum(which(is.na(coordata) == TRUE)) > 0) {
       cat("Missing data identified.\n")
     }
   }
-  coords <- aperm(array(t(tmp), c(k, p, n)), c(2, 1, 3))
+  coords <- aperm(array(t(coordata), c(k, p, n)), c(2, 1, 3))
   imscale <- aperm(array(rep(imscale, p * k), c(n, k, p)), 
                    c(3, 2, 1))
   coords <- coords * imscale
   if (readcurves==F){coords<-coords[1:nland,,] 
-      if(n==1) coords <- array(coords, c(nland,k,n))}
+  if(n==1) coords <- array(coords, c(nland,k,n))}
   if (specID == "None") {
-      if (warnmsg == TRUE) {cat("No Specimen names extracted.\n")
+    if (warnmsg == TRUE) {cat("No Specimen names extracted.\n")
     }
   }
   if (specID == "imageID") {
@@ -133,8 +146,8 @@ readland.tps <- function (file, specID = c("None", "ID", "imageID"),
     if (length(ID) == 0) {
       if(warnmsg ==TRUE){
         cat("No name given under 'ID='. Specimen names not extracted.\n")
-        }
       }
+    }
     if (length(ID) != 0) {
       dimnames(coords)[[3]] <- as.list(ID)
       if (warnmsg == TRUE) {
@@ -142,5 +155,5 @@ readland.tps <- function (file, specID = c("None", "ID", "imageID"),
       }
     }
   }
-return(coords = coords)                    
+  return(coords = coords)                    
 }

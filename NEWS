@@ -2,6 +2,7 @@ CHANGES IN GEOMORPH VERSION 3.0.5
   BUG FIXES
     o Fixed dimnames error in readland.nts when file contained a single specimen's data
     o Fixed PGLS weights for factors in morphol.disparity when phylogeny utilized
+    o Fixed readland.tps to be general to whitespace delimitation
     
 CHANGES IN GEOMORPH VERSION 3.0.4
   NEW FEATURES
