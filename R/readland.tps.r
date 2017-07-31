@@ -46,14 +46,15 @@ readland.tps <- function (file, specID = c("None", "ID", "imageID"),
 {
   ignore.case = TRUE
   specID <- match.arg(specID)
-  # tpsfile <- scan(file = file, what = "char", sep = "", quiet = TRUE) # whitespace delimited
-  # tpsfile <- scan(file = file, what = "char", sep = "\n", quiet = TRUE) # tab delimited
-  tpsfile <- scan(file = file, what = "char", sep = "\t", quiet = TRUE) # line delimited
-  
+   tpsfile <- scan(file = file, what = "char",sep = "\n", blank.lines.skip = TRUE,quiet = TRUE) # line delimited
   commline <- grep("COMMENT=", tpsfile, ignore.case)
-  if(length(commline) != 0){
-    tpsfile <- tpsfile[-commline]
-  } # removes COMMENT= lines
+  if(length(commline) != 0){ tpsfile <- tpsfile[-commline] } # removes COMMENT= lines
+  varline<-grep("VARIABLES",tpsfile,ignore.case)
+  if(length(varline) != 0){ tpsfile <- tpsfile[-varline] } #removes variables lines
+  chainline<-grep("CHAIN",tpsfile,ignore.case)
+  if(length(chainline) != 0){ tpsfile <- tpsfile[-chainline]  } #removes chain  lines
+  radiiline<-grep("RADII",tpsfile,ignore.case)
+  if(length(radiiline) != 0){ tpsfile <- tpsfile[-radiiline] } #removes radii & radiixy lines
   
   lmline <- grep("LM=", tpsfile, ignore.case)
   if (length(lmline !=0)) {
@@ -102,6 +103,9 @@ readland.tps <- function (file, specID = c("None", "ID", "imageID"),
   } 
   
   coordata <- tpsfile[-(grep("=", tpsfile))] # extract just coordinate data
+  coordata<-gsub("\t", " ", coordata)
+  coordata = coordata[! grepl('^\\s*$', coordata)] #remove empty lines
+  
   options(warn = -1)
   coordata <- matrix(as.numeric(unlist(strsplit(coordata,"\\s+"))),ncol = k, byrow = TRUE)
   
