@@ -207,9 +207,14 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
     Ur <- crossprod(Pcor, qr.Q(qr(PXr*w)))
     Uf <- crossprod(Pcor, qr.Q(qr(PXf*w)))
     Unull <- crossprod(Pcor, qr.Q(qr(matrix(w))))
-    SSEr <- sum(fastLM(Ur, Y*w)$residuals^2)
-    SSEf <- sum(fastLM(Uf, Y*w)$residuals^2)
-    SSY <- sum(fastLM(Unull, Y*w)$residuals^2)
+    SSf <- sum(crossprod(Uf, Y*w)^2) 
+    SSr <- sum(crossprod(Ur, Y*w)^2)
+    yy <- sum(y^2)
+    py <- crossprod(Pcor, Y*w)
+    pyy <- sum(py^2)
+    SSEf <- pyy - SSf
+    SSEr <- pyy - SSr
+    SSY <- pyy - sum(crossprod(Unull, Y*w)^2)
   } else {
     Ur <- qr.Q(qr(Xr*w))
     Uf <- qr.Q(qr(Xf*w))
@@ -254,7 +259,7 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
     yr <- (Er[x,] + Yhr) * w
     y <- Y[x,] * w
     SS <- sum(crossprod(Uf, yr)^2) - sum(crossprod(Ur, yr)^2)
-    yy <- sum(y^2)
+    if(!is.null(phy)) yy <- sum(crossprod(Pcor, y)^2) else yy <- sum(y^2)
     SSE <- yy - sum(crossprod(Uf, y)^2) 
     SSY <- yy - sum(crossprod(Unull, y)^2)
     if(print.progress) setTxtProgressBar(pb,step)

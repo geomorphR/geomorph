@@ -173,7 +173,7 @@ descriptions of the different plotting methods using \code{\link{plot}}, with re
 data(plethodon) 
 Y.gpa <- gpagen(plethodon$land)    #GPA-alignment  
 gdf <- geomorph.data.frame(Y.gpa, site = plethodon$site, 
-species = plethodon$species) # geomorph data frame
+species = plethodon$species) 
 plethAllometry <- procD.allometry(coords~Csize, f2 = NULL, f3=NULL, 
 logsz = TRUE, data=gdf, iter=499)
 summary(plethAllometry)
@@ -203,31 +203,41 @@ plot(plethANOVA) # diagnostic plot instead of allometry plot
 
 # procD.allometry is a wrapper function for procD.lm.  The same analyses
 # can be performed with procD.lm, and better graphics options
-# are available.  
+# are available. More complex models can be considered.
   
 # Here are some examples using procD.lm, instead, offering greater flexibility.
 
-# Previous example using plot.procD.lm, with regression type, plus other 
-# plot.default options
+data(larvalMorph)
+Y.gpa <- gpagen(larvalMorph$tailcoords, curves = larvalMorph$tail.sliders)
+gdf <- geomorph.data.frame(Y.gpa, Treatment = larvalMorph$treatment, 
+Family = larvalMorph$family)
 
-plot(plethANOVA, type = "regression", 
+# procD.allometry approach
+tailAllometry <- procD.allometry(coords ~ Csize, ~ Treatment,
+logsz = TRUE, alpha = 0.05, data = gdf)
+summary(tailAllometry) # HOS test suggests parrallel allometries, but not unambiguous
+plot(tailAllometry, method = "PredLine")
+
+# procD.lm approach, including interaction
+tailAllometry2 <- procD.lm(coords ~ log(Csize) * Treatment, data = gdf)
+plot(tailAllometry2, type = "regression", 
 predictor = log(gdf$Csize), 
 reg.type = "PredLine", 
 pch = 21, 
-bg = as.numeric(interaction(gdf$species, gdf$site)), 
-xlab = "log(CS)") # same basic plot
+bg = as.numeric(gdf$Treatment), 
+xlab = "log(CS)") # greater flexibility
 
-# Forcing interactions (not relying on HOS test)
-
-plethAllometry2 <- procD.lm(coords ~ log(Csize) * species * site, data = gdf)
-summary(plethAllometry2)
-
-plot(plethAllometry2, type = "regression", 
+# including nested family effects, but still plotting by treatment
+tailAllometry3 <- procD.lm(coords ~ log(Csize) * Treatment + 
+Treatment/Family, data = gdf)
+tailAllometry3 <- nested.update(tailAllometry3, ~ Treatment/Family)
+summary(tailAllometry3)
+plot(tailAllometry3, type = "regression", 
 predictor = log(gdf$Csize), 
 reg.type = "PredLine", 
 pch = 21, 
-bg = as.numeric(interaction(gdf$species, gdf$site)),
-xlab = "log(CS)") # allows slopes to differ, even slightly
+bg = as.numeric(gdf$Treatment), 
+xlab = "log(CS)")
 
 }
 \references{
