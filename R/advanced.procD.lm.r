@@ -275,9 +275,9 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
       pb <- txtProgressBar(min = 0, max = iter+1, initial = 0, style=3)
     }
     lss <- quick.ls.means.set.up(pfitf, g=gps, data=dat2)
-    lsm.args <- list(X0 = lss$X0, X= lss$X, Y <- NULL, 
+    lsm.args <- list(X0 = lss$X0, X= lss$X, Y = NULL, 
                      fac = lss$fac)
-    if(!is.null(Pcor)) lsm.args$Pcor <- Pcor
+    if(!is.null(Pcor)) lsm.args$Pcor <- as.matrix(Pcor)
     lsms <- lapply(1:(iter+1), function(j){
       step <- j
       x <- ind[[j]]

@@ -1836,11 +1836,12 @@ quick.ls.means.set.up <- function(pfit, g=NULL, data=NULL) {
                         function(j) rep(mean(Xcov.mean[,j]),nrow(Xcov.mean)))
     Xnew <- cbind(Xcov.mean, X[,-(1:ncol(Xcov.mean))])
   } else Xnew <- X
+  Xnew <- Xnew * sqrt(pfit$weights)
   list(X0=X, X=Xnew, fac=fac)
 }
 
 quick.ls.means <- function(X0, X, Y, fac, Pcor=NULL){
-  if(!is.null(Pcor)) fit <- .lm.fit(Pcor%*%X0,Y)$coefficients else fit <- .lm.fit(X0,Y)$coefficients
+  if(!is.null(Pcor)) fit <- .lm.fit(crossprod(Pcor, X0),Y)$coefficients else fit <- .lm.fit(X0,Y)$coefficients
   lsm <- as.matrix(lm.fit(model.matrix(~fac+0),X%*%fit)$coefficients)
   rownames(lsm) <- levels(fac)
   lsm
