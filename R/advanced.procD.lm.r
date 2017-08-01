@@ -209,7 +209,6 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
     Unull <- crossprod(Pcor, qr.Q(qr(matrix(w))))
     SSf <- sum(crossprod(Uf, Y*w)^2) 
     SSr <- sum(crossprod(Ur, Y*w)^2)
-    yy <- sum(y^2)
     py <- crossprod(Pcor, Y*w)
     pyy <- sum(py^2)
     SSEf <- pyy - SSf
