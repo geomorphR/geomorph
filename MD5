@@ -10,9 +10,9 @@ d8e8360c03c03fe45d2100e9c05d4a89 *data/plethodon.rda
 80c6fa53b642b23b378cf036d1b962f1 *data/ratland.rda
 9ba51ab9be03930a4acdcddde8169b33 *data/scallopPLY.rda
 6e5e71b242462e422b716800ffc3c464 *data/scallops.rda
-44eca9acf2e2b87c5847f4eeb0a175c9 *DESCRIPTION
+67d70a374902528918b50f64000fd0da *DESCRIPTION
 1d90d3f2b01906fcf92cbd927743b16e *geomorph.Rproj
-4bdde5c74d5d5ead8f87cd70b9f91250 *inst/CITATION
+9e4277cf48ca3337a61997394e824532 *inst/CITATION
 6fb5306da32450ba17bdf214e058408c *man/advanced.procD.lm.Rd
 5e099c6268d251bf5c98595d9566385a *man/arrayspecs.Rd
 6da04ae160b4a67e664fe3ed474fe822 *man/bilat.symmetry.Rd
@@ -45,7 +45,7 @@ a598044482a6c3e39517b798b654c57e *man/hummingbirds.Rd
 833da133e435c10f2fcb2857439f10f1 *man/larvalMorph.Rd
 215d32e2f28bb92634722b2afbc52288 *man/larvalTails.Rd
 2fcf77ab09382be75ada704c91b96552 *man/modularity.test.Rd
-5b4b42e96bdc6d7c127a3fa0f0c400dd *man/morphol.disparity.Rd
+d6f9bf8e9afaec4414c3a4292dd64898 *man/morphol.disparity.Rd
 b6748023f1102734ebb1f42991964558 *man/morphol.integr.Rd
 00e77dd77ac4f29ace5334a4df4aa23e *man/mosquito.Rd
 56d6ab3a337de1529cae2da20bd9ac08 *man/motionpaths.Rd
@@ -94,7 +94,7 @@ e186bde97e98a204b53457a14eb0a52d *man/print.procD.lm.Rd
 82db8052b9e73e447b14cb5844a0cd26 *man/print.trajectory.analysis.Rd
 dd4d9682893677462197301333539f22 *man/procD.allometry.Rd
 568bdb972038cf2ab6241af6b63f7601 *man/procD.lm.Rd
-aa05559403cdfbb5db1b36f61276cb01 *man/procD.pgls.Rd
+a488cb4f4656bd8fb56716c218e9f7ec *man/procD.pgls.Rd
 b4d393dc787783cd69ce705e64a8d542 *man/pupfish.Rd
 24203f2fe7e9af73e10becb83f54f937 *man/ratland.Rd
 cb46da06afb9b58e54ad31f7a7a02f4c *man/read.morphologika.Rd
@@ -128,7 +128,7 @@ da1241dd835f95675cc7126b2a7ec61a *man/two.d.array.Rd
 4678254db827c8ff8caf6c5beb8157be *man/warpRefOutline.Rd
 550c6adc8cd9bf90f6be30819dad83fc *man/writeland.tps.Rd
 8db431fcd5f4f0c788393a3cc00ed327 *NAMESPACE
-f186d77cf951c6f33f4ef17bf9982d7b *NEWS
+1427b733a8c4f85a0534546a98904f2b *NEWS
 a3e029a009070f7a427784eabc5351c9 *R/advanced.procD.lm.r
 311a910118a6b60a5ab89a58349e1f69 *R/arrayspecs.r
 c6e6fd3f2fd601f76e9fd87206bcb435 *R/bilat.symmetry.r
@@ -159,7 +159,7 @@ dc88ed5c8de07a73809c88ee7a88235d *R/geomorph.utils.r
 a53937415f7c199b10dca2b31bbafe0e *R/integration.test.r
 c35bcae1a6ea59c924cf7dc9eec3e013 *R/interlmkdist.r
 58b1e55ee761915c42e5437e62fa46d3 *R/modularity.test.r
-764042cabee02bd75a97dc1d4a8c6ffe *R/morphol.disparity.r
+00188ee7c812b1cac4c9ee96f694bb16 *R/morphol.disparity.r
 e6cbf50b0b3cb59913bc7adf854f12f1 *R/nested.update.r
 11d8e421c892cc95ddd76839d48070b9 *R/phylo.integration.r
 e1cb306b0d2dd762ad291bddaf2366e8 *R/phylo.modularity.r
@@ -172,7 +172,7 @@ b8814f9a047a63c586c6e472bc17d6d5 *R/plotOutliers.r
 3a29dd0ba103804d3d7b703172200402 *R/plotTangentSpace.r
 b8296e52246b38cbb671c0f20129b783 *R/procD.allometry.r
 ee735895e70980665b4f4087856b9126 *R/procD.lm.r
-8165f61dd28b550509fe3db762387209 *R/procD.pgls.r
+203e95b34088bf5d85ff0d6918412d19 *R/procD.pgls.r
 df3f4cc6406dc0c737ee2ff08c2a0e3d *R/read.morphologika.r
 9c3c828f71a413b5437d45228a3bf9b7 *R/read.ply.r
 4ee3dc7bac8cc3994ab5b2a535e43db6 *R/readland.nts.r

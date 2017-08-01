@@ -70,7 +70,7 @@ This function can be used with an object of class "procD.lm" or "advanced.procD.
 This is specially useful for analyses performed with  \code{\link{procD.pgls}}.  In this case, residuals obtained from PGLS estimation
 of coefficients, rather than OLS estimation, will be used in the analysis.  Thus, one can account for phylogeny when comparing
 morphological disparity among groups.  However, one should be aware that this approach only adjusts expected values because of phylogeny
-and does not assert a null hypothesis of equal variances based on phylogenetic relatedness.  (For example, specials means can be adjusted
+and does not assert a null hypothesis of equal variances based on phylogenetic relatedness.  (For example, species means can be adjusted
 because of phylogenetic relatedness, but the null hypothesis of equal variances is conditioned on the estimation of means.)
 }
 \examples{
