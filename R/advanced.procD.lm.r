@@ -204,9 +204,9 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
   if(!is.null(phy)){
     PXf <- Pcor%*%Xf
     PXr <- Pcor%*%Xr
-    Ur <- crosspod(Pcor, qr.Q(qr(PXr*w)))
-    Uf <- crosspod(Pcor, qr.Q(qr(PXf*w)))
-    Unull <- crosspod(Pcor, qr.Q(qr(matrix(w))))
+    Ur <- crossprod(Pcor, qr.Q(qr(PXr*w)))
+    Uf <- crossprod(Pcor, qr.Q(qr(PXf*w)))
+    Unull <- crossprod(Pcor, qr.Q(qr(matrix(w))))
     SSEr <- sum(fastLM(Ur, Y*w)$residuals^2)
     SSEf <- sum(fastLM(Uf, Y*w)$residuals^2)
     SSY <- sum(fastLM(Unull, Y*w)$residuals^2)
@@ -345,64 +345,50 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
     dimnames(P.val.slopes.dist) <- dimnames(Z.slopes.dist) <- dimnames(obs.slope.dist)
   }
 
-  if(pairwise.cond == "none"){
-    out <- list(anova.table = anova.table,
-                coefficients=pfitf$wCoefficients.full,
-                Y=pfitf$Y, X=pfitf$X,
-                QR = pfitf$wQRs.full[[kf]],
-                fitted = wYhf,
-                residuals = wEf,
-                weights = w, data = dat2, random.SS = P, random.F = Fs,
-                Terms = pfitf$Terms, term.labels = pfitf$term.labels, permutations = iter+1,
-                call= match.call()
-    )
-  }
+# output
+  out <- list(anova.table = anova.table,
+              coefficients=pfitf$wCoefficients.full,
+              Y=pfitf$Y, X=pfitf$X,
+              QR = pfitf$wQRs.full[[kf]],
+              fitted = wYhf,
+              residuals = wEf,
+              weights = w, data = dat2, random.SS = P, random.F = Fs,
+              Terms = pfitf$Terms, term.labels = pfitf$term.labels, permutations = iter+1,
+              call= match.call()
+  )
+  
   if(pairwise.cond == "means"){
-    out <- list(anova.table = anova.table, LS.means = lsms[[1]], 
-                random.LS.means = lsms,
-                LS.means.dist = Means.dist, Z.means.dist = Z.Means.dist, 
-                P.means.dist = P.Means.dist,
-                coefficients=pfitf$wCoefficients.full,
-                Y=pfitf$Y, X=pfitf$X,
-                QR = pfitf$wQRs.full[[kf]],
-                fitted = wYhf,
-                residuals = wEf,
-                weights = w, data = dat2, random.SS = P, random.F = Fs,
-                Terms = pfitf$Terms, term.labels = pfitf$term.labels, permutations = iter+1,
-                call= match.call()
-    )
+    out$LS.means <- lsms[[1]]
+    out$LS.means.dist <- Means.dist
+    out$Z.means.dist <- Z.Means.dist
+    out$P.means.dist <- P.Means.dist
   }
+    
   if(pairwise.cond == "slopes"){
     if(angle.type == "r"){
-      out <- list(anova.table = anova.table, slopes = g.slopes[[1]], random.slopes = g.slopes,
-                  slope.lengths = obs.slope.lengths,
-                  slopes.dist = obs.slope.dist, P.slopes.dist = P.val.slopes.dist,
-                  Z.slopes.dist = Z.slopes.dist,
-                  slopes.cor = P.cor[[1]], P.slopes.cor = P.val.cor, Z.slopes.cor = Z.cor,
-                  random.slopes = g.slopes, random.slopes.dist = P.slopes.dist, random.slopes.cor = P.cor,
-                  coefficients=pfitf$wCoefficients.full,
-                  Y=pfitf$Y, X=pfitf$X,
-                  QR = pfitf$wQR.full[[kf]], fitted = wYhf,
-                  residuals = wEf,
-                  weights = w, data = dat2, random.SS = P, random.F = Fs,
-                  Terms = pfitf$Terms, term.labels = pfitf$term.labels, permutations = iter+1,
-                  call= match.call()
-      )
+      out$slopes <- g.slopes[[1]]
+      out$random.slopes <- g.slopes
+      out$random.slopes.dist <- P.slopes.dist
+      out$slope.lengths <- obs.slope.lengths
+      out$slopes.dist <- obs.slope.dist
+      out$P.slopes.dist <- P.val.slopes.dist
+      out$Z.slopes.dist <- Z.slopes.dist
+      out$slopes.cor <- P.cor[[1]]
+      out$P.slopes.cor <- P.val.cor
+      out$Z.slopes.cor <- Z.cor
+       
     } else {
-      out <- list(anova.table = anova.table, slopes = g.slopes[[1]], random.slopes = g.slopes,
-                  slope.lengths = obs.slope.lengths,
-                  slopes.dist = obs.slope.dist, P.slopes.dist = P.val.slopes.dist,
-                  Z.slopes.dist = Z.slopes.dist,
-                  slopes.angles = angles.obs, P.angles = P.val.cor, Z.angles = Z.cor,
-                  random.slopes = g.slopes, random.slopes.dist = P.slopes.dist, random.angles = random.angles,
-                  coefficients=pfitf$wCoefficients.full,
-                  Y=pfitf$Y, X=pfitf$X,
-                  QR = pfitf$wQR.full[[kf]], fitted = wYhf,
-                  residuals = wEf,
-                  weights = w, data = dat2, random.SS = P, random.F = Fs,
-                  Terms = pfitf$Terms, term.labels = pfitf$term.labels, permutations = iter+1,
-                  call= match.call()
-      )
+      
+      out$slopes <- g.slopes[[1]]
+      out$random.slopes <- g.slopes
+      out$random.slopes.dist <- P.slopes.dist
+      out$slope.lengths <- obs.slope.lengths
+      out$slopes.dist <- obs.slope.dist
+      out$P.slopes.dist <- P.val.slopes.dist
+      out$Z.slopes.dist <- Z.slopes.dist
+      out$slopes.angles <- angles.obs 
+      out$P.angles <- P.val.cor
+      out$Z.angles <- Z.cor
     }
   }
   class(out) <- "advanced.procD.lm"

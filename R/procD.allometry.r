@@ -37,12 +37,7 @@
 #'   If diagnostic plots on model residuals are desired, \code{\link{procD.lm}} should be used with the resulting model formula.  
 #'   This, along with the data frame resulting from analysis with \code{\link{procD.allometry}} can be used directly in \code{\link{procD.lm}},
 #'   which might be useful for extracting ANOVA components (as \code{\link{procD.allometry}} 
-#'   is far more basic than \code{\link{procD.lm}}, in terms of output).  Additionally, experienced or advanced users will probably prefer using
-#'   \code{\link{procD.lm}} with a combination of \code{\link{plot.procD.lm}}, \code{\link{shape.predictor}}, and \code{\link{plotRefToTarget}}
-#'   for publication-quality analyses and graphics.  (Note that procD.allometry is something of a wrapper function for \code{\link{procD.lm}},
-#'   using a philosophy for model selection based on the outcome of a homogeneity of slopes test.  This is not necessary if one wishes to define
-#'   a model, irrespective of this outcome.  \code{\link{procD.lm}} offers much greater flexibility.)  Examples for more flexibile approaches
-#'   to modeling allometry using \code{\link{procD.lm}} and other functions are provided below.
+#'   is far more basic than \code{\link{procD.lm}}, in terms of output).  
 #'   
 #' \subsection{Notes for geomorph 3.0 and making allometry plots}{ 
 #' Former versions of geomorph had a "plotAllometry" function that performed ANOVA and produced
@@ -83,6 +78,18 @@
 #'  expected compared to the avergae random outcome.  For ANOVA-based functions, the option to choose among different statistics to measure effect size 
 #'  is now a function argument.
 #' }
+#'   \subsection{Notes for experienced or advanced users}{ 
+#'   Experienced or advanced users will probably prefer using
+#'   \code{\link{procD.lm}} with a combination of \code{\link{plot.procD.lm}}, \code{\link{shape.predictor}}, and \code{\link{plotRefToTarget}}
+#'   for publication-quality analyses and graphics.  procD.allometry is something of a wrapper function for \code{\link{procD.lm}},
+#'   using a philosophy for model selection based on the outcome of a homogeneity of slopes test.  This is not necessary if one wishes to define
+#'   a model, irrespective of this outcome.  \code{\link{procD.lm}} offers much greater flexibility.  
+#'   \code{procD.allometry} might be thought of as an exploratory tool,
+#'   if one is unsure how to model allometry for multiple groups.  One should not necessarily
+#'   accept the \code{procD.allometry} result as "truth" and other models can be explored with \code{\link{procD.lm}}.  
+#'   Examples for more flexibile approaches to modeling allometry using \code{\link{procD.lm}} are provided below.
+#' }
+
 #'   
 #' @param f1 A formula for the relationship of shape and size; e.g., Y ~ X.
 #' @param f2 An optional right-hand formula for the inclusion of groups; e.g., ~ groups.
@@ -190,9 +197,8 @@
 #' 
 #' # procD.allometry is a wrapper function for procD.lm.  The same analyses
 #' # can be performed with procD.lm, and better graphics options
-#' # are available.  (procD.allometry migh be thought of as an exploratory tool,
-#' # if one is unsure how to model allometry for multiple groups.  One is not obligated
-#' # to accept the result as "truth" and can impose a different model with procD.lm.)  
+#' # are available.  
+#'   
 #' # Here are some examples using procD.lm, instead, offering greater flexibility.
 #' 
 #' # Previous example using plot.procD.lm, with regression type, plus other 

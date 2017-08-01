@@ -213,17 +213,15 @@ plot.procD.lm <- function(x, type = c("diagnostics", "regression",
     if(reg.type == "CRC"){
       par(mfcol = c(1,2))
       par(mar = c(4,4,1,1))
-      plot(predictor, CRC, xlab = deparse(substitute(predictor)), ...)
+      plot(predictor, CRC,  ...)
       plot(CRC, RSC[,1], asp=1, xlab = "CRC", ylab = "RSC 1", ...)
       par(mar = c(5,4,4,2) + 0.1)
       par(mfcol=c(1,1))
     } else if(reg.type == "RegScore") {
       plot(predictor, Reg.proj, 
-           xlab = deparse(substitute(predictor)), 
            ylab = "Regression Score", ...)
     } else {
       plot(predictor, PL, 
-           xlab = deparse(substitute(predictor)), 
            ylab = "PC 1 for fitted values", ...)
     }
   }
