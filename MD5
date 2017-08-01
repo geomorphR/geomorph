@@ -92,7 +92,7 @@ c9459503ec13f843f971edda31289dc6 *man/print.pls.Rd
 2562024a7fa5d17b474646931f45afda *man/print.procD.allometry.Rd
 e186bde97e98a204b53457a14eb0a52d *man/print.procD.lm.Rd
 82db8052b9e73e447b14cb5844a0cd26 *man/print.trajectory.analysis.Rd
-dd4d9682893677462197301333539f22 *man/procD.allometry.Rd
+21d05da7043e1b578a22e03e87b13d95 *man/procD.allometry.Rd
 568bdb972038cf2ab6241af6b63f7601 *man/procD.lm.Rd
 a488cb4f4656bd8fb56716c218e9f7ec *man/procD.pgls.Rd
 b4d393dc787783cd69ce705e64a8d542 *man/pupfish.Rd
@@ -170,7 +170,7 @@ b8814f9a047a63c586c6e472bc17d6d5 *R/plotOutliers.r
 47a64e289c14a0c94eb8a415c661c6d8 *R/plotRefToTarget.r
 41db23cebd8d7be6c3decf781bd378e0 *R/plotspec.r
 3a29dd0ba103804d3d7b703172200402 *R/plotTangentSpace.r
-b8296e52246b38cbb671c0f20129b783 *R/procD.allometry.r
+57bdacc388dab3b936d67628960628e5 *R/procD.allometry.r
 ee735895e70980665b4f4087856b9126 *R/procD.lm.r
 203e95b34088bf5d85ff0d6918412d19 *R/procD.pgls.r
 df3f4cc6406dc0c737ee2ff08c2a0e3d *R/read.morphologika.r

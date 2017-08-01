@@ -115,7 +115,12 @@ The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\li
   If diagnostic plots on model residuals are desired, \code{\link{procD.lm}} should be used with the resulting model formula.  
   This, along with the data frame resulting from analysis with \code{\link{procD.allometry}} can be used directly in \code{\link{procD.lm}},
   which might be useful for extracting ANOVA components (as \code{\link{procD.allometry}} 
-  is far more basic than \code{\link{procD.lm}}, in terms of output).
+  is far more basic than \code{\link{procD.lm}}, in terms of output).  Additionally, experienced or advanced users will probably prefer using
+  \code{\link{procD.lm}} with a combination of \code{\link{plot.procD.lm}}, \code{\link{shape.predictor}}, and \code{\link{plotRefToTarget}}
+  for publication-quality analyses and graphics.  (Note that procD.allometry is something of a wrapper function for \code{\link{procD.lm}},
+  using a philosophy for model selection based on the outcome of a homogeneity of slopes test.  This is not necessary if one wishes to define
+  a model, irrespective of this outcome.  \code{\link{procD.lm}} offers much greater flexibility.)  Examples for more flexibile approaches
+  to modeling allometry using \code{\link{procD.lm}} and other functions are provided below.
   
 \subsection{Notes for geomorph 3.0 and making allometry plots}{ 
 Former versions of geomorph had a "plotAllometry" function that performed ANOVA and produced
@@ -189,6 +194,36 @@ plethANOVA <- procD.lm(plethAllometry$formula,
 data = plethAllometry$data, iter = 499, RRPP=TRUE)
 summary(plethANOVA) # Same ANOVA
 plot(plethANOVA) # diagnostic plot instead of allometry plot
+
+# procD.allometry is a wrapper function for procD.lm.  The same analyses
+# can be performed with procD.lm, and better graphics options
+# are available.  (procD.allometry migh be thought of as an exploratory tool,
+# if one is unsure how to model allometry for multiple groups.  One is not obligated
+# to accept the result as "truth" and can impose a different model with procD.lm.)  
+# Here are some examples using procD.lm, instead, offering greater flexibility.
+
+# Previous example using plot.procD.lm, with regression type, plus other 
+# plot.default options
+
+plot(plethANOVA, type = "regression", 
+predictor = log(gdf$Csize), 
+reg.type = "PredLine", 
+pch = 21, 
+bg = as.numeric(interaction(gdf$species, gdf$site)), 
+xlab = "log(CS)") # same basic plot
+
+# Forcing interactions (not relying on HOS test)
+
+plethAllometry2 <- procD.lm(coords ~ log(Csize) * species * site, data = gdf)
+summary(plethAllometry2)
+
+plot(plethAllometry2, type = "regression", 
+predictor = log(gdf$Csize), 
+reg.type = "PredLine", 
+pch = 21, 
+bg = as.numeric(interaction(gdf$species, gdf$site)),
+xlab = "log(CS)") # allows slopes to differ, even slightly
+
 }
 \references{
 Adams, D.C., F.J. Rohlf, and D.E. Slice. 2013. A field comes of age: geometric morphometrics 
