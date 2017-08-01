@@ -93,18 +93,31 @@ readland.tps <- function (file, specID = c("None", "ID", "imageID"),
     if (readcurves == TRUE && length(crvs) == 0){ stop("No CURVES= field present in file") } 
     ncurve <- as.numeric(sub("CURVES=", "", tpsfile[crvs], ignore.case))
     ncurvepts <- as.numeric(sub("POINTS=", "", tpsfile[grep("POINTS=", tpsfile, ignore.case)], ignore.case))
+<<<<<<< HEAD
     if (max(ncurve) - min(ncurve) != 0){
       stop("Number of curves not the same for all specimens.") }
     if (warnmsg == TRUE && readcurves==TRUE){
       cat(paste("Landmarks 1:", p, " are fixed landmarks.\n", sep=""))
       cat(paste("Landmarks ", p+1, ":", p+sum(ncurvepts[1:ncurve[1]]), " are semilandmarks.\n", sep=""))}
     p <- nland[1] + sum(ncurvepts[1:ncurve[1]]) 
+=======
+      if (max(ncurve) - min(ncurve) != 0){
+        stop("Number of curves not the same for all specimens.") }
+      if (warnmsg == TRUE && readcurves==TRUE){
+        cat(paste("Landmarks 1:", p, " are fixed landmarks.\n", sep=""))
+        cat(paste("Landmarks ", p+1, ":", p+sum(ncurvepts[1:ncurve[1]]), " are semilandmarks.\n", sep=""))}
+        p <- nland[1] + sum(ncurvepts[1:ncurve[1]]) 
+>>>>>>> origin/Develop
   } 
   
   coordata <- tpsfile[-(grep("=", tpsfile))] # extract just coordinate data
   options(warn = -1)
   coordata <- matrix(as.numeric(unlist(strsplit(coordata,"\\s+"))),ncol = k, byrow = TRUE)
+<<<<<<< HEAD
   
+=======
+ 
+>>>>>>> origin/Develop
   if (warnmsg == TRUE) {
     if (sum(which(is.na(coordata) == TRUE)) > 0) {
       cat("Missing data identified.\n")
