@@ -176,7 +176,7 @@
 #' 
 #' ## Obtaining size-adjusted residuals (and allometry-free shapes)
 #' plethAnova <- procD.lm(plethAllometry$formula,
-#'      data = plethAllometry$data, iter = 499, RRPP=TRUE) 
+#'      data = plethAllometry$data, iter = 249, RRPP=TRUE) 
 #' summary(plethAnova) # same ANOVA Table
 #' shape.resid <- arrayspecs(plethAnova$residuals,
 #'    p=dim(Y.gpa$coords)[1], k=dim(Y.gpa$coords)[2]) # size-adjusted residuals
@@ -185,13 +185,13 @@
 #' 
 #' # Group Allometries
 #' plethAllometry <- procD.allometry(coords~Csize, ~species*site, 
-#' logsz = TRUE, data=gdf, iter=499, RRPP=TRUE)
+#' logsz = TRUE, data=gdf, iter=249, RRPP=TRUE)
 #' summary(plethAllometry)
 #' plot(plethAllometry, method = "PredLine")
 #' 
 #' # Using procD.lm to perform diagnostic residual plots
 #' plethANOVA <- procD.lm(plethAllometry$formula, 
-#' data = plethAllometry$data, iter = 499, RRPP=TRUE)
+#' data = plethAllometry$data, iter = 249, RRPP=TRUE)
 #' summary(plethANOVA) # Same ANOVA
 #' plot(plethANOVA) # diagnostic plot instead of allometry plot
 #' 
@@ -208,12 +208,12 @@
 #' 
 #' # procD.allometry approach
 #' tailAllometry <- procD.allometry(coords ~ Csize, ~ Treatment,
-#' logsz = TRUE, alpha = 0.05, data = gdf)
+#' logsz = TRUE, alpha = 0.05, data = gdf, iter = 499)
 #' summary(tailAllometry) # HOS test suggests parrallel allometries, but not unambiguous
 #' plot(tailAllometry, method = "PredLine")
 #' 
 #' # procD.lm approach, including interaction
-#' tailAllometry2 <- procD.lm(coords ~ log(Csize) * Treatment, data = gdf)
+#' tailAllometry2 <- procD.lm(coords ~ log(Csize) * Treatment, data = gdf, iter = 499)
 #' plot(tailAllometry2, type = "regression", 
 #' predictor = log(gdf$Csize), 
 #' reg.type = "PredLine", 
@@ -223,7 +223,7 @@
 #' 
 #' # including nested family effects, but still plotting by treatment
 #' tailAllometry3 <- procD.lm(coords ~ log(Csize) * Treatment + 
-#' Treatment/Family, data = gdf)
+#' Treatment/Family, data = gdf, iter = 499)
 #' tailAllometry3 <- nested.update(tailAllometry3, ~ Treatment/Family)
 #' summary(tailAllometry3)
 #' plot(tailAllometry3, type = "regression", 

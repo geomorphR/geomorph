@@ -129,7 +129,7 @@ da1241dd835f95675cc7126b2a7ec61a *man/two.d.array.Rd
 550c6adc8cd9bf90f6be30819dad83fc *man/writeland.tps.Rd
 8db431fcd5f4f0c788393a3cc00ed327 *NAMESPACE
 bd2ab56fca38ee997dc4e316d2766c63 *NEWS
-3e0d5a7c143c2b69d9575641251396bc *R/advanced.procD.lm.r
+04c9354f03c53ebce51318d3c6fc33d4 *R/advanced.procD.lm.r
 311a910118a6b60a5ab89a58349e1f69 *R/arrayspecs.r
 c6e6fd3f2fd601f76e9fd87206bcb435 *R/bilat.symmetry.r
 14713bbb2ad126d777d95e359c71bf1a *R/build.template.r
@@ -170,7 +170,7 @@ b8814f9a047a63c586c6e472bc17d6d5 *R/plotOutliers.r
 47a64e289c14a0c94eb8a415c661c6d8 *R/plotRefToTarget.r
 41db23cebd8d7be6c3decf781bd378e0 *R/plotspec.r
 3a29dd0ba103804d3d7b703172200402 *R/plotTangentSpace.r
-dd7288fb3594fb308188594953e9a234 *R/procD.allometry.r
+1690914c58ab7b45f04deabc24c1f18c *R/procD.allometry.r
 ee735895e70980665b4f4087856b9126 *R/procD.lm.r
 ef59cd84ba50ad246d3cc8fa2f37b673 *R/procD.pgls.r
 df3f4cc6406dc0c737ee2ff08c2a0e3d *R/read.morphologika.r
@@ -185,4 +185,4 @@ a14464bdaab9da24955793e0c62e6893 *R/two.d.array.r
 6cbbaa1e92e97d4ec742825a60d5e7ab *R/warpRefMesh.r
 59d493f9cc61f036c40f49bf8b7bb3e0 *R/warpRefOutline.r
 59d7c08ac596b9218ae66b34e67bd5a7 *R/writeland.tps.r
-1c4df81b1e32bdbace546411c815acaf *README.md
+e5fa2abdbabacb84a38f7879116780f5 *README.md

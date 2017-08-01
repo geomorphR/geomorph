@@ -99,30 +99,30 @@
 #'
 #'# Example of a nested model comparison (as with ANOVA with RRPP)
 #'advanced.procD.lm(coords ~ log(Csize) + species,
-#'~ log(Csize)*species*site, iter=499, data = gdf)
+#'~ log(Csize)*species*site, iter=249, data = gdf)
 #'
 #'# Example of a test of a factor interaction, plus pairwise comparisons
 #'advanced.procD.lm(coords ~ site*species, ~ site + species, groups = ~site*species,
-#'    iter=499, data = gdf)
+#'    iter=249, data = gdf)
 #'
 #'# Example of a test of a factor interaction, plus pairwise comparisons,
 #'# accounting for a common allometry
 #'advanced.procD.lm(coords ~ Csize + site*species,
 #'~ log(Csize) + site + species,
-#'groups = ~ site*species, slope = ~log(Csize), iter = 499, data = gdf)
+#'groups = ~ site*species, slope = ~log(Csize), iter = 249, data = gdf)
 #'
 #'# Example of a test of homogeneity of slopes, plus pairwise slopes comparisons
 #'gdf$group <- factor(paste(gdf$species, gdf$site, sep="."))
 #'advanced.procD.lm(coords ~ log(Csize) + group,
 #'~ log(Csize) * group,
 #'groups = ~ group,
-#'slope = ~ log(Csize), angle.type = "deg", iter = 499, data = gdf)
+#'slope = ~ log(Csize), angle.type = "deg", iter = 249, data = gdf)
 #'
 #'# Example of partial pairwise comparisons, given greater model complexity.
 #'# Plus, working with class advanced.procD.lm objects.
 #'aov.pleth <- advanced.procD.lm(coords ~ log(Csize)*site*species,
 #'~ log(Csize) + site*species,
-#'groups = ~ species, slope = ~ log(Csize), angle.type = "deg", iter = 499, data = gdf)
+#'groups = ~ species, slope = ~ log(Csize), angle.type = "deg", iter = 249, data = gdf)
 #'
 #'summary(aov.pleth) # ANOVA plus pairwise tests
 #'plot(aov.pleth) # diagnostic plots
