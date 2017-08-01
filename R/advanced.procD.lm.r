@@ -399,7 +399,7 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
                   Y=pfitf$Y, X=pfitf$X,
                   QR = pfitf$wQR.full[[kf]], fitted = wYhf,
                   residuals = wEf,
-                  weights = w, data = dat2, random.SS = random.SS, random.F = random.F,
+                  weights = w, data = dat2, random.SS = P, random.F = Fs,
                   Terms = pfitf$Terms, term.labels = pfitf$term.labels, permutations = iter+1,
                   call= match.call()
       )
