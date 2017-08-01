@@ -1507,16 +1507,19 @@ SS.pgls.iter = function(pfit, Pcor, iter, seed=NULL, Yalt="RRPP"){
   Ur <- lapply(Xr, function(x) crossprod(P,qr.Q(qr(x))))
   Uf <- lapply(Xf, function(x) crossprod(P,qr.Q(qr(x))))
   Ufull <- Uf[[k]]
+  Unull <- crossprod(P, qr.Q(qr(crossprod(P, matrix(1, n)))))
+  p.1 <- crossprod(P, matrix(1, nrow(P))) * w
   SS <- lapply(1: perms, function(j){
     step <- j
     setTxtProgressBar(pb,step)
     x <-ind[[j]]
     rrpp.args$ind.i <- x
     Yi <- do.call(rrpp, rrpp.args)
-    if(weighted) y <- Y[x,]*w else y <- Y[x,]; py <- crossprod(P,y); pyy <- sum(py^2)
+    if(weighted) y <- Y[x,]*w else y <- Y[x,]
+    py <- crossprod(P,y); pyy <- sum(py^2)
     c(Map(function(y, ur, uf) sum(crossprod(uf,y)^2) - sum(crossprod(ur,y)^2),
           Yi, Ur, Uf),
-      pyy - sum(crossprod(Ufull, y)^2), pyy - SS.mean(py, n))
+      pyy - sum(crossprod(Ufull, y)^2), pyy - sum(crossprod(Unull, y)^2))
   })
   SS <- matrix(unlist(SS), k+2, perms)
   rownames(SS) <- c(trms, "Residuals", "Total")
@@ -1560,14 +1563,16 @@ SS.pgls.iter = function(pfit, Pcor, iter, seed=NULL, Yalt="RRPP"){
   Ur <- lapply(Xr, function(x) crossprod(P,qr.Q(qr(x))))
   Uf <- lapply(Xf, function(x) crossprod(P,qr.Q(qr(x))))
   Ufull <- Uf[[k]]
+  Unull <- crossprod(P, qr.Q(qr(crossprod(P, matrix(1, n)))))
   SS <- lapply(1: perms, function(j){
     x <-ind[[j]]
     rrpp.args$ind.i <- x
     Yi <- do.call(rrpp, rrpp.args)
-    if(weighted) y <- Y[x,]*w else y <- Y[x,]; py <- crossprod(P,y); pyy <- sum(py^2)
+    if(weighted) y <- Y[x,]*w else y <- Y[x,]
+    py <- crossprod(P,y); pyy <- sum(py^2)
     c(Map(function(y, ur, uf) sum(crossprod(uf,y)^2) - sum(crossprod(ur,y)^2),
           Yi, Ur, Uf),
-      pyy - sum(crossprod(Ufull, y)^2), pyy - SS.mean(py, n))
+      pyy - sum(crossprod(Ufull, y)^2), pyy - sum(crossprod(Unull, y)^2))
   })
   SS <- matrix(unlist(SS), k+2, perms)
   rownames(SS) <- c(trms, "Residuals", "Total")
