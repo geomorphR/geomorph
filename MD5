@@ -42,7 +42,7 @@ dab207265e691bfdd77ed11b54c1ec10 *man/gridPar.Rd
 9ab40cb3c3d8ccec94850abe377bd773 *man/interlmkdist.Rd
 1ca0185dc9ca59a6b7b361bf1cbc0c6a *man/larvalTails.Rd
 2fcf77ab09382be75ada704c91b96552 *man/modularity.test.Rd
-5b4b42e96bdc6d7c127a3fa0f0c400dd *man/morphol.disparity.Rd
+bccf7f3ab430703bcc7400e1a9caa33a *man/morphol.disparity.Rd
 b6748023f1102734ebb1f42991964558 *man/morphol.integr.Rd
 00e77dd77ac4f29ace5334a4df4aa23e *man/mosquito.Rd
 3f32b5f7d939d2f44cd4b9bd9b323399 *man/motionpaths.Rd
@@ -153,7 +153,7 @@ e639c264a0f96ef67b46f1a9b8c9705e *R/geomorph.support.code.r
 a53937415f7c199b10dca2b31bbafe0e *R/integration.test.r
 c35bcae1a6ea59c924cf7dc9eec3e013 *R/interlmkdist.r
 5da07917723535ae53cc2e7a87935764 *R/modularity.test.r
-00188ee7c812b1cac4c9ee96f694bb16 *R/morphol.disparity.r
+6206bc1c83165b9d75ca61a5af2ffa00 *R/morphol.disparity.r
 e6cbf50b0b3cb59913bc7adf854f12f1 *R/nested.update.r
 11d8e421c892cc95ddd76839d48070b9 *R/phylo.integration.r
 e1cb306b0d2dd762ad291bddaf2366e8 *R/phylo.modularity.r
@@ -170,7 +170,7 @@ ef59cd84ba50ad246d3cc8fa2f37b673 *R/procD.pgls.r
 df3f4cc6406dc0c737ee2ff08c2a0e3d *R/read.morphologika.r
 9c3c828f71a413b5437d45228a3bf9b7 *R/read.ply.r
 71872d27a729cec24cc754b2aa3141a0 *R/readland.nts.r
-69e563caf6c5f3fd99c5501c4e7f8b93 *R/readland.tps.r
+b68147269649261dd09c5153534ec6f4 *R/readland.tps.r
 945534fe7f30c519cd5a6663a9b882a3 *R/readmulti.nts.r
 bb92986b568b7e9176ff879b2e0ce9d9 *R/shape.predictor.r
 52bd9c6039246efd50a781657bb3c0e0 *R/trajectory.analysis.r
