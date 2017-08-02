@@ -230,11 +230,15 @@ procD.pgls<-function(f1, phy, iter=999, seed=NULL, int.first = FALSE,
                random.F = Fs, random.cohenf = cohenf, effect.type=effect.type,
                perm.method = ifelse(RRPP==TRUE,"RRPP", "Raw"), PGLS = TRUE)
   } else {
-    Y <- pfit$wY
-    PY <- Pcor%*%Y
-    X <- pfit$wX
-    PX <- Pcor%*%X
-    SSY <- sum(center(PY)^2)
+    Y <- pfit$Y
+    PY <- crossprod(Pcor, Y) 
+    X <- pfit$X
+    PX <- crossprod(Pcor, X)
+    Pfit <- lm.wfit(PX, PY, w = pfit$weights)
+    Pcoef <- Pfit$coefficients
+    Pfitted <- X%*%Pfit$coefficients
+    Pres <- Y - Pfitted
+    SSY <- sum(Pfit$residuals^2)
     n <- NROW(Y)
     df <- n - 1
     tab <- data.frame(Df = df,SS = SSY,
@@ -243,7 +247,6 @@ procD.pgls<-function(f1, phy, iter=999, seed=NULL, int.first = FALSE,
     rownames(tab) <- "Residuals"
     colnames(tab)[NCOL(tab)] <- "Pr(>F)"
     class(tab) = c("anova", class(tab))
-    Pfit <- lm.wfit(PX, PY, w = pfit$weights)
     out <- list(aov.table = tab, call = match.call(),
                 coefficients=pfit$wCoefficients.full[[1]],
                 Y=pfit$Y,  X=pfit$X, 
@@ -251,9 +254,9 @@ procD.pgls<-function(f1, phy, iter=999, seed=NULL, int.first = FALSE,
                 QR = pfit$QRs[[1]], fitted=pfit$wFitted.full[[1]], 
                 residuals = pfit$wResiduals.full[[1]], 
                 weights = pfit$weights, Terms = pfit$Terms, term.labels = pfit$term.labels,
-                pgls.coefficients = Pfit$coefficients, 
-                pgls.fitted = X%*%Pfit$coefficients,
-                pgls.residuals = Y - X%*%Pfit$coefficients,
+                pgls.coefficients = Pcoef, 
+                pgls.fitted = Pfitted,
+                pgls.residuals = Pres,
                 phylo.mean = apply(PY, 2, mean)
     )
   }
