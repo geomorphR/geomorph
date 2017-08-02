@@ -351,9 +351,9 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
 
 # output
   out <- list(anova.table = anova.table,
-              coefficients=pfitf$wCoefficients.full,
               Y=pfitf$Y, X=pfitf$X,
               QR = pfitf$wQRs.full[[kf]],
+              coefficients = pfitf$wCoefficients.full,
               fitted = wYhf,
               residuals = wEf,
               weights = w, data = dat2, random.SS = P, random.F = Fs,
@@ -363,7 +363,9 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
   
   if(pairwise.cond == "means"){
     out$LS.means <- lsms[[1]]
-    out$LS.means.dist <- Means.dist
+    out$random.LS.means <- lsms
+    out$random.means.dist <- P.dist
+    out$LS.obs.means.dist <- P.dist[[1]]
     out$Z.means.dist <- Z.Means.dist
     out$P.means.dist <- P.Means.dist
   }
@@ -371,26 +373,30 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
   if(pairwise.cond == "slopes"){
     if(angle.type == "r"){
       out$slopes <- g.slopes[[1]]
+      out$obs.slope.lengths <- obs.slope.lengths
+      out$obs.slopes.dist <- obs.slope.dist
       out$random.slopes <- g.slopes
+      out$random.slope.lengths <- slope.lengths
       out$random.slopes.dist <- P.slopes.dist
-      out$slope.lengths <- obs.slope.lengths
-      out$slopes.dist <- obs.slope.dist
       out$P.slopes.dist <- P.val.slopes.dist
       out$Z.slopes.dist <- Z.slopes.dist
-      out$slopes.cor <- P.cor[[1]]
+      out$obs.slopes.cor <- P.cor[[1]]
+      out$random.cor <- P.cor
       out$P.slopes.cor <- P.val.cor
       out$Z.slopes.cor <- Z.cor
        
     } else {
       
       out$slopes <- g.slopes[[1]]
+      out$obs.slope.lengths <- obs.slope.lengths
+      out$obs.slopes.dist <- obs.slope.dist
       out$random.slopes <- g.slopes
+      out$random.slope.lengths <- slope.lengths
       out$random.slopes.dist <- P.slopes.dist
-      out$slope.lengths <- obs.slope.lengths
-      out$slopes.dist <- obs.slope.dist
       out$P.slopes.dist <- P.val.slopes.dist
       out$Z.slopes.dist <- Z.slopes.dist
-      out$slopes.angles <- angles.obs 
+      out$obs.slopes.angles <- angles.obs 
+      out$random.angles <- random.angles
       out$P.angles <- P.val.cor
       out$Z.angles <- Z.cor
     }
