@@ -108,34 +108,34 @@ An optional argument for including a phylogenetic tree of {class phylo} is inclu
 \examples{
 data(plethodon)
 Y.gpa<-gpagen(plethodon$land)    #GPA-alignment
-gdf <- geomorph.data.frame(Y.gpa, species = plethodon$species, site = plethodon$site)
+gdf <- geomorph.data.frame(Y.gpa, species = plethodon$species, 
+site = plethodon$site)
 
 # Example of a nested model comparison (as with ANOVA with RRPP)
-advanced.procD.lm(coords ~ log(Csize) + species,
-~ log(Csize)*species*site, iter=249, data = gdf)
+advanced.procD.lm(f1= coords ~ log(Csize) + species,
+f2= ~ log(Csize)*species*site, iter=249, data = gdf)
 
 # Example of a test of a factor interaction, plus pairwise comparisons
-advanced.procD.lm(coords ~ site*species, ~ site + species, groups = ~site*species,
-   iter=249, data = gdf)
+advanced.procD.lm(f1= coords ~ site*species, f2= ~ site + species, 
+groups = ~site*species, iter=249, data = gdf)
 
 # Example of a test of a factor interaction, plus pairwise comparisons,
 # accounting for a common allometry
-advanced.procD.lm(coords ~ Csize + site*species,
-~ log(Csize) + site + species,
+advanced.procD.lm(f1= coords ~ Csize + site*species,
+f2= ~ log(Csize) + site + species,
 groups = ~ site*species, slope = ~log(Csize), iter = 249, data = gdf)
 
 # Example of a test of homogeneity of slopes, plus pairwise slopes comparisons
 gdf$group <- factor(paste(gdf$species, gdf$site, sep="."))
-advanced.procD.lm(coords ~ log(Csize) + group,
-~ log(Csize) * group,
-groups = ~ group,
+advanced.procD.lm(f1= coords ~ log(Csize) + group,
+f2= ~ log(Csize) * group, groups = ~ group,
 slope = ~ log(Csize), angle.type = "deg", iter = 249, data = gdf)
 
 # Example of partial pairwise comparisons, given greater model complexity.
 # Plus, working with class advanced.procD.lm objects.
-aov.pleth <- advanced.procD.lm(coords ~ log(Csize)*site*species,
-~ log(Csize) + site*species,
-groups = ~ species, slope = ~ log(Csize), angle.type = "deg", iter = 249, data = gdf)
+aov.pleth <- advanced.procD.lm(f1= coords ~ log(Csize)*site*species,
+f2= ~ log(Csize) + site*species, groups = ~ species, 
+slope = ~ log(Csize), angle.type = "deg", iter = 249, data = gdf)
 
 summary(aov.pleth) # ANOVA plus pairwise tests
 plot(aov.pleth) # diagnostic plots
