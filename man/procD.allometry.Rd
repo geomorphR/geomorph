@@ -4,16 +4,14 @@
 \alias{procD.allometry}
 \title{Procrustes ANOVA/regression, specifically for shape-size covariation (allometry)}
 \usage{
-procD.allometry(f1, f2 = NULL, f3 = NULL, logsz = TRUE, iter = 999,
-  seed = NULL, alpha = 0.05, RRPP = TRUE, effect.type = c("F", "SS",
-  "cohen"), print.progress = TRUE, data = NULL, ...)
+procD.allometry(f1, f2 = NULL, logsz = TRUE, iter = 999, seed = NULL,
+  alpha = 0.05, RRPP = TRUE, effect.type = c("F", "SS", "cohen"),
+  print.progress = TRUE, data = NULL, ...)
 }
 \arguments{
 \item{f1}{A formula for the relationship of shape and size; e.g., Y ~ X.}
 
 \item{f2}{An optional right-hand formula for the inclusion of groups; e.g., ~ groups.}
-
-\item{f3}{A optional right-hand formula for the inclusion of additional variables; e.g., ~ a + b + c + ...}
 
 \item{logsz}{A logical argument to indicate if the variable for size should be log-transformed.}
 
@@ -77,28 +75,19 @@ in the formula, and the variable used for size is called "size".}
 \item{k}{landmark dimensions}
 }
 \description{
-Function performs Procrustes ANOVA with permutation procedures to assess statistical hypotheses describing 
-  patterns of shape covariation with size for a set of Procrustes-aligned coordinates.  Other factors or
-  covariates can also be included in the analysis.  This function also provides results for plotting allometric
-  curves.
+Function performs Procrustes ANOVA with permutation procedures to facilitate visualization of size-shape patterns (allometry);
+i.e., patterns of shape covariation with size for a set of Procrustes-aligned coordinates.  Results for plotting allometric
+patterns based on several approaches in the literature are available.
 }
 \details{
 The function quantifies the relative amount of shape variation attributable to covariation with organism size (allometry)
-plus other factors in a linear model, plus estimates the probability of this variation ("significance") for a null model, 
-via distributions generated from resampling permutations. Data input is specified by formulae (e.g., 
-  Y ~ X), where 'Y' specifies the response variables (shape data), and 'X' contains one or more independent 
-  variables (discrete or continuous). The response matrix 'Y' can be either in the form of a two-dimensional data 
-  matrix of dimension (n x [p x k]), or a 3D array (p x n x k).  It is assumed that  -if the data are based
-  on landmark coordinates - the landmarks have previously been aligned using Generalized Procrustes Analysis (GPA) 
-  [e.g., with \code{\link{gpagen}}]. 
-  
-  There are three formulae that need to be input (see Arguments). The first must contain variables for shape and size,
-  e.g., Y ~ X, where Y (dependent variable) is shape and X (independent variable) is size.  The other two formulae
-  are optional to indicate (1) groups for separate allometric curves and (2) additional model variables to consider in
-  the ANOVA.  The groups input must be a single factor or multiple factors; e.g., ~ group, or ~ a*b.
-  The resulting ANOVA uses sequential (Type I) sums of squares and cross-products with variables in this order:
-  size, groups (if provided), size*groups (if warranted), other variables (if provided).  If a factor for groups is provided,
-  ANOVA for a "homogeneity of slopes" test will also be performed.
+plus (potentially) another grouping factor in a linear model, so as to provide initial visualizations of patterns of shape allometry. 
+Data input is specified by formulae (e.g., Y ~ X), where 'Y' specifies the response variables (shape data), 
+and 'X' contains A SINGLE independent continuous variable representing size. The response matrix 'Y' can be 
+either in the form of a two-dimensional data matrix of dimension (n x [p x k]), or a 3D array (p x n x k).  It is assumed that  
+-if the data are based on landmark coordinates - the landmarks have previously been aligned using Generalized Procrustes Analysis (GPA) 
+  [e.g., with \code{\link{gpagen}}].  Additionally, one has the option of providing a second formula where groups are specified
+  in the form of ~ group. If groups are provided a "homogeneity of slopes" test will be performed. 
   
   It is assumed that the order of the specimens in the shape matrix matches the order of values in the independent variables.  
   Linear model fits (using the  \code{\link{lm}} function) can also be input in place of formulae.  
@@ -106,9 +95,9 @@ via distributions generated from resampling permutations. Data input is specifie
   procedures used, and output, see \code{\link{procD.lm}} or \code{\link{advanced.procD.lm}}.
   If greater flexibility is required for variable order, \code{\link{advanced.procD.lm}} should be used.
   
-  It is recommended that \code{\link{geomorph.data.frame}} is used to create and input a data frame.  This will reduce problems caused
-  by conflicts between the global and function environments.  In the absence of a specified data frame, \code{\link{procD.allometry}} 
-  will attempt to coerce input data into a data frame, but success is not guaranteed.
+  It is strongly recommended that \code{\link{geomorph.data.frame}} is used to create and input a data frame.  This will reduce 
+  problems caused by conflicts between the global and function environments.  In the absence of a specified data frame,
+   \code{\link{procD.allometry}} will attempt to coerce input data into a data frame, but success is not guaranteed.
 
 The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{procD.allometry}}.
   The generic function, \code{\link{plot}}, produces plots of allometric curves, using one of  three methods input (see below).
@@ -116,6 +105,14 @@ The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\li
   This, along with the data frame resulting from analysis with \code{\link{procD.allometry}} can be used directly in \code{\link{procD.lm}},
   which might be useful for extracting ANOVA components (as \code{\link{procD.allometry}} 
   is far more basic than \code{\link{procD.lm}}, in terms of output).  
+  
+  \subsection{A note on allometric models}{ 
+  This function is intended to be used for the graphical visualization of simple allometric patterns. The method is appropriate for
+  models such as shape~log(size) and shape~log(size) + groups.  Three plotting options, the common allometric coefficient (CAC), 
+  regression scores (RegScore), and predicted lines (PredLine) are implemented as originally described in the literature. NOTE however
+  that for more complex models with additional parameters, one may instead wish to use the plotting capabilities that accompany 
+  \code{\link{procD.lm}} (see below for more details).
+  }
   
 \subsection{Notes for geomorph 3.0 and making allometry plots}{ 
 Former versions of geomorph had a "plotAllometry" function that performed ANOVA and produced
@@ -136,7 +133,7 @@ descriptions of the different plotting methods using \code{\link{plot}}, with re
 \itemize{
 \item {If "method=CAC" (the default) the function calculates the 
   common allometric component of the shape data, which is an estimate of the average allometric trend 
-  within groups (Mitteroecker et al. 2004). The function also calculates the residual shape component (RSC) for 
+  for group-mean centered data (Mitteroecker et al. 2004). The function also calculates the residual shape component (RSC) for 
   the data.}
   \item {If "method=RegScore" the function calculates shape scores 
   from the regression of shape on size, and plots these versus size (Drake and Klingenberg 2008). 
@@ -148,20 +145,24 @@ descriptions of the different plotting methods using \code{\link{plot}}, with re
   }
   
  \subsection{Notes for geomorph 3.0.4 and subsequent versions}{ 
- Compared to previous versions of geomorph, users might notice differences in effect sizes.  Previous versions used z-scores calculated with 
- expected values of statistics from null hypotheses (sensu Collyer et al. 2015); however Adams and Collyer (2016) showed that expected values 
- for some statistics can vary with sample size and variable number, and recommended finding the expected value, empirically, as the mean from the set 
- of random outcomes.  Geomorph 3.0.4 and subsequent versions now center z-scores on their empirically estimated expected values and where appropriate, 
- log-transform values to assure statistics are normally distributed.  This can result in negative effect sizes, when statistics are smaller than 
- expected compared to the avergae random outcome.  For ANOVA-based functions, the option to choose among different statistics to measure effect size 
+ Compared to previous versions of geomorph, users might notice differences in effect sizes.  Previous versions used z-scores 
+ calculated with expected values of statistics from null hypotheses (sensu Collyer et al. 2015); however Adams and Collyer 
+ (2016) showed that expected values for some statistics can vary with sample size and variable number, and recommended finding 
+ the expected value, empirically, as the mean from the set of random outcomes.  Geomorph 3.0.4 and subsequent versions now 
+ center z-scores on their empirically estimated expected values and where appropriate, log-transform values to assure statistics 
+ are normally distributed.  This can result in negative effect sizes, when statistics are smaller than expected compared to the 
+ avergae random outcome.  For ANOVA-based functions, the option to choose among different statistics to measure effect size 
  is now a function argument.
 }
   \subsection{Notes for experienced or advanced users}{ 
   Experienced or advanced users will probably prefer using
   \code{\link{procD.lm}} with a combination of \code{\link{plot.procD.lm}}, \code{\link{shape.predictor}}, and \code{\link{plotRefToTarget}}
-  for publication-quality analyses and graphics.  procD.allometry is something of a wrapper function for \code{\link{procD.lm}},
-  using a philosophy for model selection based on the outcome of a homogeneity of slopes test.  This is not necessary if one wishes to define
-  a model, irrespective of this outcome.  \code{\link{procD.lm}} offers much greater flexibility.  
+  for publication-quality analyses and graphics.  As stated above, use of procD.allometry is for visualizing simple allometric models 
+  that do not contain additional covariates. Thus, procD.allometry may be thought of as a wrapper function for \code{\link{procD.lm}},
+  but only for a restricted set of models and using a philosophy for model selection based on the outcome of a homogeneity of slopes 
+  test.  This is not necessary if one wishes to define a model, irrespective of this outcome, or if more complex models are of interest.
+  In these circumstances  \code{\link{procD.lm}} offers much greater flexibility, and provides more statistically general approaches to
+  visualizing patterns.  Thus, 
   \code{procD.allometry} might be thought of as an exploratory tool,
   if one is unsure how to model allometry for multiple groups.  One should not necessarily
   accept the \code{procD.allometry} result as "truth" and other models can be explored with \code{\link{procD.lm}}.  
@@ -172,8 +173,10 @@ descriptions of the different plotting methods using \code{\link{plot}}, with re
 # Simple allometry
 data(plethodon) 
 Y.gpa <- gpagen(plethodon$land)    #GPA-alignment  
+gps<-paste(plethodon$species,plethodon$site)
+
 gdf <- geomorph.data.frame(Y.gpa, site = plethodon$site, 
-species = plethodon$species) 
+species = plethodon$species,gps=gps) 
 plethAllometry <- procD.allometry(coords~Csize, f2 = NULL, f3=NULL, 
 logsz = TRUE, data=gdf, iter=249)
 summary(plethAllometry)
@@ -190,7 +193,7 @@ adj.shape <- shape.resid + array(Y.gpa$consensus, dim(shape.resid)) # allometry-
 plotTangentSpace(adj.shape) # PCA of allometry-free shape
 
 # Group Allometries
-plethAllometry <- procD.allometry(coords~Csize, ~species*site, 
+plethAllometry <- procD.allometry(coords~Csize, ~gps, 
 logsz = TRUE, data=gdf, iter=199, RRPP=TRUE)
 summary(plethAllometry)
 plot(plethAllometry, method = "PredLine")
