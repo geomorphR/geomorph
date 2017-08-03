@@ -369,8 +369,9 @@ procD.allometry<- function(f1, f2 = NULL, f3 = NULL, logsz = TRUE,
   k <- length(fitf$Xfs)
   yhat <- fitf$wFitted.full[[k]]
   X <- as.matrix(fitf$wX)
+  X[,2] <- 0
   B <- as.matrix(fitf$wCoefficients.full[[k]])
-  y.cent <- Y - X[,-2] %*% B[-2,]
+  y.cent <- Y - X %*% B
   if(logsz) sz <- log(size) else sz = size
   a <- (t(y.cent)%*%sz)%*%(1/(t(sz)%*%sz)); a <- a%*%(1/sqrt(t(a)%*%a))
   CAC <- y.cent%*%a  
