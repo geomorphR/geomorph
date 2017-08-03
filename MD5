@@ -152,7 +152,7 @@ ddff41e987eac54d3500e2313799c3c6 *R/digitize2d.r
 b56e53ac307d84a05efee9525dd6868a *R/fixed.angle.r
 203177efc30cc6fef4bd604b2fc2af01 *R/geomorph.data.frame.r
 736e8fee79671e50fb0c477386fc6343 *R/geomorph.support.code.r
-62f2bde33fa1df0335f6b5e1a70d331a *R/geomorph.utils.r
+848680935b080d2975e6f6695bcc28c3 *R/geomorph.utils.r
 0d9d88147f22cff2241b6e2e7396d57f *R/globalIntegration.r
 17bbdf1769466f17742de952fb612cc4 *R/gpagen.r
 2d8ab3c6fea452711a7cf091ffba8ff5 *R/gridPar.r
@@ -170,7 +170,7 @@ b8814f9a047a63c586c6e472bc17d6d5 *R/plotOutliers.r
 47a64e289c14a0c94eb8a415c661c6d8 *R/plotRefToTarget.r
 41db23cebd8d7be6c3decf781bd378e0 *R/plotspec.r
 3a29dd0ba103804d3d7b703172200402 *R/plotTangentSpace.r
-1961aa6fadb721acf41b2f742599fddd *R/procD.allometry.r
+7decefaf68f2be387d4affe5e060d93e *R/procD.allometry.r
 ee735895e70980665b4f4087856b9126 *R/procD.lm.r
 0ab5a49f02c78a1547432d120e53dd16 *R/procD.pgls.r
 df3f4cc6406dc0c737ee2ff08c2a0e3d *R/read.morphologika.r

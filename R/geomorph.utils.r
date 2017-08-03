@@ -200,9 +200,21 @@ plot.procD.lm <- function(x, type = c("diagnostics", "regression",
     if(!is.vector(predictor)) stop("Predictor must be a vector")
     if(length(predictor) != n) 
       stop("Observations in predictor must equal observations if procD.lm fit")
+    X <- x$X * sqrt(x$weights)
+    if(!is.null(x$Pcor)) B <- x$pgls.coefficients else B <- x$coefficients
     xc <- predictor
-    b <- lm(f ~ xc)$coefficients
-    if(is.matrix(b)) b <- b[2,] else b <- b[2]
+    pred.match <- match(xc, X)
+    if(any(is.na(pred.match))) {
+      b <- lm(f ~ xc)$coefficients
+      if(is.matrix(b)) b <- b[2,] else b <- b[2]
+    } else {
+      Xcrc <- as.matrix(X)
+      Xcrc[pred.match] <- 0
+      f <- Xcrc %*% B
+      r <- x$Y - f
+      b <- lm(f ~ xc)$coefficients
+      if(is.matrix(b)) b <- b[2,] else b <- b[2]
+    }
     a <- crossprod(r, xc)/sum(xc^2)
     a <- a/sqrt(sum(a^2))
     CRC <- r%*%a  
