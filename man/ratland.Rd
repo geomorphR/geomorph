@@ -8,7 +8,7 @@
 Landmark data from dataset rat
 }
 \references{
-Bookstein, F. L. 1991. Morphometric tools for landmark data: Geometry and Biology. 
+Bookstein, F. L. 1991. Morphometric tools for landmark data: Geometry and Biology.
  Cambridge Univ. Press, New York.
 }
 \author{

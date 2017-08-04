@@ -5,15 +5,15 @@
 \alias{pupfish}
 \title{Landmarks on pupfish}
 \description{
-Landmark data from Cyprindon pecosensis body shapes, with indication of Sex and 
+Landmark data from Cyprindon pecosensis body shapes, with indication of Sex and
 Population from which fish were sampled (Marsh or Sinkhole).
 }
 \details{
-These data were previously aligned 
+These data were previously aligned
 with GPA.  Centroid size (CS) is also provided.
 }
 \references{
-Collyer, M.L., D.J. Sekora, and D.C. Adams. 2015. A method for analysis of phenotypic 
+Collyer, M.L., D.J. Sekora, and D.C. Adams. 2015. A method for analysis of phenotypic
 change for phenotypes described by high-dimensional data. Heredity. 113: doi:10.1038/hdy.2014.75.
 }
 \author{

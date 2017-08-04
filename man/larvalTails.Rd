@@ -8,13 +8,13 @@
 Landmark data from tails of larval Salamanders exposed to different treatments of herbicides.
 }
 \details{
-Data set includes tail landmarks (landmarks), index for identifying semilandmarks (sliders), and vectors 
+Data set includes tail landmarks (landmarks), index for identifying semilandmarks (sliders), and vectors
 for variables including herbicide treatment (Treatment) and Family (Family).  The latter variable indicates
-the egg masses (clutches) sampled in the wild from which individual eggs were randomly assigned to treatment.  
+the egg masses (clutches) sampled in the wild from which individual eggs were randomly assigned to treatment.
 See Levis et al. (2016) for more experimental details.
 }
 \references{
-Levis, N.A, M.L. Schooler, J.R. Johnson, and M.L. Collyer. 2016. The effects of terrestrial and aquatic herbicides on 
+Levis, N.A, M.L. Schooler, J.R. Johnson, and M.L. Collyer. 2016. The effects of terrestrial and aquatic herbicides on
 larval salamander morphology and swim speed. Biological Journal of the Linnean Society.  Accepted.
 }
 \author{
