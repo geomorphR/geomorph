@@ -1,5 +1,9 @@
 CHANGES IN GEOMORPH VERSION 3.0.5
+  OTHER CHANGES
+    o Simplified options available in procD.allometry
+    
   BUG FIXES
+    o Fixed CAC calculations in procD.allometry
     o Fixed dimnames error in readland.nts when file contained a single specimen's data
     o Fixed PGLS weights for factors in morphol.disparity when phylogeny utilized
     o Fixed readland.tps to be general to whitespace delimitation
