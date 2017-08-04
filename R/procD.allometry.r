@@ -255,31 +255,45 @@ procD.allometry<- function(f1, f2 = NULL, logsz = TRUE,
   if(!is.null(seed) && seed=="random") seed = sample(1:iter, 1)
   size <- dat$size
   if(any(size <= 0)) stop("Size cannot be negative if using log-transformation")
-  if(logsz) form1 <- Y ~ log(size) else form1 <- Y ~ size
+  if(logsz) form1 <- Y ~ log(size) else 
+    form1 <- Y ~ size
   
 #  if(!is.null(f2) || !is.null(f3)){
-   if(!is.null(f2) ){
+   if(!is.null(f2)) {
       if(!is.null(data)) {
       data.types <- lapply(data, class)
       keep = sapply(data.types, function(x) x != "array" & x != "phylo" & x != "dist")
       dat2 <- as.data.frame(data[keep])
-    } else dat2 <- NULL
-    if(!is.null(f2)) {
       if(length(f2) > 2)   f2 <- f2[-2]
       dat.g <- model.frame(f2, data=dat2) 
+      } else dat2 <- NULL
+      
       ####### DCA: restrained f2 to have only a single factor as in original pubs (and point them to procD.lm for other models)
-      if(dim(dat.g)[2]>1) stop("groups formula (f2) must contain only a single factor. For more complex models use procD.lm")
+      ####### MLC: left the code line but turned it off as it is not necessary.  Think of ~a * b.  Not single factor but only groups
+      # the gps objects takes care of this; it makes the groups single factor
+      # if(dim(dat.g)[2]>1) stop("groups formula (f2) must contain only a single factor. For more complex models use procD.lm")
       dat <- data.frame(dat, dat.g)
       g.Terms <- terms(dat.g)
       if(any(attr(g.Terms, "dataClasses") == "numeric")) stop("groups formula (f2) must contain only factors")
       if(ncol(dat.g) > 1) gps <- factor(apply(dat.g, 1,function(x) paste(x, collapse=":"))) else 
         gps <- as.factor(unlist(dat.g))
       form2 <- update(form1, ~. + gps)
-    }  else {
-      dat.g <- NULL
-      g.Terms <- NULL
-      gps <- NULL
-      form2 <- form1
+      form4 <- form2
+      form5 <- update(form1, ~.  * gps)
+      if(!logsz) formfull <-as.formula(c("~",paste(unique(
+        c(c("size", attr(g.Terms, "term.labels"), paste("size", attr(g.Terms, "term.labels"), sep=":")))),
+        collapse="+"))) else
+          formfull <-as.formula(c("~",paste(unique(
+            c(c("log(size)", attr(g.Terms, "term.labels"), paste("log(size)", attr(g.Terms, "term.labels"), sep=":")))),
+            collapse="+")))
+      # form.type <- "g"
+      } else {
+        dat2 <- NULL
+        dat.g <- NULL
+        g.Terms <- NULL
+        gps <- NULL
+        form2 <- form1
+        formfull <- form1
     }
     
 #    if(!is.null(f3)) {
@@ -291,8 +305,6 @@ procD.allometry<- function(f1, f2 = NULL, logsz = TRUE,
 #      dat.o <- NULL
 #      o.Terms <- NULL
 #    }
-  }
-if(is.null(f2) ) form2 <- form1  #DCA new  
 
 #  if(is.null(f2) && is.null(f3)) form2 <- form1 
 #  if(!is.null(f2) & !is.null(f3)) {
@@ -305,11 +317,7 @@ if(is.null(f2) ) form2 <- form1  #DCA new
 #    form5 <- update(f3, ~. + log(size) * gps)
 #    }
 #  }
-if(!is.null(f2) ) { #DCA new  
-#  if(!is.null(f2) & is.null(f3)) {
-    form4 <- form2
-    form5 <- update(form1, ~.  * gps)
-  }
+
   
 #  if(!is.null(f2) & !is.null(f3)) {
 #    formfull <-as.formula(c("~",paste(unique(
@@ -317,16 +325,9 @@ if(!is.null(f2) ) { #DCA new
 #        c("size", attr(o.Terms, "term.labels"), paste("size", attr(o.Terms, "term.labels"), sep=":")))),
 #      collapse="+")))
 #    form.type <- "go"
-#  } else if(!is.null(f2) & is.null(f3)) {
-  if(!is.null(f2) ) {
-    if(!logsz) formfull <-as.formula(c("~",paste(unique(
-      c(c("size", attr(g.Terms, "term.labels"), paste("size", attr(g.Terms, "term.labels"), sep=":")))),
-      collapse="+"))) else
-        formfull <-as.formula(c("~",paste(unique(
-          c(c("log(size)", attr(g.Terms, "term.labels"), paste("log(size)", attr(g.Terms, "term.labels"), sep=":")))),
-          collapse="+")))
-      form.type <- "g"
-#  } else if(is.null(f2) & !is.null(f3)) {
+#  } else if(!is.null(f2) & is.null(f3)) {}
+
+# else if(is.null(f2) & !is.null(f3)) {
 #    if(!logsz) formfull <-as.formula(c("~",paste(unique(
 #      c(c("size", attr(o.Terms, "term.labels"), paste("size", attr(o.Terms, "term.labels"), sep=":")))),
 #      collapse="+"))) else
@@ -334,10 +335,8 @@ if(!is.null(f2) ) { #DCA new
 #          c(c("log(size)", attr(o.Terms, "term.labels"), paste("log(size)", attr(o.Terms, "term.labels"), sep=":")))),
 #          collapse="+")))
 #      form.type <- "o"
-  } else {
-    formfull <- form2
-    form.type <- NULL}
   
+# HOS Test
   if(!is.null(f2)){
     form4 <- update(form4, Y ~.)
     form5 <- update(form5, Y ~.)
@@ -347,28 +346,14 @@ if(!is.null(f2) ) { #DCA new
                              print.progress = print.progress)$anova.table
     rownames(HOS) = c("Common Allometry", "Group Allometries")
     hos.pval <- HOS[2,7]
-    if(hos.pval > alpha){
-#      if(form.type == "go") {
-#        if(!logsz) rhs.formfull <- paste(c("size", attr(g.Terms, "term.labels"), 
-#                                           attr(o.Terms, "term.labels")), collapse="+") else
-#                                             rhs.formfull <- paste(c("log(size)", attr(g.Terms, "term.labels"), 
-#                                                                     attr(o.Terms, "term.labels")), collapse="+")  
-#                                           formfull <- as.formula(c("Y ~", rhs.formfull))
-#      }
-  #DCA removed o.terms, as these are not used now    
-      if(form.type == "go") {
-        if(!logsz) rhs.formfull <- paste(c("size", attr(g.Terms, "term.labels")), collapse="+") else
-                         rhs.formfull <- paste(c("log(size)", attr(g.Terms, "term.labels")), collapse="+")  
-                                           formfull <- as.formula(c("Y ~", rhs.formfull))
-      }
-      if(form.type == "g") {
-        if(!logsz) rhs.formfull <- paste(c("size", attr(g.Terms, "term.labels")),  collapse="+") else
-          rhs.formfull <- paste(c("log(size)", attr(g.Terms, "term.labels")),  collapse="+")
-        formfull <- as.formula(c("Y ~", rhs.formfull))
-      }
+    if(hos.pval > alpha){ 
+      if(logsz) rhs.formfull <- paste(c("log(size)", attr(g.Terms, "term.labels")),  collapse="+") else
+        rhs.formfull <- paste(c("size", attr(g.Terms, "term.labels")),  collapse="+")
+      formfull <- as.formula(c("Y ~", rhs.formfull))
     } 
   } else HOS <- NULL
   
+  # ANOVA
   formfull <- update(formfull, Y~.)
   fitf <- procD.fit(formfull, data=dat, pca=FALSE, ...)
   cat("\nAllometry Model\n")
@@ -382,11 +367,16 @@ if(!is.null(f2) ) { #DCA new
   k <- length(fitf$Xfs)
   yhat <- fitf$wFitted.full[[k]]
   X <- as.matrix(fitf$wX)
-  X[,2] <- 0
+  X[,2] <- 0 # remove slope
+  if(!is.null(f2)){
+    xp <- NCOL(model.matrix(~gps, data = )) + 1 # + 1 for slope
+    X <- X[,1:xp] # remove potential interaction parametrs
+  }
   B <- as.matrix(fitf$wCoefficients.full[[k]])
-#  y.cent <- Y - X %*% B
-  y.cent<-resid(lm(Y~X))   #DCA added. Now matches original CAC of Mitteroecker et al. 2004 
-
+  # y.cent<-resid(lm(Y~X))   #DCA added. Now matches original CAC of Mitteroecker et al. 2004 
+  # same approach but without using lm and all its traps
+  U <- qr.Q(qr(X))
+  y.cent <- fastLM(U, Y)$residuals
   if(logsz) sz <- log(size) else sz = size
   a <- (t(y.cent)%*%sz)%*%(1/(t(sz)%*%sz)); a <- a%*%(1/sqrt(t(a)%*%a))
   CAC <- y.cent%*%a  
