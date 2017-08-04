@@ -253,18 +253,21 @@ plot.procD.lm <- function(x, type = c("diagnostics", "regression",
 #' Print/Summary Function for geomorph
 #' 
 #' @param x print/summary object (from \code{\link{advanced.procD.lm}})
+#' @param formula logical for whether to print the model formulas as data frame row names
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities
-print.advanced.procD.lm <- function (x, ...) {
+print.advanced.procD.lm <- function (x, formula = TRUE, ...) {
   cat("\nCall:\n")
   cat(deparse(x$call), fill=TRUE, "\n\n")
   cat("\nRandomized Residual Permutation Procedure Used\n")
   cat(paste(x$permutations, "Permutations"))
   cat("\nANOVA Table")
   cat("\n\n")
-  print(x$anova.table); cat("\n\n")
+  atab <- x$anova.table
+  if(!formula) rownames(atab)[1:2] <- c("Reduced Model", "Full Model")
+  print(atab); cat("\n\n")
   if(!is.null(x$LS.means)) {cat("LS means\n"); print(x$LS.means); cat("\n")}
   if(!is.null(x$slopes)) {cat("Slopes\n");print(x$slopes); cat("\n\n")}
   if(!is.null(x$LS.means.dist)) {cat("LS means distance matrix\n");print(x$LS.means.dist); cat("\n")}

@@ -29,7 +29,10 @@
 #'
 #'   Pairwise tests are only performed if formulae are provided to compute such results.
 #'   The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{advanced.procD.lm}}.
-#'   The generic function, \code{\link{plot}}, produces diagnostic plots for Procrustes residuals of the linear fit.
+#'   The generic function, \code{\link{plot}}, produces diagnostic plots for Procrustes residuals of the linear fit.  Note that there is an
+#'   argument in print/summary generic functions to print formulas as row names of the ANOVA table.  If
+#'   formulas are long, it is recommended to make this argument, \code{formula = FALSE}, in which case 
+#'   "reduced" and "full" models will be acknowledged.
 #'
 #'  \subsection{Notes for geomorph 3.0.4 and subsequent versions}{
 #'  Compared to previous versions of geomorph, users might notice differences in effect sizes.  Previous versions used z-scores calculated with
@@ -99,24 +102,28 @@
 #'site = plethodon$site)
 #'
 #'# Example of a nested model comparison (as with ANOVA with RRPP)
-#'advanced.procD.lm(f1= coords ~ log(Csize) + species,
+#'ANOVA <-  advanced.procD.lm(f1= coords ~ log(Csize) + species,
 #'f2= ~ log(Csize)*species*site, iter=249, data = gdf)
+#'summary(ANOVA, formula = FALSE) # formulas too long to print
 #'
 #'# Example of a test of a factor interaction, plus pairwise comparisons
-#'advanced.procD.lm(f1= coords ~ site*species, f2= ~ site + species, 
+#'PW.means.test <- advanced.procD.lm(f1= coords ~ site*species, f2= ~ site + species, 
 #'groups = ~site*species, iter=249, data = gdf)
+#'summary(PW.means.test, formula = TRUE)
 #'
 #'# Example of a test of a factor interaction, plus pairwise comparisons,
 #'# accounting for a common allometry
-#'advanced.procD.lm(f1= coords ~ Csize + site*species,
+#'PW.ls.means.test <- advanced.procD.lm(f1= coords ~ Csize + site*species,
 #'f2= ~ log(Csize) + site + species,
 #'groups = ~ site*species, slope = ~log(Csize), iter = 249, data = gdf)
+#'summary(PW.ls.means.test, formula = TRUE)
 #'
 #'# Example of a test of homogeneity of slopes, plus pairwise slopes comparisons
 #'gdf$group <- factor(paste(gdf$species, gdf$site, sep="."))
-#'advanced.procD.lm(f1= coords ~ log(Csize) + group,
+#'HOS <- advanced.procD.lm(f1= coords ~ log(Csize) + group,
 #'f2= ~ log(Csize) * group, groups = ~ group,
 #'slope = ~ log(Csize), angle.type = "deg", iter = 249, data = gdf)
+#'summary(HOS, formula = FALSE) # formulas too long to print
 #'
 #'# Example of partial pairwise comparisons, given greater model complexity.
 #'# Plus, working with class advanced.procD.lm objects.
@@ -124,8 +131,12 @@
 #'f2= ~ log(Csize) + site*species, groups = ~ species, 
 #'slope = ~ log(Csize), angle.type = "deg", iter = 249, data = gdf)
 #'
-#'summary(aov.pleth) # ANOVA plus pairwise tests
-#'plot(aov.pleth) # diagnostic plots
+#'summary(aov.pleth, formula = FALSE)  # formulas too long to print
+#'
+#'# Diagnostic plots
+#'plot(aov.pleth) 
+#'
+#'# Extracting objects from results
 #'aov.pleth$slopes # extract the slope vectors
 
 advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,

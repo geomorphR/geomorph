@@ -38,6 +38,40 @@
 #'   \code{\link{procD.lm}} (see below for more details).
 #'   }
 #'   
+#'   \subsection{Notes for experienced or advanced users}{ 
+#'   Experienced or advanced users will probably prefer using
+#'   \code{\link{procD.lm}} with a combination of \code{\link{plot.procD.lm}}, \code{\link{shape.predictor}}, and \code{\link{plotRefToTarget}}
+#'   for publication-quality analyses and graphics.  As stated above, use of procD.allometry is for visualizing simple allometric models 
+#'   that do not contain additional covariates. Thus, procD.allometry may be thought of as a wrapper function for \code{\link{procD.lm}},
+#'   but only for a restricted set of models and using a philosophy for model selection based on the outcome of a homogeneity of slopes 
+#'   test.  This is not necessary if one wishes to define a model, irrespective of this outcome, or if more complex models are of interest.
+#'   In these circumstances  \code{\link{procD.lm}} offers much greater flexibility, and provides more statistically general approaches to
+#'   visualizing patterns.  Thus, 
+#'   \code{procD.allometry} might be thought of as an exploratory tool,
+#'   if one is unsure how to model allometry for multiple groups.  One should not necessarily
+#'   accept the \code{procD.allometry} result as "truth" and other models can be explored with \code{\link{procD.lm}}.  
+#'   Examples for more flexibile approaches to modeling allometry using \code{\link{procD.lm}} are provided below.
+#' }
+#' 
+#' 
+#'  \subsection{Notes for geomorph 3.0.5 and subsequent versions}{ 
+#'  Previous versions of \code{procD.allometry} han an argument, f3, for providing additional covariates.  Complex
+#'  models can now be analyzed with \code{\link{procD.lm}}, which has similar plotting capabilities as \code{procD.allometry}.
+#'  Examples are provided below.  This argument is no longer used, and \code{procD.allometry} is restricted to simpler models,
+#'  deferring instead to \code{\link{procD.lm}} for complex models.
+#' }
+#'   
+#'  \subsection{Notes for geomorph 3.0.4 and subsequent versions}{ 
+#'  Compared to previous versions of geomorph, users might notice differences in effect sizes.  Previous versions used z-scores 
+#'  calculated with expected values of statistics from null hypotheses (sensu Collyer et al. 2015); however Adams and Collyer 
+#'  (2016) showed that expected values for some statistics can vary with sample size and variable number, and recommended finding 
+#'  the expected value, empirically, as the mean from the set of random outcomes.  Geomorph 3.0.4 and subsequent versions now 
+#'  center z-scores on their empirically estimated expected values and where appropriate, log-transform values to assure statistics 
+#'  are normally distributed.  This can result in negative effect sizes, when statistics are smaller than expected compared to the 
+#'  avergae random outcome.  For ANOVA-based functions, the option to choose among different statistics to measure effect size 
+#'  is now a function argument.
+#' }
+
 #' \subsection{Notes for geomorph 3.0 and making allometry plots}{ 
 #' Former versions of geomorph had a "plotAllometry" function that performed ANOVA and produced
 #' plots of allometry curves.  In geomorph 3.0, the \code{\link{plot}} function is used with 
@@ -67,31 +101,6 @@
 #'   allometric trend (Adams and Nistri 2010). }
 #'   }
 #'   }
-#'   
-#'  \subsection{Notes for geomorph 3.0.4 and subsequent versions}{ 
-#'  Compared to previous versions of geomorph, users might notice differences in effect sizes.  Previous versions used z-scores 
-#'  calculated with expected values of statistics from null hypotheses (sensu Collyer et al. 2015); however Adams and Collyer 
-#'  (2016) showed that expected values for some statistics can vary with sample size and variable number, and recommended finding 
-#'  the expected value, empirically, as the mean from the set of random outcomes.  Geomorph 3.0.4 and subsequent versions now 
-#'  center z-scores on their empirically estimated expected values and where appropriate, log-transform values to assure statistics 
-#'  are normally distributed.  This can result in negative effect sizes, when statistics are smaller than expected compared to the 
-#'  avergae random outcome.  For ANOVA-based functions, the option to choose among different statistics to measure effect size 
-#'  is now a function argument.
-#' }
-#'   \subsection{Notes for experienced or advanced users}{ 
-#'   Experienced or advanced users will probably prefer using
-#'   \code{\link{procD.lm}} with a combination of \code{\link{plot.procD.lm}}, \code{\link{shape.predictor}}, and \code{\link{plotRefToTarget}}
-#'   for publication-quality analyses and graphics.  As stated above, use of procD.allometry is for visualizing simple allometric models 
-#'   that do not contain additional covariates. Thus, procD.allometry may be thought of as a wrapper function for \code{\link{procD.lm}},
-#'   but only for a restricted set of models and using a philosophy for model selection based on the outcome of a homogeneity of slopes 
-#'   test.  This is not necessary if one wishes to define a model, irrespective of this outcome, or if more complex models are of interest.
-#'   In these circumstances  \code{\link{procD.lm}} offers much greater flexibility, and provides more statistically general approaches to
-#'   visualizing patterns.  Thus, 
-#'   \code{procD.allometry} might be thought of as an exploratory tool,
-#'   if one is unsure how to model allometry for multiple groups.  One should not necessarily
-#'   accept the \code{procD.allometry} result as "truth" and other models can be explored with \code{\link{procD.lm}}.  
-#'   Examples for more flexibile approaches to modeling allometry using \code{\link{procD.lm}} are provided below.
-#' }
 #'   
 #' @param f1 A formula for the relationship of shape and size; e.g., Y ~ X.
 #' @param f2 An optional right-hand formula for the inclusion of groups; e.g., ~ groups.
@@ -167,10 +176,9 @@
 #' # Simple allometry
 #' data(plethodon) 
 #' Y.gpa <- gpagen(plethodon$land)    #GPA-alignment  
-#' gps<-paste(plethodon$species,plethodon$site)
 #' 
 #' gdf <- geomorph.data.frame(Y.gpa, site = plethodon$site, 
-#' species = plethodon$species,gps=gps) 
+#' species = plethodon$species) 
 #' plethAllometry <- procD.allometry(coords~Csize, f2 = NULL, f3=NULL, 
 #' logsz = TRUE, data=gdf, iter=249)
 #' summary(plethAllometry)
@@ -182,21 +190,20 @@
 #'      data = plethAllometry$data, iter = 199, RRPP=TRUE) 
 #' summary(plethAnova) # same ANOVA Table
 #' shape.resid <- arrayspecs(plethAnova$residuals,
-#'    p=dim(Y.gpa$coords)[1], k=dim(Y.gpa$coords)[2]) # size-adjusted residuals
+#'    p=dim(Y.gpa$coords)[1], k=dim(Y.gpa$coords)[2]) # allometry-adjusted residuals
 #' adj.shape <- shape.resid + array(Y.gpa$consensus, dim(shape.resid)) # allometry-free shapes
 #' plotTangentSpace(adj.shape) # PCA of allometry-free shape
 #' 
 #' # Group Allometries
-#' plethAllometry <- procD.allometry(coords~Csize, ~gps, 
+#' plethAllometry <- procD.allometry(coords~Csize, ~species * site, 
 #' logsz = TRUE, data=gdf, iter=199, RRPP=TRUE)
 #' summary(plethAllometry)
 #' plot(plethAllometry, method = "PredLine")
 #' 
-#' # Using procD.lm to perform diagnostic residual plots
+#' # Using procD.lm to call procD.allometry (in case more results are desired)
 #' plethANOVA <- procD.lm(plethAllometry$formula, 
 #' data = plethAllometry$data, iter = 249, RRPP=TRUE)
 #' summary(plethANOVA) # Same ANOVA
-#' plot(plethANOVA) # diagnostic plot instead of allometry plot
 #' 
 #' # procD.allometry is a wrapper function for procD.lm.  The same analyses
 #' # can be performed with procD.lm, and better graphics options

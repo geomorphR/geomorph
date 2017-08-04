@@ -1508,7 +1508,6 @@ SS.pgls.iter = function(pfit, Pcor, iter, seed=NULL, Yalt="RRPP"){
   Uf <- lapply(Xf, function(x) crossprod(P,qr.Q(qr(x))))
   Ufull <- Uf[[k]]
   Unull <- crossprod(P, qr.Q(qr(crossprod(P, matrix(1, n)))))
-  p.1 <- crossprod(P, matrix(1, nrow(P))) * w
   SS <- lapply(1: perms, function(j){
     step <- j
     setTxtProgressBar(pb,step)
