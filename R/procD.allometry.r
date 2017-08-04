@@ -258,84 +258,40 @@ procD.allometry<- function(f1, f2 = NULL, logsz = TRUE,
   if(logsz) form1 <- Y ~ log(size) else 
     form1 <- Y ~ size
   
-#  if(!is.null(f2) || !is.null(f3)){
-   if(!is.null(f2)) {
-      if(!is.null(data)) {
+  if(!is.null(f2)) {
+    
+    if(!is.null(data)) {
       data.types <- lapply(data, class)
       keep = sapply(data.types, function(x) x != "array" & x != "phylo" & x != "dist")
       dat2 <- as.data.frame(data[keep])
       if(length(f2) > 2)   f2 <- f2[-2]
       dat.g <- model.frame(f2, data=dat2) 
-      } else dat2 <- NULL
-      
-      ####### DCA: restrained f2 to have only a single factor as in original pubs (and point them to procD.lm for other models)
-      ####### MLC: left the code line but turned it off as it is not necessary.  Think of ~a * b.  Not single factor but only groups
-      # the gps objects takes care of this; it makes the groups single factor
-      # if(dim(dat.g)[2]>1) stop("groups formula (f2) must contain only a single factor. For more complex models use procD.lm")
-      dat <- data.frame(dat, dat.g)
-      g.Terms <- terms(dat.g)
-      if(any(attr(g.Terms, "dataClasses") == "numeric")) stop("groups formula (f2) must contain only factors")
-      if(ncol(dat.g) > 1) gps <- factor(apply(dat.g, 1,function(x) paste(x, collapse=":"))) else 
-        gps <- as.factor(unlist(dat.g))
-      form2 <- update(form1, ~. + gps)
-      form4 <- form2
-      form5 <- update(form1, ~.  * gps)
-      if(!logsz) formfull <-as.formula(c("~",paste(unique(
-        c(c("size", attr(g.Terms, "term.labels"), paste("size", attr(g.Terms, "term.labels"), sep=":")))),
-        collapse="+"))) else
-          formfull <-as.formula(c("~",paste(unique(
-            c(c("log(size)", attr(g.Terms, "term.labels"), paste("log(size)", attr(g.Terms, "term.labels"), sep=":")))),
-            collapse="+")))
-      # form.type <- "g"
-      } else {
-        dat2 <- NULL
-        dat.g <- NULL
-        g.Terms <- NULL
-        gps <- NULL
-        form2 <- form1
-        formfull <- form1
-    }
+    } else dat2 <- NULL
     
-#    if(!is.null(f3)) {
-#      if(length(f3) > 2) f3 <- f3[-2]
-#      dat.o <- model.frame(f3, data=dat2) 
-#      dat <- data.frame(dat, dat.o)
-#      o.Terms <- terms(dat.o)
-#    }  else {
-#      dat.o <- NULL
-#      o.Terms <- NULL
-#    }
+    dat <- data.frame(dat, dat.g)
+    g.Terms <- terms(dat.g)
+    if(any(attr(g.Terms, "dataClasses") == "numeric")) stop("groups formula (f2) must contain only factors")
+    if(ncol(dat.g) > 1) gps <- factor(apply(dat.g, 1,function(x) paste(x, collapse=":"))) else 
+      gps <- as.factor(unlist(dat.g))
+    form2 <- update(form1, ~. + gps)
+    form4 <- form2
+    form5 <- update(form1, ~.  * gps)
+    if(!logsz) formfull <-as.formula(c("~",paste(unique(
+      c(c("size", attr(g.Terms, "term.labels"), paste("size", attr(g.Terms, "term.labels"), sep=":")))),
+      collapse="+"))) else
+        formfull <-as.formula(c("~",paste(unique(
+          c(c("log(size)", attr(g.Terms, "term.labels"), paste("log(size)", attr(g.Terms, "term.labels"), sep=":")))),
+          collapse="+")))
+  } else {
+    
+    dat2 <- NULL
+    dat.g <- NULL
+    g.Terms <- NULL
+    gps <- NULL
+    form2 <- form1
+    formfull <- form1
+  }
 
-#  if(is.null(f2) && is.null(f3)) form2 <- form1 
-#  if(!is.null(f2) & !is.null(f3)) {
-#    if(!logsz){
-#      form4 <- update(f3, ~. + size + gps)
-#      form5 <- update(f3, ~. + size * gps)
-#    }
-#    if(logsz){
-#      form4 <- update(f3, ~. + log(size) + gps)
-#    form5 <- update(f3, ~. + log(size) * gps)
-#    }
-#  }
-
-  
-#  if(!is.null(f2) & !is.null(f3)) {
-#    formfull <-as.formula(c("~",paste(unique(
-#      c(c("size", attr(g.Terms, "term.labels"), paste("size", attr(g.Terms, "term.labels"), sep=":")),
-#        c("size", attr(o.Terms, "term.labels"), paste("size", attr(o.Terms, "term.labels"), sep=":")))),
-#      collapse="+")))
-#    form.type <- "go"
-#  } else if(!is.null(f2) & is.null(f3)) {}
-
-# else if(is.null(f2) & !is.null(f3)) {
-#    if(!logsz) formfull <-as.formula(c("~",paste(unique(
-#      c(c("size", attr(o.Terms, "term.labels"), paste("size", attr(o.Terms, "term.labels"), sep=":")))),
-#      collapse="+"))) else
-#        formfull <-as.formula(c("~",paste(unique(
-#          c(c("log(size)", attr(o.Terms, "term.labels"), paste("log(size)", attr(o.Terms, "term.labels"), sep=":")))),
-#          collapse="+")))
-#      form.type <- "o"
-  
 # HOS Test
   if(!is.null(f2)){
     form4 <- update(form4, Y ~.)
@@ -373,8 +329,6 @@ procD.allometry<- function(f1, f2 = NULL, logsz = TRUE,
     X <- X[,1:xp] # remove potential interaction parametrs
   }
   B <- as.matrix(fitf$wCoefficients.full[[k]])
-  # y.cent<-resid(lm(Y~X))   #DCA added. Now matches original CAC of Mitteroecker et al. 2004 
-  # same approach but without using lm and all its traps
   Q <- qr(X)
   U <- (qr.Q(qr(X)))[, 1:Q$rank]
   y.cent <- fastLM(U, Y)$residuals
@@ -385,6 +339,7 @@ procD.allometry<- function(f1, f2 = NULL, logsz = TRUE,
   RSC <- prcomp(resid)$x
   Reg.proj <- Y%*%B[2,]%*%sqrt(solve(t(B[2,])%*%B[2,])) 
   pred.val <- prcomp(yhat)$x[,1] 
+  
   if(length(dim(Ain)) == 3){
     Adim <- dim(Ain)
     Ahat <- arrayspecs(yhat, Adim[[1]], Adim[[2]])
@@ -394,12 +349,14 @@ procD.allometry<- function(f1, f2 = NULL, logsz = TRUE,
     ref<-mshape(A)
     p=Adim[[1]] ; k= Adim[[2]]
   } else {
+    
     Ahat <- yhat ; A <- Y
     Ahat.at.min <- Ahat[which.min(sz),]
     Ahat.at.max <- Ahat[which.max(sz),]
     ref<-apply(A, 2, mean)
     p= NULL ; k=NULL
   }
+  
   if(is.null(f2)) gps <- NULL
   out <- list(HOS.test = HOS, aov.table = anovafull$aov.table, call = match.call(),
               alpha = alpha, perm.method = perm.method, permutations=iter+1,
