@@ -65,6 +65,8 @@ readland.nts<-function(file){
   if(r.lab==TRUE){
     speclab<-ntsfile[2:(1+n)]
     tmp <- tmp[c((length(tmp)-(n*p*k)+1):length(tmp))]
+    # speclab<-tmp[1:n]
+    # tmp<-tmp[-(1:length(speclab))]  
   }
   if(c.lab==TRUE){ tmp<-tmp[-(1:(p*k))] }
   if(missdata==TRUE){tmp[grep(missval,as.integer(tmp))] <- NA}

@@ -200,9 +200,21 @@ plot.procD.lm <- function(x, type = c("diagnostics", "regression",
     if(!is.vector(predictor)) stop("Predictor must be a vector")
     if(length(predictor) != n) 
       stop("Observations in predictor must equal observations if procD.lm fit")
+    X <- x$X * sqrt(x$weights)
+    if(!is.null(x$Pcor)) B <- x$pgls.coefficients else B <- x$coefficients
     xc <- predictor
-    b <- lm(f ~ xc)$coefficients
-    if(is.matrix(b)) b <- b[2,] else b <- b[2]
+    pred.match <- match(xc, X)
+    if(any(is.na(pred.match))) {
+      b <- lm(f ~ xc)$coefficients
+      if(is.matrix(b)) b <- b[2,] else b <- b[2]
+    } else {
+      Xcrc <- as.matrix(X)
+      Xcrc[pred.match] <- 0
+      f <- Xcrc %*% B
+      r <- x$Y - f
+      b <- lm(f ~ xc)$coefficients
+      if(is.matrix(b)) b <- b[2,] else b <- b[2]
+    }
     a <- crossprod(r, xc)/sum(xc^2)
     a <- a/sqrt(sum(a^2))
     CRC <- r%*%a  
@@ -213,17 +225,15 @@ plot.procD.lm <- function(x, type = c("diagnostics", "regression",
     if(reg.type == "CRC"){
       par(mfcol = c(1,2))
       par(mar = c(4,4,1,1))
-      plot(predictor, CRC, xlab = deparse(substitute(predictor)), ...)
+      plot(predictor, CRC,  ...)
       plot(CRC, RSC[,1], asp=1, xlab = "CRC", ylab = "RSC 1", ...)
       par(mar = c(5,4,4,2) + 0.1)
       par(mfcol=c(1,1))
     } else if(reg.type == "RegScore") {
       plot(predictor, Reg.proj, 
-           xlab = deparse(substitute(predictor)), 
            ylab = "Regression Score", ...)
     } else {
       plot(predictor, PL, 
-           xlab = deparse(substitute(predictor)), 
            ylab = "PC 1 for fitted values", ...)
     }
   }
@@ -243,18 +253,21 @@ plot.procD.lm <- function(x, type = c("diagnostics", "regression",
 #' Print/Summary Function for geomorph
 #' 
 #' @param x print/summary object (from \code{\link{advanced.procD.lm}})
+#' @param formula logical for whether to print the model formulas as data frame row names
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities
-print.advanced.procD.lm <- function (x, ...) {
+print.advanced.procD.lm <- function (x, formula = TRUE, ...) {
   cat("\nCall:\n")
   cat(deparse(x$call), fill=TRUE, "\n\n")
   cat("\nRandomized Residual Permutation Procedure Used\n")
   cat(paste(x$permutations, "Permutations"))
   cat("\nANOVA Table")
   cat("\n\n")
-  print(x$anova.table); cat("\n\n")
+  atab <- x$anova.table
+  if(!formula) rownames(atab)[1:2] <- c("Reduced Model", "Full Model")
+  print(atab); cat("\n\n")
   if(!is.null(x$LS.means)) {cat("LS means\n"); print(x$LS.means); cat("\n")}
   if(!is.null(x$slopes)) {cat("Slopes\n");print(x$slopes); cat("\n\n")}
   if(!is.null(x$LS.means.dist)) {cat("LS means distance matrix\n");print(x$LS.means.dist); cat("\n")}
@@ -1246,3 +1259,38 @@ print.compare.pls <- function(x,...){
 #' @author Michael Collyer
 #' @keywords utilities
 summary.compare.pls <- function(object, ...) print.compare.pls(object,...)
+
+#' Print/Summary Function for geomorph
+#' 
+#' @param x print/summary object
+#' @param ... other arguments passed to print/summary
+#' @export
+#' @author Michael Collyer
+#' @keywords utilities
+#' 
+print.combined.set <- function(x,...){
+  p <- x$points.by.set
+  g <- length(p)
+  cs <- x$CS
+  css <- colMeans(cs)
+  rcs <- css/sum(css)
+  cat(paste("\nA total of", g, "subsets were combined\n\n"))
+  y <- matrix(0, 3, g)
+  if(!is.null(names(p))) colnames(y) <- names(p)
+  y[1, ] <- p
+  y[2, ] <- css
+  y[3, ] <- rcs
+  y <- as.data.frame(y)
+  rownames(y) <- c("Number of points in subset", "Mean centroid size", "Mean relative size")
+  print(y)
+}
+
+#' Print/Summary Function for geomorph
+#' 
+#' @param object print/summary object
+#' @param ... other arguments passed to print/summary
+#' @export
+#' @author Michael Collyer
+#' @keywords utilities
+#'
+summary.combined.set <- function(object, ...) print.combined.set(object, ...)

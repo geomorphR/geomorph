@@ -99,7 +99,7 @@
 #' gdf <- geomorph.data.frame(wingshape = mosquito$wingshape, ind=mosquito$ind, side=mosquito$side,
 #' replicate=mosquito$replicate)
 #' mosquito.sym <- bilat.symmetry(A = wingshape, ind = ind, side = side,
-#' replicate = replicate, object.sym = FALSE, RRPP = TRUE, iter = 499, data = gdf)
+#' replicate = replicate, object.sym = FALSE, RRPP = TRUE, iter = 999, data = gdf)
 #' summary(mosquito.sym)
 #' plot(mosquito.sym, warpgrids = TRUE)
 #' mosquito.sym$shape.anova # extract just the anova table on shape
@@ -107,7 +107,7 @@
 #' # Previous example, performing GPA first
 #' Y.gpa <- gpagen(mosquito$wingshape)
 #' mosquito.sym2 <- bilat.symmetry(A = Y.gpa, ind = ind, side = side,
-#' replicate = replicate, object.sym = FALSE, RRPP = TRUE, iter = 499, data = gdf)
+#' replicate = replicate, object.sym = FALSE, RRPP = TRUE, iter = 999, data = gdf)
 #' summary(mosquito.sym2)
 #' summary(mosquito.sym) # same results
 #'
@@ -116,14 +116,14 @@
 #' data(scallops)
 #' gdf <- geomorph.data.frame(shape = scallops$coorddata, ind=scallops$ind)
 #' scallop.sym <- bilat.symmetry(A = shape, ind = ind, object.sym = TRUE, 
-#' land.pairs=scallops$land.pairs, data = gdf, RRPP = TRUE, iter = 499)
+#' land.pairs=scallops$land.pairs, data = gdf, RRPP = TRUE, iter = 999)
 #' summary(scallop.sym)
 #' 
 #' # Previous example, incorporating semilandmarks (requires GPA to be performed first)
 #' 
 #' Y.gpa <- gpagen(scallops$coorddata, curves= scallops$curvslide, surfaces = scallops$surfslide)
 #' scallop.sym <- bilat.symmetry(A = Y.gpa, ind = ind, object.sym = TRUE, 
-#' land.pairs=scallops$land.pairs, data = gdf, RRPP = TRUE, iter = 499)
+#' land.pairs=scallops$land.pairs, data = gdf, RRPP = TRUE, iter = 999)
 #' summary(scallop.sym)
 #' # NOTE one can also: plot(scallop.sym, warpgrids = TRUE, mesh = NULL)
 #' # NOTE one can also: scallop.sym$data.type # recall the symmetry type
@@ -199,7 +199,7 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
   pfitSh <- procD.fit(form.shape, data = dat.shape, keep.order = TRUE)
   kSh <- length(pfitSh$term.labels)
   if(!is.null(seed) && seed=="random") seed = sample(1:iter, 1)
-  if(print.progress) cat("\nShape Analysis\n")
+  if(print.progress) cat("\nShape Analysis")
   if(print.progress) {
     if(RRPP == TRUE) PSh <- SS.iter(pfitSh,Yalt="RRPP", iter=iter, seed=seed) else 
       PSh <- .SS.iter(pfitSh, Yalt="resample", iter=iter, seed=seed)
@@ -223,7 +223,7 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
       dat.size <- geomorph.data.frame(size = size, ind = ind, side = side)
     }
     pfitSz=procD.fit(form.size, data=dat.size, keep.order=TRUE)
-    if(print.progress) cat("\nSize Analysis\n")
+    if(print.progress) cat("\nSize Analysis")
     if(print.progress) {
       if(RRPP == TRUE) PSz <- SS.iter(pfitSz,Yalt="RRPP", iter=iter, seed=seed) else 
         PSz <- SS.iter(pfitSz, Yalt="resample", iter=iter, seed=seed)

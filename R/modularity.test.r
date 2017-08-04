@@ -1,4 +1,4 @@
-#' Evaluate the degree of modular signal in morphometric datasets 
+#' Evaluate the degree of modular signal in morphometric datasets
 #'
 #' Function quantifies the degree of modularity between two or more hypothesized modules of Procrustes-aligned 
 #' landmark coordinates and compares this to patterns found by randomly assigning landmarks into subsets
