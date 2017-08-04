@@ -375,7 +375,8 @@ procD.allometry<- function(f1, f2 = NULL, logsz = TRUE,
   B <- as.matrix(fitf$wCoefficients.full[[k]])
   # y.cent<-resid(lm(Y~X))   #DCA added. Now matches original CAC of Mitteroecker et al. 2004 
   # same approach but without using lm and all its traps
-  U <- qr.Q(qr(X))
+  Q <- qr(X)
+  U <- (qr.Q(qr(X)))[, 1:Q$rank]
   y.cent <- fastLM(U, Y)$residuals
   if(logsz) sz <- log(size) else sz = size
   a <- (t(y.cent)%*%sz)%*%(1/(t(sz)%*%sz)); a <- a%*%(1/sqrt(t(a)%*%a))
