@@ -59,7 +59,7 @@
 #' 
 #'data(larvalMorph)
 #'Y.gpa <- gpagen(larvalMorph$tailcoords)
-#'gdf <- geomorph.data.frame(Y.gpa, Treatment = larvalMorph$tretment, Family = larvalMorph$family)
+#'gdf <- geomorph.data.frame(Y.gpa, Treatment = larvalMorph$treatment, Family = larvalMorph$family)
 #'
 #'# Model with fixed and nested effects
 #'tailANOVA <- procD.lm(coords ~ Treatment/Family, iter = 99, RRPP=TRUE, data=gdf)
