@@ -57,12 +57,12 @@
 #' by high-dimensional data. Heredity. 115:357-365.
 #' @examples
 #' 
-#'data(larvalTails)
-#'Y.gpa <- gpagen(larvalTails$landmarks)
-#'gdf <- geomorph.data.frame(Y.gpa, Treatment = larvalTails$Treatment, Family = larvalTails$Family)
+#'data(larvalMorph)
+#'Y.gpa <- gpagen(larvalMorph$tailcoords)
+#'gdf <- geomorph.data.frame(Y.gpa, Treatment = larvalMorph$treatment, Family = larvalMorph$family)
 #'
 #'# Model with fixed and nested effects
-#'tailANOVA <- procD.lm(coords ~ Treatment/Family, iter=99, RRPP=TRUE, data=gdf)
+#'tailANOVA <- procD.lm(coords ~ Treatment/Family, iter = 99, RRPP=TRUE, data=gdf)
 #'summary(tailANOVA)
 #'
 #'# Update for nested effects
