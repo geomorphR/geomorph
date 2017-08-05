@@ -65,7 +65,14 @@ with the most terms first or use a geomorph data frame), plus indication if mean
 are to be compared among groups, with appropriate formulae to define how they should be compared.
 }
 \details{
-The response matrix 'y' can be in the form of a two-dimensional data
+This function calculates residual sum of squares either via ordinarly least squares (OLS) estimation or
+  phylogenetic least squares (PGLS) estimation for both full and reduced models.  Residuals from the reduced model are used
+  in a randomized residual permutation procedure (RRPP) to find the difference in residual sum of squares (trace of the residual
+  sums of squares and cross-products matrix, SSCP) over many permutations, thus creating a distribution of sum of squares (SS)
+  for the parameters that differ between models (Collyer et al. 2015).  The SS can be converted to F-values to generate an empircal F-distribution.  
+  A P-value is estimated as the percentile of the observed value in this distribution.
+  
+  The response matrix 'Y' can be in the form of a two-dimensional data
   matrix of dimension (n x [p x k]) or a 3D array (p x k x n). It is assumed that the landmarks have previously
   been aligned using Generalized Procrustes Analysis (GPA) [e.g., with \code{\link{gpagen}}]. The names specified for the
   independent (x) variables in the formula represent one or more
@@ -73,17 +80,12 @@ The response matrix 'y' can be in the form of a two-dimensional data
   shape matrix matches the order of values in the independent variables. Linear model fits (using the  \code{\link{lm}} function)
   can also be input in place of a formula.  Arguments for \code{\link{lm}} can also be passed on via this function.
 
-The function performs statistical assessment of the terms in the model using Procrustes distances among
-  specimens, rather than explained covariance matrices among variables. With this approach, the sum-of-squared
-  Procrustes distances are used as a measure of SS (see Goodall 1991). The SS between models is evaluated through
-  permutation. In morphometrics this approach is known as a Procrustes ANOVA (Goodall 1991), which is equivalent
+The SS calculated is the same as the sum of squared Procrustes distances among specimens, as used as a measure of SS in Procrustes ANOVA (see Goodall 1991). 
+  Procrustes ANOVA, often used in morphometrics applications is equivalent
   to distance-based anova designs (Anderson 2001). Unlike \code{\link{procD.lm}}, this function is strictly for comparison
   of two nested models. (Use of \code{\link{procD.lm}} will be more suitable in most cases.)
-  A residual randomization permutation procedure (RRPP) is utilized
-  for reduced model residuals to evaluate the SS between models (Collyer et al. 2015).  Effect-sizes (Z-scores) are
-  computed as standard deviates of the SS or pairwise statistic sampling
-  distributions generated, which might be more intuitive for P-values than F-values (see Collyer et al. 2015).  If a phylogeny is
-  used, the ANOVA Z-score is calculated from the sampling distributions of the F value, as the total SS will vary among permutations.
+  Effect-sizes (Z-scores) are computed as standard deviates of the F or pairwise statistic sampling
+  distributions generated, which might be more intuitive for P-values than F-values (see Collyer et al. 2015).
   For ANOVA Z-scores, a log-transformation is performed first, to assure a norammly distributed sampling distribution.
 
 Pairwise tests are only performed if formulae are provided to compute such results.
