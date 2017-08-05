@@ -3,7 +3,7 @@
 #' Subset (split) landmark coordinates via a grouping factor
 #'
 #' This function splits a set of landmark coordinates into subsets, as described by a factor.  The 
-#' results is a list of separate sets of landmarks.
+#' result is a list of separate sets of landmarks.
 #'
 #' @param A A 3D array (p x k x n) containing landmark coordinates for a set of specimens
 #' @param group A grouping factor of length n, for splitting the array into sub-arrays
