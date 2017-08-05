@@ -9,7 +9,7 @@ procD.pgls(f1, phy, iter = 999, seed = NULL, int.first = FALSE,
   print.progress = TRUE, ...)
 }
 \arguments{
-\item{f1}{A formula for the linear model (e.g., y~x1+x2)}
+\item{f1}{A formula for the linear model (e.g., y ~ x1 + x2)}
 
 \item{phy}{A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape}
 
@@ -22,11 +22,11 @@ which might be of interest for advanced users.}
 
 \item{int.first}{A logical value to indicate if interactions of first main effects should precede subsequent main effects}
 
-\item{effect.type}{One of "F" or "ochen", to choose from which random distribution to estimate effect size.
-(The default is "F".  Values are log-transformed before z-score calculation to
-assure normally distributed effect sizes.)}
+\item{effect.type}{One of "F" or "cohen", to choose from which random distribution to estimate effect size.
+(The default is "F".  The option, "cohen", refers to Cohen's f-squared values. 
+Values are log-transformed before z-score calculation to assure normally distributed effect sizes.)}
 
-\item{RRPP}{a logical value indicating whether residual randomization should be used for significance testing}
+\item{RRPP}{A logical value indicating whether residual randomization should be used for significance testing}
 
 \item{data}{A data frame for the function environment, see \code{\link{geomorph.data.frame}}}
 
@@ -54,13 +54,13 @@ in a manner that can accommodate
 high-dimensional datasets. The approach is derived from the statistical equivalency between parametric methods 
 utilizing covariance matrices and methods based on distance matrices (Adams 2014). Data input is specified by 
 a formula (e.g., y~X), where 'y' specifies the response variables (shape data), and 'X' contains one or more 
-independent variables (discrete or continuous). The response matrix 'y' can be either in the form of a two-dimensional data 
+independent variables (discrete or continuous). The response matrix 'Y' can be either in the form of a two-dimensional data 
 matrix of dimension (n x [p x k]), or a 3D array (p x n x k).  It is assumed that the landmarks have previously 
 been aligned using Generalized Procrustes Analysis (GPA) [e.g., with \code{\link{gpagen}}].
 Linear model fits (using the  \code{\link{lm}} function)
 can also be input in place of a formula.  Arguments for \code{\link{lm}} can also be passed on via this function.
 The user must also specify a phylogeny describing the evolutionary relationships among species (of class phylo).
-Note that the specimen labels for both X and y must match the labels on the tips of the phylogeny.
+Note that the specimen labels for both X and Y must match the labels on the tips of the phylogeny.
 
 The function \code{\link{two.d.array}} can be used to obtain a two-dimensional data matrix from a 3D array of landmark
   coordinates; however this step is no longer necessary, as procD.lm can receive 3D arrays as dependent variables.  It is also 
@@ -69,8 +69,8 @@ The function \code{\link{two.d.array}} can be used to obtain a two-dimensional d
   coerce input data into a data frame, but success is not guaranteed.
   
   From the phylogeny, a phylogenetic transformation matrix is obtained under a Brownian motion model, and used to 
-  transform the X and y variables. Next, the Gower-centered distance matrix is obtained from predicted values from the
-  model (y~X), from which sums-of-squares, F-ratios, and R^2 are estimated for each factor in the model (see Adams, 2014). 
+  transform the X and Y variables. Next, the Gower-centered distance matrix is obtained from predicted values from the
+  model (Y ~ X), from which sums-of-squares, F-ratios, and R-squared are estimated for each factor in the model (see Adams, 2014). 
   Data are then permuted across the tips of the phylogeny, and all estimates of statistical values are obtained for the permuted data,
   which are compared to the observed value to assess significance. This approach has been shown to have appropriate type I error
   rates, whereas an alternative procedure for phylogenetic regression of morphometric shape data displays elevated type I error rates

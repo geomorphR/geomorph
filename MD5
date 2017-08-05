@@ -12,7 +12,7 @@ d8e8360c03c03fe45d2100e9c05d4a89 *data/plethodon.rda
 41c8e8cfb24817d077750b01e8958b44 *DESCRIPTION
 1d90d3f2b01906fcf92cbd927743b16e *geomorph.Rproj
 9e4277cf48ca3337a61997394e824532 *inst/CITATION
-a19d31f64878755ab2de18b5f69cbfb9 *man/advanced.procD.lm.Rd
+062b39598135c6838edc70a2bd5077e5 *man/advanced.procD.lm.Rd
 5e099c6268d251bf5c98595d9566385a *man/arrayspecs.Rd
 6da04ae160b4a67e664fe3ed474fe822 *man/bilat.symmetry.Rd
 5a3e03eb2accf1269a9cf8c049adae78 *man/buildtemplate.Rd
@@ -92,8 +92,8 @@ c9459503ec13f843f971edda31289dc6 *man/print.pls.Rd
 e186bde97e98a204b53457a14eb0a52d *man/print.procD.lm.Rd
 82db8052b9e73e447b14cb5844a0cd26 *man/print.trajectory.analysis.Rd
 ef621f4f4c58845af47bf5dd1dff7bc2 *man/procD.allometry.Rd
-568bdb972038cf2ab6241af6b63f7601 *man/procD.lm.Rd
-c91b5e8bf25ef74ba7c44b87b387b23c *man/procD.pgls.Rd
+dde3f4eeae45405795d9c5fd5c5d0963 *man/procD.lm.Rd
+a0d8482955c8fb8f9715229181f5e139 *man/procD.pgls.Rd
 b4d393dc787783cd69ce705e64a8d542 *man/pupfish.Rd
 24203f2fe7e9af73e10becb83f54f937 *man/ratland.Rd
 cb46da06afb9b58e54ad31f7a7a02f4c *man/read.morphologika.Rd
@@ -128,7 +128,7 @@ da1241dd835f95675cc7126b2a7ec61a *man/two.d.array.Rd
 550c6adc8cd9bf90f6be30819dad83fc *man/writeland.tps.Rd
 8db431fcd5f4f0c788393a3cc00ed327 *NAMESPACE
 dd47b44bffc80ecf0d28299fb0c15c37 *NEWS
-2dff8660ea87c6f70f9628b84e590d91 *R/advanced.procD.lm.r
+1488a59e1b12f9478c8bd97a92e8f5bb *R/advanced.procD.lm.r
 311a910118a6b60a5ab89a58349e1f69 *R/arrayspecs.r
 c6e6fd3f2fd601f76e9fd87206bcb435 *R/bilat.symmetry.r
 14713bbb2ad126d777d95e359c71bf1a *R/build.template.r
@@ -170,8 +170,8 @@ b8814f9a047a63c586c6e472bc17d6d5 *R/plotOutliers.r
 41db23cebd8d7be6c3decf781bd378e0 *R/plotspec.r
 3a29dd0ba103804d3d7b703172200402 *R/plotTangentSpace.r
 5bf77e8ea8959f63b4325a4169ebb6de *R/procD.allometry.r
-ee735895e70980665b4f4087856b9126 *R/procD.lm.r
-0ab5a49f02c78a1547432d120e53dd16 *R/procD.pgls.r
+7c2714354a767946bf626c317bc901f0 *R/procD.lm.r
+6ec443edecc552b1bd4108546589fa15 *R/procD.pgls.r
 df3f4cc6406dc0c737ee2ff08c2a0e3d *R/read.morphologika.r
 9c3c828f71a413b5437d45228a3bf9b7 *R/read.ply.r
 4ee3dc7bac8cc3994ab5b2a535e43db6 *R/readland.nts.r
