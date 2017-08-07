@@ -112,39 +112,39 @@ An optional argument for including a phylogenetic tree of {class phylo} is inclu
 }
 \examples{
 data(plethodon)
-Y.gpa<-gpagen(plethodon$land)    #GPA-alignment
+Y.gpa<-gpagen(plethodon$land, print.progress = FALSE)    #GPA-alignment
 gdf <- geomorph.data.frame(Y.gpa, species = plethodon$species, 
 site = plethodon$site)
 
 # Example of a nested model comparison (as with ANOVA with RRPP)
 ANOVA <-  advanced.procD.lm(f1= coords ~ log(Csize) + species,
-f2= ~ log(Csize)*species*site, iter=249, data = gdf)
+f2= ~ log(Csize)*species*site, iter=99, data = gdf)
 summary(ANOVA, formula = FALSE) # formulas too long to print
 
 # Example of a test of a factor interaction, plus pairwise comparisons
 PW.means.test <- advanced.procD.lm(f1= coords ~ site*species, f2= ~ site + species, 
-groups = ~site*species, iter=249, data = gdf)
+groups = ~site*species, iter=99, data = gdf)
 summary(PW.means.test, formula = TRUE)
 
 # Example of a test of a factor interaction, plus pairwise comparisons,
 # accounting for a common allometry
 PW.ls.means.test <- advanced.procD.lm(f1= coords ~ Csize + site*species,
 f2= ~ log(Csize) + site + species,
-groups = ~ site*species, slope = ~log(Csize), iter = 249, data = gdf)
+groups = ~ site*species, slope = ~log(Csize), iter = 99, data = gdf)
 summary(PW.ls.means.test, formula = TRUE)
 
 # Example of a test of homogeneity of slopes, plus pairwise slopes comparisons
 gdf$group <- factor(paste(gdf$species, gdf$site, sep="."))
 HOS <- advanced.procD.lm(f1= coords ~ log(Csize) + group,
 f2= ~ log(Csize) * group, groups = ~ group,
-slope = ~ log(Csize), angle.type = "deg", iter = 249, data = gdf)
+slope = ~ log(Csize), angle.type = "deg", iter = 99, data = gdf)
 summary(HOS, formula = FALSE) # formulas too long to print
 
 # Example of partial pairwise comparisons, given greater model complexity.
 # Plus, working with class advanced.procD.lm objects.
 aov.pleth <- advanced.procD.lm(f1= coords ~ log(Csize)*site*species,
 f2= ~ log(Csize) + site*species, groups = ~ species, 
-slope = ~ log(Csize), angle.type = "deg", iter = 249, data = gdf)
+slope = ~ log(Csize), angle.type = "deg", iter = 99, data = gdf)
 
 summary(aov.pleth, formula = FALSE)  # formulas too long to print
 

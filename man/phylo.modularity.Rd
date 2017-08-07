@@ -68,7 +68,7 @@ Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment
 land.gps<-c("A","A","A","A","A","B","B","B","B","B","B") 
 
 MT <- phylo.modularity(Y.gpa$coords, partition.gp=land.gps, phy=plethspecies$phy, 
-CI = FALSE, iter=999)
+CI = FALSE, iter=499)
 summary(MT) # Test summary
 plot(MT) # Histogram of CR sampling distribution 
 }
