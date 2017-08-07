@@ -50,7 +50,7 @@
 #'   \code{procD.allometry} might be thought of as an exploratory tool,
 #'   if one is unsure how to model allometry for multiple groups.  One should not necessarily
 #'   accept the \code{procD.allometry} result as "truth" and other models can be explored with \code{\link{procD.lm}}.  
-#'   Examples for more flexibile approaches to modeling allometry using \code{\link{procD.lm}} are provided below.
+#'   Examples for more flexible approaches to modeling allometry using \code{\link{procD.lm}} are provided below.
 #' }
 #' 
 #' 

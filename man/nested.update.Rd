@@ -31,7 +31,7 @@ substituted  The ANOVA table is updated in terms of F-values, Z-scores, and P-va
 for all effects to be consistent with the type of distribution used.  If either Cohen's f-squared values or F values 
 were originally chosen, the same distributions are used in the update; if SS values were originally chosen, the 
 distribution is changed to Cohen's f-squared to calculate Z-scores. This change assures consistency in effect size 
-estimation, as the effectthat is updated cannot have an effect size based on SS.
+estimation, as the effect that is updated cannot have an effect size based on SS.
 
 It is important that the formula is input correctly. It can be input as one of the following four styles:
 
@@ -54,7 +54,7 @@ formulae and alert the user, it is possible the function will work with an impro
 formulae above is recommended for best results.
 
 Effect sizes (Z scores) are based on either the distribution of random F values or a distribution of
-Cohen's f-squared values, calculated in every pemutation.  An attempt will be made to preserve the effect size
+Cohen's f-squared values, calculated in every permutation.  An attempt will be made to preserve the effect size
 type used in the previous \code{\link{procD.lm}} or \code{\link{procD.pgls}} analysis.  However, an analysis
 performed in \code{\link{procD.lm}} using effect size calculated from random SS values will be updated
 to use random Cohen's f-squared values for all effects, to avoid having effect sizes measured from different

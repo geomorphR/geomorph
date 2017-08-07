@@ -15,8 +15,8 @@ subsets is a good idea, as landmark names in the combined data set will take the
 
 \item{gpa}{A logical argument to indicate if either (1) GPA should be performed (if original landmarks
 are provided) or (2) \code{gpagen} objects are provided.  If TRUE, this function will check to see if 
-the input is an object of class \code{gpagen}, and if not, perfom GPA.  If FALSE, landmarks will be unchanged.
-(One would choose gpa = FALSE if inputting aligned coordiantes and centroid size, separately.  There might be
+the input is an object of class \code{gpagen}, and if not, perform GPA.  If FALSE, landmarks will be unchanged.
+(One would choose gpa = FALSE if inputting aligned coordinates and centroid size, separately.  There might be
 little reason to do this, unless one wishes to intentionally not scale configurations.)}
 
 \item{CS.sets}{A list, array, or matrix of centroid sizes to use for scaling.  The default is NULL and should be
@@ -45,7 +45,7 @@ or Procrustes coordinates following GPA) to create a different morphological dat
 This might be of interest, for example, if one has landmarks digitized on separate images
 collected from the same organisms.  (In the examples below, configurations for heads and tails
 of larval salamanders were collected separately from images taken on the same individuals.)  An
-attempt is made to scale configurations by their relative centrod sizes, following the procedure in
+attempt is made to scale configurations by their relative centroid sizes, following the procedure in
 Davis et al. (2016); i.e., landmark coordinates are multiplied by CSi/(CSi + CSj + ...) before 
 combining them, so that resulting combinations of landmarks are scaled to unit centroid size.  This is
 only possible if GPA is performed on landmarks (gpa = TRUE) or centroid sizes are provided as an 
@@ -53,7 +53,7 @@ argument.  Objects of class \code{gpagen} can be used rather than original landm
 especially if curves or surface sliding semilandmarks are used, as different arguments cannot be passed onto
 onto separate GPAs via this function).
 
-The procedure of Davis et al. (2016) is analagous to the "seperate subsets" method of Adams (1999)
+The procedure of Davis et al. (2016) is analogous to the "seperate subsets" method of Adams (1999)
 for articulated structures.
 }
 \examples{

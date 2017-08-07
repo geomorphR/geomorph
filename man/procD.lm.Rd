@@ -120,7 +120,7 @@ The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\li
   principal component plots (rotated to first PC of covariance matrix of fitted values), and regression plots can be performed.  The
   latter is fundamentally similar to the plotting options for \code{\link{procD.allometry}}.  One must provide a linear predictor, and
   can choose among common regression component (CRC), predicted values (PredLine), or regression scores (RegScore).  See \code{\link{procD.allometry}} 
-  for details. In these plotting optons, the predictor does not need to be size, and fitted values and residuals from the procD.lm fit are used rather 
+  for details. In these plotting options, the predictor does not need to be size, and fitted values and residuals from the procD.lm fit are used rather 
   than mean-centered values. 
   
  \subsection{Notes for geomorph 3.0.4 and subsequent versions}{ 
@@ -129,7 +129,7 @@ The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\li
  for some statistics can vary with sample size and variable number, and recommended finding the expected value, empirically, as the mean from the set 
  of random outcomes.  Geomorph 3.0.4 and subsequent versions now center z-scores on their empirically estimated expected values and where appropriate, 
  log-transform values to assure statistics are normally distributed.  This can result in negative effect sizes, when statistics are smaller than 
- expected compared to the avergae random outcome.  For ANOVA-based functions, the option to choose among different statistics to measure effect size 
+ expected compared to the average random outcome.  For ANOVA-based functions, the option to choose among different statistics to measure effect size 
  is now a function argument.
 }
 }

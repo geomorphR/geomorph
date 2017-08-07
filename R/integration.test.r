@@ -31,7 +31,7 @@
 #' \subsection{Similarity to \code{\link{two.b.pls}} and \code{\link{compare.pls}} }{ 
 #' Note that \code{integration.test} performed on two matrices or arrays returns the same results as \code{\link{two.b.pls}}.  
 #' However,  \code{\link{two.b.pls}} is limited to only two modules.  It might be of interest with 3+ modules to perform integration tests
-#' between all pairwise comaprisons of modules.  This can be done, test by test, and the levels of integration can be compared with
+#' between all pairwise comparisons of modules.  This can be done, test by test, and the levels of integration can be compared with
 #' \code{\link{compare.pls}}.  Such results are different than using the average amount of integration, as performed by \code{integration.test}
 #' when more than two modules are input.
 #' }
@@ -48,7 +48,7 @@
 #'  for some statistics can vary with sample size and variable number, and recommended finding the expected value, empirically, as the mean from the set 
 #'  of random outcomes.  Geomorph 3.0.4 and subsequent versions now center z-scores on their empirically estimated expected values and where appropriate, 
 #'  log-transform values to assure statistics are normally distributed.  This can result in negative effect sizes, when statistics are smaller than 
-#'  expected compared to the avergae random outcome.  For ANOVA-based functions, the option to choose among different statistics to measure effect size 
+#'  expected compared to the average random outcome.  For ANOVA-based functions, the option to choose among different statistics to measure effect size 
 #'  is now a function argument.
 #' }
 #' 
