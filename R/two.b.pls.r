@@ -77,7 +77,7 @@
 #'   \item{permutations}{The number of random permutations used in the resampling procedure.}
 #'   \item{call}{The match call.}
 #'   
-#' @seealso \code{\link{integration.test}}, \code{\link{modularity.test}}, \code{\link{phylo.pls}},  
+#' @seealso \code{\link{integration.test}}, \code{\link{modularity.test}}, 
 #' \code{\link{phylo.integration}}, and \code{\link{compare.pls}}
 #' @references  Rohlf, F.J., and M. Corti. 2000. The use of partial least-squares to study covariation in shape. 
 #' Systematic Biology 49: 740-753.

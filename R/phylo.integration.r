@@ -88,7 +88,7 @@
 #' datasets. Evolution. 70:2623-2631.
 #' @references Adams, D.C. and M.L. Collyer. 2017. Multivariate comparative methods: evaluations, comparisons, and
 #' recommendations. Systematic Biology. In press.
-#' @seealso \code{\link{integration.test}}, \code{\link{modularity.test}}, \code{\link{phylo.pls}}, and 
+#' @seealso \code{\link{integration.test}}, \code{\link{modularity.test}}, and 
 #' \code{\link{two.b.pls}}
 #' @examples
 #' 

@@ -75,26 +75,26 @@ because of phylogenetic relatedness, but the null hypothesis of equal variances 
 }
 \examples{
 data(plethodon)
-Y.gpa<-gpagen(plethodon$land)    #GPA-alignment
+Y.gpa<-gpagen(plethodon$land,print.progress = FALSE)    #GPA-alignment
 gdf <- geomorph.data.frame(Y.gpa, species = plethodon$species, site = plethodon$site)
 
 # Morphological disparity for entire data set
-morphol.disparity(coords ~ 1, groups= NULL, data = gdf, iter=999)
+morphol.disparity(coords ~ 1, groups= NULL, data = gdf, iter=499)
 
 # Morphological disparity for entire data set, accounting for allometry
-morphol.disparity(coords ~ Csize, groups= NULL, data = gdf, iter=999)
+morphol.disparity(coords ~ Csize, groups= NULL, data = gdf, iter=499)
 
 # Morphological disparity without covariates, using overall mean
-morphol.disparity(coords ~ 1, groups= ~ species*site, data = gdf, iter=999)
+morphol.disparity(coords ~ 1, groups= ~ species*site, data = gdf, iter=499)
 
 # Morphological disparity without covariates, using group means
-morphol.disparity(coords ~ species*site, groups= ~species*site, data = gdf, iter=999)
+morphol.disparity(coords ~ species*site, groups= ~species*site, data = gdf, iter=499)
 
 # Morphological disparity of different groups than those described by the linear model
-morphol.disparity(coords ~ Csize + species*site, groups= ~ species, data = gdf, iter=999)
+morphol.disparity(coords ~ Csize + species*site, groups= ~ species, data = gdf, iter=499)
 
 # Extracting components
-MD <- morphol.disparity(coords ~ Csize + species*site, groups= ~ species, data = gdf, iter=999)
+MD <- morphol.disparity(coords ~ Csize + species*site, groups= ~ species, data = gdf, iter=499)
 MD$Procrustes.var # just the Procrustes variances
 
 
