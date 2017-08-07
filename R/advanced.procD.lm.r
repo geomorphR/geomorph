@@ -6,11 +6,11 @@
 #' with the most terms first or use a geomorph data frame), plus indication if means or slopes
 #' are to be compared among groups, with appropriate formulae to define how they should be compared.
 #'
-#'   This function calculates residual sum of squares either via ordinarly least squares (OLS) estimation or
+#'   This function calculates residual sum of squares either via ordinary least squares (OLS) estimation or
 #'   phylogenetic least squares (PGLS) estimation for both full and reduced models.  Residuals from the reduced model are used
 #'   in a randomized residual permutation procedure (RRPP) to find the difference in residual sum of squares (trace of the residual
 #'   sums of squares and cross-products matrix, SSCP) over many permutations, thus creating a distribution of sum of squares (SS)
-#'   for the parameters that differ between models (Collyer et al. 2015).  The SS can be converted to F-values to generate an empircal F-distribution.  
+#'   for the parameters that differ between models (Collyer et al. 2015).  The SS can be converted to F-values to generate an empirical F-distribution.  
 #'   A P-value is estimated as the percentile of the observed value in this distribution.
 #'   
 #'   The response matrix 'Y' can be in the form of a two-dimensional data
@@ -27,7 +27,7 @@
 #'   of two nested models. (Use of \code{\link{procD.lm}} will be more suitable in most cases.)
 #'   Effect-sizes (Z-scores) are computed as standard deviates of the F or pairwise statistic sampling
 #'   distributions generated, which might be more intuitive for P-values than F-values (see Collyer et al. 2015).
-#'   For ANOVA Z-scores, a log-transformation is performed first, to assure a norammly distributed sampling distribution.
+#'   For ANOVA Z-scores, a log-transformation is performed first, to assure a normally distributed sampling distribution.
 #'
 #'   Pairwise tests are only performed if formulae are provided to compute such results.
 #'   The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{advanced.procD.lm}}.
@@ -42,10 +42,10 @@
 #'  for some statistics can vary with sample size and variable number, and recommended finding the expected value, empirically, as the mean from the set
 #'  of random outcomes.  Geomorph 3.0.4 and subsequent versions now center z-scores on their empirically estimated expected values and where appropriate,
 #'  log-transform values to assure statistics are normally distributed.  This can result in negative effect sizes, when statistics are smaller than
-#'  expected compared to the avergae random outcome.  For ANOVA-based functions, the option to choose among different statistics to measure effect size
+#'  expected compared to the average random outcome.  For ANOVA-based functions, the option to choose among different statistics to measure effect size
 #'  is now a function argument.
 #'
-#'  An optional argument for including a phylogenetic tree of {class phylo} is included in this function.  ANOVA performed on separate PGLS models is analagous
+#'  An optional argument for including a phylogenetic tree of {class phylo} is included in this function.  ANOVA performed on separate PGLS models is analogous
 #'  to a likelihood ratio test between models (Adams and Collyer 2017).  Pairwise tests can also be performed after PGLS estimation of coefficients but users
 #'  should be aware that no formal research on the statistical properties (type I error rates and statistical power) of pairwise statistics with PGLS has yet
 #'  been performed.  Using PGLS and analysis of pairwise statistics, therefore, assumes some risk.
