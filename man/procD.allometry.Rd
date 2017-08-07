@@ -22,7 +22,7 @@ If left NULL (the default), the exact same P-values will be found for repeated r
 If seed = "random", a random seed will be used, and P-values will vary.  One can also specify an integer for specific seed values,
 which might be of interest for advanced users.}
 
-\item{alpha}{The significance level for the homegeneity of slopes test}
+\item{alpha}{The significance level for the homogeneity of slopes test}
 
 \item{RRPP}{A logical value indicating whether residual randomization should be used for significance testing}
 
@@ -43,7 +43,7 @@ are experimental in nature.}
 \value{
 An object of class "procD.allometry" is a list containing the following:
 \item{HOS.test}{ANOVA for a homogeneity of slopes test (if groups are provided).}
-\item{aov.table}{An analysis of variance table, based on inputs and the homogenetiy of slopes test.}
+\item{aov.table}{An analysis of variance table, based on inputs and the homogeneity of slopes test.}
 \item{alpha}{The significance level criterion for the homogeneity of slopes test.}
 \item{perm.method}{A value indicating whether "RRPP" or randomization of "raw" vales was used.}
 \item{permutations}{The number of random permutations used in the resampling procedure.}
@@ -130,7 +130,7 @@ The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\li
 }
 
 \subsection{Notes for geomorph 3.0.5 and subsequent versions}{ 
- Previous versions of \code{procD.allometry} han an argument, f3, for providing additional covariates.  Complex
+ Previous versions of \code{procD.allometry} had an argument, f3, for providing additional covariates.  Complex
  models can now be analyzed with \code{\link{procD.lm}}, which has similar plotting capabilities as \code{procD.allometry}.
  Examples are provided below.  This argument is no longer used, and \code{procD.allometry} is restricted to simpler models,
  deferring instead to \code{\link{procD.lm}} for complex models.
@@ -143,7 +143,7 @@ The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\li
  the expected value, empirically, as the mean from the set of random outcomes.  Geomorph 3.0.4 and subsequent versions now 
  center z-scores on their empirically estimated expected values and where appropriate, log-transform values to assure statistics 
  are normally distributed.  This can result in negative effect sizes, when statistics are smaller than expected compared to the 
- avergae random outcome.  For ANOVA-based functions, the option to choose among different statistics to measure effect size 
+ average random outcome.  For ANOVA-based functions, the option to choose among different statistics to measure effect size 
  is now a function argument.
 }
 \subsection{Notes for geomorph 3.0 and making allometry plots}{ 
@@ -223,7 +223,7 @@ Family = larvalMorph$family)
 # procD.allometry approach
 tailAllometry <- procD.allometry(coords ~ Csize, ~ Treatment,
 logsz = TRUE, alpha = 0.05, data = gdf, iter = 249)
-summary(tailAllometry) # HOS test suggests parrallel allometries, but not unambiguous
+summary(tailAllometry) # HOS test suggests parallel allometries, but not unambiguous
 plot(tailAllometry, method = "PredLine")
 
 # procD.lm approach, including interaction
