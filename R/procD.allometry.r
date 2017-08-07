@@ -68,7 +68,7 @@
 #'  the expected value, empirically, as the mean from the set of random outcomes.  Geomorph 3.0.4 and subsequent versions now 
 #'  center z-scores on their empirically estimated expected values and where appropriate, log-transform values to assure statistics 
 #'  are normally distributed.  This can result in negative effect sizes, when statistics are smaller than expected compared to the 
-#'  avergae random outcome.  For ANOVA-based functions, the option to choose among different statistics to measure effect size 
+#'  average random outcome.  For ANOVA-based functions, the option to choose among different statistics to measure effect size 
 #'  is now a function argument.
 #' }
 
@@ -110,7 +110,7 @@
 #' If left NULL (the default), the exact same P-values will be found for repeated runs of the analysis (with the same number of iterations).
 #' If seed = "random", a random seed will be used, and P-values will vary.  One can also specify an integer for specific seed values,
 #' which might be of interest for advanced users.
-#' @param alpha The significance level for the homegeneity of slopes test
+#' @param alpha The significance level for the homogeneity of slopes test
 #' @param RRPP A logical value indicating whether residual randomization should be used for significance testing
 #' @param data A data frame for the function environment, see \code{\link{geomorph.data.frame}} 
 #' @param effect.type One of "F", "SS", or "cohen", to choose from which random distribution to estimate effect size.
@@ -127,7 +127,7 @@
 #' @author Michael Collyer
 #' @return An object of class "procD.allometry" is a list containing the following:
 #' \item{HOS.test}{ANOVA for a homogeneity of slopes test (if groups are provided).}
-#' \item{aov.table}{An analysis of variance table, based on inputs and the homogenetiy of slopes test.}
+#' \item{aov.table}{An analysis of variance table, based on inputs and the homogeneity of slopes test.}
 #' \item{alpha}{The significance level criterion for the homogeneity of slopes test.}
 #' \item{perm.method}{A value indicating whether "RRPP" or randomization of "raw" vales was used.}
 #' \item{permutations}{The number of random permutations used in the resampling procedure.}
@@ -219,7 +219,7 @@
 #' # procD.allometry approach
 #' tailAllometry <- procD.allometry(coords ~ Csize, ~ Treatment,
 #' logsz = TRUE, alpha = 0.05, data = gdf, iter = 249)
-#' summary(tailAllometry) # HOS test suggests parrallel allometries, but not unambiguous
+#' summary(tailAllometry) # HOS test suggests parallel allometries, but not unambiguous
 #' plot(tailAllometry, method = "PredLine")
 #' 
 #' # procD.lm approach, including interaction
