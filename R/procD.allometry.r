@@ -50,9 +50,8 @@
 #'   \code{procD.allometry} might be thought of as an exploratory tool,
 #'   if one is unsure how to model allometry for multiple groups.  One should not necessarily
 #'   accept the \code{procD.allometry} result as "truth" and other models can be explored with \code{\link{procD.lm}}.  
-#'   Examples for more flexibile approaches to modeling allometry using \code{\link{procD.lm}} are provided below.
+#'   Examples for more flexible approaches to modeling allometry using \code{\link{procD.lm}} are provided below.
 #' }
-#' 
 #' 
 #'  \subsection{Notes for geomorph 3.0.5 and subsequent versions}{ 
 #'  Previous versions of \code{procD.allometry} had an argument, f3, for providing additional covariates.  Complex
