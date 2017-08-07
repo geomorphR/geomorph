@@ -55,7 +55,7 @@
 #' 
 #' 
 #'  \subsection{Notes for geomorph 3.0.5 and subsequent versions}{ 
-#'  Previous versions of \code{procD.allometry} han an argument, f3, for providing additional covariates.  Complex
+#'  Previous versions of \code{procD.allometry} had an argument, f3, for providing additional covariates.  Complex
 #'  models can now be analyzed with \code{\link{procD.lm}}, which has similar plotting capabilities as \code{procD.allometry}.
 #'  Examples are provided below.  This argument is no longer used, and \code{procD.allometry} is restricted to simpler models,
 #'  deferring instead to \code{\link{procD.lm}} for complex models.
