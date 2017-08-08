@@ -7,7 +7,7 @@
 #'  in attributes of the trajectories via permutation. A shape change trajectory is defined by a sequence 
 #'  of shapes in tangent space. These trajectories can be quantified for various attributes (their size, orientation, 
 #'  and shape), and comparisons of these attribute enable the statistical comparison of shape change 
-#'  trajectories (see Collyer and Adams 2013; Collyer and Adams 2007; Adams and Collyer 2007; Adams and Collyer 2009). 
+#'  trajectories (see Collyer and Adams 2013; Collyer and Adams 2007; Adams and Collyer 2007; Adams and Collyer 2009; Collyer and Adams 2013). 
 #'
 #'  Data input is specified by a two formulae (e.g., Y ~ X), where 'Y' specifies the response variables (trajectory data), 
 #'  and 'X' contains one or more independent variables (discrete or continuous). The response matrix 'Y' can be either in the form of a two-dimensional data 
@@ -136,6 +136,8 @@
 #'   trajectories in evolutionary studies. Evolution 63:1143-1154.
 #' @references Collyer, M. L., and D. C. Adams. 2007. Analysis of two-state multivariate phenotypic change 
 #'   in ecological studies. Ecology 88:683-692.
+#' @references Collyer, M. L., and D. C. Adams. 2013. Phenotypic trajectory analysis: comparison of shape change patterns 
+#' in evolution and ecology. Hystrix 24: 75–83.
 #' @references Collyer, M.L., D.J. Sekora, and D.C. Adams. 2015. A method for analysis of phenotypic change for phenotypes described 
 #' by high-dimensional data. Heredity. 115:357-365.
 #' @references Adams, D.C. and M.L. Collyer. 2016.  On the comparison of the strength of morphological integration across morphometric 
