@@ -28,6 +28,15 @@
 #'   Effect-sizes (Z-scores) are computed as standard deviates of the F or pairwise statistic sampling
 #'   distributions generated, which might be more intuitive for P-values than F-values (see Collyer et al. 2015).
 #'   For ANOVA Z-scores, a log-transformation is performed first, to assure a normally distributed sampling distribution.
+#'   
+#'   Pairwise tests have two flavors: 1) tests for differencs in group means (based on vector length between
+#'   means for pairwise comparisons) and 2) tests for angular differences in slopes between groups.  These tests are 
+#'   similar in concept to trajectory analysis (Adams and Collyer 2007; Collyer and Adams 2007; Adams and Collyer 2009;
+#'   Collyer and Adams 2013), in that pairwise statistics are either vector lengths or angluar differences between vectors.  
+#'   These tests are different than trajectory analysis (see\code{\link{trajectory.analysis}}), however, because a factorial model
+#'   is not explicitly needed to contrast vectors between point factor levels nested within group factor levels.  For angluar differences 
+#'   between factor-covariate slopes, either the angle or the vector correlation can be tested.  It should be understood
+#'   that a vector correlation of 1 (parallel vectors), not 0, is the null hypothesis, meaning slopes are the same.
 #'
 #'   Pairwise tests are only performed if formulae are provided to compute such results.
 #'   The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{advanced.procD.lm}}.
@@ -79,7 +88,7 @@
 #' @keywords analysis
 #' @export
 #' @author Michael Collyer
-#' @seealso \code{\link{procD.lm}}
+#' @seealso \code{\link{procD.lm}}, \code{\link{procD.pgls}}, \code{\link{trajectory.analysis}}
 #' @return Function returns an ANOVA table of statistical results for model comparison: error df (for each model), SS, MS,
 #' F ratio, Z, and Prand.  A list of essentially the same components as \code{\link{procD.lm}} is also returned, and additionally
 #' LS means or slopes, pairwise differences comparisons of these, effect sizes, and P-values may also be returned.  If a group formula
@@ -90,12 +99,20 @@
 #' The second is for slope vector orientation differences.  Differences in the direction of shape change (covariance of shape variables)
 #' can be summarized as a vector correlation or angle between vectors.  See \code{\link{summary.advanced.procD.lm}} for summary options.
 
-#' @references Collyer, M.L., D.J. Sekora, and D.C. Adams. 2015. A method for analysis of phenotypic change for phenotypes described
-#' by high-dimensional data. Heredity. 115:357-365.
+#' @references Adams, D.C., and M.L. Collyer. 2007. The analysis of character divergence along environmental 
+#'   gradients and other covariates. Evolution 61:510-515.
+#' @references Adams, D.C., and M.L. Collyer. 2009. A general framework for the analysis of phenotypic 
+#'   trajectories in evolutionary studies. Evolution 63:1143-1154.
 #' @references Adams, D.C. and M.L. Collyer. 2016.  On the comparison of the strength of morphological integration across morphometric
 #' datasets. Evolution. 70:2623-2631.
 #' @references Adams, D.C. and M.L. Collyer. 2017. Multivariate comparative methods: evaluations, comparisons, and
 #' recommendations. Systematic Biology. In press.
+#' @references Collyer, M.L., and D.C. Adams. 2007. Analysis of two-state multivariate phenotypic change 
+#' in ecological studies. Ecology 88:683-692.
+#' @references Collyer, M.L., and D.C. Adams. 2013. Phenotypic trajectory analysis: comparison of shape change patterns 
+#' in evolution and ecology. Hystrix 24: 75–83.
+#' @references Collyer, M.L., D.J. Sekora, and D.C. Adams. 2015. A method for analysis of phenotypic change for phenotypes described 
+#' by high-dimensional data. Heredity. 115:357-365.
 #'
 #' @examples
 #'data(plethodon)
@@ -105,7 +122,7 @@
 #'
 #'# Example of a nested model comparison (as with ANOVA with RRPP)
 #'ANOVA <-  advanced.procD.lm(f1= coords ~ log(Csize) + species,
-#'f2= ~ log(Csize)*species*site, iter=149, data = gdf)
+#'f2= ~ log(Csize)*species*site, iter=99, data = gdf)
 #'summary(ANOVA, formula = FALSE) # formulas too long to print
 #'
 #'# Example of a test of a factor interaction, plus pairwise comparisons

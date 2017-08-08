@@ -12,7 +12,7 @@ d8e8360c03c03fe45d2100e9c05d4a89 *data/plethodon.rda
 cb8b882e86b9e09d437d0bcb978d9011 *DESCRIPTION
 1d90d3f2b01906fcf92cbd927743b16e *geomorph.Rproj
 9e4277cf48ca3337a61997394e824532 *inst/CITATION
-37679226fc80f014d4fc7df6e17e590e *man/advanced.procD.lm.Rd
+615a1afbe3c144ec63ccc86156613c54 *man/advanced.procD.lm.Rd
 5e099c6268d251bf5c98595d9566385a *man/arrayspecs.Rd
 f848ef1f438cde2d874d50120fd223ba *man/bilat.symmetry.Rd
 5a3e03eb2accf1269a9cf8c049adae78 *man/buildtemplate.Rd
@@ -115,7 +115,7 @@ cebd4d3722633f6509a04c416d0a8fc9 *man/summary.physignal.Rd
 4d24444881a61630e1d9211f8a0bea98 *man/summary.procD.allometry.Rd
 136b14a4bcce5a2c60890e815f21c4af *man/summary.procD.lm.Rd
 f57bd85c3f1edc96c99eb82c36047ac4 *man/summary.trajectory.analysis.Rd
-a9d524575913ec79dbe6099d00e7ddf9 *man/trajectory.analysis.Rd
+1a6b1533f28a91e0352ee948672e5ddf *man/trajectory.analysis.Rd
 5a32906c31d34b5f4a721942b1d3c537 *man/two.b.pls.Rd
 da1241dd835f95675cc7126b2a7ec61a *man/two.d.array.Rd
 8193dd10d2d3422240d788b5e404ee21 *man/warpRefMesh.Rd
@@ -123,7 +123,7 @@ da1241dd835f95675cc7126b2a7ec61a *man/two.d.array.Rd
 550c6adc8cd9bf90f6be30819dad83fc *man/writeland.tps.Rd
 93ea77c450f07778e3ef2c9d5500eb42 *NAMESPACE
 fc78b8aca3a6f551cdafd7a05e824678 *NEWS
-6ffb6c234e4ecd8ac9f8454b8c594f25 *R/advanced.procD.lm.r
+8a7ab2fa21e4e2c7fbfe9566733681b3 *R/advanced.procD.lm.r
 311a910118a6b60a5ab89a58349e1f69 *R/arrayspecs.r
 64d437712d9e8e1db2e345bca5c66108 *R/bilat.symmetry.r
 14713bbb2ad126d777d95e359c71bf1a *R/build.template.r
@@ -173,7 +173,7 @@ df3f4cc6406dc0c737ee2ff08c2a0e3d *R/read.morphologika.r
 b68147269649261dd09c5153534ec6f4 *R/readland.tps.r
 945534fe7f30c519cd5a6663a9b882a3 *R/readmulti.nts.r
 bb92986b568b7e9176ff879b2e0ce9d9 *R/shape.predictor.r
-4494b90ba263780309d32f149a6b74cb *R/trajectory.analysis.r
+954f44a51d9013079ba637ea1f147bbd *R/trajectory.analysis.r
 227a499fd0bfa4891d8092f8ef7cf788 *R/two.b.pls.r
 a14464bdaab9da24955793e0c62e6893 *R/two.d.array.r
 6cbbaa1e92e97d4ec742825a60d5e7ab *R/warpRefMesh.r
