@@ -180,7 +180,7 @@ Collyer, M.L., and D.C. Adams. 2007. Analysis of two-state multivariate phenotyp
 in ecological studies. Ecology 88:683-692.
 
 Collyer, M.L., and D.C. Adams. 2013. Phenotypic trajectory analysis: comparison of shape change patterns 
-in evolution and ecology. Hystrix 24: 75–83.
+in evolution and ecology. Hystrix 24: 75-83.
 
 Collyer, M.L., D.J. Sekora, and D.C. Adams. 2015. A method for analysis of phenotypic change for phenotypes described 
 by high-dimensional data. Heredity. 115:357-365.
