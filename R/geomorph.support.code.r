@@ -2443,6 +2443,7 @@ phylo.mat<-function(x,phy){
   eigC.vect = eigC$vectors[,1:(length(lambda))]
   D.mat <- fast.solve(eigC.vect%*% diag(sqrt(lambda)) %*% t(eigC.vect))
   rownames(D.mat) <- colnames(D.mat) <- colnames(C)
+  rownames(invC) <- colnames(invC) <- colnames(C)
   list(invC = invC, D.mat = D.mat,C = C)
 }
 
