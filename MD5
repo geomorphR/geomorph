@@ -12,7 +12,7 @@ d8e8360c03c03fe45d2100e9c05d4a89 *data/plethodon.rda
 41c8e8cfb24817d077750b01e8958b44 *DESCRIPTION
 1d90d3f2b01906fcf92cbd927743b16e *geomorph.Rproj
 9e4277cf48ca3337a61997394e824532 *inst/CITATION
-615a1afbe3c144ec63ccc86156613c54 *man/advanced.procD.lm.Rd
+43beca044c62e7f6e47965fc8f6af892 *man/advanced.procD.lm.Rd
 5e099c6268d251bf5c98595d9566385a *man/arrayspecs.Rd
 f848ef1f438cde2d874d50120fd223ba *man/bilat.symmetry.Rd
 5a3e03eb2accf1269a9cf8c049adae78 *man/buildtemplate.Rd
@@ -115,7 +115,7 @@ cebd4d3722633f6509a04c416d0a8fc9 *man/summary.physignal.Rd
 4d24444881a61630e1d9211f8a0bea98 *man/summary.procD.allometry.Rd
 136b14a4bcce5a2c60890e815f21c4af *man/summary.procD.lm.Rd
 f57bd85c3f1edc96c99eb82c36047ac4 *man/summary.trajectory.analysis.Rd
-1a6b1533f28a91e0352ee948672e5ddf *man/trajectory.analysis.Rd
+2bfe2dd61817be8877d9f076a57a36fd *man/trajectory.analysis.Rd
 5a32906c31d34b5f4a721942b1d3c537 *man/two.b.pls.Rd
 da1241dd835f95675cc7126b2a7ec61a *man/two.d.array.Rd
 8193dd10d2d3422240d788b5e404ee21 *man/warpRefMesh.Rd
@@ -123,7 +123,7 @@ da1241dd835f95675cc7126b2a7ec61a *man/two.d.array.Rd
 550c6adc8cd9bf90f6be30819dad83fc *man/writeland.tps.Rd
 93ea77c450f07778e3ef2c9d5500eb42 *NAMESPACE
 dd47b44bffc80ecf0d28299fb0c15c37 *NEWS
-8a7ab2fa21e4e2c7fbfe9566733681b3 *R/advanced.procD.lm.r
+293e84439b361855e2a4be241f3d6f99 *R/advanced.procD.lm.r
 311a910118a6b60a5ab89a58349e1f69 *R/arrayspecs.r
 64d437712d9e8e1db2e345bca5c66108 *R/bilat.symmetry.r
 14713bbb2ad126d777d95e359c71bf1a *R/build.template.r
@@ -145,7 +145,7 @@ ddff41e987eac54d3500e2313799c3c6 *R/digitize2d.r
 9cfff0013db7a8c0e4aca770b5d9ea25 *R/findMeanSpec.r
 b56e53ac307d84a05efee9525dd6868a *R/fixed.angle.r
 203177efc30cc6fef4bd604b2fc2af01 *R/geomorph.data.frame.r
-5d579fa1e9a3f1a25fa27588de913751 *R/geomorph.support.code.r
+2e16c32858bf0c9764301e41d642dca4 *R/geomorph.support.code.r
 b7e455e0f4955337f7b36f9059a4239a *R/geomorph.utils.r
 0d9d88147f22cff2241b6e2e7396d57f *R/globalIntegration.r
 17bbdf1769466f17742de952fb612cc4 *R/gpagen.r
@@ -173,10 +173,10 @@ df3f4cc6406dc0c737ee2ff08c2a0e3d *R/read.morphologika.r
 aab11f6c7d3a5863a3ad10bf88af789a *R/readland.tps.r
 945534fe7f30c519cd5a6663a9b882a3 *R/readmulti.nts.r
 bb92986b568b7e9176ff879b2e0ce9d9 *R/shape.predictor.r
-954f44a51d9013079ba637ea1f147bbd *R/trajectory.analysis.r
+cfc91ef2ff02ff96d0ba126336615d43 *R/trajectory.analysis.r
 227a499fd0bfa4891d8092f8ef7cf788 *R/two.b.pls.r
 a14464bdaab9da24955793e0c62e6893 *R/two.d.array.r
 6cbbaa1e92e97d4ec742825a60d5e7ab *R/warpRefMesh.r
 59d493f9cc61f036c40f49bf8b7bb3e0 *R/warpRefOutline.r
 59d7c08ac596b9218ae66b34e67bd5a7 *R/writeland.tps.r
-e5fa2abdbabacb84a38f7879116780f5 *README.md
+a8ea0fd07cf6fd8c389e2d5fe48c22fb *README.md
