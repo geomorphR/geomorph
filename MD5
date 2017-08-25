@@ -10,6 +10,7 @@ d8e8360c03c03fe45d2100e9c05d4a89 *data/plethodon.rda
 9ba51ab9be03930a4acdcddde8169b33 *data/scallopPLY.rda
 6e5e71b242462e422b716800ffc3c464 *data/scallops.rda
 41c8e8cfb24817d077750b01e8958b44 *DESCRIPTION
+7db72b7e01004751c5cf9d9eb2c9122c *Develop.Rproj
 1d90d3f2b01906fcf92cbd927743b16e *geomorph.Rproj
 9e4277cf48ca3337a61997394e824532 *inst/CITATION
 43beca044c62e7f6e47965fc8f6af892 *man/advanced.procD.lm.Rd
@@ -160,7 +161,7 @@ edef90baa8e51a2cb4c96be281e83980 *R/nested.update.r
 5e12723d8749bc8119410cd31dff7003 *R/physignal.r
 ce94a8e9f425fb976e0ef0ecbf5096ae *R/plotAllSpecimens.r
 70944e4cf2fe6dff3d190418b5003686 *R/plotGMPhyloMorphoSpace.r
-b8814f9a047a63c586c6e472bc17d6d5 *R/plotOutliers.r
+7f7b290759ccbd6ef00452da19767082 *R/plotOutliers.r
 47a64e289c14a0c94eb8a415c661c6d8 *R/plotRefToTarget.r
 41db23cebd8d7be6c3decf781bd378e0 *R/plotspec.r
 3a29dd0ba103804d3d7b703172200402 *R/plotTangentSpace.r
