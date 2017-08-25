@@ -4,20 +4,29 @@
 #' 
 #' The function creates a plot of all specimens ordered by their Procrustes distance from the mean shape. 
 #' The median distance (unbroken line) and upper and lower quartiles (dashed lines) summarize the distances
-#' from the mean shape. Specimens falling above the upper quartile are plotted in red. The addresses of all specimens are
+#' from the mean shape. Specimens falling above the upper quartile are plotted in red. The user may optionally 
+#' also inspect the shapes of identified outlier configurations as compared to the consensus, in order
+#' to identify digitization errors or other data issues.The addresses of all specimens are
 #' returned in the order displayed in the plot for further inspection by \code{\link{plotRefToTarget}}.
 #' 
 #' If the data have strong group structure and there is reasonable belief that the whole sample mean should not be used,
 #' then a factor defining the groups can be used.
 #' 
+#' \subsection{NEWS: Notes for geomorph 3.0.6}{ 
+#'  The new version now includes an optional argument (inspect.outliers), which, when set to TRUE, allows the user to
+#'  plot the identified outlier configurations in order to compare their shape with the consensus. This may help in identifying
+#'  digitization errors or other data issues.
+#' }
+#' 
 #' @param A A 3D array (p x k x n) containing GPA-aligned coordinates for a set of specimens
 #' @param groups An optional factor defining groups
+#' @param inspect.outliers A logical value indicating whether to plot outlier shape configurations as compared to the consensus
 #' @export
 #' @keywords utilities
 #' @seealso  \code{\link{gpagen}}
 #' @seealso  \code{\link{plotTangentSpace}}
 #' @seealso  \code{\link{plotAllSpecimens}}
-#' @author Emma Sherratt
+#' @author Emma Sherratt & Antigoni Kaliontzopoulou
 #' @return Function returns the landmark addresses of all specimens ordered as in the plot. If groups are used, function returns 
 #' a list structure and a plot for each level in groups.
 #' @examples
@@ -28,9 +37,11 @@
 #' newland[c(3,11),,26] <- newland[c(11,3),,2]
 #' Y<- gpagen(newland) # GPA
 #' out <- plotOutliers(Y$coords) # function returns dimnames and address of all specimens ordered
-#' plotRefToTarget(mshape(Y$coords), Y$coords[,,out[1]], method="vector", label=TRUE)
-#' plotRefToTarget(mshape(Y$coords), Y$coords[,,out[2]], method="vector", label=TRUE)
+#' plotOutliers(Y$coords, inspect.outliers = TRUE) # function also produces plots of identified outlier specimens compared to the mean shape
 #' 
+#' # example with groups
+#' plotOutliers(Y$coords, groups = plethodon$species, inspect.outliers = TRUE)
+#'  
 plotOutliers <- function(A, groups = NULL, inspect.outliers = FALSE){
   if (length(dim(A))!=3){
     stop("Data matrix not a 3D array (see 'arrayspecs').")  }
