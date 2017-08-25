@@ -6,17 +6,11 @@
 #' The median distance (unbroken line) and upper and lower quartiles (dashed lines) summarize the distances
 #' from the mean shape. Specimens falling above the upper quartile are plotted in red. The user may optionally 
 #' also inspect the shapes of identified outlier configurations as compared to the consensus, in order
-#' to identify digitization errors or other data issues.The addresses of all specimens are
+#' to identify digitization errors or other data issues. The addresses of all specimens are
 #' returned in the order displayed in the plot for further inspection by \code{\link{plotRefToTarget}}.
 #' 
 #' If the data have strong group structure and there is reasonable belief that the whole sample mean should not be used,
 #' then a factor defining the groups can be used.
-#' 
-#' \subsection{NEWS: Notes for geomorph 3.0.6}{ 
-#'  The new version now includes an optional argument (inspect.outliers), which, when set to TRUE, allows the user to
-#'  plot the identified outlier configurations in order to compare their shape with the consensus. This may help in identifying
-#'  digitization errors or other data issues.
-#' }
 #' 
 #' @param A A 3D array (p x k x n) containing GPA-aligned coordinates for a set of specimens
 #' @param groups An optional factor defining groups

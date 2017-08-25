@@ -1,6 +1,6 @@
 PENDING CHANGES IN GEOMORPH VERSION 3.0.6
   NEW FEATURES
-    o 
+    o plotOutliers now allows to plot outlier configurations in order to compare their shape with the consensus. 
     
   OTHER CHANGES
     o 
