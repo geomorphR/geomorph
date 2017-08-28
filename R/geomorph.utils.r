@@ -263,6 +263,7 @@ print.advanced.procD.lm <- function (x, formula = TRUE, ...) {
   cat(deparse(x$call), fill=TRUE, "\n\n")
   cat("\nRandomized Residual Permutation Procedure Used\n")
   cat(paste(x$permutations, "Permutations"))
+  cat("\nANOVA effect sizes and P-values based on empirical", x$effect.type, "distributions\n")
   cat("\nANOVA Table")
   cat("\n\n")
   atab <- x$anova.table
@@ -270,16 +271,16 @@ print.advanced.procD.lm <- function (x, formula = TRUE, ...) {
   print(atab); cat("\n\n")
   if(!is.null(x$LS.means)) {cat("LS means\n"); print(x$LS.means); cat("\n")}
   if(!is.null(x$slopes)) {cat("Slopes\n");print(x$slopes); cat("\n\n")}
-  if(!is.null(x$LS.means.dist)) {cat("LS means distance matrix\n");print(x$LS.means.dist); cat("\n")}
+  if(!is.null(x$LS.obs.means.dist)) {cat("LS means distance matrix\n");print(x$LS.obs.means.dist); cat("\n")}
   if(!is.null(x$Z.means.dist)) {cat("Effect sizes (Z)\n");print(x$Z.means.dist); cat("\n")}
   if(!is.null(x$P.means.dist)) {cat("P-values\n");print(x$P.means.dist); cat("\n\n")}
-  if(!is.null(x$slopes.dist)) {cat("Contrasts in slope vector length\n");print(x$slopes.dist); cat("\n")}
+  if(!is.null(x$obs.slopes.dist)) {cat("Contrasts in slope vector length\n");print(x$obs.slopes.dist); cat("\n")}
   if(!is.null(x$Z.slopes.dist)) {cat("Effect sizes (Z)\n");print(x$Z.slopes.dist); cat("\n")}
   if(!is.null(x$P.slopes.dist)) {cat("P-values\n");print(x$P.slopes.dist); cat("\n\n")}
-  if(!is.null(x$slopes.cor)) {cat("Correlations between slope vectors\n");print(x$slopes.cor); cat("\n")}
+  if(!is.null(x$obs.slopes.cor)) {cat("Correlations between slope vectors\n");print(x$obs.slopes.cor); cat("\n")}
   if(!is.null(x$Z.slopes.cor)) {cat("Effects sizes (Z)\n");print(x$Z.slopes.cor); cat("\n")}
   if(!is.null(x$P.slopes.cor)) {cat("P-values\n");print(x$P.slopes.cor); cat("\n\n")}
-  if(!is.null(x$slopes.angles)) {cat("Angles between slope vectors\n");print(x$slopes.angles); cat("\n")}
+  if(!is.null(x$obs.slopes.angles)) {cat("Angles between slope vectors\n");print(x$obs.slopes.angles); cat("\n")}
   if(!is.null(x$Z.angles)) {cat("Effects sizes (Z)\n");print(x$Z.angles); cat("\n")}
   if(!is.null(x$P.angles)) {cat("P-values\n");print(x$P.angles); cat("\n\n")}
   invisible(x)

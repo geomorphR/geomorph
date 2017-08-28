@@ -1,6 +1,7 @@
 CHANGES IN GEOMORPH VERSION 3.0.5
   OTHER CHANGES
     o Simplified options available in procD.allometry
+    o Added an option for statistic used to calculate effect sizes and P-values
     
   BUG FIXES
     o Fixed CAC calculations in procD.allometry
