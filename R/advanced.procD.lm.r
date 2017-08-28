@@ -25,8 +25,8 @@
 #'   Procrustes ANOVA, often used in morphometrics applications is equivalent
 #'   to distance-based anova designs (Anderson 2001). Unlike \code{\link{procD.lm}}, this function is strictly for comparison
 #'   of two nested models. (Use of \code{\link{procD.lm}} will be more suitable in most cases.)
-#'   Effect-sizes (Z-scores) are computed as standard deviates of the F or pairwise statistic sampling
-#'   distributions generated, which might be more intuitive for P-values than F-values (see Collyer et al. 2015).
+#'   Effect-sizes (Z-scores) are computed as standard deviates of the statistic chosen for ANOVA (see arguments) or for
+#'   pairwise statistic sampling distributions generated, which might be more intuitive for P-values than F-values (see Collyer et al. 2015).
 #'   For ANOVA Z-scores, a log-transformation is performed first, to assure a normally distributed sampling distribution.
 #'   
 #'   Pairwise tests have two flavors: 1) tests for differencs in group means (based on vector length between
@@ -73,7 +73,12 @@
 #' correlations (r), radians (rad) or degrees (deg).
 #' @param phy A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape (optional)
 #' @param pc.shape An argument for whether analysis should be performed on the principal component scores of shape.  This is a useful
-#' option if the data are high-dimensional (many more variables than observations) but will not affect results
+#' option if the data are high-dimensional (many more variables than observations) but will not affect results.
+#' @param effect.type An optional argument for which distribution of statistics should be used for calculating effect sizes (
+#' and P-values).  The default is "F" for the distribution of random F-statistics, but "SS" and "Rsq" are also
+#' possible, for the distributions of random SS between models or R-squared values, respectively.  One should not choose "SS" if a PGLS model is considered.
+#' P-values should be similar in most cases, regardless of statistic chosen, as the rank correlations between statistics are either perfect (SS and Rsq for OLS) 
+#' or generally large.
 #' @param iter Number of iterations for significance testing
 #' @param seed An optional argument for setting the seed for random permutations of the resampling procedure.
 #' If left NULL (the default), the exact same P-values will be found for repeated runs of the analysis (with the same number of iterations).
@@ -134,7 +139,7 @@
 #'# accounting for a common allometry
 #'PW.ls.means.test <- advanced.procD.lm(f1= coords ~ Csize + site*species,
 #'f2= ~ log(Csize) + site + species,
-#'groups = ~ site*species, slope = ~log(Csize), iter = 99, data = gdf)
+#'groups = ~ site*species, iter = 99, data = gdf)
 #'summary(PW.ls.means.test, formula = TRUE)
 #'
 #'# Example of a test of homogeneity of slopes, plus pairwise slopes comparisons
@@ -162,6 +167,7 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
                             angle.type = c("r", "deg", "rad"),
                             phy = NULL,
                             pc.shape = FALSE,
+                            effect.type = c("F", "SS", "Rsq"),
                             iter=999,
                             seed = NULL,
                             print.progress = TRUE,
@@ -278,6 +284,7 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
   } else slp <- NULL
 
   # AOV Table
+  effect.type <- match.arg(effect.type)
   if(print.progress) {
     cat("\nCalculating SS for", (iter+1), "permutations\n")
     pb <- txtProgressBar(min = 0, max = iter+1, initial = 0, style=3)
@@ -299,9 +306,16 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
   rownames(P) <- c("Dif", "Residuals", "Total")
   colnames(P) <- c("obs", paste("iter", 1:iter, sep=":"))
   Fs <- (P[1,]/(dfr - dff))/(P[2,]/dff)
-  P.val <- pval(Fs)
-  Z.score <- effect.size(log(Fs))
-  
+  if(effect.type == "SS"){
+    P.val <- pval(P[1,])
+    Z.score <- effect.size(log(P[1,]))
+  } else if(effect.type == "Rsq"){
+    P.val <- pval(P[1,]/P[3,])
+    Z.score <- effect.size(log(P[1,]/P[3,]))
+  } else {
+    P.val <- pval(Fs)
+    Z.score <- effect.size(log(Fs))
+  }
   # pairwise means
   if(pairwise.cond == "means") {
     if(print.progress) {
@@ -361,6 +375,8 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
   rownames(anova.table) <- c(formula(pfitr$Terms), formula(pfitf$Terms))
   colnames(anova.table)[1] <- "Df"
   colnames(anova.table)[ncol(anova.table)] <- "Pr(>F)"
+  if(effect.type == "SS") colnames(anova.table)[ncol(anova.table)] <- "Pr(>SS)"
+  if(effect.type == "Rsq") colnames(anova.table)[ncol(anova.table)] <- "Pr(>Rsq)"
   class(anova.table) <- c("anova", class(anova.table))
 
   if(pairwise.cond == "slopes") {
@@ -387,6 +403,7 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
               fitted = wYhf,
               residuals = wEf,
               weights = w, data = dat2, random.SS = P, random.F = Fs,
+              effect.type = effect.type,
               Terms = pfitf$Terms, term.labels = pfitf$term.labels, permutations = iter+1,
               call= match.call()
   )

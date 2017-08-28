@@ -5,8 +5,9 @@
 \title{Procrustes ANOVA and pairwise tests for shape data, using complex linear models}
 \usage{
 advanced.procD.lm(f1, f2, groups = NULL, slope = NULL, angle.type = c("r",
-  "deg", "rad"), phy = NULL, pc.shape = FALSE, iter = 999, seed = NULL,
-  print.progress = TRUE, data = NULL, ...)
+  "deg", "rad"), phy = NULL, pc.shape = FALSE, effect.type = c("F", "SS",
+  "Rsq"), iter = 999, seed = NULL, print.progress = TRUE, data = NULL,
+  ...)
 }
 \arguments{
 \item{f1}{A formula for a linear model, containing the response matrix (e.g., y ~ x1 + x2)}
@@ -28,7 +29,13 @@ correlations (r), radians (rad) or degrees (deg).}
 \item{phy}{A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape (optional)}
 
 \item{pc.shape}{An argument for whether analysis should be performed on the principal component scores of shape.  This is a useful
-option if the data are high-dimensional (many more variables than observations) but will not affect results}
+option if the data are high-dimensional (many more variables than observations) but will not affect results.}
+
+\item{effect.type}{An optional argument for which distribution of statistics should be used for calculating effect sizes (
+and P-values).  The default is "F" for the distribution of random F-statistics, but "SS" and "Rsq" are also
+possible, for the distributions of random SS between models or R-squared values, respectively.  One should not choose "SS" if a PGLS model is considered.
+P-values should be similar in most cases, regardless of statistic chosen, as the rank correlations between statistics are either perfect (SS and Rsq for OLS) 
+or generally large.}
 
 \item{iter}{Number of iterations for significance testing}
 
@@ -84,8 +91,8 @@ The SS calculated is the same as the sum of squared Procrustes distances among s
   Procrustes ANOVA, often used in morphometrics applications is equivalent
   to distance-based anova designs (Anderson 2001). Unlike \code{\link{procD.lm}}, this function is strictly for comparison
   of two nested models. (Use of \code{\link{procD.lm}} will be more suitable in most cases.)
-  Effect-sizes (Z-scores) are computed as standard deviates of the F or pairwise statistic sampling
-  distributions generated, which might be more intuitive for P-values than F-values (see Collyer et al. 2015).
+  Effect-sizes (Z-scores) are computed as standard deviates of the statistic chosen for ANOVA (see arguments) or for
+  pairwise statistic sampling distributions generated, which might be more intuitive for P-values than F-values (see Collyer et al. 2015).
   For ANOVA Z-scores, a log-transformation is performed first, to assure a normally distributed sampling distribution.
   
   Pairwise tests have two flavors: 1) tests for differencs in group means (based on vector length between
@@ -139,7 +146,7 @@ summary(PW.means.test, formula = TRUE)
 # accounting for a common allometry
 PW.ls.means.test <- advanced.procD.lm(f1= coords ~ Csize + site*species,
 f2= ~ log(Csize) + site + species,
-groups = ~ site*species, slope = ~log(Csize), iter = 99, data = gdf)
+groups = ~ site*species, iter = 99, data = gdf)
 summary(PW.ls.means.test, formula = TRUE)
 
 # Example of a test of homogeneity of slopes, plus pairwise slopes comparisons
