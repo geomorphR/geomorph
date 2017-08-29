@@ -199,6 +199,7 @@ procD.pgls<-function(f1, phy, iter=999, seed=NULL, int.first = FALSE,
     tab <- data.frame(anova.tab, Z = c(Z, NA, NA), Pr = c(P.val, NA, NA))
     colnames(tab)[1] <- "Df"
     colnames(tab)[ncol(tab)] <- "Pr(>F)"
+    if(effect.type == "cohen") colnames(tab)[ncol(tab)] <- "Pr(>Cohen f-sq)"
     class(tab) <- c("anova", class(tab))
     PY <- Pcor%*%pfit$Y; PX <- Pcor%*%pfit$X
     Pfit <- lm.wfit(PX, PY, pfit$weights)

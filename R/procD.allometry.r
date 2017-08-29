@@ -367,7 +367,7 @@ procD.allometry<- function(f1, f2 = NULL, logsz = TRUE,
   if(is.null(f2)) gps <- NULL
   out <- list(HOS.test = HOS, aov.table = anovafull$aov.table, call = match.call(),
               alpha = alpha, perm.method = perm.method, permutations=iter+1,
-              formula = formfull, data=dat,
+              formula = formfull, data=dat, effect.type = effect.type,
               random.SS = anovafull$random.SS, random.F = anovafull$random.F,
               random.cohenf = anovafull$random.cohenf,
               CAC = CAC, RSC = RSC, Reg.proj = Reg.proj,

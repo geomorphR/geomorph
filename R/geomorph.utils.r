@@ -82,6 +82,8 @@ print.procD.lm <- function (x, ...) {
     if(x$perm.method == "RRPP") cat ("Randomized Residual Permutation Procedure Used\n") else
       cat("Randomization of Raw Values used\n")
     cat(paste(x$permutations, "Permutations"))
+    if(x$effect.type == "cohen") x$effect.type = "Cohen f-squared"
+    cat("\nANOVA effect sizes and P-values based on empirical", x$effect.type, "distributions\n")
     cat("\n\n")
     print(x$aov.table)
   }
@@ -328,6 +330,8 @@ printAllometry.HOS <- function(x){
   if(x$perm.method == "RRPP") cat ("Randomized Residual Permutation Procedure Used\n") else
     cat("Randomization of Raw Values used\n")
   cat(paste(x$permutations, "Permutations"))
+  if(x$effect.type == "cohen") x$effect.type = "Cohen f-squared"
+  cat("\nANOVA effect sizes and P-values based on empirical", x$effect.type, "distributions\n")
   cat("\n\n")
   print(x$aov.table)
 }
@@ -339,6 +343,8 @@ printAllometry.noHOS <- function(x){
   if(x$perm.method == "RRPP") cat ("Randomized Residual Permutation Procedure Used\n") else
     cat("Randomization of Raw Values used\n")
   cat(paste(x$permutations, "Permutations"))
+  if(x$effect.type == "cohen") x$effect.type = "Cohen f-squared"
+  cat("\nANOVA effect sizes and P-values based on empirical", x$effect.type, "distributions\n")
   cat("\n\n")
   print(x$aov.table)
 }
