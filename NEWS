@@ -4,9 +4,11 @@ PENDING CHANGES IN GEOMORPH VERSION 3.0.6
     
   OTHER CHANGES
     o Added effect type option to advanced.procD.lm
+    o Added an additional line of summary to ANOVA tables to signal how effect sizes are calculated
+    o Adjusted ANOVA tables to show from which distributions P-values are estimated.
     
   BUG FIXES
-    o 
+    o Fixed effect size calculation error in procD.lm for single factor OLS models. 
     
 CHANGES IN GEOMORPH VERSION 3.0.5
   OTHER CHANGES
