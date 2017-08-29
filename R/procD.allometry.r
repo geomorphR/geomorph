@@ -53,6 +53,7 @@
 #'   Examples for more flexible approaches to modeling allometry using \code{\link{procD.lm}} are provided below.
 #' }
 #' 
+#' 
 #'  \subsection{Notes for geomorph 3.0.5 and subsequent versions}{ 
 #'  Previous versions of \code{procD.allometry} had an argument, f3, for providing additional covariates.  Complex
 #'  models can now be analyzed with \code{\link{procD.lm}}, which has similar plotting capabilities as \code{procD.allometry}.
@@ -201,7 +202,7 @@
 #' 
 #' # Using procD.lm to call procD.allometry (in case more results are desired)
 #' plethANOVA <- procD.lm(plethAllometry$formula, 
-#' data = plethAllometry$data, iter = 249, RRPP=TRUE)
+#' data = plethAllometry$data, iter = 149, RRPP=TRUE)
 #' summary(plethANOVA) # Same ANOVA
 #' 
 #' # procD.allometry is a wrapper function for procD.lm.  The same analyses
@@ -366,7 +367,7 @@ procD.allometry<- function(f1, f2 = NULL, logsz = TRUE,
   if(is.null(f2)) gps <- NULL
   out <- list(HOS.test = HOS, aov.table = anovafull$aov.table, call = match.call(),
               alpha = alpha, perm.method = perm.method, permutations=iter+1,
-              formula = formfull, data=dat,
+              formula = formfull, data=dat, effect.type = effect.type,
               random.SS = anovafull$random.SS, random.F = anovafull$random.F,
               random.cohenf = anovafull$random.cohenf,
               CAC = CAC, RSC = RSC, Reg.proj = Reg.proj,

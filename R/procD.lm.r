@@ -52,7 +52,7 @@
 #'   principal component plots (rotated to first PC of covariance matrix of fitted values), and regression plots can be performed.  The
 #'   latter is fundamentally similar to the plotting options for \code{\link{procD.allometry}}.  One must provide a linear predictor, and
 #'   can choose among common regression component (CRC), predicted values (PredLine), or regression scores (RegScore).  See \code{\link{procD.allometry}} 
-#'   for details. In these plotting optons, the predictor does not need to be size, and fitted values and residuals from the procD.lm fit are used rather 
+#'   for details. In these plotting options, the predictor does not need to be size, and fitted values and residuals from the procD.lm fit are used rather 
 #'   than mean-centered values. 
 #'   
 #'  \subsection{Notes for geomorph 3.0.4 and subsequent versions}{ 
@@ -224,7 +224,7 @@ procD.lm<- function(f1, iter = 999, seed=NULL, RRPP = TRUE, effect.type = c("F",
       etas <- SS/SSY
       cohenf <- etas/(1-etas)
       P.val <- pval(Fs)
-      if(effect.type == "SS") Z <- effect.size(log(P)) else
+      if(effect.type == "SS") Z <- effect.size(log(SS)) else
         if(effect.type == "F") Z <- effect.size(log(Fs)) else
           Z <- effect.size(log(cohenf)) 
       names(SS) <- names(Fs) <- names(cohenf) <- c("obs", paste("iter", 1:iter, sep=":"))
@@ -232,6 +232,8 @@ procD.lm<- function(f1, iter = 999, seed=NULL, RRPP = TRUE, effect.type = c("F",
     tab <- data.frame(anova.tab, Z = c(Z, NA, NA), Pr = c(P.val, NA, NA))
     colnames(tab)[1] <- "Df"
     colnames(tab)[ncol(tab)] <- "Pr(>F)"
+    if(effect.type == "SS") colnames(tab)[ncol(tab)] <- "Pr(>SS)"
+    if(effect.type == "cohen") colnames(tab)[ncol(tab)] <- "Pr(>Cohen f-sq)"
     class(tab) <- c("anova", class(tab))
     out <- list(aov.table = tab, call = match.call(),
                 coefficients=pfit$wCoefficients.full[[k]], 

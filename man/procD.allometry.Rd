@@ -206,7 +206,7 @@ plot(plethAllometry, method = "PredLine")
 
 # Using procD.lm to call procD.allometry (in case more results are desired)
 plethANOVA <- procD.lm(plethAllometry$formula, 
-data = plethAllometry$data, iter = 249, RRPP=TRUE)
+data = plethAllometry$data, iter = 149, RRPP=TRUE)
 summary(plethANOVA) # Same ANOVA
 
 # procD.allometry is a wrapper function for procD.lm.  The same analyses
