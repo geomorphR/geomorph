@@ -1,13 +1,26 @@
-CHANGES IN GEOMORPH VERSION 3.0.5
+CHANGES APPENDED TO GEOMORPH VERSION 3.0.5 (NOT ON CRAN UNTIL
+VERSION 3.0.6, BUT FOUND ON GITHUB)
+
+NEW FEATURES
+
+OTHER CHANGES
+    o Added an option for statistic used to calculate effect sizes and P-values
+    o Added an additional line of summary to ANOVA tables to signal how effect sizes are calculated
+    o Adjusted ANOVA tables to show from which distributions P-values are estimated.
+    
+BUG FIXES
+    o Fixed effect size calculation error in procD.lm for single factor OLS models.
+
+CHANGES IN GEOMORPH VERSION 3.0.5 (CRAN RELEASE)
   OTHER CHANGES
     o Simplified options available in procD.allometry
-    o Added an option for statistic used to calculate effect sizes and P-values
     
   BUG FIXES
     o Fixed CAC calculations in procD.allometry
     o Fixed dimnames error in readland.nts when file contained a single specimen's data
     o Fixed PGLS weights for factors in morphol.disparity when phylogeny utilized
     o Fixed readland.tps to be general to whitespace delimitation
+
     
 CHANGES IN GEOMORPH VERSION 3.0.4
   NEW FEATURES
