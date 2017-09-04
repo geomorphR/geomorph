@@ -1179,9 +1179,32 @@ procD.fit <- function(f1, keep.order=FALSE, pca=TRUE, data = NULL, ...){
   } else {
     form.in <- formula(f1)
     d <- list()
-    if(is.null(data))
-      d$Y <- eval(form.in[[2]], envir = parent.frame()) else
-        d$Y <- eval(form.in[[2]], envir = data)
+    if(!is.null(data)) {
+      d$Y <- try(eval(form.in[[2]], envir = data), silent = TRUE)
+      if(!is.numeric(d$Y[[1]])) {
+        cat("Warning: You have attempted to provide a geomorph data frame
+but also provided a formula that does not evaluate data found
+within the data frame.  If you receive an error, this is likely
+the reason.  You should only use a geomorph data frame if the
+components of your formula are data that can be found in the data frame.\n\n")
+        d$Y <- try(eval(form.in[[2]], envir = parent.frame()), silent = TRUE)
+        if(!is.numeric(d$Y[[1]]))
+          stop(paste("Attempts to evaluate data in both the geomorph data frame
+and the global environment were unsuccessful.
+Perhaps you are trying to call a component of an object?
+For example, myData$coords ~  or ~ myData$Csize
+This generally does not work well.  
+Please review the use of geomorph data frames and try again.\n\n"))
+      }
+    } else {
+      d$Y <- try(eval(form.in[[2]], envir = parent.frame()), silent = TRUE)
+      if(!is.numeric(d$Y[[1]]))
+        stop(paste("An Attempt to evaluate data in global environment was unsuccessful.
+Perhaps you are trying to call a component of an object?
+For example, myData$coords ~  or ~ myData$Csize
+This generally does not work well.  
+Please review the use of geomorph data frames and try again.\n\n"))
+    }
     if(class(d$Y) == "dist") d$Y <- pcoa(d$Y) else
       if(length(dim(d$Y)) == 3)  d$Y <- two.d.array(d$Y) else
         d$Y <- as.matrix(d$Y)

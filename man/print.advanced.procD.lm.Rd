@@ -4,12 +4,10 @@
 \alias{print.advanced.procD.lm}
 \title{Print/Summary Function for geomorph}
 \usage{
-\method{print}{advanced.procD.lm}(x, formula = TRUE, ...)
+\method{print}{advanced.procD.lm}(x, ...)
 }
 \arguments{
 \item{x}{print/summary object (from \code{\link{advanced.procD.lm}})}
-
-\item{formula}{logical for whether to print the model formulas as data frame row names}
 
 \item{...}{other arguments passed to print/summary}
 }

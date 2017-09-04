@@ -82,8 +82,6 @@ print.procD.lm <- function (x, ...) {
     if(x$perm.method == "RRPP") cat ("Randomized Residual Permutation Procedure Used\n") else
       cat("Randomization of Raw Values used\n")
     cat(paste(x$permutations, "Permutations"))
-    if(x$effect.type == "cohen") x$effect.type = "Cohen f-squared"
-    cat("\nANOVA effect sizes and P-values based on empirical", x$effect.type, "distributions\n")
     cat("\n\n")
     print(x$aov.table)
   }
@@ -202,21 +200,9 @@ plot.procD.lm <- function(x, type = c("diagnostics", "regression",
     if(!is.vector(predictor)) stop("Predictor must be a vector")
     if(length(predictor) != n) 
       stop("Observations in predictor must equal observations if procD.lm fit")
-    X <- x$X * sqrt(x$weights)
-    if(!is.null(x$Pcor)) B <- x$pgls.coefficients else B <- x$coefficients
     xc <- predictor
-    pred.match <- match(xc, X)
-    if(any(is.na(pred.match))) {
-      b <- lm(f ~ xc)$coefficients
-      if(is.matrix(b)) b <- b[2,] else b <- b[2]
-    } else {
-      Xcrc <- as.matrix(X)
-      Xcrc[pred.match] <- 0
-      f <- Xcrc %*% B
-      r <- x$Y - f
-      b <- lm(f ~ xc)$coefficients
-      if(is.matrix(b)) b <- b[2,] else b <- b[2]
-    }
+    b <- lm(f ~ xc)$coefficients
+    if(is.matrix(b)) b <- b[2,] else b <- b[2]
     a <- crossprod(r, xc)/sum(xc^2)
     a <- a/sqrt(sum(a^2))
     CRC <- r%*%a  
@@ -227,15 +213,17 @@ plot.procD.lm <- function(x, type = c("diagnostics", "regression",
     if(reg.type == "CRC"){
       par(mfcol = c(1,2))
       par(mar = c(4,4,1,1))
-      plot(predictor, CRC,  ...)
+      plot(predictor, CRC, xlab = deparse(substitute(predictor)), ...)
       plot(CRC, RSC[,1], asp=1, xlab = "CRC", ylab = "RSC 1", ...)
       par(mar = c(5,4,4,2) + 0.1)
       par(mfcol=c(1,1))
     } else if(reg.type == "RegScore") {
       plot(predictor, Reg.proj, 
+           xlab = deparse(substitute(predictor)), 
            ylab = "Regression Score", ...)
     } else {
       plot(predictor, PL, 
+           xlab = deparse(substitute(predictor)), 
            ylab = "PC 1 for fitted values", ...)
     }
   }
@@ -255,34 +243,30 @@ plot.procD.lm <- function(x, type = c("diagnostics", "regression",
 #' Print/Summary Function for geomorph
 #' 
 #' @param x print/summary object (from \code{\link{advanced.procD.lm}})
-#' @param formula logical for whether to print the model formulas as data frame row names
 #' @param ... other arguments passed to print/summary
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities
-print.advanced.procD.lm <- function (x, formula = TRUE, ...) {
+print.advanced.procD.lm <- function (x, ...) {
   cat("\nCall:\n")
   cat(deparse(x$call), fill=TRUE, "\n\n")
   cat("\nRandomized Residual Permutation Procedure Used\n")
   cat(paste(x$permutations, "Permutations"))
-  cat("\nANOVA effect sizes and P-values based on empirical", x$effect.type, "distributions\n")
   cat("\nANOVA Table")
   cat("\n\n")
-  atab <- x$anova.table
-  if(!formula) rownames(atab)[1:2] <- c("Reduced Model", "Full Model")
-  print(atab); cat("\n\n")
+  print(x$anova.table); cat("\n\n")
   if(!is.null(x$LS.means)) {cat("LS means\n"); print(x$LS.means); cat("\n")}
   if(!is.null(x$slopes)) {cat("Slopes\n");print(x$slopes); cat("\n\n")}
-  if(!is.null(x$LS.obs.means.dist)) {cat("LS means distance matrix\n");print(x$LS.obs.means.dist); cat("\n")}
+  if(!is.null(x$LS.means.dist)) {cat("LS means distance matrix\n");print(x$LS.means.dist); cat("\n")}
   if(!is.null(x$Z.means.dist)) {cat("Effect sizes (Z)\n");print(x$Z.means.dist); cat("\n")}
   if(!is.null(x$P.means.dist)) {cat("P-values\n");print(x$P.means.dist); cat("\n\n")}
-  if(!is.null(x$obs.slopes.dist)) {cat("Contrasts in slope vector length\n");print(x$obs.slopes.dist); cat("\n")}
+  if(!is.null(x$slopes.dist)) {cat("Contrasts in slope vector length\n");print(x$slopes.dist); cat("\n")}
   if(!is.null(x$Z.slopes.dist)) {cat("Effect sizes (Z)\n");print(x$Z.slopes.dist); cat("\n")}
   if(!is.null(x$P.slopes.dist)) {cat("P-values\n");print(x$P.slopes.dist); cat("\n\n")}
-  if(!is.null(x$obs.slopes.cor)) {cat("Correlations between slope vectors\n");print(x$obs.slopes.cor); cat("\n")}
+  if(!is.null(x$slopes.cor)) {cat("Correlations between slope vectors\n");print(x$slopes.cor); cat("\n")}
   if(!is.null(x$Z.slopes.cor)) {cat("Effects sizes (Z)\n");print(x$Z.slopes.cor); cat("\n")}
   if(!is.null(x$P.slopes.cor)) {cat("P-values\n");print(x$P.slopes.cor); cat("\n\n")}
-  if(!is.null(x$obs.slopes.angles)) {cat("Angles between slope vectors\n");print(x$obs.slopes.angles); cat("\n")}
+  if(!is.null(x$slopes.angles)) {cat("Angles between slope vectors\n");print(x$slopes.angles); cat("\n")}
   if(!is.null(x$Z.angles)) {cat("Effects sizes (Z)\n");print(x$Z.angles); cat("\n")}
   if(!is.null(x$P.angles)) {cat("P-values\n");print(x$P.angles); cat("\n\n")}
   invisible(x)
@@ -330,8 +314,6 @@ printAllometry.HOS <- function(x){
   if(x$perm.method == "RRPP") cat ("Randomized Residual Permutation Procedure Used\n") else
     cat("Randomization of Raw Values used\n")
   cat(paste(x$permutations, "Permutations"))
-  if(x$effect.type == "cohen") x$effect.type = "Cohen f-squared"
-  cat("\nANOVA effect sizes and P-values based on empirical", x$effect.type, "distributions\n")
   cat("\n\n")
   print(x$aov.table)
 }
@@ -343,8 +325,6 @@ printAllometry.noHOS <- function(x){
   if(x$perm.method == "RRPP") cat ("Randomized Residual Permutation Procedure Used\n") else
     cat("Randomization of Raw Values used\n")
   cat(paste(x$permutations, "Permutations"))
-  if(x$effect.type == "cohen") x$effect.type = "Cohen f-squared"
-  cat("\nANOVA effect sizes and P-values based on empirical", x$effect.type, "distributions\n")
   cat("\n\n")
   print(x$aov.table)
 }
