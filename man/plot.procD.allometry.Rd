@@ -26,8 +26,6 @@ if {warpgrids=TRUE} (see \code{\link{warpRefMesh}}).}
 \item{shapes}{Logical argument whether to return the the shape coordinates shape coordinates of the small and large shapes}
 
 \item{...}{other arguments passed to plot}
-
-\item{pt.col}{An optional vector of colours to use for points (as in points(bg=))}
 }
 \value{
 If shapes = TRUE, function returns a list containing the shape coordinates of the small and large shapes

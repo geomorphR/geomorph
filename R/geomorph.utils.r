@@ -395,7 +395,6 @@ summary.procD.allometry <- function(object, ...) {
 #'  should be displayed (note: if groups are provided no TPS grids are shown)
 #' @param label An optional vector indicating labels for each specimen that are to be displayed
 #' @param gp.label A logical value indicating labels for each group to be displayed (if group was originally included); "PredLine" only
-#' @param pt.col An optional vector of colours to use for points (as in points(bg=))
 #' @param mesh A mesh3d object to be warped to represent shape deformation of the minimum and maximum size 
 #' if {warpgrids=TRUE} (see \code{\link{warpRefMesh}}).
 #' @param shapes Logical argument whether to return the the shape coordinates shape coordinates of the small and large shapes
