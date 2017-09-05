@@ -413,22 +413,22 @@ summary.procD.allometry <- function(object, ...) {
 #'   transformation of skull shape in St Bernard dogs. Proc. R. Soc. B. 275:71-76.
 #' @references Mitteroecker, P., P. Gunz, M. Bernhard, K. Schaefer, and F. L. Bookstein. 2004. 
 #'   Comparison of cranial ontogenetic trajectories among great apes and humans. J. Hum. Evol. 46:679-698.
-plot.procD.allometry <- function(x, method=c("CAC","RegScore","PredLine"),warpgrids=TRUE,
-                                 label=NULL, gp.label=FALSE, pt.col=NULL, mesh=NULL, shapes=FALSE,...) {
+plot.procD.allometry <- function(x, method=c("CAC","RegScore","PredLine"), warpgrids=TRUE,
+                                 label=NULL, gp.label=FALSE, mesh=NULL, shapes=FALSE, ...) {
   method <- match.arg(method)
   if(x$logsz) xlab <- "log(Size)" else xlab <- "Size"
   if(x$logsz) size <- log(x$size) else size <- x$size
   n <- length(size)
-  if(!is.null(x$gps) && is.null(pt.col)) pt.col <- as.numeric(x$gps) 
-  if(is.null(x$gps) && is.null(pt.col)) pt.col <- rep(1, length(size))
+  if(!is.null(x$gps)) pt.col <- as.numeric(x$gps) 
+  if(is.null(x$gps)) pt.col <- rep(1, length(size))
   if(method == "CAC"){
     layout(matrix(c(3,1,1,1,1,1,1,1,4,2,2,2,2,2,2,2,2,2),3,6))   
-    plot(size,x$CAC,xlab=xlab, ylab="CAC",pch=21,bg=pt.col,cex=1.25)
+    plot(size, x$CAC, xlab=xlab, ylab="CAC", col=pt.col, ...)
     if (!is.null(label)) {
       if(isTRUE(label)){text(size,x$CAC,seq(1, n),adj=c(-0.7,-0.7)) }
       else{text(size,x$CAC,label,adj=c(-0.1,-0.1))}
     }
-    plot(x$CAC,x$RSC[,1], xlab="CAC",ylab="RSC 1", pch=21,bg=pt.col,cex=1.25)
+    plot(x$CAC,x$RSC[,1], xlab="CAC",ylab="RSC 1", col=pt.col, ...)
     if (!is.null(label)) {
       if(!is.null(label)){text(x$CAC,x$RSC,seq(1, n),adj=c(-0.7,-0.7)) }
       else{text(x$CAC,x$RSC,label,adj=c(-0.1,-0.1))}
@@ -436,7 +436,7 @@ plot.procD.allometry <- function(x, method=c("CAC","RegScore","PredLine"),warpgr
   }
   if(method=="PredLine"){
     layout(matrix(c(2,1,1,1,1,1,1,1,3),3,3))   
-    plot(size,x$pred.val,xlab=xlab, ylab="Shape (Predicted)",pch=21,bg=pt.col,cex=1.25)
+    plot(size,x$pred.val,xlab=xlab, ylab="Shape (Predicted)", col=pt.col, ...)
     if (!is.null(label)) {
       if(isTRUE(label)){text(size,x$pred.val,seq(1, n),adj=c(-0.7,-0.7)) }
       else{text(size,x$pred.val,label,adj=c(-0.1,-0.1))}
@@ -448,7 +448,7 @@ plot.procD.allometry <- function(x, method=c("CAC","RegScore","PredLine"),warpgr
   }
   if(method=="RegScore"){
     layout(matrix(c(2,1,1,1,1,1,1,1,3),3,3))   
-    plot(size,x$Reg.proj,xlab=xlab, ylab="Shape (Regression Score)",pch=21,bg=pt.col,cex=1.25)
+    plot(size,x$Reg.proj,xlab=xlab, ylab="Shape (Regression Score)", col=pt.col, ...)
     if (!is.null(label)) {
       if(isTRUE(label)){text(size,x$Reg.proj,seq(1, n),adj=c(-0.7,-0.7)) }
       else{text(size,x$Reg.proj,label,adj=c(-0.1,-0.1))}
