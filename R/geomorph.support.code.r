@@ -1201,9 +1201,9 @@ Please review the use of geomorph data frames and try again.\n\n"))
       if(!is.numeric(d$Y[[1]]))
         stop(paste("An Attempt to evaluate data in global environment was unsuccessful.
 Perhaps you are trying to call a component of an object?
-For example, myData$coords ~  or ~ myData$Csize
+For example, myData$coords ~  
 This generally does not work well.  
-Please review the use of geomorph data frames and try again.\n\n"))
+Please consider using a geomorph data frames and try again.\n\n"))
     }
     if(class(d$Y) == "dist") d$Y <- pcoa(d$Y) else
       if(length(dim(d$Y)) == 3)  d$Y <- two.d.array(d$Y) else
@@ -1257,6 +1257,11 @@ Please review the use of geomorph data frames and try again.\n\n"))
               silent = TRUE)
               })
           check <- (sapply(dat, NROW) == n)
+          if(!all(check)) stop("Your formula appears to have data embedded within objects
+(a '$' is part of the formula).  It is not possible to reconcile 
+the location of the data from the object that contains it with this 
+function.  Either use a geomorph data frame or liberate the data from 
+the object and try again.")
           dat <- dat[check]
           tl <- tl[check]
           names(dat) <- tl
