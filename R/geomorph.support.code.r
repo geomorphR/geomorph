@@ -1146,7 +1146,7 @@ procD.fit.int <- function(a) {
 # calls one of previous functions, depending on conditions
 procD.fit <- function(f1, keep.order=FALSE, pca=TRUE, data = NULL, ...){
   if(is.null(data)) cat("\nWarning: no geomorph data frame provided.
-      If an error occurs, this might be the reason.\n")
+                        If an error occurs, this might be the reason.\n")
   dots <- list(...)
   SS.type <- dots$SS.type
   if(is.null(SS.type)) SS.type <- "I"
@@ -1178,9 +1178,32 @@ procD.fit <- function(f1, keep.order=FALSE, pca=TRUE, data = NULL, ...){
   } else {
     form.in <- formula(f1)
     d <- list()
-    if(is.null(data))
-      d$Y <- eval(form.in[[2]], envir = parent.frame()) else
-        d$Y <- eval(form.in[[2]], envir = data)
+    if(!is.null(data)) {
+      d$Y <- try(eval(form.in[[2]], envir = data), silent = TRUE)
+      if(!is.numeric(d$Y[[1]])) {
+        cat("Warning: You have attempted to provide a geomorph data frame
+            but also provided a formula that does not evaluate data found
+            within the data frame.  If you receive an error, this is likely
+            the reason.  You should only use a geomorph data frame if the
+            components of your formula are data that can be found in the data frame.\n\n")
+        d$Y <- try(eval(form.in[[2]], envir = parent.frame()), silent = TRUE)
+        if(!is.numeric(d$Y[[1]]))
+          stop(paste("Attempts to evaluate data in both the geomorph data frame
+                     and the global environment were unsuccessful.
+                     Perhaps you are trying to call a component of an object?
+                     For example, myData$coords ~  or ~ myData$Csize
+                     This generally does not work well.  
+                     Please review the use of geomorph data frames and try again.\n\n"))
+      }
+      } else {
+        d$Y <- try(eval(form.in[[2]], envir = parent.frame()), silent = TRUE)
+        if(!is.numeric(d$Y[[1]]))
+          stop(paste("An Attempt to evaluate data in global environment was unsuccessful.
+                     Perhaps you are trying to call a component of an object?
+                     For example, myData$coords ~  
+                     This generally does not work well.  
+                     Please consider using a geomorph data frames and try again.\n\n"))
+      }
     if(class(d$Y) == "dist") d$Y <- pcoa(d$Y) else
       if(length(dim(d$Y)) == 3)  d$Y <- two.d.array(d$Y) else
         d$Y <- as.matrix(d$Y)
@@ -1227,16 +1250,21 @@ procD.fit <- function(f1, keep.order=FALSE, pca=TRUE, data = NULL, ...){
         dat <- lapply(1:length(tl), function(j) {
           try(get(as.character(tl[j]), parent.frame()),
               silent = TRUE)
-          }) else
-            dat <- lapply(1:length(tl), function(j) {
-              try(get(as.character(tl[j]), data),
-              silent = TRUE)
-              })
-          check <- (sapply(dat, NROW) == n)
-          dat <- dat[check]
-          tl <- tl[check]
-          names(dat) <- tl
-          dat <- as.data.frame(dat)
+        }) else
+          dat <- lapply(1:length(tl), function(j) {
+            try(get(as.character(tl[j]), data),
+                silent = TRUE)
+          })
+        check <- (sapply(dat, NROW) == n)
+        if(!all(check)) stop("Your formula appears to have data embedded within objects
+                             (a '$' is part of the formula).  It is not possible to reconcile 
+                             the location of the data from the object that contains it with this 
+                             function.  Either use a geomorph data frame or liberate the data from 
+                             the object and try again.")
+        dat <- dat[check]
+        tl <- tl[check]
+        names(dat) <- tl
+        dat <- as.data.frame(dat)
     }
     if(pca) d$Y <- prcomp(d$Y)$x
     dat$Y <- d$Y
@@ -1247,7 +1275,7 @@ procD.fit <- function(f1, keep.order=FALSE, pca=TRUE, data = NULL, ...){
                      terms = Terms,
                      formula = form,
                      SS.type = SS.type)
-  }
+      }
   if(is.null(pdf.args$w))
     pdf.args$w <- rep(1, NROW(pdf.args$data))
   if(is.null(pdf.args$offset))

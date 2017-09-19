@@ -261,7 +261,7 @@ procD.allometry<- function(f1, f2 = NULL, logsz = TRUE,
   names(dat)[is.na(nmmatch)] <- "size"
   if(!is.null(seed) && seed=="random") seed = sample(1:iter, 1)
   size <- dat$size
-  if(any(size <= 0)) stop("Size cannot be negative if using log-transformation")
+  if(any(size <= 0)) stop("Size values cannot be negative")
   if(logsz) form1 <- Y ~ log(size) else 
     form1 <- Y ~ size
   
