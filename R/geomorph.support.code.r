@@ -1381,11 +1381,13 @@ rrpp.w.o <- function(fitted, residuals, ind.i, w, o){
 }
 
 rrpp <- function(fitted, residuals, ind.i, w, o){
-  if(!is.null(w) && !is.null(o)) rrpp.w.o(fitted, residuals, ind.i, w, o)
-  if(!is.null(w) && is.null(o)) rrpp.w(fitted, residuals, ind.i, w)
-  if(is.null(w) && !is.null(o)) rrpp.o(fitted, residuals, ind.i, o)
-  if(is.null(w) && is.null(o)) rrpp.basic(fitted, residuals, ind.i)
+  if(!is.null(w) && !is.null(o)) r <- rrpp.w.o(fitted, residuals, ind.i, w, o)
+  if(!is.null(w) && is.null(o)) r <- rrpp.w(fitted, residuals, ind.i, w)
+  if(is.null(w) && !is.null(o)) r <- rrpp.o(fitted, residuals, ind.i, o)
+  if(is.null(w) && is.null(o)) r <- rrpp.basic(fitted, residuals, ind.i)
+  r
 }
+
 
 # SS.mean
 # calculates SS for fitted values when only a mean is needed
