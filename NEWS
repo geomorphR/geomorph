@@ -9,6 +9,7 @@ OTHER CHANGES
     o Adjusted ANOVA tables to show from which distributions P-values are estimated.
     
 BUG FIXES
+    o Fixed issue with integration.test when 3+ partitions with non-contiguous variables
     o Fixed effect size calculation error in procD.lm for single factor OLS models.
     o Fixed ellipses options in procD.fit
 
