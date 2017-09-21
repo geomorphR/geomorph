@@ -10,6 +10,7 @@ PENDING CHANGES IN GEOMORPH VERSION 3.0.6
     
   BUG FIXES
     o Fixed effect size calculation error in procD.lm for single factor OLS models. 
+    o Fixed ellipses options in procD.fit
     
 CHANGES IN GEOMORPH VERSION 3.0.5
   OTHER CHANGES
