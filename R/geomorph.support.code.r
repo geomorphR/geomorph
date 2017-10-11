@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 #' @name geomorph-package
 #' @docType package
 #' @aliases geomorph
@@ -6086,4 +6085,4 @@ readland.tps2 <- function (file, specID = c("None", "ID", "imageID"))
   }
   return(list(coords = coords,scale=imscale)  )
 }
->>>>>>> origin/Develop
+
