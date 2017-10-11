@@ -64,7 +64,7 @@ readland.nts<-function(file){
   if(r.lab) {
     speclab<-tmp[1:n]
     tmp <- tmp[-(1:n)]
-    }
+    } else speclab <- NULL
   if(c.lab) tmp <- tmp[-(1:(p*k))]
   if(missdata==TRUE){tmp[grep(missval,as.integer(tmp))] <- NA}
   options(warn=-1)
