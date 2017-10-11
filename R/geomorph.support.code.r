@@ -907,8 +907,8 @@ pcoa <- function(D){
   if(class(D) != "dist") stop("function only works with distance matrices")
   cmd <- cmdscale(D, k=attr(D, "Size") -1, eig=TRUE)
   options(warn=0)
-  p <- length(cmd$eig[zapsmall(cmd$eig) > 0])
-  Yp <- cmd$points[,1:p]
+  p <- which(zapsmall(abs(cmd$eig)) > 0)
+  Yp <- cmd$points[,p]
   Yp
 }
 
