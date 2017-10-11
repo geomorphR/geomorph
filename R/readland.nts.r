@@ -61,14 +61,11 @@ readland.nts<-function(file){
   if(missdata==TRUE){missval<-ifelse(dimval==6,header[5],header[6]) } 
   n<-header[2];k<-header[dimval];p<-header[3]/k;   
   tmp<-unlist(strsplit(ntsfile[-1],"\\s+"))
-  speclab<-NULL; 
-  if(r.lab==TRUE){
-    speclab<-ntsfile[2:(1+n)]
-    tmp <- tmp[c((length(tmp)-(n*p*k)+1):length(tmp))]
-    # speclab<-tmp[1:n]
-    # tmp<-tmp[-(1:length(speclab))]  
-  }
-  if(c.lab==TRUE){ tmp<-tmp[-(1:(p*k))] }
+  if(r.lab) {
+    speclab<-tmp[1:n]
+    tmp <- tmp[-(1:n)]
+    } else speclab <- NULL
+  if(c.lab) tmp <- tmp[-(1:(p*k))]
   if(missdata==TRUE){tmp[grep(missval,as.integer(tmp))] <- NA}
   options(warn=-1)
   landdata<-matrix(as.numeric(tmp),ncol=k,byrow=TRUE)
