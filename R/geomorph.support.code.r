@@ -1955,7 +1955,7 @@ apply.slopes <- function(pfit, Yr, g=NULL, slope=NULL, data=NULL, Pcor=NULL){
 # advanced.procD.lm
 vec.cor.matrix <- function(M) {
   M = as.matrix(M)
-  w = 1/sqrt(diag(tcrossprod(M)))
+  w = 1/sqrt(rowSums(M^2))
   vc = tcrossprod(M*w)
   options(warn = -1)
   vc
