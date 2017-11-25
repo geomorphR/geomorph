@@ -87,8 +87,8 @@ c9459503ec13f843f971edda31289dc6 *man/print.pls.Rd
 e186bde97e98a204b53457a14eb0a52d *man/print.procD.lm.Rd
 82db8052b9e73e447b14cb5844a0cd26 *man/print.trajectory.analysis.Rd
 2cd3062e457e7e6125d0c96af20f443f *man/procD.allometry.Rd
-4ecf757b5cc536b86277dc5eb789d7ee *man/procD.lm.Rd
-4bccb4aad894b03023f1fd595e55cda3 *man/procD.pgls.Rd
+560c34490c78fe8f622fd927b91a06f5 *man/procD.lm.Rd
+fe8671f1d8b31b03fc0939878c3a4db9 *man/procD.pgls.Rd
 b4d393dc787783cd69ce705e64a8d542 *man/pupfish.Rd
 24203f2fe7e9af73e10becb83f54f937 *man/ratland.Rd
 cb46da06afb9b58e54ad31f7a7a02f4c *man/read.morphologika.Rd
@@ -145,7 +145,7 @@ ddff41e987eac54d3500e2313799c3c6 *R/digitize2d.r
 9cfff0013db7a8c0e4aca770b5d9ea25 *R/findMeanSpec.r
 b56e53ac307d84a05efee9525dd6868a *R/fixed.angle.r
 203177efc30cc6fef4bd604b2fc2af01 *R/geomorph.data.frame.r
-7823865d0e67208d683ea9b08c9a154d *R/geomorph.support.code.r
+934972f4326d13775431f65857bcec5a *R/geomorph.support.code.r
 d9a977d9da97bbcdf710bcffc559e595 *R/geomorph.utils.r
 0d9d88147f22cff2241b6e2e7396d57f *R/globalIntegration.r
 17bbdf1769466f17742de952fb612cc4 *R/gpagen.r
@@ -165,8 +165,8 @@ b9bf50c860e1a582d9e17b604e1133b3 *R/plotOutliers.r
 41db23cebd8d7be6c3decf781bd378e0 *R/plotspec.r
 3a29dd0ba103804d3d7b703172200402 *R/plotTangentSpace.r
 880ea7dce82163dc2b6d8354d73d414d *R/procD.allometry.r
-e0ac00a1e2020de6b318c7192a46d2a9 *R/procD.lm.r
-543d1d655c68752f80ce72a205947473 *R/procD.pgls.r
+85ee57df1cfac458542a9177b461aada *R/procD.lm.r
+6272e502999243341bd1a3ca44481372 *R/procD.pgls.r
 df3f4cc6406dc0c737ee2ff08c2a0e3d *R/read.morphologika.r
 9c3c828f71a413b5437d45228a3bf9b7 *R/read.ply.r
 7f0641e4fc3731624966a5e6578f5790 *R/readland.nts.r

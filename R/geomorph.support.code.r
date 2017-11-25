@@ -1491,7 +1491,7 @@ SS.iter <- function(pfit, iter, seed = NULL, Yalt="RRPP") {
 # calculates F values in random iterations of a resampling procedure, with pgls involved
 # used in the 'procD.lm' functions where pgls is used
 # Formerly Fpgls.iter
-SS.pgls.iter = function(pfit, Pcor, iter, seed=NULL, Yalt="RRPP"){
+SS.pgls.iter <- function(pfit, Pcor, iter, seed=NULL, Yalt="RRPP"){
   P <- Pcor
   fitted <- pfit$fitted.reduced
   res <- pfit$residuals.reduced
@@ -1521,14 +1521,14 @@ SS.pgls.iter = function(pfit, Pcor, iter, seed=NULL, Yalt="RRPP"){
   Ur <- lapply(Xr, function(x) crossprod(P,qr.Q(qr(x))))
   Uf <- lapply(Xf, function(x) crossprod(P,qr.Q(qr(x))))
   Ufull <- Uf[[k]]
-  Unull <- crossprod(P, qr.Q(qr(crossprod(P, matrix(1, n)))))
+  Unull <- Ufull[,1]
   SS <- lapply(1: perms, function(j){
     step <- j
     setTxtProgressBar(pb,step)
     x <-ind[[j]]
     rrpp.args$ind.i <- x
     Yi <- do.call(rrpp, rrpp.args)
-    if(weighted) y <- Y[x,]*w else y <- Y[x,]
+    if(weighted) y <- Yi[[1]]*w else y <- Y[[1]]
     py <- crossprod(P,y); pyy <- sum(py^2)
     c(Map(function(y, ur, uf) sum(crossprod(uf,y)^2) - sum(crossprod(ur,y)^2),
           Yi, Ur, Uf),
@@ -1548,7 +1548,7 @@ SS.pgls.iter = function(pfit, Pcor, iter, seed=NULL, Yalt="RRPP"){
 # same as Fpgls.iter, but without progress bar option
 # used in the 'procD.lm' functions where pgls is used
 # Formerly .Fpgls.iter
-.SS.pgls.iter = function(pfit, Pcor, iter, seed=NULL, Yalt="RRPP"){
+.SS.pgls.iter <- function(pfit, Pcor, iter, seed=NULL, Yalt="RRPP"){
   P <- Pcor
   fitted <- pfit$fitted.reduced
   res <- pfit$residuals.reduced
@@ -1576,12 +1576,12 @@ SS.pgls.iter = function(pfit, Pcor, iter, seed=NULL, Yalt="RRPP"){
   Ur <- lapply(Xr, function(x) crossprod(P,qr.Q(qr(x))))
   Uf <- lapply(Xf, function(x) crossprod(P,qr.Q(qr(x))))
   Ufull <- Uf[[k]]
-  Unull <- crossprod(P, qr.Q(qr(crossprod(P, matrix(1, n)))))
+  Unull <- Ufull[,1]
   SS <- lapply(1: perms, function(j){
     x <-ind[[j]]
     rrpp.args$ind.i <- x
     Yi <- do.call(rrpp, rrpp.args)
-    if(weighted) y <- Y[x,]*w else y <- Y[x,]
+    if(weighted) y <- Yi[[1]]*w else y <- Y[[1]]
     py <- crossprod(P,y); pyy <- sum(py^2)
     c(Map(function(y, ur, uf) sum(crossprod(uf,y)^2) - sum(crossprod(ur,y)^2),
           Yi, Ur, Uf),
@@ -1593,6 +1593,115 @@ SS.pgls.iter = function(pfit, Pcor, iter, seed=NULL, Yalt="RRPP"){
   out <- list(SS = SS[1:k,], SSE = SS[k+1,], SSY = SS[k+2,])
   out
 }
+
+SS.pgls.iter.trans <- function(pfit, Pcor, iter, seed=NULL, Yalt="RRPP"){
+  P <- Pcor
+  fitted <- pfit$fitted.reduced
+  res <- pfit$residuals.reduced
+  Y <- crossprod(P, pfit$Y)
+  dims <- dim(as.matrix(Y))
+  n <- dims[1]; p <- dims[2]
+  ind <- perm.index(n, iter, seed=seed)
+  perms <- length(ind)
+  trms <- pfit$term.labels
+  k <- length(trms)
+  w <- sqrt(pfit$weights)
+  o <- pfit$offset
+  if(sum(w) != n) weighted = TRUE else weighted = FALSE
+  if(sum(o) != 0) offset = TRUE else offset = FALSE
+  cat(paste("\n\nSums of Squares calculations:", perms, "permutations.\n"))
+  pb <- txtProgressBar(min = 0, max = perms+1, initial = 0, style=3)
+  Xr <- lapply(pfit$wXrs, function(x) crossprod(P, as.matrix(x)))
+  Xf <- lapply(pfit$wXfs, function(x) crossprod(P, as.matrix(x)))
+  Ur <- lapply(Xr, function(x) qr.Q(qr(x)))
+  Uf <- lapply(Xf, function(x) qr.Q(qr(x)))
+  Ufull <- Uf[[k]]
+  Unull <- Ufull[,1]
+  if(Yalt == "resample") {
+    fitted <- lapply(fitted, function(.) matrix(0, n, p))
+    res <- lapply(res, function(.) Y)
+  } else {
+    fitted <- Map(function(u) crossprod(tcrossprod(u), Y), Ur)
+    res <- lapply(fitted, function(f) Y - f)
+  }
+  rrpp.args <- list(fitted = fitted, residuals = res,
+                    ind.i = NULL, w = NULL, o = NULL)
+  if(weighted) rrpp.args$w <- w
+  if(offset) rrpp.args$o <- o
+  SS <- lapply(1: perms, function(j){
+    step <- j
+    setTxtProgressBar(pb,step)
+    x <-ind[[j]]
+    rrpp.args$ind.i <- x
+    Yi <- do.call(rrpp, rrpp.args)
+    if(weighted) y <- Yi[[1]]*w else y <- Yi[[1]]
+    py <- y; pyy <- sum(y^2)
+    c(Map(function(y, ur, uf) sum(crossprod(uf,y)^2) - sum(crossprod(ur,y)^2),
+          Yi, Ur, Uf),
+      pyy - sum(crossprod(Ufull, y)^2), pyy - sum(crossprod(Unull, y)^2))
+  })
+  SS <- matrix(unlist(SS), k+2, perms)
+  rownames(SS) <- c(trms, "Residuals", "Total")
+  colnames(SS) <- c("obs", paste("iter", 1:(perms-1), sep=":"))
+  step <- perms + 1
+  setTxtProgressBar(pb,step)
+  close(pb)
+  out <- list(SS = SS[1:k,], SSE = SS[k+1,], SSY = SS[k+2,])
+  out
+}
+
+
+.SS.pgls.iter.trans <- function(pfit, Pcor, iter, seed=NULL, Yalt="RRPP"){
+  P <- Pcor
+  fitted <- pfit$fitted.reduced
+  res <- pfit$residuals.reduced
+  Y <- crossprod(P, pfit$Y)
+  dims <- dim(as.matrix(Y))
+  n <- dims[1]; p <- dims[2]
+  ind <- perm.index(n, iter, seed=seed)
+  perms <- length(ind)
+  trms <- pfit$term.labels
+  k <- length(trms)
+  w <- sqrt(pfit$weights)
+  o <- pfit$offset
+  if(sum(w) != n) weighted = TRUE else weighted = FALSE
+  if(sum(o) != 0) offset = TRUE else offset = FALSE
+  cat(paste("\n\nSums of Squares calculations:", perms, "permutations.\n"))
+  pb <- txtProgressBar(min = 0, max = perms+1, initial = 0, style=3)
+  Xr <- lapply(pfit$wXrs, function(x) crossprod(P, as.matrix(x)))
+  Xf <- lapply(pfit$wXfs, function(x) crossprod(P, as.matrix(x)))
+  Ur <- lapply(Xr, function(x) qr.Q(qr(x)))
+  Uf <- lapply(Xf, function(x) qr.Q(qr(x)))
+  Ufull <- Uf[[k]]
+  Unull <- Ufull[,1]
+  if(Yalt == "resample") {
+    fitted <- lapply(fitted, function(.) matrix(0, n, p))
+    res <- lapply(res, function(.) Y)
+  } else {
+    fitted <- Map(function(u) crossprod(tcrossprod(u), Y), Ur)
+    res <- lapply(fitted, function(f) Y - f)
+  }
+  rrpp.args <- list(fitted = fitted, residuals = res,
+                    ind.i = NULL, w = NULL, o = NULL)
+  if(weighted) rrpp.args$w <- w
+  if(offset) rrpp.args$o <- o
+  SS <- lapply(1: perms, function(j){
+    x <-ind[[j]]
+    rrpp.args$ind.i <- x
+    Yi <- do.call(rrpp, rrpp.args)
+    if(weighted) y <- Yi[[1]]*w else y <- Yi[[1]]
+    py <- y; pyy <- sum(y^2)
+    c(Map(function(y, ur, uf) sum(crossprod(uf,y)^2) - sum(crossprod(ur,y)^2),
+          Yi, Ur, Uf),
+      pyy - sum(crossprod(Ufull, y)^2), pyy - sum(crossprod(Unull, y)^2))
+  })
+  SS <- matrix(unlist(SS), k+2, perms)
+  rownames(SS) <- c(trms, "Residuals", "Total")
+  colnames(SS) <- c("obs", paste("iter", 1:(perms-1), sep=":"))
+  out <- list(SS = SS[1:k,], SSE = SS[k+1,], SSY = SS[k+2,])
+  out
+}
+
 
 # anova.parts
 # makes an ANOVA table based on SS from SS.iter

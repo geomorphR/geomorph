@@ -72,7 +72,10 @@
 #' If seed = "random", a random seed will be used, and P-values will vary.  One can also specify an integer for specific seed values,
 #' which might be of interest for advanced users.
 #' @param int.first A logical value to indicate if interactions of first main effects should precede subsequent main effects
-#' @param RRPP A logical value indicating whether residual randomization should be used for significance testing
+#' @param RRPP A logical value indicating whether residual randomization should be used for significance testing.
+#' @param mod.resid A logical value indicating whether exchangebale units in RRPP are modified residuals (if TRUE)
+#' or unmodified residuals (if FALSE).  If RRPP is false, randomizing raw values is the same as randomizing
+#' residuals of the overall mean.  Thus, modified residuals are the same as transformed values.
 #' @param effect.type One of "F" or "cohen", to choose from which random distribution to estimate effect size.
 #' (The default is "F".  The option, "cohen", refers to Cohen's f-squared values. 
 #' Values are log-transformed before z-score calculation to assure normally distributed effect sizes.)
@@ -114,7 +117,7 @@
 #' pleth.pgls$pgls.fitted #the PGLS fitted values 
 procD.pgls<-function(f1, phy, iter=999, seed=NULL, int.first = FALSE, 
                      effect.type = c("F", "cohen"),
-                     RRPP=TRUE, data=NULL, print.progress = TRUE, ...){
+                     RRPP=TRUE, mod.resid = TRUE, data=NULL, print.progress = TRUE, ...){
   if(int.first==TRUE) ko = TRUE else ko = FALSE
   if(!is.null(data)) data <- droplevels(data)
   pfit <- procD.fit(f1, data=data, keep.order=ko, pca=FALSE, ... )
@@ -144,14 +147,22 @@ procD.pgls<-function(f1, phy, iter=999, seed=NULL, int.first = FALSE,
   Pcor <- fast.solve(eigC.vect%*% diag(sqrt(lambda)) %*% t(eigC.vect)) 
   dimnames(Pcor) <- dimnames(C)
   Pcor <- Pcor[rownames(Y),rownames(Y)]
+  if(RRPP && mod.resid) method = "rrpp.trans"
+  if(RRPP && !mod.resid) method = "rrpp.std"
+  if(!RRPP && mod.resid) method = "frpp.trans"
+  if(!RRPP && !mod.resid) method = "frpp.std"
   
   if(k > 0) {
     if(print.progress) {
-      if(RRPP == TRUE) P <- SS.pgls.iter(pfitr, Yalt="RRPP", Pcor, iter=iter, seed=seed) else 
-        P <- SS.pgls.iter(pfitr, Yalt="resample", Pcor, iter=iter, seed=seed)
+      if(method == "rrpp.std") P <- SS.pgls.iter(pfitr, Yalt="RRPP", Pcor, iter=iter, seed=seed) 
+      if(method == "frpp.std") P <- SS.pgls.iter(pfitr, Yalt="resample", Pcor, iter=iter, seed=seed)
+      if(method == "rrpp.trans") P <- SS.pgls.iter.trans(pfitr, Yalt="RRPP", Pcor, iter=iter, seed=seed)
+      if(method == "frpp.trans") P <- SS.pgls.iter.trans(pfitr, Yalt="resample", Pcor, iter=iter, seed=seed)
     } else {
-      if(RRPP == TRUE) P <- .SS.pgls.iter(pfitr, Yalt="RRPP", Pcor, iter=iter, seed=seed) else 
-        P <- .SS.pgls.iter(pfitr, Yalt="resample", Pcor, iter=iter, seed=seed)
+      if(method == "rrpp.std") P <- .SS.pgls.iter(pfitr, Yalt="RRPP", Pcor, iter=iter, seed=seed) 
+      if(method == "frpp.std") P <- .SS.pgls.iter(pfitr, Yalt="resample", Pcor, iter=iter, seed=seed)
+      if(method == "rrpp.trans") P <- .SS.pgls.iter.trans(pfitr, Yalt="RRPP", Pcor, iter=iter, seed=seed)
+      if(method == "frpp.trans") P <- .SS.pgls.iter.trans(pfitr, Yalt="resample", Pcor, iter=iter, seed=seed)
     }
     anova.parts.obs <- anova.parts(pfitr, P)
     anova.tab <-anova.parts.obs$anova.table 
@@ -203,6 +214,8 @@ procD.pgls<-function(f1, phy, iter=999, seed=NULL, int.first = FALSE,
     class(tab) <- c("anova", class(tab))
     PY <- Pcor%*%pfit$Y; PX <- Pcor%*%pfit$X
     Pfit <- lm.wfit(PX, PY, pfit$weights)
+    SS <- rbind(SS, SSE, SSY)
+    rownames(SS) <- c(pfit$term.labels, "Residuals", "Total")
     out = list(aov.table = tab, call = match.call(),
                coefficients=pfit$wCoefficients.full[[k]],
                Y=pfit$Y,  X=pfit$X, 

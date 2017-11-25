@@ -5,8 +5,8 @@
 \title{Phylogenetic ANOVA/regression for shape data}
 \usage{
 procD.pgls(f1, phy, iter = 999, seed = NULL, int.first = FALSE,
-  effect.type = c("F", "cohen"), RRPP = TRUE, data = NULL,
-  print.progress = TRUE, ...)
+  effect.type = c("F", "cohen"), RRPP = TRUE, mod.resid = TRUE,
+  data = NULL, print.progress = TRUE, ...)
 }
 \arguments{
 \item{f1}{A formula for the linear model (e.g., y ~ x1 + x2)}
@@ -26,7 +26,11 @@ which might be of interest for advanced users.}
 (The default is "F".  The option, "cohen", refers to Cohen's f-squared values. 
 Values are log-transformed before z-score calculation to assure normally distributed effect sizes.)}
 
-\item{RRPP}{A logical value indicating whether residual randomization should be used for significance testing}
+\item{RRPP}{A logical value indicating whether residual randomization should be used for significance testing.}
+
+\item{mod.resid}{A logical value indicating whether exchangebale units in RRPP are modified residuals (if TRUE)
+or unmodified residuals (if FALSE).  If RRPP is false, randomizing raw values is the same as randomizing
+residuals of the overall mean.  Thus, modified residuals are the same as transformed values.}
 
 \item{data}{A data frame for the function environment, see \code{\link{geomorph.data.frame}}}
 

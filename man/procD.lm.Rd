@@ -58,7 +58,7 @@ NULL is returned.}
 \item{R2}{The coefficient of determination for each model term.}
 \item{F}{The F values for each model term.}
 \item{permutations}{The number of random permutations (including observed) used.}
-\item{random.SS}{A matrix or vector of random SS found via the resampling procedure used.}
+\item{random.SS}{A matrix of random SS found via the resampling procedure used.}
 \item{random.F}{A matrix or vector of random F values found via the resampling procedure used.}
 \item{random.cohenf}{A matrix or vector of random Cohen's f-squared values
  found via the resampling procedure used.}

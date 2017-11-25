@@ -107,7 +107,7 @@
 #' \item{R2}{The coefficient of determination for each model term.}
 #' \item{F}{The F values for each model term.}
 #' \item{permutations}{The number of random permutations (including observed) used.}
-#' \item{random.SS}{A matrix or vector of random SS found via the resampling procedure used.}
+#' \item{random.SS}{A matrix of random SS found via the resampling procedure used.}
 #' \item{random.F}{A matrix or vector of random F values found via the resampling procedure used.}
 #' \item{random.cohenf}{A matrix or vector of random Cohen's f-squared values
 #'  found via the resampling procedure used.}
@@ -235,6 +235,8 @@ procD.lm<- function(f1, iter = 999, seed=NULL, RRPP = TRUE, effect.type = c("F",
     if(effect.type == "SS") colnames(tab)[ncol(tab)] <- "Pr(>SS)"
     if(effect.type == "cohen") colnames(tab)[ncol(tab)] <- "Pr(>Cohen f-sq)"
     class(tab) <- c("anova", class(tab))
+    SS <- rbind(SS, SSE, SSY)
+    rownames(SS) <- c(pfit$term.labels, "Residuals", "Total")
     out <- list(aov.table = tab, call = match.call(),
                 coefficients=pfit$wCoefficients.full[[k]], 
                 Y=pfit$Y,  X=pfit$X, 
