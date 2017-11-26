@@ -1488,7 +1488,7 @@ SS.iter <- function(pfit, iter, seed = NULL, Yalt="RRPP") {
 }
 
 # SS.pgls.iter
-# calculates F values in random iterations of a resampling procedure, with pgls involved
+# calculates SS values in random iterations of a resampling procedure, with pgls involved
 # used in the 'procD.lm' functions where pgls is used
 # Formerly Fpgls.iter
 SS.pgls.iter <- function(pfit, Pcor, iter, seed=NULL, Yalt="RRPP"){
@@ -1545,7 +1545,7 @@ SS.pgls.iter <- function(pfit, Pcor, iter, seed=NULL, Yalt="RRPP"){
 }
 
 # .SS.pgls.iter
-# same as Fpgls.iter, but without progress bar option
+# same as SS.pgls.iter, but without progress bar option
 # used in the 'procD.lm' functions where pgls is used
 # Formerly .Fpgls.iter
 .SS.pgls.iter <- function(pfit, Pcor, iter, seed=NULL, Yalt="RRPP"){
@@ -1594,6 +1594,10 @@ SS.pgls.iter <- function(pfit, Pcor, iter, seed=NULL, Yalt="RRPP"){
   out
 }
 
+# SS.pgls.iter.trans
+# Same as SS.pgls.iter but randomizes transformed residuals
+# used in the 'procD.lm' functions where pgls is used
+# Formerly Fpgls.iter
 SS.pgls.iter.trans <- function(pfit, Pcor, iter, seed=NULL, Yalt="RRPP"){
   P <- Pcor
   fitted <- pfit$fitted.reduced
@@ -1650,7 +1654,9 @@ SS.pgls.iter.trans <- function(pfit, Pcor, iter, seed=NULL, Yalt="RRPP"){
   out
 }
 
-
+# .SS.pgls.iter.trans
+# same as SS.pgls.iter.trans, but without progress bar option
+# used in the 'procD.lm' functions where pgls is used
 .SS.pgls.iter.trans <- function(pfit, Pcor, iter, seed=NULL, Yalt="RRPP"){
   P <- Pcor
   fitted <- pfit$fitted.reduced
@@ -1666,7 +1672,6 @@ SS.pgls.iter.trans <- function(pfit, Pcor, iter, seed=NULL, Yalt="RRPP"){
   o <- pfit$offset
   if(sum(w) != n) weighted = TRUE else weighted = FALSE
   if(sum(o) != 0) offset = TRUE else offset = FALSE
-  cat(paste("\n\nSums of Squares calculations:", perms, "permutations.\n"))
   pb <- txtProgressBar(min = 0, max = perms+1, initial = 0, style=3)
   Xr <- lapply(pfit$wXrs, function(x) crossprod(P, as.matrix(x)))
   Xf <- lapply(pfit$wXfs, function(x) crossprod(P, as.matrix(x)))
