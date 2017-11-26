@@ -1597,12 +1597,13 @@ SS.pgls.iter <- function(pfit, Pcor, iter, seed=NULL, Yalt="RRPP"){
 # SS.pgls.iter.trans
 # Same as SS.pgls.iter but randomizes transformed residuals
 # used in the 'procD.lm' functions where pgls is used
-# Formerly Fpgls.iter
+# Note: this function must use weighted procD.fit results, as weights
+# are embedded in modified residuals
 SS.pgls.iter.trans <- function(pfit, Pcor, iter, seed=NULL, Yalt="RRPP"){
   P <- Pcor
-  fitted <- pfit$fitted.reduced
-  res <- pfit$residuals.reduced
-  Y <- crossprod(P, pfit$Y)
+  fitted <- pfit$wFitted.reduced
+  res <- pfit$wResiduals.reduced
+  Y <- crossprod(P, pfit$wY)
   dims <- dim(as.matrix(Y))
   n <- dims[1]; p <- dims[2]
   ind <- perm.index(n, iter, seed=seed)
@@ -1611,7 +1612,6 @@ SS.pgls.iter.trans <- function(pfit, Pcor, iter, seed=NULL, Yalt="RRPP"){
   k <- length(trms)
   w <- sqrt(pfit$weights)
   o <- pfit$offset
-  if(sum(w) != n) weighted = TRUE else weighted = FALSE
   if(sum(o) != 0) offset = TRUE else offset = FALSE
   cat(paste("\n\nSums of Squares calculations:", perms, "permutations.\n"))
   pb <- txtProgressBar(min = 0, max = perms+1, initial = 0, style=3)
@@ -1630,7 +1630,6 @@ SS.pgls.iter.trans <- function(pfit, Pcor, iter, seed=NULL, Yalt="RRPP"){
   }
   rrpp.args <- list(fitted = fitted, residuals = res,
                     ind.i = NULL, w = NULL, o = NULL)
-  if(weighted) rrpp.args$w <- w
   if(offset) rrpp.args$o <- o
   SS <- lapply(1: perms, function(j){
     step <- j
@@ -1638,7 +1637,7 @@ SS.pgls.iter.trans <- function(pfit, Pcor, iter, seed=NULL, Yalt="RRPP"){
     x <-ind[[j]]
     rrpp.args$ind.i <- x
     Yi <- do.call(rrpp, rrpp.args)
-    if(weighted) y <- Yi[[1]]*w else y <- Yi[[1]]
+    y <- Yi[[1]]
     py <- y; pyy <- sum(y^2)
     c(Map(function(y, ur, uf) sum(crossprod(uf,y)^2) - sum(crossprod(ur,y)^2),
           Yi, Ur, Uf),
@@ -1659,9 +1658,9 @@ SS.pgls.iter.trans <- function(pfit, Pcor, iter, seed=NULL, Yalt="RRPP"){
 # used in the 'procD.lm' functions where pgls is used
 .SS.pgls.iter.trans <- function(pfit, Pcor, iter, seed=NULL, Yalt="RRPP"){
   P <- Pcor
-  fitted <- pfit$fitted.reduced
-  res <- pfit$residuals.reduced
-  Y <- crossprod(P, pfit$Y)
+  fitted <- pfit$wFitted.reduced
+  res <- pfit$wResiduals.reduced
+  Y <- crossprod(P, pfit$wY)
   dims <- dim(as.matrix(Y))
   n <- dims[1]; p <- dims[2]
   ind <- perm.index(n, iter, seed=seed)
@@ -1670,7 +1669,6 @@ SS.pgls.iter.trans <- function(pfit, Pcor, iter, seed=NULL, Yalt="RRPP"){
   k <- length(trms)
   w <- sqrt(pfit$weights)
   o <- pfit$offset
-  if(sum(w) != n) weighted = TRUE else weighted = FALSE
   if(sum(o) != 0) offset = TRUE else offset = FALSE
   pb <- txtProgressBar(min = 0, max = perms+1, initial = 0, style=3)
   Xr <- lapply(pfit$wXrs, function(x) crossprod(P, as.matrix(x)))
@@ -1688,13 +1686,12 @@ SS.pgls.iter.trans <- function(pfit, Pcor, iter, seed=NULL, Yalt="RRPP"){
   }
   rrpp.args <- list(fitted = fitted, residuals = res,
                     ind.i = NULL, w = NULL, o = NULL)
-  if(weighted) rrpp.args$w <- w
   if(offset) rrpp.args$o <- o
   SS <- lapply(1: perms, function(j){
     x <-ind[[j]]
     rrpp.args$ind.i <- x
     Yi <- do.call(rrpp, rrpp.args)
-    if(weighted) y <- Yi[[1]]*w else y <- Yi[[1]]
+    y <- Yi[[1]]
     py <- y; pyy <- sum(y^2)
     c(Map(function(y, ur, uf) sum(crossprod(uf,y)^2) - sum(crossprod(ur,y)^2),
           Yi, Ur, Uf),
@@ -1706,7 +1703,6 @@ SS.pgls.iter.trans <- function(pfit, Pcor, iter, seed=NULL, Yalt="RRPP"){
   out <- list(SS = SS[1:k,], SSE = SS[k+1,], SSY = SS[k+2,])
   out
 }
-
 
 # anova.parts
 # makes an ANOVA table based on SS from SS.iter
