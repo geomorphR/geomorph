@@ -1488,10 +1488,10 @@ SS.iter <- function(pfit, iter, seed = NULL, Yalt="RRPP") {
 }
 
 # SS.pgls.iter
-# calculates SS values in random iterations of a resampling procedure, with pgls involved
+# calculates F values in random iterations of a resampling procedure, with pgls involved
 # used in the 'procD.lm' functions where pgls is used
 # Formerly Fpgls.iter
-SS.pgls.iter <- function(pfit, Pcor, iter, seed=NULL, Yalt="RRPP"){
+SS.pgls.iter = function(pfit, Pcor, iter, seed=NULL, Yalt="RRPP"){
   P <- Pcor
   fitted <- pfit$fitted.reduced
   res <- pfit$residuals.reduced
@@ -1521,14 +1521,14 @@ SS.pgls.iter <- function(pfit, Pcor, iter, seed=NULL, Yalt="RRPP"){
   Ur <- lapply(Xr, function(x) crossprod(P,qr.Q(qr(x))))
   Uf <- lapply(Xf, function(x) crossprod(P,qr.Q(qr(x))))
   Ufull <- Uf[[k]]
-  Unull <- Ufull[,1]
+  Unull <- crossprod(P, qr.Q(qr(crossprod(P, matrix(1, n)))))
   SS <- lapply(1: perms, function(j){
     step <- j
     setTxtProgressBar(pb,step)
     x <-ind[[j]]
     rrpp.args$ind.i <- x
     Yi <- do.call(rrpp, rrpp.args)
-    if(weighted) y <- Yi[[1]]*w else y <- Y[[1]]
+    if(weighted) y <- Y[x,]*w else y <- Y[x,]
     py <- crossprod(P,y); pyy <- sum(py^2)
     c(Map(function(y, ur, uf) sum(crossprod(uf,y)^2) - sum(crossprod(ur,y)^2),
           Yi, Ur, Uf),
@@ -1548,7 +1548,7 @@ SS.pgls.iter <- function(pfit, Pcor, iter, seed=NULL, Yalt="RRPP"){
 # same as SS.pgls.iter, but without progress bar option
 # used in the 'procD.lm' functions where pgls is used
 # Formerly .Fpgls.iter
-.SS.pgls.iter <- function(pfit, Pcor, iter, seed=NULL, Yalt="RRPP"){
+.SS.pgls.iter = function(pfit, Pcor, iter, seed=NULL, Yalt="RRPP"){
   P <- Pcor
   fitted <- pfit$fitted.reduced
   res <- pfit$residuals.reduced
@@ -1576,12 +1576,12 @@ SS.pgls.iter <- function(pfit, Pcor, iter, seed=NULL, Yalt="RRPP"){
   Ur <- lapply(Xr, function(x) crossprod(P,qr.Q(qr(x))))
   Uf <- lapply(Xf, function(x) crossprod(P,qr.Q(qr(x))))
   Ufull <- Uf[[k]]
-  Unull <- Ufull[,1]
+  Unull <- crossprod(P, qr.Q(qr(crossprod(P, matrix(1, n)))))
   SS <- lapply(1: perms, function(j){
     x <-ind[[j]]
     rrpp.args$ind.i <- x
     Yi <- do.call(rrpp, rrpp.args)
-    if(weighted) y <- Yi[[1]]*w else y <- Y[[1]]
+    if(weighted) y <- Y[x,]*w else y <- Y[x,]
     py <- crossprod(P,y); pyy <- sum(py^2)
     c(Map(function(y, ur, uf) sum(crossprod(uf,y)^2) - sum(crossprod(ur,y)^2),
           Yi, Ur, Uf),

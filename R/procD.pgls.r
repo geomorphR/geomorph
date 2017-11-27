@@ -154,15 +154,15 @@ procD.pgls<-function(f1, phy, iter=999, seed=NULL, int.first = FALSE,
   
   if(k > 0) {
     if(print.progress) {
-      if(method == "rrpp.std") P <- SS.pgls.iter(pfitr, Yalt="RRPP", Pcor, iter=iter, seed=seed) 
-      if(method == "frpp.std") P <- SS.pgls.iter(pfitr, Yalt="resample", Pcor, iter=iter, seed=seed)
-      if(method == "rrpp.trans") P <- SS.pgls.iter.trans(pfitr, Yalt="RRPP", Pcor, iter=iter, seed=seed)
-      if(method == "frpp.trans") P <- SS.pgls.iter.trans(pfitr, Yalt="resample", Pcor, iter=iter, seed=seed)
+      if(method == "rrpp.std") P <- SS.pgls.iter(pfitr, Pcor=Pcor, iter=iter, seed=seed, Yalt="RRPP")
+      if(method == "frpp.std") P <- SS.pgls.iter(pfitr, Pcor=Pcor, iter=iter, seed=seed, Yalt="resample")
+      if(method == "rrpp.trans") P <- SS.pgls.iter.trans(pfitr, Pcor=Pcor, iter=iter, seed=seed, Yalt="RRPP")
+      if(method == "frpp.trans") P <- SS.pgls.iter.trans(pfitr, Pcor=Pcor, iter=iter, seed=seed, Yalt="resample")
     } else {
-      if(method == "rrpp.std") P <- .SS.pgls.iter(pfitr, Yalt="RRPP", Pcor, iter=iter, seed=seed) 
-      if(method == "frpp.std") P <- .SS.pgls.iter(pfitr, Yalt="resample", Pcor, iter=iter, seed=seed)
-      if(method == "rrpp.trans") P <- .SS.pgls.iter.trans(pfitr, Yalt="RRPP", Pcor, iter=iter, seed=seed)
-      if(method == "frpp.trans") P <- .SS.pgls.iter.trans(pfitr, Yalt="resample", Pcor, iter=iter, seed=seed)
+      if(method == "rrpp.std") P <- .SS.pgls.iter(pfitr, Pcor, Yalt="RRPP",  iter=iter, seed=seed) 
+      if(method == "frpp.std") P <- .SS.pgls.iter(pfitr, Pcor, Yalt="resample",  iter=iter, seed=seed)
+      if(method == "rrpp.trans") P <- .SS.pgls.iter.trans(pfitr, Pcor, Yalt="RRPP", iter=iter, seed=seed)
+      if(method == "frpp.trans") P <- .SS.pgls.iter.trans(pfitr, Pcor, Yalt="resample", iter=iter, seed=seed)
     }
     anova.parts.obs <- anova.parts(pfitr, P)
     anova.tab <-anova.parts.obs$anova.table 
