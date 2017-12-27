@@ -55,6 +55,6 @@ Rohlf, F. J. 2010. tpsRelw: Relative warps analysis. Version 1.49. Department of
   and Evolution, State University of New York at Stony Brook, Stony Brook, NY.
 }
 \author{
-Dean Adams & Emma Sherratt
+Dean Adams, Emma Sherratt, & Michael Collyer
 }
 \keyword{IO}

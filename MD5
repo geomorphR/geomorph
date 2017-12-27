@@ -12,7 +12,7 @@ d8e8360c03c03fe45d2100e9c05d4a89 *data/plethodon.rda
 41c8e8cfb24817d077750b01e8958b44 *DESCRIPTION
 1d90d3f2b01906fcf92cbd927743b16e *geomorph.Rproj
 9e4277cf48ca3337a61997394e824532 *inst/CITATION
-e0265dc02d2dd5116f8d2b3ab7caad1e *man/advanced.procD.lm.Rd
+bd797976ebdcf17c03e8d2dfffb146e2 *man/advanced.procD.lm.Rd
 5e099c6268d251bf5c98595d9566385a *man/arrayspecs.Rd
 5de12ec69c1a0cfc45daf0c5640efc14 *man/bilat.symmetry.Rd
 5a3e03eb2accf1269a9cf8c049adae78 *man/buildtemplate.Rd
@@ -94,7 +94,7 @@ b4d393dc787783cd69ce705e64a8d542 *man/pupfish.Rd
 cb46da06afb9b58e54ad31f7a7a02f4c *man/read.morphologika.Rd
 264a8a7606d0f550aa7cc4c9abdb76cb *man/read.ply.Rd
 64f811957932c1d67cc8324ee2f706e5 *man/readland.nts.Rd
-966f9d68d5bb1cb659253fcbf7462b05 *man/readland.tps.Rd
+f8f42ae1f37f2bcc753bb44d82763feb *man/readland.tps.Rd
 d7ab7b16621a488c2daa709d10af488b *man/readmulti.nts.Rd
 8be198584c10582597e98c6cecbb26f7 *man/scallopPLY.Rd
 c4f3fe2e244677c2504bbe0283590d1c *man/scallops.Rd
@@ -123,7 +123,7 @@ da1241dd835f95675cc7126b2a7ec61a *man/two.d.array.Rd
 550c6adc8cd9bf90f6be30819dad83fc *man/writeland.tps.Rd
 93ea77c450f07778e3ef2c9d5500eb42 *NAMESPACE
 bb9e5056e07c43503360fa142e156e8f *NEWS
-d21bcb56febb51a68e9fd1d2d72eae56 *R/advanced.procD.lm.r
+b5f5a1f9a5435c8bb0c8c6d1ad406510 *R/advanced.procD.lm.r
 311a910118a6b60a5ab89a58349e1f69 *R/arrayspecs.r
 d980a87857f224470f10d92ac8d50779 *R/bilat.symmetry.r
 14713bbb2ad126d777d95e359c71bf1a *R/build.template.r
@@ -145,7 +145,7 @@ ddff41e987eac54d3500e2313799c3c6 *R/digitize2d.r
 9cfff0013db7a8c0e4aca770b5d9ea25 *R/findMeanSpec.r
 b56e53ac307d84a05efee9525dd6868a *R/fixed.angle.r
 203177efc30cc6fef4bd604b2fc2af01 *R/geomorph.data.frame.r
-40d3ed8d140ffeb878b478f1a06e057c *R/geomorph.support.code.r
+3a62a91f7534fac06f991bd3e48d1393 *R/geomorph.support.code.r
 d9a977d9da97bbcdf710bcffc559e595 *R/geomorph.utils.r
 0d9d88147f22cff2241b6e2e7396d57f *R/globalIntegration.r
 17bbdf1769466f17742de952fb612cc4 *R/gpagen.r
@@ -170,7 +170,7 @@ b8e08a315b3c34603f20a9664a853029 *R/plotOutliers.r
 df3f4cc6406dc0c737ee2ff08c2a0e3d *R/read.morphologika.r
 9c3c828f71a413b5437d45228a3bf9b7 *R/read.ply.r
 7f0641e4fc3731624966a5e6578f5790 *R/readland.nts.r
-aab11f6c7d3a5863a3ad10bf88af789a *R/readland.tps.r
+2813f6c01bdddb2dc7f47a6c898de2a5 *R/readland.tps.r
 945534fe7f30c519cd5a6663a9b882a3 *R/readmulti.nts.r
 bb92986b568b7e9176ff879b2e0ce9d9 *R/shape.predictor.r
 cfc91ef2ff02ff96d0ba126336615d43 *R/trajectory.analysis.r

@@ -177,6 +177,59 @@ mshape<-function(A){
 
 # SUPPORT FUNCTIONS
 
+# scanTPS
+# Scans data and other info from TPS files
+# used by readland.tps
+scanTPS <- function(file) {
+  ignore.case = TRUE
+  tpsfile <- scan(file = file, what = "char", sep = "\t", quiet = TRUE)
+  commline <- grep("COMMENT=", tpsfile, ignore.case)
+  if(length(commline) != 0) tpsfile <- tpsfile[-commline] # removes COMMENT= lines
+  lmline <- grep("LM=", tpsfile, ignore.case)
+  if(length(lmline) == 0) lmline <- grep("LM3=", tpsfile, ignore.case)
+  if(length(lmline) == 0) stop("No landmark command provided; e.g., 'LM=' or 'LM3=")
+  endline <- lmline[-1] - 1
+  endline <- c(endline, length(tpsfile))
+  n <- length(lmline)
+  spec.list <- lapply(1:n, function(j){
+    start <- lmline[j]
+    end <- endline[j]
+    temp <- tpsfile[start:end]
+    lml <- grep("LM", temp)
+    crvl <- grep("CURVES", temp)
+    cptl <- grep("POINTS", temp)
+    scl <- grep("SCALE", temp)
+    iml <- grep("IMAGE", temp)
+    idl <- grep("ID", temp)
+    notlm <- grep("=", temp)
+    templm <- strsplit(temp[-notlm], "\\s+")
+    lm <- lapply(templm, as.numeric)
+    p <- length(lm)
+    k <- sapply(lm, length)
+    if(length(unique(k)) == 1) k <- unique(k)
+    scale <- as.numeric(unlist(strsplit(temp[scl], "SCALE="))[2])
+    id <- unlist(strsplit(temp[idl], "ID="))[2]
+    image <- unlist(strsplit(temp[iml], "IMAGE="))[2]
+    image <- sub(".jpg", "", image, ignore.case)
+    image <- sub(".tif", "", image, ignore.case)
+    image <- sub(".bmp", "", image, ignore.case)
+    image <- sub(".tiff", "", image, ignore.case)
+    image <- sub(".jpeg", "", image, ignore.case)
+    image <- sub(".jpe", "", image, ignore.case)
+    plm <- as.numeric(unlist(strsplit(temp[lml], "="))[2])
+    pcv <- p - plm
+    if(p > plm) {
+      curve.lm <- lm[-(1:plm)] 
+      lm <- lm[1:plm]
+      curve.pts <- as.vector(na.omit(as.numeric(unlist(strsplit(temp[cptl], "POINTS=")))))
+    } else curve.lm <- curve.pts <- NULL
+    
+    out <- list(lm = lm, curve.lm = curve.lm, p = p, plm = plm, pcv = pcv,
+                k = k, curve.pts = curve.pts, scale = scale, id = id, image = image)
+    out  
+  })
+}
+
 # center
 # centers a matrix faster than scale()
 # used in other functions for gpagen; digitsurface
@@ -1554,6 +1607,84 @@ SS.iter.null <- function(fit, ind, P = NULL, RRPP=TRUE, print.progress = TRUE) {
     setTxtProgressBar(pb,step)
     close(pb)
   }
+  SS
+}
+
+RSS.iter <- function(fitr, fitf, ind, P = NULL, print.progress = TRUE) {
+  if(!is.null(P)) gls = TRUE else gls = FALSE
+  RRPP <- TRUE
+  perms <- length(ind)
+  Y <- fitf$wY
+  dims <- dim(as.matrix(Y))
+  n <- dims[1]; p <- dims[2]
+  kf <- length(fitf$term.labels)
+  kr <- length(fitr$term.labels)
+  if(kr == 0) kr = 1
+  w <- sqrt(fitf$weights)
+  o <- fitf$offset
+  if(sum(o) != 0) offset = TRUE else offset = FALSE
+  rrpp.args <- list(fitted = NULL, residuals = NULL,
+                    ind.i = NULL, w = NULL, o = NULL)
+  if(offset) rrpp.args$o <- o
+  if(print.progress){
+    cat(paste("\nSums of Squares calculations:", perms, "permutations.\n"))
+    pb <- txtProgressBar(min = 0, max = perms+1, initial = 0, style=3)
+  }
+  if(gls){
+    Y <- crossprod(P, Y)
+    dims <- dim(Y)
+    n <- dims[1]; p <- dims[2]
+    Xf <- crossprod(P, fitf$wXfs[[kf]])
+    Xr <- crossprod(P, fitr$wXfs[[kr]])
+    Uf <- qr.Q(qr(Xf))
+    Ur <- qr.Q(qr(Xr))
+    Unull <- Uf[,1]
+    fitted <- fastFit(Ur, Y, n, p)
+    res <- Y - fitted
+    rrpp.args$fitted <- list(fitted)
+    rrpp.args$residuals <- list(res)
+    SS <- lapply(1: perms, function(j){
+      step <- j
+      if(print.progress) setTxtProgressBar(pb,step)
+      x <-ind[[j]]
+      rrpp.args$ind.i <- x
+      Yi <- do.call(rrpp, rrpp.args)
+      y <- Yi[[1]]
+      pyy <- sum(y^2)
+      c(pyy - sum(crossprod(Ur, y)^2),
+        pyy - sum(crossprod(Uf, y)^2),
+        pyy - sum(crossprod(Unull, y)^2))
+    })
+  } else {
+    fitted <- fitr$wFitted.full[[kr]]
+    res <- fitr$wResiduals.full[[kr]]
+    rrpp.args$fitted <- list(fitted)
+    rrpp.args$residuals <- list(res)
+    Uf <- qr.Q(fitf$wQRs.full[[kf]])
+    Ur <- qr.Q(fitr$wQRs.full[[kr]])
+    Unull <- Uf[,1]
+    SS <- lapply(1: perms, function(j){
+      step <- j
+      if(print.progress) setTxtProgressBar(pb,step)
+      x <-ind[[j]]
+      rrpp.args$ind.i <- x
+      Yi <- do.call(rrpp, rrpp.args)
+      y <- Yi[[1]]
+      yy <- sum(y^2)
+      c(yy - sum(crossprod(Ur, y)^2),
+        yy - sum(crossprod(Uf, y)^2),
+        yy - SS.mean(y, n))
+    })
+  }
+  names(SS) <- c("obs", paste("iter", 1:(perms-1), sep=":"))
+  step <- perms + 1
+  if(print.progress) {
+    setTxtProgressBar(pb,step)
+    close(pb)
+  }
+  SS <-matrix(unlist(SS), 3, perms)
+  colnames(SS) <- c("obs", paste("iter", 1:(perms-1), sep=":"))
+  rownames(SS) <- c("RSSr", "RSSf", "SSY")
   SS
 }
 
