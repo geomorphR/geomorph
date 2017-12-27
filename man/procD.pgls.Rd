@@ -5,8 +5,7 @@
 \title{Phylogenetic ANOVA/regression for shape data}
 \usage{
 procD.pgls(f1, phy, iter = 999, seed = NULL, int.first = FALSE,
-  effect.type = c("F", "cohen"), RRPP = TRUE, mod.resid = TRUE,
-  data = NULL, print.progress = TRUE, ...)
+  effect.type = c("F", "cohen"), data = NULL, print.progress = TRUE, ...)
 }
 \arguments{
 \item{f1}{A formula for the linear model (e.g., y ~ x1 + x2)}
@@ -26,22 +25,12 @@ which might be of interest for advanced users.}
 (The default is "F".  The option, "cohen", refers to Cohen's f-squared values. 
 Values are log-transformed before z-score calculation to assure normally distributed effect sizes.)}
 
-\item{RRPP}{A logical value indicating whether residual randomization should be used for significance testing.}
-
-\item{mod.resid}{A logical value indicating whether exchangebale units in RRPP are modified residuals (if TRUE)
-or unmodified residuals (if FALSE).  If RRPP is false, randomizing raw values is the same as randomizing
-residuals of the overall mean.  Thus, modified residuals are the same as transformed values.}
-
 \item{data}{A data frame for the function environment, see \code{\link{geomorph.data.frame}}}
 
 \item{print.progress}{A logical value to indicate whether a progress bar should be printed to the screen.
 This is helpful for long-running analyses.}
 
-\item{...}{Arguments passed on to procD.fit (typically associated with the lm function,
-such as weights or offset).  The function procD.fit can also currently
-handle either type I, type II, or type III sums of squares and cross-products (SSCP) calculations.  Choice of SSCP type can be made with the argument,
-SS.type; i.e., SS.type = "I" or SS.type = "III".  Only advanced users should consider using these additional arguments, as such arguments
-are experimental in nature.}
+\item{...}{Arguments passed on to \code{\link{procD.lm}}.}
 }
 \value{
 procD.lm.pgls returns an object of class "procD.lm".  
@@ -49,7 +38,7 @@ See \code{\link{procD.lm}} for a description of the list of results generated.  
 the phylogenetic correction matrix, Pcor, plus "pgls" adjusted coefficients, fitted values, residuals, and mean.
 }
 \description{
-Function performs Procrustes ANOVA in a phylogenetic framework and uses  permutation procedures to assess 
+Function performs Procrustes ANOVA in a phylogenetic framework and uses permutation procedures to assess 
 statistical hypotheses describing patterns of shape variation and covariation for a set of Procrustes-aligned coordinates
 }
 \details{
@@ -57,7 +46,7 @@ The function performs ANOVA and regression models in a phylogenetic context unde
 in a manner that can accommodate 
 high-dimensional datasets. The approach is derived from the statistical equivalency between parametric methods 
 utilizing covariance matrices and methods based on distance matrices (Adams 2014). Data input is specified by 
-a formula (e.g., y~X), where 'y' specifies the response variables (shape data), and 'X' contains one or more 
+a formula (e.g., y ~ X), where 'y' specifies the response variables (shape data), and 'X' contains one or more 
 independent variables (discrete or continuous). The response matrix 'Y' can be either in the form of a two-dimensional data 
 matrix of dimension (n x [p x k]), or a 3D array (p x n x k).  It is assumed that the landmarks have previously 
 been aligned using Generalized Procrustes Analysis (GPA) [e.g., with \code{\link{gpagen}}].
@@ -77,18 +66,8 @@ The function \code{\link{two.d.array}} can be used to obtain a two-dimensional d
   model (Y ~ X), from which sums-of-squares, F-ratios, and R-squared are estimated for each factor in the model (see Adams, 2014). 
   Data are then permuted across the tips of the phylogeny, and all estimates of statistical values are obtained for the permuted data,
   which are compared to the observed value to assess significance. This approach has been shown to have appropriate type I error
-  rates, whereas an alternative procedure for phylogenetic regression of morphometric shape data displays elevated type I error rates
-  (see Adams and Collyer 2015). 
-  
-  Two possible resampling procedures are provided. First, if RRPP=FALSE, 
-  the rows of the matrix of shape variables 
-  are randomized relative to the design matrix. This is analogous to a 'full' randomization. Second, if RRPP=TRUE,
-  a residual randomization permutation procedure is utilized (Collyer et al. 2015). Here, residual shape values from a reduced model are
-  obtained, and are randomized with respect to the linear model under consideration. These are then added to 
-  predicted values from the remaining effects to obtain pseudo-values from which SS are calculated. NOTE: for
-  single-factor designs, the two approaches are identical.  However, when evaluating factorial models it has been
-  shown that RRPP attains higher statistical power and thus has greater ability to identify patterns in data should
-  they be present (see Anderson and terBraak 2003). 
+  rates 9Adams and Collyer 2018), whereas an alternative procedure for phylogenetic regression of morphometric shape data displays elevated 
+  type I error rates (see Adams and Collyer 2015). 
   
   Effect-sizes (Z scores) are computed as standard deviates of either the 
   F or Cohen's f-squared sampling distributions generated, which might be more intuitive for P-values than F-values 
@@ -103,6 +82,13 @@ The function \code{\link{two.d.array}} can be used to obtain a two-dimensional d
 
 The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{procD.pgls}}.
   The generic function, \code{\link{plot}}, produces diagnostic plots for Procrustes residuals of the linear fit.
+  
+ \subsection{Notes for geomorph 3.0.7 and subsequent versions}{ 
+ Compared to previous versions, GLS computations in random permutations require RRPP (Adams and Collyer 2018).  Thus, 
+ full randomization is no longer permitted with this function.  This function uses \code{\link{procD.lm}}, after calculating 
+ a phylogenetic covariance matrix, and with the constraint of RRPP.  If alternative covariance matrices or permutation methods 
+ are preferred, one can use \code{\link{procD.lm}}, which has greater flexibility.
+}
   
  \subsection{Notes for geomorph 3.0.4 and subsequent versions}{ 
  Compared to previous versions of geomorph, users might notice differences in effect sizes.  Previous versions used z-scores calculated with 
@@ -119,14 +105,17 @@ The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\li
 data(plethspecies)
 Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment
 gdf <- geomorph.data.frame(Y.gpa, phy = plethspecies$phy)
-procD.pgls(coords ~ Csize, phy = phy, data = gdf, iter = 999, RRPP = FALSE) # randomize raw values
-procD.pgls(coords ~ Csize, phy = phy, data = gdf, iter = 999, RRPP = TRUE) # randomize residuals
+procD.pgls(coords ~ Csize, phy = phy, data = gdf, iter = 999) 
+
+# The same analysis with procD.lm
+PCov <- vcv.phylo(plethspecies$phy) # requires ape package
+procD.lm(coords ~ Csize, Cov = PCov, data = gdf, iter = 999, RRPP = TRUE)
 
 ### Extracting objects
-pleth.pgls <- procD.pgls(coords ~ Csize, phy = phy, data = gdf, iter = 999, RRPP = TRUE)
+pleth.pgls <- procD.pgls(coords ~ Csize, phy = phy, data = gdf, iter = 999)
 summary(pleth.pgls) 
 plot(pleth.pgls)
-pleth.pgls$Pcor # the phylogenetic transformation (correction) matrix
+pleth.pgls$Pcov # the projection matrix derived from the phylogenetic covariance matrix
 pleth.pgls$pgls.fitted #the PGLS fitted values 
 }
 \references{
@@ -141,6 +130,8 @@ by high-dimensional data. Heredity. 115:357-365.
 
 Adams, D.C. and M.L. Collyer. 2016.  On the comparison of the strength of morphological integration across morphometric 
 datasets. Evolution. 70:2623-2631.
+
+Adams, D.C. and M.L. Collyer. 2016. TBD (insipient ms)
 }
 \author{
 Dean Adams and Michael Collyer

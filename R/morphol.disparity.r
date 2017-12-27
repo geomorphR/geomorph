@@ -152,7 +152,7 @@ morphol.disparity <- function(f1, groups = NULL, iter = 999, seed = NULL,
           \n\n\n.")
       if(length(gps) == 0) pv = sum(R^2)/nrow(R) else {
         Xgps <- model.matrix(~ gps + 0, data =) * w
-        if(!is.null(f1$pgls.residuals)) Xgps <- crossprod(f1$Pcor, Xgps)
+        if(!is.null(f1$pgls.residuals)) Xgps <- crossprod(f1$Pcov, Xgps)
         d <- diag(tcrossprod(R))
         pv <- coef(lm.fit(Xgps, d))
       }
@@ -165,7 +165,7 @@ morphol.disparity <- function(f1, groups = NULL, iter = 999, seed = NULL,
         gps <- as.factor(unlist(gps))
       if(length(gps) == 0) pv = sum(R^2)/nrow(R) else {
         Xgps <- model.matrix(~ gps + 0) * w
-        if(!is.null(f1$pgls.residuals)) Xgps <- crossprod(f1$Pcor, Xgps)
+        if(!is.null(f1$pgls.residuals)) Xgps <- crossprod(f1$Pcov, Xgps)
         d <- diag(tcrossprod(R))
         pv <- coef(lm.fit(Xgps, d))
       }

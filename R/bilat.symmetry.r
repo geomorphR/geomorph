@@ -86,6 +86,8 @@
 #' \item{random.shape.F}{A matrix of random F-values from the Shape analysis.}
 #' \item{random.size.F}{A matrix of random F-values from the Centroid Size analysis.}
 #' \item{perm.method}{A value indicating whether "Raw" values were shuffled or "RRPP" performed.}
+#' \item{procD.lm.shape}{A list of typical output from an objeect of class procD.lm, for shape}
+#' \item{procD.lm.size}{If applicable, a list of typical output from an objeect of class procD.lm, for size.}
 #' \item{call}{The matched call.}
 #' 
 #' @references Klingenberg, C.P. and G.S. McIntyre. 1998. Quantitative genetics of geometric shape in the mouse mandible. Evolution. 55:2342-2352.
@@ -190,53 +192,60 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
   }
   Y <- two.d.array(A)
   if(!is.null(replicate)) {
-    form.shape <- Y ~ ind*side + ind:side:replicate 
+    form.shape <- Y ~ ind + side + ind/side 
+    form.names <- c("ind", "side", "ind:side", "ind:side:replicate", "Total")
     dat.shape <- geomorph.data.frame(Y = Y, ind = ind, side = side, replicate = replicate)
   } else {
-    form.shape <- Y ~ ind*side
+    form.shape <- Y ~ ind + side 
+    form.names <- c("ind", "side", "ind:side", "Total")
     dat.shape <- geomorph.data.frame(Y = Y, ind = ind, side = side)
   }
-  pfitSh <- procD.fit(form.shape, data = dat.shape, keep.order = TRUE)
-  kSh <- length(pfitSh$term.labels)
-  if(!is.null(seed) && seed=="random") seed = sample(1:iter, 1)
   if(print.progress) cat("\nShape Analysis")
-  if(print.progress) {
-    if(RRPP == TRUE) PSh <- SS.iter(pfitSh,Yalt="RRPP", iter=iter, seed=seed) else 
-      PSh <- .SS.iter(pfitSh, Yalt="resample", iter=iter, seed=seed)
-  } else {
-    if(RRPP == TRUE) PSh <- .SS.iter(pfitSh,Yalt="RRPP", iter=iter, seed=seed) else 
-      PSh <- .SS.iter(pfitSh, Yalt="resample", iter=iter, seed=seed)
+  PSh <- procD.lm(form.shape, data = dat.shape, RRPP = RRPP, 
+           seed = seed, iter= iter, print.progress = print.progress, 
+           effect.type = "F")
+  random.shape.F <- PSh$random.F
+  if(length(form.names) > 4) {
+    SS <- PSh$random.SS
+    df.mat <- matrix(PSh$df, NROW(SS), NCOL(SS))
+    MS <- SS/df.mat
+    random.shape.F[1,] <- MS[1,]/MS[3,]
+    random.shape.F[2,] <- MS[2,]/MS[3,]
+    random.shape.F[3,] <- MS[3,]/MS[4,]
+    PSh$random.F <- random.shape.F
+    newZ <- apply(log(random.shape.F), 1, effect.size)
+    PSh$aov.table$F[1:3] <- random.shape.F[1:3, 1]
+    PSh$aov.table$Z[1:3] <- newZ[1:3]
+    rownames(PSh$aov.table) <- form.names
   }
-  anova.parts.Sh <- anova.parts.symmetry(pfitSh, PSh, object.sym)
-  anovaSh <-anova.parts.Sh$anova.table 
-  Sh.random.Fs <-anova.parts.Sh$random.Fs
-  if(is.matrix(Sh.random.Fs))
-    colnames(Sh.random.Fs) <- c("obs", paste("iter", 1:iter, sep=":")) else
-      names(Sh.random.Fs) <-c("obs", paste("iter", 1:iter, sep=":"))
-  
+  shape.anova <- PSh$aov.table
   if(object.sym==FALSE){  
     if(!is.null(replicate)) {
-      form.size <- size~ind*side+ind:side:replicate 
+      form.size <- size ~ ind + side + ind/side 
       dat.size <- geomorph.data.frame(size = size, ind = ind, side = side, replicate = replicate)
     } else {
-      form.size <- size~ind*side
+      form.size <- size ~ ind + side 
       dat.size <- geomorph.data.frame(size = size, ind = ind, side = side)
     }
-    pfitSz=procD.fit(form.size, data=dat.size, keep.order=TRUE)
     if(print.progress) cat("\nSize Analysis")
-    if(print.progress) {
-      if(RRPP == TRUE) PSz <- SS.iter(pfitSz,Yalt="RRPP", iter=iter, seed=seed) else 
-        PSz <- SS.iter(pfitSz, Yalt="resample", iter=iter, seed=seed)
-    } else {
-      if(RRPP == TRUE) PSz <- .SS.iter(pfitSz,Yalt="RRPP", iter=iter, seed=seed) else 
-        PSz <- .SS.iter(pfitSz, Yalt="resample", iter=iter, seed=seed)
+    PSz <- procD.lm(form.size, data = dat.size, RRPP = RRPP, 
+                    seed = seed, iter= iter, print.progress = print.progress, 
+                    effect.type = "F")
+    random.size.F <- PSz$random.F
+    if(length(form.names) > 4) {
+      SS <- PSz$random.SS
+      df.mat <- matrix(PSz$df, NROW(SS), NCOL(SS))
+      MS <- SS/df.mat
+      random.size.F[1,] <- MS[1,]/MS[3,]
+      random.size.F[2,] <- MS[2,]/MS[3,]
+      random.size.F[3,] <- MS[3,]/MS[4,]
+      PSz$random.F <- random.size.F
+      newZ <- apply(log(random.size.F), 1, effect.size)
+      PSz$aov.table$F[1:3] <- random.size.F[1:3, 1]
+      PSz$aov.table$Z[1:3] <- newZ[1:3]
+      rownames(PSz$aov.table) <- form.names
     }
-    anova.parts.Sz <- anova.parts.symmetry(pfitSz, PSz, object.sym)
-    anovaSz <-anova.parts.Sz$anova.table 
-    Sz.random.Fs <-anova.parts.Sz$random.Fs
-    if(is.matrix(Sz.random.Fs))
-      colnames(Sz.random.Fs) <- c("obs", paste("iter", 1:iter, sep=":")) else
-        names(Sz.random.Fs) <-c("obs", paste("iter", 1:iter, sep=":"))
+    size.anova <- PSz$aov.table
   }
   # build shape components for output
   if(object.sym==FALSE){
@@ -276,29 +285,26 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
   FA.component<-simplify2array(lapply(1:n.ind, function(j) 
   {t(matrix(FA.component[j,],k,p)) + mn.shape - mn.DA}))
   dimnames(FA.component)[[3]] <- dimnames(symm.component)[[3]] 
-  colnames(anovaSh)[1] <- "Df"
-  colnames(anovaSh)[ncol(anovaSh)] <- "Pr(>F)"
-  class(anovaSh) <- c("anova", class(anovaSh))
+
   if(object.sym==FALSE){
-    colnames(anovaSz)[1] <- "Df"
-    colnames(anovaSz)[ncol(anovaSz)] <- "Pr(>F)"
-    class(anovaSz) <- c("anova", class(anovaSz))
-    out<-list(size.anova = anovaSz, shape.anova = anovaSh, symm.shape = symm.component,
+    out<-list(size.anova = size.anova, shape.anova = shape.anova, symm.shape = symm.component,
               asymm.shape = asymm.component, DA.component = DA.mns, FA.component = FA.component,
               data.type = ifelse(object.sym==TRUE,"Object", "Matching"),
               FA.mns = FA.component, DA.mns = DA.mns,
               permutations = iter+1,
-              random.shape.F = Sh.random.Fs, random.size.F = Sz.random.Fs,
+              random.shape.F = random.shape.F, random.size.F = random.size.F,
               perm.method = ifelse(RRPP==TRUE,"RRPP", "Raw"),
+              procD.lm.shape = PSh, procD.lm.size = PSz,
               call=match.call()) }
   if(object.sym==TRUE){
-    out<-list(size.anova = NULL, shape.anova = anovaSh, symm.shape = symm.component,
+    out<-list(size.anova = NULL, shape.anova = shape.anova, symm.shape = symm.component,
               asymm.shape = asymm.component, DA.component = DA.mns, FA.component = FA.component,
               data.type = ifelse(object.sym==TRUE,"Object", "Matching"),
               FA.mns = FA.component, DA.mns = DA.mns,
               permutations = iter+1,
-              random.shape.F = Sh.random.Fs, random.size.F = NULL,
+              random.shape.F = random.shape.F, random.size.F = NULL,
               perm.method = ifelse(RRPP==TRUE,"RRPP", "Raw"),
+              procD.lm.shape = PSh,
               call=match.call()) }
   class(out) <- "bilat.symmetry"
   out  

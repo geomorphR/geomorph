@@ -55,6 +55,12 @@
 #'   for details. In these plotting options, the predictor does not need to be size, and fitted values and residuals from the procD.lm fit are used rather 
 #'   than mean-centered values. 
 #'   
+#'  \subsection{Notes for geomorph 3.0.7 and subsequent versions}{ 
+#'  Compared to previous versions, GLS computations in random permutations are not possible in procD.lm.  One should use
+#'  RRPP = TRUE is a covariance matrix is provided as an argument.  The method of SS calculations follows
+#'  Adams and Collyer 2018.  Additonal output with a "gls." prefix is also available.
+#' }
+#'   
 #'  \subsection{Notes for geomorph 3.0.4 and subsequent versions}{ 
 #'  Compared to previous versions of geomorph, users might notice differences in effect sizes.  Previous versions used z-scores calculated with 
 #'  expected values of statistics from null hypotheses (sensu Collyer et al. 2015); however Adams and Collyer (2016) showed that expected values 
@@ -76,6 +82,8 @@
 #' (The option, "cohen", is for Cohen's f-squared values.  The default is "F".  Values are log-transformed before z-score calculation to
 #' assure normally distributed data.)
 #' @param int.first A logical value to indicate if interactions of first main effects should precede subsequent main effects
+#' @param Cov An optional covariance matrix that can be used for generalized least squares estimates of
+#' coefficients and sums of squares and cross-products (see Adams and Collyer 2018).
 #' @param data A data frame for the function environment, see \code{\link{geomorph.data.frame}} 
 #' @param print.progress A logical value to indicate whether a progress bar should be printed to the screen.  
 #' This is helpful for long-running analyses.
@@ -114,6 +122,7 @@
 #' \item{permutations}{The number of random permutations (including observed) used.}
 #' \item{effect.type}{The distribution used to estimate effect-size.}
 #' \item{perm.method}{A value indicating whether "Raw" values were shuffled or "RRPP" performed.}
+#' \item{gls}{This prefix will be used if a covariance matrix is provided to indicate GLS computations.}
 #' @references Anderson MJ. 2001. A new method for non-parametric multivariate analysis of variance. 
 #'    Austral Ecology 26: 32-46.
 #' @references Anderson MJ. and C.J.F. terBraak. 2003. Permutation tests for multi-factorial analysis of variance.
@@ -124,6 +133,7 @@
 #' by high-dimensional data. Heredity. 115:357-365.
 #' @references Adams, D.C. and M.L. Collyer. 2016.  On the comparison of the strength of morphological integration across morphometric 
 #' datasets. Evolution. 70:2623-2631.
+#' @references Adams, D.C. and M.L. Collyer. 2016. TBD (insipient ms)
 #' @seealso \code{\link{advanced.procD.lm}}, \code{\link{procD.pgls}}, and 
 #' \code{\link{nested.update}} within geomorph; \code{\link[stats]{lm}} for more on linear model fits.
 #' @examples
@@ -173,7 +183,7 @@
 #' attributes(rat.anova)
 #' rat.anova$fitted # just the fitted values
 procD.lm<- function(f1, iter = 999, seed=NULL, RRPP = TRUE, effect.type = c("F", "SS", "cohen"),
-                    int.first = FALSE,  data=NULL, print.progress = TRUE, ...){
+                    int.first = FALSE,  Cov = NULL, data=NULL, print.progress = TRUE, ...){
   if(int.first) ko = TRUE else ko = FALSE
   if(!is.null(data)) data <- droplevels(data)
   pfit <- procD.fit(f1, data=data, keep.order=ko,  pca=FALSE, ...)
@@ -183,59 +193,62 @@ procD.lm<- function(f1, iter = 999, seed=NULL, RRPP = TRUE, effect.type = c("F",
   k <- length(pfit$term.labels)
   if(p > n) pfitr <- procD.fit(f1, data=data, keep.order=ko,  pca=TRUE, ...) else
     pfitr <- pfit
+  id <- rownames(Y)
+  ind <- perm.index(n, iter=iter, seed = seed)
+  SS.args <- list(fit = pfitr, ind = ind, P = NULL,
+                  RRPP = RRPP, print.progress = print.progress)
+  if(!is.null(Cov)){
+    Cov.name <- deparse(substitute(Cov))
+    Cov.match <- match(Cov.name, names(data))
+    if(length(Cov.match) > 1) stop("More than one object matches covariance matrix name")
+    if(all(is.na(Cov.match))) Cov <- Cov else Cov <- data[[Cov.match]]
+    if(!is.matrix(Cov)) stop("The covariance matrix must be a matrix.")
+    dimsC <- dim(Cov)
+    if(!all(dimsC == n))
+      stop("Either one or both of the dimensions of the covariance matrix do not match the number of observations.")
+    if(is.null(id) || is.null(rownames(Cov))) 
+      cat("\nWarning: No names to match between data and covariance matrix; consistent order is assumed.\n")
+    Pcov <- Cov.proj(Cov, id)
+    SS.args$P <- Pcov
+  } else {
+    Pcov <- NULL
+  }
   if(k > 0) {
-    if(print.progress == TRUE){
-      if(RRPP == TRUE) P <- SS.iter(pfitr, Yalt="RRPP", iter=iter, seed=seed) else 
-        P <- SS.iter(pfitr, Yalt="resample", iter=iter, seed=seed)
-    } else {
-      if(RRPP == TRUE) P <- .SS.iter(pfitr, Yalt="RRPP", iter=iter, seed=seed) else 
-        P <- .SS.iter(pfitr, Yalt="resample", iter=iter, seed=seed)
-    }
-    SS <-P$SS
-    SSE <- P$SSE
-    SSY <- P$SSY
-    anova.parts.obs <- anova.parts(pfitr, P)
+    SS <- do.call(SS.iter, SS.args)
+    anova.parts.obs <- anova.parts(pfitr, SS) 
     anova.tab <-anova.parts.obs$anova.table 
     df <- anova.parts.obs$df
     effect.type <- match.arg(effect.type)
-    SS.type <- pfit$SS.type
-    if(is.matrix(SS)){
-      MSE <- SSE/df[k+1]
-      SSE.mat <- matrix(SSE, k, length(SSE), byrow = TRUE)
-      MSE.mat <- matrix(MSE, k, length(MSE), byrow = TRUE)
-      Fs <- (SS[1:k,]/df[1:k])/MSE.mat
-      if(SS.type == "III") {
-        etas <- SS/(SS+SSE.mat)
-        cohenf <- etas/(1-etas)
-      } else {
-        etas <- SS/SSY
-        unexp <- 1 - apply(etas, 2, cumsum)
-        cohenf <- etas/unexp
-      }
-      P.val <- apply(Fs, 1, pval)
-      if(effect.type == "SS") Z <- apply(log(SS), 1, effect.size) else
-        if(effect.type == "F") Z <- apply(log(Fs), 1, effect.size) else
-          Z <- apply(log(cohenf), 1, effect.size) 
-      rownames(SS) <- rownames(Fs) <- rownames(cohenf) <- pfit$term.labels
-      colnames(SS) <- colnames(Fs) <- colnames(cohenf) <- c("obs", paste("iter", 1:iter, sep=":"))
-    } else {
-      MSE <- SSE/df[2]
-      Fs <- (SS/df[1])/MSE
-      etas <- SS/SSY
-      cohenf <- etas/(1-etas)
-      P.val <- pval(Fs)
-      if(effect.type == "SS") Z <- effect.size(log(SS)) else
-        if(effect.type == "F") Z <- effect.size(log(Fs)) else
-          Z <- effect.size(log(cohenf)) 
-      names(SS) <- names(Fs) <- names(cohenf) <- c("obs", paste("iter", 1:iter, sep=":"))
+    if(effect.type == "SS" && !is.null(Cov)) {
+      cat("\nWarning: Measuring effect size on SS with GLS does not make sense; F used instead.\n")
+      effect.type = "F"
     }
+    SS.type <- pfit$SS.type
+    SSE <- SS[k + 1, ]
+    SSY <- SS[k + 2, ]
+    MSE <- SSE/df[k + 1]
+    SSE.mat <- matrix(SSE, k, length(SSE), byrow = TRUE)
+    MSE.mat <- matrix(MSE, k, length(MSE), byrow = TRUE)
+    Fs <- (SS[1:k,]/df[1:k])/MSE.mat
+    if(SS.type == "III") {
+      if(k == 1) etas <- SS/(SS + SSE.mat) else etas <- SS[1:k,]/(SS+SSE.mat)
+      cohenf <- etas/(1-etas)
+    } else {
+      if(k == 1) etas <- SS/SSY else etas <- SS[1:k,]/SSY
+      unexp <- 1 - apply(etas, 2, cumsum)
+      cohenf <- etas/unexp
+    }
+    if(k == 1) P.val <- pval(Fs) else P.val <- apply(Fs, 1, pval)
+    if(effect.type == "SS") Z <- apply(log(SS[1:k,]), 1, effect.size) else
+      if(effect.type == "F") Z <- apply(log(Fs), 1, effect.size) else
+        Z <- apply(log(cohenf), 1, effect.size) 
+    colnames(SS) <- colnames(Fs) <- colnames(cohenf) <- c("obs", paste("iter", 1:iter, sep=":"))
     tab <- data.frame(anova.tab, Z = c(Z, NA, NA), Pr = c(P.val, NA, NA))
     colnames(tab)[1] <- "Df"
     colnames(tab)[ncol(tab)] <- "Pr(>F)"
     if(effect.type == "SS") colnames(tab)[ncol(tab)] <- "Pr(>SS)"
     if(effect.type == "cohen") colnames(tab)[ncol(tab)] <- "Pr(>Cohen f-sq)"
     class(tab) <- c("anova", class(tab))
-    SS <- rbind(SS, SSE, SSY)
     rownames(SS) <- c(pfit$term.labels, "Residuals", "Total")
     out <- list(aov.table = tab, call = match.call(),
                 coefficients=pfit$wCoefficients.full[[k]], 
@@ -249,15 +262,16 @@ procD.lm<- function(f1, iter = 999, seed=NULL, RRPP = TRUE, effect.type = c("F",
                 random.SS = SS, random.F = Fs, random.cohenf = cohenf, effect.type=effect.type,
                 perm.method = ifelse(RRPP==TRUE,"RRPP", "Raw"))
   } else {
-    Y <- pfit$wY
-    SSY <- sum(center(Y)^2)
+    SS <- do.call(SS.iter.null, SS.args)
+    P.val <- pval(SS)
+    Z <- effect.size(SS)
     n <- NROW(Y)
     df <- n - 1
-    tab <- data.frame(Df = df,SS = SSY,
-                      MS = SSY/df, Rsq = NA,
-                      F = NA, P = NA)
+    tab <- data.frame(Df = df,SS = SS[1],
+                      MS = SS[1]/df, Rsq = 1,
+                      F = NA, P = P.val)
     rownames(tab) <- "Residuals"
-    colnames(tab)[NCOL(tab)] <- "Pr(>F)"
+    colnames(tab)[NCOL(tab)] <- "Pr(>SS)"
     class(tab) = c("anova", class(tab))
     out <- list(aov.table = tab, call = match.call(),
                 coefficients=pfit$wCoefficients.full[[1]], 
@@ -265,7 +279,23 @@ procD.lm<- function(f1, iter = 999, seed=NULL, RRPP = TRUE, effect.type = c("F",
                 QR = pfit$wQRs.full[[1]], fitted=pfit$wFitted.full[[1]],
                 residuals = pfit$wResiduals.full[[1]], 
                 weights = pfit$weights, Terms = pfit$Terms, term.labels = pfit$term.labels,
-                data = pfit$data)
+                data = pfit$data,
+                random.SS = SS, 
+                GLS = FALSE,
+                OLS = TRUE)
+  }
+  if(!is.null(Pcov)) {
+    PY <- as.matrix(crossprod(Pcov, pfit$Y))
+    PX <- as.matrix(crossprod(Pcov, pfit$X))
+    glsFit <- lm.wfit(PX, PY, pfit$weights)
+    out$gls.coefficients <- glsFit$coefficients
+    out$gls.fitted <- pfit$X %*% glsFit$coefficients
+    out$gls.residuals <- pfit$Y - pfit$X %*% glsFit$coefficients
+    GLS.mean = apply(PY, 2, mean)
+    out$Cov = Cov
+    out$Pcov = Pcov
+    out$GLS = TRUE
+    out$OLS = FALSE
   }
   class(out) <- "procD.lm"
   out

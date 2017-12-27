@@ -53,6 +53,8 @@ An object of class "bilat.symmetry" returns a list of the following
 \item{random.shape.F}{A matrix of random F-values from the Shape analysis.}
 \item{random.size.F}{A matrix of random F-values from the Centroid Size analysis.}
 \item{perm.method}{A value indicating whether "Raw" values were shuffled or "RRPP" performed.}
+\item{procD.lm.shape}{A list of typical output from an objeect of class procD.lm, for shape}
+\item{procD.lm.size}{If applicable, a list of typical output from an objeect of class procD.lm, for size.}
 \item{call}{The matched call.}
 }
 \description{

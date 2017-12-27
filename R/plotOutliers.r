@@ -31,7 +31,8 @@
 #' newland[c(3,11),,26] <- newland[c(11,3),,2]
 #' Y<- gpagen(newland) # GPA
 #' out <- plotOutliers(Y$coords) # function returns dimnames and address of all specimens ordered
-#' plotOutliers(Y$coords, inspect.outliers = TRUE) # function also produces plots of identified outlier specimens compared to the mean shape
+#' plotOutliers(Y$coords, inspect.outliers = TRUE) # function also produces plots of 
+#' # identified outlier specimens compared to the mean shape
 #' 
 #' # example with groups
 #' plotOutliers(Y$coords, groups = plethodon$species, inspect.outliers = TRUE)
