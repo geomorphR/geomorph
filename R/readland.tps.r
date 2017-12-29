@@ -74,8 +74,8 @@ readland.tps <- function (file, specID = c("None", "ID", "imageID"),
   }
   n <- length(lmline)
   p <- nland[1]
-  imscale <- as.numeric(sub("SCALE=", "", tpsfile[grep("SCALE", 
-                                                       tpsfile, ignore.case)], ignore.case))
+  imscale <- as.vector(na.omit(as.numeric(sub("SCALE=", "", tpsfile[grep("SCALE", 
+                                                       tpsfile, ignore.case)], ignore.case))))
   if (is.null(imscale)) {
     imscale = array(1, n)
   }
