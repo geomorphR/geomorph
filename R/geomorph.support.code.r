@@ -3,7 +3,6 @@
 #' @aliases geomorph
 #' @title Geometric morphometric analyses for 2D/3D data
 #' @author Dean C. Adams, Michael Collyer, Antigoni Kaliontzopoulou & Emma Sherratt
-#'
 #' @description Functions in this package allow one to read, manipulate, and digitize landmark data; generate shape
 #'  variables via Procrustes analysis for points, curves and surface data, perform statistical analyses
 #'  of shape variation and covariation, and provide graphical depictions of shapes and patterns of
@@ -1461,11 +1460,6 @@ Cov.proj <- function(Cov, id){
   P
 }
 
-# SS.mean
-# calculates SS for fitted values when only a mean is needed
-# used in SS.iter and SS.pgls.iter
-SS.mean <- function(x, n) if(is.vector(x)) sum(x)^2/n else sum(colSums(x)^2)/n
-
 # SS.iter
 # calculates SS in random iterations of a resampling procedure
 # used in nearly all 'procD.lm' functions, unless pgls in used
@@ -1497,7 +1491,8 @@ SS.iter <- function(fit, ind, P = NULL, RRPP = TRUE, print.progress = TRUE) {
     Ur <- lapply(Xr, function(x) qr.Q(qr(x)))
     Uf <- lapply(Xf, function(x) qr.Q(qr(x)))
     Ufull <- Uf[[k]]
-    Unull <- Ufull[,1]
+    int <- attr(fit$Terms, "intercept")
+    Unull <- qr.Q(qr(crossprod(P, rep(int, n))))
     if(!RRPP) {
       fitted <- lapply(fitted, function(.) matrix(0, n, p))
       res <- lapply(res, function(.) Y)
@@ -1529,6 +1524,8 @@ SS.iter <- function(fit, ind, P = NULL, RRPP = TRUE, print.progress = TRUE) {
     Ur <- lapply(fit$wQRs.reduced, qr.Q)
     Uf <- lapply(fit$wQRs.full, qr.Q)
     Ufull <- Uf[[k]]
+    int <- attr(fit$Terms, "intercept")
+    Unull <- qr.Q(qr(rep(int, n)))
     SS <- lapply(1: perms, function(j){
       step <- j
       if(print.progress) setTxtProgressBar(pb,step)
@@ -1539,7 +1536,7 @@ SS.iter <- function(fit, ind, P = NULL, RRPP = TRUE, print.progress = TRUE) {
       yy <- sum(y^2)
       c(Map(function(y, ur, uf) sum(crossprod(uf,y)^2) - sum(crossprod(ur,y)^2),
             Yi, Ur, Uf),
-        yy - sum(crossprod(Ufull, y)^2), yy - SS.mean(y, n))
+        yy - sum(crossprod(Ufull, y)^2), yy - sum(crossprod(Unull, y)^2))
     })
   }
   SS <- matrix(unlist(SS), k+2, perms)
@@ -1574,7 +1571,8 @@ SS.iter.null <- function(fit, ind, P = NULL, RRPP=TRUE, print.progress = TRUE) {
       fitted <- lapply(fitted, function(.) matrix(0, n, p))
       res <- lapply(res, function(.) Y)
     } else {
-      U <- qr.Q(qr(crossprod(P, matrix(1, n))))
+      int <- attr(fit$Terms, "intercept")
+      U <- qr.Q(qr(crossprod(P, rep(int, n))))
       fitted <- crossprod(tcrossprod(U), Y)
       res <- lapply(fitted, function(f) Y - f)
     }
@@ -1590,13 +1588,14 @@ SS.iter.null <- function(fit, ind, P = NULL, RRPP=TRUE, print.progress = TRUE) {
       fitted <- lapply(fitted, function(.) matrix(0, n, p))
       res <- lapply(res, function(.) Y)
     }
-    
+    int <- attr(fit$Terms, "intercept")
+    U <- qr.Q(qr(rep(int, n)))
     SS <- lapply(1:perms, function(j){
       x <-ind[[j]]
       y <- Y[x,]; yy <- sum(y^2)
       step <- j
       if(print.progress) setTxtProgressBar(pb,step)
-      yy - SS.mean(y, n)
+      yy - sum(crossprod(U, y)^2)
     })
   }
   SS <- matrix(unlist(SS), 1, perms)
@@ -1638,7 +1637,8 @@ RSS.iter <- function(fitr, fitf, ind, P = NULL, print.progress = TRUE) {
     Xr <- crossprod(P, fitr$wXfs[[kr]])
     Uf <- qr.Q(qr(Xf))
     Ur <- qr.Q(qr(Xr))
-    Unull <- Uf[,1]
+    int <- attr(fitf$Terms, "intercept")
+    Unull <- qr.Q(qr(crossprod(P, rep(int, n))))
     fitted <- fastFit(Ur, Y, n, p)
     res <- Y - fitted
     rrpp.args$fitted <- list(fitted)
@@ -1662,7 +1662,8 @@ RSS.iter <- function(fitr, fitf, ind, P = NULL, print.progress = TRUE) {
     rrpp.args$residuals <- list(res)
     Uf <- qr.Q(fitf$wQRs.full[[kf]])
     Ur <- qr.Q(fitr$wQRs.full[[kr]])
-    Unull <- Uf[,1]
+    int <- attr(fitf$Terms, "intercept")
+    Unull <- qr.Q(qr(rep(int, n)))
     SS <- lapply(1: perms, function(j){
       step <- j
       if(print.progress) setTxtProgressBar(pb,step)
@@ -1673,7 +1674,7 @@ RSS.iter <- function(fitr, fitf, ind, P = NULL, print.progress = TRUE) {
       yy <- sum(y^2)
       c(yy - sum(crossprod(Ur, y)^2),
         yy - sum(crossprod(Uf, y)^2),
-        yy - SS.mean(y, n))
+        yy - sum(crossprod(Unull,y)^2))
     })
   }
   names(SS) <- c("obs", paste("iter", 1:(perms-1), sep=":"))

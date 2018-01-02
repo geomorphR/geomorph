@@ -157,11 +157,16 @@ plot.QQ <- function(r){
 plot.procD.lm <- function(x, type = c("diagnostics", "regression",
                                       "PC"), outliers=FALSE, predictor = NULL,
                           reg.type = c("CRC", "PredLine", "RegScore"), ...){
+  x.names <- names(x)
+  x.names[x.names == "pgls.residuals"] = "gls.residuals"
+  x.names[x.names == "pgls.fitted"] = "gls.fitted"
+  x.names[x.names == "pgls.coefficients"] = "gls.coefficients"
+  names(x) <- x.names
   r <- as.matrix(x$residuals)
   f <- as.matrix(x$fitted)
-  if(!is.null(x$Pcor)) {
-    r <- as.matrix(x$pgls.residuals)
-    f <- as.matrix(x$pgls.fitted)
+  if(!is.null(x$Pcov)) {
+    r <- as.matrix(x$gls.residuals)
+    f <- as.matrix(x$gls.fitted)
   }
   type <- match.arg(type)
   if(is.na(match(type, c("diagnostics", "regression", "PC")))) 
@@ -203,7 +208,7 @@ plot.procD.lm <- function(x, type = c("diagnostics", "regression",
     if(length(predictor) != n) 
       stop("Observations in predictor must equal observations if procD.lm fit")
     X <- x$X * sqrt(x$weights)
-    if(!is.null(x$Pcor)) B <- x$pgls.coefficients else B <- x$coefficients
+    if(!is.null(x$Pcov)) B <- x$gls.coefficients else B <- x$coefficients
     xc <- predictor
     pred.match <- match(xc, X)
     if(any(is.na(pred.match))) {
