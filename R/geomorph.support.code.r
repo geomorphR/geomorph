@@ -1581,7 +1581,7 @@ SS.iter.null <- function(fit, ind, P = NULL, RRPP=TRUE, print.progress = TRUE) {
       y <- fitted + res[x,]; pyy <- sum(y^2)
       step <- j
       if(print.progress) setTxtProgressBar(pb,step)
-      pyy - SS.mean(y, n)
+      pyy - sum(crossprod(U, y)^2)
     })
   } else {
     if(!RRPP) {
