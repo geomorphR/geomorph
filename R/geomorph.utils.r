@@ -220,7 +220,7 @@ plot.procD.lm <- function(x, type = c("diagnostics", "regression",
       Xcrc <- as.matrix(X)
       Xcrc[,!pred.match] <- 0
       f <- Xcrc %*% B
-      r <- x$LM$Y - f
+      r <- x$Y - f
       b <- lm(f ~ xc)$coefficients
       if(is.matrix(b)) b <- b[2,] else b <- b[2]
     }
