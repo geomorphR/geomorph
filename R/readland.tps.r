@@ -45,6 +45,7 @@ readland.tps <- function (file, specID = c("None", "ID", "imageID"),
                           readcurves = FALSE, warnmsg = TRUE) {
   tpsf <- scanTPS(file)
   n <- length(tpsf)
+  specID <- match.arg(specID)
   if(specID == "ID") id <- sapply(1:n, function(j) tpsf[[j]]$id) else
     if(specID == "imageID") id <- sapply(1:n, function(j) tpsf[[j]]$image) else {
       if(warnmsg) cat("\nNo specID provided; specimens will be numbered 1, 2, 3 ...\n")
