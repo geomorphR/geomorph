@@ -129,9 +129,9 @@
 gpagen = function(A, curves=NULL, surfaces=NULL, PrinAxes = TRUE, 
                   max.iter = NULL, ProcD=TRUE, Proj = TRUE,
                   print.progress = TRUE){
-  n <- dim(A)[[3]]; p <- dim(A)[[1]]; k <- dim(A)[[2]]
   if(!is.array(A)) stop("Coordinates must be a 3D array")
   if(length(dim(A)) != 3) stop("Coordinates array does not have proper dimensions")
+  n <- dim(A)[[3]]; p <- dim(A)[[1]]; k <- dim(A)[[2]]
   Y <- lapply(1:n, function(j) A[,,j])
   if(!is.logical(ProcD)) prD <- TRUE else prD <- ProcD
   if(is.null(max.iter)) max.it <- 5 else max.it <- as.numeric(max.iter)
