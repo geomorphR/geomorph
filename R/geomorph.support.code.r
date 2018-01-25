@@ -2101,7 +2101,7 @@ apply.pls <- function(x,y, RV=FALSE, iter, seed = NULL){
   if(jj > 100) j <- 1:100 else j <- 1:jj
   while(jj > 0){
     ind.j <- ind[j]
-    y.rand <-lapply(1:length(j), function(i) y[ind.j[[i]],])
+    y.rand <-lapply(1:length(j), function(i) as.matrix(y[ind.j[[i]],]))
     if(RV == TRUE) RV.rand <- c(RV.rand,sapply(1:length(j), function(i) pls(x,y.rand[[i]], RV=TRUE, verbose = TRUE)$RV)) else
       r.rand <- c(r.rand, sapply(1:length(j), function(i) quick.pls(x,y.rand[[i]])))
     jj <- jj-length(j)
@@ -2127,7 +2127,7 @@ apply.pls <- function(x,y, RV=FALSE, iter, seed = NULL){
   if(jj > 100) j <- 1:100 else j <- 1:jj
   while(jj > 0){
     ind.j <- ind[j]
-    y.rand <-lapply(1:length(j), function(i) y[ind.j[[i]],])
+    y.rand <-lapply(1:length(j), function(i) as.matrix(y[ind.j[[i]],]))
     if(RV == TRUE) RV.rand <- c(RV.rand,sapply(1:length(j), function(i) pls(x,y.rand[[i]], RV=TRUE, verbose = TRUE)$RV)) else
       r.rand <- c(r.rand, sapply(1:length(j), function(i) quick.pls(x,y.rand[[i]])))
     jj <- jj-length(j)

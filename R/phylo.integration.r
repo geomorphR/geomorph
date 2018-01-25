@@ -141,7 +141,7 @@ phylo.integration <-function(A, A2=NULL, phy, partition.gp=NULL,iter=999, seed=N
     namesX<-rownames(x)
     num.taxa.Y<-nrow(y)
     namesY<-rownames(y)
-    y<-y[rownames(x),] 
+    y<-as.matrix(y[rownames(x),])  
   }
   if (is.null(namesX)){
     stop("No specimen names in data matrix. Please assign specimen names.")  } 
