@@ -273,9 +273,10 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
   RSS <- do.call(RSS.iter, SS.args)
   RSSr <- RSS[1,]
   RSSf <- RSS[2,]
-  SSY <- RSS[3,]
+  RSSm <- RSS[3,]
+  SSY <- RSS[4,]
   SS <- RSSr - RSSf
-  Fs <- (SS/(dfr - dff))/(RSSf/dff)
+  Fs <- (SS/(dfr - dff))/(RSSm/dff)
   Rsq <- SS/SSY
   if(effect.type == "SS"){
     P.val <- pval(SS)

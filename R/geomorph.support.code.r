@@ -1650,10 +1650,12 @@ RSS.iter <- function(fitr, fitf, ind, P = NULL, print.progress = TRUE) {
       rrpp.args$ind.i <- x
       Yi <- do.call(rrpp, rrpp.args)
       y <- Yi[[1]]
-      pyy <- sum(y^2)
+      yy <- Y[x,]
+      pyy <- sum(yy^2)
       c(pyy - sum(crossprod(Ur, y)^2),
         pyy - sum(crossprod(Uf, y)^2),
-        pyy - sum(crossprod(Unull, y)^2))
+        pyy - sum(crossprod(Uf, yy)^2),
+        pyy - sum(crossprod(Unull,y)^2))
     })
   } else {
     fitted <- fitr$wFitted.full[[kr]]
@@ -1671,21 +1673,23 @@ RSS.iter <- function(fitr, fitf, ind, P = NULL, print.progress = TRUE) {
       rrpp.args$ind.i <- x
       Yi <- do.call(rrpp, rrpp.args)
       y <- Yi[[1]]
-      yy <- sum(y^2)
-      c(yy - sum(crossprod(Ur, y)^2),
-        yy - sum(crossprod(Uf, y)^2),
-        yy - sum(crossprod(Unull,y)^2))
+      yy <- Y[x,]
+      pyy <- sum(yy^2)
+      c(pyy - sum(crossprod(Ur, y)^2),
+        pyy - sum(crossprod(Uf, y)^2),
+        pyy - sum(crossprod(Uf, yy)^2),
+        pyy - sum(crossprod(Unull,y)^2))
     })
   }
-  names(SS) <- c("obs", paste("iter", 1:(perms-1), sep=":"))
+
   step <- perms + 1
   if(print.progress) {
     setTxtProgressBar(pb,step)
     close(pb)
   }
-  SS <-matrix(unlist(SS), 3, perms)
+  SS <-matrix(unlist(SS), 4, perms)
   colnames(SS) <- c("obs", paste("iter", 1:(perms-1), sep=":"))
-  rownames(SS) <- c("RSSr", "RSSf", "SSY")
+  rownames(SS) <- c("RSSr", "RSSf", "RSSm", "SSY")
   SS
 }
 
