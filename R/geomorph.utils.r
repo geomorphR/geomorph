@@ -750,9 +750,9 @@ plot.bilat.symmetry <- function(x, warpgrids = TRUE, mesh= NULL, ...){
       if (k==3){
         if (is.null(mesh)){
           open3d() ; mfrow3d(1, 2) 
-          plotRefToTarget(x$DA.mns[,,1],x$DA.mns[,,2],method="points",main="Directional Asymmetry",xlab="",ylab="",zlab="",box=FALSE, axes=FALSE)
+          plotRefToTarget(x$DA.mns[,,1],x$DA.mns[,,2],method="points",main="Directional Asymmetry",box=FALSE, axes=FALSE)
           next3d()
-          plotRefToTarget(x$FA.mns[,,1],x$FA.mns[,,2],method="points",main="Fluctuating Asymmetry",xlab="",ylab="",zlab="",box=FALSE, axes=FALSE)
+          plotRefToTarget(x$FA.mns[,,1],x$FA.mns[,,2],method="points",main="Fluctuating Asymmetry",box=FALSE, axes=FALSE)
         } 
         if(!is.null(mesh)){
           open3d() ; mfrow3d(1, 2) 
@@ -781,9 +781,9 @@ plot.bilat.symmetry <- function(x, warpgrids = TRUE, mesh= NULL, ...){
         if (k==3){
           if(is.null(mesh)) {
             open3d() ; mfrow3d(1, 2) 
-            plotRefToTarget(x$DA.mns[,,1],x$DA.mns[,,2],method="points",main="Directional Asymmetry",xlab="",ylab="",zlab="",box=FALSE, axes=FALSE)
+            plotRefToTarget(x$DA.mns[,,1],x$DA.mns[,,2],method="points",main="Directional Asymmetry",box=FALSE, axes=FALSE)
             next3d()
-            plotRefToTarget(x$FA.mns[,,1],x$FA.mns[,,2],method="points",main="Fluctuating Asymmetry",xlab="",ylab="",zlab="",box=FALSE, axes=FALSE)
+            plotRefToTarget(x$FA.mns[,,1],x$FA.mns[,,2],method="points",main="Fluctuating Asymmetry",box=FALSE, axes=FALSE)
           } 
           if(!is.null(mesh)){
             open3d() ; mfrow3d(1, 2) 
