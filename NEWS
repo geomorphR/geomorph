@@ -10,6 +10,7 @@ PENDING CHANGES IN GEOMORPH VERSION 3.0.6
     o Modified plot.procD.allometry to allow direct control of all plotting arguments by the user.
     
   BUG FIXES
+    o Fixes issues with estimate.missing regression approach
     o Fixed issues with phylo.integration where Y-dataset contained a single variable
     o Fixed issue with integration.test when 3+ partitions with non-contiguous variables
     o Fixed effect size calculation error in procD.lm for single factor OLS models. 

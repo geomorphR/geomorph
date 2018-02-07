@@ -96,20 +96,23 @@ estimate.missing<-function(A,method=c("TPS","Reg")){
     A2[,,spec.NA]<-incomplete
     A.2d<-two.d.array(A2)    
     for (i in 1:length(spec.NA)){
-      missing<-which(is.na(A.2d[spec.NA[i],])== T)
-      x<-A.2d[-spec.NA,-missing]
-      y<-A.2d[-spec.NA,missing]
+      missing.coord<-which(is.na(A.2d[spec.NA[i],])== T)  
+      x<-A.2d[-spec.NA,-missing.coord]
+      y<-A.2d[-spec.NA,missing.coord]
       XY.vcv<-cov(cbind(x,y))      
       S12<-XY.vcv[1:dim(x)[2],(dim(x)[2]+1):(dim(x)[2]+dim(y)[2])]
       pls<-svd(S12)
       U<-pls$u; V<-pls$v
       XScores<-x%*%U; YScores<-y%*%V
-      beta<-coef(lm(YScores[,1]~XScores[,1]))
-      miss.xsc<-c(1,A.2d[spec.NA[i],-missing]%*%U[,1])
-      miss.ysc<-c(miss.xsc%*%beta,(rep(0,(ncol(y)-1))))
+#      beta<-coef(lm(YScores[,1]~XScores[,1]))
+#      miss.xsc<-c(1,A.2d[spec.NA[i],-missing.coord]%*%U[,1])
+#      miss.ysc<-c(miss.xsc%*%beta,(rep(0,(ncol(y)-1))))
+      beta<-coef(lm(YScores~XScores))
+      miss.xsc<-c(1,A.2d[spec.NA[i],-missing.coord]%*%U)
+      miss.ysc<-miss.xsc%*%beta
       pred.val<-miss.ysc%*%t(V)
-      for (j in 1:length(missing)){
-        A.2d[spec.NA[i],missing[j]]<-pred.val[j]    
+      for (j in 1:length(V)){
+        A.2d[spec.NA[i],missing.coord[j]]<-pred.val[j]    
       }
     }
     A2<-arrayspecs(A.2d,dim(A)[1],dim(A)[2])
