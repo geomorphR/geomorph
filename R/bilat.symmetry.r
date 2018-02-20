@@ -72,7 +72,7 @@
 #' This is helpful for long-running analyses.
 #' @keywords analysis
 #' @export
-#' @author Dean Adams, Emma Sherratt, and Michael Collyer
+#' @author Dean Adams and Michael Collyer
 #' @return An object of class "bilat.symmetry" returns a list of the following
 #' \item{shape.anova}{An analysis of variance table for the shape data.}
 #' \item{size.anova}{An analysis of variance table for the shape data (when object.sym=FALSE).}

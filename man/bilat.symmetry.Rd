@@ -155,6 +155,6 @@ Klingenberg, C.P., M. Barluenga, and A. Meyer. 2002. Shape analysis of symmetric
 individuals and asymmetry. Evolution. 56:1909-1920.
 }
 \author{
-Dean Adams, Emma Sherratt, and Michael Collyer
+Dean Adams and Michael Collyer
 }
 \keyword{analysis}
