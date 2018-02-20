@@ -42,9 +42,7 @@ incomplete blocks of landmarks (see Gunz et al. 2009).
 NOTE: Because all geometric morphometric analyses and plotting functions implemented in geomorph 
 require a full complement of landmark coordinates, the alternative to estimating the missing 
 landmark coordinates is to proceed with subsequent analyses EXCLUDING
-specimens with missing values. To do this, see functions \code{\link[stats]{complete.cases}} (use: mydata[complete.cases(mydata),])
-or \code{\link[stats]{na.omit}} (use: newdata <- na.omit(mydata)) to make a dataset of only the complete specimens.
-These functions require the dataset to be a matrix in the form of a 2d array (see \code{\link{two.d.array}}).
+specimens with missing values.
 }
 \examples{
 data(plethodon)
