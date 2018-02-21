@@ -32,7 +32,7 @@
 #' @param print.progress A logical value to indicate whether a progress bar should be printed to the screen.  
 #' This is helpful for long-running analyses.
 #' @keywords analysis
-#' @author Dean Adams & Emma Sherratt
+#' @author Dean Adams
 #' @export
 #' @return An object of class "evolrate" returns a list with the following components: 
 #'   \item{sigma.d.ratio}{The ratio of maximum to minimum net evolutionary rates.}

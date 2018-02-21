@@ -68,7 +68,7 @@
 #' @export
 #' @keywords utilities
 #' @seealso  \code{\link{digitize2d}}, \code{\link{digit.fixed}}, \code{\link{gpagen}}, \code{\link{digit.curves}}
-#' @author Emma Sherratt, Dean Adams, Erik Otarola-Castillo 
+#' @author Emma Sherratt & Dean Adams 
 #' @examples  
 #' ## (not run) Use interactive function in rgl window
 #'  # data(scallops)
