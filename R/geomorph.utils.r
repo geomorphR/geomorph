@@ -107,7 +107,7 @@ plot.het <- function(r,f){
   f <- center(f)
   r <- sqrt(diag(tcrossprod(r)))
   f <- sqrt(diag(tcrossprod(f)))
-  lfr <- loess(r~f)
+  lfr <- loess(r~f, span = 1)
   lfr <- cbind(lfr$x, lfr$y, lfr$fitted)
   lfr <- lfr[order(lfr[,1]),]
   plot(lfr, pch=19, asp=1, 
@@ -182,7 +182,7 @@ plot.procD.lm <- function(x, type = c("diagnostics", "regression",
          xlab = paste("PC 1", var.f[1],"%"),
          ylab = "Procrustes Distance Residuals",
          main = "Residuals vs. PC 1 fitted")
-    lfr <- loess(dr~pca.f$x[,1])
+    lfr <- loess(dr~pca.f$x[,1], span = 1)
     lfr <- cbind(lfr$x, lfr$fitted); lfr <- lfr[order(lfr[,1]),]
     points(lfr, type="l", col="red")
     plot.het(r,f)
