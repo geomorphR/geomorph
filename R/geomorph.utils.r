@@ -171,7 +171,7 @@ plot.procD.lm <- function(x, type = c("diagnostics", "regression",
   type <- match.arg(type)
   if(is.na(match(type, c("diagnostics", "regression", "PC")))) 
     type <- "diagnostics"
-  CRC <- PL <- Reg.proj <- NULL
+  CRC <- PL <- Reg.proj <- P <- NULL
   if(type == "diagnostics") {
     pca.r <- prcomp(r)
     var.r <- round(pca.r$sdev^2/sum(pca.r$sdev^2)*100,2)
