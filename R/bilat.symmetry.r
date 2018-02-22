@@ -13,8 +13,8 @@
 #'  
 #'  As input, the function receives either A 3D array (p x k x n) containing raw landmarks (requiring 
 #'  GPA to be performed) or a gpagen object (if GPA has been previously performed). If one wishes 
-#'  to incorporate semilandmarks, GPA should be performed first using gpagen. Otherwise, 
-#'  bilat.symmetry can perform the initial GPA, assuming all landmarks are fixed. For 
+#'  to incorporate semilandmarks, GPA should be performed first using gpagen, in which case a gpagen object should be
+#'  provided to bilat.symmetry. Otherwise, bilat.symmetry can perform the initial GPA, assuming all landmarks are fixed. For 
 #'  "object.sym = FALSE, landmarks should be of dimension (p x k x 2n), as each specimen is 
 #'  represented by both left and right configurations.
 #'    

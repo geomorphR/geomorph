@@ -77,6 +77,6 @@ Adams, D.C. and M.L. Collyer. 2017. Multivariate comparative methods: evaluation
 recommendations. Systematic Biology. In press.
 }
 \author{
-Dean Adams & Emma Sherratt
+Dean Adams
 }
 \keyword{analysis}
