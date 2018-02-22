@@ -2,7 +2,7 @@
 
 ## gpagen
 
-#' Print/Summary Function for geomorph
+#' Print/Summary Function for geomorph 
 #' 
 #' @param x print/summary object (from \code{\link{gpagen}})
 #' @param ... other arguments passed to print/summary
