@@ -15,10 +15,12 @@
 
 \item{shapes}{Logical argument whether to return the the shape coordinates of the extreme ends of axis1 and axis2}
 
-\item{...}{other arguments passed to plot}
+\item{...}{other arguments passed to plot and plotRefToTarget (in a limited capacity).  In most cases, greater flexibility
+can be attained with using \code{\link{plotRefToTarget}} and \code{\link{shape.predictor}}.}
 }
 \value{
-If shapes = TRUE, function returns a list containing the shape coordinates of the extreme ends of axis1 and axis2 if 3D arrays were originally provided for each
+If shapes = TRUE, function returns a list containing the shape coordinates of the extreme ends of axis1 and axis2 
+if 3D arrays were originally provided for each
 }
 \description{
 Plot Function for geomorph

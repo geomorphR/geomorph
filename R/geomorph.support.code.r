@@ -172,7 +172,7 @@ mshape<-function(A){
   if(is.list(A)) res <- Reduce("+", A)/length(A)
   if(is.matrix(A)) res <- colMeans(A)
   if(!is.array(A) && !is.list(A) && !is.matrix(A)) stop("There are not multiple configurations from which to obtain a mean.")
-  class(res) <- "mshape"
+  class(res) <- c("mshape", "matrix")
   return(res)
 }
 

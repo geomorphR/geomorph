@@ -16,11 +16,11 @@
 \description{
 Plot Function for geomorph
 }
+\seealso{
+\code{\link{define.links}}
+}
 \author{
 Antigoni Kaliontzopoulou
 }
-\keyword{#'}
-\keyword{@seealso}
-\keyword{\code{\link{define.links}}}
 \keyword{utilities}
 \keyword{visualization}

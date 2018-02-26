@@ -58,7 +58,8 @@ The function quantifies the degree of association between two blocks of shape da
  The generic function, \code{\link{plot}}, produces a two-block.pls plot.  This function calls \code{\link{plot.pls}}, which has two additional
  arguments (with defaults): label = NULL, warpgrids = TRUE.  These arguments allow one to include a vector to label points and a logical statement to
  include warpgrids, respectively.  Warpgrids can only be included for 3D arrays of Procrustes residuals. The plot is a plot of PLS scores from 
- Block1 versus Block2 performed for the first set of PLS axes. 
+ Block1 versus Block2 performed for the first set of PLS axes. It is imperative that one understands the arguments for plot parameters and
+ \code{\link{plotRefToTarget}} because arguments can be passed to both of these functions.
  
  \subsection{For more than two blocks}{ 
 If one wishes to consider 3+ arrays or matrices, there are multiple options.  First, one could perform multiple two.b.pls analyses and use
