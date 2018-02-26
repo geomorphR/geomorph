@@ -63,7 +63,7 @@ shapeHulls <- function(x, groups = NULL, group.cols = NULL,
   if(NCOL(y) < 2) stop("Cannot generate hulls in fewer than 2 dimensions")
   if(NCOL(y) > 2) y <- y[,1:2]
   n <- NROW(y)
-  if(groups == "none") groups <- rep(1, n)
+  if(!is.null(groups) && groups == "none") groups <- rep(1, n)
   if(is.null(groups)) {
     groups <- x$groups
     if(is.null(groups)) groups <- rep(1, n)
