@@ -1245,7 +1245,7 @@ summary.plotTangentSpace <- function (object, ...) {
   print.plotTangentSpace(object, ...)
 }
 
-# comapre.pls
+# compare.pls
 
 #' Print/Summary Function for geomorph
 #' 
@@ -1310,3 +1310,46 @@ print.combined.set <- function(x,...){
 #' @keywords utilities
 #'
 summary.combined.set <- function(object, ...) print.combined.set(object, ...)
+
+# mshape
+
+#' Plot Function for geomorph
+#' 
+#' @param x plot object (from \code{\link{mshape}})
+#' @param links An optional matrix defining for links between landmarks
+#' @param ... other arguments passed to plot
+#' @export
+#' @author Antigoni Kaliontzopoulou
+#' @keywords utilities
+#' @keywords visualization
+#' #' @seealso  \code{\link{define.links}}
+
+
+plot.mshape <- function(x, links=NULL,...){
+  if(ncol(x)==2){
+    par(xpd=T)
+    plot(x, type="n", xaxt="n", yaxt="n", xlab="", ylab="", bty="n",...)
+    if(!is.null(links)){
+      for (i in 1:nrow(links)){
+        segments(x[links[i,1], 1], x[links[i,1], 2], 
+                 x[links[i,2], 1], x[links[i,2], 2])
+      }
+    }
+    points(x, cex=3, pch=21, bg="white")
+    text(x, labels=1:nrow(x))
+  }
+  if(ncol(x)==3){
+    plot3d(x, type="n", aspect=FALSE, xlab="", ylab="", zlab="", axes=F,...)
+    if(!is.null(links)){
+      for(i in 1:nrow(links)){
+        segments3d(c(x[links[i,1], 1], x[links[i,2], 1]),
+                   c(x[links[i,1], 2], x[links[i,2], 2]), 
+                   c(x[links[i,1], 3], x[links[i,2], 3]))
+      }
+    }
+    plot3d(x, add=T, type="s", col="white", alpha=0.25, shininess=2, fog=F)
+    text3d(x, texts=1:nrow(x), cex=0.7, font=2)
+  }
+  
+}
+

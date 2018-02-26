@@ -153,6 +153,9 @@ NULL
 #' The function estimates the average landmark coordinates for a set of aligned specimens. It is assumed
 #' that the landmarks have previously been aligned using Generalized Procrustes Analysis (GPA)
 #'  [e.g., with \code{\link{gpagen}}]. This function is described in Claude (2008).
+#'  
+#'  One can then use the generic function \code{\link{plot}} to produce a numbered plot of landmark 
+#'  positions and potentially add links, in order to review landmark positions
 #'
 #' @param A Either a list (length n, ach p x k), A 3D array (p x k x n), or a matrix (pk X n) containing GPA-aligned coordinates for a set of specimens
 #' @keywords utilities
@@ -169,6 +172,7 @@ mshape<-function(A){
   if(is.list(A)) res <- Reduce("+", A)/length(A)
   if(is.matrix(A)) res <- colMeans(A)
   if(!is.array(A) && !is.list(A) && !is.matrix(A)) stop("There are not multiple configurations from which to obtain a mean.")
+  class(res) <- "mshape"
   return(res)
 }
 
