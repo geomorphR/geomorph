@@ -102,50 +102,65 @@ plotRefToTarget<-function(M1, M2, mesh= NULL, outline=NULL,
                    col=linkcol[i], lty=linklty[i], lwd=linklwd[i])
         }
       }
-      if(label == TRUE){text(M2, label=paste(1:dim(M2)[1]), adj=gP$txt.adj,
-                             pos=gP$txt.pos, cex=gP$txt.cex, col=gP$txt.col)}
+      if(label == TRUE){
+        text(M2, label=paste(1:dim(M2)[1]), adj=gP$txt.adj,
+                             pos=gP$txt.pos, cex=gP$txt.cex, col=gP$txt.col)
+        }
       if(!is.null(outline)){
-        curve.warp <- tps2d(outline, M1, M2)
-        points(curve.warp,pch=19, cex=gP$tar.out.cex, col=gP$tar.out.col) 
+        curve.warp <- xy.coords(tps2d(outline, M1, M2))
+        plot.xy(curve.warp, type="p", pch=19, cex=gP$tar.out.cex, col=gP$tar.out.col) 
       }
-      if(useRefPts==FALSE) points(M2,pch=21,cex=gP$tar.pt.size, bg=gP$tar.pt.bg) else points(M1,pch=21,cex=gP$pt.size, bg=gP$pt.bg)
+      if(useRefPts==FALSE){
+        plot.xy(xy.coords(M2), type="p", pch=21, cex=gP$tar.pt.size, bg=gP$tar.pt.bg)
+      } else {
+        plot.xy(xy.coords(M1), type="p", pch=21, cex=gP$pt.size, bg=gP$pt.bg)}
     }
     if(method=="vector"){
+      plot.new()
       if(axes==TRUE){
-      plot(M1,asp=1,type="n",xlab="x",ylab="y",xlim=limits(M1[,1],1.25),
-           ylim=limits(M1[,2],1.25),...)}
+        plot.window(limits(M1[,1], 1.25), limits(M1[,2], 1.25),
+                    xlab="x", ylab="y", asp = 1)
+      }
       if(axes==FALSE){
-        plot(M1,asp=1,type="n",xlab="",ylab="",xlim=limits(M1[,1],1.25),axes=FALSE,
-             ylim=limits(M1[,2],1.25),...)}
+        plot.window(limits(M1[,1], 1.25), limits(M1[,2],1.25),
+                    xlab="", ylab="", asp = 1, xaxt="n", yaxt="n")
+      }
       if(is.null(links)==FALSE){
         linkcol <- rep(gP$link.col,nrow(links))[1:nrow(links)]
         linklwd <- rep(gP$link.lwd,nrow(links))[1:nrow(links)]
         linklty <- rep(gP$link.lty,nrow(links))[1:nrow(links)]
         for (i in 1:nrow(links)){
-          segments(M2[links[i,1],1],M2[links[i,1],2],M2[links[i,2],1],M2[links[i,2],2],
-                   col=linkcol[i],lty=linklty[i],lwd=linklwd[i])
+          segments(M2[links[i,1],1], M2[links[i,1],2], M2[links[i,2],1], M2[links[i,2],2],
+                   col=linkcol[i], lty=linklty[i], lwd=linklwd[i])
         }
       }
-      if(label == TRUE){text(M1, label=paste(1:dim(M1)[1]),adj=gP$txt.adj,
-                             pos=gP$txt.pos,cex=gP$txt.cex,col=gP$txt.col)}
-      arrows(M1[,1],M1[,2],M2[,1],M2[,2],length=0.075,lwd=2)
-      points(M1,pch=21,bg=gP$pt.bg,cex=gP$pt.size)
+      if(label == TRUE){
+        text(M1, label=paste(1:dim(M1)[1]),adj=gP$txt.adj,
+             pos=gP$txt.pos, cex=gP$txt.cex, col=gP$txt.col)
+        }
+      arrows(M1[,1], M1[,2], M2[,1], M2[,2], length=0.075,lwd=2)
+      plot.xy(xy.coords(M1), type="p", pch=21, bg=gP$pt.bg, cex=gP$pt.size)
     }
     if(method=="points"){
+      plot.new()
       if(axes==TRUE){
-      plot(M1,asp=1,pch=21,type="n",xlim=limits(M1[,1],1.25),
-           ylim=limits(M1[,2],1.25),xlab="x",ylab="y",...)}
+        plot.window(limits(M1[,1], 1.25), limits(M1[,2], 1.25),
+                    xlab="x", ylab="y", asp = 1)
+      }
       if(axes==FALSE){
-        plot(M1,asp=1,pch=21,type="n",xlim=limits(M1[,1],1.25),axes=FALSE,
-             ylim=limits(M1[,2],1.25),xlab="",ylab="",...)}
-      if(label == TRUE){text(M1, label=paste(1:dim(M1)[1]),adj=gP$txt.adj,
-                             pos=gP$txt.pos,cex=gP$txt.cex,col=gP$txt.col)}
+        plot.window(limits(M1[,1], 1.25), limits(M1[,2],1.25),
+                    xlab="", ylab="", asp = 1, xaxt="n", yaxt="n")
+      }
+      if(label == TRUE){
+        text(M1, label=paste(1:dim(M1)[1]), adj=gP$txt.adj,
+             pos=gP$txt.pos, cex=gP$txt.cex, col=gP$txt.col)
+        }
       if(!is.null(outline)){
         curve.warp <- tps2d(outline, M1, M2)
-        points(outline,pch=19, cex=gP$out.cex, col=gP$out.col) 
-        points(curve.warp,pch=19, cex=gP$tar.out.cex, col=gP$tar.out.col) 
+        plot.xy(xy.coords(outline), type="p", pch=19, cex=gP$out.cex, col=gP$out.col) 
+        plot.xy(xy.coords(curve.warp), type="p", pch=19, cex=gP$tar.out.cex, col=gP$tar.out.col) 
       }
-      if(is.null(links)==FALSE){
+      if(!is.null(links)){
         linkcol <- rep(gP$link.col,nrow(links))[1:nrow(links)]
         linklwd <- rep(gP$link.lwd,nrow(links))[1:nrow(links)]
         linklty <- rep(gP$link.lty,nrow(links))[1:nrow(links)]
@@ -161,8 +176,8 @@ plotRefToTarget<-function(M1, M2, mesh= NULL, outline=NULL,
                    lty=tarlinklty[i],lwd=tarlinklwd[i])
         }
       }
-      points(M2,pch=21,bg=gP$tar.pt.bg,cex=gP$tar.pt.size)
-      points(M1,pch=21,bg=gP$pt.bg,cex=gP$pt.size)
+      plot.xy(xy.coords(M2), type="p", pch=21, bg=gP$tar.pt.bg, cex=gP$tar.pt.size)
+      plot.xy(xy.coords(M1), type="p", pch=21, bg=gP$pt.bg, cex=gP$pt.size)
     }
     if(method=="surface"){
       stop("Surface plotting for 3D landmarks only.")
