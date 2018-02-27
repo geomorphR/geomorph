@@ -888,10 +888,22 @@ tps <- function(matr, matt, n, sz=1.5, pt.bg="black",
   m <- round(0.5+(n-1)*(2/5*rX + yM-ym)/(2/5*rX + xM-xm))
   M <- as.matrix(expand.grid(a,b))
   ngrid <- tps2d(M, matr, matt)
-  plot(ngrid, cex=0.2, asp=1, axes=FALSE, xlab="", ylab="")
-  for (i in 1:m){lines(ngrid[(1:n)+(i-1)*n, ], col=grid.col, lwd=grid.lwd,lty=grid.lty)}
-  for (i in 1:n){lines(ngrid[(1:m)*n-i+1, ], col=grid.col, lwd=grid.lwd,lty=grid.lty)}
-  if(refpts==FALSE) points(matt, pch=21, bg=pt.bg, cex=sz) else points(matr, pch=21, bg=pt.bg, cex=sz)
+  plot.new()
+  plot.window(1.05*range(ngrid[,1]), 1.05*range(ngrid[,2]), xaxt="n", yaxt="n", 
+              xlab="", ylab="", bty="n", asp = 1)
+  for (i in 1:m){
+    lines(ngrid[(1:n)+(i-1)*n, ], col=grid.col, lwd=grid.lwd, lty=grid.lty)
+    }
+  for (i in 1:n){
+    lines(ngrid[(1:m)*n-i+1, ], col=grid.col, lwd=grid.lwd, lty=grid.lty)
+  }
+  if(refpts==FALSE) {
+    matt <- xy.coords(matt)
+    plot.xy(matt, type="p", pch=21, bg=pt.bg, cex=sz) 
+  } else {
+    matr <- xy.coords(matr)
+    points(matr, type="p", pch=21, bg=pt.bg, cex=sz)
+  }
 }
 
 # tps2d
@@ -929,35 +941,36 @@ tps2d <- function(M, matr, matt){
 # tps2d3d
 #
 #
-tps2d3d<-function(M, matr, matt, PB=TRUE){		#DCA: altered from J. Claude 2008
-  p<-dim(matr)[1]; k<-dim(matr)[2];q<-dim(M)[1]
-  Pdist<-as.matrix(dist(matr))
-  ifelse(k==2,P<-Pdist^2*log(Pdist^2),P<- Pdist)
-  P[which(is.na(P))]<-0
-  Q<-cbind(1, matr)
-  L<-rbind(cbind(P,Q), cbind(t(Q),matrix(0,k+1,k+1)))
-  m2<-rbind(matt, matrix(0, k+1, k))
-  coefx<-fast.solve(L)%*%m2[,1]
-  coefy<-fast.solve(L)%*%m2[,2]
-  if(k==3){coefz<-fast.solve(L)%*%m2[,3]}
-  fx<-function(matr, M, coef, step){
-    Xn<-numeric(q)
+tps2d3d <- function(M, matr, matt, PB=TRUE){		#DCA: altered from J. Claude 2008
+  p <- dim(matr)[1]; k <- dim(matr)[2]; q <- dim(M)[1]
+  Pdist <- as.matrix(dist(matr))
+  ifelse(k==2, P <- Pdist^2*log(Pdist^2), P <- Pdist)
+  P[which(is.na(P))] <- 0
+  Q <- cbind(1, matr)
+  L <-rbind(cbind(P, Q), cbind(t(Q), matrix(0,k+1,k+1)))
+  m2 <- rbind(matt, matrix(0, k+1, k))
+  coefx <- fast.solve(L)%*%m2[,1]
+  coefy <- fast.solve(L)%*%m2[,2]
+  if(k==3){coefz <- fast.solve(L)%*%m2[,3]}
+  fx <- function(matr, M, coef, step){
+    Xn <- numeric(q)
     for (i in 1:q){
-      Z<-apply((matr-matrix(M[i,],p,k,byrow=TRUE))^2,1,sum)
-      ifelse(k==2,Z1<-Z*log(Z),Z1<-sqrt(Z)); Z1[which(is.na(Z1))]<-0
-      ifelse(k==2,Xn[i]<-coef[p+1]+coef[p+2]*M[i,1]+coef[p+3]*M[i,2]+sum(coef[1:p]*Z1),
-             Xn[i]<-coef[p+1]+coef[p+2]*M[i,1]+coef[p+3]*M[i,2]+coef[p+4]*M[i,3]+sum(coef[1:p]*Z1))
+      Z <- apply((matr-matrix(M[i,], p, k, byrow=TRUE))^2, 1, sum)
+      ifelse(k==2, Z1<-Z*log(Z), Z1<-sqrt(Z)); Z1[which(is.na(Z1))] <- 0
+      ifelse(k==2, Xn[i] <- coef[p+1] + coef[p+2]*M[i,1] + coef[p+3]*M[i,2] + sum(coef[1:p]*Z1),
+             Xn[i] <- coef[p+1] + coef[p+2]*M[i,1] + coef[p+3]*M[i,2] + coef[p+4]*M[i,3] + sum(coef[1:p]*Z1))
       if(PB==TRUE){setTxtProgressBar(pb, step + i)}
     }
-    Xn}
-  matg<-matrix(NA, q, k)
+    return(Xn)
+    }
+  matg <- matrix(NA, q, k)
   if(PB==TRUE){pb <- txtProgressBar(min = 0, max = q*k, style = 3) }
-  matg[,1]<-fx(matr, M, coefx, step = 1)
-  matg[,2]<-fx(matr, M, coefy, step=q)
-  if(k==3){matg[,3]<-fx(matr, M, coefz, step=q*2)
+  matg[,1] <- fx(matr, M, coefx, step = 1)
+  matg[,2] <- fx(matr, M, coefy, step=q)
+  if(k==3){matg[,3] <- fx(matr, M, coefz, step=q*2)
   }
   if(PB==TRUE) close(pb)
-  matg
+  return(matg)
 }
 
 # pcoa
