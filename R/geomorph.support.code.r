@@ -890,21 +890,21 @@ tps <- function(matr, matt, n, sz=1.5, pt.bg="black",
   ngrid <- tps2d(M, matr, matt)
   plot.new()
   plot.window(1.05*range(ngrid[,1]), 1.05*range(ngrid[,2]), xaxt="n", yaxt="n", 
-              xlab="", ylab="", bty="n", asp = 1,...)
+              xlab="", ylab="", bty="n", asp = 1)
   for (i in 1:m){
-    xy.plot(ngrid$x[(1:n)+(i-1)*n,], ngrid$y[(1:n)+(i-1)*n,], type = "l",
+    plot.xy(ngrid$x[(1:n)+(i-1)*n,], ngrid$y[(1:n)+(i-1)*n,], type = "l",
             col=grid.col, lwd=grid.lwd, lty=grid.lty)
   }
   for (i in 1:n){
-    xy.plot(ngrid$x[(1:m)*n-i+1, ], ngrid$y[(1:m)*n-i+1, ], type = "l",
+    plot.xy(ngrid$x[(1:m)*n-i+1, ], ngrid$y[(1:m)*n-i+1, ], type = "l",
             col=grid.col, lwd=grid.lwd, lty=grid.lty)
   }
   if(refpts==FALSE) {
     matt <- xy.coords(matt)
-    plot.xy(matt, type="p", pch=21, bg=pt.bg, cex=sz,...) 
+    plot.xy(matt, type="p", pch=21, bg=pt.bg, cex=sz) 
   } else {
     matr <- xy.coords(matr)
-    plot.xy(matr, type="p", pch=21, bg=pt.bg, cex=sz,...)
+    plot.xy(matr, type="p", pch=21, bg=pt.bg, cex=sz)
   }
 }
 
