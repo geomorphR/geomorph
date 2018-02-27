@@ -1380,17 +1380,20 @@ plot.mshape <- function(x, links=NULL,...){
   x <- as.matrix(x)
   class(x) <- "matrix"
   if(ncol(x)==2){
+    x <- xy.coords(x)
     par(xpd=T)
-    plot(x, type="n", xaxt="n", yaxt="n", xlab="", ylab="", bty="n", asp = 1, ...)
+    plot.new()
+    plot.window(1.05*range(x$x), 1.05*range(x$y), 
+                xaxt="n", yaxt="n", xlab="", ylab="", bty="n", asp = 1,...)
     if(!is.null(links)){
       for (i in 1:nrow(links)){
-        segments(x[links[i,1], 1], x[links[i,1], 2], 
-                 x[links[i,2], 1], x[links[i,2], 2])
+        segments(x$x[links[i,1]], x$y[links[i,1]], 
+                 x$x[links[i,2]], x$y[links[i,2]])
       }
     }
-    points(x, cex=3, pch=21, bg="white")
-    text(x, labels=1:nrow(x))
-  }
+    plot.xy(x, type="p", cex=3, pch=21, bg="white")
+    text(x, labels=1:length(x$x))
+  } else {
   if(ncol(x)==3){
     plot3d(x, type="n", aspect=FALSE, xlab="", ylab="", zlab="", axes=F,...)
     if(!is.null(links)){
@@ -1403,6 +1406,6 @@ plot.mshape <- function(x, links=NULL,...){
     plot3d(x, add=T, type="s", col="white", alpha=0.25, shininess=2, fog=F)
     text3d(x, texts=1:nrow(x), cex=0.7, font=2)
   }
-  
+  }
 }
 
