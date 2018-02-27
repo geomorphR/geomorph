@@ -73,7 +73,8 @@
 #' 
 plotRefToTarget<-function(M1, M2, mesh= NULL, outline=NULL, 
                           method=c("TPS","vector","points","surface"),
-                          mag=1.0, links=NULL, label=FALSE, axes=FALSE, gridPars=NULL, useRefPts=FALSE,...){
+                          mag=1.0, links=NULL, label=FALSE, axes=FALSE, 
+                          gridPars=NULL, useRefPts=FALSE,...){
   method <- match.arg(method)
   if(any(is.na(M1))==TRUE){
     stop("Data contains missing values. Estimate these first (see 'estimate.missing').")  }
@@ -85,7 +86,7 @@ plotRefToTarget<-function(M1, M2, mesh= NULL, outline=NULL,
   M2 <- M2 + (M2-M1)*mag
   limits <- function(x,s){ 
     r <- range(x)
-    rc <- scale(r,scale=FALSE)
+    rc <- scale(r, scale=FALSE)
     l <- mean(r)+s*rc
   }
   if(k==2){
@@ -98,7 +99,7 @@ plotRefToTarget<-function(M1, M2, mesh= NULL, outline=NULL,
         linklty <- rep(gP$tar.link.lty,nrow(links))[1:nrow(links)]
         for (i in 1:nrow(links)){
           segments(M2[links[i,1],1], M2[links[i,1],2], M2[links[i,2],1], M2[links[i,2],2],
-                   col=linkcol[i],lty=linklty[i],lwd=linklwd[i])
+                   col=linkcol[i], lty=linklty[i], lwd=linklwd[i])
         }
       }
       if(label == TRUE){text(M2, label=paste(1:dim(M2)[1]), adj=gP$txt.adj,

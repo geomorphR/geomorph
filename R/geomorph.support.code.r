@@ -902,7 +902,7 @@ tps <- function(matr, matt, n, sz=1.5, pt.bg="black",
     plot.xy(matt, type="p", pch=21, bg=pt.bg, cex=sz) 
   } else {
     matr <- xy.coords(matr)
-    points(matr, type="p", pch=21, bg=pt.bg, cex=sz)
+    plot.xy(matr, type="p", pch=21, bg=pt.bg, cex=sz)
   }
 }
 
