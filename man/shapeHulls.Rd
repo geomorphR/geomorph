@@ -25,10 +25,10 @@ to modify hull line type.}
 \description{
 This function is used to update \code{\link{plot.procD.lm}} and \code{\link{plot.trajectory.analysis}}
 objects with convex hull for different groups.  This function does not currently work with 
-\code{\link{plotTangentSpace}}.  If no groups are defined, and attempt to define groups from 
+\code{\link{plotTangentSpace}}.  If no groups are defined, an attempt to define groups from 
 the original \code{\link{procD.lm}} or \code{\link{trajectory.analysis}} analysis will be made.  Failling this, just a single
 convex hull will be returned.  The user can aslo choose to plot only one hull with groups = "none", which is 
-different than a NULL argumnet.  Groups can also differ from the groups originally considered for the the original \code{\link{procD.lm}} 
+different than a NULL argumnet.  Groups can also differ from the groups originally considered for the original \code{\link{procD.lm}} 
 or \code{\link{trajectory.analysis}} analysis.
 }
 \details{
@@ -52,6 +52,7 @@ group.lwd = rep(2, 4), group.lty = c(2, 1, 2, 1))
 legend("topright", levels(pc.plot$groups), 
 col = c("dark red", "dark red", "dark blue", "dark blue"),
 lwd = rep(2,4), lty = c(2, 1, 2, 1))
+shapeHulls(pc.plot, groups = "none", group.lwd = 3, group.cols = "dark grey")
 
 pc.plot <- plot(fit, type = "PC", pch = 19)
 shapeHulls(pc.plot, groups = gdf$Sex, group.cols = c("black", "black"), 
