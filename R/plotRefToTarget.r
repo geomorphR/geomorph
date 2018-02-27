@@ -71,37 +71,38 @@
 #' # plotRefToTarget(ref,Y.gpa$coords[,,1],gridPars=gridPar(tar.pt.bg = "blue", tar.link.col="blue",
 #' # tar.link.lwd=2), method="points", links = scallinks)
 #' 
-plotRefToTarget<-function(M1,M2,mesh= NULL,outline=NULL,method=c("TPS","vector","points","surface"),
-                          mag=1.0,links=NULL,label=FALSE,axes=FALSE,gridPars=NULL,useRefPts=FALSE,...){
+plotRefToTarget<-function(M1, M2, mesh= NULL, outline=NULL, 
+                          method=c("TPS","vector","points","surface"),
+                          mag=1.0, links=NULL, label=FALSE, axes=FALSE, gridPars=NULL, useRefPts=FALSE,...){
   method <- match.arg(method)
   if(any(is.na(M1))==TRUE){
     stop("Data contains missing values. Estimate these first (see 'estimate.missing').")  }
   if(any(is.na(M2))==TRUE){
     stop("Data contains missing values. Estimate these first (see 'estimate.missing').")  }
-  if(is.null(gridPars)) gP = gridPar() else gP=gridPars
-  k<-dim(M1)[2]
-  mag<-(mag-1)
-  M2<-M2+(M2-M1)*mag
-  limits = function(x,s){ 
-    r = range(x)
-    rc=scale(r,scale=FALSE)
-    l=mean(r)+s*rc
+  if(is.null(gridPars)) gP <- gridPar() else gP <- gridPars
+  k <- dim(M1)[2]
+  mag <- (mag-1)
+  M2 <- M2 + (M2-M1)*mag
+  limits <- function(x,s){ 
+    r <- range(x)
+    rc <- scale(r,scale=FALSE)
+    l <- mean(r)+s*rc
   }
   if(k==2){
     if(method=="TPS"){
-      tps(M1,M2,gP$n.col.cell, sz=gP$tar.pt.size, pt.bg=gP$tar.pt.bg, grid.col=gP$grid.col, 
+      tps(M1, M2, gP$n.col.cell, sz=gP$tar.pt.size, pt.bg=gP$tar.pt.bg, grid.col=gP$grid.col, 
           grid.lwd=gP$grid.lwd, grid.lty=gP$grid.lty, refpts=useRefPts)
       if(is.null(links)==FALSE){
         linkcol <- rep(gP$tar.link.col,nrow(links))[1:nrow(links)]
         linklwd <- rep(gP$tar.link.lwd,nrow(links))[1:nrow(links)]
         linklty <- rep(gP$tar.link.lty,nrow(links))[1:nrow(links)]
         for (i in 1:nrow(links)){
-          segments(M2[links[i,1],1],M2[links[i,1],2],M2[links[i,2],1],M2[links[i,2],2],
+          segments(M2[links[i,1],1], M2[links[i,1],2], M2[links[i,2],1], M2[links[i,2],2],
                    col=linkcol[i],lty=linklty[i],lwd=linklwd[i])
         }
       }
-      if(label == TRUE){text(M2, label=paste(1:dim(M2)[1]),adj=gP$txt.adj,
-                             pos=gP$txt.pos,cex=gP$txt.cex,col=gP$txt.col)}
+      if(label == TRUE){text(M2, label=paste(1:dim(M2)[1]), adj=gP$txt.adj,
+                             pos=gP$txt.pos, cex=gP$txt.cex, col=gP$txt.col)}
       if(!is.null(outline)){
         curve.warp <- tps2d(outline, M1, M2)
         points(curve.warp,pch=19, cex=gP$tar.out.cex, col=gP$tar.out.col) 

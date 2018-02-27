@@ -876,50 +876,55 @@ pGpa.wSliders <- function(Y, curves, surf, ProcD = TRUE, PrinAxes = FALSE, Proj 
 # tps
 #
 #
-tps<-function(matr, matt, n,sz=1.5, pt.bg="black",
+tps <- function(matr, matt, n, sz=1.5, pt.bg="black",
               grid.col="black", grid.lwd=1, grid.lty=1, refpts=FALSE){		#DCA: altered from J. Claude: 2D only
-  xm<-min(matr[,1])
-  ym<-min(matr[,2])
-  xM<-max(matr[,1])
-  yM<-max(matr[,2])
-  rX<-xM-xm; rY<-yM-ym
-  a<-seq(xm-1/5*rX, xM+1/5*rX, length=n)
-  b<-seq(ym-1/5*rX, yM+1/5*rX,by=(xM-xm)*7/(5*(n-1)))
-  m<-round(0.5+(n-1)*(2/5*rX+ yM-ym)/(2/5*rX+ xM-xm))
-  M<-as.matrix(expand.grid(a,b))
-  ngrid<-tps2d(M,matr,matt)
-  plot(ngrid, cex=0.2,asp=1,axes=FALSE,xlab="",ylab="")
-  for (i in 1:m){lines(ngrid[(1:n)+(i-1)*n,], col=grid.col,lwd=grid.lwd,lty=grid.lty)}
-  for (i in 1:n){lines(ngrid[(1:m)*n-i+1,], col=grid.col,lwd=grid.lwd,lty=grid.lty)}
-  if(refpts==FALSE) points(matt,pch=21,bg=pt.bg,cex=sz) else points(matr,pch=21,bg=pt.bg,cex=sz)
+  xm <- min(matr[,1])
+  ym <- min(matr[,2])
+  xM <- max(matr[,1])
+  yM <- max(matr[,2])
+  rX <- xM-xm; rY <- yM-ym
+  a <- seq(xm - 1/5*rX, xM + 1/5*rX, length=n)
+  b <- seq(ym - 1/5*rX, yM + 1/5*rX, by=(xM-xm)*7/(5*(n-1)))
+  m <- round(0.5+(n-1)*(2/5*rX + yM-ym)/(2/5*rX + xM-xm))
+  M <- as.matrix(expand.grid(a,b))
+  ngrid <- tps2d(M, matr, matt)
+  plot(ngrid, cex=0.2, asp=1, axes=FALSE, xlab="", ylab="")
+  for (i in 1:m){lines(ngrid[(1:n)+(i-1)*n, ], col=grid.col, lwd=grid.lwd,lty=grid.lty)}
+  for (i in 1:n){lines(ngrid[(1:m)*n-i+1, ], col=grid.col, lwd=grid.lwd,lty=grid.lty)}
+  if(refpts==FALSE) points(matt, pch=21, bg=pt.bg, cex=sz) else points(matr, pch=21, bg=pt.bg, cex=sz)
 }
 
 # tps2d
 #
 #
-tps2d<-function(M, matr, matt)
-{p<-dim(matr)[1]; q<-dim(M)[1]; n1<-p+3
-P<-matrix(NA, p, p)
-for (i in 1:p)
-{for (j in 1:p){
-  r2<-sum((matr[i,]-matr[j,])^2)
-  P[i,j]<- r2*log(r2)}}
-P[which(is.na(P))]<-0
-Q<-cbind(1, matr)
-L<-rbind(cbind(P,Q), cbind(t(Q),matrix(0,3,3)))
-m2<-rbind(matt, matrix(0, 3, 2))
-coefx<-fast.solve(L)%*%m2[,1]
-coefy<-fast.solve(L)%*%m2[,2]
-fx<-function(matr, M, coef)
-{Xn<-numeric(q)
-for (i in 1:q)
-{Z<-apply((matr-matrix(M[i,],p,2,byrow=TRUE))^2,1,sum)
-Xn[i]<-coef[p+1]+coef[p+2]*M[i,1]+coef[p+3]*M[i,2]+sum(coef[1:p]*(Z*log(Z)))}
-Xn}
-matg<-matrix(NA, q, 2)
-matg[,1]<-fx(matr, M, coefx)
-matg[,2]<-fx(matr, M, coefy)
-matg}
+tps2d <- function(M, matr, matt){
+  p <- dim(matr)[1]; q <- dim(M)[1]; n1 <- p+3
+  P <- matrix(NA, p, p)
+  for (i in 1:p){
+    for (j in 1:p){
+      r2 <- sum((matr[i,] - matr[j,])^2)
+      P[i,j] <- r2*log(r2)
+    }
+  }
+  P[which(is.na(P))] <- 0
+  Q <- cbind(1, matr)
+  L <- rbind(cbind(P, Q), cbind(t(Q), matrix(0,3,3)))
+  m2 <- rbind(matt, matrix(0, 3, 2))
+  coefx <- fast.solve(L)%*%m2[,1]
+  coefy <- fast.solve(L)%*%m2[,2]
+  fx <- function(matr, M, coef){
+    Xn <- numeric(q)
+    for (i in 1:q){
+      Z <- apply((matr - matrix(M[i,], p, 2, byrow=TRUE))^2, 1, sum)
+      Xn[i] <- coef[p+1] + coef[p+2]*M[i,1] + coef[p+3]*M[i,2] + sum(coef[1:p]*(Z*log(Z)))
+    }
+    return(Xn)
+  } 
+  matg <- matrix(NA, q, 2)
+  matg[,1] <- fx(matr, M, coefx)
+  matg[,2] <- fx(matr, M, coefy)
+  return(matg)
+}
 
 # tps2d3d
 #
