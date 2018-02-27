@@ -893,19 +893,17 @@ tps <- function(matr, matt, n, sz=1.5, pt.bg="black",
               xlab="", ylab="", bty="n", asp = 1)
   ngrid <- xy.coords(ngrid)
   for (i in 1:m){
-    plot.xy(ngrid$x[(1:n)+(i-1)*n,], ngrid$y[(1:n)+(i-1)*n,], type = "l",
+    plot.xy(ngrid$x[(1:n)+(i-1)*n], ngrid$y[(1:n)+(i-1)*n], type = "l",
             col=grid.col, lwd=grid.lwd, lty=grid.lty)
   }
   for (i in 1:n){
-    plot.xy(ngrid$x[(1:m)*n-i+1, ], ngrid$y[(1:m)*n-i+1, ], type = "l",
+    plot.xy(ngrid$x[(1:m)*n-i+1], ngrid$y[(1:m)*n-i+1], type = "l",
             col=grid.col, lwd=grid.lwd, lty=grid.lty)
   }
   if(refpts==FALSE) {
-    matt <- xy.coords(matt)
-    plot.xy(matt, type="p", pch=21, bg=pt.bg, cex=sz) 
+    plot.xy(xy.coords(matt), type="p", pch=21, bg=pt.bg, cex=sz) 
   } else {
-    matr <- xy.coords(matr)
-    plot.xy(matr, type="p", pch=21, bg=pt.bg, cex=sz)
+    plot.xy(xy.coords(matr), type="p", pch=21, bg=pt.bg, cex=sz)
   }
 }
 
