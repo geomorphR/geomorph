@@ -76,9 +76,9 @@ plotRefToTarget<-function(M1, M2, mesh= NULL, outline=NULL,
                           mag=1.0, links=NULL, label=FALSE, axes=FALSE, 
                           gridPars=NULL, useRefPts=FALSE,...){
   method <- match.arg(method)
-  if(any(is.na(M1))==TRUE){
+  if(any(is.na(M1))){
     stop("Data contains missing values. Estimate these first (see 'estimate.missing').")  }
-  if(any(is.na(M2))==TRUE){
+  if(any(is.na(M2))){
     stop("Data contains missing values. Estimate these first (see 'estimate.missing').")  }
   if(is.null(gridPars)) gP <- gridPar() else gP <- gridPars
   k <- dim(M1)[2]
@@ -102,7 +102,7 @@ plotRefToTarget<-function(M1, M2, mesh= NULL, outline=NULL,
                    col=linkcol[i], lty=linklty[i], lwd=linklwd[i])
         }
       }
-      if(label == TRUE){
+      if(label){
         text(M2, label=paste(1:dim(M2)[1]), adj=gP$txt.adj,
                              pos=gP$txt.pos, cex=gP$txt.cex, col=gP$txt.col)
         }
@@ -110,22 +110,22 @@ plotRefToTarget<-function(M1, M2, mesh= NULL, outline=NULL,
         curve.warp <- xy.coords(tps2d(outline, M1, M2))
         plot.xy(curve.warp, type="p", pch=19, cex=gP$tar.out.cex, col=gP$tar.out.col) 
       }
-      if(useRefPts==FALSE){
+      if(!useRefPts){
         plot.xy(xy.coords(M2), type="p", pch=21, cex=gP$tar.pt.size, bg=gP$tar.pt.bg)
       } else {
         plot.xy(xy.coords(M1), type="p", pch=21, cex=gP$pt.size, bg=gP$pt.bg)}
     }
     if(method=="vector"){
       plot.new()
-      if(axes==TRUE){
+      if(axes){
         plot.window(limits(M1[,1], 1.25), limits(M1[,2], 1.25),
                     xlab="x", ylab="y", asp = 1)
       }
-      if(axes==FALSE){
+      if(!axes){
         plot.window(limits(M1[,1], 1.25), limits(M1[,2],1.25),
                     xlab="", ylab="", asp = 1, xaxt="n", yaxt="n")
       }
-      if(is.null(links)==FALSE){
+      if(!is.null(links)){
         linkcol <- rep(gP$link.col,nrow(links))[1:nrow(links)]
         linklwd <- rep(gP$link.lwd,nrow(links))[1:nrow(links)]
         linklty <- rep(gP$link.lty,nrow(links))[1:nrow(links)]
@@ -134,7 +134,7 @@ plotRefToTarget<-function(M1, M2, mesh= NULL, outline=NULL,
                    col=linkcol[i], lty=linklty[i], lwd=linklwd[i])
         }
       }
-      if(label == TRUE){
+      if(label){
         text(M1, label=paste(1:dim(M1)[1]),adj=gP$txt.adj,
              pos=gP$txt.pos, cex=gP$txt.cex, col=gP$txt.col)
         }
@@ -143,15 +143,15 @@ plotRefToTarget<-function(M1, M2, mesh= NULL, outline=NULL,
     }
     if(method=="points"){
       plot.new()
-      if(axes==TRUE){
+      if(axes){
         plot.window(limits(M1[,1], 1.25), limits(M1[,2], 1.25),
                     xlab="x", ylab="y", asp = 1)
       }
-      if(axes==FALSE){
+      if(!axes){
         plot.window(limits(M1[,1], 1.25), limits(M1[,2],1.25),
                     xlab="", ylab="", asp = 1, xaxt="n", yaxt="n")
       }
-      if(label == TRUE){
+      if(label){
         text(M1, label=paste(1:dim(M1)[1]), adj=gP$txt.adj,
              pos=gP$txt.pos, cex=gP$txt.cex, col=gP$txt.col)
         }
@@ -219,16 +219,16 @@ plotRefToTarget<-function(M1, M2, mesh= NULL, outline=NULL,
       on.exit(par(old.par))
     }
     if(method=="vector"){
-      if(axes==TRUE){
+      if(axes){
       plot3d(M1,type="s",col=gP$pt.bg,size=gP$pt.size,aspect=FALSE,...)}
-      if(axes==FALSE){
+      if(!axes){
         plot3d(M1,type="s",col=gP$pt.bg,size=gP$pt.size,aspect=FALSE,xlab="",ylab="",zlab="",axes=F,...)}
-      if(label == TRUE){text3d(M1, texts = paste(1:dim(M1)[1]), adj=(gP$txt.adj+gP$pt.size),
+      if(label){text3d(M1, texts = paste(1:dim(M1)[1]), adj=(gP$txt.adj+gP$pt.size),
                                pos=(gP$txt.pos+gP$pt.size),cex=gP$txt.cex,col=gP$txt.col)}
       for (i in 1:nrow(M1)){
         segments3d(rbind(M1[i,],M2[i,]),lwd=2)
       }
-      if(is.null(links)==FALSE){
+      if(!is.null(links)){
         tarlinkcol <- rep(gP$tar.link.col,nrow(links))[1:nrow(links)]
         tarlinklwd <- rep(gP$tar.link.lwd,nrow(links))[1:nrow(links)]
         tarlinklty <- rep(gP$tar.link.lty,nrow(links))[1:nrow(links)]
@@ -239,16 +239,16 @@ plotRefToTarget<-function(M1, M2, mesh= NULL, outline=NULL,
       }
     }
     if(method=="points"){
-      if(axes==TRUE){
+      if(axes){
       plot3d(M1,type="s",col=gP$pt.bg,size=gP$pt.size,aspect=FALSE,...)
       plot3d(M2,type="s",col=gP$tar.pt.bg,size=gP$tar.pt.size,add=TRUE)}
-      if(axes==FALSE){
+      if(!axes){
         plot3d(M1,type="s",col=gP$pt.bg,size=gP$pt.size,aspect=FALSE,xlab="",ylab="",zlab="",axes=F,...)
         plot3d(M2,type="s",col=gP$tar.pt.bg,size=gP$tar.pt.size,add=TRUE)}
       
-      if(label == TRUE){text3d(M1, texts = paste(1:dim(M1)[1]), adj=(gP$txt.adj+gP$pt.size),
+      if(label){text3d(M1, texts = paste(1:dim(M1)[1]), adj=(gP$txt.adj+gP$pt.size),
                                pos=(gP$txt.pos+gP$pt.size),cex=gP$txt.cex,col=gP$txt.col)}
-      if(is.null(links)==FALSE){
+      if(!is.null(links)){
         linkcol <- rep(gP$link.col,nrow(links))[1:nrow(links)]
         linklwd <- rep(gP$link.lwd,nrow(links))[1:nrow(links)]
         linklty <- rep(gP$link.lty,nrow(links))[1:nrow(links)]
@@ -264,7 +264,7 @@ plotRefToTarget<-function(M1, M2, mesh= NULL, outline=NULL,
       }
     }
     if (method == "surface") {
-      if(is.null(mesh)==TRUE){
+      if(is.null(mesh)){
         stop("Surface plotting requires a template mesh3d object (see 'warpRefMesh').")
       }
       warp.PLY <- mesh
