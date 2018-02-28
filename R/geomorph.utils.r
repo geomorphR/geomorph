@@ -686,10 +686,10 @@ plot.pls <- function(x, label = NULL, warpgrids=TRUE, shapes=FALSE, ...){
         cat("\nWarping mesh\n")
         warp1 <- tps2d3d(vb, A1.ref, pls1.min)
         warp1.PLY$vb <- rbind(t(warp1), 1)
-        shade3d(warp1.PLY, ...)
+        shade3d(warp1.PLY, main = paste("PLS Block1 negative"), ...)
         warp2 <- tps2d3d(vb, A1.ref, pls1.max)
         warp2.PLY$vb <- rbind(t(warp2), 1)
-        shade3d(warp2.PLY, ...)
+        shade3d(warp2.PLY, main = paste("PLS Block1 positive"), ...)
       } else {
         plot3d(pls1.min, type = "s", col = "gray", main = paste("PLS Block1 negative"), 
                size = 1.25, aspect = FALSE,xlab="",ylab="",zlab="",box=FALSE, axes=FALSE)
@@ -705,10 +705,10 @@ plot.pls <- function(x, label = NULL, warpgrids=TRUE, shapes=FALSE, ...){
         cat("\nWarping mesh\n")
         warp1 <- tps2d3d(vb, A2.ref, pls2.min)
         warp1.PLY$vb <- rbind(t(warp1), 1)
-        shade3d(warp1.PLY, ...)
+        shade3d(warp1.PLY, main = paste("PLS Block2 negative"), ...)
         warp2 <- tps2d3d(vb, A2.ref, pls2.max)
         warp2.PLY$vb <- rbind(t(warp2), 1)
-        shade3d(warp2.PLY, ...)
+        shade3d(warp2.PLY, main = paste("PLS Block2 positive"), ...)
       } else {
         plot3d(pls2.min, type = "s", col = "gray", main = paste("PLS Block2 negative"), 
                size = 1.25, aspect = FALSE,xlab="",ylab="",zlab="",box=FALSE, axes=FALSE)
