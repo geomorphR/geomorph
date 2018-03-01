@@ -9,6 +9,7 @@ PENDING CHANGES IN GEOMORPH VERSION 3.0.6
     o Added an additional line of summary to ANOVA tables to signal how effect sizes are calculated
     o Adjusted ANOVA tables to show from which distributions P-values are estimated.
     o Modified plot.procD.allometry to allow direct control of all plotting arguments by the user.
+    o Modified plotRefToTarget and tps to use plot.xy instead of plot, and thus avoid conflicts with plot.mshape.
     
   BUG FIXES
     o Fixes issues with estimate.missing regression approach
