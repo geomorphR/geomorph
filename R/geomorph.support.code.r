@@ -3119,3 +3119,46 @@ readland.tps2 <- function (file, specID = c("None", "ID", "imageID"))
   }
   return(list(coords = coords,scale=imscale)  )
 }
+
+# Function for ace of GM data
+# follows fastAnc in phytools
+shape.ace <- function(x, phy){
+  N <- length(phy$tip.label)
+  Nnode <- phy$Nnode
+  anc.states<-NULL   
+  for (i in 1:ncol(x)){
+    x1 <- x[,i]
+    tmp <- vector()
+    for (j in 1:Nnode + N) {
+      a <- multi2di(root(phy, node = j))
+      tmp[j - N] <- ace(x1, a, method = "pic")$ace[1]
+    }
+    anc.states<-cbind(anc.states, tmp)   
+  }
+  colnames(anc.states) <- NULL
+  row.names(anc.states) <- NULL
+  return(anc.states)
+}
+
+# Function for retrieving pieces for PCA weighting from a VCV (not from phylo)
+# Follows phylo.mat
+
+cov.mat <- function(x, COV) {
+  if(is.null(dimnames(COV))){
+    warning("COV matrix does not include dimnames. Assuming same order of observations as x")
+  } else {
+    C <- C[rownames(x),rownames(x)]
+  }
+  invC <- fast.solve(C)
+  eigC <- eigen(C)
+  lambda <- zapsmall(eigC$values)
+  if(any(lambda == 0)){
+    warning("Singular covariance matrix. Proceed with caution")
+    lambda = lambda[lambda > 0]
+  }
+  eigC.vect <- eigC$vectors[,1:(length(lambda))]
+  D.mat <- fast.solve(eigC.vect%*% diag(sqrt(lambda)) %*% t(eigC.vect))
+  rownames(D.mat) <- colnames(D.mat) <- colnames(C)
+  rownames(invC) <- colnames(invC) <- colnames(C)
+  list(invC = invC, D.mat = D.mat, C = C)
+}

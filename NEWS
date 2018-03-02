@@ -2,6 +2,7 @@ PENDING CHANGES IN GEOMORPH VERSION 3.0.6
   NEW FEATURES
     o plotOutliers now allows to plot outlier configurations in order to compare their shape with the consensus. 
     o plot.mshape function added to plot the consensus configuration with numbers and links
+    o New function gm.prcomp implements raw and weighted PCA and allows S3 generic plotting of its output
     
   OTHER CHANGES
     o Changes procD.pgls to use residuals from GLS model for permutations
