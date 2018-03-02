@@ -1480,15 +1480,15 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, phylo = FALSE,
     phy <- attributes(x)$phy
     pcdata <- rbind(pcdata, x$anc.pcscores[,c(axis1, axis2)])
     plot.new()
-    plot.window(1.05*range(pcdata[,1]), 1.05*range(pcdata[,2]), asp=1,...)
+    plot.window(1.05*range(pcdata[,1]), 1.05*range(pcdata[,2]), log = "", asp=1,...)
     for (i in 1:nrow(phy$edge)) {
       dt.xy <- xy.coords(pcdata[(phy$edge[i,]),])
       plot.xy(dt.xy, type="l", col = phylo.par$edge.color, 
-              lwd = phylo.par$edge.width, lty = phylo.par$edge.lty,...)
+              lwd = phylo.par$edge.width, lty = phylo.par$edge.lty)
     }
     plot.xy(xy.coords(pcdata[1:length(phy$tip),]), type="p",...)
     plot.xy(xy.coords(pcdata[(length(phy$tip)+1):nrow(pcdata),]), type="p",
-            pch = phylo.par$node.pch, cex = phylo.par$node.cex, bg = phylo.par$node.bg,...)
+            pch = phylo.par$node.pch, cex = phylo.par$node.cex, bg = phylo.par$node.bg)
     }
   out <- list(points = x$pc.data[,1:2], pc.data = x$pc.data)
   class(out) <- "plot.gm.prcomp"
