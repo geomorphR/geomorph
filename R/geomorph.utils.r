@@ -1383,8 +1383,7 @@ plot.mshape <- function(x, links=NULL,...){
     x <- xy.coords(x)
     par(xpd=T)
     plot.new()
-    plot.window(1.05*range(x$x), 1.05*range(x$y), 
-                xaxt="n", yaxt="n", xlab="", ylab="", bty="n", asp = 1,...)
+    plot.window(1.05*range(x$x), 1.05*range(x$y), asp = 1,...)
     if(!is.null(links)){
       for (i in 1:nrow(links)){
         segments(x$x[links[i,1]], x$y[links[i,1]], 
