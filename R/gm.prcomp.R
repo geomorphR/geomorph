@@ -82,6 +82,16 @@
 #'      node.cex = 0)) # Supresses plotting of nodes
 #' text(pleth.phylomorpho$pc.scores, labels = labels(pleth.phylomorpho$pc.scores)[[1]],
 #'      pos = 3, font = 4) 
+#'
+#' # same plot but change the PC axes type
+#' 
+#' plot(pleth.phylomorpho, phylo = TRUE, cex = 2, pch = 22, bg = gps, 
+#'      phylo.par = list(edge.color = "blue", edge.width = 2, edge.lty = 2,
+#'      node.cex = 0), axes = FALSE) # Supresses plotting of nodes and axes
+#'  abline(h = 0, lty = 3, cex = 0.7) # subtle axes
+#'  abline(v = 0, lty = 3, cex = 0.7)
+#' text(pleth.phylomorpho$pc.scores, labels = labels(pleth.phylomorpho$pc.scores)[[1]],
+#'      pos = 3, font = 4) 
 
 gm.prcomp <- function (A, phy = NULL, phylo.pca = FALSE, Cov = NULL, ...){
   if (length(dim(A)) != 3) {
