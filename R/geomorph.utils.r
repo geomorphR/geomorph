@@ -1466,6 +1466,7 @@ summary.gm.prcomp <- function (object, ...) {
 plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, phylo = FALSE, 
                            phylo.par = list(edge.color = "black", edge.width = 1, edge.lty = 1,
                                             node.bg = "black", node.pch = 21, node.cex = 1), ...) {
+  options(warn = -1)
   pcdata <- x$pc.scores[, c(axis1, axis2)]
   dots <- list(...)
   if(!is.null(dots$axes)) axes <- dots$axes else axes <- TRUE
@@ -1497,6 +1498,7 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, phylo = FALSE,
             pch = phylo.par$node.pch, cex = phylo.par$node.cex, bg = phylo.par$node.bg)
   }
 
+  options(warn = 0)
   out <- list(points = x$pc.data[,1:2], pc.data = x$pc.data)
   class(out) <- "plot.gm.prcomp"
   invisible(out)
