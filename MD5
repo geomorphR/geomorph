@@ -63,8 +63,8 @@ d975879b9cfb692a95bd331d298d79d2 *man/plethspecies.Rd
 c243df60434118dddca6904f3d6de9b0 *man/plot.physignal.Rd
 4e6d701aa8d096d2d3ca1d88b3b5a59c *man/plot.pls.Rd
 e0dd289393b7ba937f21c5dedc667006 *man/plot.procD.allometry.Rd
-fc73d8aa1896727b6849cee4c50fb1fd *man/plot.procD.lm.Rd
-21d89ace20ae5cc0f35b744a10157075 *man/plot.trajectory.analysis.Rd
+b659ebcf45cba667c6f44f49aff68d15 *man/plot.procD.lm.Rd
+77c2c660ba7162cb0c2cb219860f19c2 *man/plot.trajectory.analysis.Rd
 0907a5bb638b6428e56cdb5fc4be0b67 *man/plotAllSpecimens.Rd
 3e76391a9bf5098ea870b6e9fdcb8b99 *man/plotGMPhyloMorphoSpace.Rd
 85302e89254f72a167c74648814039ae *man/plotOutliers.Rd
@@ -148,7 +148,7 @@ ed003209e3771dc165b2747defc1de9c *R/estimate.missing.r
 b56e53ac307d84a05efee9525dd6868a *R/fixed.angle.r
 203177efc30cc6fef4bd604b2fc2af01 *R/geomorph.data.frame.r
 32b121545fc8c07d5aace5f9bb14791b *R/geomorph.support.code.r
-0c753a632e558b8522016108fb0523ef *R/geomorph.utils.r
+9ea810d14cc301d4c8190d983b819f0e *R/geomorph.utils.r
 0d9d88147f22cff2241b6e2e7396d57f *R/globalIntegration.r
 d25761e75d4dd3e3c0e4bc4ca1b4b188 *R/gpagen.r
 2d8ab3c6fea452711a7cf091ffba8ff5 *R/gridPar.r

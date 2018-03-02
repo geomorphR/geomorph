@@ -150,6 +150,9 @@ plot.QQ <- function(r){
 #' @param ... other arguments passed to plot (helpful to employ
 #' different colors or symbols for different groups).  See
 #' \code{\link{plot.default}} and \code{\link{par}}
+#' @return An object of class "plot.procD.lm" is a list with components
+#'  that can be used in other plot functions, such as the type of plot, points, 
+#'  a group factor, and other information depending on the plot parameters used.
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities
@@ -1247,6 +1250,9 @@ trajplot.by.groups<-function(Data, TM, groups, group.cols = NULL,
 #' but initial points with green color and end points with red color.
 #' @param pt.scale An optional value to magnify or reduce points (1 = no change)
 #' @param ... other arguments passed to plot
+#' @return An object of class "plot.trajectory.analysis" is a list with components
+#'  that can be used in other plot functions, such as the type of plot, points, 
+#'  a group factor, and other information depending on the plot parameters used.
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities
@@ -1383,7 +1389,8 @@ plot.mshape <- function(x, links=NULL,...){
     x <- xy.coords(x)
     par(xpd=T)
     plot.new()
-    plot.window(1.05*range(x$x), 1.05*range(x$y), asp = 1,...)
+    plot.window(1.05*range(x$x), 1.05*range(x$y), asp = 1,
+                xlab="", ylab="", xaxt="n", yaxt="n", bty="n",...)
     if(!is.null(links)){
       for (i in 1:nrow(links)){
         segments(x$x[links[i,1]], x$y[links[i,1]], 

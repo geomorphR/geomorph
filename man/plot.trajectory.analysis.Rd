@@ -20,6 +20,11 @@ but initial points with green color and end points with red color.}
 
 \item{...}{other arguments passed to plot}
 }
+\value{
+An object of class "plot.trajectory.analysis" is a list with components
+ that can be used in other plot functions, such as the type of plot, points, 
+ a group factor, and other information depending on the plot parameters used.
+}
 \description{
 Plot Function for geomorph
 }

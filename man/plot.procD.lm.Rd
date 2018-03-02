@@ -34,6 +34,11 @@ that the predictor is size.}
 different colors or symbols for different groups).  See
 \code{\link{plot.default}} and \code{\link{par}}}
 }
+\value{
+An object of class "plot.procD.lm" is a list with components
+ that can be used in other plot functions, such as the type of plot, points, 
+ a group factor, and other information depending on the plot parameters used.
+}
 \description{
 Plot Function for geomorph
 }
