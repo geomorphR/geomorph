@@ -8,12 +8,12 @@
 #' It is not intended to influence how one should digitize landmarks using StereoMorph.  Each digitizing experience is
 #' unique and users might need to edit their own data using StereoMorph functions in some cases; this function will not
 #' necessarily overcome all data editing challenges.  This function currently works with 2D data only, 
-#' as the \code{\link[SteroMorph]{readShapes}} function of StereMorph pertains to digitizing images.
+#' as the readShapes function of StereMorph pertains to digitizing images.
 #' 
 #' The enhanced feature of this function is that it can find a prescribed number of approximatey equally spaced 
 #' semilandmarks along 2D curves (from the many points of Bexier curves in StereoMorph), facilitating rapid \code{\link{gpagen}}
 #' analysis and the flexibility to change the desired number of semilandmarks defining curves.  This is only true, however,
-#' if the curves oprtion in \code{\link[SteroMorph]{digitizeImages}} is used.  
+#' if the curves oprtion in digitizeImages (StreoMorph) is used.  
 #' 
 #' The user can specify the number of points along curves, whether curves are continuous (closed and without fixed points), 
 #' and whether landmarks should be scaled, if possible (if scaling was performed while digtizing).
@@ -35,7 +35,7 @@
 #' @export
 #' @keywords IO
 #' @author Michael Collyer
-#' @seealso \code{\link[StereoMorph]{readShapes}} (from StreoMorph)
+#' @seealso readShapes (from StreoMorph)
 #' @return An object of class "geomorphShapes" is a list containing the following
 #' \item{landmarks}{A list of specimen by specimen landmarks, arranged with fixed landmarks first and semilandmarks second.}
 #' \item{fixed}{A vector indicating which landmarks are initially considered "fixed" (but this can be changed).}
