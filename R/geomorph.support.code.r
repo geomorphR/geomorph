@@ -2965,7 +2965,7 @@ traj.by.groups <- function(ff, fr, traj.pts, data=NULL, iter, seed= NULL,
 # GMfromShapes0
 # function to read landmarks without sliders from a StereoMorph shapes object
 # used in: readland.shapes
-GMfromShapes0 <- function(Shapes){ # No curves
+GMfromShapes0 <- function(Shapes, scaled = TRUE){ # No curves
   scaling <- Shapes$scaling
   sp.names <- names(scaling)
   
@@ -2982,8 +2982,8 @@ GMfromShapes0 <- function(Shapes){ # No curves
     landmarks <- Shapes$landmarks.pixel
     scaled = FALSE
   } else {
-    landmarks <- Shapes$landmarks.scaled
-    scaled = TRUE
+    if(scaled) landmarks <- Shapes$landmarks.scaled else 
+      landmarks <- Shapes$landmarks.pixel
   }
   
   dims <- dim(landmarks)
@@ -3034,8 +3034,8 @@ evenPts <- function(x, n){
 # GMfromShapes1
 # function to read landmarks with sliders from a StereoMorph shapes object
 # used in: readland.shapes
-GMfromShapes1 <- function(Shapes, nCurvePts, curve.ends = NULL, continuous.curve = NULL){ # with Curves
-  out <- GMfromShapes0(Shapes)
+GMfromShapes1 <- function(Shapes, nCurvePts, curve.ends = NULL, continuous.curve = NULL, scaled = TRUE){ # with Curves
+  out <- GMfromShapes0(Shapes, scaled = scaled)
   scaled = out$scaled
   if(scaled) curves <- Shapes$curves.scaled else 
     curves <- Shapes$curves.pixel

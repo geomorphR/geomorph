@@ -24,7 +24,7 @@ db6cbd31768f1fd06f29c6a7f3d42412 *man/compare.pls.Rd
 fab11ba70acfdd0f4b5a2030019d383a *man/define.links.Rd
 5f4ece10c8c082f7bc3d09973f33bdb1 *man/define.modules.Rd
 7501f31982d9a66af0c748739b364ad3 *man/define.sliders.Rd
-46db5f2e0c63490122f9c65b70222374 *man/digit.curves.Rd
+413ca1a29c6124cf0edc4acf5736aa32 *man/digit.curves.Rd
 9d53f208f8a788f77f9062c49f353048 *man/digit.fixed.Rd
 d4502085a6a0161d79904b23d6d8cdda *man/digitize2d.Rd
 e1d5a23bebea2da8148fa1617386b897 *man/digitsurface.Rd
@@ -36,7 +36,7 @@ f9221a7b4261484793b945d7be4bbec6 *man/geomorph-package.Rd
 fc517d25bdb69ff8f0aff4558aa643ce *man/geomorph.data.frame.Rd
 525f50dde2a91b7ac438af78505e83f2 *man/globalIntegration.Rd
 1dbc8b683185f1dd3f671b254206393b *man/gm.prcomp.Rd
-f6cb6aeebdcd32b07aa3756125399d93 *man/gpagen.Rd
+f276b0ad70688fe8297c3140bc7ac773 *man/gpagen.Rd
 dab207265e691bfdd77ed11b54c1ec10 *man/gridPar.Rd
 a598044482a6c3e39517b798b654c57e *man/hummingbirds.Rd
 d4b1fbe2910cefb535115644338f2b93 *man/integration.test.Rd
@@ -98,6 +98,7 @@ b4d393dc787783cd69ce705e64a8d542 *man/pupfish.Rd
 cb46da06afb9b58e54ad31f7a7a02f4c *man/read.morphologika.Rd
 264a8a7606d0f550aa7cc4c9abdb76cb *man/read.ply.Rd
 64f811957932c1d67cc8324ee2f706e5 *man/readland.nts.Rd
+d3ce76b7cc9673dd6a92f4e4b7b3ba22 *man/readland.shapes.Rd
 f8f42ae1f37f2bcc753bb44d82763feb *man/readland.tps.Rd
 d7ab7b16621a488c2daa709d10af488b *man/readmulti.nts.Rd
 8be198584c10582597e98c6cecbb26f7 *man/scallopPLY.Rd
@@ -127,7 +128,7 @@ da1241dd835f95675cc7126b2a7ec61a *man/two.d.array.Rd
 8193dd10d2d3422240d788b5e404ee21 *man/warpRefMesh.Rd
 4678254db827c8ff8caf6c5beb8157be *man/warpRefOutline.Rd
 d9119f721918f22c267db843023a86fe *man/writeland.tps.Rd
-9414d8123ccf271b655a5dd3a02408c7 *NAMESPACE
+c89c7bf45de5d6e5c11bd40e0359d916 *NAMESPACE
 bd301f9e99c48acf63cca2be8adfb8bd *NEWS
 1e4dfb5a8730860a6bb9cafa1cb699b8 *R/advanced.procD.lm.r
 311a910118a6b60a5ab89a58349e1f69 *R/arrayspecs.r
@@ -142,7 +143,7 @@ f1dd9c66b82a3713184080a311e41c2e *R/coords.subset.r
 d16ddcc0cc85bf6a16a27faf592b0a6c *R/define.modules.r
 c669fc61c1284507d289559ee93f9892 *R/define.sliders.r
 de2c474fcd4c125b7563c13ea9c9ee99 *R/deprecated.defunct.r
-1fb0bd4167df4c3f2c3d726c39f6e053 *R/digit.curves.r
+8f2dd10372e0c742f1dfaffdc693a305 *R/digit.curves.r
 0c03428098d628c816597b70abc3ccd3 *R/digit.fixed.r
 ddff41e987eac54d3500e2313799c3c6 *R/digitize2d.r
 6ee66fc21bc5f6391b02c890d2313575 *R/digitsurface.r
@@ -151,11 +152,11 @@ ed003209e3771dc165b2747defc1de9c *R/estimate.missing.r
 9cfff0013db7a8c0e4aca770b5d9ea25 *R/findMeanSpec.r
 b56e53ac307d84a05efee9525dd6868a *R/fixed.angle.r
 203177efc30cc6fef4bd604b2fc2af01 *R/geomorph.data.frame.r
-b08fc8b017f78bc3afc12add74f5778f *R/geomorph.support.code.r
+dae6a45be1aa4773bbf7cf3a632acb29 *R/geomorph.support.code.r
 76fe183bc1cd22d1b515f72f1a0bb271 *R/geomorph.utils.r
 0d9d88147f22cff2241b6e2e7396d57f *R/globalIntegration.r
 f04e88c4f380b4a2c3c17d09e526b580 *R/gm.prcomp.R
-d25761e75d4dd3e3c0e4bc4ca1b4b188 *R/gpagen.r
+daba0c41a16b87f5f284721b4f2b09be *R/gpagen.r
 2d8ab3c6fea452711a7cf091ffba8ff5 *R/gridPar.r
 4c14d0451db3d7529482ac61e2c0592c *R/integration.test.r
 c35bcae1a6ea59c924cf7dc9eec3e013 *R/interlmkdist.r
@@ -177,6 +178,7 @@ b8e08a315b3c34603f20a9664a853029 *R/plotOutliers.r
 df3f4cc6406dc0c737ee2ff08c2a0e3d *R/read.morphologika.r
 9c3c828f71a413b5437d45228a3bf9b7 *R/read.ply.r
 7f0641e4fc3731624966a5e6578f5790 *R/readland.nts.r
+c5e47b85492834d913bd31661fd739c4 *R/readland.shapes.r
 48589b8afc67c5c8714972e6de1be0a1 *R/readland.tps.r
 945534fe7f30c519cd5a6663a9b882a3 *R/readmulti.nts.r
 bb92986b568b7e9176ff879b2e0ce9d9 *R/shape.predictor.r
