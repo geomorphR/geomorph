@@ -8,10 +8,12 @@ gpagen(A, curves = NULL, surfaces = NULL, PrinAxes = TRUE,
   max.iter = NULL, ProcD = TRUE, Proj = TRUE, print.progress = TRUE)
 }
 \arguments{
-\item{A}{A 3D array (p x k x n) containing landmark coordinates for a set of specimens}
+\item{A}{Either an object of class geomorphShapes or a 3D array (p x k x n) containing landmark coordinates 
+for a set of specimens.  If A is a geomorphShapes object, the curves argument is uneeded.}
 
 \item{curves}{An optional matrix defining which landmarks should be treated as semilandmarks on boundary 
-curves, and which landmarks specify the tangent directions for their sliding}
+curves, and which landmarks specify the tangent directions for their sliding.  This matrix is generated automatically
+with \code{\link{geomorphShapes}} following digitizing of curves in StereoMorph.}
 
 \item{surfaces}{An optional vector defining which landmarks should be treated as semilandmarks on surfaces}
 

@@ -2962,6 +2962,195 @@ traj.by.groups <- function(ff, fr, traj.pts, data=NULL, iter, seed= NULL,
        ngroups = tn, npoints = tp)
 }
 
+# GMfromShapes0
+# function to read landmarks without sliders from a StereoMorph shapes object
+# used in: readland.shapes
+GMfromShapes0 <- function(Shapes){ # No curves
+  scaling <- Shapes$scaling
+  sp.names <- names(scaling)
+  
+  if(any(is.na(scaling))){
+    sp.na <- which(is.na(scaling))
+    if(all(is.na(scaling))) {
+      cat("\nWarning: All specimens have no scaling")
+      cat("\nUnscaled landmarks imported, as a result\n")
+    } else {
+      cat("\nWarning: Some specimens have no scaling\n")
+      cat(sp.names[sp.na])
+      cat("\nUnscaled landmarks imported, as a result\n")
+    }
+    landmarks <- Shapes$landmarks.pixel
+    scaled = FALSE
+  } else {
+    landmarks <- Shapes$landmarks.scaled
+    scaled = TRUE
+  }
+  
+  dims <- dim(landmarks)
+  sp.nms <- dimnames(landmarks)[[3]]
+  landmarks <- lapply(1:n, function(j){
+    landmarks[,,j]
+  })
+  names(landmarks) <- sp.nms
+  
+  out <- list(landmarks = landmarks, fixed = 1:dims[[1]],
+              sliders = NULL, curves = NULL, n = dims[[3]], 
+              p = dims[[1]], k = dims[[2]], scaled = scaled)
+  class(out) <- "geomorphShapes"
+  invisible(out)
+}
+
+# evenPts
+# basic function for spacing out curve points via linear interolation
+# simple form of pointsAtEvenSpacing from StereoMorph 
+# used in: readland.shapes and difit.curves
+evenPts <- function(x, n){
+  x <- as.matrix(na.omit(x))
+  N <- NROW(x); p <- NCOL(x)
+  if(N == 1) stop("x must be a matrix")
+  if(N == 2) {
+    out <- rbind(x[1,], rowMeans(x), x[2,])
+    n <- 3
+  } else {
+    xx <- x[2:N, ] - x[1:(N - 1), ]
+    ds <- sqrt(rowSums(xx^2))
+    cds <- c(0, cumsum(ds))
+    cuts <- cumsum(rep(cds[N]/(n-1), n-1))
+    if(n < 3) n <- 3
+    targets <- lapply(1:(n-2), function(j){
+      dtar <- cuts[j]
+      ll <- which.max(cds[cds < dtar])
+      ul <- ll + 1
+      adj <- (dtar- cds[ll])/(cds[[ul]] - cds[ll])
+      x[ll,] + adj * (x[ul,] - x[ll,])
+    })
+    
+    out <- matrix(c(x[1,], unlist(targets), x[N,]), n, p, byrow = TRUE)
+  }
+  
+  out
+}
+
+# GMfromShapes1
+# function to read landmarks with sliders from a StereoMorph shapes object
+# used in: readland.shapes
+GMfromShapes1 <- function(Shapes, nCurvePts, curve.ends = NULL, continuous.curve = NULL){ # with Curves
+  out <- GMfromShapes0(Shapes)
+  scaled = out$scaled
+  if(scaled) curves <- Shapes$curves.scaled else 
+    curves <- Shapes$curves.pixel
+  sp.names <- names(out$landmarks)
+  n <- out$n; p <- out$p; k <- out$k
+  
+  # define fixed landmarks
+  fixedLM  <- out$landmarks
+  
+  # define curves
+  curves.check <- sapply(1:n, function(j) length(curves[[j]]))
+  if(length(unique(curves.check)) > 1) stop("Specimens have different numbers of curves")
+  curve.n <- curves.check[1]
+  curve.nms <- names(curves[[1]])
+  nCurvePts <- unlist(nCurvePts)
+  if(length(nCurvePts) != curve.n) stop("The number of curves and length of nCurvePts do not match")
+  curves <- lapply(1:n, function(j){
+    x <- curves[[j]]
+    res <- lapply(1:curve.n, function(jj) evenPts(x[[jj]], nCurvePts[[jj]]))
+    names(res) <- curve.nms
+    res
+  })
+  
+  # index fixed landmarks in curves (anchors)
+  anchors <- lapply(1:curve.n, function(j){
+    cv <- curves[[1]][[j]]
+    matchX <- na.omit(match(cv[,1], fixedLM[[1]][,1]))
+    matchY <- na.omit(match(cv[,2], fixedLM[[1]][,2]))
+    if(identical(matchX, matchY)) res <- matchX else {
+      kX <- length(matchX)
+      kY <- length(matchY)
+      if(kX < kY) res <- matchY[matchY %in% matchX] else
+        if(kY < kX) res <- matchX[matchX %in% matchY] else
+          res <- 0
+    }
+    res
+  })
+  
+  # binary index for fixed points in curves (0 = no; 1 = yes)
+  curve.ends <- lapply(1:curve.n, function(j){
+    cv <- curves[[1]][[j]]
+    lm <- fixedLM[[1]]
+    c1 <- cv[1,]; ce <- cv[nrow(cv),]
+    a.spot <- na.omit(match(c1, lm))
+    b.spot <- na.omit(match(ce, lm))
+    if(length(a.spot) == 2) a = 1 else a = 0
+    if(length(b.spot) == 2) b = 1 else b = 0
+    c(a, b)
+  })
+  
+  # determine which curve points become landmarks
+  curve.refs <- list()
+  for(i in 1:curve.n) {
+    cp <- nCurvePts[i]
+    ce <- c(2, cp+1) - curve.ends[[i]] 
+    cvr <- (1:cp)[-ce]
+    curve.refs[[i]] <- cvr
+  }
+  
+  # create indicator values for semilandmarks
+  lm.curve.refs<- list()
+  pp <- p
+  for(i in 1:curve.n){
+    cp <- 1:length(curve.refs[[i]]) + pp
+    lm.curve.refs[[i]] <- cp
+    pp <- max(cp)
+  }
+  
+  # assemble the landmarks, both fixed and semi
+  landmarks <- lapply(1:n, function(j){
+    x <- fixedLM[[j]]
+    cv <- curves[[j]]
+    for(i in 1:curve.n) x <- rbind(x, cv[[i]][curve.refs[[i]],])
+    rownames(x)[(p+1):(nrow(x))] <- paste("semiLM", (p+1):(nrow(x)), sep=".")
+    x
+  })
+  names(landmarks) <- sp.names
+  
+  # make an index in case any curves are continuous
+  cc <- rep(0, curve.n)
+  if(!is.null(continuous.curve)){
+    continuous.curve <- unlist(continuous.curve)
+    cc[continuous.curve] = 1
+  } 
+  
+  # create a curves matrix
+  curves.mat.parts <- lapply(1:curve.n, function(j){
+    strp <- c(anchors[[j]][[1]], lm.curve.refs[[j]], anchors[[j]][[2]])
+    if(cc[j] == 1) strp <- c(strp, strp[2])
+    n.mp <- length(strp) - 2
+    mat.part <- matrix(NA, n.mp, 3)
+    for(i in 1:n.mp) mat.part[i,] <- strp[i:(i+2)]
+    mat.part
+  })
+  
+  curves.mat <- curves.mat.parts[[1]]
+  for(i in 2:curve.n) curves.mat <- rbind(curves.mat, curves.mat.parts[[i]])
+  fixed <- out$fixed
+  sliders <- (1:nrow(landmarks[[1]]))[-fixed]
+  curve.mat.nms <- rownames(landmarks[[1]])[curves.mat[,2]]
+  rownames(curves.mat) <- curve.mat.nms
+  
+  # Assemble the output
+  out$landmarks <- landmarks
+  out$fixed <- fixed
+  out$sliders <- sliders
+  out$curves <- curves.mat
+  out$p <- length(fixed) + length(sliders)
+  
+  invisible(out)
+}
+
+
+
+
 #####-----------------------------------------------------------------------------------
 
 ### geomorph-specific logicals
@@ -3163,3 +3352,5 @@ cov.mat <- function(x, COV) {
   rownames(invC) <- colnames(invC) <- colnames(C)
   list(invC = invC, D.mat = D.mat, C = C)
 }
+
+

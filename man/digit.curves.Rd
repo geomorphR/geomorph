@@ -11,7 +11,7 @@ digit.curves(start, curve, nPoints, closed = TRUE)
 
 \item{curve}{A matrix (p x k) of 2D or 3D coordinates for a set of ordered points defining a curve}
 
-\item{nPoints}{Numeric how many semilandmarks to place equidistantly along the curve}
+\item{nPoints}{Numeric how many semilandmarks to place equidistantly along the curve (not counting beginning and end points)}
 
 \item{closed}{Logical Whether the curve is closed (TRUE) or open (FALSE)}
 }
@@ -42,6 +42,6 @@ Rohlf, F.J., 2015. The tps series of software. Hystrix 26(1):9-12.
 \code{\link{digit.fixed}} \code{\link{digitize2d}}
 }
 \author{
-Emma Sherratt
+Emma Sherratt and Michael Collyer
 }
 \keyword{digitizing}

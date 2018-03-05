@@ -42,7 +42,8 @@
 #' inferential analyses using Procrustes residuals. 
 #' }
 
-#' @param A A 3D array (p x k x n) containing landmark coordinates for a set of specimens
+#' @param A Either an object of class geomorphShapes or a 3D array (p x k x n) containing landmark coordinates 
+#' for a set of specimens.  If A is a geomorphShapes object, the curves argument is uneeded.
 #' @param Proj A logical value indicating whether or not the aligned Procrustes residuals should be projected 
 #'   into tangent space 
 #' @param ProcD A logical value indicating whether or not Procrustes distance should be used as the criterion
@@ -51,7 +52,8 @@
 #' @param max.iter The maximum number of GPA iterations to perform before superimposition is halted.  The final
 #' number of iterations could be larger than this, if curves or surface semilandmarks are involved.
 #' @param curves An optional matrix defining which landmarks should be treated as semilandmarks on boundary 
-#'   curves, and which landmarks specify the tangent directions for their sliding
+#'   curves, and which landmarks specify the tangent directions for their sliding.  This matrix is generated automatically
+#'   with \code{\link{geomorphShapes}} following digitizing of curves in StereoMorph.
 #' @param surfaces An optional vector defining which landmarks should be treated as semilandmarks on surfaces
 #' @param print.progress A logical value to indicate whether a progress bar should be printed to the screen.  
 #' @keywords analysis
@@ -129,10 +131,21 @@
 gpagen = function(A, curves=NULL, surfaces=NULL, PrinAxes = TRUE, 
                   max.iter = NULL, ProcD=TRUE, Proj = TRUE,
                   print.progress = TRUE){
-  if(!is.array(A)) stop("Coordinates must be a 3D array")
-  if(length(dim(A)) != 3) stop("Coordinates array does not have proper dimensions")
-  n <- dim(A)[[3]]; p <- dim(A)[[1]]; k <- dim(A)[[2]]
-  Y <- lapply(1:n, function(j) A[,,j])
+  if(inherits(A, "geomorphShapes")) {
+    Y <- A$landmarks
+    curves <- A$curves
+    n <- A$n
+    p <- A$p
+    k <- A$k
+    
+  } else {
+    
+    if(!is.array(A)) stop("Coordinates must be a 3D array")
+    if(length(dim(A)) != 3) stop("Coordinates array does not have proper dimensions")
+    n <- dim(A)[[3]]; p <- dim(A)[[1]]; k <- dim(A)[[2]]
+    Y <- lapply(1:n, function(j) A[,,j])
+  }
+  
   if(!is.logical(ProcD)) prD <- TRUE else prD <- ProcD
   if(is.null(max.iter)) max.it <- 5 else max.it <- as.numeric(max.iter)
   if(is.numeric(max.it) & max.it > 50) {
