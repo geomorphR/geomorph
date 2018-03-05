@@ -36,7 +36,7 @@ f9221a7b4261484793b945d7be4bbec6 *man/geomorph-package.Rd
 fc517d25bdb69ff8f0aff4558aa643ce *man/geomorph.data.frame.Rd
 525f50dde2a91b7ac438af78505e83f2 *man/globalIntegration.Rd
 1dbc8b683185f1dd3f671b254206393b *man/gm.prcomp.Rd
-f276b0ad70688fe8297c3140bc7ac773 *man/gpagen.Rd
+c541cfd27a385c9c8b041f3b2681cdc3 *man/gpagen.Rd
 dab207265e691bfdd77ed11b54c1ec10 *man/gridPar.Rd
 a598044482a6c3e39517b798b654c57e *man/hummingbirds.Rd
 d4b1fbe2910cefb535115644338f2b93 *man/integration.test.Rd
@@ -98,7 +98,7 @@ b4d393dc787783cd69ce705e64a8d542 *man/pupfish.Rd
 cb46da06afb9b58e54ad31f7a7a02f4c *man/read.morphologika.Rd
 264a8a7606d0f550aa7cc4c9abdb76cb *man/read.ply.Rd
 64f811957932c1d67cc8324ee2f706e5 *man/readland.nts.Rd
-698317dc45f4b47cd5067e7bce6a2038 *man/readland.shapes.Rd
+a85648f5e2c27948f944f0966bbd95ab *man/readland.shapes.Rd
 f8f42ae1f37f2bcc753bb44d82763feb *man/readland.tps.Rd
 d7ab7b16621a488c2daa709d10af488b *man/readmulti.nts.Rd
 8be198584c10582597e98c6cecbb26f7 *man/scallopPLY.Rd
@@ -156,7 +156,7 @@ b56e53ac307d84a05efee9525dd6868a *R/fixed.angle.r
 76fe183bc1cd22d1b515f72f1a0bb271 *R/geomorph.utils.r
 0d9d88147f22cff2241b6e2e7396d57f *R/globalIntegration.r
 f04e88c4f380b4a2c3c17d09e526b580 *R/gm.prcomp.R
-daba0c41a16b87f5f284721b4f2b09be *R/gpagen.r
+ced377da13ad0907c4921eb770f8ee33 *R/gpagen.r
 2d8ab3c6fea452711a7cf091ffba8ff5 *R/gridPar.r
 4c14d0451db3d7529482ac61e2c0592c *R/integration.test.r
 c35bcae1a6ea59c924cf7dc9eec3e013 *R/interlmkdist.r
@@ -178,7 +178,7 @@ b8e08a315b3c34603f20a9664a853029 *R/plotOutliers.r
 df3f4cc6406dc0c737ee2ff08c2a0e3d *R/read.morphologika.r
 9c3c828f71a413b5437d45228a3bf9b7 *R/read.ply.r
 7f0641e4fc3731624966a5e6578f5790 *R/readland.nts.r
-91ddab6a9dde36605abcde7b9570a19b *R/readland.shapes.r
+d29e8c4f9f9a0cca6d3cdd985353f604 *R/readland.shapes.r
 48589b8afc67c5c8714972e6de1be0a1 *R/readland.tps.r
 945534fe7f30c519cd5a6663a9b882a3 *R/readmulti.nts.r
 bb92986b568b7e9176ff879b2e0ce9d9 *R/shape.predictor.r

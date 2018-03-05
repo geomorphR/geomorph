@@ -29,7 +29,7 @@
 #' point should be treated as a semilandmark.  For example, if one wishes to digitize a curve around an eye, for digitizing purposes a point might
 #' be initiated to find a curve around the eye and back to the point.  This point will be "fixed" without indicating the curve is continuous.  One 
 #' could use this argument to indicate which curves are continuous; e.g., continuous.curve = c(2, 5) to indicate curves 2 and 5
-#' are continuous points and their fixed ladnamrks are really sliding semilandmarks.
+#' have starting points that are not fixed landmarks but really sliding semilandmarks, as part of a closed curve.
 #' @param scaled A logical value (stating whether warnings should be printed (TRUE as default) to indicate whether scaled landmarks and curve
 #' points should be used.  If any scales are missing, the function will default to scaled = FALSE.
 #' @export
