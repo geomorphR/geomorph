@@ -2987,6 +2987,7 @@ GMfromShapes0 <- function(Shapes, scaled = TRUE){ # No curves
   }
   
   dims <- dim(landmarks)
+  n <- dims[[3]]; p <- dims[[1]]; k <- dims[[2]]
   sp.nms <- dimnames(landmarks)[[3]]
   landmarks <- lapply(1:n, function(j){
     landmarks[,,j]
@@ -2994,8 +2995,8 @@ GMfromShapes0 <- function(Shapes, scaled = TRUE){ # No curves
   names(landmarks) <- sp.nms
   
   out <- list(landmarks = landmarks, fixed = 1:dims[[1]],
-              sliders = NULL, curves = NULL, n = dims[[3]], 
-              p = dims[[1]], k = dims[[2]], scaled = scaled)
+              sliders = NULL, curves = NULL, n = n, 
+              p = p, k = k, scaled = scaled)
   class(out) <- "geomorphShapes"
   invisible(out)
 }

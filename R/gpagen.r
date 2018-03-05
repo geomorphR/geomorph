@@ -53,7 +53,7 @@
 #' number of iterations could be larger than this, if curves or surface semilandmarks are involved.
 #' @param curves An optional matrix defining which landmarks should be treated as semilandmarks on boundary 
 #'   curves, and which landmarks specify the tangent directions for their sliding.  This matrix is generated automatically
-#'   with \code{\link{geomorphShapes}} following digitizing of curves in StereoMorph.
+#'   with \code{\link{readland.shapes}} following digitizing of curves in StereoMorph.
 #' @param surfaces An optional vector defining which landmarks should be treated as semilandmarks on surfaces
 #' @param print.progress A logical value to indicate whether a progress bar should be printed to the screen.  
 #' @keywords analysis

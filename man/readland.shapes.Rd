@@ -49,27 +49,28 @@ This function can read in landmarks plus acquire points from curves, if the curv
 This function is intended for reading data and facilitating the generation of a "curves" matrix for \code{\link{gpagen}}.
 It is not intended to influence how one should digitize landmarks using StereoMorph.  Each digitizing experience is
 unique and users might need to edit their own data using StereoMorph functions in some cases; this function will not
-necessarily overcome all data editing challenges.  This function currently works with 2D data only, as the \code{\link{readShapes}}.
-function of StereMorph pertains to digitizing images.
+necessarily overcome all data editing challenges.  This function currently works with 2D data only, 
+as the \code{\link[SteroMorph]{readShapes}} function of StereMorph pertains to digitizing images.
 
 The enhanced feature of this function is that it can find a prescribed number of approximatey equally spaced 
 semilandmarks along 2D curves (from the many points of Bexier curves in StereoMorph), facilitating rapid \code{\link{gpagen}}
 analysis and the flexibility to change the desired number of semilandmarks defining curves.  This is only true, however,
-if the curves oprtion in \code{\link{digitizeImages}} is used.
+if the curves oprtion in \code{\link[SteroMorph]{digitizeImages}} is used.
 
 The user can specify the number of points along curves, whether curves are continuous (closed and without fixed points), 
 and whether landmarks should be scaled, if possible (if scaling was performed while digtizing).
 }
 \examples{
 # A true example is not possible, as digitizing experiences are unqiue, but here is a general set-up
-# myShapes <- readShapes("myDigitizingFile") # using readShapes from StereoMorph to acquire data, with class "shapes"
+# myShapes <- readShapes("myDigitizingFile") # data from readShapes from StereoMorph 
 # myGMdata <- readland.shapes(myShapes) # just reading in the fixed landmarks
 # myGMdata <- readland.shapes(myShapes, 
-#      nCurvePts = c(10, 15, 5), continuous.curve = 2) # fixed landmarks plus curve points for three curves, one closed
+#      nCurvePts = c(10, 15, 5), 
+#      continuous.curve = 2) # fixed landmarks plus curve points for three curves, one closed
 # myGPA <- gpagen(myGMdata, procD = FALSE) # GPA perfomed with minimized bending energy
 }
 \seealso{
-\code{\link{advanced.procD.lm}} (from StreoMorph)
+\code{\link[StereoMorph]{readShapes}} (from StreoMorph)
 }
 \author{
 Michael Collyer
