@@ -99,6 +99,8 @@ gm.prcomp <- function (A, phy = NULL, phylo.pca = FALSE, Cov = NULL, ...){
   if(any(is.na(A))==T){
     stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').") }
 
+  p <- dim(A)[1]; k <- dim(A)[2]; n <- dim(A)[3]
+  ref <- mshape(A)
   dots <- list(...)
   retx <- dots$retx
   if(is.null(retx)) retx <- TRUE
@@ -107,8 +109,6 @@ gm.prcomp <- function (A, phy = NULL, phylo.pca = FALSE, Cov = NULL, ...){
   center <- dots$center
   if(is.null(center)) center <- TRUE
   tol <- dots$tol
-  p <- dim(A)[1]; k <- dim(A)[2]; n <- dim(A)[3]
-  ref <- mshape(A)
   x <- scale(two.d.array(A), center = center, scale = scale.)
 
   if(is.null(phy) & phylo.pca == T){
@@ -128,7 +128,11 @@ gm.prcomp <- function (A, phy = NULL, phylo.pca = FALSE, Cov = NULL, ...){
       stop("Number of taxa in data matrix and tree are not equal.")
     if(is.null(rownames(x))) {
       warning("Shape dataset does not include species names. Assuming the order of data matches phy$tip.label")
-    } else x <- x[phy$tip.label, ]
+    } else {
+      x <- x[phy$tip.label, ]
+      A <- A[,,phy$tip.label]
+      }
+    anc.raw <- shape.ace(two.d.array(A), phy)
     anc <- shape.ace(x, phy)
     
     if(phylo.pca == T){
@@ -137,8 +141,8 @@ gm.prcomp <- function (A, phy = NULL, phylo.pca = FALSE, Cov = NULL, ...){
       one <- matrix(1, nrow(x)); I <- diag(1, nrow(x)) 
       Ptrans <- D.mat%*%(I-one%*%crossprod(one, invC)/sum(invC))
       x <- Ptrans%*%x
-      center = apply(x, 2, mean)
       anc <- scale(anc, center = anc[1,], scale = F)
+      center <- anc[1,]
     } else {
       x <- rbind(x, anc)
       center <- anc[1,]
@@ -156,7 +160,7 @@ gm.prcomp <- function (A, phy = NULL, phylo.pca = FALSE, Cov = NULL, ...){
   
   if(is.null(tol)){
     d <- prcomp(x)$sdev^2
-    cd <-cumsum(d)/sum(d)
+    cd <- cumsum(d)/sum(d)
     cd <- length(which(cd < 1)) 
     if(length(cd) < length(d)) cd <- cd + 1
     tol <- max(c(d[cd]/d[1], 0.005))
@@ -188,12 +192,12 @@ gm.prcomp <- function (A, phy = NULL, phylo.pca = FALSE, Cov = NULL, ...){
               sdev = pc.res$sdev, rotation = pc.res$rotation, anc.states = NULL, anc.pcscores = NULL)
   
   if(meth == "Phylomorphospace") {
-    out$anc.states <- anc
+    out$anc.states <- arrayspecs(anc.raw, p, k)
     out$anc.pcscores <- pcdata[(N+1):nrow(pcdata),]
   }
   
   if(meth == "Phylogenetic PCA"){
-    out$anc.states <- anc
+    out$anc.states <- arrayspecs(anc.raw, p, k)
     out$anc.pcscores <- anc%*%pc.res$rotation
   }
   

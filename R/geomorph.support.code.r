@@ -3122,6 +3122,7 @@ readland.tps2 <- function (file, specID = c("None", "ID", "imageID"))
 
 # Function for ace of GM data
 # follows fastAnc in phytools
+# x is a matrix
 shape.ace <- function(x, phy){
   N <- length(phy$tip.label)
   Nnode <- phy$Nnode
