@@ -3009,16 +3009,20 @@ evenPts <- function(x, n){
   x <- as.matrix(na.omit(x))
   N <- NROW(x); p <- NCOL(x)
   if(N == 1) stop("x must be a matrix")
+  if(n < 3) {
+    n <- 2
+    nn <- 3 # so lapply function works
+  } else nn <- n
+  
   if(N == 2) {
-    out <- rbind(x[1,], rowMeans(x), x[2,])
-    n <- 3
-  } else {
+    x <- rbind(x, x[2,])
+    N <- 3 # third row cut off later
+  }
     xx <- x[2:N, ] - x[1:(N - 1), ]
     ds <- sqrt(rowSums(xx^2))
     cds <- c(0, cumsum(ds))
     cuts <- cumsum(rep(cds[N]/(n-1), n-1))
-    if(n < 3) n <- 3
-    targets <- lapply(1:(n-2), function(j){
+    targets <- lapply(1:(nn-2), function(j){
       dtar <- cuts[j]
       ll <- which.max(cds[cds < dtar])
       ul <- ll + 1
@@ -3026,9 +3030,7 @@ evenPts <- function(x, n){
       x[ll,] + adj * (x[ul,] - x[ll,])
     })
     
-    out <- matrix(c(x[1,], unlist(targets), x[N,]), n, p, byrow = TRUE)
-  }
-  
+  out <- matrix(c(x[1,], unlist(targets), x[N,]), n, p, byrow = TRUE)
   out
 }
 
