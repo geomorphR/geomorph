@@ -1522,7 +1522,8 @@ print.geomorphShapes <- function (x, ...) {
   cat("\nNumber of total landmarks:", x$p)
   if(x$scaled) cat("\nLandmakrs have been scaled.") else
     cat("\nLandmarks have not been scaled.")
-  cat("\n\nThis information is based on information available from a class 'shapes' object.")
+  cat("\n\nThis information is based on information available from a class 'shapes' object,")
+  cat("\nas it was originally read.  (It might have been since edited but this summary will not change.)")
   cat("\nThe curves matrix (for use in gpagen) is also based on the same information.")
   cat("\nThis matrix can be modified to alter which landmarks are semilandmarks.\n")
   invisible(x)
