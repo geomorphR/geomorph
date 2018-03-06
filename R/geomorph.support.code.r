@@ -3067,13 +3067,8 @@ GMfromShapes1 <- function(Shapes, nCurvePts, curve.ends = NULL, continuous.curve
     cv <- curves[[1]][[j]]
     matchX <- na.omit(match(cv[,1], fixedLM[[1]][,1]))
     matchY <- na.omit(match(cv[,2], fixedLM[[1]][,2]))
-    if(identical(matchX, matchY)) res <- matchX else {
-      kX <- length(matchX)
-      kY <- length(matchY)
-      if(kX < kY) res <- matchY[matchY %in% matchX] else
-        if(kY < kX) res <- matchX[matchX %in% matchY] else
-          res <- 0
-    }
+    if(identical(matchX, matchY)) res <- matchX else 
+      res <- intersect(matchX, matchY)
     res
   })
   
@@ -3102,9 +3097,11 @@ GMfromShapes1 <- function(Shapes, nCurvePts, curve.ends = NULL, continuous.curve
   lm.curve.refs<- list()
   pp <- p
   for(i in 1:curve.n){
-    cp <- 1:length(curve.refs[[i]]) + pp
+    cr <- curve.refs[[i]]
+    if(length(cr) == 1 && cr == 0) cp <- NULL else
+      cp <- cr + pp - 1
     lm.curve.refs[[i]] <- cp
-    pp <- max(cp)
+    if(is.null(cp)) pp <- pp else pp <- max(cp)
   }
   
   # assemble the landmarks, both fixed and semi
@@ -3126,16 +3123,22 @@ GMfromShapes1 <- function(Shapes, nCurvePts, curve.ends = NULL, continuous.curve
   
   # create a curves matrix
   curves.mat.parts <- lapply(1:curve.n, function(j){
-    strp <- c(anchors[[j]][[1]], lm.curve.refs[[j]], anchors[[j]][[2]])
-    if(cc[j] == 1) strp <- c(strp, strp[2])
-    n.mp <- length(strp) - 2
-    mat.part <- matrix(NA, n.mp, 3)
-    for(i in 1:n.mp) mat.part[i,] <- strp[i:(i+2)]
+    lcr <- lm.curve.refs[[j]]
+    if(is.null(lcr)) {
+      mat.part <- NULL
+      } else {
+        strp <- c(anchors[[j]][[1]], lcr, anchors[[j]][[2]])
+        if(cc[j] == 1) strp <- c(strp, strp[2])
+        n.mp <- length(strp) - 2
+        mat.part <- matrix(NA, n.mp, 3)
+        for(i in 1:n.mp) mat.part[i,] <- strp[i:(i+2)]
+      }
     mat.part
   })
   
   curves.mat <- curves.mat.parts[[1]]
-  for(i in 2:curve.n) curves.mat <- rbind(curves.mat, curves.mat.parts[[i]])
+  for(i in 2:curve.n) if(!is.null(curves.mat.parts[[i]]))
+    curves.mat <- rbind(curves.mat, curves.mat.parts[[i]])
   fixed <- out$fixed
   sliders <- (1:nrow(landmarks[[1]]))[-fixed]
   curve.mat.nms <- rownames(landmarks[[1]])[curves.mat[,2]]
