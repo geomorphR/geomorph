@@ -3098,7 +3098,7 @@ GMfromShapes1 <- function(Shapes, nCurvePts, curve.ends = NULL, continuous.curve
   pp <- p
   for(i in 1:curve.n){
     cr <- curve.refs[[i]]
-    if(length(cr) == 1 && cr == 0) cp <- NULL else
+    if(length(cr) == 1 && cr == 0) cp <- NA else
       cp <- cr + pp - 1
     lm.curve.refs[[i]] <- cp
     if(is.null(cp)) pp <- pp else pp <- max(cp)
@@ -3124,7 +3124,7 @@ GMfromShapes1 <- function(Shapes, nCurvePts, curve.ends = NULL, continuous.curve
   # create a curves matrix
   curves.mat.parts <- lapply(1:curve.n, function(j){
     lcr <- lm.curve.refs[[j]]
-    if(is.null(lcr)) {
+    if(all(is.na(lcr))) {
       mat.part <- NULL
       } else {
         strp <- c(anchors[[j]][[1]], lcr, anchors[[j]][[2]])
