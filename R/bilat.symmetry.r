@@ -51,9 +51,8 @@
 #'  
 #'  The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{bilat.symmetry}}.
 #'
-#' @param A Either A 3D array (p x k x n) containing raw landmarks (requiring GPA to be performed) or a gpagen object (if GPA has been previously performed).  If one 
-#' wishes to incorporate semilandmarks, GPA should be performed first using \code{\link{gpagen}}.  Otherwise, bilat.symmetry can perform the initial GPA, assuming all landmarks
-#' are fixed.  For "object.sym = FALSE, landmarks should be of dimension (p x k x 2n), as each specimen is represented by both left and right configurations.
+#' @param A One of either A 3D array (p x k x n) containing raw landmarks (requiring GPA to be performed) or a gpagen object (if GPA has been previously performed) or a
+#' geomorphShapes object (requiring GPA to be performed).  Any gpagen argument shoudl work within bilat.symmetry.
 #' @param ind A vector containing labels for each individual. For matching symmetry, the matched pairs receive the same 
 #' label (replicates also receive the same label).
 #' @param side An optional vector (for matching symmetry) designating which object belongs to which 'side-group'
@@ -70,6 +69,7 @@
 #' @param RRPP A logical value indicating whether residual randomization should be used for significance testing.
 #' @param print.progress A logical value to indicate whether a progress bar should be printed to the screen.  
 #' This is helpful for long-running analyses.
+#' @param ... Arguments to pass onto gpagen
 #' @keywords analysis
 #' @export
 #' @author Dean Adams and Michael Collyer
@@ -131,35 +131,42 @@
 #' # NOTE one can also: scallop.sym$data.type # recall the symmetry type
 
 bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,land.pairs=NULL,
-                         data = NULL, iter = 999, seed = NULL, RRPP = TRUE, print.progress = TRUE){
-  if(!is.null(data)){
-    data <- droplevels(data)
-    A.name <- deparse(substitute(A))
-    A.name.match <- match(A.name, names(data))[1]
-    if(is.na(A.name.match)) A.name.match <- NULL
-  } else A.name.match <- NULL
-  if(is.null(A.name.match) && is.gpagen(A)) {
+                         data = NULL, iter = 999, seed = NULL, RRPP = TRUE, print.progress = TRUE, ...){
+  if(inherits(A, "geomorphShapes")) {
+    A <- gpagen(A, ...)
     size <- A$Csize
     A <- A$coords
   } else {
-    if(!is.null(data)) {
-      if(is.null(A.name.match)) stop("Coordinates are not part of the data frame provided")
-      A <- data[[A.name.match]]
-      if(any(is.na(A))==T) stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').") 
-      if (length(dim(A))!=3) stop("Data matrix not a 3D array (see 'arrayspecs').") 
-      if(print.progress) cat("\nInitial GPA\n")
-      A <- gpagen(A, print.progress = print.progress)
+    if(!is.null(data)){
+      data <- droplevels(data)
+      A.name <- deparse(substitute(A))
+      A.name.match <- match(A.name, names(data))[1]
+      if(is.na(A.name.match)) A.name.match <- NULL
+    } else A.name.match <- NULL
+    if(is.null(A.name.match) && is.gpagen(A)) {
       size <- A$Csize
       A <- A$coords
     } else {
-      if(any(is.na(A))==T) stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').") 
-      if (length(dim(A))!=3) stop("Data matrix not a 3D array (see 'arrayspecs').") 
-      if(print.progress) cat("\nInitial GPA\n")
-      A <- gpagen(A, print.progress = print.progress)
-      size <- A$Csize
-      A <- A$coords
+      if(!is.null(data)) {
+        if(is.null(A.name.match)) stop("Coordinates are not part of the data frame provided")
+        A <- data[[A.name.match]]
+        if(any(is.na(A))) stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').") 
+        if (length(dim(A))!=3) stop("Data matrix not a 3D array (see 'arrayspecs').") 
+        if(print.progress) cat("\nInitial GPA\n")
+        A <- gpagen(A, print.progress = print.progress, ...)
+        size <- A$Csize
+        A <- A$coords
+      } else {
+        if(any(is.na(A))) stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').") 
+        if (length(dim(A))!=3) stop("Data matrix not a 3D array (see 'arrayspecs').") 
+        if(print.progress) cat("\nInitial GPA\n")
+        A <- gpagen(A, print.progress = print.progress, ...)
+        size <- A$Csize
+        A <- A$coords
+      }
     }
   }
+  
   if(is.null(data)){
     if(is.null(ind)) stop("Individuals not specified.") else ind <- factor(ind)
     if(!is.null(side)) side <- factor(side)
@@ -175,6 +182,7 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
     if(all(is.na(replicate.match))) replicate <- NULL else 
       replicate <- factor(data[[which(!is.na(replicate.match))]])
   }
+  
   n<-dim(A)[3]; k<-dim(A)[2]; p<-dim(A)[1]; nind<-nlevels(ind); spec.names<-dimnames(A)[[3]]
   if(object.sym == FALSE && is.null(side)) stop("Sides not specified.") 
   if(object.sym==TRUE){

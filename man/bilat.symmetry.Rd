@@ -6,12 +6,11 @@
 \usage{
 bilat.symmetry(A, ind = NULL, side = NULL, replicate = NULL,
   object.sym = FALSE, land.pairs = NULL, data = NULL, iter = 999,
-  seed = NULL, RRPP = TRUE, print.progress = TRUE)
+  seed = NULL, RRPP = TRUE, print.progress = TRUE, ...)
 }
 \arguments{
-\item{A}{Either A 3D array (p x k x n) containing raw landmarks (requiring GPA to be performed) or a gpagen object (if GPA has been previously performed).  If one 
-wishes to incorporate semilandmarks, GPA should be performed first using \code{\link{gpagen}}.  Otherwise, bilat.symmetry can perform the initial GPA, assuming all landmarks
-are fixed.  For "object.sym = FALSE, landmarks should be of dimension (p x k x 2n), as each specimen is represented by both left and right configurations.}
+\item{A}{One of either A 3D array (p x k x n) containing raw landmarks (requiring GPA to be performed) or a gpagen object (if GPA has been previously performed) or a
+geomorphShapes object (requiring GPA to be performed).  Any gpagen argument shoudl work within bilat.symmetry.}
 
 \item{ind}{A vector containing labels for each individual. For matching symmetry, the matched pairs receive the same 
 label (replicates also receive the same label).}
@@ -38,6 +37,8 @@ which might be of interest for advanced users.}
 
 \item{print.progress}{A logical value to indicate whether a progress bar should be printed to the screen.
 This is helpful for long-running analyses.}
+
+\item{...}{Arguments to pass onto gpagen}
 }
 \value{
 An object of class "bilat.symmetry" returns a list of the following
