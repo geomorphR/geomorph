@@ -1454,8 +1454,8 @@ summary.gm.prcomp <- function (object, ...) {
 #'  that can be used in other plot functions, such as the type of plot, points, 
 #'  a group factor, and other information depending on the plot parameters used.
 #'  
-#'  NOTE: To visualize shape variation across PC axes, use \code\{\link{plotRefTotarget}} with the
-#'  $pc.shapes component of your gm.prcomp object.
+#'  NOTE: To visualize shape variation across PC axes, use plotRefToTarget (link below)
+#'  with the $pc.shapes component of your gm.prcomp object.
 #' @export
 #' @author Antigoni Kaliontzopoulou
 #' @keywords utilities
