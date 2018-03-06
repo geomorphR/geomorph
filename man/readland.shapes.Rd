@@ -69,7 +69,7 @@ and whether landmarks should be scaled, if possible (if scaling was performed wh
 # myGMdata <- readland.shapes(myShapes, 
 #      nCurvePts = c(10, 15, 5), 
 #      continuous.curve = 2) # fixed landmarks plus curve points for three curves, one closed
-# myGPA <- gpagen(myGMdata, procD = FALSE) # GPA perfomed with minimized bending energy
+# myGPA <- gpagen(myGMdata, ProcD = FALSE) # GPA perfomed with minimized bending energy
 }
 \seealso{
 readShapes (from StreoMorph)

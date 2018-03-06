@@ -58,7 +58,7 @@
 #' # myGMdata <- readland.shapes(myShapes, 
 #' #      nCurvePts = c(10, 15, 5), 
 #' #      continuous.curve = 2) # fixed landmarks plus curve points for three curves, one closed
-#' # myGPA <- gpagen(myGMdata, procD = FALSE) # GPA perfomed with minimized bending energy
+#' # myGPA <- gpagen(myGMdata, ProcD = FALSE) # GPA perfomed with minimized bending energy
 readland.shapes <- function(Shapes, nCurvePts = NULL, continuous.curve = NULL, scaled = TRUE){
   if(is.null(nCurvePts)) out <- GMfromShapes0(Shapes) else{
     nCurvePts[nCurvePts < 3] = 0 # curves are either 3+ points or missing
