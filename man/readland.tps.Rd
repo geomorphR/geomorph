@@ -33,8 +33,8 @@ This function reads a *.tps file containing two- or three-dimensional landmark c
   provided for all specimens. If one or more specimens are missing the scale factor, landmarks are treated 
   in their original units.  
   
-  Missing data may be present in the file. In this case, they must be designated by 'NA'. The 
-  positions of missing landmarks may then be estimated using estimate.missing.
+  Missing data may be present in the file. In this case, they are automatically identified during data import
+  and coded as 'NA'. The positions of missing landmarks may then be estimated using \code{\link{estimate.missing}}.
 
 The user may specify whether specimen names are to be extracted from the 'ID=' field or 'IMAGE=' field 
 and included in the resulting 3D array. 

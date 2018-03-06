@@ -9,8 +9,8 @@
 #'   provided for all specimens. If one or more specimens are missing the scale factor, landmarks are treated 
 #'   in their original units.  
 #'   
-#'   Missing data may be present in the file. In this case, they must be designated by 'NA'. The 
-#'   positions of missing landmarks may then be estimated using estimate.missing.
+#'   Missing data may be present in the file. In this case, they are automatically identified during data import
+#'   and coded as 'NA'. The positions of missing landmarks may then be estimated using \code{\link{estimate.missing}}.
 #' 
 #' The user may specify whether specimen names are to be extracted from the 'ID=' field or 'IMAGE=' field 
 #' and included in the resulting 3D array. 
@@ -67,7 +67,7 @@ readland.tps <- function (file, specID = c("None", "ID", "imageID"),
     if(length(pcv.unique) == 1 && pcv.unique == 0) {
       cat("\nNo curves detected; all points appear to be fixed landmarks.\n")
     } else if(length(pcv.unique) == 1 && pcv.unique > 0) {
-      cat("\n", pcv.unique, "curve points detected per specimens and are appended to fixed landmarks.\n")
+      cat("\n", pcv.unique, "curve points detected per specimen and are appended to fixed landmarks.\n")
     } else if(length(pcv.unique) > 1){
       cat("\nCurve points detected but numbers vary among specimens.\n")
       cat("\nCurve point frequencies:\n")
@@ -105,6 +105,7 @@ readland.tps <- function (file, specID = c("None", "ID", "imageID"),
         kk <- length(pts)
         if(kk > 0) lm[i,1:kk] <- pts
       }
+      lm[which(lm<0)] <- NA
       if(length(x$scale) == 0) x$scale = 1
       lm*x$scale
     })
@@ -120,6 +121,7 @@ readland.tps <- function (file, specID = c("None", "ID", "imageID"),
         kk <- length(pts)
         if(kk > 0) lm[i,1:kk] <- pts
       }
+      lm[which(lm<0)] <- NA
       if(length(x$scale) == 0) x$scale = 1
       lm*x$scale
     })

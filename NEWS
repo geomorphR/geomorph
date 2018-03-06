@@ -3,6 +3,7 @@ PENDING CHANGES IN GEOMORPH VERSION 3.0.6
     o plotOutliers now allows to plot outlier configurations in order to compare their shape with the consensus. 
     o plot.mshape function added to plot the consensus configuration with numbers and links
     o New function gm.prcomp implements raw and weighted PCA and allows S3 generic plotting of its output
+    o New function readland.shapes allows reading a shapes file produced by StereoMorph, including landmark data and (potentially multiple) curves, and sampling semilandmarks from these curves.
     
   OTHER CHANGES
     o Changes procD.pgls to use residuals from GLS model for permutations
@@ -11,6 +12,7 @@ PENDING CHANGES IN GEOMORPH VERSION 3.0.6
     o Adjusted ANOVA tables to show from which distributions P-values are estimated.
     o Modified plot.procD.allometry to allow direct control of all plotting arguments by the user.
     o Modified plotRefToTarget and tps to use plot.xy instead of plot, and thus avoid conflicts with plot.mshape.
+    o Added catch for missing data to readland.tps, to identify negative values and recode them as NAs.
     
   BUG FIXES
     o Fixes issues with estimate.missing regression approach
