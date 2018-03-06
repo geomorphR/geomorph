@@ -132,40 +132,40 @@
 
 bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,land.pairs=NULL,
                          data = NULL, iter = 999, seed = NULL, RRPP = TRUE, print.progress = TRUE, ...){
-  if(inherits(A, "geomorphShapes")) {
-    A <- gpagen(A, ...)
+
+  if(!is.null(data)){
+    data <- droplevels(data)
+    A.name <- deparse(substitute(A))
+    A.name.match <- match(A.name, names(data))[1]
+    if(is.na(A.name.match)) A.name.match <- NULL
+    } else A.name.match <- NULL
+  
+    if(is.null(A.name.match) && is.gpagen(A)) {
     size <- A$Csize
     A <- A$coords
-  } else {
-    if(!is.null(data)){
-      data <- droplevels(data)
-      A.name <- deparse(substitute(A))
-      A.name.match <- match(A.name, names(data))[1]
-      if(is.na(A.name.match)) A.name.match <- NULL
-    } else A.name.match <- NULL
-    if(is.null(A.name.match) && is.gpagen(A)) {
+    } else if(is.null(A.name.match) && inherits(A, "geomorphShapes")) {
+      A <- gpagen(A, ...)
       size <- A$Csize
       A <- A$coords
     } else {
       if(!is.null(data)) {
         if(is.null(A.name.match)) stop("Coordinates are not part of the data frame provided")
-        A <- data[[A.name.match]]
-        if(any(is.na(A))) stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').") 
-        if (length(dim(A))!=3) stop("Data matrix not a 3D array (see 'arrayspecs').") 
-        if(print.progress) cat("\nInitial GPA\n")
-        A <- gpagen(A, print.progress = print.progress, ...)
-        size <- A$Csize
-        A <- A$coords
-      } else {
-        if(any(is.na(A))) stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').") 
-        if (length(dim(A))!=3) stop("Data matrix not a 3D array (see 'arrayspecs').") 
-        if(print.progress) cat("\nInitial GPA\n")
-        A <- gpagen(A, print.progress = print.progress, ...)
-        size <- A$Csize
-        A <- A$coords
+          A <- data[[A.name.match]]
+          if(any(is.na(A))) stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').") 
+          if (length(dim(A))!=3) stop("Data matrix not a 3D array (see 'arrayspecs').") 
+          if(print.progress) cat("\nInitial GPA\n")
+          A <- gpagen(A, print.progress = print.progress, ...)
+          size <- A$Csize
+          A <- A$coords
+        } else {
+          if(any(is.na(A))) stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').") 
+          if (length(dim(A))!=3) stop("Data matrix not a 3D array (see 'arrayspecs').") 
+          if(print.progress) cat("\nInitial GPA\n")
+          A <- gpagen(A, print.progress = print.progress, ...)
+          size <- A$Csize
+          A <- A$coords
+        }
       }
-    }
-  }
   
   if(is.null(data)){
     if(is.null(ind)) stop("Individuals not specified.") else ind <- factor(ind)
