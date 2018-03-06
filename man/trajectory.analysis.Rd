@@ -123,7 +123,7 @@ Once the function has performed the analysis, a plot can be generated of the tra
 \subsection{Notes for geomorph 3.0}{ 
 Previous versions of geomorph had two separate analytical approaches based on whether trajectories were estimated or
 provided (as might be the case with motion trajectories; see Adams and Cerney 2007).  Starting with geomorph 3.0, 
-commensurate analytical approaches are used.  This involves converting 1 x vp vectors for trajectpries, were p is the 
+commensurate analytical approaches are used.  This involves converting 1 x vp vectors for trajectories, were p is the 
 number of trajectory points and v is the number of variables in the data space, into p x v matrices, analogous to the
 procedure for estimating trajectories.  Thus, rather than providing separate ANOVAs for size, orientation, and shape
 of trajectories, a general ANOVA is provided with pairwise statistics for the same attribute differences.  This change

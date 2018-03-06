@@ -3,9 +3,9 @@
 #' This function is used to update \code{\link{plot.procD.lm}} and \code{\link{plot.trajectory.analysis}}
 #' objects with convex hull for different groups.  This function does not currently work with 
 #' \code{\link{plotTangentSpace}}.  If no groups are defined, an attempt to define groups from 
-#' the original \code{\link{procD.lm}} or \code{\link{trajectory.analysis}} analysis will be made.  Failling this, just a single
-#' convex hull will be returned.  The user can aslo choose to plot only one hull with groups = "none", which is 
-#' different than a NULL argumnet.  Groups can also differ from the groups originally considered for the original \code{\link{procD.lm}} 
+#' the original \code{\link{procD.lm}} or \code{\link{trajectory.analysis}} analysis will be made.  Failing this, just a single
+#' convex hull will be returned.  The user can also choose to plot only one hull with groups = "none", which is 
+#' different than a NULL argument.  Groups can also differ from the groups originally considered for the original \code{\link{procD.lm}} 
 #' or \code{\link{trajectory.analysis}} analysis.
 #' 
 #' This function is a wrapper for the \code{\link{points}} function. It is intentionally limited, so
@@ -15,8 +15,8 @@
 #' @param groups An optional vector or factor to define groups for hull.  If NULL, an attempt to coerce groups
 #' from the analytical design first used will be made.  If "none", only one hull will be generated for all points.
 #' @param group.cols An optional vector to define hull colors, arranged in the same order as factor levels.  If NULL and if multiple groups
-#' exist, the general R color sequence (bleck, red, green, blue, etc.) will be used.
-#' @param group.lwd An optional vector equal in length to the number of group levels, and arannged in the order of group levels,
+#' exist, the general R color sequence (black, red, green, blue, etc.) will be used.
+#' @param group.lwd An optional vector equal in length to the number of group levels, and arranged in the order of group levels,
 #' to modify hull line width.
 #' @param group.lty An optional vector equal in length to the number of group levels, and arannged in the order of group levels,
 #' to modify hull line type.

@@ -126,7 +126,7 @@ NULL
 #' @details These data were previously aligned
 #' with GPA.  Centroid size (CS) is also provided.
 #' @references Collyer, M.L., D.J. Sekora, and D.C. Adams. 2015. A method for analysis of phenotypic
-#' change for phenotypes described by high-dimensional data. Heredity. 113: doi:10.1038/hdy.2014.75.
+#' change for phenotypes described by high-dimensional data. Heredity. 115: 357-365.
 NULL
 
 
@@ -157,7 +157,7 @@ NULL
 #'  One can then use the generic function \code{\link{plot}} to produce a numbered plot of landmark 
 #'  positions and potentially add links, in order to review landmark positions
 #'
-#' @param A Either a list (length n, ach p x k), A 3D array (p x k x n), or a matrix (pk X n) containing GPA-aligned coordinates for a set of specimens
+#' @param A Either a list (length n, p x k), A 3D array (p x k x n), or a matrix (pk X n) containing GPA-aligned coordinates for a set of specimens
 #' @keywords utilities
 #' @export
 #' @author Julien Claude

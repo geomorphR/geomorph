@@ -43,7 +43,7 @@
 #' }
 
 #' @param A Either an object of class geomorphShapes or a 3D array (p x k x n) containing landmark coordinates 
-#' for a set of specimens.  If A is a geomorphShapes object, the curves argument is uneeded.
+#' for a set of specimens.  If A is a geomorphShapes object, the curves argument is not needed.
 #' @param Proj A logical value indicating whether or not the aligned Procrustes residuals should be projected 
 #'   into tangent space 
 #' @param ProcD A logical value indicating whether or not Procrustes distance should be used as the criterion

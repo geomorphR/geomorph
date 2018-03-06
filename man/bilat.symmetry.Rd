@@ -10,7 +10,7 @@ bilat.symmetry(A, ind = NULL, side = NULL, replicate = NULL,
 }
 \arguments{
 \item{A}{One of either A 3D array (p x k x n) containing raw landmarks (requiring GPA to be performed) or a gpagen object (if GPA has been previously performed) or a
-geomorphShapes object (requiring GPA to be performed).  Any gpagen argument shoudl work within bilat.symmetry.}
+geomorphShapes object (requiring GPA to be performed).  Any gpagen argument should work within bilat.symmetry.}
 
 \item{ind}{A vector containing labels for each individual. For matching symmetry, the matched pairs receive the same 
 label (replicates also receive the same label).}
@@ -54,7 +54,7 @@ An object of class "bilat.symmetry" returns a list of the following
 \item{random.shape.F}{A matrix of random F-values from the Shape analysis.}
 \item{random.size.F}{A matrix of random F-values from the Centroid Size analysis.}
 \item{perm.method}{A value indicating whether "Raw" values were shuffled or "RRPP" performed.}
-\item{procD.lm.shape}{A list of typical output from an objeect of class procD.lm, for shape}
+\item{procD.lm.shape}{A list of typical output from an object of class procD.lm, for shape}
 \item{procD.lm.size}{If applicable, a list of typical output from an objeect of class procD.lm, for size.}
 \item{call}{The matched call.}
 }

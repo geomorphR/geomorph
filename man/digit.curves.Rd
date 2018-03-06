@@ -30,7 +30,7 @@ The start of the curve is a fixed landmark on the curve that is equivalent (homo
 
 If 'closed = T', the function returns the coordinates of the 'start' landmark plus nPoints. If 'closed = F', the function returns the coordinates of the 'start' landmark, plus nPoints and the end of the curve.
 
-If unsure if the points defining the curve are ordered, then plot and colour them using the rainbow function, e.g. plot(curve, pch=19, cex=0.1, col=rainbow(nrow(outline))), and it should be easy to visualise.
+If unsure if the points defining the curve are ordered, then plot and color them using the rainbow function, e.g. plot(curve, pch=19, cex=0.1, col=rainbow(nrow(outline))), and it should be easy to visualize.
 }
 \references{
 Bookstein, F. J. 1997 Landmark Methods for Forms without Landmarks: Morphometrics of 

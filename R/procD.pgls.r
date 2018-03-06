@@ -90,7 +90,7 @@
 #' by high-dimensional data. Heredity. 115:357-365.
 #' @references Adams, D.C. and M.L. Collyer. 2016.  On the comparison of the strength of morphological integration across morphometric 
 #' datasets. Evolution. 70:2623-2631.
-#' @references Adams, D.C. and M.L. Collyer. 2016. TBD (insipient ms)
+#' @references Adams, D.C. and M.L. Collyer. 2016. TBD (ms in review)
 #' @examples
 #' ### Example of D-PGLS for high-dimensional data 
 #' data(plethspecies)

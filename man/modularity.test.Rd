@@ -32,7 +32,7 @@ An object of class "CR" is a list containing the following
 \item{P.value}{The empirically calculated P-value from the resampling procedure.}
    \item{CR.mat}{For more than two partitions, the pairwise CRs among partitions.}
    \item{random.CR}{The CR calculated in each of the random permutations of the resampling procedure.}
-   \item{permutations}{The number of random permutations used in the resampling procdure.}
+   \item{permutations}{The number of random permutations used in the resampling procedure.}
    \item{call}{The match call.}
 }
 \description{
