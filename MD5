@@ -98,7 +98,7 @@ b4d393dc787783cd69ce705e64a8d542 *man/pupfish.Rd
 cb46da06afb9b58e54ad31f7a7a02f4c *man/read.morphologika.Rd
 264a8a7606d0f550aa7cc4c9abdb76cb *man/read.ply.Rd
 64f811957932c1d67cc8324ee2f706e5 *man/readland.nts.Rd
-a85648f5e2c27948f944f0966bbd95ab *man/readland.shapes.Rd
+5968a80295d75c53b21829ffe768e643 *man/readland.shapes.Rd
 f8f42ae1f37f2bcc753bb44d82763feb *man/readland.tps.Rd
 d7ab7b16621a488c2daa709d10af488b *man/readmulti.nts.Rd
 8be198584c10582597e98c6cecbb26f7 *man/scallopPLY.Rd
@@ -178,7 +178,7 @@ b8e08a315b3c34603f20a9664a853029 *R/plotOutliers.r
 df3f4cc6406dc0c737ee2ff08c2a0e3d *R/read.morphologika.r
 9c3c828f71a413b5437d45228a3bf9b7 *R/read.ply.r
 7f0641e4fc3731624966a5e6578f5790 *R/readland.nts.r
-d29e8c4f9f9a0cca6d3cdd985353f604 *R/readland.shapes.r
+5436e01a1fc36d1e667379af2ca4ec92 *R/readland.shapes.r
 48589b8afc67c5c8714972e6de1be0a1 *R/readland.tps.r
 945534fe7f30c519cd5a6663a9b882a3 *R/readmulti.nts.r
 bb92986b568b7e9176ff879b2e0ce9d9 *R/shape.predictor.r

@@ -15,7 +15,9 @@ curve points, using linear interpolation to find equally spaced distances betwee
 nCurvePts = c(20, 50, 10) would return 20, 50, and 10 curve points, respectively.  If fixed landmarks are end points of curves,
 they will not be repeated as additional curve points.  Therefore, one should expect in these cases that the number of semilandmarks
 are fewer than the number of curve ponits; i.e., choosing 20 curve points might yield 18 semilandmarks.  If left NULL, no curve points
-will be estimated and only fixed landmarks will be read.}
+will be estimated and only fixed landmarks will be read.  Note: if less than 3 curve points are chosen for an open curve or less than 4
+points are chosen for a closed curve, the number of points will default to 0, as fewer than these make it impossible to develop a curves 
+matrix.  A value of 0 can be chosen to omit specific curves when reading in data.}
 
 \item{continuous.curve}{An optional value or string of values to indicate which curves are closed and whose same start and end
 point should be treated as a semilandmark.  For example, if one wishes to digitize a curve around an eye, for digitizing purposes a point might
