@@ -1504,3 +1504,37 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, phylo = FALSE,
   invisible(out)
   
 }
+
+
+# geomorphShapes
+
+#' Print/Summary function for geomorph
+#' 
+#' @param x print/summary object
+#' @param ... other arguments passed to print/summary
+#' @export
+#' @author Michael Collyer
+#' @keywords utilities
+print.geomorphShapes <- function (x, ...) {
+  cat("\nLandmark data for", x$n, "specimens")
+  cat("\nNumber of fixed landmarks:", length(x$fixed))
+  cat("\nNumber of (sliding) semilandmarks:", length(x$sliders))
+  cat("\nNumber of total landmarks:", x$p)
+  if(x$scaled) cat("\nLandmakrs have been scaled.") else
+    cat("\nLandmarks have not been scaled.")
+  cat("\n\nThis information is based on information available in class 'shapes' object.")
+  cat("\nThe curves matrix (for use in gpagen) is also based on the same information.")
+  cat("\nThis matrix can be modified to alter which landmakrs are semilandmarks.\n")
+  invisible(x)
+}
+
+#' Print/Summary Function for geomorph
+#' 
+#' @param object print/summary object
+#' @param ... other arguments passed to print/summary
+#' @export
+#' @author Michael Collyer
+#' @keywords utilities
+summary.geomorphShapes <- function (object, ...) {
+  print.geomorphShapes(object, ...)
+}

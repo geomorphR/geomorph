@@ -81,6 +81,7 @@ c046c994e533bf55f4cad27e218e887f *man/print.CR.phylo.Rd
 d25053abfbafbd828758c0ce1be25de5 *man/print.CR.Rd
 b310a04bb98abf787e09032682e32dff *man/print.evolrate.Rd
 e54a53855f3a44b7d98a2e3802fad0cf *man/print.evolrate1.Rd
+5e2cbf01c34483fa25a8d809d746d6f1 *man/print.geomorphShapes.Rd
 b7e6c44a6550481ceb569b5bf0c94c89 *man/print.gm.prcomp.Rd
 5a1b43e6d504c8876fb2a8fff1f88a83 *man/print.gpagen.Rd
 05e172a5b2f3efa4de8f89af3da3d190 *man/print.morphol.disparity.Rd
@@ -113,6 +114,7 @@ b855ab3d098d9c88761b8c74e60836c4 *man/summary.CR.phylo.Rd
 50a7fd2834ae11fb8fb4cdbe52ceb477 *man/summary.CR.Rd
 1870e50daa32d820e6d26e5ac6acc8c0 *man/summary.evolrate.Rd
 35361fd2b705bcd194bc998d78978e46 *man/summary.evolrate1.Rd
+8991ad846347e197a872570f79f50313 *man/summary.geomorphShapes.Rd
 68dd4db00f079fea47218ea51e9dc8b6 *man/summary.gm.prcomp.Rd
 4650837bdbeb227d95c700d3cb00811a *man/summary.gpagen.Rd
 959f66c73c14ff74e2b3f3807d6ef6d7 *man/summary.morphol.disparity.Rd
@@ -128,7 +130,7 @@ da1241dd835f95675cc7126b2a7ec61a *man/two.d.array.Rd
 8193dd10d2d3422240d788b5e404ee21 *man/warpRefMesh.Rd
 4678254db827c8ff8caf6c5beb8157be *man/warpRefOutline.Rd
 d9119f721918f22c267db843023a86fe *man/writeland.tps.Rd
-c89c7bf45de5d6e5c11bd40e0359d916 *NAMESPACE
+583415aba7c67efd1ab6ed40fe427484 *NAMESPACE
 bd301f9e99c48acf63cca2be8adfb8bd *NEWS
 1e4dfb5a8730860a6bb9cafa1cb699b8 *R/advanced.procD.lm.r
 311a910118a6b60a5ab89a58349e1f69 *R/arrayspecs.r
@@ -153,7 +155,7 @@ ed003209e3771dc165b2747defc1de9c *R/estimate.missing.r
 b56e53ac307d84a05efee9525dd6868a *R/fixed.angle.r
 203177efc30cc6fef4bd604b2fc2af01 *R/geomorph.data.frame.r
 5367610cd83931a540f34856d35f1ce6 *R/geomorph.support.code.r
-76fe183bc1cd22d1b515f72f1a0bb271 *R/geomorph.utils.r
+ebb76f516a4f52e388fb9f6b48db0461 *R/geomorph.utils.r
 0d9d88147f22cff2241b6e2e7396d57f *R/globalIntegration.r
 f04e88c4f380b4a2c3c17d09e526b580 *R/gm.prcomp.R
 ced377da13ad0907c4921eb770f8ee33 *R/gpagen.r
