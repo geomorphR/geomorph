@@ -2967,32 +2967,32 @@ traj.by.groups <- function(ff, fr, traj.pts, data=NULL, iter, seed= NULL,
 # used in: readland.shapes
 GMfromShapes0 <- function(Shapes, scaled = TRUE){ # No curves
   scaling <- Shapes$scaling
-  sp.names <- names(scaling)
-  
-  if(any(is.na(scaling))){
-    sp.na <- which(is.na(scaling))
-    if(all(is.na(scaling))) {
-      cat("\nWarning: All specimens have no scaling")
-      cat("\nUnscaled landmarks imported, as a result\n")
-    } else {
-      cat("\nWarning: Some specimens have no scaling\n")
-      cat(sp.names[sp.na])
-      cat("\nUnscaled landmarks imported, as a result\n")
-    }
+  sp.names <- dimnames(Shapes$landmarks.pixel)[[3]]
+  lm.names <- dimnames(Shapes$landmarks.pixel)[[1]]
+  if(is.null(scaling)) {
     landmarks <- Shapes$landmarks.pixel
+    cat("\nWarning: No specimens have scaling")
+    cat("\nUnscaled landmarks imported, as a result\n")
     scaled = FALSE
-  } else {
-    if(scaled) landmarks <- Shapes$landmarks.scaled else 
-      landmarks <- Shapes$landmarks.pixel
-  }
-  
+    } else {
+      if(any(is.na(scaling))){
+        sp.na <- which(is.na(scaling))
+        cat("\nWarning: Some specimens have no scaling\n")
+        cat(sp.names[sp.na])
+        cat("\nUnscaled landmarks imported, as a result\n")
+        landmarks <- Shapes$landmarks.pixel
+        scaled = FALSE
+      } else {
+        if(scaled) landmarks <- Shapes$landmarks.scaled else 
+          landmarks <- Shapes$landmarks.pixel
+      }
+    }
   dims <- dim(landmarks)
   n <- dims[[3]]; p <- dims[[1]]; k <- dims[[2]]
-  sp.nms <- dimnames(landmarks)[[3]]
   landmarks <- lapply(1:n, function(j){
     landmarks[,,j]
   })
-  names(landmarks) <- sp.nms
+  names(landmarks) <- sp.names
   
   out <- list(landmarks = landmarks, fixed = 1:dims[[1]],
               sliders = NULL, curves = NULL, n = n, 
@@ -3137,8 +3137,11 @@ GMfromShapes1 <- function(Shapes, nCurvePts, curve.ends = NULL, continuous.curve
   })
   
   curves.mat <- curves.mat.parts[[1]]
-  for(i in 2:curve.n) if(!is.null(curves.mat.parts[[i]]))
-    curves.mat <- rbind(curves.mat, curves.mat.parts[[i]])
+  if(curve.n >= 2){
+    for(i in 2:curve.n) if(!is.null(curves.mat.parts[[i]]))
+      curves.mat <- rbind(curves.mat, curves.mat.parts[[i]])
+  }
+
   fixed <- out$fixed
   sliders <- (1:nrow(landmarks[[1]]))[-fixed]
   curve.mat.nms <- rownames(landmarks[[1]])[curves.mat[,2]]
