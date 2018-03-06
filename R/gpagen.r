@@ -142,6 +142,7 @@ gpagen = function(A, curves=NULL, surfaces=NULL, PrinAxes = TRUE,
     
     if(!is.array(A)) stop("Coordinates must be a 3D array")
     if(length(dim(A)) != 3) stop("Coordinates array does not have proper dimensions")
+    if(any(is.na(A))) stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').")
     n <- dim(A)[[3]]; p <- dim(A)[[1]]; k <- dim(A)[[2]]
     Y <- lapply(1:n, function(j) A[,,j])
   }
