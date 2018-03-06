@@ -221,7 +221,7 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
     random.shape.F[2,] <- MS[2,]/MS[3,]
     random.shape.F[3,] <- MS[3,]/MS[4,]
     PSh$random.F <- random.shape.F
-    newZ <- apply(log(random.shape.F), 1, effect.size)
+    newZ <- apply(log(random.shape.F + 0.000001), 1, effect.size)
     PSh$aov.table$F[1:3] <- random.shape.F[1:3, 1]
     PSh$aov.table$Z[1:3] <- newZ[1:3]
     rownames(PSh$aov.table) <- form.names
@@ -248,7 +248,7 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
       random.size.F[2,] <- MS[2,]/MS[3,]
       random.size.F[3,] <- MS[3,]/MS[4,]
       PSz$random.F <- random.size.F
-      newZ <- apply(log(random.size.F), 1, effect.size)
+      newZ <- apply(log(random.size.F + 0.000001), 1, effect.size)
       PSz$aov.table$F[1:3] <- random.size.F[1:3, 1]
       PSz$aov.table$Z[1:3] <- newZ[1:3]
       rownames(PSz$aov.table) <- form.names
