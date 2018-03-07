@@ -14,7 +14,7 @@ readland.shapes(Shapes, nCurvePts = NULL, continuous.curve = NULL,
 curve points, using linear interpolation to find equally spaced distances between points.  For example, with three curves,
 nCurvePts = c(20, 50, 10) would return 20, 50, and 10 curve points, respectively.  If fixed landmarks are end points of curves,
 they will not be repeated as additional curve points.  Therefore, one should expect in these cases that the number of semilandmarks
-are fewer than the number of curve ponits; i.e., choosing 20 curve points might yield 18 semilandmarks.  If left NULL, no curve points
+are fewer than the number of curve points; i.e., choosing 20 curve points might yield 18 semilandmarks.  If left NULL, no curve points
 will be estimated and only fixed landmarks will be read.  Note: if less than 3 curve points are chosen for an open curve or less than 4
 points are chosen for a closed curve, the number of points will default to 0, as fewer than these make it impossible to develop a curves 
 matrix.  A value of 0 can be chosen to omit specific curves when reading in data.}
@@ -52,15 +52,15 @@ This function is intended for reading data and facilitating the generation of a 
 It is not intended to influence how one should digitize landmarks using StereoMorph.  Each digitizing experience is
 unique and users might need to edit their own data using StereoMorph functions in some cases; this function will not
 necessarily overcome all data editing challenges.  This function currently works with 2D data only, 
-as the readShapes function of StereMorph pertains to digitizing images.
+as the readShapes function of StereoMorph pertains to digitizing images.
 
-The enhanced feature of this function is that it can find a prescribed number of approximatey equally spaced 
-semilandmarks along 2D curves (from the many points of Bexier curves in StereoMorph), facilitating rapid \code{\link{gpagen}}
+The enhanced feature of this function is that it can find a prescribed number of approximately equally spaced 
+semilandmarks along 2D curves (from the many points of Bezier curves in StereoMorph), facilitating rapid \code{\link{gpagen}}
 analysis and the flexibility to change the desired number of semilandmarks defining curves.  This is only true, however,
-if the curves oprtion in digitizeImages (StreoMorph) is used.
+if the curves option in digitizeImages (StreoMorph) is used.
 
 The user can specify the number of points along curves, whether curves are continuous (closed and without fixed points), 
-and whether landmarks should be scaled, if possible (if scaling was performed while digtizing).
+and whether landmarks should be scaled, if possible (if scaling was performed while digitizing).
 }
 \examples{
 # A true example is not possible, as digitizing experiences are unqiue, but here is a general set-up
@@ -72,7 +72,7 @@ and whether landmarks should be scaled, if possible (if scaling was performed wh
 # myGPA <- gpagen(myGMdata, ProcD = FALSE) # GPA perfomed with minimized bending energy
 }
 \seealso{
-readShapes (from StreoMorph)
+readShapes (from StereoMorph)
 }
 \author{
 Michael Collyer

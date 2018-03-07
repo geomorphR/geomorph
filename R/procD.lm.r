@@ -58,7 +58,7 @@
 #'  \subsection{Notes for geomorph 3.0.7 and subsequent versions}{ 
 #'  Compared to previous versions, GLS computations in random permutations are not possible in procD.lm.  One should use
 #'  RRPP = TRUE is a covariance matrix is provided as an argument.  The method of SS calculations follows
-#'  Adams and Collyer 2018.  Additonal output with a "gls." prefix is also available.
+#'  Adams and Collyer 2018.  Additional output with a "gls." prefix is also available.
 #' }
 #'   
 #'  \subsection{Notes for geomorph 3.0.4 and subsequent versions}{ 
@@ -133,7 +133,7 @@
 #' by high-dimensional data. Heredity. 115:357-365.
 #' @references Adams, D.C. and M.L. Collyer. 2016.  On the comparison of the strength of morphological integration across morphometric 
 #' datasets. Evolution. 70:2623-2631.
-#' @references Adams, D.C. and M.L. Collyer. 2016. TBD (insipient ms)
+#' @references Adams, D.C. and M.L. Collyer. 2016. TBD (ms in review)
 #' @seealso \code{\link{advanced.procD.lm}}, \code{\link{procD.pgls}}, and 
 #' \code{\link{nested.update}} within geomorph; \code{\link[stats]{lm}} for more on linear model fits.
 #' @examples

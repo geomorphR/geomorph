@@ -78,7 +78,7 @@ The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\li
  Block1 versus Block2 performed for the first set of PLS axes. 
  
 \subsection{Similarity to \code{\link{two.b.pls}} and \code{\link{compare.pls}} }{ 
-Note that \code{phylo.integration} performed on two matrices or arrays returns the same results as a phylogenetic variaton of
+Note that \code{phylo.integration} performed on two matrices or arrays returns the same results as a phylogenetic variation of
  \code{\link{two.b.pls}}.  It might be of interest with 3+ modules to perform separate phylogenetic integration tests
 between all pairwise comparisons of modules.  This can be done, test by test, and the levels of integration can be compared with
 \code{\link{compare.pls}}.  Such results are different than using the average amount of integration, as performed by \code{phylo.integration}

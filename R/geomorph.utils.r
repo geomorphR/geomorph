@@ -136,7 +136,7 @@ plot.QQ <- function(r){
 #' regression, or principal component plots.  Diagnostic plots are similar to 
 #' \code{\link{lm}} diagnostic plots, but for multivariate data.  Regression plots
 #' plot multivariate dispersion in some fashion against predictor values. PC plots
-#' project data onto the eigenvectors of the coavriance matrix for fitted values.
+#' project data onto the eigenvectors of the covariance matrix for fitted values.
 #' @param outliers Logical argument to include outliers plot, if diagnostics
 #' are performed
 #' @param predictor An optional vector if "regression" plot type is chosen, 
@@ -1484,10 +1484,6 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, phylo = FALSE,
     pcdata <- rbind(pcdata, x$anc.pcscores[,c(axis1, axis2)])
     plot.new()
     plot.window(1.05*range(pcdata[,1]), 1.05*range(pcdata[,2]), log = "", asp=1,...)
-    if(axes){
-      abline(h = 0, ...)
-      abline(v = 0, ...)
-    }
     for (i in 1:nrow(phy$edge)) {
       dt.xy <- xy.coords(pcdata[(phy$edge[i,]),])
       plot.xy(dt.xy, type="l", col = phylo.par$edge.color, 
@@ -1496,6 +1492,10 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, phylo = FALSE,
     plot.xy(xy.coords(pcdata[1:length(phy$tip),]), type="p",...)
     plot.xy(xy.coords(pcdata[(length(phy$tip)+1):nrow(pcdata),]), type="p",
             pch = phylo.par$node.pch, cex = phylo.par$node.cex, bg = phylo.par$node.bg)
+  }
+  if(axes){
+    abline(h = 0, lty=2, ...)
+    abline(v = 0, lty=2, ...)
   }
 
   options(warn = 0)

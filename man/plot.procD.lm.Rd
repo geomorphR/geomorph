@@ -15,7 +15,7 @@
 regression, or principal component plots.  Diagnostic plots are similar to 
 \code{\link{lm}} diagnostic plots, but for multivariate data.  Regression plots
 plot multivariate dispersion in some fashion against predictor values. PC plots
-project data onto the eigenvectors of the coavriance matrix for fitted values.}
+project data onto the eigenvectors of the covariance matrix for fitted values.}
 
 \item{outliers}{Logical argument to include outliers plot, if diagnostics
 are performed}

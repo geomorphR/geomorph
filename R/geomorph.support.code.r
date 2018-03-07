@@ -126,7 +126,7 @@ NULL
 #' @details These data were previously aligned
 #' with GPA.  Centroid size (CS) is also provided.
 #' @references Collyer, M.L., D.J. Sekora, and D.C. Adams. 2015. A method for analysis of phenotypic
-#' change for phenotypes described by high-dimensional data. Heredity. 113: doi:10.1038/hdy.2014.75.
+#' change for phenotypes described by high-dimensional data. Heredity. 115: 357-365.
 NULL
 
 
@@ -157,7 +157,7 @@ NULL
 #'  One can then use the generic function \code{\link{plot}} to produce a numbered plot of landmark 
 #'  positions and potentially add links, in order to review landmark positions
 #'
-#' @param A Either a list (length n, ach p x k), A 3D array (p x k x n), or a matrix (pk X n) containing GPA-aligned coordinates for a set of specimens
+#' @param A Either a list (length n, p x k), A 3D array (p x k x n), or a matrix (pk X n) containing GPA-aligned coordinates for a set of specimens
 #' @keywords utilities
 #' @export
 #' @author Julien Claude
@@ -3002,7 +3002,7 @@ GMfromShapes0 <- function(Shapes, scaled = TRUE){ # No curves
 }
 
 # evenPts
-# basic function for spacing out curve points via linear interolation
+# basic function for spacing out curve points via linear interpolation
 # simple form of pointsAtEvenSpacing from StereoMorph 
 # used in: readland.shapes and difit.curves
 evenPts <- function(x, n){
@@ -3109,7 +3109,7 @@ GMfromShapes1 <- function(Shapes, nCurvePts, curve.ends = NULL, continuous.curve
     x <- fixedLM[[j]]
     cv <- curves[[j]]
     for(i in 1:curve.n) x <- rbind(x, cv[[i]][curve.refs[[i]],])
-    rownames(x)[(p+1):(nrow(x))] <- paste("semiLM", (p+1):(nrow(x)), sep=".")
+    rownames(x)[(p+1):(nrow(x))] <- paste("curveLM", (p+1):(nrow(x)), sep=".")
     x
   })
   names(landmarks) <- sp.names
@@ -3141,9 +3141,18 @@ GMfromShapes1 <- function(Shapes, nCurvePts, curve.ends = NULL, continuous.curve
     for(i in 2:curve.n) if(!is.null(curves.mat.parts[[i]]))
       curves.mat <- rbind(curves.mat, curves.mat.parts[[i]])
   }
-
+  single.anchors <- sapply(lapply(anchors, unique), length) == 1
   fixed <- out$fixed
   sliders <- (1:nrow(landmarks[[1]]))[-fixed]
+  makeSemi <- as.numeric(single.anchors) * cc
+  for(i in 1:length(makeSemi)){
+    if(makeSemi[i] > 0) {
+      targ <- unique(anchors[[i]])
+      fixed <- fixed[-targ]
+      sliders <- c(targ, sliders)
+    }
+  }
+  
   curve.mat.nms <- rownames(landmarks[[1]])[curves.mat[,2]]
   rownames(curves.mat) <- curve.mat.nms
   

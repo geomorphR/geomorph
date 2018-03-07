@@ -27,12 +27,14 @@
 #' landmark coordinates is to proceed with subsequent analyses EXCLUDING
 #' specimens with missing values. 
 #' 
-#' @param A An array (p x k x n) containing landmark coordinates for a set of specimens
+#' @param A An array (p x k x n) containing landmark coordinates for a set of specimens or a geomorphShapes object
 #' @param method Method for estimating missing landmark locations
 #' @author Dean Adams
 #' @keywords utilities
 #' @return Function returns an array (p x k x n) of the same dimensions as input A, including coordinates for the target specimens 
-#' (the original landmarks plus the estimated coordinates for the missing landmarks). These data need to be Procrustes Superimposed prior to analysis (seesee \code{\link{gpagen}}).
+#' (the original landmarks plus the estimated coordinates for the missing landmarks).
+#' If the input is a geomorphShapes object, this is returned with the original and estimated coordinates in $landmarks
+#' In both cases, these data need to be Procrustes Superimposed prior to analysis, including sliding of semilandmarks (see \code{\link{gpagen}}).
 #' @export
 #' @references Claude, J. 2008. Morphometrics with R. Springer, New York.
 #' @references  Bookstein, F. L., K. Schafer, H. Prossinger, H. Seidler, M. Fieder, G. Stringer, G. W. Weber, 
@@ -49,71 +51,80 @@
 #'   
 #' estimate.missing(plethland,method="TPS")
 #' estimate.missing(plethland,method="Reg")
-estimate.missing<-function(A,method=c("TPS","Reg")){ 
+estimate.missing <- function(A, method=c("TPS","Reg")){
+  if(inherits(A, "geomorphShapes")) {
+    a <- A
+    A <- simplify2array(a$landmarks)
+  }
+
   if(any(is.na(A))==FALSE)  {stop("No missing data.")}
   method <- match.arg(method)
   if (length(dim(A))!=3){
     stop("Data matrix not a 3D array (see 'arrayspecs').")  }
   if(method=="TPS"){
-    A2<-A
-    spec.NA<-which(rowSums(is.na(two.d.array(A)))>0)
-    Y.gpa<-gpagen(A[,,-spec.NA],PrinAxes=FALSE)
-    p<-dim(Y.gpa$coords)[1]; k<-dim(Y.gpa$coords)[2]; n<-dim(Y.gpa$coords)[3]    
-    ref<-mshape(arrayspecs(two.d.array(Y.gpa$coords)*Y.gpa$Csize,p,k))
+    A2 <- A
+    spec.NA <- which(rowSums(is.na(two.d.array(A)))>0)
+    Y.gpa <- gpagen(A[,,-spec.NA], PrinAxes=FALSE)
+    p <- dim(Y.gpa$coords)[1]; k <- dim(Y.gpa$coords)[2]; n <- dim(Y.gpa$coords)[3]    
+    ref <- mshape(arrayspecs(two.d.array(Y.gpa$coords)*Y.gpa$Csize, p, k))
     for (i in 1:length(spec.NA)){
-      missing<-which(is.na(A2[,1,spec.NA[i]])== T)
-      tmp<-tps2d3d(ref,ref[-missing,],A2[-missing,,spec.NA[i]], PB=FALSE)
-      A2[,,spec.NA[i]]<-tmp
+      missing <- which(is.na(A2[,1,spec.NA[i]]))
+      tmp <- tps2d3d(ref, ref[-missing,], A2[-missing,,spec.NA[i]], PB=FALSE)
+      A2[,,spec.NA[i]] <- tmp
     }
   }
   if(method=="Reg"){
-    spec.NA<-which(rowSums(is.na(two.d.array(A)))>0)    
-    land.NA<-which(colSums(is.na(two.d.array(A)))>0)  
-    p<-dim(A)[1]; k<-dim(A)[2];  
-    A2<-A
-    complete<-A[,,-spec.NA]
-    incomplete<-A[,,spec.NA]
-    Y.gpa<-gpagen(complete, PrinAxes=FALSE)
-    ref<-mshape(arrayspecs(two.d.array(Y.gpa$coords)*Y.gpa$Csize,p,k))
-    complete<-arrayspecs(two.d.array(Y.gpa$coords)*Y.gpa$Csize,p,k)
+    spec.NA <- which(rowSums(is.na(two.d.array(A)))>0)    
+    land.NA <- which(colSums(is.na(two.d.array(A)))>0)  
+    p <- dim(A)[1]; k <- dim(A)[2]  
+    A2 <- A
+    complete <- A[,,-spec.NA]
+    incomplete <- A[,,spec.NA]
+    Y.gpa <- gpagen(complete, PrinAxes=FALSE)
+    ref <- mshape(arrayspecs(two.d.array(Y.gpa$coords)*Y.gpa$Csize, p, k))
+    complete <- arrayspecs(two.d.array(Y.gpa$coords)*Y.gpa$Csize, p, k)
     if(length(dim(incomplete))>2){
       for (i in 1:dim(incomplete)[3]){
-        missing<-which(is.na(incomplete[,1,i])== TRUE)
-        lndmk<-which(is.na(incomplete[,1,i])!= TRUE)
+        missing <- which(is.na(incomplete[,1,i]))
+        lndmk <- which(!is.na(incomplete[,1,i]))
         tmp <- apply.pPsup(center(ref[-missing,]), list(center(incomplete[-missing,,i])))[[1]]
-        incomplete[lndmk,,i]<-tmp
+        incomplete[lndmk,,i] <- tmp
       }      
     }
     if(length(dim(incomplete))==2){
-      missing<-which(is.na(incomplete[,1])== T)
-      lndmk<-which(is.na(incomplete[,1])!= T)
+      missing <- which(is.na(incomplete[,1]))
+      lndmk <- which(!is.na(incomplete[,1]))
       tmp <- apply.pPsup(center(ref[-missing,]), list(center(incomplete[-missing,])))[[1]]
-      incomplete[lndmk,]<-tmp
+      incomplete[lndmk,] <- tmp
     }
-    A2[,,-spec.NA]<-complete
-    A2[,,spec.NA]<-incomplete
-    A.2d<-two.d.array(A2)    
+    A2[,,-spec.NA] <- complete
+    A2[,,spec.NA] <- incomplete
+    A.2d <- two.d.array(A2)    
     for (i in 1:length(spec.NA)){
-      missing.coord<-which(is.na(A.2d[spec.NA[i],])== T)  
-      x<-A.2d[-spec.NA,-missing.coord]
-      y<-A.2d[-spec.NA,missing.coord]
-      XY.vcv<-cov(cbind(x,y))      
-      S12<-XY.vcv[1:dim(x)[2],(dim(x)[2]+1):(dim(x)[2]+dim(y)[2])]
-      pls<-svd(S12)
-      U<-pls$u; V<-pls$v
-      XScores<-x%*%U; YScores<-y%*%V
+      missing.coord <- which(is.na(A.2d[spec.NA[i],]))  
+      x <- A.2d[-spec.NA, -missing.coord]
+      y <- A.2d[-spec.NA, missing.coord]
+      XY.vcv <- cov(cbind(x,y))      
+      S12 <- XY.vcv[1:dim(x)[2], (dim(x)[2]+1):(dim(x)[2]+dim(y)[2])]
+      pls <- svd(S12)
+      U <- pls$u; V <- pls$v
+      XScores <- x%*%U; YScores <- y%*%V
 #      beta<-coef(lm(YScores[,1]~XScores[,1]))
 #      miss.xsc<-c(1,A.2d[spec.NA[i],-missing.coord]%*%U[,1])
 #      miss.ysc<-c(miss.xsc%*%beta,(rep(0,(ncol(y)-1))))
-      beta<-coef(lm(YScores~XScores))
-      miss.xsc<-c(1,A.2d[spec.NA[i],-missing.coord]%*%U)
-      miss.ysc<-miss.xsc%*%beta
-      pred.val<-miss.ysc%*%t(V)
+      beta <- coef(lm(YScores ~ XScores))
+      miss.xsc <- c(1,A.2d[spec.NA[i],-missing.coord]%*%U)
+      miss.ysc <- miss.xsc%*%beta
+      pred.val <- miss.ysc%*%t(V)
       for (j in 1:length(V)){
-        A.2d[spec.NA[i],missing.coord[j]]<-pred.val[j]    
+        A.2d[spec.NA[i] ,missing.coord[j]] <- pred.val[j]    
       }
     }
-    A2<-arrayspecs(A.2d,dim(A)[1],dim(A)[2])
+    A2 <- arrayspecs(A.2d, dim(A)[1], dim(A)[2])
+  }
+  if("a"%in%ls()) {
+    a$landmarks <- lapply(1:length(a$landmarks), function(j) A2[,,j])
+    A2 <- a
   }
   return(A2)
 }

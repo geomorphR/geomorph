@@ -43,7 +43,7 @@
 #' }
 
 #' @param A Either an object of class geomorphShapes or a 3D array (p x k x n) containing landmark coordinates 
-#' for a set of specimens.  If A is a geomorphShapes object, the curves argument is uneeded.
+#' for a set of specimens.  If A is a geomorphShapes object, the curves argument is not needed.
 #' @param Proj A logical value indicating whether or not the aligned Procrustes residuals should be projected 
 #'   into tangent space 
 #' @param ProcD A logical value indicating whether or not Procrustes distance should be used as the criterion
@@ -133,6 +133,7 @@ gpagen = function(A, curves=NULL, surfaces=NULL, PrinAxes = TRUE,
                   print.progress = TRUE){
   if(inherits(A, "geomorphShapes")) {
     Y <- A$landmarks
+    if(any(unlist(lapply(Y, is.na)))) stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').")
     curves <- A$curves
     n <- A$n
     p <- A$p
@@ -185,7 +186,8 @@ gpagen = function(A, curves=NULL, surfaces=NULL, PrinAxes = TRUE,
   iter <- gpa$iter
   pt.var <- Reduce("+",Map(function(y) y^2/n, coords))
   coords <- simplify2array(coords)
-  dimnames(coords)<- dimnames(A)
+  if(inherits(A, "geomorphShapes")) dimnames(coords)[[3]] <- names(A$landmarks) else
+    dimnames(coords) <- dimnames(A)
   pt.VCV <- var(two.d.array(coords))
   rownames(pt.var) <- dimnames(coords)[[1]]
   colnames(pt.var) <- if(k==3) c("Var.X", "Var.Y", "Var.Z") else 

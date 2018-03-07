@@ -154,7 +154,7 @@ plots of allometry curves.  In geomorph 3.0, the \code{\link{plot}} function is 
 \itemize{
 \item{method = ("CAC, "RegScore, "PredLine").  Choose the desired plot method.}
 \item{warpgrids: default = TRUE.  Logical value to indicate whether warpgrids should be plotted.} 
-(Only workds with 3D array data)
+(Only works with 3D array data)
 \item{label: can be logical to label points (1:n) - e.g., label = TRUE - or a vector indicating
 text to use as labels.}
 \item{mesh: A mesh3d object to be warped to represent shape deformation of the minimum and maximum size 

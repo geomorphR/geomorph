@@ -99,10 +99,10 @@ The SS calculated is the same as the sum of squared Procrustes distances among s
   pairwise statistic sampling distributions generated, which might be more intuitive for P-values than F-values (see Collyer et al. 2015).
   For ANOVA Z-scores, a log-transformation is performed first, to assure a normally distributed sampling distribution.
   
-  Pairwise tests have two flavors: 1) tests for differencs in group means (based on vector length between
+  Pairwise tests have two flavors: 1) tests for differences in group means (based on vector length between
   means for pairwise comparisons) and 2) tests for angular differences in slopes between groups.  These tests are 
   similar in concept to trajectory analysis (Adams and Collyer 2007; Collyer and Adams 2007; Adams and Collyer 2009;
-  Collyer and Adams 2013), in that pairwise statistics are either vector lengths or angluar differences between vectors.  
+  Collyer and Adams 2013), in that pairwise statistics are either vector lengths or angular differences between vectors.  
   These tests are different than trajectory analysis (see\code{\link{trajectory.analysis}}), however, because a factorial model
   is not explicitly needed to contrast vectors between point factor levels nested within group factor levels.  For angluar differences 
   between factor-covariate slopes, either the angle or the vector correlation can be tested.  It should be understood

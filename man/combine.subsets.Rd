@@ -53,7 +53,7 @@ argument.  Objects of class \code{gpagen} can be used rather than original landm
 especially if curves or surface sliding semilandmarks are used, as different arguments cannot be passed onto
 onto separate GPAs via this function).
 
-The procedure of Davis et al. (2016) is analogous to the "seperate subsets" method of Adams (1999)
+The procedure of Davis et al. (2016) is analogous to the "separate subsets" method of Adams (1999)
 for articulated structures.
 }
 \examples{
