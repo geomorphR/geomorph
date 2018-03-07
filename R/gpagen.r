@@ -133,6 +133,7 @@ gpagen = function(A, curves=NULL, surfaces=NULL, PrinAxes = TRUE,
                   print.progress = TRUE){
   if(inherits(A, "geomorphShapes")) {
     Y <- A$landmarks
+    if(any(unlist(lapply(Y, is.na)))) stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').")
     curves <- A$curves
     n <- A$n
     p <- A$p
