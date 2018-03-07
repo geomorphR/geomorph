@@ -53,8 +53,6 @@
 #' plot(pleth.raw, pch=22, cex = 1.5, xlab = "My PCA - axis 1", bg = gps,
 #'     font.lab = 2, cex.lab = 2) # Modify options as desired
 #  Add things as desired using standard R plotting
-#' segments(0.95*par()$usr[1], 0, 0.95*par()$usr[2], 0, lty = 2, lwd = 1)
-#' segments(0, 0.95*par()$usr[3], 0, 0.95*par()$usr[4], lty = 2, lwd = 1)
 #' legend("topright", pch=22, pt.bg = unique(gps), legend = levels(gps), cex = 2)
 #' 
 #' ### Phylogenetic PCA
