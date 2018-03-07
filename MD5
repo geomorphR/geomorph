@@ -14,7 +14,7 @@ a22caf7dccb36209243808792742e669 *DESCRIPTION
 e65e81ca3e2c0b6e712bf6f4bafcdaec *inst/CITATION
 124dd0ee19e00069a3e6e256a6d4c854 *man/advanced.procD.lm.Rd
 5e099c6268d251bf5c98595d9566385a *man/arrayspecs.Rd
-3fe9d8d437fe702313a3948751d53518 *man/bilat.symmetry.Rd
+09a13ec6ddae8d9bd2a17356db3a89eb *man/bilat.symmetry.Rd
 5a3e03eb2accf1269a9cf8c049adae78 *man/buildtemplate.Rd
 e475085993cce4909490bf99d610df76 *man/combine.subsets.Rd
 8bd2c022b944c4633ec9a47e3d26291f *man/compare.evol.rates.Rd
@@ -29,7 +29,7 @@ c7537e44a2ee577ca4212ed2e9d21c7e *man/digit.curves.Rd
 d4502085a6a0161d79904b23d6d8cdda *man/digitize2d.Rd
 e1d5a23bebea2da8148fa1617386b897 *man/digitsurface.Rd
 595a67c64e1cc0d654efc19b205b9b5b *man/editTemplate.Rd
-99c4de99f4da558b6801bf8d778b9aa2 *man/estimate.missing.Rd
+304be7cec73ac387ebda7decb730a5ae *man/estimate.missing.Rd
 feb5a2091da078ddc90f6eb999061231 *man/findMeanSpec.Rd
 45b6346502c944a2250ba4f544bf720f *man/fixed.angle.Rd
 f9221a7b4261484793b945d7be4bbec6 *man/geomorph-package.Rd
@@ -134,7 +134,7 @@ d9119f721918f22c267db843023a86fe *man/writeland.tps.Rd
 0f330a363a759bd28bff3aa691a26d84 *NEWS
 94f61351420a894081752e903fcd99e2 *R/advanced.procD.lm.r
 311a910118a6b60a5ab89a58349e1f69 *R/arrayspecs.r
-4151355e39424ab0555f029f85787da9 *R/bilat.symmetry.r
+4284c714345d262621c9b18a3c43e997 *R/bilat.symmetry.r
 14713bbb2ad126d777d95e359c71bf1a *R/build.template.r
 112757cb68025f1d659d177b0f1f8fc6 *R/combine.subsets.R
 603c11a2c1bbfa580c88be605c8f28bc *R/compare.evol.rates.r
@@ -150,7 +150,7 @@ de2c474fcd4c125b7563c13ea9c9ee99 *R/deprecated.defunct.r
 ddff41e987eac54d3500e2313799c3c6 *R/digitize2d.r
 6ee66fc21bc5f6391b02c890d2313575 *R/digitsurface.r
 05f8cee04bf9faaab3fda006fbd3efbe *R/editTemplate.r
-87a090caf42cc12492960570ca6cf161 *R/estimate.missing.r
+5bc259523f3a82d5f31f6f024c4e26ac *R/estimate.missing.r
 9cfff0013db7a8c0e4aca770b5d9ea25 *R/findMeanSpec.r
 b56e53ac307d84a05efee9525dd6868a *R/fixed.angle.r
 203177efc30cc6fef4bd604b2fc2af01 *R/geomorph.data.frame.r

@@ -7,13 +7,15 @@
 estimate.missing(A, method = c("TPS", "Reg"))
 }
 \arguments{
-\item{A}{An array (p x k x n) containing landmark coordinates for a set of specimens}
+\item{A}{An array (p x k x n) containing landmark coordinates for a set of specimens or a geomorphShapes object}
 
 \item{method}{Method for estimating missing landmark locations}
 }
 \value{
 Function returns an array (p x k x n) of the same dimensions as input A, including coordinates for the target specimens 
-(the original landmarks plus the estimated coordinates for the missing landmarks). These data need to be Procrustes Superimposed prior to analysis (see \code{\link{gpagen}}).
+(the original landmarks plus the estimated coordinates for the missing landmarks).
+If the input is a geomorphShapes object, this is returned with the original and estimated coordinates in $landmarks
+In both cases, these data need to be Procrustes Superimposed prior to analysis, including sliding of semilandmarks (see \code{\link{gpagen}}).
 }
 \description{
 A function for estimating the locations of missing landmarks
