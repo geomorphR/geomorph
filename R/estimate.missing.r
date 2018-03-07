@@ -123,7 +123,7 @@ estimate.missing <- function(A, method=c("TPS","Reg")){
     A2 <- arrayspecs(A.2d, dim(A)[1], dim(A)[2])
   }
   if("a"%in%ls()) {
-    a$landmarks <- A2
+    a$landmarks <- lapply(1:length(a$landmarks), function(j) A2[,,j])
     A2 <- a
   }
   return(A2)
