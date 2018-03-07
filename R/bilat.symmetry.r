@@ -12,10 +12,11 @@
 #'  morphometrics may be found in: Mardia et al. 2000; Klingenberg et al. 2002. 
 #'  
 #'  As input, the function receives either A 3D array (p x k x n) containing raw landmarks (requiring 
-#'  GPA to be performed) or a gpagen object (if GPA has been previously performed). If one wishes 
-#'  to incorporate semilandmarks, GPA should be performed first using gpagen, in which case a gpagen object should be
-#'  provided to bilat.symmetry. Otherwise, bilat.symmetry can perform the initial GPA, assuming all landmarks are fixed. For 
-#'  "object.sym = FALSE, landmarks should be of dimension (p x k x 2n), as each specimen is 
+#'  GPA to be performed) or a gpagen object (if GPA has been previously performed) or a geomorphShapes object.
+#'  If one wishes to incorporate semilandmarks, GPA can either be performed first using gpagen, or within bilat.symmetry
+#'  by passing adequate GPA arguments (i.e. curves, surfaces, ProcD etc, see \code{\link{gpagen}}. If a geomorphShapes
+#'  object is provided, semilandmarks are automatically identified and slided during GPA.
+#'  For "object.sym = FALSE, landmarks should be of dimension (p x k x 2n), as each specimen is 
 #'  represented by both left and right configurations.
 #'    
 #' Analyses of symmetry for matched pairs of objects is implemented when {object.sym=FALSE}. Here, a 3D array [p x k x 2n] 
@@ -121,16 +122,16 @@
 #' land.pairs=scallops$land.pairs, data = gdf, RRPP = TRUE, iter = 499)
 #' summary(scallop.sym)
 #' 
-#' # Previous example, incorporating semilandmarks (requires GPA to be performed first)
+#' # Previous example, incorporating semilandmarks
 #' 
-#' Y.gpa <- gpagen(scallops$coorddata, curves= scallops$curvslide, surfaces = scallops$surfslide)
-#' scallop.sym <- bilat.symmetry(A = Y.gpa, ind = ind, object.sym = TRUE, 
+#' scallop.sym <- bilat.symmetry(A = scallops$coorddata, ind = ind, object.sym = TRUE, 
+#' curves= scallops$curvslide, surfaces = scallops$surfslide,
 #' land.pairs=scallops$land.pairs, data = gdf, RRPP = TRUE, iter = 499)
 #' summary(scallop.sym)
 #' # NOTE one can also: plot(scallop.sym, warpgrids = TRUE, mesh = NULL)
 #' # NOTE one can also: scallop.sym$data.type # recall the symmetry type
 
-bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,land.pairs=NULL,
+bilat.symmetry<-function(A, ind=NULL, side=NULL, replicate=NULL, object.sym=FALSE, land.pairs=NULL,
                          data = NULL, iter = 999, seed = NULL, RRPP = TRUE, print.progress = TRUE, ...){
 
   if(!is.null(data)){
@@ -185,13 +186,13 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
   
   n<-dim(A)[3]; k<-dim(A)[2]; p<-dim(A)[1]; nind<-nlevels(ind); spec.names<-dimnames(A)[[3]]
   if(object.sym == FALSE && is.null(side)) stop("Sides not specified.") 
-  if(object.sym==TRUE){
-    if(is.null(land.pairs)){stop("Landmark pairs not specified.")} 
-    npairs <- nrow(land.pairs); nl<-p-2*npairs
+  if(object.sym == TRUE){
+    if(is.null(land.pairs)) {stop("Landmark pairs not specified.")} 
+    npairs <- nrow(land.pairs); nl <- p-2*npairs
     A2 <- A
     A2[land.pairs[,1],,] <- A[land.pairs[,2],,]
     A2[land.pairs[,2],,] <- A[land.pairs[,1],,]
-    A2[,1,]<-A2[,1,]*-1
+    A2[,1,] <- A2[,1,]*(-1)
     A <- array(c(A,A2), c(p,k, 2*n))
     ind <- factor(rep(ind,2)); side <- gl(2,n); if(!is.null(replicate)) replicate <- rep(replicate,2)
     if(print.progress) cat("\nObject Symmetry GPA\n")

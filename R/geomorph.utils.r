@@ -1494,8 +1494,8 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, phylo = FALSE,
             pch = phylo.par$node.pch, cex = phylo.par$node.cex, bg = phylo.par$node.bg)
   }
   if(axes){
-    abline(h = 0, ...)
-    abline(v = 0, ...)
+    abline(h = 0, lty=2, ...)
+    abline(v = 0, lty=2, ...)
   }
 
   options(warn = 0)

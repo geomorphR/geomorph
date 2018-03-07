@@ -185,7 +185,8 @@ gpagen = function(A, curves=NULL, surfaces=NULL, PrinAxes = TRUE,
   iter <- gpa$iter
   pt.var <- Reduce("+",Map(function(y) y^2/n, coords))
   coords <- simplify2array(coords)
-  dimnames(coords)<- dimnames(A)
+  if(inherits(A, "geomorphShapes")) dimnames(coords)[[3]] <- names(A$landmarks) else
+    dimnames(coords) <- dimnames(A)
   pt.VCV <- var(two.d.array(coords))
   rownames(pt.var) <- dimnames(coords)[[1]]
   colnames(pt.var) <- if(k==3) c("Var.X", "Var.Y", "Var.Z") else 

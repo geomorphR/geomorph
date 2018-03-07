@@ -72,10 +72,11 @@ The function quantifies components of shape variation for a set of specimens as 
  morphometrics may be found in: Mardia et al. 2000; Klingenberg et al. 2002. 
  
  As input, the function receives either A 3D array (p x k x n) containing raw landmarks (requiring 
- GPA to be performed) or a gpagen object (if GPA has been previously performed). If one wishes 
- to incorporate semilandmarks, GPA should be performed first using gpagen, in which case a gpagen object should be
- provided to bilat.symmetry. Otherwise, bilat.symmetry can perform the initial GPA, assuming all landmarks are fixed. For 
- "object.sym = FALSE, landmarks should be of dimension (p x k x 2n), as each specimen is 
+ GPA to be performed) or a gpagen object (if GPA has been previously performed) or a geomorphShapes object.
+ If one wishes to incorporate semilandmarks, GPA can either be performed first using gpagen, or within bilat.symmetry
+ by passing adequate GPA arguments (i.e. curves, surfaces, ProcD etc, see \code{\link{gpagen}}. If a geomorphShapes
+ object is provided, semilandmarks are automatically identified and slided during GPA.
+ For "object.sym = FALSE, landmarks should be of dimension (p x k x 2n), as each specimen is 
  represented by both left and right configurations.
    
 Analyses of symmetry for matched pairs of objects is implemented when {object.sym=FALSE}. Here, a 3D array [p x k x 2n] 

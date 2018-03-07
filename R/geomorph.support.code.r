@@ -3002,7 +3002,7 @@ GMfromShapes0 <- function(Shapes, scaled = TRUE){ # No curves
 }
 
 # evenPts
-# basic function for spacing out curve points via linear interolation
+# basic function for spacing out curve points via linear interpolation
 # simple form of pointsAtEvenSpacing from StereoMorph 
 # used in: readland.shapes and difit.curves
 evenPts <- function(x, n){
