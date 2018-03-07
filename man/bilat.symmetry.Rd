@@ -139,10 +139,10 @@ scallop.sym <- bilat.symmetry(A = shape, ind = ind, object.sym = TRUE,
 land.pairs=scallops$land.pairs, data = gdf, RRPP = TRUE, iter = 499)
 summary(scallop.sym)
 
-# Previous example, incorporating semilandmarks (requires GPA to be performed first)
+# Previous example, incorporating semilandmarks
 
-Y.gpa <- gpagen(scallops$coorddata, curves= scallops$curvslide, surfaces = scallops$surfslide)
-scallop.sym <- bilat.symmetry(A = Y.gpa, ind = ind, object.sym = TRUE, 
+scallop.sym <- bilat.symmetry(A = scallops$coorddata, ind = ind, object.sym = TRUE, 
+curves= scallops$curvslide, surfaces = scallops$surfslide,
 land.pairs=scallops$land.pairs, data = gdf, RRPP = TRUE, iter = 499)
 summary(scallop.sym)
 # NOTE one can also: plot(scallop.sym, warpgrids = TRUE, mesh = NULL)
