@@ -1499,7 +1499,8 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, phylo = FALSE,
   }
 
   options(warn = 0)
-  out <- list(points = pcdata, pc.object = x, plot.par = list(gen.par = dots, phylo.par = phylo.par))
+  out <- list(points = pcdata, pc.object = x, phylo = phylo, 
+              plot.par = list(gen.par = dots, phylo.par = phylo.par))
   class(out) <- "plot.gm.prcomp"
   invisible(out)
   
