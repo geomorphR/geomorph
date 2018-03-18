@@ -1499,7 +1499,7 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, phylo = FALSE,
   }
 
   options(warn = 0)
-  out <- list(points = pcdata, pc.data = x$pc.scores)
+  out <- list(points = pcdata, pc.object = x)
   class(out) <- "plot.gm.prcomp"
   invisible(out)
   
