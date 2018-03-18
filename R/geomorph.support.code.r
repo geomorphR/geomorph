@@ -877,7 +877,7 @@ pGpa.wSliders <- function(Y, curves, surf, ProcD = TRUE, PrinAxes = FALSE, Proj 
 #
 #
 tps <- function(matr, matt, n, sz=1.5, pt.bg="black",
-              grid.col="black", grid.lwd=1, grid.lty=1, refpts=FALSE){		#DCA: altered from J. Claude: 2D only
+              grid.col="black", grid.lwd=1, grid.lty=1, refpts=FALSE, k3 = FALSE){		#DCA: altered from J. Claude: 2D only
   xm <- min(matr[,1])
   ym <- min(matr[,2])
   xM <- max(matr[,1])
@@ -888,21 +888,39 @@ tps <- function(matr, matt, n, sz=1.5, pt.bg="black",
   m <- round(0.5+(n-1)*(2/5*rX + yM-ym)/(2/5*rX + xM-xm))
   M <- as.matrix(expand.grid(a,b))
   ngrid <- tps2d(M, matr, matt)
-  plot.new()
-  plot.window(1.05*range(ngrid[,1]), 1.05*range(ngrid[,2]), xaxt="n", yaxt="n", 
-              xlab="", ylab="", bty="n", asp = 1)
-  for (i in 1:m){
-    plot.xy(xy.coords(ngrid[(1:n)+(i-1)*n,]), type = "l",
-            col=grid.col, lwd=grid.lwd, lty=grid.lty)
+  if (k3 == FALSE){
+    plot.new()
+    plot.window(1.05*range(ngrid[,1]), 1.05*range(ngrid[,2]), xaxt="n", yaxt="n", 
+                xlab="", ylab="", bty="n", asp = 1)
+    for (i in 1:m){
+      plot.xy(xy.coords(ngrid[(1:n)+(i-1)*n,]), type = "l",
+              col=grid.col, lwd=grid.lwd, lty=grid.lty)
+    }
+    for (i in 1:n){
+      plot.xy(xy.coords(ngrid[(1:m)*n-i+1,]), type = "l",
+              col=grid.col, lwd=grid.lwd, lty=grid.lty)
+    }
+    if(refpts==FALSE) {
+      plot.xy(xy.coords(matt), type="p", pch=21, bg=pt.bg, cex=sz) 
+    } else {
+      plot.xy(xy.coords(matr), type="p", pch=21, bg=pt.bg, cex=sz)
+    }
   }
-  for (i in 1:n){
-    plot.xy(xy.coords(ngrid[(1:m)*n-i+1,]), type = "l",
-            col=grid.col, lwd=grid.lwd, lty=grid.lty)
-  }
-  if(refpts==FALSE) {
-    plot.xy(xy.coords(matt), type="p", pch=21, bg=pt.bg, cex=sz) 
-  } else {
-    plot.xy(xy.coords(matr), type="p", pch=21, bg=pt.bg, cex=sz)
+  # added in for shape.predictor; plots in rgl window
+  if(k3 == TRUE){
+    ngrid <- cbind(ngrid,0)
+    plot3d(ngrid, cex=0.2, aspect=FALSE, axes=FALSE, xlab="", ylab="", zlab="")
+    for (i in 1:m){
+      lines3d(ngrid[(1:n)+(i-1)*n,], col=grid.col, lwd=grid.lwd, lty=grid.lty)
+      }
+    for (i in 1:n){
+      lines3d(ngrid[(1:m)*n-i+1,], col=grid.col, lwd=grid.lwd, lty=grid.lty)
+      }
+    if(refpts==FALSE) {
+      points3d(cbind(matt,0), col=pt.bg, size=sz*10)
+      } else {
+        points3d(cbind(matr,0),col=pt.bg,size=sz*10)
+      }
   }
 }
 

@@ -44,7 +44,7 @@
 #' @return If using {method="surface"}, function will return the warped mesh3d object.
 #' @keywords visualization
 #' @export
-#' @author Dean Adams, Emma Sherratt & Michael Collyer
+#' @author Dean Adams, Emma Sherratt, Antigoni Kaliontzopoulou & Michael Collyer
 #' @references Claude, J. 2008. Morphometrics with R. Springer, New York. 
 #' @seealso  \code{\link{gridPar}}
 #' @seealso  \code{\link{define.links}}
@@ -184,7 +184,72 @@ plotRefToTarget<-function(M1, M2, mesh= NULL, outline=NULL,
     }      
   }
   if(k==3){
-    if(method=="TPS"){
+    #for shape predictor k=2
+    if(method=="TPS" && class(M2) == "predshape.k2"){
+      tps(M1[,1:2],M2[,1:2],gP$n.col.cell, sz=gP$tar.pt.size, pt.bg=gP$tar.pt.bg, 
+          grid.col=gP$grid.col, grid.lwd=gP$grid.lwd, grid.lty=gP$grid.lty, refpts=useRefPts, 
+          k3=TRUE)
+      if(is.null(links)==FALSE){
+        linkcol <- rep(gP$tar.link.col,nrow(links))[1:nrow(links)]
+        linklwd <- rep(gP$tar.link.lwd,nrow(links))[1:nrow(links)]
+        linklty <- rep(gP$tar.link.lty,nrow(links))[1:nrow(links)]
+        for (i in 1:nrow(links)){
+          segments3d(rbind(M2[links[i,1],],M2[links[i,2],]),
+                     col=linkcol[i],lty=linklwd[i],lwd=linklty[i])
+        }
+      }
+      if(label == TRUE){text3d(M2, texts = paste(1:dim(M2)[1]), adj=(gP$txt.adj+gP$pt.size),
+                               pos=(gP$txt.pos+gP$pt.size),cex=gP$txt.cex,col=gP$txt.col)}
+      if(!is.null(outline)){
+        curve.warp <- tps2d(outline, M1[,1:2],M2[,1:2])
+        points3d(cbind(curve.warp,0), size=gP$tar.out.cex, col=gP$tar.out.col) 
+      }
+    }
+    #for shape predictor k=3
+    if(method=="TPS" && class(M2) == "predshape.k3"){
+      layout3d(matrix(c(1,2),1,2))
+      tps(M1[,1:2],M2[,1:2],gP$n.col.cell, sz=gP$tar.pt.size, pt.bg=gP$tar.pt.bg, 
+          grid.col=gP$grid.col, grid.lwd=gP$grid.lwd, grid.lty=gP$grid.lty, refpts=useRefPts,
+          k3=TRUE)
+      title3d("X,Y tps grid") # doesn't work?
+      if(is.null(links)==FALSE){
+        linkcol <- rep(gP$tar.link.col,nrow(links))[1:nrow(links)]
+        linklwd <- rep(gP$tar.link.lwd,nrow(links))[1:nrow(links)]
+        linklty <- rep(gP$tar.link.lty,nrow(links))[1:nrow(links)]
+        for (i in 1:nrow(links)){
+          segments3d(rbind(M2[links[i,1],],M2[links[i,2],]),
+                     col=linkcol[i],lty=linklwd[i],lwd=linklty[i])
+        }
+      }
+      if(label == TRUE){text3d(M2, texts = paste(1:dim(M2)[1]), adj=(gP$txt.adj+gP$pt.size),
+                               pos=(gP$txt.pos+gP$pt.size),cex=gP$txt.cex,col=gP$txt.col)} 
+      if(!is.null(outline)){
+        curve.warp <- tps2d(outline, M1[,1:2],M2[,1:2])
+        points3d(cbind(curve.warp,0), size=gP$tar.out.cex, col=gP$tar.out.col) 
+      }
+      b<-c(1,3)
+      tps(M1[,b],M2[,b],gP$n.col.cell, sz=gP$tar.pt.size, pt.bg=gP$tar.pt.bg, 
+          grid.col=gP$grid.col, grid.lwd=gP$grid.lwd, grid.lty=gP$grid.lty, refpts=useRefPts,
+          k3=TRUE)
+      title3d("X,Y tps grid") # doesn't work?
+      if(is.null(links)==FALSE){
+        linkcol <- rep(gP$tar.link.col,nrow(links))[1:nrow(links)]
+        linklwd <- rep(gP$tar.link.lwd,nrow(links))[1:nrow(links)]
+        linklty <- rep(gP$tar.link.lty,nrow(links))[1:nrow(links)]
+        for (i in 1:nrow(links)){
+          segments3d(rbind(M2[links[i,1],c(1,3,2)],M2[links[i,2],c(1,3,2)]),
+                     col=linkcol[i],lty=linklwd[i],lwd=linklty[i])
+        }
+      }
+      if(label == TRUE){text3d(M2[,c(1,3,2)], texts = paste(1:dim(M2)[1]), adj=(gP$txt.adj+gP$pt.size),
+                               pos=(gP$txt.pos+gP$pt.size),cex=gP$txt.cex,col=gP$txt.col)} # doesn't work?
+      if(!is.null(outline)){
+        curve.warp <- tps2d(outline, M1[,b],M2[,b])
+        points3d(cbind(curve.warp,0), size=gP$tar.out.cex, col=gP$tar.out.col) 
+      }
+    }
+    # Regular TPS plotting for 3D objects
+    if(method=="TPS" && class(M2) == "matrix"){
       old.par <- par(no.readonly = TRUE)
       layout(matrix(c(1,2),1,2))
       par(mar=c(1,1,1,1))

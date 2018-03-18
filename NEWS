@@ -4,6 +4,7 @@ PENDING CHANGES IN GEOMORPH VERSION 3.0.6
     o plot.mshape function added to plot the consensus configuration with numbers and links
     o New function gm.prcomp implements raw and weighted PCA and allows S3 generic plotting of its output
     o New function readland.shapes allows reading a shapes file produced by StereoMorph, including landmark data and (potentially multiple) curves, and sampling semilandmarks from these curves.
+    o New function picknplot.shape allows interactively picking points in geomorph scatterplots to visualize shape variation across morphospace.
     
   OTHER CHANGES
     o Added ellipsis to bilat.symmetry and geomorphShapes option to allow more flexible gpagen options within.
