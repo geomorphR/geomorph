@@ -51,7 +51,7 @@ d4b1fbe2910cefb535115644338f2b93 *man/integration.test.Rd
 3836be3a677b58fbfeca4c9b0c6ef9e4 *man/phylo.integration.Rd
 d6b6ab6950b043346bf1ed0319f12f6f *man/phylo.modularity.Rd
 e65dbb16700b9c7d4531176ff3a6b13c *man/physignal.Rd
-643f38b4cf7eeac78c5dd7ae7436028d *man/picknplot.shape.Rd
+b88bac813e8836e2eb64a35cce43cc8e *man/picknplot.shape.Rd
 af93ecd1b6eb7fb84c529ee5d5ca59b4 *man/plethodon.Rd
 67af5edfcfef3d23440b41c805d143c6 *man/plethShapeFood.Rd
 d975879b9cfb692a95bd331d298d79d2 *man/plethspecies.Rd
@@ -169,7 +169,7 @@ edef90baa8e51a2cb4c96be281e83980 *R/nested.update.r
 9b788d4879c1c927f458c2843c018a07 *R/phylo.integration.r
 1b47ea078b94f0801956b859717acc39 *R/phylo.modularity.r
 5e12723d8749bc8119410cd31dff7003 *R/physignal.r
-0dbe394d4fdc62ac25181aedda16ccc8 *R/picknplot.shape.r
+4c3b4e4aa9c021374cf303fa4b631fbc *R/picknplot.shape.r
 ce94a8e9f425fb976e0ef0ecbf5096ae *R/plotAllSpecimens.r
 70944e4cf2fe6dff3d190418b5003686 *R/plotGMPhyloMorphoSpace.r
 b8e08a315b3c34603f20a9664a853029 *R/plotOutliers.r

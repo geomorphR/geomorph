@@ -33,7 +33,9 @@ data(plethodon)
 Y.gpa <- gpagen(plethodon$land)
 pleth.pca <- gm.prcomp(Y.gpa$coords)
 pleth.pca.plot <- plot(pleth.pca)
-picknplot.shape(pleth.pca.plot) #May change method for plotRefToTarget
+picknplot.shape(pleth.pca.plot) 
+# May change arguments for plotRefToTarget
+picknplot.shape(plot(pleth.pca), method = "vector", mag = 3)
 
 # 3d
 data(scallops)
