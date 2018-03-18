@@ -37,6 +37,16 @@ picknplot.shape(pleth.pca.plot)
 # May change arguments for plotRefToTarget
 picknplot.shape(plot(pleth.pca), method = "vector", mag = 3)
 
+# 2d with phylomorphospace
+data(plethspecies) 
+Y.gpa <- gpagen(plethspecies$land)
+gps <- as.factor(c(rep("gp1", 5), rep("gp2", 4))) # Two random groups
+pleth.phylomorpho <- gm.prcomp(Y.gpa$coords, plethspecies$phy)
+pleth.phylo.plot <- plot(pleth.phylomorpho, phylo = TRUE, cex = 2, pch = 22, bg = gps, 
+     phylo.par = list(edge.color = "blue", edge.width = 2, edge.lty = 2,
+     node.pch = 22, node.bg = "black")) 
+picknplot.shape(pleth.phylo.plot, method = "points", mag = 5)
+
 # 3d
 data(scallops)
 Y3d.gpa <- gpagen(A=scallops$coorddata, curves=scallops$curvslide, surfaces=scallops$surfslide)
