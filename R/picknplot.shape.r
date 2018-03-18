@@ -85,7 +85,7 @@ picknplot.shape <- function(x, ...){
     p = p + 1
   } 
   out <- list(points = picked.pts, shapes = picked.shapes)
-  return(out)
+  invisible(out)
 }
 
   
