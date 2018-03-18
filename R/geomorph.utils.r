@@ -1483,7 +1483,7 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, phylo = FALSE,
     phy <- attributes(x)$phy
     pcdata <- rbind(pcdata, x$anc.pcscores[,c(axis1, axis2)])
     plot.new()
-    plot.window(1.05*range(pcdata[,1]), 1.05*range(pcdata[,2]), log = "", asp=1,...)
+    plot.window(1.05*range(pcdata[,1]), 1.05*range(pcdata[,2]), log = "", asp=1, ...)
     for (i in 1:nrow(phy$edge)) {
       dt.xy <- xy.coords(pcdata[(phy$edge[i,]),])
       plot.xy(dt.xy, type="l", col = phylo.par$edge.color, 
@@ -1499,7 +1499,7 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, phylo = FALSE,
   }
 
   options(warn = 0)
-  out <- list(points = x$pc.data[,1:2], pc.data = x$pc.data)
+  out <- list(points = x$pcdata[,1:2], pc.data = x$pcdata)
   class(out) <- "plot.gm.prcomp"
   invisible(out)
   
