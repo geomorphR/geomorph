@@ -187,7 +187,8 @@ gm.prcomp <- function (A, phy = NULL, phylo.pca = FALSE, Cov = NULL, ...){
   if(!is.null(Cov)) meth <- "Cov-weighted PCA"
   
   out <- list(pc.summary = summary(pc.res), pc.scores = pcdata[1:n, ], pc.shapes = shapes, 
-              sdev = pc.res$sdev, rotation = pc.res$rotation, anc.states = NULL, anc.pcscores = NULL)
+              sdev = pc.res$sdev, rotation = pc.res$rotation, Y = A, 
+              anc.states = NULL, anc.pcscores = NULL)
   
   if(meth == "Phylomorphospace") {
     out$anc.states <- arrayspecs(anc.raw, p, k)
