@@ -1521,7 +1521,7 @@ print.geomorphShapes <- function (x, ...) {
   cat("\nNumber of fixed landmarks:", length(x$fixed))
   cat("\nNumber of (sliding) semilandmarks:", length(x$sliders))
   cat("\nNumber of total landmarks:", x$p)
-  if(x$scaled) cat("\nLandmakrs have been scaled.") else
+  if(x$scaled) cat("\nlandmarks have been scaled.") else
     cat("\nLandmarks have not been scaled.")
   cat("\n\nThis information is based on information available from a class 'shapes' object,")
   cat("\nas it was originally read.  (It might have been since edited but this summary will not change.)")

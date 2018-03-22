@@ -3145,7 +3145,9 @@ GMfromShapes1 <- function(Shapes, nCurvePts, curve.ends = NULL, continuous.curve
     if(all(is.na(lcr))) {
       mat.part <- NULL
       } else {
-        strp <- c(anchors[[j]][[1]], lcr, anchors[[j]][[2]])
+        anch <- anchors[[j]]
+        if(length(anch) == 1) anch[[2]] <- anch[[1]]
+        strp <- c(anch[[1]], lcr, anch[[2]])
         if(cc[j] == 1) strp <- c(strp, strp[2])
         n.mp <- length(strp) - 2
         mat.part <- matrix(NA, n.mp, 3)
