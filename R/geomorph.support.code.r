@@ -3083,30 +3083,19 @@ GMfromShapes1 <- function(Shapes, nCurvePts, curve.ends = NULL, continuous.curve
   # index fixed landmarks in curves (anchors)
   anchors <- lapply(1:curve.n, function(j){
     cv <- curves[[1]][[j]]
-    matchX <- na.omit(match(cv[,1], fixedLM[[1]][,1]))
-    matchY <- na.omit(match(cv[,2], fixedLM[[1]][,2]))
-    if(identical(matchX, matchY)) res <- matchX else 
-      res <- intersect(matchX, matchY)
-    res
-  })
-  
-  # binary index for fixed points in curves (0 = no; 1 = yes)
-  curve.ends <- lapply(1:curve.n, function(j){
-    cv <- curves[[1]][[j]]
     lm <- fixedLM[[1]]
-    c1 <- cv[1,]; ce <- cv[nrow(cv),]
-    a.spot <- na.omit(match(c1, lm))
-    b.spot <- na.omit(match(ce, lm))
-    if(length(a.spot) == 2) a = 1 else a = 0
-    if(length(b.spot) == 2) b = 1 else b = 0
-    c(a, b)
+    ends <- rbind(cv[1,], cv[nrow(cv),])
+    a <- which(apply(lm, 1,function(x) identical(x, ends[1,])))
+    b <- which(apply(lm, 1,function(x) identical(x, ends[2,])))
+    c(a,b)
   })
   
   # determine which curve points become landmarks
   curve.refs <- list()
+  curve.ends <- rep(1, p)
   for(i in 1:curve.n) {
     cp <- nCurvePts[i]
-    ce <- c(2, cp+1) - curve.ends[[i]] 
+    ce <- c(2, cp+1) - curve.ends
     cvr <- (1:cp)[-ce]
     curve.refs[[i]] <- cvr
   }
@@ -3146,7 +3135,6 @@ GMfromShapes1 <- function(Shapes, nCurvePts, curve.ends = NULL, continuous.curve
       mat.part <- NULL
       } else {
         anch <- anchors[[j]]
-        if(length(anch) == 1) anch[[2]] <- anch[[1]]
         strp <- c(anch[[1]], lcr, anch[[2]])
         if(cc[j] == 1) strp <- c(strp, strp[2])
         n.mp <- length(strp) - 2
