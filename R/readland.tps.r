@@ -139,7 +139,7 @@ readland.tps <- function (file, specID = c("None", "ID", "imageID"),
     cat("\nThere appears to be missing or superfluous data.\n")
     cat("Check these specimens for mistakes:", id[k.error], "\n")
   }
-  if(is.array(lmo)) dimnames(lmo)[[3]] <- id
+  if(n==1){if(is.array(lmo)) dimnames(lmo)[[3]] <- list(id)} else {if(is.array(lmo)) dimnames(lmo)[[3]] <- id} #added check for N=1 in file
   if(is.list(lmo)){
     cat("\n\nNote that the landmark array may not be properly formatted,")
     cat("\nin which case a list of landmarks by specimen is available for inspection.\n")
