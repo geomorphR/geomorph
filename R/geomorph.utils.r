@@ -1425,7 +1425,7 @@ plot.mshape <- function(x, links=NULL,...){
 #' @author Antigoni Kaliontzopoulou
 #' @keywords utilities
 print.gm.prcomp <- function (x, ...) {
-  meths <- which(lapply(pPCA, is.null)==F)
+  meths <- which(lapply(x, is.null)==F)
   cat("Methods applied: "); cat(names(meths), sep=", ", append = T, "\n")
   cat("Importance of components:", "\n")
   for(i in meths){

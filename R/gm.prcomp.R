@@ -8,11 +8,11 @@
 #' (e.g. due to spatial autocorrelation). At present combined analysis allowing the use of both 
 #' a phylogeny and another covariance matrix is not implemented.
 #' Several complementary types of analyses are available when using a phylogeny, namely:
-#' \item{phyloPCA} {A phylogenetic PCA, where a phylogenetic transformation is applied to take expected
-#' covariance due to shared phylogenetic history into account (sensu Revell 2009).}
-#' \item{phylomorphospace} {A non-weighted PCA of the raw data, followed by a projection to PCA space of 
-#' the estimated ancestral shape values for the nodes of the phylogeny.}
-#' \item{evolPCA} {A non-weighted PCA of both the tip and estimated ancestor shapes together.}
+#'      1. phyloPCA: A phylogenetic PCA, where a phylogenetic transformation is applied to take expected
+#' covariance due to shared phylogenetic history into account (sensu Revell 2009).
+#'      2. phylomorphospace: A non-weighted PCA of the raw data, followed by a projection to PCA space of 
+#' the estimated ancestral shape values for the nodes of the phylogeny.
+#'      3. evolPCA: A non-weighted PCA of both the tip and estimated ancestor shapes together.
 #' 
 #' 
 #' PLOTTING: Contrary to previous geomorph implementations, gm.prcomp does not produce plots. 
@@ -25,11 +25,11 @@
 #' @param Cov An optional covariance matrix for weighting. See also details.
 #' @return An object of class "gm.prcomp" contains a list of results for each of the PCA approaches implemented.
 #' Each of these lists includes the following components:
-#' \item{x} {Principal component scores for all specimens.}
-#' \item{anc.x} {Principal component scores for the ancestors on the phylogeny.}
-#' \item{sdev} {The singular values of the decomposed VCV matrix.}
+#' \item{x}{Principal component scores for all specimens.}
+#' \item{anc.x}{Principal component scores for the ancestors on the phylogeny.}
+#' \item{sdev}{The singular values of the decomposed VCV matrix.}
 #' \item{rotation}{The matrix of variable loadings, i.e. the eigenvectors of the decomposed matrix.}
-#' \item{shapes} {A list with the shape coordinates of the extreme ends of all PC axes.}
+#' \item{shapes}{A list with the shape coordinates of the extreme ends of all PC axes.}
 #' \item{ancestors}{The matrix of estimated ancestral shapes, if a phylogeny is used.}
 #' @export
 #' @keywords visualization
