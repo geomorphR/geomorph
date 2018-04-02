@@ -4,32 +4,24 @@
 \alias{gm.prcomp}
 \title{Principal components analysis of shape data}
 \usage{
-gm.prcomp(A, phy = NULL, phylo.pca = FALSE, Cov = NULL, ...)
+gm.prcomp(A, phy = NULL, Cov = NULL, ...)
 }
 \arguments{
 \item{A}{A 3D array (p x k x n) containing landmark coordinates for a set of aligned specimens}
 
 \item{phy}{An optional phylogenetic tree of class phylo - see \code{\link{read.tree}} in library ape}
 
-\item{phylo.pca}{A logical value indicating whether phylogenetic PCA (TRUE) 
-or the phylomorphospace approach (FALSE) should be used. See also details.}
-
 \item{Cov}{An optional covariance matrix for weighting. See also details.}
-
-\item{...}{Arguments passed on to \code{\link{prcomp}}.  By default, \code{\link{gm.prcomp}}
-will attempt to remove redundant axes (eigenvalues effectively 0).  To override this, adjust the 
-argument, tol, from \code{\link{prcomp}}.}
 }
 \value{
-An object of class "gm.prcomp" is a list with the following components:
-\item{pc.summary}{A table summarizing the percent variation explained by each pc axis, equivalent to summary of \code{\link{prcomp}}.}
-\item{pc.scores}{The set of principal component scores for all specimens.}
-\item{pc.shapes}{A list with the shape coordinates of the extreme ends of all PC axes, e.g. $PC1min}
-\item{sdev}{The standard deviations of the principal components (i.e., the square roots of the eigenvalues of the 
-covariance/correlation matrix, as per \code{\link{prcomp}}.}
-\item{rotation}{The matrix of variable loadings, as per \code{\link{prcomp}}.}
-\item{anc.states}{The matrix of estimated ancestral shapes, if a phylogeny is used.}
-\item{anc.pcscores}{The matrix of principal component scores for the phylogeny nodes.}
+An object of class "gm.prcomp" contains a list of results for each of the PCA approaches implemented.
+Each of these lists includes the following components:
+\item{x} {Principal component scores for all specimens.}
+\item{anc.x} {Principal component scores for the ancestors on the phylogeny.}
+\item{sdev} {The singular values of the decomposed VCV matrix.}
+\item{rotation}{The matrix of variable loadings, i.e. the eigenvectors of the decomposed matrix.}
+\item{shapes} {A list with the shape coordinates of the extreme ends of all PC axes.}
+\item{ancestors}{The matrix of estimated ancestral shapes, if a phylogeny is used.}
 }
 \description{
 Function performs raw or weighted PCA on superimposed shape coordinates
@@ -40,14 +32,16 @@ of weighing the analysis using a phylogenetic tree, or a variance-covariance mat
 to incorporate the expected covariance among dependent observations 
 (e.g. due to spatial autocorrelation). At present combined analysis allowing the use of both 
 a phylogeny and another covariance matrix is not implemented.
-If a phylogeny is provided and phylo.pca = TRUE, observations are phylogenetically adjusted to 
-calculate a phylogenetic PCA (Revell, 2009). 
-If phylo.pca = FALSE, ancestral shapes are first estimated for the phylogeny nodes and PCA is then calculated
-on the combined matrix of raw and ancestor data, producing the data necessary for a phylomorphospace plot.
+Several complementary types of analyses are available when using a phylogeny, namely:
+\item{phyloPCA} {A phylogenetic PCA, where a phylogenetic transformation is applied to take expected
+covariance due to shared phylogenetic history into account (sensu Revell 2009).}
+\item{phylomorphospace} {A non-weighted PCA of the raw data, followed by a projection to PCA space of 
+the estimated ancestral shape values for the nodes of the phylogeny.}
+\item{evolPCA} {A non-weighted PCA of both the tip and estimated ancestor shapes together.}
 
 PLOTTING: Contrary to previous geomorph implementations, gm.prcomp does not produce plots. 
-For plotting options of gm.prcomp class objects see \code{\link{plot.gm.prcomp}} and the 
-examples below.
+For plotting options of gm.prcomp class objects combine \code{\link{plot.gm.prcomp}} and 
+\code{\link{picknplot}} following the examples below.
 }
 \examples{
 data(plethspecies) 
@@ -101,8 +95,10 @@ text(pleth.phylomorpho$pc.scores, labels = labels(pleth.phylomorpho$pc.scores)[[
      pos = 3, font = 4) 
 }
 \references{
-Revell, L. J. (2009) Size-correction and principal components for interspecific comparative studies. 
+Revell, L.J. (2009) Size-correction and principal components for interspecific comparative studies. 
 Evolution, 63, 3258-3268.
+Polly, P.D.P. et al. (2013) Phylogenetic principal components analysis and geometric morphometrics, 
+Hystrix, the Italian Journal of Mammalogy, 24(1), 33–41.
 }
 \author{
 Antigoni Kaliontzopoulou

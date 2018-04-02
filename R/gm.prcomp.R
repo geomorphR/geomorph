@@ -7,38 +7,37 @@
 #' to incorporate the expected covariance among dependent observations 
 #' (e.g. due to spatial autocorrelation). At present combined analysis allowing the use of both 
 #' a phylogeny and another covariance matrix is not implemented.
-#' If a phylogeny is provided and phylo.pca = TRUE, observations are phylogenetically adjusted to 
-#' calculate a phylogenetic PCA (Revell, 2009). 
-#' If phylo.pca = FALSE, ancestral shapes are first estimated for the phylogeny nodes and PCA is then calculated
-#' on the combined matrix of raw and ancestor data, producing the data necessary for a phylomorphospace plot.
+#' Several complementary types of analyses are available when using a phylogeny, namely:
+#' \item{phyloPCA} {A phylogenetic PCA, where a phylogenetic transformation is applied to take expected
+#' covariance due to shared phylogenetic history into account (sensu Revell 2009).}
+#' \item{phylomorphospace} {A non-weighted PCA of the raw data, followed by a projection to PCA space of 
+#' the estimated ancestral shape values for the nodes of the phylogeny.}
+#' \item{evolPCA} {A non-weighted PCA of both the tip and estimated ancestor shapes together.}
+#' 
 #' 
 #' PLOTTING: Contrary to previous geomorph implementations, gm.prcomp does not produce plots. 
-#' For plotting options of gm.prcomp class objects see \code{\link{plot.gm.prcomp}} and the 
-#' examples below.
+#' For plotting options of gm.prcomp class objects combine \code{\link{plot.gm.prcomp}} and 
+#' \code{\link{picknplot}} following the examples below.
 #' 
 #'
 #' @param A A 3D array (p x k x n) containing landmark coordinates for a set of aligned specimens
 #' @param phy An optional phylogenetic tree of class phylo - see \code{\link{read.tree}} in library ape
-#' @param phylo.pca A logical value indicating whether phylogenetic PCA (TRUE) 
-#' or the phylomorphospace approach (FALSE) should be used. See also details.
 #' @param Cov An optional covariance matrix for weighting. See also details.
-#' @param ... Arguments passed on to \code{\link{prcomp}}.  By default, \code{\link{gm.prcomp}}
-#' will attempt to remove redundant axes (eigenvalues effectively 0).  To override this, adjust the 
-#' argument, tol, from \code{\link{prcomp}}.
-#' @return An object of class "gm.prcomp" is a list with the following components:
-#' \item{pc.summary}{A table summarizing the percent variation explained by each pc axis, equivalent to summary of \code{\link{prcomp}}.}
-#' \item{pc.scores}{The set of principal component scores for all specimens.}
-#' \item{pc.shapes}{A list with the shape coordinates of the extreme ends of all PC axes, e.g. $PC1min}
-#' \item{sdev}{The standard deviations of the principal components (i.e., the square roots of the eigenvalues of the 
-#' covariance/correlation matrix, as per \code{\link{prcomp}}.}
-#' \item{rotation}{The matrix of variable loadings, as per \code{\link{prcomp}}.}
-#' \item{anc.states}{The matrix of estimated ancestral shapes, if a phylogeny is used.}
-#' \item{anc.pcscores}{The matrix of principal component scores for the phylogeny nodes.}
+#' @return An object of class "gm.prcomp" contains a list of results for each of the PCA approaches implemented.
+#' Each of these lists includes the following components:
+#' \item{x} {Principal component scores for all specimens.}
+#' \item{anc.x} {Principal component scores for the ancestors on the phylogeny.}
+#' \item{sdev} {The singular values of the decomposed VCV matrix.}
+#' \item{rotation}{The matrix of variable loadings, i.e. the eigenvectors of the decomposed matrix.}
+#' \item{shapes} {A list with the shape coordinates of the extreme ends of all PC axes.}
+#' \item{ancestors}{The matrix of estimated ancestral shapes, if a phylogeny is used.}
 #' @export
 #' @keywords visualization
 #' @author Antigoni Kaliontzopoulou
-#' @references Revell, L. J. (2009) Size-correction and principal components for interspecific comparative studies. 
+#' @references Revell, L.J. (2009) Size-correction and principal components for interspecific comparative studies. 
 #' Evolution, 63, 3258-3268.
+#' Polly, P.D.P. et al. (2013) Phylogenetic principal components analysis and geometric morphometrics, 
+#' Hystrix, the Italian Journal of Mammalogy, 24(1), 33–41.
 #' @examples
 #' data(plethspecies) 
 #' Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment
@@ -91,118 +90,146 @@
 #' text(pleth.phylomorpho$pc.scores, labels = labels(pleth.phylomorpho$pc.scores)[[1]],
 #'      pos = 3, font = 4) 
 
-gm.prcomp <- function (A, phy = NULL, phylo.pca = FALSE, Cov = NULL, ...){
+gm.prcomp <- function (A, phy = NULL, Cov = NULL, ...) {
   if (length(dim(A)) != 3) {
     stop("Data matrix not a 3D array (see 'arrayspecs').") }
   if(any(is.na(A))==T){
     stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').") }
-
+  if(!is.null(phy) & !is.null(Cov)){
+    stop("Method not implemented for weighting with BOTH a phylogeny and another covariance matrix.
+         Only the phylogeny will be considered for weighting the PCA.")
+  }
+  
   p <- dim(A)[1]; k <- dim(A)[2]; n <- dim(A)[3]
-  ref <- mshape(A)
   dots <- list(...)
-  retx <- dots$retx
-  if(is.null(retx)) retx <- TRUE
   scale. <- dots$scale.
   if(is.null(scale.)) scale. <- FALSE
   center <- dots$center
   if(is.null(center)) center <- TRUE
-  tol <- dots$tol
-  x <- scale(two.d.array(A), center = center, scale = scale.)
+  Y <- scale(two.d.array(A), center = center, scale = scale.)
+  vcv.y <- crossprod(Y) / (n-1)
+  svd.y <- svd(vcv.y)
 
-  if(is.null(phy) & phylo.pca == T){
-    stop("To perform phylogenetic pca, please provide a phylogeny.")
-  }
-  
   if(!is.null(phy)){
     if (!inherits(phy, "phylo"))
       stop("Tree must be of class 'phylo.'")
     if (!is.binary.tree(phy)) 
       stop("Tree is not fully bifurcating (consider 'multi2di' in ape).")
-    if(!is.null(Cov)){
-      stop("Method not implemented for weighting with BOTH a phylogeny and another covariance matrix.")
-    }
     N <- length(phy$tip.label); Nnode <- phy$Nnode
     if(N!=n)
       stop("Number of taxa in data matrix and tree are not equal.")
-    if(is.null(rownames(x))) {
+    if(is.null(rownames(Y))) {
       warning("Shape dataset does not include species names. Assuming the order of data matches phy$tip.label")
     } else {
-      x <- x[phy$tip.label, ]
       A <- A[,,phy$tip.label]
-      }
+      Y <- Y[phy$tip.label, ]
+    }
     anc.raw <- shape.ace(two.d.array(A), phy)
-    anc <- shape.ace(x, phy)
+    ancY <- shape.ace(Y, phy)
+    evol.dt <- rbind(Y, ancY)
     
-    if(phylo.pca == T){
-      phy.parts <- phylo.mat(x, phy)
-      invC <- phy.parts$invC; D.mat <- phy.parts$D.mat
-      one <- matrix(1, nrow(x)); I <- diag(1, nrow(x)) 
-      Ptrans <- D.mat%*%(I-one%*%crossprod(one, invC)/sum(invC))
-      x <- Ptrans%*%x
-      anc <- scale(anc, center = anc[1,], scale = F)
-      center <- anc[1,]
-    } else {
-      x <- rbind(x, anc)
-      center <- anc[1,]
-    }
-  } else {
-    if(!is.null(Cov)){
-      cov.parts <- cov.mat(x, Cov)
-      invC <- cov.parts$invC; D.mat <- cov.parts$D.mat
-      one <- matrix(1, nrow(x)); I <- diag(1, nrow(x)) 
-      Ptrans <- D.mat%*%(I-one%*%crossprod(one, invC)/sum(invC))
-      x <- Ptrans%*%x
-      center = apply(x, 2, mean)
-    }
+    C  <- vcv.phylo(phy)
+    ones <- matrix(1, ncol(C))
+    invC <- fast.solve(C)
+    rootY <- fast.solve(t(ones)%*%invC%*%ones)%*%t(ones)%*%invC%*%Y
+    
+    Yc.phylo <- scale(Y, center = rootY, scale = F)
+    vcv.p <- (t(Yc.phylo)%*%invC%*%Yc.phylo) / (nrow(Yc.phylo) - 1)
+    svd.p <- svd(vcv.p)
+    
+    Yc.evol <- scale(evol.dt, center = rootY, scale = F)
+    vcv.e <- crossprod(Yc.evol) / (nrow(Yc.evol)-1)
+    svd.e <- svd(vcv.e)
   }
   
-  if(is.null(tol)){
-    d <- prcomp(x)$sdev^2
-    cd <- cumsum(d)/sum(d)
-    cd <- length(which(cd < 1)) 
-    if(length(cd) < length(d)) cd <- cd + 1
-    tol <- max(c(d[cd]/d[1], 0.005))
+  if(!is.null(Cov) & is.null(phy)){
+    C <- Cov
+    ones <- matrix(1, ncol(C))
+    invC <- fast.solve(C)
+    w.meanY <- fast.solve(t(ones)%*%invC%*%ones)%*%t(ones)%*%invC%*%Y
+    Ywc <- scale(Y, center = w.meanY, scale = F)
+    vcv.w <- (t(Ywc)%*%invC%*%Ywc) / (N-1)
+    svd.w <- svd(vcv.w)
+  }
+  
+  ### Output
+  rawPCA <- phyloPCA <- phylomorphospace <- evolPCA <- wPCA <- NULL
+  
+  # Raw data PCA
+  nPC <- max(which(zapsmall(svd.y$d) > 0))
+  rawPCA$x <- Y%*%svd.y$v[,1:nPC]
+  rawPCA$d <- svd.y$d[1:nPC]
+  rawPCA$rotation <- svd.y$v
+  colnames(rawPCA$x) <- paste("PC", 1:nPC, sep = "")
+  rawPCA$shapes <- lapply(1:ncol(rawPCA$x),  
+                         function(x){shape.predictor(A, rawPCA$x[,x], 
+                                                     min = min(rawPCA$x[,x]),
+                                                     max = max(rawPCA$x[,x]))})
+  names(rawPCA$shapes) <- paste("shapes.PC", 1:nPC, sep = "")
+  
+  if(!is.null(phy)){
+    # Phylomorphospace
+    phylomorphospace$x <- (Yc.evol%*%svd.y$v[, 1:nPC])[1:N,]
+    phylomorphospace$anc.x <- (Yc.evol%*%svd.y$v[, 1:nPC])[(N+1):(N+Nnode),]
+    phylomorphospace$d <- svd.y$d[1:nPC]
+    phylomorphospace$rotation <- svd.y$v
+    colnames(phylomorphospace$x) <- colnames(phylomorphospace$anc.x) <- paste("PC", 1:nPC, sep = "")
+    phylomorphospace$shapes <- lapply(1:ncol(phylomorphospace$x), 
+                                      function(x){shape.predictor(A, phylomorphospace$x[,x],
+                                                                  min = min(phylomorphospace$x[,x]),
+                                                                  max = max(phylomorphospace$x[,x]))})
+    names(phylomorphospace$shapes) <- paste("shapes.PC", 1:nPC, sep = "")
+    phylomorphospace$ancestors <- anc.raw
+    
+    # Phylogenetic PCA
+    nPC <- max(which(zapsmall(svd.p$d) > 0))
+    phyloPCA$x <- (Yc.evol%*%svd.p$v[, 1:nPC])[1:N,]
+    phyloPCA$anc.x <- (Yc.evol%*%svd.p$v[, 1:nPC])[(N+1):(N+Nnode),]
+    phyloPCA$d <- svd.p$d[1:nPC]
+    phyloPCA$rotation <- svd.p$v
+    colnames(phyloPCA$x) <- colnames(phyloPCA$anc.x) <- paste("PC", 1:nPC, sep = "")
+    phyloPCA$shapes <- lapply(1:ncol(phyloPCA$x),
+                              function(x){shape.predictor(A, phyloPCA$x[,x],
+                                                          min = min(phyloPCA$x[,x]),
+                                                          max = max(phyloPCA$x[,x]))})
+    names(phyloPCA$shapes) <- paste("shapes.PC", 1:nPC, sep = "")
+    phyloPCA$ancestors <- anc.raw
+    
+    # "Evolutionary" PCA
+    nPC <- max(which(zapsmall(svd.e$d) > 0))
+    evolPCA$x <- (Yc.evol%*%svd.e$v[, 1:nPC])[1:N,]
+    evolPCA$anc.x <- (Yc.evol%*%svd.e$v[, 1:nPC])[(N+1):(N+Nnode),]
+    evolPCA$d <- svd.e$d[1:nPC]
+    evolPCA$rotation <- svd.e$v
+    colnames(evolPCA$x) <- colnames(evolPCA$anc.x) <- paste("PC", 1:nPC, sep = "")
+    evolPCA$shapes <- lapply(1:ncol(evolPCA$x),
+                             function(x){shape.predictor(A, evolPCA$x[,x],
+                                                         min = min(evolPCA$x[,x]),
+                                                         max = max(evolPCA$x[,x]))})
+    names(evolPCA$shapes) <- paste("shapes.PC", 1:nPC, sep = "")
+    evolPCA$ancestors <- anc.raw
+  }
+  
+  if(!is.null(Cov) & is.null(phy)){
+    # Weighted PCA
+    nPC <- max(which(zapsmall(svd.w$d) > 0))
+    wPCA$x <- Ywc%*%svd.w$v[,1:nPC]
+    wPCA$d <- svd.w$d[1:nPC]
+    wPCA$rotation <- svd.w$v
+    colnames(wPCA$x) <- paste("PC", 1:nPC, sep = "")
+    wPCA$shapes <- lapply(1:ncol(wPCA$x),
+                          function(x){shape.predictor(A, wPCA$x[,x],
+                                                      min = min(wPCA$x[,x]),
+                                                      max = max(wPCA$x[,x]))})
+    names(wPCA$shapes) <- paste("shapes.PC", 1:nPC, sep = "")
   }
 
-  pc.res <- prcomp(x, retx = retx, tol = tol, center = center)
-  pcdata <- pc.res$x
-  shapes <- shape.names <- NULL
-  for(i in 1:ncol(pcdata)){
-    pcaxis.min <- min(pcdata[, i]) ; pcaxis.max <- max(pcdata[, i])
-    pc.min <- pc.max <- rep(0, dim(pcdata)[2])
-    pc.min[i] <- pcaxis.min ; pc.max[i] <- pcaxis.max
-    pc.min <- as.matrix(pc.min %*% (t(pc.res$rotation))) + as.vector(t(ref))
-    pc.max <- as.matrix(pc.max %*% (t(pc.res$rotation))) + as.vector(t(ref))
-    shapes <- rbind(shapes,pc.min, pc.max)
-    shape.names <- c(shape.names,paste("PC",i,"min", sep=""),paste("PC",i,"max", sep=""))
-  }
-  shapes <- arrayspecs(shapes,p, k)
-  shapes <- lapply(seq(dim(shapes)[3]), function(x) shapes[,,x])
-  names(shapes) <- shape.names
-  
-  # OUTPUT
-  if(is.null(phy) & is.null(Cov)) meth <- "Raw data PCA"
-  if(!is.null(phy) & phylo.pca == FALSE) meth <- "Phylomorphospace"
-  if(!is.null(phy) & phylo.pca == TRUE) meth <- "Phylogenetic PCA"
-  if(!is.null(Cov)) meth <- "Cov-weighted PCA"
-  
-  out <- list(pc.summary = summary(pc.res), pc.scores = pcdata[1:n, ], pc.shapes = shapes, 
-              sdev = pc.res$sdev, rotation = pc.res$rotation, Y = A, 
-              anc.states = NULL, anc.pcscores = NULL)
-  
-  if(meth == "Phylomorphospace") {
-    out$anc.states <- arrayspecs(anc.raw, p, k)
-    out$anc.pcscores <- pcdata[(N+1):nrow(pcdata),]
-  }
-  
-  if(meth == "Phylogenetic PCA"){
-    out$anc.states <- arrayspecs(anc.raw, p, k)
-    out$anc.pcscores <- anc%*%pc.res$rotation
-  }
+  out <- list(rawPCA = rawPCA, phyloPCA = phyloPCA, phylomorphospace = phylomorphospace,
+              evolPCA = evolPCA, wPCA = wPCA)
   
   class(out) = "gm.prcomp"
-  attributes(out)$method <- meth
   attributes(out)$phy <- phy
-  attributes(out)$Adata <- A
+  attributes(out)$Cov <- Cov
+  attributes(out)$A <- A
   return(out)
 }

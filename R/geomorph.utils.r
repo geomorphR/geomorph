@@ -1425,9 +1425,21 @@ plot.mshape <- function(x, links=NULL,...){
 #' @author Antigoni Kaliontzopoulou
 #' @keywords utilities
 print.gm.prcomp <- function (x, ...) {
-  cat(paste("Method: ", attributes(x)$method, "\n", sep=""))
-  print(x$pc.summary)
-  invisible(x)
+  meths <- which(lapply(pPCA, is.null)==F)
+  cat("Methods applied: "); cat(names(meths), sep=", ", append = T, "\n")
+  cat("Importance of components:", "\n")
+  for(i in meths){
+    sum.tab <- rbind(x[[i]]$d,
+                     x[[i]]$d/sum(x[[i]]$d),
+                     cumsum(x[[i]]$d/sum(x[[i]]$d)))
+    colnames(sum.tab) <- paste("PC", 1:ncol(sum.tab), sep="")
+    rownames(sum.tab) <- c("Singular values", "Proportion of variance", "Cumulative Proportion")
+    cat(names(meths)[i])
+    print(sum.tab)
+    cat("\n")
+  }
+
+    invisible(x)
 }
 
 #' Print/Summary Function for geomorph
