@@ -9,8 +9,8 @@
 #'   provided for all specimens. If one or more specimens are missing the scale factor, landmarks are treated 
 #'   in their original units.  
 #'   
-#'   Missing data may be present in the file. In this case, they must be designated by 'NA'. The 
-#'   positions of missing landmarks may then be estimated using estimate.missing.
+#'   Missing data may be present in the file. In this case, they are automatically identified during data import
+#'   and coded as 'NA'. The positions of missing landmarks may then be estimated using \code{\link{estimate.missing}}.
 #' 
 #' The user may specify whether specimen names are to be extracted from the 'ID=' field or 'IMAGE=' field 
 #' and included in the resulting 3D array. 
@@ -33,7 +33,7 @@
 #' @param warnmsg A logical value stating whether warnings should be printed
 #' @export
 #' @keywords IO
-#' @author Dean Adams & Emma Sherratt
+#' @author Dean Adams, Emma Sherratt, & Michael Collyer
 #' @return Function returns a (p x k x n) array, where p is the number of landmark points, k is the number 
 #'   of landmark dimensions (2 or 3), and n is the number of specimens. The third dimension of this array 
 #'   contains names for each specimen, which are obtained from the image names in the *.tps file. 
@@ -42,123 +42,122 @@
 #'   and Evolution, State University of New York at Stony Brook, Stony Brook, NY.
 
 readland.tps <- function (file, specID = c("None", "ID", "imageID"), 
-                          readcurves = FALSE, warnmsg = TRUE) 
-{
-  ignore.case = TRUE
+                          readcurves = FALSE, warnmsg = TRUE) {
+  tpsf <- scanTPS(file)
+  n <- length(tpsf)
   specID <- match.arg(specID)
-   tpsfile <- scan(file = file, what = "char",sep = "\n", blank.lines.skip = TRUE,quiet = TRUE) # line delimited
-  commline <- grep("COMMENT=", tpsfile, ignore.case)
-  if(length(commline) != 0){ tpsfile <- tpsfile[-commline] } # removes COMMENT= lines
-  varline<-grep("VARIABLES",tpsfile,ignore.case)
-  if(length(varline) != 0){ tpsfile <- tpsfile[-varline] } #removes variables lines
-  chainline<-grep("CHAIN",tpsfile,ignore.case)
-  if(length(chainline) != 0){ tpsfile <- tpsfile[-chainline]  } #removes chain  lines
-  radiiline<-grep("RADII",tpsfile,ignore.case)
-  if(length(radiiline) != 0){ tpsfile <- tpsfile[-radiiline] } #removes radii & radiixy lines
+  if(specID == "ID") id <- sapply(1:n, function(j) tpsf[[j]]$id) else
+    if(specID == "imageID") id <- sapply(1:n, function(j) tpsf[[j]]$image) else {
+      if(warnmsg) cat("\nNo specID provided; specimens will be numbered 1, 2, 3 ...\n")
+      id <- 1:n
+    }
+  if(warnmsg){
+    if(specID == "ID" && length(id[[1]]) == 0) {
+      cat("\nWarning: specID = 'ID' did not produce reliable ID information;")
+      cat("\nspecimens will be numbered 1, 2, 3 ...\n")
+      id <- 1:n
+    }
+    if(specID == "imageID" && length(id[[1]]) == 0) {
+      cat("\nWarning: specID = 'imageID' did not produce reliable ID information;")
+      cat("\nspecimens will be numbered 1, 2, 3 ...\n")
+      id <- 1:n
+    }
+    pcv.check <- sapply(1:n, function(j) tpsf[[j]]$pcv)
+    pcv.unique <- unique(pcv.check)
+    if(length(pcv.unique) == 1 && pcv.unique == 0) {
+      cat("\nNo curves detected; all points appear to be fixed landmarks.\n")
+    } else if(length(pcv.unique) == 1 && pcv.unique > 0) {
+      cat("\n", pcv.unique, "curve points detected per specimen and are appended to fixed landmarks.\n")
+    } else if(length(pcv.unique) > 1){
+      cat("\nCurve points detected but numbers vary among specimens.\n")
+      cat("\nCurve point frequencies:\n")
+      print(table(factor(pcv.check)))
+    }
+  }
   
-  lmline <- grep("LM=", tpsfile, ignore.case)
-  if (length(lmline !=0)) {
-    nland <- as.numeric(sub("LM=", "", tpsfile[lmline], ignore.case))
-    k <- 2
+  kcheck <- sapply(1:n, function(j) length(tpsf[[j]]$k))
+  k.error <- which(kcheck > 1)
+  if(length(k.error) == 0) k.error <- NULL else
+    cat("\nWarning: improper landmark number or formatting appear for specimen(s):", k.error,"\n")
+  pcheck <- sapply(1:n, function(j) tpsf[[j]]$p)
+  p.unique <- unique(pcheck)
+  if(length(p.unique) > 1) {
+    p.error <- table(as.factor(pcheck))
+    names(pcheck) <- id
+    cat("\nWarning: different numbers of landmarks among specimens\n")
+    cat("Frequencies by landmark number:\n")
+    print(p.error)
+  } else p.error <- NULL
+  scale.list <- unlist(lapply(1:n, function(j) tpsf[[j]]$scale))
+  if(length(scale.list) != n && warnmsg) {
+    cat("\nWarning: not all specimens have scale adjustment (perhaps because they are already scaled);")
+    cat("\nno rescaling will be performed in these cases\n")
+  }
+  if(!readcurves) {
+    lmo <- lapply(1:n, function(j) {
+      x <- tpsf[[j]]
+      l <- x$lm
+      k <- max(x$k)
+      p <- x$plm
+      lm <- matrix(NA, p, k)
+      for(i in 1:p) {
+        pts <- unlist(l[[i]])
+        kk <- length(pts)
+        if(kk > 0) lm[i,1:kk] <- pts
+      }
+      lm[which(lm<0)] <- NA
+      if(length(x$scale) == 0) x$scale = 1
+      lm*x$scale
+    })
+  } else {
+    lmo <- lapply(1:n, function(j) {
+      x <- tpsf[[j]]
+      l <- c(x$lm, x$curve.lm)
+      k <- max(x$k)
+      p <- x$plm + x$pcv
+      lm <- matrix(NA, p, k)
+      for(i in 1:p) {
+        pts <- unlist(l[[i]])
+        kk <- length(pts)
+        if(kk > 0) lm[i,1:kk] <- pts
+      }
+      lm[which(lm<0)] <- NA
+      if(length(x$scale) == 0) x$scale = 1
+      lm*x$scale
+    })
+  }
+  lmo <- try(simplify2array(lmo), silent = TRUE)
+  if(!is.null(p.error) && warnmsg) {
+    target <- as.numeric(names(sort(p.error, decreasing = TRUE))[1])
+    p.error <- pcheck != target
+    badspec <- unique(c(id[k.error], id[p.error]))
+    cat("\nThere was a problem because of imbalanced data!")
+    cat("\nBased on the specID argument used,")
+    cat("\ncheck the following specimens for landmark issues:", badspec)
   } 
-  if (length(lmline) == 0) {
-    lmline <- grep("LM3=", tpsfile, ignore.case)
-    nland <- as.numeric(sub("LM3=", "", tpsfile[lmline], ignore.case))
-    k <- 3
+  if(!is.null(k.error)){
+    cat("\nThere appears to be missing or superfluous data.\n")
+    cat("Check these specimens for mistakes:", id[k.error], "\n")
   }
-  if(any(nland == 0)){ stop("No landmark data for specimens: ", paste(which(nland==0), collapse=",")) }
+  if(n==1){if(is.array(lmo)) dimnames(lmo)[[3]] <- list(id)} else {if(is.array(lmo)) dimnames(lmo)[[3]] <- id} #added check for N=1 in file
+  if(is.list(lmo)){
+    cat("\n\nNote that the landmark array may not be properly formatted,")
+    cat("\nin which case a list of landmarks by specimen is available for inspection.\n")
+    names(lmo) <- id
+  }
   
-  if (max(nland) - min(nland) != 0) {
-    print(t(data.frame(specimens = summary(factor(nland)) )))
-    stop("Number of landmarks not the same for all specimens.")
-  }
-  n <- length(lmline)
-  p <- nland[1]
-  imscale <- as.numeric(sub("SCALE=", "", tpsfile[grep("SCALE", 
-                                                       tpsfile, ignore.case)], ignore.case))
-  if(any(is.na(imscale))) imscale <- na.omit(imscale)
-  if (is.null(imscale)) {
-    imscale = array(1, n)
-  }
-  if (warnmsg == TRUE) {
-    if (length(imscale) != n) {
-      cat(paste("Not all specimens have scale. File contains:", length(imscale), 
-                "SCALE lines,", n, "Specimens.", "Assuming landmarks have been previously scaled.", sep= " ","\n"))
+  if(warnmsg){
+    if(length(pcv.unique) > 1 || length(pcv.unique) > 1){
+      cat("\n\nA break down of fixed and curve points per specimen:\n")
+      sp.list <- sapply(1:n, function(j) {
+        x <- tpsf[[j]]
+        c(x$plm, x$pcv)
+      })
+      rownames(sp.list) <- c("nFixedPts", "nCurvePts")
+      colnames(sp.list) <- id
+      print(sp.list)
     }
   }
-  if (length(imscale) != n) {
-    imscale = array(1, n)
-  }
-  # Extracting CURVE= information
-  crvs <- grep("CURVES=", tpsfile, ignore.case)
-  if(length(crvs)>0){
-    if (readcurves == TRUE && length(crvs) == 0){ stop("No CURVES= field present in file") } 
-    ncurve <- as.numeric(sub("CURVES=", "", tpsfile[crvs], ignore.case))
-    ncurvepts <- as.numeric(sub("POINTS=", "", tpsfile[grep("POINTS=", tpsfile, ignore.case)], ignore.case))
-    if (max(ncurve) - min(ncurve) != 0){
-      stop("Number of curves not the same for all specimens.") }
-    if (warnmsg == TRUE && readcurves==TRUE){
-      cat(paste("Landmarks 1:", p, " are fixed landmarks.\n", sep=""))
-      cat(paste("Landmarks ", p+1, ":", p+sum(ncurvepts[1:ncurve[1]]), " are semilandmarks.\n", sep=""))}
-    p <- nland[1] + sum(ncurvepts[1:ncurve[1]]) 
-  } 
   
-  coordata <- tpsfile[-(grep("=", tpsfile))] # extract just coordinate data
-  coordata<-gsub("\t", " ", coordata)
-  coordata = coordata[! grepl('^\\s*$', coordata)] #remove empty lines
-  
-  options(warn = -1)
-  coordata <- matrix(as.numeric(unlist(strsplit(coordata,"\\s+"))),ncol = k, byrow = TRUE)
-  
-  if (warnmsg == TRUE) {
-    if (sum(which(is.na(coordata) == TRUE)) > 0) {
-      cat("Missing data identified.\n")
-    }
-  }
-  coords <- aperm(array(t(coordata), c(k, p, n)), c(2, 1, 3))
-  imscale <- aperm(array(rep(imscale, p * k), c(n, k, p)), 
-                   c(3, 2, 1))
-  coords <- coords * imscale
-  if (readcurves==F){coords<-coords[1:nland,,] 
-  if(n==1) coords <- array(coords, c(nland,k,n))}
-  if (specID == "None") {
-    if (warnmsg == TRUE) {cat("No Specimen names extracted.\n")
-    }
-  }
-  if (specID == "imageID") {
-    imageID <- (sub("IMAGE=", "", tpsfile[grep("IMAGE=", tpsfile, ignore.case)], 
-                    ignore.case))
-    if (length(imageID) != 0) {
-      imageID <- sub(".jpg", "", imageID, ignore.case)
-      imageID <- sub(".tif", "", imageID, ignore.case)
-      imageID <- sub(".bmp", "", imageID, ignore.case)
-      imageID <- sub(".tiff", "", imageID, ignore.case)
-      imageID <- sub(".jpeg", "", imageID, ignore.case)
-      imageID <- sub(".jpe", "", imageID, ignore.case)
-      dimnames(coords)[[3]] <- as.list(imageID)
-      if (warnmsg == TRUE) {
-        cat("Specimen names extracted from line 'IMAGE=' \n")
-      }
-    }
-    if (length(imageID) == 0) {
-      if (warnmsg == TRUE) {
-        cat("No name given under 'IMAGE='. Specimen names not extracted.\n")
-      }
-    } 
-  }
-  if (specID == "ID") {
-    ID <- sub("ID=", "", tpsfile[grep("ID=", tpsfile, ignore.case)], ignore.case)
-    if (length(ID) == 0) {
-      if(warnmsg ==TRUE){
-        cat("No name given under 'ID='. Specimen names not extracted.\n")
-      }
-    }
-    if (length(ID) != 0) {
-      dimnames(coords)[[3]] <- as.list(ID)
-      if (warnmsg == TRUE) {
-        cat("Specimen names extracted from line 'ID=' \n")
-      }
-    }
-  }
-  return(coords = coords)                    
+  invisible(lmo)
 }

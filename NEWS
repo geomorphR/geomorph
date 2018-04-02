@@ -12,6 +12,7 @@ BUG FIXES
     o Fixed issue with integration.test when 3+ partitions with non-contiguous variables
     o Fixed effect size calculation error in procD.lm for single factor OLS models.
     o Fixed ellipses options in procD.fit
+    o Fixed various issues with scanning tps files in readland.tps
 
 CHANGES IN GEOMORPH VERSION 3.0.5 (CRAN RELEASE)
   OTHER CHANGES 
