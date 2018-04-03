@@ -20,7 +20,7 @@
 #' @seealso  \code{\link{shape.predictor}}, \code{\link{plotRefToTarget}}
 #' 
 #' @examples
-#' 2d
+#' # 2d
 #' data(plethodon) 
 #' Y.gpa <- gpagen(plethodon$land)
 #' pleth.pca <- gm.prcomp(Y.gpa$coords)
@@ -88,7 +88,7 @@ picknplot.shape <- function(x, ...){
     ans <- readline("Save deformation grid as png file (y/n)? ")
     if(ans=="y") {
       file.name <- readline("Please provide file name for saving deformation grid (without quotes) ")
-      rgl.snapshot(file = file.name)
+      rgl.snapshot(filename = file.name)
     }
     if(ans=="n"){
       try(rgl.close(), silent=T)

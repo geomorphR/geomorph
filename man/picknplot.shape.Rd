@@ -28,7 +28,7 @@ shape is to be saved as a png file, in which case the name of the file needs to 
 Interactive plots are at present available for plots produced by \code{\link{plot.gm.prcomp}}.
 }
 \examples{
-2d
+# 2d
 data(plethodon) 
 Y.gpa <- gpagen(plethodon$land)
 pleth.pca <- gm.prcomp(Y.gpa$coords)

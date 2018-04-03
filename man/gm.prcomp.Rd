@@ -12,6 +12,8 @@ gm.prcomp(A, phy = NULL, Cov = NULL, ...)
 \item{phy}{An optional phylogenetic tree of class phylo - see \code{\link{read.tree}} in library ape}
 
 \item{Cov}{An optional covariance matrix for weighting. See also details.}
+
+\item{...}{Other arguments passed to \code{\link{scale}}}
 }
 \value{
 An object of class "gm.prcomp" contains a list of results for each of the PCA approaches implemented.
@@ -33,66 +35,59 @@ to incorporate the expected covariance among dependent observations
 (e.g. due to spatial autocorrelation). At present combined analysis allowing the use of both 
 a phylogeny and another covariance matrix is not implemented.
 Several complementary types of analyses are available when using a phylogeny, namely:
-     1. phyloPCA: A phylogenetic PCA, where a phylogenetic transformation is applied to take expected
+     1) phyloPCA: A phylogenetic PCA, where a phylogenetic transformation is applied to take expected
 covariance due to shared phylogenetic history into account (sensu Revell 2009).
-     2. phylomorphospace: A non-weighted PCA of the raw data, followed by a projection to PCA space of 
+     2) phylomorphospace: A non-weighted PCA of the raw data, followed by a projection to PCA space of 
 the estimated ancestral shape values for the nodes of the phylogeny.
-     3. evolPCA: A non-weighted PCA of both the tip and estimated ancestor shapes together.
+     3) evolPCA: A non-weighted PCA of both the tip and estimated ancestor shapes together.
 
 PLOTTING: Contrary to previous geomorph implementations, gm.prcomp does not produce plots. 
 For plotting options of gm.prcomp class objects combine \code{\link{plot.gm.prcomp}} and 
-\code{\link{picknplot}} following the examples below.
+\code{\link{picknplot.shape}} following the examples below.
 }
 \examples{
-data(plethspecies) 
-Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment
+ data(plethspecies) 
+ Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment
+ 
+ ### PCA on raw data
+ pleth.raw <- gm.prcomp(Y.gpa$coords)
+ summary(pleth.raw)
+ 
+ ### PCA with phylogeny
+ pleth.phylo <- gm.prcomp(Y.gpa$coords, phy = plethspecies$phy)
+ summary(pleth.phylo)
+ summary(pleth.phylo$phylomorphospace)
+ 
+ #### Plotting
+ plot(pleth.raw$rawPCA)
+ gps <- as.factor(c(rep("gp1", 5), rep("gp2", 4))) # Two random groups
+ par(mar=c(2, 2, 2, 2))
+ plot(pleth.raw$rawPCA, pch=22, cex = 1.5, bg = gps) # Modify options as desired
+ #  Add things as desired using standard R plotting
+ text(par()$usr[1], 0.1*par()$usr[3], labels = "PC1 - 45.64\%", pos = 4, font = 2)
+ text(0, 0.95*par()$usr[4], labels = "PC2 - 18.80\%", pos = 4, font = 2)
+ legend("topleft", pch=22, pt.bg = unique(gps), legend = levels(gps))
+ 
+ ### Plotting including a phylogeny
+ plot(pleth.phylo$phyloPCA, phylo = TRUE, cex = 1.5, pch = 22, bg = gps, xlim = c(-0.05, 0.015),
+      phylo.par = list(edge.color = "grey", edge.width = 2,
+                       node.bg = "black", node.pch = 22, node.cex = 0.5))
+ text(pleth.phylo$phyloPCA$x, labels = labels(pleth.phylo$phyloPCA$x)[[1]],
+      pos = 2, font = 4) 
+ text(pleth.phylo$phyloPCA$anc.x, labels = 1:nrow(pleth.phylo$phyloPCA$anc.x),
+      adj = c(-0.1, -0.1), font = 2) 
+ 
+ 
+ layout(matrix(1:4, nrow=2, byrow=TRUE))
+ plot(pleth.phylo$rawPCA, pch=21, bg=1:nrow(pleth.phylo$rawPCA$x)); title(main="rawPCA")
+ plot(pleth.phylo$phyloPCA, pch=21, bg=1:nrow(pleth.phylo$rawPCA$x), phylo = TRUE,
+      phylo.par = list(edge.color="grey", node.cex=0)); title(main="phyloPCA")
+ plot(pleth.phylo$phylomorphospace, pch=21, bg=1:nrow(pleth.phylo$rawPCA$x), phylo = TRUE,
+      phylo.par = list(edge.color="grey", node.cex=0)); title(main="phylomorphospace")
+ plot(pleth.phylo$evolPCA, pch=21, bg=1:nrow(pleth.phylo$rawPCA$x), phylo = TRUE,
+      phylo.par = list(edge.color="grey", node.cex=0)); title(main="evolPCA")
 
-### Raw data PCA
-pleth.raw <- gm.prcomp(Y.gpa$coords)
-summary(pleth.raw)
 
-# Plotting
-gps <- as.factor(c(rep("gp1", 5), rep("gp2", 4))) # Two random groups
-par(mgp = c(2.5, 0.5, 0))
-plot(pleth.raw, pch=22, cex = 1.5, xlab = "My PCA - axis 1", bg = gps,
-    font.lab = 2, cex.lab = 2) # Modify options as desired
-legend("topright", pch=22, pt.bg = unique(gps), legend = levels(gps), cex = 2)
-
-### Phylogenetic PCA
-pleth.ppca <- gm.prcomp(Y.gpa$coords, plethspecies$phy, phylo.pca = TRUE)
-summary(pleth.ppca) 
-
-# Plotting
-par(mgp = c(2, 0.5, 0))
-plot(pleth.ppca, phylo = TRUE, cex = 1.5, pch = 22, bg = gps, cex.lab = 2, 
-     font.lab = 2, xlim = c(-0.007, 0.017),
-     phylo.par = list(edge.color = "grey", edge.width = 2,
-     node.bg = "black", node.pch = 22, node.cex = 0.5))
-text(pleth.ppca$pc.scores, labels = labels(pleth.ppca$pc.scores)[[1]],
-     pos = 2, font = 4) 
-text(pleth.ppca$anc.pcscores, labels = labels(pleth.ppca$anc.pcscores)[[1]],
-     adj = c(-0.1, -0.1), font = 2) 
-     
-### Phylomorphospace
-pleth.phylomorpho <- gm.prcomp(Y.gpa$coords, plethspecies$phy)
-summary(pleth.phylomorpho)
-
-# Plotting
-plot(pleth.phylomorpho, phylo = TRUE, cex = 2, pch = 22, bg = gps, 
-     phylo.par = list(edge.color = "blue", edge.width = 2, edge.lty = 2,
-     node.cex = 0)) # Supresses plotting of nodes
-text(pleth.phylomorpho$pc.scores, labels = labels(pleth.phylomorpho$pc.scores)[[1]],
-     pos = 3, font = 4) 
-
-# same plot but change the PC axes type
-
-plot(pleth.phylomorpho, phylo = TRUE, cex = 2, pch = 22, bg = gps, 
-     phylo.par = list(edge.color = "blue", edge.width = 2, edge.lty = 2,
-     node.cex = 0), axes = FALSE) # Supresses plotting of nodes and axes
- abline(h = 0, lty = 3, cex = 0.7) # subtle axes
- abline(v = 0, lty = 3, cex = 0.7)
-text(pleth.phylomorpho$pc.scores, labels = labels(pleth.phylomorpho$pc.scores)[[1]],
-     pos = 3, font = 4) 
 }
 \references{
 Revell, L.J. (2009) Size-correction and principal components for interspecific comparative studies. 
