@@ -122,6 +122,7 @@ gm.prcomp <- function (A, phy = NULL, Cov = NULL, ...) {
     evol.dt <- rbind(Y, ancY)
     
     C  <- vcv.phylo(phy)
+    C <- C[rownames(Y), rownames(Y)]
     ones <- matrix(1, ncol(C))
     invC <- fast.solve(C)
     rootY <- fast.solve(t(ones)%*%invC%*%ones)%*%t(ones)%*%invC%*%Y
@@ -137,6 +138,7 @@ gm.prcomp <- function (A, phy = NULL, Cov = NULL, ...) {
   
   if(!is.null(Cov) & is.null(phy)){
     C <- Cov
+    C <- C[rownames(Y), rownames(Y)]
     ones <- matrix(1, ncol(C))
     invC <- fast.solve(C)
     w.meanY <- fast.solve(t(ones)%*%invC%*%ones)%*%t(ones)%*%invC%*%Y
@@ -151,30 +153,30 @@ gm.prcomp <- function (A, phy = NULL, Cov = NULL, ...) {
   # Raw data PCA
   nPC <- max(which(zapsmall(svd.y$d) > 0))
   rawPCA$x <- Y%*%svd.y$v[,1:nPC]
+  colnames(rawPCA$x) <- paste("PC", 1:nPC, sep = "")
   rawPCA$d <- svd.y$d[1:nPC]
   rawPCA$rotation <- svd.y$v
-  colnames(rawPCA$x) <- paste("PC", 1:nPC, sep = "")
   rawPCA$shapes <- lapply(1:ncol(rawPCA$x),  
                          function(x){shape.predictor(A, rawPCA$x[,x], 
                                                      min = min(rawPCA$x[,x]),
                                                      max = max(rawPCA$x[,x]))})
   names(rawPCA$shapes) <- paste("shapes.PC", 1:nPC, sep = "")
-  class(rawPCA) <- "gm.prcomp"
+  class(rawPCA) <- c("gm.prcomp", "rawPCA")
   
   if(!is.null(phy)){
     # Phylomorphospace
     phylomorphospace$x <- (Yc.evol%*%svd.y$v[, 1:nPC])[1:N,]
     phylomorphospace$anc.x <- (Yc.evol%*%svd.y$v[, 1:nPC])[(N+1):(N+Nnode),]
+    colnames(phylomorphospace$x) <- colnames(phylomorphospace$anc.x) <- paste("PC", 1:nPC, sep = "")
     phylomorphospace$d <- svd.y$d[1:nPC]
     phylomorphospace$rotation <- svd.y$v
-    colnames(phylomorphospace$x) <- colnames(phylomorphospace$anc.x) <- paste("PC", 1:nPC, sep = "")
     phylomorphospace$shapes <- lapply(1:ncol(phylomorphospace$x), 
                                       function(x){shape.predictor(A, phylomorphospace$x[,x],
                                                                   min = min(phylomorphospace$x[,x]),
                                                                   max = max(phylomorphospace$x[,x]))})
     names(phylomorphospace$shapes) <- paste("shapes.PC", 1:nPC, sep = "")
     phylomorphospace$ancestors <- anc.raw
-    class(phylomorphospace) <- "gm.prcomp"
+    class(phylomorphospace) <- c("gm.prcomp", "phylomorphospace")
     
     # Phylogenetic PCA
     nPC <- max(which(zapsmall(svd.p$d) > 0))
@@ -189,7 +191,7 @@ gm.prcomp <- function (A, phy = NULL, Cov = NULL, ...) {
                                                           max = max(phyloPCA$x[,x]))})
     names(phyloPCA$shapes) <- paste("shapes.PC", 1:nPC, sep = "")
     phyloPCA$ancestors <- anc.raw
-    class(phyloPCA) <- "gm.prcomp"
+    class(phyloPCA) <- c("gm.prcomp", "phyloPCA")
     
     # "Evolutionary" PCA
     nPC <- max(which(zapsmall(svd.e$d) > 0))
@@ -204,7 +206,7 @@ gm.prcomp <- function (A, phy = NULL, Cov = NULL, ...) {
                                                          max = max(evolPCA$x[,x]))})
     names(evolPCA$shapes) <- paste("shapes.PC", 1:nPC, sep = "")
     evolPCA$ancestors <- anc.raw
-    class(evolPCA) <- "gm.prcomp"
+    class(evolPCA) <- c("gm.prcomp", "evolPCA")
   }
   
   if(!is.null(Cov) & is.null(phy)){

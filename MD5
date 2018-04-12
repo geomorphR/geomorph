@@ -155,10 +155,10 @@ ddff41e987eac54d3500e2313799c3c6 *R/digitize2d.r
 9cfff0013db7a8c0e4aca770b5d9ea25 *R/findMeanSpec.r
 b56e53ac307d84a05efee9525dd6868a *R/fixed.angle.r
 203177efc30cc6fef4bd604b2fc2af01 *R/geomorph.data.frame.r
-c5ef153ed9299be0f46775cc499f5dee *R/geomorph.support.code.r
-e1deb1a5d3c98b01cb17d7d6cb2f1161 *R/geomorph.utils.r
+9096fc61357011e073039ec1405e11c3 *R/geomorph.support.code.r
+41660f00e4d8b303e225bd76e8b02161 *R/geomorph.utils.r
 0d9d88147f22cff2241b6e2e7396d57f *R/globalIntegration.r
-05750c2b3155173ba2170fe9448476d9 *R/gm.prcomp.R
+3ef4a948f6ebbe6b4606d09d45d3ce08 *R/gm.prcomp.R
 ec44337b65275a475c17534dd18d720c *R/gpagen.r
 2d8ab3c6fea452711a7cf091ffba8ff5 *R/gridPar.r
 4c14d0451db3d7529482ac61e2c0592c *R/integration.test.r

@@ -3351,8 +3351,8 @@ shape.ace <- function(x, phy){
     }
     anc.states<-cbind(anc.states, tmp)   
   }
-  colnames(anc.states) <- NULL
-  row.names(anc.states) <- NULL
+  colnames(anc.states) <- 1:ncol(x)
+  row.names(anc.states) <- 1:Nnode
   return(anc.states)
 }
 
