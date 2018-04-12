@@ -16,7 +16,8 @@
 #'      a legacy version of the operations previously included in plotGMPhyloMorphoSpace.
 #' 
 #' WARNING: Note that in the case of a phylogenetic PCA, the sum of eigenvalues does not correspond to the
-#' total variance of the data, or the variance of PC scores. For more details on phylogenetic PCA and its
+#' total variance of the data, or the variance of PC scores. Also, note that due to the phylogenetic centering
+#' and weighting applied, this method distorts shape space. For more details on phylogenetic PCA and its
 #' properties, users are strongly encouraged to consult Polly et al. 2013.
 #' 
 #' PLOTTING: Contrary to previous geomorph implementations, gm.prcomp does not produce plots. 
@@ -118,8 +119,6 @@ gm.prcomp <- function (A, phy = NULL, Cov = NULL, ...) {
   if(!is.null(phy)){
     if (!inherits(phy, "phylo"))
       stop("Tree must be of class 'phylo.'")
-    if (!is.binary.tree(phy)) 
-      stop("Tree is not fully bifurcating (consider 'multi2di' in ape).")
     N <- length(phy$tip.label); Nnode <- phy$Nnode
     if(N!=n)
       stop("Number of taxa in data matrix and tree are not equal.")
