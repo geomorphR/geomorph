@@ -17,7 +17,9 @@
 #' 
 #' PLOTTING: Contrary to previous geomorph implementations, gm.prcomp does not produce plots. 
 #' For plotting options of gm.prcomp class objects combine \code{\link{plot.gm.prcomp}} and 
-#' \code{\link{picknplot.shape}} following the examples below.
+#' \code{\link{picknplot.shape}} following the examples below. Note that trying to plot the full result
+#' of gm.prcomp will give an error. Choose a specific PCA method to be plotted, by pointing to one of the 
+#' components of the list returned as a result from gm.prcomp.
 #' 
 #'
 #' @param A A 3D array (p x k x n) containing landmark coordinates for a set of aligned specimens

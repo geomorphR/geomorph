@@ -32,26 +32,27 @@ Interactive plots are at present available for plots produced by \code{\link{plo
 data(plethodon) 
 Y.gpa <- gpagen(plethodon$land)
 pleth.pca <- gm.prcomp(Y.gpa$coords)
-pleth.pca.plot <- plot(pleth.pca)
+pleth.pca.plot <- plot(pleth.pca$rawPCA)
 picknplot.shape(pleth.pca.plot) 
 # May change arguments for plotRefToTarget
-picknplot.shape(plot(pleth.pca), method = "vector", mag = 3)
+picknplot.shape(plot(pleth.pca$rawPCA), method = "points", mag = 3, links=plethodon$links)
 
-# 2d with phylomorphospace
+# 2d with phylogeny
 data(plethspecies) 
 Y.gpa <- gpagen(plethspecies$land)
 gps <- as.factor(c(rep("gp1", 5), rep("gp2", 4))) # Two random groups
-pleth.phylomorpho <- gm.prcomp(Y.gpa$coords, plethspecies$phy)
-pleth.phylo.plot <- plot(pleth.phylomorpho, phylo = TRUE, cex = 2, pch = 22, bg = gps, 
-     phylo.par = list(edge.color = "blue", edge.width = 2, edge.lty = 2,
-     node.pch = 22, node.bg = "black")) 
-picknplot.shape(pleth.phylo.plot, method = "points", mag = 5)
-
+pleth.phylo <- gm.prcomp(Y.gpa$coords, plethspecies$phy)
+pleth.phylomorphospace <- plot(pleth.phylo$phylomorphospace, phylo = TRUE, cex = 2, pch = 22, bg = gps, 
+                               phylo.par = list(edge.color = "blue", edge.width = 2, edge.lty = 2,
+                                                node.pch = 22, node.bg = "black"))
+links.species <- plethodon$links[-11,]
+links.species[11, 1] <- 11
+picknplot.shape(pleth.phylomorphospace, method = "points", links = links.species)
 # 3d
 data(scallops)
 Y3d.gpa <- gpagen(A=scallops$coorddata, curves=scallops$curvslide, surfaces=scallops$surfslide)
 scallops.pca <- gm.prcomp(Y3d.gpa$coords)
-scallops.pca.plot <- plot(scallops.pca)
+scallops.pca.plot <- plot(scallops.pca$rawPCA)
 picknplot.shape(scallops.pca.plot) #May change method for plotRefToTarget
 }
 \seealso{

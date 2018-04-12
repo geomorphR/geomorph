@@ -1489,6 +1489,9 @@ summary.gm.prcomp <- function (object, ...) {
 plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, phylo = FALSE, 
                            phylo.par = list(edge.color = "black", edge.width = 1, edge.lty = 1,
                                             node.bg = "black", node.pch = 21, node.cex = 1), ...) {
+  if("list"%in%class(x)){
+    stop("You are trying to plot multiple results, please choose a specific PCA result.")
+  }
   options(warn = -1)
   pcdata <- x$x[, c(axis1, axis2)]
   dots <- list(...)
