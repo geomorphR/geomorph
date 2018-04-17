@@ -17,7 +17,8 @@ PENDING CHANGES IN GEOMORPH VERSION 3.0.6
     o Added catch for missing data to readland.tps, to identify negative values and recode them as NAs.
     
   BUG FIXES
-    o Fixes issues with estimate.missing regression approach
+    o Fixed issue with compare.evol.rates permutation method for univariate trait
+    o Fixed issues with estimate.missing regression approach
     o Fixed issues with phylo.integration where Y-dataset contained a single variable
     o Fixed issue with integration.test when 3+ partitions with non-contiguous variables
     o Fixed effect size calculation error in procD.lm for single factor OLS models. 
