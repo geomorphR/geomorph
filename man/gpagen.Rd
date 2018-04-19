@@ -109,6 +109,9 @@ plot(Y.gpa)
 # Example 2: points and semilandmarks on curves
 data(hummingbirds)
 
+###Slider matrix
+hummingbirds$curvepts
+
 # Using Procrustes Distance for sliding
 Y.gpa <- gpagen(hummingbirds$land,curves=hummingbirds$curvepts)   
 summary(Y.gpa)
