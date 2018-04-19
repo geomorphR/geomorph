@@ -36,7 +36,7 @@ f95ea8b6cbd04111605b5d6540f45e22 *man/digitize2d.Rd
 adf74f7e6a13f7601f8f9dc8afce9a21 *man/geomorph.data.frame.Rd
 2df80d8fef3a88b77f375ca18d8f80b5 *man/globalIntegration.Rd
 77392cfc79baa6e02677e9cac79cb7f4 *man/gm.prcomp.Rd
-3e52b413a8fd77745c75245cd0018d29 *man/gpagen.Rd
+8a2855ea9dcef2801294cec0a9f62410 *man/gpagen.Rd
 8deee231fc8f213b425013c38a501739 *man/gridPar.Rd
 503d0d6794185c93995717bb4e63abc8 *man/hummingbirds.Rd
 92d48fce09fd91232a18fd336014d384 *man/integration.test.Rd
@@ -132,7 +132,7 @@ b93c55fc393106e3991a0743bd3c281e *man/trajectory.analysis.Rd
 5b917c86f2b7831f548f7a81d6c1de9a *man/warpRefOutline.Rd
 aac14dd389a4f2cd73e97e8fbc0bfbad *man/writeland.tps.Rd
 5bc1c0bfbd09d5472952e59245d9532c *NAMESPACE
-a6edd91cfb6589f2876d577e5d018a56 *NEWS
+9389826f270fab6e3a0225113eb0a11f *NEWS
 94f61351420a894081752e903fcd99e2 *R/advanced.procD.lm.r
 311a910118a6b60a5ab89a58349e1f69 *R/arrayspecs.r
 4284c714345d262621c9b18a3c43e997 *R/bilat.symmetry.r
@@ -159,7 +159,7 @@ b56e53ac307d84a05efee9525dd6868a *R/fixed.angle.r
 2cdfb08cd4c561b408037f3a3f14fd9b *R/geomorph.utils.r
 0d9d88147f22cff2241b6e2e7396d57f *R/globalIntegration.r
 3c0c4cc669a6ceff75d452fba2859ad4 *R/gm.prcomp.R
-ec44337b65275a475c17534dd18d720c *R/gpagen.r
+1c4889a07f637dde887cf5b234276cd3 *R/gpagen.r
 2d8ab3c6fea452711a7cf091ffba8ff5 *R/gridPar.r
 4c14d0451db3d7529482ac61e2c0592c *R/integration.test.r
 c35bcae1a6ea59c924cf7dc9eec3e013 *R/interlmkdist.r
