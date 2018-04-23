@@ -414,6 +414,13 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
       out$Z.angles <- Z.cor
     }
   }
+  rownames(out$anova.table) <- c(deparse(formula(pfitr$Terms)),
+                                 deparse(formula(pfitf$Terms)), "Total")
+  rownames(out$anova.table)[1] <- paste(rownames(out$anova.table)[1], "(Null)")
+  Rsq.fix <- out$anova.table$Rsq 
+  out$anova.table$Rsq <- c(NA, Rsq.fix[2] - Rsq.fix[1], NA)
+  out$anova.table <- out$anova.table[,-2]
+  
   class(out) <- "advanced.procD.lm"
   out
 }
