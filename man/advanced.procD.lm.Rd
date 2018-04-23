@@ -114,6 +114,17 @@ Pairwise tests are only performed if formulae are provided to compute such resul
   argument in print/summary generic functions to print formulas as row names of the ANOVA table.  If
   formulas are long, it is recommended to make this argument, \code{formula = FALSE}, in which case 
   "reduced" and "full" models will be acknowledged.
+  
+ \subsection{Notes for geomorph 3.0.6 and subsequent versions}{
+ For pairwise tests, previous versions assumed that pairwise comparisons of least-squares means used models with parallel slopes.
+ Under most circumstances, this assumption is safe (and preferred), as the estimation of mean differences otherwise would have to 
+ assume something about the mean values of covariates as appropriate locations for estimating means.  Version 3.0.6 and subseqent verisons
+ find least-squares means that are truer to the model defined.  For example, if a user defines a full model with parallel slopes, e.g.,
+ shape ~ x + A + B + A:B, where x is a covariate and A and B are factors, results should be no different than before.  However, if a user 
+ defines a full model which allows unique slopes, e.g., shape ~ x + A + B + x:A + x:B + A:B + x:A:B, least squares means will now be estimated
+ for mean values of x using the coefficients for x:A, x:B, and x:A:B (previous versions did not).  This change is to made to
+ be consistent with other least-squares means estimation functions in other packages.
+}
 
 \subsection{Notes for geomorph 3.0.4 and subsequent versions}{
  Compared to previous versions of geomorph, users might notice differences in effect sizes.  Previous versions used z-scores calculated with

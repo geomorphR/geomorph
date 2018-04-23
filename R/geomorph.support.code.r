@@ -17,6 +17,9 @@
 #' @importFrom geiger sim.char
 #' @importFrom jpeg readJPEG
 #' @importFrom Matrix nearPD
+#' @importFrom RRPP lm.rrpp
+#' @importFrom RRPP anova.lm.rrpp
+#' @importFrom RRPP pairwise
 #'
 #' @section geomorph TOC:
 #' geomorph-package
