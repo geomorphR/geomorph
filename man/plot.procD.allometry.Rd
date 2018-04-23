@@ -5,8 +5,8 @@
 \title{Plot Function for geomorph}
 \usage{
 \method{plot}{procD.allometry}(x, method = c("CAC", "RegScore", "PredLine"),
-  warpgrids = TRUE, label = NULL, gp.label = FALSE, pt.col = NULL,
-  mesh = NULL, shapes = FALSE, ...)
+  warpgrids = TRUE, label = NULL, gp.label = FALSE, mesh = NULL,
+  shapes = FALSE, ...)
 }
 \arguments{
 \item{x}{plot object (from \code{\link{procD.allometry}})}
@@ -19,8 +19,6 @@ should be displayed (note: if groups are provided no TPS grids are shown)}
 \item{label}{An optional vector indicating labels for each specimen that are to be displayed}
 
 \item{gp.label}{A logical value indicating labels for each group to be displayed (if group was originally included); "PredLine" only}
-
-\item{pt.col}{An optional vector of colours to use for points (as in points(bg=))}
 
 \item{mesh}{A mesh3d object to be warped to represent shape deformation of the minimum and maximum size 
 if {warpgrids=TRUE} (see \code{\link{warpRefMesh}}).}

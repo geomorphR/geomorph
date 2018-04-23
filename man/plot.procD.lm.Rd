@@ -15,7 +15,7 @@
 regression, or principal component plots.  Diagnostic plots are similar to 
 \code{\link{lm}} diagnostic plots, but for multivariate data.  Regression plots
 plot multivariate dispersion in some fashion against predictor values. PC plots
-project data onto the eigenvectors of the coavriance matrix for fitted values.}
+project data onto the eigenvectors of the covariance matrix for fitted values.}
 
 \item{outliers}{Logical argument to include outliers plot, if diagnostics
 are performed}
@@ -33,6 +33,11 @@ that the predictor is size.}
 \item{...}{other arguments passed to plot (helpful to employ
 different colors or symbols for different groups).  See
 \code{\link{plot.default}} and \code{\link{par}}}
+}
+\value{
+An object of class "plot.procD.lm" is a list with components
+ that can be used in other plot functions, such as the type of plot, points, 
+ a group factor, and other information depending on the plot parameters used.
 }
 \description{
 Plot Function for geomorph

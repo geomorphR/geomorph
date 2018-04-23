@@ -2,8 +2,7 @@
 #' @docType package
 #' @aliases geomorph
 #' @title Geometric morphometric analyses for 2D/3D data
-#' @author Dean C. Adams, Michael Collyer, Antigoni Kaliontzopoulou & Emma Sherratt
-#'
+#' @author Dean C. Adams, Michael Collyer & Antigoni Kaliontzopoulou
 #' @description Functions in this package allow one to read, manipulate, and digitize landmark data; generate shape
 #'  variables via Procrustes analysis for points, curves and surface data, perform statistical analyses
 #'  of shape variation and covariation, and provide graphical depictions of shapes and patterns of
@@ -127,8 +126,9 @@ NULL
 #' @details These data were previously aligned
 #' with GPA.  Centroid size (CS) is also provided.
 #' @references Collyer, M.L., D.J. Sekora, and D.C. Adams. 2015. A method for analysis of phenotypic
-#' change for phenotypes described by high-dimensional data. Heredity. 113: doi:10.1038/hdy.2014.75.
+#' change for phenotypes described by high-dimensional data. Heredity. 115: 357-365.
 NULL
+
 
 #' Head and tail shapes of larval salamanders
 #'
@@ -153,8 +153,11 @@ NULL
 #' The function estimates the average landmark coordinates for a set of aligned specimens. It is assumed
 #' that the landmarks have previously been aligned using Generalized Procrustes Analysis (GPA)
 #'  [e.g., with \code{\link{gpagen}}]. This function is described in Claude (2008).
+#'  
+#'  One can then use the generic function \code{\link{plot}} to produce a numbered plot of landmark 
+#'  positions and potentially add links, in order to review landmark positions
 #'
-#' @param A Either a list (length n, ach p x k), A 3D array (p x k x n), or a matrix (pk X n) containing GPA-aligned coordinates for a set of specimens
+#' @param A Either a list (length n, p x k), A 3D array (p x k x n), or a matrix (pk X n) containing GPA-aligned coordinates for a set of specimens
 #' @keywords utilities
 #' @export
 #' @author Julien Claude
@@ -169,12 +172,66 @@ mshape<-function(A){
   if(is.list(A)) res <- Reduce("+", A)/length(A)
   if(is.matrix(A)) res <- colMeans(A)
   if(!is.array(A) && !is.list(A) && !is.matrix(A)) stop("There are not multiple configurations from which to obtain a mean.")
+  class(res) <- c("mshape", "matrix")
   return(res)
 }
 
 #####----------------------------------------------------------------------------------------------------
 
 # SUPPORT FUNCTIONS
+
+# scanTPS
+# Scans data and other info from TPS files
+# used by readland.tps
+scanTPS <- function(file) {
+  ignore.case = TRUE
+  tpsfile <- scan(file = file, what = "char", sep = "\t", quiet = TRUE)
+  commline <- grep("COMMENT=", tpsfile, ignore.case)
+  if(length(commline) != 0) tpsfile <- tpsfile[-commline] # removes COMMENT= lines
+  lmline <- grep("LM=", tpsfile, ignore.case)
+  if(length(lmline) == 0) lmline <- grep("LM3=", tpsfile, ignore.case)
+  if(length(lmline) == 0) stop("No landmark command provided; e.g., 'LM=' or 'LM3=")
+  endline <- lmline[-1] - 1
+  endline <- c(endline, length(tpsfile))
+  n <- length(lmline)
+  spec.list <- lapply(1:n, function(j){
+    start <- lmline[j]
+    end <- endline[j]
+    temp <- tpsfile[start:end]
+    lml <- grep("LM", temp)
+    crvl <- grep("CURVES", temp)
+    cptl <- grep("POINTS", temp)
+    scl <- grep("SCALE", temp)
+    iml <- grep("IMAGE", temp)
+    idl <- grep("ID", temp)
+    notlm <- grep("=", temp)
+    templm <- strsplit(temp[-notlm], "\\s+")
+    lm <- lapply(templm, as.numeric)
+    p <- length(lm)
+    k <- sapply(lm, length)
+    if(length(unique(k)) == 1) k <- unique(k)
+    scale <- as.numeric(unlist(strsplit(temp[scl], "SCALE="))[2])
+    id <- unlist(strsplit(temp[idl], "ID="))[2]
+    image <- unlist(strsplit(temp[iml], "IMAGE="))[2]
+    image <- sub(".jpg", "", image, ignore.case)
+    image <- sub(".tif", "", image, ignore.case)
+    image <- sub(".bmp", "", image, ignore.case)
+    image <- sub(".tiff", "", image, ignore.case)
+    image <- sub(".jpeg", "", image, ignore.case)
+    image <- sub(".jpe", "", image, ignore.case)
+    plm <- as.numeric(unlist(strsplit(temp[lml], "="))[2])
+    pcv <- p - plm
+    if(p > plm) {
+      curve.lm <- lm[-(1:plm)] 
+      lm <- lm[1:plm]
+      curve.pts <- as.vector(na.omit(as.numeric(unlist(strsplit(temp[cptl], "POINTS=")))))
+    } else curve.lm <- curve.pts <- NULL
+    
+    out <- list(lm = lm, curve.lm = curve.lm, p = p, plm = plm, pcv = pcv,
+                k = k, curve.pts = curve.pts, scale = scale, id = id, image = image)
+    out  
+  })
+}
 
 # center
 # centers a matrix faster than scale()
@@ -819,83 +876,119 @@ pGpa.wSliders <- function(Y, curves, surf, ProcD = TRUE, PrinAxes = FALSE, Proj 
 # tps
 #
 #
-tps<-function(matr, matt, n,sz=1.5, pt.bg="black",
-              grid.col="black", grid.lwd=1, grid.lty=1, refpts=FALSE){		#DCA: altered from J. Claude: 2D only
-  xm<-min(matr[,1])
-  ym<-min(matr[,2])
-  xM<-max(matr[,1])
-  yM<-max(matr[,2])
-  rX<-xM-xm; rY<-yM-ym
-  a<-seq(xm-1/5*rX, xM+1/5*rX, length=n)
-  b<-seq(ym-1/5*rX, yM+1/5*rX,by=(xM-xm)*7/(5*(n-1)))
-  m<-round(0.5+(n-1)*(2/5*rX+ yM-ym)/(2/5*rX+ xM-xm))
-  M<-as.matrix(expand.grid(a,b))
-  ngrid<-tps2d(M,matr,matt)
-  plot(ngrid, cex=0.2,asp=1,axes=FALSE,xlab="",ylab="")
-  for (i in 1:m){lines(ngrid[(1:n)+(i-1)*n,], col=grid.col,lwd=grid.lwd,lty=grid.lty)}
-  for (i in 1:n){lines(ngrid[(1:m)*n-i+1,], col=grid.col,lwd=grid.lwd,lty=grid.lty)}
-  if(refpts==FALSE) points(matt,pch=21,bg=pt.bg,cex=sz) else points(matr,pch=21,bg=pt.bg,cex=sz)
+tps <- function(matr, matt, n, sz=1.5, pt.bg="black",
+              grid.col="black", grid.lwd=1, grid.lty=1, refpts=FALSE, k3 = FALSE){		#DCA: altered from J. Claude: 2D only
+  xm <- min(matr[,1])
+  ym <- min(matr[,2])
+  xM <- max(matr[,1])
+  yM <- max(matr[,2])
+  rX <- xM-xm; rY <- yM-ym
+  a <- seq(xm - 1/5*rX, xM + 1/5*rX, length=n)
+  b <- seq(ym - 1/5*rX, yM + 1/5*rX, by=(xM-xm)*7/(5*(n-1)))
+  m <- round(0.5+(n-1)*(2/5*rX + yM-ym)/(2/5*rX + xM-xm))
+  M <- as.matrix(expand.grid(a,b))
+  ngrid <- tps2d(M, matr, matt)
+  if (k3 == FALSE){
+    plot.new()
+    plot.window(1.05*range(ngrid[,1]), 1.05*range(ngrid[,2]), xaxt="n", yaxt="n", 
+                xlab="", ylab="", bty="n", asp = 1)
+    for (i in 1:m){
+      plot.xy(xy.coords(ngrid[(1:n)+(i-1)*n,]), type = "l",
+              col=grid.col, lwd=grid.lwd, lty=grid.lty)
+    }
+    for (i in 1:n){
+      plot.xy(xy.coords(ngrid[(1:m)*n-i+1,]), type = "l",
+              col=grid.col, lwd=grid.lwd, lty=grid.lty)
+    }
+    if(refpts==FALSE) {
+      plot.xy(xy.coords(matt), type="p", pch=21, bg=pt.bg, cex=sz) 
+    } else {
+      plot.xy(xy.coords(matr), type="p", pch=21, bg=pt.bg, cex=sz)
+    }
+  }
+  # added in for shape.predictor; plots in rgl window
+  if(k3 == TRUE){
+    ngrid <- cbind(ngrid,0)
+    plot3d(ngrid, cex=0.2, aspect=FALSE, axes=FALSE, xlab="", ylab="", zlab="")
+    for (i in 1:m){
+      lines3d(ngrid[(1:n)+(i-1)*n,], col=grid.col, lwd=grid.lwd, lty=grid.lty)
+      }
+    for (i in 1:n){
+      lines3d(ngrid[(1:m)*n-i+1,], col=grid.col, lwd=grid.lwd, lty=grid.lty)
+      }
+    if(refpts==FALSE) {
+      points3d(cbind(matt,0), col=pt.bg, size=sz*10)
+      } else {
+        points3d(cbind(matr,0),col=pt.bg,size=sz*10)
+      }
+  }
 }
 
 # tps2d
 #
 #
-tps2d<-function(M, matr, matt)
-{p<-dim(matr)[1]; q<-dim(M)[1]; n1<-p+3
-P<-matrix(NA, p, p)
-for (i in 1:p)
-{for (j in 1:p){
-  r2<-sum((matr[i,]-matr[j,])^2)
-  P[i,j]<- r2*log(r2)}}
-P[which(is.na(P))]<-0
-Q<-cbind(1, matr)
-L<-rbind(cbind(P,Q), cbind(t(Q),matrix(0,3,3)))
-m2<-rbind(matt, matrix(0, 3, 2))
-coefx<-fast.solve(L)%*%m2[,1]
-coefy<-fast.solve(L)%*%m2[,2]
-fx<-function(matr, M, coef)
-{Xn<-numeric(q)
-for (i in 1:q)
-{Z<-apply((matr-matrix(M[i,],p,2,byrow=TRUE))^2,1,sum)
-Xn[i]<-coef[p+1]+coef[p+2]*M[i,1]+coef[p+3]*M[i,2]+sum(coef[1:p]*(Z*log(Z)))}
-Xn}
-matg<-matrix(NA, q, 2)
-matg[,1]<-fx(matr, M, coefx)
-matg[,2]<-fx(matr, M, coefy)
-matg}
+tps2d <- function(M, matr, matt){
+  p <- dim(matr)[1]; q <- dim(M)[1]; n1 <- p+3
+  P <- matrix(NA, p, p)
+  for (i in 1:p){
+    for (j in 1:p){
+      r2 <- sum((matr[i,] - matr[j,])^2)
+      P[i,j] <- r2*log(r2)
+    }
+  }
+  P[which(is.na(P))] <- 0
+  Q <- cbind(1, matr)
+  L <- rbind(cbind(P, Q), cbind(t(Q), matrix(0,3,3)))
+  m2 <- rbind(matt, matrix(0, 3, 2))
+  coefx <- fast.solve(L)%*%m2[,1]
+  coefy <- fast.solve(L)%*%m2[,2]
+  fx <- function(matr, M, coef){
+    Xn <- numeric(q)
+    for (i in 1:q){
+      Z <- apply((matr - matrix(M[i,], p, 2, byrow=TRUE))^2, 1, sum)
+      Xn[i] <- coef[p+1] + coef[p+2]*M[i,1] + coef[p+3]*M[i,2] + sum(coef[1:p]*(Z*log(Z)))
+    }
+    return(Xn)
+  } 
+  matg <- matrix(NA, q, 2)
+  matg[,1] <- fx(matr, M, coefx)
+  matg[,2] <- fx(matr, M, coefy)
+  return(matg)
+}
 
 # tps2d3d
 #
 #
-tps2d3d<-function(M, matr, matt, PB=TRUE){		#DCA: altered from J. Claude 2008
-  p<-dim(matr)[1]; k<-dim(matr)[2];q<-dim(M)[1]
-  Pdist<-as.matrix(dist(matr))
-  ifelse(k==2,P<-Pdist^2*log(Pdist^2),P<- Pdist)
-  P[which(is.na(P))]<-0
-  Q<-cbind(1, matr)
-  L<-rbind(cbind(P,Q), cbind(t(Q),matrix(0,k+1,k+1)))
-  m2<-rbind(matt, matrix(0, k+1, k))
-  coefx<-fast.solve(L)%*%m2[,1]
-  coefy<-fast.solve(L)%*%m2[,2]
-  if(k==3){coefz<-fast.solve(L)%*%m2[,3]}
-  fx<-function(matr, M, coef, step){
-    Xn<-numeric(q)
+tps2d3d <- function(M, matr, matt, PB=TRUE){		#DCA: altered from J. Claude 2008
+  p <- dim(matr)[1]; k <- dim(matr)[2]; q <- dim(M)[1]
+  Pdist <- as.matrix(dist(matr))
+  ifelse(k==2, P <- Pdist^2*log(Pdist^2), P <- Pdist)
+  P[which(is.na(P))] <- 0
+  Q <- cbind(1, matr)
+  L <-rbind(cbind(P, Q), cbind(t(Q), matrix(0,k+1,k+1)))
+  m2 <- rbind(matt, matrix(0, k+1, k))
+  coefx <- fast.solve(L)%*%m2[,1]
+  coefy <- fast.solve(L)%*%m2[,2]
+  if(k==3){coefz <- fast.solve(L)%*%m2[,3]}
+  fx <- function(matr, M, coef, step){
+    Xn <- numeric(q)
     for (i in 1:q){
-      Z<-apply((matr-matrix(M[i,],p,k,byrow=TRUE))^2,1,sum)
-      ifelse(k==2,Z1<-Z*log(Z),Z1<-sqrt(Z)); Z1[which(is.na(Z1))]<-0
-      ifelse(k==2,Xn[i]<-coef[p+1]+coef[p+2]*M[i,1]+coef[p+3]*M[i,2]+sum(coef[1:p]*Z1),
-             Xn[i]<-coef[p+1]+coef[p+2]*M[i,1]+coef[p+3]*M[i,2]+coef[p+4]*M[i,3]+sum(coef[1:p]*Z1))
+      Z <- apply((matr-matrix(M[i,], p, k, byrow=TRUE))^2, 1, sum)
+      ifelse(k==2, Z1<-Z*log(Z), Z1<-sqrt(Z)); Z1[which(is.na(Z1))] <- 0
+      ifelse(k==2, Xn[i] <- coef[p+1] + coef[p+2]*M[i,1] + coef[p+3]*M[i,2] + sum(coef[1:p]*Z1),
+             Xn[i] <- coef[p+1] + coef[p+2]*M[i,1] + coef[p+3]*M[i,2] + coef[p+4]*M[i,3] + sum(coef[1:p]*Z1))
       if(PB==TRUE){setTxtProgressBar(pb, step + i)}
     }
-    Xn}
-  matg<-matrix(NA, q, k)
+    return(Xn)
+    }
+  matg <- matrix(NA, q, k)
   if(PB==TRUE){pb <- txtProgressBar(min = 0, max = q*k, style = 3) }
-  matg[,1]<-fx(matr, M, coefx, step = 1)
-  matg[,2]<-fx(matr, M, coefy, step=q)
-  if(k==3){matg[,3]<-fx(matr, M, coefz, step=q*2)
+  matg[,1] <- fx(matr, M, coefx, step = 1)
+  matg[,2] <- fx(matr, M, coefy, step=q)
+  if(k==3){matg[,3] <- fx(matr, M, coefz, step=q*2)
   }
   if(PB==TRUE) close(pb)
-  matg
+  return(matg)
 }
 
 # pcoa
@@ -1146,7 +1239,7 @@ procD.fit.int <- function(a) {
 # calls one of previous functions, depending on conditions
 procD.fit <- function(f1, keep.order=FALSE, pca=TRUE, data = NULL, ...){
   if(is.null(data)) cat("\nWarning: no geomorph data frame provided.
-                        If an error occurs, this might be the reason.\n")
+      If an error occurs, this might be the reason.\n")
   dots <- list(...)
   SS.type <- dots$SS.type
   if(is.null(SS.type)) SS.type <- "I"
@@ -1182,28 +1275,28 @@ procD.fit <- function(f1, keep.order=FALSE, pca=TRUE, data = NULL, ...){
       d$Y <- try(eval(form.in[[2]], envir = data), silent = TRUE)
       if(!is.numeric(d$Y[[1]])) {
         cat("Warning: You have attempted to provide a geomorph data frame
-            but also provided a formula that does not evaluate data found
-            within the data frame.  If you receive an error, this is likely
-            the reason.  You should only use a geomorph data frame if the
-            components of your formula are data that can be found in the data frame.\n\n")
+but also provided a formula that does not evaluate data found
+within the data frame.  If you receive an error, this is likely
+the reason.  You should only use a geomorph data frame if the
+components of your formula are data that can be found in the data frame.\n\n")
         d$Y <- try(eval(form.in[[2]], envir = parent.frame()), silent = TRUE)
         if(!is.numeric(d$Y[[1]]))
           stop(paste("Attempts to evaluate data in both the geomorph data frame
-                     and the global environment were unsuccessful.
-                     Perhaps you are trying to call a component of an object?
-                     For example, myData$coords ~  or ~ myData$Csize
-                     This generally does not work well.  
-                     Please review the use of geomorph data frames and try again.\n\n"))
+and the global environment were unsuccessful.
+Perhaps you are trying to call a component of an object?
+For example, myData$coords ~  or ~ myData$Csize
+This generally does not work well.  
+Please review the use of geomorph data frames and try again.\n\n"))
       }
-      } else {
-        d$Y <- try(eval(form.in[[2]], envir = parent.frame()), silent = TRUE)
-        if(!is.numeric(d$Y[[1]]))
-          stop(paste("An Attempt to evaluate data in global environment was unsuccessful.
-                     Perhaps you are trying to call a component of an object?
-                     For example, myData$coords ~  
-                     This generally does not work well.  
-                     Please consider using a geomorph data frames and try again.\n\n"))
-      }
+    } else {
+      d$Y <- try(eval(form.in[[2]], envir = parent.frame()), silent = TRUE)
+      if(!is.numeric(d$Y[[1]]))
+        stop(paste("An Attempt to evaluate data in global environment was unsuccessful.
+Perhaps you are trying to call a component of an object?
+For example, myData$coords ~  
+This generally does not work well.  
+Please consider using a geomorph data frames and try again.\n\n"))
+    }
     if(class(d$Y) == "dist") d$Y <- pcoa(d$Y) else
       if(length(dim(d$Y)) == 3)  d$Y <- two.d.array(d$Y) else
         d$Y <- as.matrix(d$Y)
@@ -1250,21 +1343,21 @@ procD.fit <- function(f1, keep.order=FALSE, pca=TRUE, data = NULL, ...){
         dat <- lapply(1:length(tl), function(j) {
           try(get(as.character(tl[j]), parent.frame()),
               silent = TRUE)
-        }) else
-          dat <- lapply(1:length(tl), function(j) {
-            try(get(as.character(tl[j]), data),
-                silent = TRUE)
-          })
-        check <- (sapply(dat, NROW) == n)
-        if(!all(check)) stop("Your formula appears to have data embedded within objects
-                             (a '$' is part of the formula).  It is not possible to reconcile 
-                             the location of the data from the object that contains it with this 
-                             function.  Either use a geomorph data frame or liberate the data from 
-                             the object and try again.")
-        dat <- dat[check]
-        tl <- tl[check]
-        names(dat) <- tl
-        dat <- as.data.frame(dat)
+          }) else
+            dat <- lapply(1:length(tl), function(j) {
+              try(get(as.character(tl[j]), data),
+              silent = TRUE)
+              })
+          check <- (sapply(dat, NROW) == n)
+          if(!all(check)) stop("Your formula appears to have data embedded within objects
+(a '$' is part of the formula).  It is not possible to reconcile 
+the location of the data from the object that contains it with this 
+function.  Either use a geomorph data frame or liberate the data from 
+the object and try again.")
+          dat <- dat[check]
+          tl <- tl[check]
+          names(dat) <- tl
+          dat <- as.data.frame(dat)
     }
     if(pca) d$Y <- prcomp(d$Y)$x
     dat$Y <- d$Y
@@ -1275,7 +1368,7 @@ procD.fit <- function(f1, keep.order=FALSE, pca=TRUE, data = NULL, ...){
                      terms = Terms,
                      formula = form,
                      SS.type = SS.type)
-      }
+  }
   if(is.null(pdf.args$w))
     pdf.args$w <- rep(1, NROW(pdf.args$data))
   if(is.null(pdf.args$offset))
@@ -1388,279 +1481,287 @@ rrpp <- function(fitted, residuals, ind.i, w, o){
   r
 }
 
-
-# SS.mean
-# calculates SS for fitted values when only a mean is needed
-# used in SS.iter and SS.pgls.iter
-SS.mean <- function(x, n) if(is.vector(x)) sum(x)^2/n else sum(colSums(x)^2)/n
+# Cov.proj
+# generates projection matrix from covariance matrix
+# used in procD.lm
+Cov.proj <- function(Cov, id){
+  if(is.null(id)) id <- 1:NCOL(Cov)
+  Cov <- Cov[id, id]
+  invC <- fast.solve(Cov)
+  eigC <- eigen(Cov)
+  lambda <- zapsmall(eigC$values)
+  if(any(lambda == 0)){
+    cat("Warning: singular covariance matrix. Proceed with caution")
+    lambda = lambda[lambda > 0]
+  }
+  eigC.vect = eigC$vectors[,1:(length(lambda))]
+  P <- fast.solve(eigC.vect%*% diag(sqrt(lambda)) %*% t(eigC.vect))
+  dimnames(P) <- dimnames(Cov)
+  P
+}
 
 # SS.iter
 # calculates SS in random iterations of a resampling procedure
 # used in nearly all 'procD.lm' functions, unless pgls in used
-SS.iter <- function(pfit, iter, seed = NULL, Yalt="RRPP") {
-  fitted <- pfit$fitted.reduced
-  res <- pfit$residuals.reduced
-  Y <- pfit$Y
+# now replaces SS.pgls.iter
+SS.iter <- function(fit, ind, P = NULL, RRPP = TRUE, print.progress = TRUE) {
+  if(!is.null(P)) gls = TRUE else gls = FALSE
+  perms <- length(ind)
+  fitted <- fit$wFitted.reduced
+  res <- fit$wResiduals.reduced
+  Y <- fit$wY
   dims <- dim(as.matrix(Y))
   n <- dims[1]; p <- dims[2]
-  ind <- perm.index(n, iter, seed = seed)
-  perms <- length(ind)
-  trms <- pfit$term.labels
+  trms <- fit$term.labels
   k <- length(trms)
-  if(Yalt == "resample") {
-    fitted <- lapply(fitted, function(.) matrix(0, n, p))
-    res <- lapply(res, function(.) Y)
-  }
-  w <- sqrt(pfit$weights)
-  o <- pfit$offset
-  if(sum(w) != n) weighted = TRUE else weighted = FALSE
+  w <- sqrt(fit$weights)
+  o <- fit$offset
   if(sum(o) != 0) offset = TRUE else offset = FALSE
   rrpp.args <- list(fitted = fitted, residuals = res,
                     ind.i = NULL, w = NULL, o = NULL)
-  if(weighted) rrpp.args$w <- w
   if(offset) rrpp.args$o <- o
-  cat(paste("\n\nSums of Squares calculations:", perms, "permutations.\n"))
-  pb <- txtProgressBar(min = 0, max = perms+1, initial = 0, style=3)
-  Ur <- lapply(pfit$wQRs.reduced, qr.Q)
-  Uf <- lapply(pfit$wQRs.full, qr.Q)
-  SS <- lapply(1: perms, function(j){
-    step <- j
-    setTxtProgressBar(pb,step)
-    x <-ind[[j]]
-    rrpp.args$ind.i <- x
-    Yi <- do.call(rrpp, rrpp.args)
-    if(weighted) y <- Y[x,]*w else y <- Y[x,]; yy <- sum(y^2)
-    c(Map(function(y, ur, uf) sum(crossprod(uf,y)^2) - sum(crossprod(ur,y)^2),
-          Yi, Ur, Uf),
-      yy - sum(crossprod(Uf[[k]], y)^2), yy - SS.mean(y, n))
-  })
+  if(print.progress){
+    cat(paste("\nSums of Squares calculations:", perms, "permutations.\n"))
+    pb <- txtProgressBar(min = 0, max = perms+1, initial = 0, style=3)
+  }
+  if(gls){
+    Y <- crossprod(P, Y)
+    Xr <- lapply(fit$wXrs, function(x) crossprod(P, as.matrix(x)))
+    Xf <- lapply(fit$wXfs, function(x) crossprod(P, as.matrix(x)))
+    Ur <- lapply(Xr, function(x) qr.Q(qr(x)))
+    Uf <- lapply(Xf, function(x) qr.Q(qr(x)))
+    Ufull <- Uf[[k]]
+    int <- attr(fit$Terms, "intercept")
+    Unull <- qr.Q(qr(crossprod(P, rep(int, n))))
+    if(!RRPP) {
+      fitted <- lapply(fitted, function(.) matrix(0, n, p))
+      res <- lapply(res, function(.) Y)
+    } else {
+      fitted <- Map(function(u) crossprod(tcrossprod(u), Y), Ur)
+      res <- lapply(fitted, function(f) Y - f)
+    }
+    rrpp.args$fitted <- fitted
+    rrpp.args$residuals <- res
+    SS <- lapply(1: perms, function(j){
+      step <- j
+      if(print.progress) setTxtProgressBar(pb,step)
+      x <-ind[[j]]
+      rrpp.args$ind.i <- x
+      Yi <- do.call(rrpp, rrpp.args)
+      y <- Yi[[1]]
+      pyy <- sum(y^2)
+      c(Map(function(y, ur, uf) sum(crossprod(uf,y)^2) - sum(crossprod(ur,y)^2),
+            Yi, Ur, Uf),
+        pyy - sum(crossprod(Ufull, y)^2), pyy - sum(crossprod(Unull, y)^2))
+    })
+  } else {
+    if(!RRPP) {
+      fitted <- lapply(fitted, function(.) matrix(0, n, p))
+      res <- lapply(res, function(.) Y)
+      rrpp.args$fitted <- fitted
+      rrpp.args$residuals <- res
+    }
+    Ur <- lapply(fit$wQRs.reduced, qr.Q)
+    Uf <- lapply(fit$wQRs.full, qr.Q)
+    Ufull <- Uf[[k]]
+    int <- attr(fit$Terms, "intercept")
+    Unull <- qr.Q(qr(rep(int, n)))
+    SS <- lapply(1: perms, function(j){
+      step <- j
+      if(print.progress) setTxtProgressBar(pb,step)
+      x <-ind[[j]]
+      rrpp.args$ind.i <- x
+      Yi <- do.call(rrpp, rrpp.args)
+      y <- Yi[[1]]
+      yy <- sum(y^2)
+      c(Map(function(y, ur, uf) sum(crossprod(uf,y)^2) - sum(crossprod(ur,y)^2),
+            Yi, Ur, Uf),
+        yy - sum(crossprod(Ufull, y)^2), yy - sum(crossprod(Unull, y)^2))
+    })
+  }
   SS <- matrix(unlist(SS), k+2, perms)
   rownames(SS) <- c(trms, "Residuals", "Total")
   colnames(SS) <- c("obs", paste("iter", 1:(perms-1), sep=":"))
   step <- perms + 1
-  setTxtProgressBar(pb,step)
-  close(pb)
-  out <- list(SS = SS[1:k,], SSE = SS[k+1,], SSY = SS[k+2,])
-  out
-}
-
-# .SS.iter
-# same as SS.iter, but without progress bar option
-# used in nearly all 'procD.lm' functions, unless pgls in used
-.SS.iter <- function(pfit,iter, seed = NULL, Yalt="RRPP") {
-  fitted <- pfit$fitted.reduced
-  res <- pfit$residuals.reduced
-  Y <- pfit$Y
-  dims <- dim(as.matrix(Y))
-  n <- dims[1]; p <- dims[2]
-  ind <- perm.index(n, iter, seed = seed)
-  perms <- length(ind)
-  trms <- pfit$term.labels
-  k <- length(trms)
-  if(Yalt == "resample") {
-    fitted <- lapply(fitted, function(.) matrix(0, n, p))
-    res <- lapply(res, function(.) Y)
-  }
-  w <- sqrt(pfit$weights)
-  o <- pfit$offset
-  if(sum(w) != n) weighted = TRUE else weighted = FALSE
-  if(sum(o) != 0) offset = TRUE else offset = FALSE
-  rrpp.args <- list(fitted = fitted, residuals = res,
-                    ind.i = NULL, w = NULL, o = NULL)
-  if(weighted) rrpp.args$w <- w
-  if(offset) rrpp.args$o <- o
-  Ur <- lapply(pfit$wQRs.reduced, qr.Q)
-  Uf <- lapply(pfit$wQRs.full, qr.Q)
-  SS <- lapply(1: perms, function(j){
-    x <-ind[[j]]
-    rrpp.args$ind.i <- x
-    Yi <- do.call(rrpp, rrpp.args)
-    if(weighted) y <- Y[x,]*w else y <- Y[x,]; yy <- sum(y^2)
-    c(Map(function(y, ur, uf) sum(crossprod(uf,y)^2) - sum(crossprod(ur,y)^2),
-          Yi, Ur, Uf),
-      yy - sum(crossprod(Uf[[k]], y)^2), yy - SS.mean(y, n))
-  })
-  SS <- matrix(unlist(SS), k+2, perms)
-  rownames(SS) <- c(trms, "Residuals", "Total")
-  colnames(SS) <- c("obs", paste("iter", 1:(perms-1), sep=":"))
-  out <- list(SS = SS[1:k,], SSE = SS[k+1,], SSY = SS[k+2,])
-  out
-}
-
-# SS.pgls.iter
-# calculates F values in random iterations of a resampling procedure, with pgls involved
-# used in the 'procD.lm' functions where pgls is used
-# Formerly Fpgls.iter
-SS.pgls.iter = function(pfit, Pcor, iter, seed=NULL, Yalt="RRPP"){
-  P <- Pcor
-  fitted <- pfit$fitted.reduced
-  res <- pfit$residuals.reduced
-  Y <- pfit$Y
-  dims <- dim(as.matrix(Y))
-  n <- dims[1]; p <- dims[2]
-  ind <- perm.index(n, iter, seed=seed)
-  perms <- length(ind)
-  trms <- pfit$term.labels
-  k <- length(trms)
-  if(Yalt == "resample") {
-    fitted <- lapply(fitted, function(.) matrix(0, n, p))
-    res <- lapply(res, function(.) Y)
-  }
-  w <- sqrt(pfit$weights)
-  o <- pfit$offset
-  if(sum(w) != n) weighted = TRUE else weighted = FALSE
-  if(sum(o) != 0) offset = TRUE else offset = FALSE
-  rrpp.args <- list(fitted = fitted, residuals = res,
-                    ind.i = NULL, w = NULL, o = NULL)
-  if(weighted) rrpp.args$w <- w
-  if(offset) rrpp.args$o <- o
-  cat(paste("\n\nSums of Squares calculations:", perms, "permutations.\n"))
-  pb <- txtProgressBar(min = 0, max = perms+1, initial = 0, style=3)
-  Xr <- lapply(pfit$wXrs, function(x) crossprod(P, as.matrix(x)))
-  Xf <- lapply(pfit$wXfs, function(x) crossprod(P, as.matrix(x)))
-  Ur <- lapply(Xr, function(x) crossprod(P,qr.Q(qr(x))))
-  Uf <- lapply(Xf, function(x) crossprod(P,qr.Q(qr(x))))
-  Ufull <- Uf[[k]]
-  Unull <- crossprod(P, qr.Q(qr(crossprod(P, matrix(1, n)))))
-  SS <- lapply(1: perms, function(j){
-    step <- j
+  if(print.progress) {
     setTxtProgressBar(pb,step)
-    x <-ind[[j]]
-    rrpp.args$ind.i <- x
-    Yi <- do.call(rrpp, rrpp.args)
-    if(weighted) y <- Y[x,]*w else y <- Y[x,]
-    py <- crossprod(P,y); pyy <- sum(py^2)
-    c(Map(function(y, ur, uf) sum(crossprod(uf,y)^2) - sum(crossprod(ur,y)^2),
-          Yi, Ur, Uf),
-      pyy - sum(crossprod(Ufull, y)^2), pyy - sum(crossprod(Unull, y)^2))
-  })
-  SS <- matrix(unlist(SS), k+2, perms)
-  rownames(SS) <- c(trms, "Residuals", "Total")
+    close(pb)
+  }
+  SS
+}
+
+SS.iter.null <- function(fit, ind, P = NULL, RRPP=TRUE, print.progress = TRUE) {
+  if(!is.null(P)) gls = TRUE else gls = FALSE
+  perms <- length(ind)
+  if(print.progress){
+    cat(paste("\nSums of Squares calculations:", perms, "permutations.\n"))
+    pb <- txtProgressBar(min = 0, max = perms+1, initial = 0, style=3)
+  }
+  fitted <- fit$wFitted.full
+  res <- fit$wResiduals.full
+  Y <- fit$wY
+  dims <- dim(as.matrix(Y))
+  n <- dims[1]; p <- dims[2]
+  k <- 1
+  w <- sqrt(fit$weights)
+  o <- fit$offset
+  if(gls){
+    Y <- crossprod(P, Y)
+    if(!RRPP) {
+      fitted <- lapply(fitted, function(.) matrix(0, n, p))
+      res <- lapply(res, function(.) Y)
+    } else {
+      int <- attr(fit$Terms, "intercept")
+      U <- qr.Q(qr(crossprod(P, rep(int, n))))
+      fitted <- crossprod(tcrossprod(U), Y)
+      res <- lapply(fitted, function(f) Y - f)
+    }
+    SS <- lapply(1:perms, function(j){
+      x <-ind[[j]]
+      y <- fitted + res[x,]; pyy <- sum(y^2)
+      step <- j
+      if(print.progress) setTxtProgressBar(pb,step)
+      pyy - sum(crossprod(U, y)^2)
+    })
+  } else {
+    if(!RRPP) {
+      fitted <- lapply(fitted, function(.) matrix(0, n, p))
+      res <- lapply(res, function(.) Y)
+    }
+    int <- attr(fit$Terms, "intercept")
+    U <- qr.Q(qr(rep(int, n)))
+    SS <- lapply(1:perms, function(j){
+      x <-ind[[j]]
+      y <- Y[x,]; yy <- sum(y^2)
+      step <- j
+      if(print.progress) setTxtProgressBar(pb,step)
+      yy - sum(crossprod(U, y)^2)
+    })
+  }
+  SS <- matrix(unlist(SS), 1, perms)
+  rownames(SS) <- "Residuals"
   colnames(SS) <- c("obs", paste("iter", 1:(perms-1), sep=":"))
   step <- perms + 1
-  setTxtProgressBar(pb,step)
-  close(pb)
-  out <- list(SS = SS[1:k,], SSE = SS[k+1,], SSY = SS[k+2,])
-  out
+  if(print.progress) {
+    setTxtProgressBar(pb,step)
+    close(pb)
+  }
+  SS
 }
 
-# .SS.pgls.iter
-# same as Fpgls.iter, but without progress bar option
-# used in the 'procD.lm' functions where pgls is used
-# Formerly .Fpgls.iter
-.SS.pgls.iter = function(pfit, Pcor, iter, seed=NULL, Yalt="RRPP"){
-  P <- Pcor
-  fitted <- pfit$fitted.reduced
-  res <- pfit$residuals.reduced
-  Y <- pfit$Y
+RSS.iter <- function(fitr, fitf, ind, P = NULL, print.progress = TRUE) {
+  if(!is.null(P)) gls = TRUE else gls = FALSE
+  RRPP <- TRUE
+  perms <- length(ind)
+  Y <- fitf$wY
   dims <- dim(as.matrix(Y))
   n <- dims[1]; p <- dims[2]
-  ind <- perm.index(n, iter, seed=seed)
-  perms <- length(ind)
-  trms <- pfit$term.labels
-  k <- length(trms)
-  if(Yalt == "resample") {
-    fitted <- lapply(fitted, function(.) matrix(0, n, p))
-    res <- lapply(res, function(.) Y)
-  }
-  w <- sqrt(pfit$weights)
-  o <- pfit$offset
-  if(sum(w) != n) weighted = TRUE else weighted = FALSE
+  kf <- length(fitf$term.labels)
+  kr <- length(fitr$term.labels)
+  if(kr == 0) kr = 1
+  w <- sqrt(fitf$weights)
+  o <- fitf$offset
   if(sum(o) != 0) offset = TRUE else offset = FALSE
-  rrpp.args <- list(fitted = fitted, residuals = res,
+  rrpp.args <- list(fitted = NULL, residuals = NULL,
                     ind.i = NULL, w = NULL, o = NULL)
-  if(weighted) rrpp.args$w <- w
   if(offset) rrpp.args$o <- o
-  Xr <- lapply(pfit$wXrs, function(x) crossprod(P, as.matrix(x)))
-  Xf <- lapply(pfit$wXfs, function(x) crossprod(P, as.matrix(x)))
-  Ur <- lapply(Xr, function(x) crossprod(P,qr.Q(qr(x))))
-  Uf <- lapply(Xf, function(x) crossprod(P,qr.Q(qr(x))))
-  Ufull <- Uf[[k]]
-  Unull <- crossprod(P, qr.Q(qr(crossprod(P, matrix(1, n)))))
-  SS <- lapply(1: perms, function(j){
-    x <-ind[[j]]
-    rrpp.args$ind.i <- x
-    Yi <- do.call(rrpp, rrpp.args)
-    if(weighted) y <- Y[x,]*w else y <- Y[x,]
-    py <- crossprod(P,y); pyy <- sum(py^2)
-    c(Map(function(y, ur, uf) sum(crossprod(uf,y)^2) - sum(crossprod(ur,y)^2),
-          Yi, Ur, Uf),
-      pyy - sum(crossprod(Ufull, y)^2), pyy - sum(crossprod(Unull, y)^2))
-  })
-  SS <- matrix(unlist(SS), k+2, perms)
-  rownames(SS) <- c(trms, "Residuals", "Total")
+  if(print.progress){
+    cat(paste("\nSums of Squares calculations:", perms, "permutations.\n"))
+    pb <- txtProgressBar(min = 0, max = perms+1, initial = 0, style=3)
+  }
+  if(gls){
+    Y <- crossprod(P, Y)
+    dims <- dim(Y)
+    n <- dims[1]; p <- dims[2]
+    Xf <- crossprod(P, fitf$wXfs[[kf]])
+    Xr <- crossprod(P, fitr$wXfs[[kr]])
+    Uf <- qr.Q(qr(Xf))
+    Ur <- qr.Q(qr(Xr))
+    int <- attr(fitf$Terms, "intercept")
+    Unull <- qr.Q(qr(crossprod(P, rep(int, n))))
+    fitted <- fastFit(Ur, Y, n, p)
+    res <- Y - fitted
+    rrpp.args$fitted <- list(fitted)
+    rrpp.args$residuals <- list(res)
+    SS <- lapply(1: perms, function(j){
+      step <- j
+      if(print.progress) setTxtProgressBar(pb,step)
+      x <-ind[[j]]
+      rrpp.args$ind.i <- x
+      Yi <- do.call(rrpp, rrpp.args)
+      y <- Yi[[1]]
+      yy <- Y[x,]
+      pyy <- sum(yy^2)
+      c(pyy - sum(crossprod(Ur, y)^2),
+        pyy - sum(crossprod(Uf, y)^2),
+        pyy - sum(crossprod(Uf, yy)^2),
+        pyy - sum(crossprod(Unull,y)^2))
+    })
+  } else {
+    fitted <- fitr$wFitted.full[[kr]]
+    res <- fitr$wResiduals.full[[kr]]
+    rrpp.args$fitted <- list(fitted)
+    rrpp.args$residuals <- list(res)
+    Uf <- qr.Q(fitf$wQRs.full[[kf]])
+    Ur <- qr.Q(fitr$wQRs.full[[kr]])
+    int <- attr(fitf$Terms, "intercept")
+    Unull <- qr.Q(qr(rep(int, n)))
+    SS <- lapply(1: perms, function(j){
+      step <- j
+      if(print.progress) setTxtProgressBar(pb,step)
+      x <-ind[[j]]
+      rrpp.args$ind.i <- x
+      Yi <- do.call(rrpp, rrpp.args)
+      y <- Yi[[1]]
+      yy <- Y[x,]
+      pyy <- sum(yy^2)
+      c(pyy - sum(crossprod(Ur, y)^2),
+        pyy - sum(crossprod(Uf, y)^2),
+        pyy - sum(crossprod(Uf, yy)^2),
+        pyy - sum(crossprod(Unull,y)^2))
+    })
+  }
+
+  step <- perms + 1
+  if(print.progress) {
+    setTxtProgressBar(pb,step)
+    close(pb)
+  }
+  SS <-matrix(unlist(SS), 4, perms)
   colnames(SS) <- c("obs", paste("iter", 1:(perms-1), sep=":"))
-  out <- list(SS = SS[1:k,], SSE = SS[k+1,], SSY = SS[k+2,])
-  out
+  rownames(SS) <- c("RSSr", "RSSf", "RSSm", "SSY")
+  SS
 }
 
 # anova.parts
 # makes an ANOVA table based on SS from SS.iter
 # used in nearly all 'procD.lm' functions
 # replaces anova.parts.pgls
-anova.parts <- function(pfit, P){ # P(ermutations) from SS.iter
+anova.parts <- function(pfit, SS){ # P(ermutations) from SS.iter
   Y <- as.matrix(pfit$Y)
   QRr <- pfit$wQRs.reduced
   QRf <- pfit$wQRs.full
   k <- length(QRf)
-  n <- dim(Y)[1]; p <- dim(Y)[2]
+  dims <- dim(Y)
+  n <- dims[1]; p <- dims[2]
   df <- sapply(1:k, function(j) QRf[[j]]$rank - QRr[[j]]$rank)
   dfE <- n- sum(df) -1
-  SSE.model <- P$SSE[1]
-  SSY <- P$SSY[1]
-  if(k==1) SS <- P$SS[1] else SS <- P$SS[,1]
+  df <- c(df, dfE, n-1)
+  SS <- SS[,1]
+  SSE.model <- SS[k + 1]
+  SSY <- SS[k + 2]
   anova.terms <- pfit$term.labels
   MS <- SS/df
   R2 <- SS/SSY
   MSE <- SSE.model/dfE
   Fs <- MS/MSE
-  df <- c(df, dfE, n-1)
-  SS <- c(SS,SSE.model, SSY)
-  MS <- c(MS,MSE,NA)
-  R2 <- c(R2,NA,NA)
-  Fs <- c(Fs,NA,NA)
+  MS[length(MS)] <- NA
+  Fs[-(1:k)] <- NA
+  R2[length(R2)] <- NA
   anova.tab <- data.frame(df,SS,MS,Rsq=R2,F=Fs)
   rownames(anova.tab) <- c(anova.terms, "Residuals", "Total")
   out <- list(anova.table = anova.tab, anova.terms = anova.terms,
               SS = SS, df = df, R2 = R2[1:k], F = Fs[1:k])
-  out
-}
-
-# anova.parts.symmetry
-# makes an ANOVA table based on SS from SS.iter
-# used in symmetry analysis, which is a nested model
-anova.parts.symmetry <- function(pfit, P, object.sym = FALSE){ # P(ermutations) from SS.iter
-  Y <- as.matrix(pfit$Y)
-  QRr <- pfit$wQRs.reduced
-  QRf <- pfit$wQRs.full
-  k <- length(QRf)
-  n <- dim(Y)[1]; p <- dim(Y)[2]
-  df <- sapply(1:k, function(j) QRf[[j]]$rank - QRr[[j]]$rank)
-  SSY <- P$SSY
-  SS <- P$SS
-  anova.terms <- pfit$term.labels
-  if(object.sym){
-    SS<-SS/2; SSY<-SSY/2
-  }
-  MS <- SS/df
-  R2 <- SS/SSY
-  F1 <- MS[1,]/MS[3,]
-  F2 <- MS[2,]/MS[3,]
-  if(k==4) F3 <- MS[3,]/MS[4,] else F3 <- NULL
-  Fs <- rbind(F1,F2,F3, NA)
-  rownames(Fs) <- rownames(MS) <- rownames(SS) <- rownames(R2) <- anova.terms
-  Ps <- apply(Fs,1,pval)
-  if(k==4) Ps[4] <- NA else Ps[3] <-NA
-  Zs <- apply(Fs,1,effect.size)
-  if(k==4) Zs[4] <- NA else Zs[3] <-NA
-  anova.tab <- data.frame(df = df,SS = SS[,1],
-                          MS = MS[,1],
-                          Rsq= R2[,1],
-                          F=Fs[,1], Z=Zs, Pr = Ps)
-  rownames(anova.tab) <- anova.terms
-  out <- list(anova.table = anova.tab, anova.terms = anova.terms,
-              SS = SS[,1], df = df, R2 = R2[,1], F = Fs[1:(k-1),1],
-              random.Fs = Fs)
   out
 }
 
@@ -2044,7 +2145,7 @@ apply.pls <- function(x,y, RV=FALSE, iter, seed = NULL){
   if(jj > 100) j <- 1:100 else j <- 1:jj
   while(jj > 0){
     ind.j <- ind[j]
-    y.rand <-lapply(1:length(j), function(i) y[ind.j[[i]],])
+    y.rand <-lapply(1:length(j), function(i) as.matrix(y[ind.j[[i]],]))
     if(RV == TRUE) RV.rand <- c(RV.rand,sapply(1:length(j), function(i) pls(x,y.rand[[i]], RV=TRUE, verbose = TRUE)$RV)) else
       r.rand <- c(r.rand, sapply(1:length(j), function(i) quick.pls(x,y.rand[[i]])))
     jj <- jj-length(j)
@@ -2070,7 +2171,7 @@ apply.pls <- function(x,y, RV=FALSE, iter, seed = NULL){
   if(jj > 100) j <- 1:100 else j <- 1:jj
   while(jj > 0){
     ind.j <- ind[j]
-    y.rand <-lapply(1:length(j), function(i) y[ind.j[[i]],])
+    y.rand <-lapply(1:length(j), function(i) as.matrix(y[ind.j[[i]],]))
     if(RV == TRUE) RV.rand <- c(RV.rand,sapply(1:length(j), function(i) pls(x,y.rand[[i]], RV=TRUE, verbose = TRUE)$RV)) else
       r.rand <- c(r.rand, sapply(1:length(j), function(i) quick.pls(x,y.rand[[i]])))
     jj <- jj-length(j)
@@ -2879,6 +2980,203 @@ traj.by.groups <- function(ff, fr, traj.pts, data=NULL, iter, seed= NULL,
        ngroups = tn, npoints = tp)
 }
 
+# GMfromShapes0
+# function to read landmarks without sliders from a StereoMorph shapes object
+# used in: readland.shapes
+GMfromShapes0 <- function(Shapes, scaled = TRUE){ # No curves
+  scaling <- Shapes$scaling
+  sp.names <- dimnames(Shapes$landmarks.pixel)[[3]]
+  lm.names <- dimnames(Shapes$landmarks.pixel)[[1]]
+  if(is.null(scaling)) {
+    landmarks <- Shapes$landmarks.pixel
+    cat("\nWarning: No specimens have scaling")
+    cat("\nUnscaled landmarks imported, as a result\n")
+    scaled = FALSE
+    } else {
+      if(any(is.na(scaling))){
+        sp.na <- which(is.na(scaling))
+        cat("\nWarning: Some specimens have no scaling\n")
+        cat(sp.names[sp.na])
+        cat("\nUnscaled landmarks imported, as a result\n")
+        landmarks <- Shapes$landmarks.pixel
+        scaled = FALSE
+      } else {
+        if(scaled) landmarks <- Shapes$landmarks.scaled else 
+          landmarks <- Shapes$landmarks.pixel
+      }
+    }
+  dims <- dim(landmarks)
+  n <- dims[[3]]; p <- dims[[1]]; k <- dims[[2]]
+  landmarks <- lapply(1:n, function(j){
+    landmarks[,,j]
+  })
+  names(landmarks) <- sp.names
+  
+  out <- list(landmarks = landmarks, fixed = 1:dims[[1]],
+              sliders = NULL, curves = NULL, n = n, 
+              p = p, k = k, scaled = scaled)
+  class(out) <- "geomorphShapes"
+  invisible(out)
+}
+
+# evenPts
+# basic function for spacing out curve points via linear interpolation
+# simple form of pointsAtEvenSpacing from StereoMorph 
+# used in: readland.shapes and difit.curves
+evenPts <- function(x, n){
+  x <- as.matrix(na.omit(x))
+  N <- NROW(x); p <- NCOL(x)
+  if(N == 1) stop("x must be a matrix")
+  if(n < 3) {
+    n <- 2
+    nn <- 3 # so lapply function works
+  } else nn <- n
+  
+  if(N == 2) {
+    x <- rbind(x, x[2,])
+    N <- 3 # third row cut off later
+  }
+    xx <- x[2:N, ] - x[1:(N - 1), ]
+    ds <- sqrt(rowSums(xx^2))
+    cds <- c(0, cumsum(ds))
+    cuts <- cumsum(rep(cds[N]/(n-1), n-1))
+    targets <- lapply(1:(nn-2), function(j){
+      dtar <- cuts[j]
+      ll <- which.max(cds[cds < dtar])
+      ul <- ll + 1
+      adj <- (dtar- cds[ll])/(cds[[ul]] - cds[ll])
+      x[ll,] + adj * (x[ul,] - x[ll,])
+    })
+    
+  out <- matrix(c(x[1,], unlist(targets), x[N,]), n, p, byrow = TRUE)
+  out
+}
+
+# GMfromShapes1
+# function to read landmarks with sliders from a StereoMorph shapes object
+# used in: readland.shapes
+GMfromShapes1 <- function(Shapes, nCurvePts, curve.ends = NULL, continuous.curve = NULL, scaled = TRUE){ # with Curves
+  out <- GMfromShapes0(Shapes, scaled = scaled)
+  scaled = out$scaled
+  if(scaled) curves <- Shapes$curves.scaled else 
+    curves <- Shapes$curves.pixel
+  sp.names <- names(out$landmarks)
+  n <- out$n; p <- out$p; k <- out$k
+  
+  # define fixed landmarks
+  fixedLM  <- out$landmarks
+  
+  # define curves
+  curves.check <- sapply(1:n, function(j) length(curves[[j]]))
+  if(length(unique(curves.check)) > 1) stop("Specimens have different numbers of curves")
+  curve.n <- curves.check[1]
+  curve.nms <- names(curves[[1]])
+  nCurvePts <- unlist(nCurvePts)
+  if(length(nCurvePts) != curve.n) stop("The number of curves and length of nCurvePts do not match")
+  curves <- lapply(1:n, function(j){
+    x <- curves[[j]]
+    res <- lapply(1:curve.n, function(jj) evenPts(x[[jj]], nCurvePts[[jj]]))
+    names(res) <- curve.nms
+    res
+  })
+  
+  # index fixed landmarks in curves (anchors)
+  anchors <- lapply(1:curve.n, function(j){
+    cv <- curves[[1]][[j]]
+    lm <- fixedLM[[1]]
+    ends <- rbind(cv[1,], cv[nrow(cv),])
+    a <- which(apply(lm, 1,function(x) identical(x, ends[1,])))
+    b <- which(apply(lm, 1,function(x) identical(x, ends[2,])))
+    c(a,b)
+  })
+  
+  # determine which curve points become landmarks
+  curve.refs <- list()
+  curve.ends <- rep(1, p)
+  for(i in 1:curve.n) {
+    cp <- nCurvePts[i]
+    ce <- c(2, cp+1) - curve.ends
+    cvr <- (1:cp)[-ce]
+    curve.refs[[i]] <- cvr
+  }
+  
+  # create indicator values for semilandmarks
+  lm.curve.refs<- list()
+  pp <- p
+  for(i in 1:curve.n){
+    cr <- curve.refs[[i]]
+    if(length(cr) == 1 && cr == 0) cp <- NA else
+      cp <- cr + pp - 1
+    lm.curve.refs[[i]] <- cp
+    if(is.null(cp)) pp <- pp else pp <- max(cp)
+  }
+  
+  # assemble the landmarks, both fixed and semi
+  landmarks <- lapply(1:n, function(j){
+    x <- fixedLM[[j]]
+    cv <- curves[[j]]
+    for(i in 1:curve.n) x <- rbind(x, cv[[i]][curve.refs[[i]],])
+    rownames(x)[(p+1):(nrow(x))] <- paste("curveLM", (p+1):(nrow(x)), sep=".")
+    x
+  })
+  names(landmarks) <- sp.names
+  
+  # make an index in case any curves are continuous
+  cc <- rep(0, curve.n)
+  if(!is.null(continuous.curve)){
+    continuous.curve <- unlist(continuous.curve)
+    cc[continuous.curve] = 1
+  } 
+  
+  # create a curves matrix
+  curves.mat.parts <- lapply(1:curve.n, function(j){
+    lcr <- lm.curve.refs[[j]]
+    if(all(is.na(lcr))) {
+      mat.part <- NULL
+      } else {
+        anch <- anchors[[j]]
+        strp <- c(anch[[1]], lcr, anch[[2]])
+        if(cc[j] == 1) strp <- c(strp, strp[2])
+        n.mp <- length(strp) - 2
+        mat.part <- matrix(NA, n.mp, 3)
+        for(i in 1:n.mp) mat.part[i,] <- strp[i:(i+2)]
+      }
+    mat.part
+  })
+  
+  curves.mat <- curves.mat.parts[[1]]
+  if(curve.n >= 2){
+    for(i in 2:curve.n) if(!is.null(curves.mat.parts[[i]]))
+      curves.mat <- rbind(curves.mat, curves.mat.parts[[i]])
+  }
+  single.anchors <- sapply(lapply(anchors, unique), length) == 1
+  fixed <- out$fixed
+  sliders <- (1:nrow(landmarks[[1]]))[-fixed]
+  makeSemi <- as.numeric(single.anchors) * cc
+  for(i in 1:length(makeSemi)){
+    if(makeSemi[i] > 0) {
+      targ <- unique(anchors[[i]])
+      fixed <- fixed[-targ]
+      sliders <- c(targ, sliders)
+    }
+  }
+  
+  curve.mat.nms <- rownames(landmarks[[1]])[curves.mat[,2]]
+  rownames(curves.mat) <- curve.mat.nms
+  
+  # Assemble the output
+  out$landmarks <- landmarks
+  out$fixed <- fixed
+  out$sliders <- sliders
+  out$curves <- curves.mat
+  out$p <- length(fixed) + length(sliders)
+  
+  invisible(out)
+}
+
+
+
+
 #####-----------------------------------------------------------------------------------
 
 ### geomorph-specific logicals
@@ -3036,3 +3334,49 @@ readland.tps2 <- function (file, specID = c("None", "ID", "imageID"))
   }
   return(list(coords = coords,scale=imscale)  )
 }
+
+# Function for ace of GM data
+# follows fastAnc in phytools
+# x is a matrix
+shape.ace <- function(x, phy){
+  N <- length(phy$tip.label)
+  Nnode <- phy$Nnode
+  anc.states<-NULL   
+  for (i in 1:ncol(x)){
+    x1 <- x[,i]
+    tmp <- vector()
+    for (j in 1:Nnode + N) {
+      a <- multi2di(root(phy, node = j))
+      tmp[j - N] <- ace(x1, a, method = "pic")$ace[1]
+    }
+    anc.states<-cbind(anc.states, tmp)   
+  }
+  colnames(anc.states) <- 1:ncol(x)
+  row.names(anc.states) <- 1:Nnode
+  return(anc.states)
+}
+
+# Function for retrieving pieces for PCA weighting from a VCV (not from phylo)
+# Follows phylo.mat
+
+cov.mat <- function(x, COV) {
+  if(is.null(dimnames(COV))){
+    warning("COV matrix does not include dimnames. Assuming same order of observations as x")
+  } else {
+    C <- C[rownames(x),rownames(x)]
+  }
+  invC <- fast.solve(C)
+  eigC <- eigen(C)
+  lambda <- zapsmall(eigC$values)
+  if(any(lambda == 0)){
+    warning("Singular covariance matrix. Proceed with caution")
+    lambda = lambda[lambda > 0]
+  }
+  eigC.vect <- eigC$vectors[,1:(length(lambda))]
+  D.mat <- fast.solve(eigC.vect%*% diag(sqrt(lambda)) %*% t(eigC.vect))
+  rownames(D.mat) <- colnames(D.mat) <- colnames(C)
+  rownames(invC) <- colnames(invC) <- colnames(C)
+  list(invC = invC, D.mat = D.mat, C = C)
+}
+
+

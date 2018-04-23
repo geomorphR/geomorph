@@ -51,8 +51,8 @@ obtained under Brownian motion using a common evolutionary rate pattern for all 
 common evolutionary rate matrix for all species is used, with the multi-dimensional rate used along the diagonal elements (see 
 Denton and Adams 2015). This procedure is more general than the original simulation procedure, and retains the desirable 
 statistical properties of earlier methods, and under a wider array of data types.  Second, significance may be accomplished via 
-permutation, where data values at the tips are permuted relative to the (see Adams and Collyer 2017). This procedure is shown to 
-retain all appropriate statistical properties, including rotation-invariance of significance levels (see results of Adams and Collyer 2017).
+permutation, where data values at the tips are permuted relative to the (see Adams and Collyer 2018). This procedure is shown to 
+retain all appropriate statistical properties, including rotation-invariance of significance levels (see results of Adams and Collyer 2018).
 }
 }
 \examples{
@@ -73,10 +73,10 @@ Denton, J.S.S., and D.C. Adams. 2015. A new phylogenetic test for comparing
 multiple high-dimensional evolutionary rates suggests interplay of evolutionary rates and 
 modularity in lanternfishes (Myctophiformes; Myctophidae). Evolution. 69:2425-2440.
 
-Adams, D.C. and M.L. Collyer. 2017. Multivariate comparative methods: evaluations, comparisons, and
-recommendations. Systematic Biology. In press.
+Adams, D.C. and M.L. Collyer. 2018. Multivariate comparative methods: evaluations, comparisons, and
+recommendations. Systematic Biology. 67:14-31.
 }
 \author{
-Dean Adams & Emma Sherratt
+Dean Adams
 }
 \keyword{analysis}

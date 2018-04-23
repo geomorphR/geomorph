@@ -7,7 +7,7 @@
 #'
 #' @param A A 3D array (p x k x n) containing landmark coordinates for a set of specimens
 #' @param file Name of the *.tps file to be created
-#' @param scale A logical value stating whether warnings should be printedAn optional vector containing the length of the scale for each specimen
+#' @param scale An optional vector containing the length of the scale for each specimen
 #' @param specID A logical value stating whether specimen ID names should be saved to line ID=
 #' @export
 #' @keywords IO

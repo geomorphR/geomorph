@@ -122,7 +122,7 @@ Adams, D.C. and M.L. Collyer. 2016.  On the comparison of the strength of morpho
 datasets. Evolution. 70:2623-2631.
 }
 \seealso{
-\code{\link{two.b.pls}}, \code{\link{modularity.test}},  
+\code{\link{two.b.pls}}, \code{\link{modularity.test}}, 
 \code{\link{phylo.integration}}, and \code{\link{compare.pls}}
 }
 \author{

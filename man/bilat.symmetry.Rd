@@ -6,7 +6,7 @@
 \usage{
 bilat.symmetry(A, ind = NULL, side = NULL, replicate = NULL,
   object.sym = FALSE, land.pairs = NULL, data = NULL, iter = 999,
-  seed = NULL, RRPP = TRUE, print.progress = TRUE)
+  seed = NULL, RRPP = TRUE, print.progress = TRUE, ...)
 }
 \arguments{
 \item{A}{Either A 3D array (p x k x n) containing raw landmarks (requiring GPA to be performed) or a gpagen object (if GPA has been previously performed).  If one 
@@ -38,6 +38,8 @@ which might be of interest for advanced users.}
 
 \item{print.progress}{A logical value to indicate whether a progress bar should be printed to the screen.
 This is helpful for long-running analyses.}
+
+\item{...}{Arguments to pass onto gpagen}
 }
 \value{
 An object of class "bilat.symmetry" returns a list of the following
@@ -53,6 +55,8 @@ An object of class "bilat.symmetry" returns a list of the following
 \item{random.shape.F}{A matrix of random F-values from the Shape analysis.}
 \item{random.size.F}{A matrix of random F-values from the Centroid Size analysis.}
 \item{perm.method}{A value indicating whether "Raw" values were shuffled or "RRPP" performed.}
+\item{procD.lm.shape}{A list of typical output from an object of class procD.lm, for shape}
+\item{procD.lm.size}{If applicable, a list of typical output from an objeect of class procD.lm, for size.}
 \item{call}{The matched call.}
 }
 \description{
@@ -69,10 +73,10 @@ The function quantifies components of shape variation for a set of specimens as 
  morphometrics may be found in: Mardia et al. 2000; Klingenberg et al. 2002. 
  
  As input, the function receives either A 3D array (p x k x n) containing raw landmarks (requiring 
- GPA to be performed) or a gpagen object (if GPA has been previously performed). If one wishes 
- to incorporate semilandmarks, GPA should be performed first using gpagen. Otherwise, 
- bilat.symmetry can perform the initial GPA, assuming all landmarks are fixed. For 
- "object.sym = FALSE, landmarks should be of dimension (p x k x 2n), as each specimen is 
+ GPA to be performed) or a gpagen object (if GPA has been previously performed) or a geomorphShapes object.
+ If one wishes to incorporate semilandmarks, GPA can either be performed first using gpagen, or within bilat.symmetry
+ by passing adequate GPA arguments (i.e. curves, surfaces, ProcD etc, see \code{\link{gpagen}}. 
+ For "object.sym = FALSE, landmarks should be of dimension (p x k x 2n), as each specimen is 
  represented by both left and right configurations.
    
 Analyses of symmetry for matched pairs of objects is implemented when {object.sym=FALSE}. Here, a 3D array [p x k x 2n] 
@@ -135,10 +139,10 @@ scallop.sym <- bilat.symmetry(A = shape, ind = ind, object.sym = TRUE,
 land.pairs=scallops$land.pairs, data = gdf, RRPP = TRUE, iter = 499)
 summary(scallop.sym)
 
-# Previous example, incorporating semilandmarks (requires GPA to be performed first)
+# Previous example, incorporating semilandmarks
 
-Y.gpa <- gpagen(scallops$coorddata, curves= scallops$curvslide, surfaces = scallops$surfslide)
-scallop.sym <- bilat.symmetry(A = Y.gpa, ind = ind, object.sym = TRUE, 
+scallop.sym <- bilat.symmetry(A = shape, ind = ind, object.sym = TRUE, 
+curves= scallops$curvslide, surfaces = scallops$surfslide,
 land.pairs=scallops$land.pairs, data = gdf, RRPP = TRUE, iter = 499)
 summary(scallop.sym)
 # NOTE one can also: plot(scallop.sym, warpgrids = TRUE, mesh = NULL)
@@ -153,6 +157,6 @@ Klingenberg, C.P., M. Barluenga, and A. Meyer. 2002. Shape analysis of symmetric
 individuals and asymmetry. Evolution. 56:1909-1920.
 }
 \author{
-Dean Adams, Emma Sherratt, and Michael Collyer
+Dean Adams and Michael Collyer
 }
 \keyword{analysis}

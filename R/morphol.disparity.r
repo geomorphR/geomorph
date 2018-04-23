@@ -62,7 +62,7 @@
 #'   for biologists: a primer. 2nd edition. Elsevier/Academic Press, Amsterdam.
 #' @examples
 #' data(plethodon)
-#' Y.gpa<-gpagen(plethodon$land,print.progress = FALSE)    #GPA-alignment
+#' Y.gpa<-gpagen(plethodon$land, print.progress = FALSE)    #GPA-alignment
 #' gdf <- geomorph.data.frame(Y.gpa, species = plethodon$species, site = plethodon$site)
 #' 
 #' # Morphological disparity for entire data set
@@ -134,25 +134,21 @@ morphol.disparity <- function(f1, groups = NULL, iter = 999, seed = NULL,
     w <- sqrt(f1$weights)
     k <- length(f1$term.labels) + 1
     if(is.null(groups) || is.null(data)){
-      X <- f1$X
-      dummy <- function(x){
-        check <- x == 0 | x == 1 | x == -1
-        ifelse(all(check), TRUE, FALSE)
-      }
-      keep <- apply(X,2,dummy)
-      X <- X[,keep]
-      if(NCOL(X) > 1 && sum(X[,1]) == NROW(X)) X <- X[,-1]
-      unX <- as.matrix(unique(X)); unX <- unX[order(unX[,1]),]
-      gps <- as.factor(match(as.data.frame(t(X)), as.data.frame(t(unX))))
       cat("\n\n
           Because either no groups were defined or no geomorph data frame was provided, 
-          an attempt was made to define groups from the model design matrix.  Group levels are thus 
-          defined by design matrix levels in numerical order.  To be precise, rerun the anlaysis with 
-          groups defined and a geomorph data frame provided (see example in help file).
-          \n\n\n.")
-      if(length(gps) == 0) pv = sum(R^2)/nrow(R) else {
-        Xgps <- model.matrix(~ gps + 0, data =) * w
-        if(!is.null(f1$pgls.residuals)) Xgps <- crossprod(f1$Pcor, Xgps)
+          an attempt was made to define groups from the data frame of the fit.  Group levels are thus 
+          defined by factors found in the data frame.  To be precise, rerun the anlaysis with 
+          both groups defined and a geomorph data frame provided (see example in help file).
+          \n\n\n")
+      check <- sapply(f1$data, is.factor)
+      if(all(!check)) gps <- NULL
+      if(any(check)) {
+        datasub <- f1$data[check]
+        gps <- apply(datasub, 1 , paste , collapse = "." )
+      }
+      if(is.null(gps)) pv = sum(R^2)/nrow(R) else {
+        Xgps <- model.matrix(~ gps + 0, data = datasub) * w
+        if(!is.null(f1$pgls.residuals)) Xgps <- crossprod(f1$Pcov, Xgps)
         d <- diag(tcrossprod(R))
         pv <- coef(lm.fit(Xgps, d))
       }
@@ -165,7 +161,7 @@ morphol.disparity <- function(f1, groups = NULL, iter = 999, seed = NULL,
         gps <- as.factor(unlist(gps))
       if(length(gps) == 0) pv = sum(R^2)/nrow(R) else {
         Xgps <- model.matrix(~ gps + 0) * w
-        if(!is.null(f1$pgls.residuals)) Xgps <- crossprod(f1$Pcor, Xgps)
+        if(!is.null(f1$pgls.residuals)) Xgps <- crossprod(f1$Pcov, Xgps)
         d <- diag(tcrossprod(R))
         pv <- coef(lm.fit(Xgps, d))
       }

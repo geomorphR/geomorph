@@ -20,8 +20,8 @@
 #' common evolutionary rate matrix for all species is used, with the multi-dimensional rate used along the diagonal elements (see 
 #' Denton and Adams 2015). This procedure is more general than the original simulation procedure, and retains the desirable 
 #' statistical properties of earlier methods, and under a wider array of data types.  Second, significance may be accomplished via 
-#' permutation, where data values at the tips are permuted relative to the (see Adams and Collyer 2017). This procedure is shown to 
-#' retain all appropriate statistical properties, including rotation-invariance of significance levels (see results of Adams and Collyer 2017).
+#' permutation, where data values at the tips are permuted relative to the (see Adams and Collyer 2018). This procedure is shown to 
+#' retain all appropriate statistical properties, including rotation-invariance of significance levels (see results of Adams and Collyer 2018).
 #' }
 #'
 #' @param A A 3D array (p x k x n) containing GPA-aligned coordinates for all specimens, or a matrix (n x variables)
@@ -32,7 +32,7 @@
 #' @param print.progress A logical value to indicate whether a progress bar should be printed to the screen.  
 #' This is helpful for long-running analyses.
 #' @keywords analysis
-#' @author Dean Adams & Emma Sherratt
+#' @author Dean Adams
 #' @export
 #' @return An object of class "evolrate" returns a list with the following components: 
 #'   \item{sigma.d.ratio}{The ratio of maximum to minimum net evolutionary rates.}
@@ -46,8 +46,8 @@
 #' @references Denton, J.S.S., and D.C. Adams. 2015. A new phylogenetic test for comparing 
 #' multiple high-dimensional evolutionary rates suggests interplay of evolutionary rates and 
 #' modularity in lanternfishes (Myctophiformes; Myctophidae). Evolution. 69:2425-2440.
-#' @references Adams, D.C. and M.L. Collyer. 2017. Multivariate comparative methods: evaluations, comparisons, and
-#' recommendations. Systematic Biology. In press.
+#' @references Adams, D.C. and M.L. Collyer. 2018. Multivariate comparative methods: evaluations, comparisons, and
+#' recommendations. Systematic Biology. 67:14-31.
 #' @examples
 #' data(plethspecies) 
 #' Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment    
@@ -96,6 +96,10 @@ compare.evol.rates<-function(A,phy,gp,iter=999,method=c("simulation","permutatio
   rate.mat<-matrix(nearPD(rate.mat,corr=FALSE)$mat,nrow=ncol(rate.mat),ncol=ncol(rate.mat))
   if(method == "permutation"){
     ind<-perm.index(N,iter)
+    if(ncol(x)==1){
+      x.r <-simplify2array(lapply(1:iter, function(i) x[ind[[i]]]))
+      dim(x.r) <- c(nrow(x.r), 1, iter); dimnames(x.r)[[1]]<-names(x)
+    }else
     x.r <-simplify2array(lapply(1:iter, function(i) x[ind[[i]],]))
   }
   if(method != "permutation") {x.r<-sim.char(phy=phy,par=rate.mat,nsim=iter,model="BM") }

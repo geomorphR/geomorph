@@ -92,7 +92,7 @@
 #' by high-dimensional data. Heredity. 115:357-365.
 #' @references Adams, D.C. and M.L. Collyer. 2016.  On the comparison of the strength of morphological integration across morphometric 
 #' datasets. Evolution. 70:2623-2631.
-#' @seealso \code{\link{two.b.pls}}, \code{\link{modularity.test}},  
+#' @seealso \code{\link{two.b.pls}}, \code{\link{modularity.test}}, 
 #' \code{\link{phylo.integration}}, and \code{\link{compare.pls}}
 #' @examples
 #' data(plethodon) 

@@ -5,9 +5,9 @@
 \title{Procrustes ANOVA and pairwise tests for shape data, using complex linear models}
 \usage{
 advanced.procD.lm(f1, f2, groups = NULL, slope = NULL, angle.type = c("r",
-  "deg", "rad"), phy = NULL, pc.shape = FALSE, effect.type = c("F", "SS",
-  "Rsq"), iter = 999, seed = NULL, print.progress = TRUE, data = NULL,
-  ...)
+  "deg", "rad"), phy = NULL, Cov = NULL, pc.shape = FALSE,
+  effect.type = c("F", "SS", "Rsq"), iter = 999, seed = NULL,
+  print.progress = TRUE, data = NULL, ...)
 }
 \arguments{
 \item{f1}{A formula for a linear model, containing the response matrix (e.g., y ~ x1 + x2)}
@@ -26,7 +26,11 @@ slopes are compared.  Group slopes can differ in their magnitude and direction o
 \item{angle.type}{A value specifying whether directional differences between slopes should be represented by vector
 correlations (r), radians (rad) or degrees (deg).}
 
-\item{phy}{A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape (optional)}
+\item{phy}{A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape (optional).}
+
+\item{Cov}{A covariance matrix to guide GLS computations.  If both a phylogenetic tree and covariance matrix
+are provided, a Brownian motion covariance matrix will not be calculated, based on the phylogeny (it will be ignored).  
+Currently this function cannot handle multiple covariance matrices.}
 
 \item{pc.shape}{An argument for whether analysis should be performed on the principal component scores of shape.  This is a useful
 option if the data are high-dimensional (many more variables than observations) but will not affect results.}
@@ -95,10 +99,10 @@ The SS calculated is the same as the sum of squared Procrustes distances among s
   pairwise statistic sampling distributions generated, which might be more intuitive for P-values than F-values (see Collyer et al. 2015).
   For ANOVA Z-scores, a log-transformation is performed first, to assure a normally distributed sampling distribution.
   
-  Pairwise tests have two flavors: 1) tests for differencs in group means (based on vector length between
+  Pairwise tests have two flavors: 1) tests for differences in group means (based on vector length between
   means for pairwise comparisons) and 2) tests for angular differences in slopes between groups.  These tests are 
   similar in concept to trajectory analysis (Adams and Collyer 2007; Collyer and Adams 2007; Adams and Collyer 2009;
-  Collyer and Adams 2013), in that pairwise statistics are either vector lengths or angluar differences between vectors.  
+  Collyer and Adams 2013), in that pairwise statistics are either vector lengths or angular differences between vectors.  
   These tests are different than trajectory analysis (see\code{\link{trajectory.analysis}}), however, because a factorial model
   is not explicitly needed to contrast vectors between point factor levels nested within group factor levels.  For angluar differences 
   between factor-covariate slopes, either the angle or the vector correlation can be tested.  It should be understood
@@ -169,6 +173,18 @@ plot(aov.pleth)
 
 # Extracting objects from results
 aov.pleth$slopes # extract the slope vectors
+
+# GLS Examples (same as procD.gpls example)
+data(plethspecies)
+Y.gpa<-gpagen(plethspecies$land)    
+gdf <- geomorph.data.frame(Y.gpa, tree = plethspecies$phy)
+procD.pgls(coords ~ Csize, phy = tree, data = gdf, iter = 999)
+
+advanced.procD.lm(coords ~ Csize, ~1, phy = gdf$tree, data = gdf, iter = 999)
+
+# Could also do this with ape function
+# phyCov <- vcv.phylo(plethspecies$phy)
+# advanced.procD.lm(coords ~ Csize, ~1, Cov = phyCov, data = gdf, iter = 999)
 }
 \references{
 Adams, D.C., and M.L. Collyer. 2007. The analysis of character divergence along environmental 

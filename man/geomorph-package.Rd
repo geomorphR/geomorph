@@ -17,5 +17,5 @@ geomorph-package
 }
 
 \author{
-Dean C. Adams, Michael Collyer, Antigoni Kaliontzopoulou & Emma Sherratt
+Dean C. Adams, Michael Collyer & Antigoni Kaliontzopoulou
 }

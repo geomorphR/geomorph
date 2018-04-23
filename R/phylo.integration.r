@@ -28,7 +28,7 @@
 #'  Block1 versus Block2 performed for the first set of PLS axes. 
 #'  
 #' \subsection{Similarity to \code{\link{two.b.pls}} and \code{\link{compare.pls}} }{ 
-#' Note that \code{phylo.integration} performed on two matrices or arrays returns the same results as a phylogenetic variaton of
+#' Note that \code{phylo.integration} performed on two matrices or arrays returns the same results as a phylogenetic variation of
 #'  \code{\link{two.b.pls}}.  It might be of interest with 3+ modules to perform separate phylogenetic integration tests
 #' between all pairwise comparisons of modules.  This can be done, test by test, and the levels of integration can be compared with
 #' \code{\link{compare.pls}}.  Such results are different than using the average amount of integration, as performed by \code{phylo.integration}
@@ -141,7 +141,7 @@ phylo.integration <-function(A, A2=NULL, phy, partition.gp=NULL,iter=999, seed=N
     namesX<-rownames(x)
     num.taxa.Y<-nrow(y)
     namesY<-rownames(y)
-    y<-y[rownames(x),] 
+    y<-as.matrix(y[rownames(x),])  
   }
   if (is.null(namesX)){
     stop("No specimen names in data matrix. Please assign specimen names.")  } 

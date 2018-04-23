@@ -10,64 +10,37 @@
 #'
 #' If 'closed = T', the function returns the coordinates of the 'start' landmark plus nPoints. If 'closed = F', the function returns the coordinates of the 'start' landmark, plus nPoints and the end of the curve. 
 #' 
-#' If unsure if the points defining the curve are ordered, then plot and colour them using the rainbow function, e.g. plot(curve, pch=19, cex=0.1, col=rainbow(nrow(outline))), and it should be easy to visualise.
+#' If unsure if the points defining the curve are ordered, then plot and color them using the rainbow function, e.g. plot(curve, pch=19, cex=0.1, col=rainbow(nrow(outline))), and it should be easy to visualize.
 #'
 #' @param start A numeric vector of x,y,(z) coordinates for the landmark defining the start of the curve (can be simply first point on open outline: curve[1,])
 #' @param curve A matrix (p x k) of 2D or 3D coordinates for a set of ordered points defining a curve
-#' @param nPoints Numeric how many semilandmarks to place equidistantly along the curve 
+#' @param nPoints Numeric how many semilandmarks to place equidistantly along the curve (not counting beginning and end points) 
 #' @param closed Logical Whether the curve is closed (TRUE) or open (FALSE)
 #' @return Function returns a matrix of coordinates for nPoints equally spaced semilandmarks sampled along the curve (plus start and end if 'closed = F', or only including start if 'closed = T') 
 #' @seealso \code{\link{digit.fixed}} \code{\link{digitize2d}}
 #' @export
 #' @keywords digitizing
-#' @author Emma Sherratt
+#' @author Emma Sherratt and Michael Collyer
 #' @references Bookstein, F. J. 1997 Landmark Methods for Forms without Landmarks: Morphometrics of 
 #' Group Differences in Outline Shape. Medical Image Analysis 1(3):225-243.
 #' @references Rohlf, F.J., 2015. The tps series of software. Hystrix 26(1):9-12.
 
 digit.curves <- function(start, curve, nPoints, closed=TRUE){
-  nPoints=nPoints+2
-  checkmat <- is.matrix(curve)
-  if (checkmat==FALSE) { stop("Input must be a p-x-k matrix of curve coordinates")}
-  checkdim <- dim(curve)[2]
-  nCurvePoints = nrow(curve)
-  start <- as.numeric(start)
-  newPoints <- matrix(NA, ncol=checkdim, nrow = nPoints)
-  if (checkdim==2) {start <- which.min(sqrt((start[1]-curve[,1])^2+
-                                              (start[2]-curve[,2])^2))}
-  
-  if (checkdim==3) {start <- which.min(sqrt((start[1]-curve[,1])^2+
-                                              (start[2]-curve[,2])^2+
-                                              (start[3]-curve[,3])^2))}
-  newPoints[1,] <- curve[start,]
-  if(start!=1 && start!= nCurvePoints){curve <- rbind(curve[start:nCurvePoints,],
-                               curve[1:(start-1),])} 
-  if(start == nCurvePoints){curve <-curve[nCurvePoints:1,]  }
-  if(closed==FALSE){newPoints[nPoints,] <- curve[nrow(curve),]}
-  if(closed==TRUE){curve <- rbind(curve, curve[1,])
-                nCurvePoints <- nCurvePoints+1
-                newPoints[nPoints,] <- curve[nCurvePoints,]}
-  B <- rep(0, nCurvePoints) 
-  for(i in 1:(nCurvePoints-1)){ 
-    if (checkdim==2) {Interval<-sqrt((curve[i,1]-curve[i+1,1])^2 
-                                       + (curve[i,2]-curve[i+1,2])^2)} 
-    if (checkdim==3) {Interval<-sqrt((curve[i,1]-curve[i+1,1])^2 
-                                       + (curve[i,2]-curve[i+1,2])^2
-                                       + (curve[i,3]-curve[i+1,3])^2)}
-  B[i+1]<-B[i]+Interval} 
-  TotalLength <- B[nCurvePoints]
-  j = 2
-  for (i in 2:(nPoints-1)){
-    NextLength <- TotalLength*(i - 1) / (nPoints - 1) 
-    while(B[j-1] < NextLength) {j=j+1} 
-    xy0 <- curve[j - 2,] 
-    xy <- curve[j - 1,] 
-    CurrInterval <- B[j - 1] - B[j - 2] 
-    if (CurrInterval > 0){p <- (NextLength - B[j - 2]) / CurrInterval } else p <- 0
-    newPoints[i,1] <- round((1 - p) * xy0[1] + p * xy[1], digits=4) 
-    newPoints[i,2] <- round((1 - p) * xy0[2] + p * xy[2], digits=4) 
-    if (checkdim==3) {newPoints[i,3] <- round((1 - p) * xy0[3] + p * xy[3], digits=4)}
+  nPoints <- nPoints+2
+  if(!is.matrix(curve)) stop("Input must be a p-x-k matrix of curve coordinates")
+  nCurvePoints = NROW(curve)
+  if(nCurvePoints < 2) stop("curve matrix does not have enough points to estimate any interior points")
+  if(nPoints > (nCurvePoints - 1)) {
+    if((nCurvePoints - 1) == 1) nPoints = 1
+    if((nCurvePoints - 1) > 1) nPoints = nCurvePoints - 2
+    cat("\nWarning: because the number of desired points exceeds the number of curve points,")
+    cat("\nthe number of points will be truncated to", nPoints, "\n\n")
   }
-  if (closed==TRUE){return(newPoints[1:(nPoints-1),])}
-  if (closed==FALSE){return(newPoints[1:nPoints,])}
+  start <- as.numeric(start)
+  if(!setequal(start, curve[1,])) curve <- rbind(start, curve)
+  if(closed) curve <- rbind(curve, curve[1,])
+  res <- evenPts(curve, nPoints)
+  if(closed) res <- res[-NROW(res),]
+  res
+
 }

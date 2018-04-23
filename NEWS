@@ -1,20 +1,27 @@
-CHANGES APPENDED TO GEOMORPH VERSION 3.0.5 (NOT ON CRAN UNTIL
-VERSION 3.0.6, BUT FOUND ON GITHUB)
+CHANGES IN GEOMORPH VERSION 3.0.6
+  NEW FEATURES
+    o plotOutliers now allows to plot outlier configurations in order to compare their shape with the consensus
+    o plot.mshape function added to plot the consensus configuration with numbers and links
 
-NEW FEATURES
-
-OTHER CHANGES
-    o Added an option for statistic used to calculate effect sizes and P-values
+  OTHER CHANGES
+    o Added ellipsis to bilat.symmetry and geomorphShapes option to allow more flexible gpagen options within
+    o Changed procD.pgls to use residuals from GLS model for permutations
+    o Added effect type option to advanced.procD.lm
     o Added an additional line of summary to ANOVA tables to signal how effect sizes are calculated
-    o Adjusted ANOVA tables to show from which distributions P-values are estimated.
-    
-BUG FIXES 
-    o Fixed issue with integration.test when 3+ partitions with non-contiguous variables
-    o Fixed effect size calculation error in procD.lm for single factor OLS models.
-    o Fixed ellipses options in procD.fit
-    o Fixed various issues with scanning tps files in readland.tps
+    o Adjusted ANOVA tables to show from which distributions P-values are estimated
+    o Modified plot.procD.allometry to allow direct control of all plotting arguments by the user
+    o Modified plotRefToTarget and tps to use plot.xy instead of plot, and thus avoid conflicts with plot.mshape
+    o Added catch for missing data to readland.tps, to identify negative values and recode them as NAs
 
-CHANGES IN GEOMORPH VERSION 3.0.5 (CRAN RELEASE)
+  BUG FIXES 
+    o Fixed issue with compare.evol.rates permutation method for univariate trait
+    o Fixed issues with estimate.missing regression approach
+    o Fixed issues with phylo.integration where Y-dataset contained a single variable
+    o Fixed issue with integration.test when 3+ partitions with non-contiguous variables
+    o Fixed effect size calculation error in procD.lm for single factor OLS models. 
+    o Fixed ellipses options in procD.fit
+
+CHANGES IN GEOMORPH VERSION 3.0.5
   OTHER CHANGES 
     o Simplified options available in procD.allometry
     

@@ -52,7 +52,7 @@
 #' \item{P.value}{The empirically calculated P-value from the resampling procedure.}
 #'    \item{CR.mat}{For more than two partitions, the pairwise CRs among partitions.}
 #'    \item{random.CR}{The CR calculated in each of the random permutations of the resampling procedure.}
-#'    \item{permutations}{The number of random permutations used in the resampling procdure.}
+#'    \item{permutations}{The number of random permutations used in the resampling procedure.}
 #'    \item{call}{The match call.}
 #' @references Adams, D.C. 2016.Evaluating modularity in morphometric data: Challenges with the RV coefficient and a 
 #' new test measure. Methods in Ecology and Evolution 7:565-572.
@@ -60,7 +60,7 @@
 #' \code{\link{phylo.integration}}
 #' @examples
 #' data(pupfish) 
-#' Y.gpa<-gpagen(pupfish$coords,print.progress = FALSE)    #GPA-alignment    
+#' Y.gpa<-gpagen(pupfish$coords, print.progress = FALSE)    #GPA-alignment    
 #'  #landmarks on the body and operculum
 #' land.gps<-rep('a',56); land.gps[39:48]<-'b'
 #'

@@ -11,7 +11,7 @@ digit.curves(start, curve, nPoints, closed = TRUE)
 
 \item{curve}{A matrix (p x k) of 2D or 3D coordinates for a set of ordered points defining a curve}
 
-\item{nPoints}{Numeric how many semilandmarks to place equidistantly along the curve}
+\item{nPoints}{Numeric how many semilandmarks to place equidistantly along the curve (not counting beginning and end points)}
 
 \item{closed}{Logical Whether the curve is closed (TRUE) or open (FALSE)}
 }
@@ -30,7 +30,7 @@ The start of the curve is a fixed landmark on the curve that is equivalent (homo
 
 If 'closed = T', the function returns the coordinates of the 'start' landmark plus nPoints. If 'closed = F', the function returns the coordinates of the 'start' landmark, plus nPoints and the end of the curve.
 
-If unsure if the points defining the curve are ordered, then plot and colour them using the rainbow function, e.g. plot(curve, pch=19, cex=0.1, col=rainbow(nrow(outline))), and it should be easy to visualise.
+If unsure if the points defining the curve are ordered, then plot and color them using the rainbow function, e.g. plot(curve, pch=19, cex=0.1, col=rainbow(nrow(outline))), and it should be easy to visualize.
 }
 \references{
 Bookstein, F. J. 1997 Landmark Methods for Forms without Landmarks: Morphometrics of 
@@ -42,6 +42,6 @@ Rohlf, F.J., 2015. The tps series of software. Hystrix 26(1):9-12.
 \code{\link{digit.fixed}} \code{\link{digitize2d}}
 }
 \author{
-Emma Sherratt
+Emma Sherratt and Michael Collyer
 }
 \keyword{digitizing}

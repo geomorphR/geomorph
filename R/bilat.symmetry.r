@@ -12,10 +12,10 @@
 #'  morphometrics may be found in: Mardia et al. 2000; Klingenberg et al. 2002. 
 #'  
 #'  As input, the function receives either A 3D array (p x k x n) containing raw landmarks (requiring 
-#'  GPA to be performed) or a gpagen object (if GPA has been previously performed). If one wishes 
-#'  to incorporate semilandmarks, GPA should be performed first using gpagen. Otherwise, 
-#'  bilat.symmetry can perform the initial GPA, assuming all landmarks are fixed. For 
-#'  "object.sym = FALSE, landmarks should be of dimension (p x k x 2n), as each specimen is 
+#'  GPA to be performed) or a gpagen object (if GPA has been previously performed) or a geomorphShapes object.
+#'  If one wishes to incorporate semilandmarks, GPA can either be performed first using gpagen, or within bilat.symmetry
+#'  by passing adequate GPA arguments (i.e. curves, surfaces, ProcD etc, see \code{\link{gpagen}}. 
+#'  For "object.sym = FALSE, landmarks should be of dimension (p x k x 2n), as each specimen is 
 #'  represented by both left and right configurations.
 #'    
 #' Analyses of symmetry for matched pairs of objects is implemented when {object.sym=FALSE}. Here, a 3D array [p x k x 2n] 
@@ -70,9 +70,10 @@
 #' @param RRPP A logical value indicating whether residual randomization should be used for significance testing.
 #' @param print.progress A logical value to indicate whether a progress bar should be printed to the screen.  
 #' This is helpful for long-running analyses.
+#' @param ... Arguments to pass onto gpagen
 #' @keywords analysis
 #' @export
-#' @author Dean Adams, Emma Sherratt, and Michael Collyer
+#' @author Dean Adams and Michael Collyer
 #' @return An object of class "bilat.symmetry" returns a list of the following
 #' \item{shape.anova}{An analysis of variance table for the shape data.}
 #' \item{size.anova}{An analysis of variance table for the shape data (when object.sym=FALSE).}
@@ -86,6 +87,8 @@
 #' \item{random.shape.F}{A matrix of random F-values from the Shape analysis.}
 #' \item{random.size.F}{A matrix of random F-values from the Centroid Size analysis.}
 #' \item{perm.method}{A value indicating whether "Raw" values were shuffled or "RRPP" performed.}
+#' \item{procD.lm.shape}{A list of typical output from an object of class procD.lm, for shape}
+#' \item{procD.lm.size}{If applicable, a list of typical output from an objeect of class procD.lm, for size.}
 #' \item{call}{The matched call.}
 #' 
 #' @references Klingenberg, C.P. and G.S. McIntyre. 1998. Quantitative genetics of geometric shape in the mouse mandible. Evolution. 55:2342-2352.
@@ -119,45 +122,52 @@
 #' land.pairs=scallops$land.pairs, data = gdf, RRPP = TRUE, iter = 499)
 #' summary(scallop.sym)
 #' 
-#' # Previous example, incorporating semilandmarks (requires GPA to be performed first)
+#' # Previous example, incorporating semilandmarks
 #' 
-#' Y.gpa <- gpagen(scallops$coorddata, curves= scallops$curvslide, surfaces = scallops$surfslide)
-#' scallop.sym <- bilat.symmetry(A = Y.gpa, ind = ind, object.sym = TRUE, 
+#' scallop.sym <- bilat.symmetry(A = shape, ind = ind, object.sym = TRUE, 
+#' curves= scallops$curvslide, surfaces = scallops$surfslide,
 #' land.pairs=scallops$land.pairs, data = gdf, RRPP = TRUE, iter = 499)
 #' summary(scallop.sym)
 #' # NOTE one can also: plot(scallop.sym, warpgrids = TRUE, mesh = NULL)
 #' # NOTE one can also: scallop.sym$data.type # recall the symmetry type
 
-bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,land.pairs=NULL,
-                         data = NULL, iter = 999, seed = NULL, RRPP = TRUE, print.progress = TRUE){
+bilat.symmetry<-function(A, ind=NULL, side=NULL, replicate=NULL, object.sym=FALSE, land.pairs=NULL,
+                         data = NULL, iter = 999, seed = NULL, RRPP = TRUE, print.progress = TRUE, ...){
+
   if(!is.null(data)){
     data <- droplevels(data)
     A.name <- deparse(substitute(A))
     A.name.match <- match(A.name, names(data))[1]
     if(is.na(A.name.match)) A.name.match <- NULL
-  } else A.name.match <- NULL
-  if(is.null(A.name.match) && is.gpagen(A)) {
+    } else A.name.match <- NULL
+  
+    if(is.null(A.name.match) && is.gpagen(A)) {
     size <- A$Csize
     A <- A$coords
-  } else {
-    if(!is.null(data)) {
-      if(is.null(A.name.match)) stop("Coordinates are not part of the data frame provided")
-      A <- data[[A.name.match]]
-      if(any(is.na(A))==T) stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').") 
-      if (length(dim(A))!=3) stop("Data matrix not a 3D array (see 'arrayspecs').") 
-      if(print.progress) cat("\nInitial GPA\n")
-      A <- gpagen(A, print.progress = print.progress)
+    } else if(is.null(A.name.match) && inherits(A, "geomorphShapes")) {
+      A <- gpagen(A, ...)
       size <- A$Csize
       A <- A$coords
     } else {
-      if(any(is.na(A))==T) stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').") 
-      if (length(dim(A))!=3) stop("Data matrix not a 3D array (see 'arrayspecs').") 
-      if(print.progress) cat("\nInitial GPA\n")
-      A <- gpagen(A, print.progress = print.progress)
-      size <- A$Csize
-      A <- A$coords
-    }
-  }
+      if(!is.null(data)) {
+        if(is.null(A.name.match)) stop("Coordinates are not part of the data frame provided")
+          A <- data[[A.name.match]]
+          if(any(is.na(A))) stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').") 
+          if (length(dim(A))!=3) stop("Data matrix not a 3D array (see 'arrayspecs').") 
+          if(print.progress) cat("\nInitial GPA\n")
+          A <- gpagen(A, print.progress = print.progress, ...)
+          size <- A$Csize
+          A <- A$coords
+        } else {
+          if(any(is.na(A))) stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').") 
+          if (length(dim(A))!=3) stop("Data matrix not a 3D array (see 'arrayspecs').") 
+          if(print.progress) cat("\nInitial GPA\n")
+          A <- gpagen(A, print.progress = print.progress, ...)
+          size <- A$Csize
+          A <- A$coords
+        }
+      }
+  
   if(is.null(data)){
     if(is.null(ind)) stop("Individuals not specified.") else ind <- factor(ind)
     if(!is.null(side)) side <- factor(side)
@@ -173,15 +183,16 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
     if(all(is.na(replicate.match))) replicate <- NULL else 
       replicate <- factor(data[[which(!is.na(replicate.match))]])
   }
+  
   n<-dim(A)[3]; k<-dim(A)[2]; p<-dim(A)[1]; nind<-nlevels(ind); spec.names<-dimnames(A)[[3]]
   if(object.sym == FALSE && is.null(side)) stop("Sides not specified.") 
-  if(object.sym==TRUE){
-    if(is.null(land.pairs)){stop("Landmark pairs not specified.")} 
-    npairs <- nrow(land.pairs); nl<-p-2*npairs
+  if(object.sym == TRUE){
+    if(is.null(land.pairs)) {stop("Landmark pairs not specified.")} 
+    npairs <- nrow(land.pairs); nl <- p-2*npairs
     A2 <- A
     A2[land.pairs[,1],,] <- A[land.pairs[,2],,]
     A2[land.pairs[,2],,] <- A[land.pairs[,1],,]
-    A2[,1,]<-A2[,1,]*-1
+    A2[,1,] <- A2[,1,]*(-1)
     A <- array(c(A,A2), c(p,k, 2*n))
     ind <- factor(rep(ind,2)); side <- gl(2,n); if(!is.null(replicate)) replicate <- rep(replicate,2)
     if(print.progress) cat("\nObject Symmetry GPA\n")
@@ -190,53 +201,60 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
   }
   Y <- two.d.array(A)
   if(!is.null(replicate)) {
-    form.shape <- Y ~ ind*side + ind:side:replicate 
+    form.shape <- Y ~ ind + side + ind/side 
+    form.names <- c("ind", "side", "ind:side", "ind:side:replicate", "Total")
     dat.shape <- geomorph.data.frame(Y = Y, ind = ind, side = side, replicate = replicate)
   } else {
-    form.shape <- Y ~ ind*side
+    form.shape <- Y ~ ind + side 
+    form.names <- c("ind", "side", "ind:side", "Total")
     dat.shape <- geomorph.data.frame(Y = Y, ind = ind, side = side)
   }
-  pfitSh <- procD.fit(form.shape, data = dat.shape, keep.order = TRUE)
-  kSh <- length(pfitSh$term.labels)
-  if(!is.null(seed) && seed=="random") seed = sample(1:iter, 1)
   if(print.progress) cat("\nShape Analysis")
-  if(print.progress) {
-    if(RRPP == TRUE) PSh <- SS.iter(pfitSh,Yalt="RRPP", iter=iter, seed=seed) else 
-      PSh <- .SS.iter(pfitSh, Yalt="resample", iter=iter, seed=seed)
-  } else {
-    if(RRPP == TRUE) PSh <- .SS.iter(pfitSh,Yalt="RRPP", iter=iter, seed=seed) else 
-      PSh <- .SS.iter(pfitSh, Yalt="resample", iter=iter, seed=seed)
+  PSh <- procD.lm(form.shape, data = dat.shape, RRPP = RRPP, 
+            seed = seed, iter= iter, print.progress = print.progress, 
+            effect.type = "F")
+  random.shape.F <- PSh$random.F
+  if(length(form.names) > 4) {
+    SS <- PSh$random.SS
+    df.mat <- matrix(PSh$df, NROW(SS), NCOL(SS))
+    MS <- SS/df.mat
+    random.shape.F[1,] <- MS[1,]/MS[3,]
+    random.shape.F[2,] <- MS[2,]/MS[3,]
+    random.shape.F[3,] <- MS[3,]/MS[4,]
+    PSh$random.F <- random.shape.F
+    newZ <- apply(log(random.shape.F + 0.000001), 1, effect.size)
+    PSh$aov.table$F[1:3] <- random.shape.F[1:3, 1]
+    PSh$aov.table$Z[1:3] <- newZ[1:3]
+    rownames(PSh$aov.table) <- form.names
   }
-  anova.parts.Sh <- anova.parts.symmetry(pfitSh, PSh, object.sym)
-  anovaSh <-anova.parts.Sh$anova.table 
-  Sh.random.Fs <-anova.parts.Sh$random.Fs
-  if(is.matrix(Sh.random.Fs))
-    colnames(Sh.random.Fs) <- c("obs", paste("iter", 1:iter, sep=":")) else
-      names(Sh.random.Fs) <-c("obs", paste("iter", 1:iter, sep=":"))
-  
+  shape.anova <- PSh$aov.table
   if(object.sym==FALSE){  
     if(!is.null(replicate)) {
-      form.size <- size~ind*side+ind:side:replicate 
+      form.size <- size ~ ind + side + ind/side 
       dat.size <- geomorph.data.frame(size = size, ind = ind, side = side, replicate = replicate)
     } else {
-      form.size <- size~ind*side
+      form.size <- size ~ ind + side 
       dat.size <- geomorph.data.frame(size = size, ind = ind, side = side)
     }
-    pfitSz=procD.fit(form.size, data=dat.size, keep.order=TRUE)
     if(print.progress) cat("\nSize Analysis")
-    if(print.progress) {
-      if(RRPP == TRUE) PSz <- SS.iter(pfitSz,Yalt="RRPP", iter=iter, seed=seed) else 
-        PSz <- SS.iter(pfitSz, Yalt="resample", iter=iter, seed=seed)
-    } else {
-      if(RRPP == TRUE) PSz <- .SS.iter(pfitSz,Yalt="RRPP", iter=iter, seed=seed) else 
-        PSz <- .SS.iter(pfitSz, Yalt="resample", iter=iter, seed=seed)
+    PSz <- procD.lm(form.size, data = dat.size, RRPP = RRPP, 
+                    seed = seed, iter= iter, print.progress = print.progress, 
+                    effect.type = "F")
+    random.size.F <- PSz$random.F
+    if(length(form.names) > 4) {
+      SS <- PSz$random.SS
+      df.mat <- matrix(PSz$df, NROW(SS), NCOL(SS))
+      MS <- SS/df.mat
+      random.size.F[1,] <- MS[1,]/MS[3,]
+      random.size.F[2,] <- MS[2,]/MS[3,]
+      random.size.F[3,] <- MS[3,]/MS[4,]
+      PSz$random.F <- random.size.F
+      newZ <- apply(log(random.size.F + 0.000001), 1, effect.size)
+      PSz$aov.table$F[1:3] <- random.size.F[1:3, 1]
+      PSz$aov.table$Z[1:3] <- newZ[1:3]
+      rownames(PSz$aov.table) <- form.names
     }
-    anova.parts.Sz <- anova.parts.symmetry(pfitSz, PSz, object.sym)
-    anovaSz <-anova.parts.Sz$anova.table 
-    Sz.random.Fs <-anova.parts.Sz$random.Fs
-    if(is.matrix(Sz.random.Fs))
-      colnames(Sz.random.Fs) <- c("obs", paste("iter", 1:iter, sep=":")) else
-        names(Sz.random.Fs) <-c("obs", paste("iter", 1:iter, sep=":"))
+    size.anova <- PSz$aov.table
   }
   # build shape components for output
   if(object.sym==FALSE){
@@ -276,29 +294,26 @@ bilat.symmetry<-function(A,ind=NULL,side=NULL,replicate=NULL,object.sym=FALSE,la
   FA.component<-simplify2array(lapply(1:n.ind, function(j) 
   {t(matrix(FA.component[j,],k,p)) + mn.shape - mn.DA}))
   dimnames(FA.component)[[3]] <- dimnames(symm.component)[[3]] 
-  colnames(anovaSh)[1] <- "Df"
-  colnames(anovaSh)[ncol(anovaSh)] <- "Pr(>F)"
-  class(anovaSh) <- c("anova", class(anovaSh))
+
   if(object.sym==FALSE){
-    colnames(anovaSz)[1] <- "Df"
-    colnames(anovaSz)[ncol(anovaSz)] <- "Pr(>F)"
-    class(anovaSz) <- c("anova", class(anovaSz))
-    out<-list(size.anova = anovaSz, shape.anova = anovaSh, symm.shape = symm.component,
+    out<-list(size.anova = size.anova, shape.anova = shape.anova, symm.shape = symm.component,
               asymm.shape = asymm.component, DA.component = DA.mns, FA.component = FA.component,
               data.type = ifelse(object.sym==TRUE,"Object", "Matching"),
               FA.mns = FA.component, DA.mns = DA.mns,
               permutations = iter+1,
-              random.shape.F = Sh.random.Fs, random.size.F = Sz.random.Fs,
+              random.shape.F = random.shape.F, random.size.F = random.size.F,
               perm.method = ifelse(RRPP==TRUE,"RRPP", "Raw"),
+              procD.lm.shape = PSh, procD.lm.size = PSz,
               call=match.call()) }
   if(object.sym==TRUE){
-    out<-list(size.anova = NULL, shape.anova = anovaSh, symm.shape = symm.component,
+    out<-list(size.anova = NULL, shape.anova = shape.anova, symm.shape = symm.component,
               asymm.shape = asymm.component, DA.component = DA.mns, FA.component = FA.component,
               data.type = ifelse(object.sym==TRUE,"Object", "Matching"),
               FA.mns = FA.component, DA.mns = DA.mns,
               permutations = iter+1,
-              random.shape.F = Sh.random.Fs, random.size.F = NULL,
+              random.shape.F = random.shape.F, random.size.F = NULL,
               perm.method = ifelse(RRPP==TRUE,"RRPP", "Raw"),
+              procD.lm.shape = PSh,
               call=match.call()) }
   class(out) <- "bilat.symmetry"
   out  

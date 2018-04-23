@@ -75,7 +75,7 @@ because of phylogenetic relatedness, but the null hypothesis of equal variances 
 }
 \examples{
 data(plethodon)
-Y.gpa<-gpagen(plethodon$land,print.progress = FALSE)    #GPA-alignment
+Y.gpa<-gpagen(plethodon$land, print.progress = FALSE)    #GPA-alignment
 gdf <- geomorph.data.frame(Y.gpa, species = plethodon$species, site = plethodon$site)
 
 # Morphological disparity for entire data set

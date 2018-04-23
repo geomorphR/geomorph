@@ -5,8 +5,8 @@
 \title{Procrustes ANOVA/regression for shape data}
 \usage{
 procD.lm(f1, iter = 999, seed = NULL, RRPP = TRUE, effect.type = c("F",
-  "SS", "cohen"), int.first = FALSE, data = NULL, print.progress = TRUE,
-  ...)
+  "SS", "cohen"), int.first = FALSE, Cov = NULL, data = NULL,
+  print.progress = TRUE, ...)
 }
 \arguments{
 \item{f1}{A formula for the linear model (e.g., y~x1+x2)}
@@ -25,6 +25,9 @@ which might be of interest for advanced users.}
 assure normally distributed data.)}
 
 \item{int.first}{A logical value to indicate if interactions of first main effects should precede subsequent main effects}
+
+\item{Cov}{An optional covariance matrix that can be used for generalized least squares estimates of
+coefficients and sums of squares and cross-products (see Adams and Collyer 2018).}
 
 \item{data}{A data frame for the function environment, see \code{\link{geomorph.data.frame}}}
 
@@ -58,13 +61,14 @@ NULL is returned.}
 \item{R2}{The coefficient of determination for each model term.}
 \item{F}{The F values for each model term.}
 \item{permutations}{The number of random permutations (including observed) used.}
-\item{random.SS}{A matrix or vector of random SS found via the resampling procedure used.}
+\item{random.SS}{A matrix of random SS found via the resampling procedure used.}
 \item{random.F}{A matrix or vector of random F values found via the resampling procedure used.}
 \item{random.cohenf}{A matrix or vector of random Cohen's f-squared values
  found via the resampling procedure used.}
 \item{permutations}{The number of random permutations (including observed) used.}
 \item{effect.type}{The distribution used to estimate effect-size.}
 \item{perm.method}{A value indicating whether "Raw" values were shuffled or "RRPP" performed.}
+\item{gls}{This prefix will be used if a covariance matrix is provided to indicate GLS computations.}
 }
 \description{
 Function performs Procrustes ANOVA with permutation procedures to assess statistical hypotheses describing 
@@ -122,6 +126,12 @@ The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\li
   can choose among common regression component (CRC), predicted values (PredLine), or regression scores (RegScore).  See \code{\link{procD.allometry}} 
   for details. In these plotting options, the predictor does not need to be size, and fitted values and residuals from the procD.lm fit are used rather 
   than mean-centered values. 
+  
+ \subsection{Notes for geomorph 3.0.6 and subsequent versions}{ 
+ Compared to previous versions, GLS computations in random permutations are now possible in procD.lm.  One should use
+ RRPP = TRUE if a covariance matrix is provided as an argument.  The method of SS calculations follows
+ Adams and Collyer 2018.  Additional output with a "gls." prefix is also available.
+}
   
  \subsection{Notes for geomorph 3.0.4 and subsequent versions}{ 
  Compared to previous versions of geomorph, users might notice differences in effect sizes.  Previous versions used z-scores calculated with 
@@ -195,6 +205,9 @@ by high-dimensional data. Heredity. 115:357-365.
 
 Adams, D.C. and M.L. Collyer. 2016.  On the comparison of the strength of morphological integration across morphometric 
 datasets. Evolution. 70:2623-2631.
+
+Adams, D.C. and M.L. Collyer. 2018. Multivariate comparative methods: evaluations, comparisons, and
+recommendations. Systematic Biology. 67:14-31.
 }
 \seealso{
 \code{\link{advanced.procD.lm}}, \code{\link{procD.pgls}}, and 

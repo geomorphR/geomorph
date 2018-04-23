@@ -29,10 +29,10 @@
 #'   pairwise statistic sampling distributions generated, which might be more intuitive for P-values than F-values (see Collyer et al. 2015).
 #'   For ANOVA Z-scores, a log-transformation is performed first, to assure a normally distributed sampling distribution.
 #'   
-#'   Pairwise tests have two flavors: 1) tests for differencs in group means (based on vector length between
+#'   Pairwise tests have two flavors: 1) tests for differences in group means (based on vector length between
 #'   means for pairwise comparisons) and 2) tests for angular differences in slopes between groups.  These tests are 
 #'   similar in concept to trajectory analysis (Adams and Collyer 2007; Collyer and Adams 2007; Adams and Collyer 2009;
-#'   Collyer and Adams 2013), in that pairwise statistics are either vector lengths or angluar differences between vectors.  
+#'   Collyer and Adams 2013), in that pairwise statistics are either vector lengths or angular differences between vectors.  
 #'   These tests are different than trajectory analysis (see\code{\link{trajectory.analysis}}), however, because a factorial model
 #'   is not explicitly needed to contrast vectors between point factor levels nested within group factor levels.  For angluar differences 
 #'   between factor-covariate slopes, either the angle or the vector correlation can be tested.  It should be understood
@@ -71,7 +71,10 @@
 #' slopes are compared.  Group slopes can differ in their magnitude and direction of shape change.
 #' @param angle.type A value specifying whether directional differences between slopes should be represented by vector
 #' correlations (r), radians (rad) or degrees (deg).
-#' @param phy A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape (optional)
+#' @param phy A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape (optional).
+#' @param Cov A covariance matrix to guide GLS computations.  If both a phylogenetic tree and covariance matrix
+#' are provided, a Brownian motion covariance matrix will not be calculated, based on the phylogeny (it will be ignored).  
+#' Currently this function cannot handle multiple covariance matrices.
 #' @param pc.shape An argument for whether analysis should be performed on the principal component scores of shape.  This is a useful
 #' option if the data are high-dimensional (many more variables than observations) but will not affect results.
 #' @param effect.type An optional argument for which distribution of statistics should be used for calculating effect sizes (
@@ -162,22 +165,59 @@
 #'
 #'# Extracting objects from results
 #'aov.pleth$slopes # extract the slope vectors
+#'
+#'# GLS Examples (same as procD.gpls example)
+#'data(plethspecies)
+#'Y.gpa<-gpagen(plethspecies$land)    
+#'gdf <- geomorph.data.frame(Y.gpa, tree = plethspecies$phy)
+#'procD.pgls(coords ~ Csize, phy = tree, data = gdf, iter = 999)
+#'
+#'advanced.procD.lm(coords ~ Csize, ~1, phy = gdf$tree, data = gdf, iter = 999)
+#'
+#' # Could also do this with ape function
+#' # phyCov <- vcv.phylo(plethspecies$phy)
+#' # advanced.procD.lm(coords ~ Csize, ~1, Cov = phyCov, data = gdf, iter = 999)
 
 advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
                             angle.type = c("r", "deg", "rad"),
-                            phy = NULL,
+                            phy = NULL, Cov = NULL,
                             pc.shape = FALSE,
                             effect.type = c("F", "SS", "Rsq"),
                             iter=999,
                             seed = NULL,
                             print.progress = TRUE,
                             data=NULL, ...){
+  
   if(!is.null(data)) data <- droplevels(data)
   if(pc.shape) pfit1 <- procD.fit(f1, data=data, pca = TRUE, ...) else
     pfit1 <- procD.fit(f1, data=data, pca=FALSE, ...)
   if(!is.null(seed) && seed=="random") seed = sample(1:iter, 1)
   Y <- as.matrix(pfit1$Y)
   n <- dim(Y)[1]; p <- dim(Y)[2]
+  
+  # covariance matrices
+  if(!is.null(phy)) {
+    phy.name <- deparse(substitute(phy))
+    if(!inherits(phy, "phylo")) 
+      stop(paste("No phylo object called,", phy.name,"found in data or gobal environment."))
+    N <- length(phy$tip.label)
+    if(is.null(Cov)) {
+      if(length(match(rownames(Y), phy$tip.label))!=N)
+        stop("Data matrix missing some taxa present on the tree.")
+      if(length(match(phy$tip.label,rownames(Y)))!=N)
+        stop("Tree missing some taxa in the data matrix.")
+      C <- vcv.phylo(phy)
+      id <- rownames(Y)
+      Pcov <- Cov.proj(C, id)
+    }
+  }
+  if(!is.null(Cov)) {
+    id <- rownames(Y)
+    Pcov <- Cov.proj(Cov, id)
+ } 
+  if(is.null(Cov) && is.null(phy)) Pcov <- NULL
+  
+  # initial model evaluations
   if(!is.null(data)) dat.temp <- gdf.to.df(data) else
     dat.temp <- pfit1$data
   dat.temp$Y <- Y
@@ -185,28 +225,6 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
   if(class(f2) == "formula") f2 <- update(f2, Y ~.)
   if(pc.shape) pfit2 = procD.fit(f2, pca = TRUE, data = dat.temp, ...) else
     pfit2 = procD.fit(f2, pca = FALSE, data = dat.temp, ...)
-  if(!is.null(phy)){
-    phy.name <- deparse(substitute(phy))
-    phy.match <- match(phy.name, names(data))
-    if(length(phy.match) > 1) stop("More than one object of class phylo in data frame")
-    if(all(is.na(phy.match))) phy <- phy else phy <- data[[phy.match]]
-    N<-length(phy$tip.label)
-    if(length(match(rownames(Y), phy$tip.label))!=N)
-      stop("Data matrix missing some taxa present on the tree.")
-    if(length(match(phy$tip.label,rownames(Y)))!=N)
-      stop("Tree missing some taxa in the data matrix.")
-    C <- vcv.phylo(phy)
-    eigC <- eigen(C)
-    lambda <- zapsmall(eigC$values)
-    if(any(lambda == 0)){
-      warning("Singular phylogenetic covariance matrix. Proceed with caution")
-      lambda = lambda[lambda > 0]
-    }
-    eigC.vect = eigC$vectors[,1:(length(lambda))]
-    Pcor <- fast.solve(eigC.vect%*% diag(sqrt(lambda)) %*% t(eigC.vect))
-    dimnames(Pcor) <- dimnames(C)
-    Pcor <- Pcor[rownames(Y),rownames(Y)]
-  } else Pcor <- NULL
   k1 <- pfit1$QRs.full[[length(pfit1$QRs.full)]]$rank
   k2 <- pfit2$QRs.full[[length(pfit2$QRs.full)]]$rank
   if(k1 > k2) pfitf <- pfit1 else pfitf <- pfit2
@@ -222,43 +240,9 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
   if(kr >1 & kf > 1 & k.unique == k.total) stop("Models are not nested")
   dfr <- NROW(pfitr$wResiduals.full[[kr]]) - dfr
   dff <- NROW(pfitf$wResiduals.full[[kf]]) - dff
-  Xf <- as.matrix(pfitf$Xfs[[kf]])
-  Xr <- as.matrix(pfitr$Xfs[[kr]])
-  Er <- pfitr$residuals.full[[kr]]
-  Ef <- pfitf$residuals.full[[kf]]
-  wEr <- pfitr$wResiduals.full[[kr]]
-  wEf <- pfitf$wResiduals.full[[kf]]
-  Yhr <- pfitr$fitted.full[[kr]]
-  Yhf <- pfitf$fitted.full[[kf]]
-  wYhr <- pfitr$wFitted.full[[kr]]
-  wYhf <- pfitf$wFitted.full[[kf]]
   w1 <- pfitr$weights; w2 <- pfitf$weights
   if(any(is.na(match(w1,w2)))) stop("Weights cannot be different between models.")
   w <- sqrt(w1)
-  Qr <-qr.Q(qr(Xr*sqrt(w)))
-  Qf <-qr.Q(qr(Xf*sqrt(w)))
-  if(!is.null(phy)){
-    PXf <- Pcor%*%Xf
-    PXr <- Pcor%*%Xr
-    Ur <- crossprod(Pcor, qr.Q(qr(PXr*w)))
-    Uf <- crossprod(Pcor, qr.Q(qr(PXf*w)))
-    Unull <- crossprod(Pcor, qr.Q(qr(matrix(w))))
-    SSf <- sum(crossprod(Uf, Y*w)^2) 
-    SSr <- sum(crossprod(Ur, Y*w)^2)
-    py <- crossprod(Pcor, Y*w)
-    pyy <- sum(py^2)
-    SSEf <- pyy - SSf
-    SSEr <- pyy - SSr
-    SSY <- pyy - sum(crossprod(Unull, Y*w)^2)
-  } else {
-    Ur <- qr.Q(qr(Xr*w))
-    Uf <- qr.Q(qr(Xf*w))
-    Unull <- qr.Q(qr(matrix(w)))
-    SSEr <- sum(wEr^2)
-    SSEf <- sum(wEf^2)
-    SSY <- sum(center(pfitf$wY)^2)
-  }
-  SSm <- SSEr - SSEf
   ind <- perm.index(n, iter, seed=seed)
   if(!is.null(groups) && !is.null(slope)) pairwise.cond <- "slopes"
   if(!is.null(groups) && is.null(slope)) pairwise.cond <-"means"
@@ -271,7 +255,6 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
   data.types <- lapply(data, class)
   keep = sapply(data.types, function(x) x != "array" & x != "phylo"  & x != "dist")
   if(!is.null(data)) dat2 <- as.data.frame(data[keep]) else dat2 <- pfitf$data
-
   if(!is.null(groups)){
     g.match <- match(names(dat2), attr(terms(groups), "term.labels"))
     if(!all(is.na(g.match))) gps <- dat2[,which(!is.na(g.match))] else
@@ -285,37 +268,51 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
 
   # AOV Table
   effect.type <- match.arg(effect.type)
-  if(print.progress) {
-    cat("\nCalculating SS for", (iter+1), "permutations\n")
-    pb <- txtProgressBar(min = 0, max = iter+1, initial = 0, style=3)
-  }
-  P <- lapply(1:(iter + 1), function(j){
-    step <- j
-    x <- ind[[j]]
-    yr <- (Er[x,] + Yhr) * w
-    y <- Y[x,] * w
-    SS <- sum(crossprod(Uf, yr)^2) - sum(crossprod(Ur, yr)^2)
-    if(!is.null(phy)) yy <- sum(crossprod(Pcor, y)^2) else yy <- sum(y^2)
-    SSE <- yy - sum(crossprod(Uf, y)^2) 
-    SSY <- yy - sum(crossprod(Unull, y)^2)
-    if(print.progress) setTxtProgressBar(pb,step)
-    c(SS, SSE, SSY)
-  })
-  if(print.progress) close(pb)
-  P <- matrix(unlist(P), 3, iter + 1)
-  rownames(P) <- c("Dif", "Residuals", "Total")
-  colnames(P) <- c("obs", paste("iter", 1:iter, sep=":"))
-  Fs <- (P[1,]/(dfr - dff))/(P[2,]/dff)
+  SS.args <- list(fitr = pfitr, fitf = pfitf,
+                  ind = ind, P = Pcov, print.progress = print.progress)
+  RSS <- do.call(RSS.iter, SS.args)
+  RSSr <- RSS[1,]
+  RSSf <- RSS[2,]
+  RSSm <- RSS[3,]
+  SSY <- RSS[4,]
+  SS <- RSSr - RSSf
+  Fs <- (SS/(dfr - dff))/(RSSm/dff)
+  Rsq <- SS/SSY
   if(effect.type == "SS"){
-    P.val <- pval(P[1,])
-    Z.score <- effect.size(log(P[1,]))
+    P.val <- pval(SS)
+    Z.score <- effect.size(log(SS))
   } else if(effect.type == "Rsq"){
-    P.val <- pval(P[1,]/P[3,])
-    Z.score <- effect.size(log(P[1,]/P[3,]))
+    P.val <- pval(Rsq)
+    Z.score <- effect.size(log(Rsq))
   } else {
     P.val <- pval(Fs)
     Z.score <- effect.size(log(Fs))
   }
+  
+  # for pairwise tests
+  o <- pfitf$offset
+  if(sum(o) != 0) offset = TRUE else offset = FALSE
+  rrpp.args <- list(fitted = NULL, residuals = NULL,
+                    ind.i = NULL, w = NULL, o = NULL)
+  if(offset) rrpp.args$o <- o
+  if(!is.null(Pcov)){
+    Y <- crossprod(Pcov, Y)
+    dims <- dim(Y)
+    n <- dims[1]; p <- dims[2]
+    Xf <- crossprod(Pcov, pfitf$wXfs[[kf]])
+    Xr <- crossprod(Pcov, pfitr$wXrs[[kr]])
+    gFit <- lm.fit(Xf, Y)
+    fitted <- gFit$fitted.values
+    res <- Y - fitted
+    rrpp.args$fitted <- list(fitted)
+    rrpp.args$residuals <- list(res)
+  } else {
+    fitted <- pfitr$wFitted.full[[kr]]
+    res <- pfitr$wResiduals.full[[kr]]
+    rrpp.args$fitted <- list(fitted)
+    rrpp.args$residuals <- list(res)
+  }
+  
   # pairwise means
   if(pairwise.cond == "means") {
     if(print.progress) {
@@ -325,11 +322,13 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
     lss <- quick.ls.means.set.up(pfitf, g=gps, data=dat2)
     lsm.args <- list(X0 = lss$X0, X= lss$X, Y = NULL, 
                      fac = lss$fac)
-    if(!is.null(Pcor)) lsm.args$Pcor <- as.matrix(Pcor)
+    if(!is.null(Pcov)) lsm.args$Pcor <- as.matrix(Pcov)
     lsms <- lapply(1:(iter+1), function(j){
       step <- j
       x <- ind[[j]]
-      yr <- (Er[x,] + Yhr) * w
+      rrpp.args$ind.i <- x
+      Yi <- do.call(rrpp, rrpp.args)
+      yr <- Yi[[1]]
       lsm.args$Y <- yr
       if(print.progress) setTxtProgressBar(pb,step)
       do.call(quick.ls.means, lsm.args)
@@ -350,11 +349,13 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
     }
     gss <- quick.slopes.set.up(pfitf, g=gps, slope=slp, data=dat2)
     gs.args <- list(covs = gss$covs, fac = gss$fac, Y= NULL)
-    if(!is.null(Pcor)) gs.args$Pcor <- Pcor
+    if(!is.null(Pcov)) gs.args$Pcor <- Pcov
     g.slopes <- lapply(1:(iter+1), function(j){
       step <- j
       x <- ind[[j]]
-      yr <- (Er[x,] + Yhr) * w
+      rrpp.args$ind.i <- x
+      Yi <- do.call(rrpp, rrpp.args)
+      yr <- Yi[[1]]
       gs.args$Y <- yr
       if(print.progress) setTxtProgressBar(pb,step)
       do.call(quick.slopes, gs.args)
@@ -370,8 +371,9 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
     Z.cor <- Effect.size.matrix(P.cor.t)
   }
 
-  anova.table <- data.frame(df = c(dfr,dff), SSE = c(SSEr, SSEf), SS = c(NA, SSm),
-                            R2 = c(NA, SSm/SSY), F = c(NA, Fs[1]), Z = c(NA, Z.score), P = c(NA,P.val))
+  # output
+  anova.table <- data.frame(df = c(dfr,dff), RSS = c(RSSr[1], RSSf[1]), SS = c(NA, SS[1]),
+                            Rsq = c(NA, Rsq[1]), F = c(NA, Fs[1]), Z = c(NA, Z.score), P = c(NA,P.val))
   rownames(anova.table) <- c(formula(pfitr$Terms), formula(pfitf$Terms))
   colnames(anova.table)[1] <- "Df"
   colnames(anova.table)[ncol(anova.table)] <- "Pr(>F)"
@@ -400,13 +402,22 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
               Y=pfitf$Y, X=pfitf$X,
               QR = pfitf$wQRs.full[[kf]],
               coefficients = pfitf$wCoefficients.full,
-              fitted = wYhf,
-              residuals = wEf,
-              weights = w, data = dat2, random.SS = P, random.F = Fs,
+              fitted = pfitf$wFitted.full[[kf]],
+              residuals = pfitf$wResiduals.full[[kf]],
+              weights = w, data = dat2, random.SS = RSS, random.F = Fs,
               effect.type = effect.type,
+              OLS = TRUE, GLS = FALSE,
               Terms = pfitf$Terms, term.labels = pfitf$term.labels, permutations = iter+1,
               call= match.call()
   )
+  if(!is.null(Pcov)) {
+    out$PCov = Pcov
+    out$GLS = TRUE
+    out$OLS = FALSE
+    gls.fitted = fitted
+    gls.residuals = res
+    gls.coefficients = gFit$coefficients
+  }
   
   if(pairwise.cond == "means"){
     out$LS.means <- lsms[[1]]

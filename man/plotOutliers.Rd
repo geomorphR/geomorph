@@ -4,12 +4,14 @@
 \alias{plotOutliers}
 \title{Find potential outliers}
 \usage{
-plotOutliers(A, groups = NULL)
+plotOutliers(A, groups = NULL, inspect.outliers = FALSE)
 }
 \arguments{
 \item{A}{A 3D array (p x k x n) containing GPA-aligned coordinates for a set of specimens}
 
 \item{groups}{An optional factor defining groups}
+
+\item{inspect.outliers}{A logical value indicating whether to plot outlier shape configurations as compared to the consensus}
 }
 \value{
 Function returns the landmark addresses of all specimens ordered as in the plot. If groups are used, function returns 
@@ -21,7 +23,9 @@ Function plots all specimens ordered by distance from the mean.
 \details{
 The function creates a plot of all specimens ordered by their Procrustes distance from the mean shape. 
 The median distance (unbroken line) and upper and lower quartiles (dashed lines) summarize the distances
-from the mean shape. Specimens falling above the upper quartile are plotted in red. The addresses of all specimens are
+from the mean shape. Specimens falling above the upper quartile are plotted in red. The user may optionally 
+also inspect the shapes of identified outlier configurations as compared to the consensus, in order
+to identify digitization errors or other data issues. The addresses of all specimens are
 returned in the order displayed in the plot for further inspection by \code{\link{plotRefToTarget}}.
 
 If the data have strong group structure and there is reasonable belief that the whole sample mean should not be used,
@@ -35,9 +39,12 @@ newland[c(1,8),,2] <- newland[c(8,1),,2]
 newland[c(3,11),,26] <- newland[c(11,3),,2]
 Y<- gpagen(newland) # GPA
 out <- plotOutliers(Y$coords) # function returns dimnames and address of all specimens ordered
-plotRefToTarget(mshape(Y$coords), Y$coords[,,out[1]], method="vector", label=TRUE)
-plotRefToTarget(mshape(Y$coords), Y$coords[,,out[2]], method="vector", label=TRUE)
+plotOutliers(Y$coords, inspect.outliers = TRUE) # function also produces plots of 
+# identified outlier specimens compared to the mean shape
 
+# example with groups
+plotOutliers(Y$coords, groups = plethodon$species, inspect.outliers = TRUE)
+ 
 }
 \seealso{
 \code{\link{gpagen}}
@@ -47,6 +54,6 @@ plotRefToTarget(mshape(Y$coords), Y$coords[,,out[2]], method="vector", label=TRU
 \code{\link{plotAllSpecimens}}
 }
 \author{
-Emma Sherratt
+Emma Sherratt & Antigoni Kaliontzopoulou
 }
 \keyword{utilities}

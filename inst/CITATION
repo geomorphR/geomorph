@@ -1,13 +1,12 @@
 citHeader("To cite package 'geomorph' in a publication use:")
 
 citEntry(entry="Misc",
-	title = "Geomorph: Software for geometric morphometric analyses. R package version 3.0.5. https://cran.r-project.org/package=geomorph.",
+	title = "Geomorph: Software for geometric morphometric analyses. R package version 3.0.6. https://cran.r-project.org/package=geomorph.",
         author = personList(as.person("D.C. Adams"),
 			    as.person("M.L. Collyer"),
-			    as.person("A. Kaliontzopoulou"),
-			    as.person("E. Sherratt")),
-  	year = "2017",
+			    as.person("A. Kaliontzopoulou")),
+  	year = "2018",
 
-        textVersion = paste("Adams, D. C., M. L. Collyer, A. Kaliontzopoulou, and E. Sherratt. 2017. Geomorph: Software for geometric morphometric analyses. R package version 3.0.5. https://cran.r-project.org/package=geomorph.",sep=""))
+        textVersion = paste("Adams, D. C., M. L. Collyer, and A. Kaliontzopoulou. 2018. Geomorph: Software for geometric morphometric analyses. R package version 3.0.6. https://cran.r-project.org/package=geomorph.",sep=""))
 
 citFooter("As geomorph is evolving quickly, you may want to cite also its version number (found with 'library(help = geomorph)').")

@@ -105,6 +105,6 @@ Group Differences in Outline Shape. Medical Image Analysis 1(3):225-243.
 \code{\link{digitize2d}}, \code{\link{digit.fixed}}, \code{\link{gpagen}}, \code{\link{digit.curves}}
 }
 \author{
-Emma Sherratt, Dean Adams, Erik Otarola-Castillo
+Emma Sherratt & Dean Adams
 }
 \keyword{utilities}

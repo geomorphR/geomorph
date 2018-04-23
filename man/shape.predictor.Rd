@@ -33,7 +33,7 @@ or 1) an intercept is included in the design and 2) is FALSE in the Intercept ar
 and 2) is FALSE in the Intercept argument, if no intercept is desired.}
 }
 \value{
-A list of predicted shapes matching the number of vectors of prediction criteria provides.  The predications 
+A list of predicted shapes matching the number of vectors of prediction criteria provides.  The predictions 
 also have names matching those of the prediction criteria.
 }
 \description{

@@ -55,9 +55,14 @@ A general function to perform Procrustes analysis of two- or three-dimensional l
 \details{
 The function performs a Generalized Procrustes Analysis (GPA) on two-dimensional or three-dimensional
  landmark coordinates. The analysis can be performed on fixed landmark points, semilandmarks on 
- curves, semilandmarks on surfaces, or any combination. To include semilandmarks on curves, one 
- must specify a matrix defining which landmarks are to be treated as semilandmarks using the "curves=" 
- option. Likewise, to include semilandmarks 
+ curves, semilandmarks on surfaces, or any combination. If data are provided in the form of a 3D array, all
+ landmarks and semilandmarks are contained in this object. If this is the only component provided, the function
+ will treat all points as if they were fixed landmarks. To designate some points as semilandmarks, one uses 
+ the "curves=" or "surfaces=" options (or both). To include semilandmarks on curves, a matrix defining 
+ which landmarks are to be treated as semilandmarks is provided using the "curves=" option. This matrix contains
+ three columns that specify the semilandmarks and two neighboring landmarks which are used to specify the tangent 
+ direction for sliding. The matrix may be generated using the function \code{\link{define.sliders}}). Likewise, 
+ to include semilandmarks 
  on surfaces, one must specify a vector listing which landmarks are to be treated as surface semilandmarks 
  using the "surfaces=" option. The "ProcD=TRUE" option will slide the semilandmarks along their tangent 
  directions using the Procrustes distance criterion, while "ProcD=FALSE" will slide the semilandmarks 
@@ -101,6 +106,9 @@ plot(Y.gpa)
 
 # Example 2: points and semilandmarks on curves
 data(hummingbirds)
+
+###Slider matrix
+hummingbirds$curvepts
 
 # Using Procrustes Distance for sliding
 Y.gpa <- gpagen(hummingbirds$land,curves=hummingbirds$curvepts)   

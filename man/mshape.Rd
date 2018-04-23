@@ -7,7 +7,7 @@
 mshape(A)
 }
 \arguments{
-\item{A}{Either a list (length n, ach p x k), A 3D array (p x k x n), or a matrix (pk X n) containing GPA-aligned coordinates for a set of specimens}
+\item{A}{Either a list (length n, p x k), A 3D array (p x k x n), or a matrix (pk X n) containing GPA-aligned coordinates for a set of specimens}
 }
 \description{
 Estimate the mean shape for a set of aligned specimens
@@ -16,6 +16,9 @@ Estimate the mean shape for a set of aligned specimens
 The function estimates the average landmark coordinates for a set of aligned specimens. It is assumed
 that the landmarks have previously been aligned using Generalized Procrustes Analysis (GPA)
  [e.g., with \code{\link{gpagen}}]. This function is described in Claude (2008).
+ 
+ One can then use the generic function \code{\link{plot}} to produce a numbered plot of landmark 
+ positions and potentially add links, in order to review landmark positions
 }
 \examples{
 data(plethodon)

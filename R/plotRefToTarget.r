@@ -44,7 +44,7 @@
 #' @return If using {method="surface"}, function will return the warped mesh3d object.
 #' @keywords visualization
 #' @export
-#' @author Dean Adams, Emma Sherratt & Michael Collyer
+#' @author Dean Adams, Emma Sherratt, Antigoni Kaliontzopoulou & Michael Collyer
 #' @references Claude, J. 2008. Morphometrics with R. Springer, New York. 
 #' @seealso  \code{\link{gridPar}}
 #' @seealso  \code{\link{define.links}}
@@ -71,79 +71,96 @@
 #' # plotRefToTarget(ref,Y.gpa$coords[,,1],gridPars=gridPar(tar.pt.bg = "blue", tar.link.col="blue",
 #' # tar.link.lwd=2), method="points", links = scallinks)
 #' 
-plotRefToTarget<-function(M1,M2,mesh= NULL,outline=NULL,method=c("TPS","vector","points","surface"),
-                          mag=1.0,links=NULL,label=FALSE,axes=FALSE,gridPars=NULL,useRefPts=FALSE,...){
+plotRefToTarget<-function(M1, M2, mesh= NULL, outline=NULL, 
+                          method=c("TPS","vector","points","surface"),
+                          mag=1.0, links=NULL, label=FALSE, axes=FALSE, 
+                          gridPars=NULL, useRefPts=FALSE,...){
   method <- match.arg(method)
-  if(any(is.na(M1))==TRUE){
+  if(any(is.na(M1))){
     stop("Data contains missing values. Estimate these first (see 'estimate.missing').")  }
-  if(any(is.na(M2))==TRUE){
+  if(any(is.na(M2))){
     stop("Data contains missing values. Estimate these first (see 'estimate.missing').")  }
-  if(is.null(gridPars)) gP = gridPar() else gP=gridPars
-  k<-dim(M1)[2]
-  mag<-(mag-1)
-  M2<-M2+(M2-M1)*mag
-  limits = function(x,s){ 
-    r = range(x)
-    rc=scale(r,scale=FALSE)
-    l=mean(r)+s*rc
+  if(is.null(gridPars)) gP <- gridPar() else gP <- gridPars
+  k <- dim(M1)[2]
+  mag <- (mag-1)
+  M2 <- M2 + (M2-M1)*mag
+  limits <- function(x,s){ 
+    r <- range(x)
+    rc <- scale(r, scale=FALSE)
+    l <- mean(r)+s*rc
   }
   if(k==2){
     if(method=="TPS"){
-      tps(M1,M2,gP$n.col.cell, sz=gP$tar.pt.size, pt.bg=gP$tar.pt.bg, grid.col=gP$grid.col, 
+      tps(M1, M2, gP$n.col.cell, sz=gP$tar.pt.size, pt.bg=gP$tar.pt.bg, grid.col=gP$grid.col, 
           grid.lwd=gP$grid.lwd, grid.lty=gP$grid.lty, refpts=useRefPts)
       if(is.null(links)==FALSE){
         linkcol <- rep(gP$tar.link.col,nrow(links))[1:nrow(links)]
         linklwd <- rep(gP$tar.link.lwd,nrow(links))[1:nrow(links)]
         linklty <- rep(gP$tar.link.lty,nrow(links))[1:nrow(links)]
         for (i in 1:nrow(links)){
-          segments(M2[links[i,1],1],M2[links[i,1],2],M2[links[i,2],1],M2[links[i,2],2],
-                   col=linkcol[i],lty=linklty[i],lwd=linklwd[i])
+          segments(M2[links[i,1],1], M2[links[i,1],2], M2[links[i,2],1], M2[links[i,2],2],
+                   col=linkcol[i], lty=linklty[i], lwd=linklwd[i])
         }
       }
-      if(label == TRUE){text(M2, label=paste(1:dim(M2)[1]),adj=gP$txt.adj,
-                             pos=gP$txt.pos,cex=gP$txt.cex,col=gP$txt.col)}
+      if(label){
+        text(M2, label=paste(1:dim(M2)[1]), adj=gP$txt.adj,
+                             pos=gP$txt.pos, cex=gP$txt.cex, col=gP$txt.col)
+        }
       if(!is.null(outline)){
-        curve.warp <- tps2d(outline, M1, M2)
-        points(curve.warp,pch=19, cex=gP$tar.out.cex, col=gP$tar.out.col) 
+        curve.warp <- xy.coords(tps2d(outline, M1, M2))
+        plot.xy(curve.warp, type="p", pch=19, cex=gP$tar.out.cex, col=gP$tar.out.col) 
       }
-      if(useRefPts==FALSE) points(M2,pch=21,cex=gP$tar.pt.size, bg=gP$tar.pt.bg) else points(M1,pch=21,cex=gP$pt.size, bg=gP$pt.bg)
+      if(!useRefPts){
+        plot.xy(xy.coords(M2), type="p", pch=21, cex=gP$tar.pt.size, bg=gP$tar.pt.bg)
+      } else {
+        plot.xy(xy.coords(M1), type="p", pch=21, cex=gP$pt.size, bg=gP$pt.bg)}
     }
     if(method=="vector"){
-      if(axes==TRUE){
-      plot(M1,asp=1,type="n",xlab="x",ylab="y",xlim=limits(M1[,1],1.25),
-           ylim=limits(M1[,2],1.25),...)}
-      if(axes==FALSE){
-        plot(M1,asp=1,type="n",xlab="",ylab="",xlim=limits(M1[,1],1.25),axes=FALSE,
-             ylim=limits(M1[,2],1.25),...)}
-      if(is.null(links)==FALSE){
+      plot.new()
+      if(axes){
+        plot.window(limits(M1[,1], 1.25), limits(M1[,2], 1.25),
+                    xlab="x", ylab="y", asp = 1)
+      }
+      if(!axes){
+        plot.window(limits(M1[,1], 1.25), limits(M1[,2],1.25),
+                    xlab="", ylab="", asp = 1, xaxt="n", yaxt="n")
+      }
+      if(!is.null(links)){
         linkcol <- rep(gP$link.col,nrow(links))[1:nrow(links)]
         linklwd <- rep(gP$link.lwd,nrow(links))[1:nrow(links)]
         linklty <- rep(gP$link.lty,nrow(links))[1:nrow(links)]
         for (i in 1:nrow(links)){
-          segments(M2[links[i,1],1],M2[links[i,1],2],M2[links[i,2],1],M2[links[i,2],2],
-                   col=linkcol[i],lty=linklty[i],lwd=linklwd[i])
+          segments(M2[links[i,1],1], M2[links[i,1],2], M2[links[i,2],1], M2[links[i,2],2],
+                   col=linkcol[i], lty=linklty[i], lwd=linklwd[i])
         }
       }
-      if(label == TRUE){text(M1, label=paste(1:dim(M1)[1]),adj=gP$txt.adj,
-                             pos=gP$txt.pos,cex=gP$txt.cex,col=gP$txt.col)}
-      arrows(M1[,1],M1[,2],M2[,1],M2[,2],length=0.075,lwd=2)
-      points(M1,pch=21,bg=gP$pt.bg,cex=gP$pt.size)
+      if(label){
+        text(M1, label=paste(1:dim(M1)[1]),adj=gP$txt.adj,
+             pos=gP$txt.pos, cex=gP$txt.cex, col=gP$txt.col)
+        }
+      arrows(M1[,1], M1[,2], M2[,1], M2[,2], length=0.075,lwd=2)
+      plot.xy(xy.coords(M1), type="p", pch=21, bg=gP$pt.bg, cex=gP$pt.size)
     }
     if(method=="points"){
-      if(axes==TRUE){
-      plot(M1,asp=1,pch=21,type="n",xlim=limits(M1[,1],1.25),
-           ylim=limits(M1[,2],1.25),xlab="x",ylab="y",...)}
-      if(axes==FALSE){
-        plot(M1,asp=1,pch=21,type="n",xlim=limits(M1[,1],1.25),axes=FALSE,
-             ylim=limits(M1[,2],1.25),xlab="",ylab="",...)}
-      if(label == TRUE){text(M1, label=paste(1:dim(M1)[1]),adj=gP$txt.adj,
-                             pos=gP$txt.pos,cex=gP$txt.cex,col=gP$txt.col)}
+      plot.new()
+      if(axes){
+        plot.window(limits(M1[,1], 1.25), limits(M1[,2], 1.25),
+                    xlab="x", ylab="y", asp = 1)
+      }
+      if(!axes){
+        plot.window(limits(M1[,1], 1.25), limits(M1[,2],1.25),
+                    xlab="", ylab="", asp = 1, xaxt="n", yaxt="n")
+      }
+      if(label){
+        text(M1, label=paste(1:dim(M1)[1]), adj=gP$txt.adj,
+             pos=gP$txt.pos, cex=gP$txt.cex, col=gP$txt.col)
+        }
       if(!is.null(outline)){
         curve.warp <- tps2d(outline, M1, M2)
-        points(outline,pch=19, cex=gP$out.cex, col=gP$out.col) 
-        points(curve.warp,pch=19, cex=gP$tar.out.cex, col=gP$tar.out.col) 
+        plot.xy(xy.coords(outline), type="p", pch=19, cex=gP$out.cex, col=gP$out.col) 
+        plot.xy(xy.coords(curve.warp), type="p", pch=19, cex=gP$tar.out.cex, col=gP$tar.out.col) 
       }
-      if(is.null(links)==FALSE){
+      if(!is.null(links)){
         linkcol <- rep(gP$link.col,nrow(links))[1:nrow(links)]
         linklwd <- rep(gP$link.lwd,nrow(links))[1:nrow(links)]
         linklty <- rep(gP$link.lty,nrow(links))[1:nrow(links)]
@@ -159,15 +176,80 @@ plotRefToTarget<-function(M1,M2,mesh= NULL,outline=NULL,method=c("TPS","vector",
                    lty=tarlinklty[i],lwd=tarlinklwd[i])
         }
       }
-      points(M2,pch=21,bg=gP$tar.pt.bg,cex=gP$tar.pt.size)
-      points(M1,pch=21,bg=gP$pt.bg,cex=gP$pt.size)
+      plot.xy(xy.coords(M2), type="p", pch=21, bg=gP$tar.pt.bg, cex=gP$tar.pt.size)
+      plot.xy(xy.coords(M1), type="p", pch=21, bg=gP$pt.bg, cex=gP$pt.size)
     }
     if(method=="surface"){
       stop("Surface plotting for 3D landmarks only.")
     }      
   }
   if(k==3){
-    if(method=="TPS"){
+    #for shape predictor k=2
+    if(method=="TPS" && class(M2) == "predshape.k2"){
+      tps(M1[,1:2],M2[,1:2],gP$n.col.cell, sz=gP$tar.pt.size, pt.bg=gP$tar.pt.bg, 
+          grid.col=gP$grid.col, grid.lwd=gP$grid.lwd, grid.lty=gP$grid.lty, refpts=useRefPts, 
+          k3=TRUE)
+      if(is.null(links)==FALSE){
+        linkcol <- rep(gP$tar.link.col,nrow(links))[1:nrow(links)]
+        linklwd <- rep(gP$tar.link.lwd,nrow(links))[1:nrow(links)]
+        linklty <- rep(gP$tar.link.lty,nrow(links))[1:nrow(links)]
+        for (i in 1:nrow(links)){
+          segments3d(rbind(M2[links[i,1],],M2[links[i,2],]),
+                     col=linkcol[i],lty=linklwd[i],lwd=linklty[i])
+        }
+      }
+      if(label == TRUE){text3d(M2, texts = paste(1:dim(M2)[1]), adj=(gP$txt.adj+gP$pt.size),
+                               pos=(gP$txt.pos+gP$pt.size),cex=gP$txt.cex,col=gP$txt.col)}
+      if(!is.null(outline)){
+        curve.warp <- tps2d(outline, M1[,1:2],M2[,1:2])
+        points3d(cbind(curve.warp,0), size=gP$tar.out.cex, col=gP$tar.out.col) 
+      }
+    }
+    #for shape predictor k=3
+    if(method=="TPS" && class(M2) == "predshape.k3"){
+      layout3d(matrix(c(1,2),1,2))
+      tps(M1[,1:2],M2[,1:2],gP$n.col.cell, sz=gP$tar.pt.size, pt.bg=gP$tar.pt.bg, 
+          grid.col=gP$grid.col, grid.lwd=gP$grid.lwd, grid.lty=gP$grid.lty, refpts=useRefPts,
+          k3=TRUE)
+      title3d("X,Y tps grid") # doesn't work?
+      if(is.null(links)==FALSE){
+        linkcol <- rep(gP$tar.link.col,nrow(links))[1:nrow(links)]
+        linklwd <- rep(gP$tar.link.lwd,nrow(links))[1:nrow(links)]
+        linklty <- rep(gP$tar.link.lty,nrow(links))[1:nrow(links)]
+        for (i in 1:nrow(links)){
+          segments3d(rbind(M2[links[i,1],],M2[links[i,2],]),
+                     col=linkcol[i],lty=linklwd[i],lwd=linklty[i])
+        }
+      }
+      if(label == TRUE){text3d(M2, texts = paste(1:dim(M2)[1]), adj=(gP$txt.adj+gP$pt.size),
+                               pos=(gP$txt.pos+gP$pt.size),cex=gP$txt.cex,col=gP$txt.col)} 
+      if(!is.null(outline)){
+        curve.warp <- tps2d(outline, M1[,1:2],M2[,1:2])
+        points3d(cbind(curve.warp,0), size=gP$tar.out.cex, col=gP$tar.out.col) 
+      }
+      b<-c(1,3)
+      tps(M1[,b],M2[,b],gP$n.col.cell, sz=gP$tar.pt.size, pt.bg=gP$tar.pt.bg, 
+          grid.col=gP$grid.col, grid.lwd=gP$grid.lwd, grid.lty=gP$grid.lty, refpts=useRefPts,
+          k3=TRUE)
+      title3d("X,Y tps grid") # doesn't work?
+      if(is.null(links)==FALSE){
+        linkcol <- rep(gP$tar.link.col,nrow(links))[1:nrow(links)]
+        linklwd <- rep(gP$tar.link.lwd,nrow(links))[1:nrow(links)]
+        linklty <- rep(gP$tar.link.lty,nrow(links))[1:nrow(links)]
+        for (i in 1:nrow(links)){
+          segments3d(rbind(M2[links[i,1],c(1,3,2)],M2[links[i,2],c(1,3,2)]),
+                     col=linkcol[i],lty=linklwd[i],lwd=linklty[i])
+        }
+      }
+      if(label == TRUE){text3d(M2[,c(1,3,2)], texts = paste(1:dim(M2)[1]), adj=(gP$txt.adj+gP$pt.size),
+                               pos=(gP$txt.pos+gP$pt.size),cex=gP$txt.cex,col=gP$txt.col)} # doesn't work?
+      if(!is.null(outline)){
+        curve.warp <- tps2d(outline, M1[,b],M2[,b])
+        points3d(cbind(curve.warp,0), size=gP$tar.out.cex, col=gP$tar.out.col) 
+      }
+    }
+    # Regular TPS plotting for 3D objects
+    if(method=="TPS" && class(M2) == "matrix"){
       old.par <- par(no.readonly = TRUE)
       layout(matrix(c(1,2),1,2))
       par(mar=c(1,1,1,1))
@@ -202,16 +284,16 @@ plotRefToTarget<-function(M1,M2,mesh= NULL,outline=NULL,method=c("TPS","vector",
       on.exit(par(old.par))
     }
     if(method=="vector"){
-      if(axes==TRUE){
+      if(axes){
       plot3d(M1,type="s",col=gP$pt.bg,size=gP$pt.size,aspect=FALSE,...)}
-      if(axes==FALSE){
+      if(!axes){
         plot3d(M1,type="s",col=gP$pt.bg,size=gP$pt.size,aspect=FALSE,xlab="",ylab="",zlab="",axes=F,...)}
-      if(label == TRUE){text3d(M1, texts = paste(1:dim(M1)[1]), adj=(gP$txt.adj+gP$pt.size),
+      if(label){text3d(M1, texts = paste(1:dim(M1)[1]), adj=(gP$txt.adj+gP$pt.size),
                                pos=(gP$txt.pos+gP$pt.size),cex=gP$txt.cex,col=gP$txt.col)}
       for (i in 1:nrow(M1)){
         segments3d(rbind(M1[i,],M2[i,]),lwd=2)
       }
-      if(is.null(links)==FALSE){
+      if(!is.null(links)){
         tarlinkcol <- rep(gP$tar.link.col,nrow(links))[1:nrow(links)]
         tarlinklwd <- rep(gP$tar.link.lwd,nrow(links))[1:nrow(links)]
         tarlinklty <- rep(gP$tar.link.lty,nrow(links))[1:nrow(links)]
@@ -222,16 +304,16 @@ plotRefToTarget<-function(M1,M2,mesh= NULL,outline=NULL,method=c("TPS","vector",
       }
     }
     if(method=="points"){
-      if(axes==TRUE){
+      if(axes){
       plot3d(M1,type="s",col=gP$pt.bg,size=gP$pt.size,aspect=FALSE,...)
       plot3d(M2,type="s",col=gP$tar.pt.bg,size=gP$tar.pt.size,add=TRUE)}
-      if(axes==FALSE){
+      if(!axes){
         plot3d(M1,type="s",col=gP$pt.bg,size=gP$pt.size,aspect=FALSE,xlab="",ylab="",zlab="",axes=F,...)
         plot3d(M2,type="s",col=gP$tar.pt.bg,size=gP$tar.pt.size,add=TRUE)}
       
-      if(label == TRUE){text3d(M1, texts = paste(1:dim(M1)[1]), adj=(gP$txt.adj+gP$pt.size),
+      if(label){text3d(M1, texts = paste(1:dim(M1)[1]), adj=(gP$txt.adj+gP$pt.size),
                                pos=(gP$txt.pos+gP$pt.size),cex=gP$txt.cex,col=gP$txt.col)}
-      if(is.null(links)==FALSE){
+      if(!is.null(links)){
         linkcol <- rep(gP$link.col,nrow(links))[1:nrow(links)]
         linklwd <- rep(gP$link.lwd,nrow(links))[1:nrow(links)]
         linklty <- rep(gP$link.lty,nrow(links))[1:nrow(links)]
@@ -247,7 +329,7 @@ plotRefToTarget<-function(M1,M2,mesh= NULL,outline=NULL,method=c("TPS","vector",
       }
     }
     if (method == "surface") {
-      if(is.null(mesh)==TRUE){
+      if(is.null(mesh)){
         stop("Surface plotting requires a template mesh3d object (see 'warpRefMesh').")
       }
       warp.PLY <- mesh

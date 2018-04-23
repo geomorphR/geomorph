@@ -102,6 +102,6 @@ Claude, J. 2008. Morphometrics with R. Springer, New York.
 \code{\link{warpRefOutline}}
 }
 \author{
-Dean Adams, Emma Sherratt & Michael Collyer
+Dean Adams, Emma Sherratt, Antigoni Kaliontzopoulou & Michael Collyer
 }
 \keyword{visualization}
