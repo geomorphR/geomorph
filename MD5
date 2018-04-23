@@ -9,7 +9,7 @@ d8e8360c03c03fe45d2100e9c05d4a89 *data/plethodon.rda
 80c6fa53b642b23b378cf036d1b962f1 *data/ratland.rda
 9ba51ab9be03930a4acdcddde8169b33 *data/scallopPLY.rda
 6e5e71b242462e422b716800ffc3c464 *data/scallops.rda
-54b7d8e81593f9e20e1de29f17373690 *DESCRIPTION
+647e5faa3605629df1060e5ce2c3aead *DESCRIPTION
 73f723a130c92f8b84a81465a15add7c *geomorph.Rproj
 e65e81ca3e2c0b6e712bf6f4bafcdaec *inst/CITATION
 52783d93586299b5b51fda9cc05894b8 *man/advanced.procD.lm.Rd
@@ -93,8 +93,8 @@ aa9104be734ce6ed986a76ae3a1b8dda *man/print.pls.Rd
 1c020ff2d475e36230387f1a5505cdbd *man/print.procD.lm.Rd
 f87c4153ddfe0e1b304b02cd8d32976a *man/print.trajectory.analysis.Rd
 1f0a3ac813e7f4d678a809a0b21f4b6d *man/procD.allometry.Rd
-910d91dacbec36682540ae49b3adf55e *man/procD.lm.Rd
-e83b7bb643cfbc5e76a277341b49665d *man/procD.pgls.Rd
+713e344bcbe454960c48dc30f38079fe *man/procD.lm.Rd
+d4688f59ce59a6088773b578bc2b6f55 *man/procD.pgls.Rd
 72b91c59988d64411b7538795533db3b *man/pupfish.Rd
 a9e642b1b58f83a93ab678d6be98df1c *man/ratland.Rd
 b5b82fe2e02de4c88624666de296f1ed *man/read.morphologika.Rd
@@ -177,8 +177,8 @@ b8e08a315b3c34603f20a9664a853029 *R/plotOutliers.r
 41db23cebd8d7be6c3decf781bd378e0 *R/plotspec.r
 3a29dd0ba103804d3d7b703172200402 *R/plotTangentSpace.r
 8f4c5716a7b3a296614a6d9c195cfcef *R/procD.allometry.r
-2cbfdd07ec499ad22fc3e9080a443f57 *R/procD.lm.r
-623f441d4350e73803906a715f69a6c5 *R/procD.pgls.r
+bf3be35c4c1b790ca1f8ec30f30dd736 *R/procD.lm.r
+faff3a734a2823413bea836cc64d1e63 *R/procD.pgls.r
 df3f4cc6406dc0c737ee2ff08c2a0e3d *R/read.morphologika.r
 9c3c828f71a413b5437d45228a3bf9b7 *R/read.ply.r
 7f0641e4fc3731624966a5e6578f5790 *R/readland.nts.r

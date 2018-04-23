@@ -27,7 +27,7 @@
 #'   model (Y ~ X), from which sums-of-squares, F-ratios, and R-squared are estimated for each factor in the model (see Adams, 2014). 
 #'   Data are then permuted across the tips of the phylogeny, and all estimates of statistical values are obtained for the permuted data,
 #'   which are compared to the observed value to assess significance. This approach has been shown to have appropriate type I error
-#'   rates 9Adams and Collyer 2018), whereas an alternative procedure for phylogenetic regression of morphometric shape data displays elevated 
+#'   rates (Adams and Collyer 2018), whereas an alternative procedure for phylogenetic regression of morphometric shape data displays elevated 
 #'   type I error rates (see Adams and Collyer 2015). 
 #'   
 #'   Effect-sizes (Z scores) are computed as standard deviates of either the 
@@ -44,7 +44,7 @@
 #'   The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{procD.pgls}}.
 #'   The generic function, \code{\link{plot}}, produces diagnostic plots for Procrustes residuals of the linear fit.
 #'   
-#'  \subsection{Notes for geomorph 3.0.7 and subsequent versions}{ 
+#'  \subsection{Notes for geomorph 3.0.6 and subsequent versions}{ 
 #'  Compared to previous versions, GLS computations in random permutations require RRPP (Adams and Collyer 2018).  Thus, 
 #'  full randomization is no longer permitted with this function.  This function uses \code{\link{procD.lm}}, after calculating 
 #'  a phylogenetic covariance matrix, and with the constraint of RRPP.  If alternative covariance matrices or permutation methods 
@@ -90,7 +90,8 @@
 #' by high-dimensional data. Heredity. 115:357-365.
 #' @references Adams, D.C. and M.L. Collyer. 2016.  On the comparison of the strength of morphological integration across morphometric 
 #' datasets. Evolution. 70:2623-2631.
-#' @references Adams, D.C. and M.L. Collyer. 2016. TBD (ms in review)
+#' @references Adams, D.C. and M.L. Collyer. 2018. Multivariate comparative methods: evaluations, comparisons, and
+#' recommendations. Systematic Biology. 67:14-31.
 #' @examples
 #' ### Example of D-PGLS for high-dimensional data 
 #' data(plethspecies)
