@@ -104,7 +104,7 @@ The SS calculated is the same as the sum of squared Procrustes distances among s
   similar in concept to trajectory analysis (Adams and Collyer 2007; Collyer and Adams 2007; Adams and Collyer 2009;
   Collyer and Adams 2013), in that pairwise statistics are either vector lengths or angular differences between vectors.  
   These tests are different than trajectory analysis (see\code{\link{trajectory.analysis}}), however, because a factorial model
-  is not explicitly needed to contrast vectors between point factor levels nested within group factor levels.  For angluar differences 
+  is not explicitly needed to contrast vectors between point factor levels nested within group factor levels.  For angular differences 
   between factor-covariate slopes, either the angle or the vector correlation can be tested.  It should be understood
   that a vector correlation of 1 (parallel vectors), not 0, is the null hypothesis, meaning slopes are the same.
 

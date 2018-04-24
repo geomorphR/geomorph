@@ -13,7 +13,7 @@ estimate.missing(A, method = c("TPS", "Reg"))
 }
 \value{
 Function returns an array (p x k x n) of the same dimensions as input A, including coordinates for the target specimens 
-(the original landmarks plus the estimated coordinates for the missing landmarks). These data need to be Procrustes Superimposed prior to analysis (seesee \code{\link{gpagen}}).
+(the original landmarks plus the estimated coordinates for the missing landmarks). These data need to be Procrustes Superimposed prior to analysis (see \code{\link{gpagen}}).
 }
 \description{
 A function for estimating the locations of missing landmarks

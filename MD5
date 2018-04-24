@@ -12,9 +12,9 @@ d8e8360c03c03fe45d2100e9c05d4a89 *data/plethodon.rda
 647e5faa3605629df1060e5ce2c3aead *DESCRIPTION
 73f723a130c92f8b84a81465a15add7c *geomorph.Rproj
 e65e81ca3e2c0b6e712bf6f4bafcdaec *inst/CITATION
-3f3b4f32439863671006ecf6e41097a2 *man/advanced.procD.lm.Rd
+9b9358c0564276ad2a9906dbe2710843 *man/advanced.procD.lm.Rd
 5a8e62b1b33e226fb4e4d5ed92630fe7 *man/arrayspecs.Rd
-29ef731f3df54f1749e3c998c718e018 *man/bilat.symmetry.Rd
+c84ebb4bb94fc6ea25a256e96d899dc8 *man/bilat.symmetry.Rd
 da8b187ac0217f9f31b72bd7fd72e2ed *man/buildtemplate.Rd
 07eb7b985075995628992be2a9b9ee1d *man/combine.subsets.Rd
 8346c2b0fc091bd46e61a76a46914a71 *man/compare.evol.rates.Rd
@@ -29,7 +29,7 @@ a4b896e26feda07f8062406ff8ae7499 *man/digit.fixed.Rd
 f95ea8b6cbd04111605b5d6540f45e22 *man/digitize2d.Rd
 0feccd2425c8bd7dbfe20060ddf30e2e *man/digitsurface.Rd
 6f2261cab1a4d51d06e03b3df1602922 *man/editTemplate.Rd
-4b6e0f87bc1fed2ed1db84f0bada3eb4 *man/estimate.missing.Rd
+8323822868d79f3be97372b5833a0dd5 *man/estimate.missing.Rd
 311b47ea4c5e19caf4d6d20a66dd6889 *man/findMeanSpec.Rd
 3741bb9db42dfbd0ce77da3b4d8bd6d2 *man/fixed.angle.Rd
 01625e5fec0fb0bc717a71a42bb27140 *man/geomorph-package.Rd
@@ -124,9 +124,9 @@ b93c55fc393106e3991a0743bd3c281e *man/trajectory.analysis.Rd
 aac14dd389a4f2cd73e97e8fbc0bfbad *man/writeland.tps.Rd
 964e43205dc479504df6c5fc4099f10f *NAMESPACE
 c0f2f20b73d320a2b97c77f769c877ee *NEWS
-6015bacdcd0785d9c7937208bb6fb29f *R/advanced.procD.lm.r
+adcd41abbf0eade267c1033619680a67 *R/advanced.procD.lm.r
 311a910118a6b60a5ab89a58349e1f69 *R/arrayspecs.r
-606a93e34cc1efa7edfd5794f7d12994 *R/bilat.symmetry.r
+dee0a5177e5e42a2ef0d434c6d132f27 *R/bilat.symmetry.r
 14713bbb2ad126d777d95e359c71bf1a *R/build.template.r
 112757cb68025f1d659d177b0f1f8fc6 *R/combine.subsets.R
 bc64cd3ef49ec3e580b9ed38b61ec453 *R/compare.evol.rates.r
@@ -142,7 +142,7 @@ de2c474fcd4c125b7563c13ea9c9ee99 *R/deprecated.defunct.r
 ddff41e987eac54d3500e2313799c3c6 *R/digitize2d.r
 6ee66fc21bc5f6391b02c890d2313575 *R/digitsurface.r
 05f8cee04bf9faaab3fda006fbd3efbe *R/editTemplate.r
-e35e6cc7c87552fc18862b21331ac32b *R/estimate.missing.r
+1edd9ec57b03d0c8f01e4239fd7e8ae7 *R/estimate.missing.r
 9cfff0013db7a8c0e4aca770b5d9ea25 *R/findMeanSpec.r
 b56e53ac307d84a05efee9525dd6868a *R/fixed.angle.r
 203177efc30cc6fef4bd604b2fc2af01 *R/geomorph.data.frame.r

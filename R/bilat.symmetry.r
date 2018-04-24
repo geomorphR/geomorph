@@ -88,7 +88,7 @@
 #' \item{random.size.F}{A matrix of random F-values from the Centroid Size analysis.}
 #' \item{perm.method}{A value indicating whether "Raw" values were shuffled or "RRPP" performed.}
 #' \item{procD.lm.shape}{A list of typical output from an object of class procD.lm, for shape}
-#' \item{procD.lm.size}{If applicable, a list of typical output from an objeect of class procD.lm, for size.}
+#' \item{procD.lm.size}{If applicable, a list of typical output from an object of class procD.lm, for size.}
 #' \item{call}{The matched call.}
 #' 
 #' @references Klingenberg, C.P. and G.S. McIntyre. 1998. Quantitative genetics of geometric shape in the mouse mandible. Evolution. 55:2342-2352.
