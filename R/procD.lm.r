@@ -133,7 +133,7 @@
 #' by high-dimensional data. Heredity. 115:357-365.
 #' @references Adams, D.C. and M.L. Collyer. 2016.  On the comparison of the strength of morphological integration across morphometric 
 #' datasets. Evolution. 70:2623-2631.
-#' @references Adams, D.C. and M.L. Collyer. 2018. Multivariate comparative methods: evaluations, comparisons, and
+#' @references Adams, D.C. and M.L. Collyer. 2018. Multivariate phylogenetic comparative methods: evaluations, comparisons, and
 #' recommendations. Systematic Biology. 67:14-31.
 #' @seealso \code{\link{advanced.procD.lm}}, \code{\link{procD.pgls}}, and 
 #' \code{\link{nested.update}} within geomorph; \code{\link[stats]{lm}} for more on linear model fits.
