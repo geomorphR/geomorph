@@ -34,7 +34,7 @@
 #'   similar in concept to trajectory analysis (Adams and Collyer 2007; Collyer and Adams 2007; Adams and Collyer 2009;
 #'   Collyer and Adams 2013), in that pairwise statistics are either vector lengths or angular differences between vectors.  
 #'   These tests are different than trajectory analysis (see\code{\link{trajectory.analysis}}), however, because a factorial model
-#'   is not explicitly needed to contrast vectors between point factor levels nested within group factor levels.  For angluar differences 
+#'   is not explicitly needed to contrast vectors between point factor levels nested within group factor levels.  For angular differences 
 #'   between factor-covariate slopes, either the angle or the vector correlation can be tested.  It should be understood
 #'   that a vector correlation of 1 (parallel vectors), not 0, is the null hypothesis, meaning slopes are the same.
 #'
@@ -66,7 +66,7 @@
 #'  is now a function argument.
 #'
 #'  An optional argument for including a phylogenetic tree of {class phylo} is included in this function.  ANOVA performed on separate PGLS models is analogous
-#'  to a likelihood ratio test between models (Adams and Collyer 2017).  Pairwise tests can also be performed after PGLS estimation of coefficients but users
+#'  to a likelihood ratio test between models (Adams and Collyer 2018).  Pairwise tests can also be performed after PGLS estimation of coefficients but users
 #'  should be aware that no formal research on the statistical properties (type I error rates and statistical power) of pairwise statistics with PGLS has yet
 #'  been performed.  Using PGLS and analysis of pairwise statistics, therefore, assumes some risk.
 #' }
@@ -124,8 +124,8 @@
 #'   trajectories in evolutionary studies. Evolution 63:1143-1154.
 #' @references Adams, D.C. and M.L. Collyer. 2016.  On the comparison of the strength of morphological integration across morphometric
 #' datasets. Evolution. 70:2623-2631.
-#' @references Adams, D.C. and M.L. Collyer. 2017. Multivariate comparative methods: evaluations, comparisons, and
-#' recommendations. Systematic Biology. In press.
+#' @references Adams, D.C. and M.L. Collyer. 2017. Multivariate phylogenetic comparative methods: evaluations, comparisons, and
+#' recommendations. Systematic Biology. 67:14-31.
 #' @references Collyer, M.L., and D.C. Adams. 2007. Analysis of two-state multivariate phenotypic change 
 #' in ecological studies. Ecology 88:683-692.
 #' @references Collyer, M.L., and D.C. Adams. 2013. Phenotypic trajectory analysis: comparison of shape change patterns 
