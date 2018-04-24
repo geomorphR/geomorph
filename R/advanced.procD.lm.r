@@ -279,7 +279,7 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
   effect.type <- match.arg(effect.type)
   
   if(print.progress) cat("\nPerforming ANOVA:")
-  anova.res <- anova(pfitR, pfitF, 
+  anova.res <- anova.lm.rrpp(pfitR, pfitF, 
                     effect.type = effect.type, print.progress = print.progress)
   
   # pairwise means
@@ -414,8 +414,8 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
       out$Z.angles <- Z.cor
     }
   }
-  rownames(out$anova.table) <- c(deparse(formula(pfitr$Terms)),
-                                 deparse(formula(pfitf$Terms)), "Total")
+  rownames(out$anova.table) <- c(formula(pfitr$Terms)[-2],
+                                 formula(pfitf$Terms)[-2], "Total")
   rownames(out$anova.table)[1] <- paste(rownames(out$anova.table)[1], "(Null)")
   Rsq.fix <- out$anova.table$Rsq 
   out$anova.table$Rsq <- c(NA, Rsq.fix[2] - Rsq.fix[1], NA)
