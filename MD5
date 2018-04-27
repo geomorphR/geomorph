@@ -14,7 +14,7 @@ f4f2080e745b8d689f17caf549449ab5 *geomorph.Rproj
 e65e81ca3e2c0b6e712bf6f4bafcdaec *inst/CITATION
 176942c36e7acc4f6a64ec40c141cf5f *man/advanced.procD.lm.Rd
 5e099c6268d251bf5c98595d9566385a *man/arrayspecs.Rd
-2e3bd61198c98b6cc7eee5c21ef9c239 *man/bilat.symmetry.Rd
+1c00d400c3d8629370d24cf98f1c85a3 *man/bilat.symmetry.Rd
 5a3e03eb2accf1269a9cf8c049adae78 *man/buildtemplate.Rd
 e475085993cce4909490bf99d610df76 *man/combine.subsets.Rd
 42c669d7a0081707773f13b373598292 *man/compare.evol.rates.Rd
@@ -127,6 +127,7 @@ c0f2f20b73d320a2b97c77f769c877ee *NEWS
 e8b7ece0dcc25a216f3142217ffe5d30 *R/advanced.procD.lm 8.19.19 AM.r
 311a910118a6b60a5ab89a58349e1f69 *R/arrayspecs.r
 9ae1369d51009b1111560f2d7da1e255 *R/bilat.symmetry 8.19.19 AM.r
+dee0a5177e5e42a2ef0d434c6d132f27 *R/bilat.symmetry.r
 14713bbb2ad126d777d95e359c71bf1a *R/build.template.r
 112757cb68025f1d659d177b0f1f8fc6 *R/combine.subsets.R
 bc64cd3ef49ec3e580b9ed38b61ec453 *R/compare.evol.rates.r
