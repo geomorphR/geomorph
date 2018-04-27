@@ -232,7 +232,7 @@ procD.lm<- function(f1, iter = 999, seed=NULL, RRPP = TRUE, effect.type = c("F",
     MSE.mat <- matrix(MSE, k, length(MSE), byrow = TRUE)
     Fs <- (SS[1:k,]/df[1:k])/MSE.mat
     if(SS.type == "III") {
-      if(k == 1) etas <- SS/(SS + SSE.mat) else etas <- SS[1:k,]/(SS+SSE.mat)
+      if(k == 1) etas <- SS/(SS + SSE.mat) else etas <- SS[1:k,]/(SS[1:k,]+SSE.mat)
       cohenf <- etas/(1-etas)
     } else {
       if(k == 1) etas <- SS/SSY else etas <- SS[1:k,]/SSY

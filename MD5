@@ -11,7 +11,7 @@ d8e8360c03c03fe45d2100e9c05d4a89 *data/plethodon.rda
 9ba51ab9be03930a4acdcddde8169b33 *data/scallopPLY.rda
 6e5e71b242462e422b716800ffc3c464 *data/scallops.rda
 9deb59dd2f0b363f605c932ea89bffb8 *DESCRIPTION
-73f723a130c92f8b84a81465a15add7c *geomorph.Rproj
+f4f2080e745b8d689f17caf549449ab5 *geomorph.Rproj
 e65e81ca3e2c0b6e712bf6f4bafcdaec *inst/CITATION
 68cd7f216515b1f3efa5567bf10fbb63 *man/advanced.procD.lm.Rd
 5a8e62b1b33e226fb4e4d5ed92630fe7 *man/arrayspecs.Rd
@@ -167,7 +167,7 @@ c1b0512d6589a1ea640837e7ee10f522 *R/plotOutliers.r
 41db23cebd8d7be6c3decf781bd378e0 *R/plotspec.r
 3a29dd0ba103804d3d7b703172200402 *R/plotTangentSpace.r
 8f4c5716a7b3a296614a6d9c195cfcef *R/procD.allometry.r
-e63998bee87a2e73e0d11c7013a77c59 *R/procD.lm.r
+d1b47fca2de17c07960f708ae4280fa0 *R/procD.lm.r
 a6400d5d89f7d530f23f80c11de53a69 *R/procD.pgls.r
 df3f4cc6406dc0c737ee2ff08c2a0e3d *R/read.morphologika.r
 9c3c828f71a413b5437d45228a3bf9b7 *R/read.ply.r
