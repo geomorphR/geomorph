@@ -1,3 +1,4 @@
+8aab8335a2312770acc853948b052f1b *cran-comments.md
 247b6e5658356e87edfd560687b239fc *data/hummingbirds.rda
 56558754725fea156eb0820f67a4f508 *data/larvalMorph.rda
 2abf7b7d088204662abf4c6acf673ff5 *data/mosquito.rda
@@ -9,7 +10,7 @@ d8e8360c03c03fe45d2100e9c05d4a89 *data/plethodon.rda
 80c6fa53b642b23b378cf036d1b962f1 *data/ratland.rda
 9ba51ab9be03930a4acdcddde8169b33 *data/scallopPLY.rda
 6e5e71b242462e422b716800ffc3c464 *data/scallops.rda
-647e5faa3605629df1060e5ce2c3aead *DESCRIPTION
+9deb59dd2f0b363f605c932ea89bffb8 *DESCRIPTION
 73f723a130c92f8b84a81465a15add7c *geomorph.Rproj
 e65e81ca3e2c0b6e712bf6f4bafcdaec *inst/CITATION
 68cd7f216515b1f3efa5567bf10fbb63 *man/advanced.procD.lm.Rd
