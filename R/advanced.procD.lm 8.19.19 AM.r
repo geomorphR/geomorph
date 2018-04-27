@@ -176,7 +176,7 @@
 #'
 #' # Could also do this with ape function
 #' # phyCov <- vcv.phylo(plethspecies$phy)
-#' # advanced.procD.lm(coords ~ Csize, ~1, Cov = phyCov, data = gdf, iter = 999)
+#' # advanced.procD.lm(coords ~ Csize, ~1, Cov = phyCov, data = gdf, iter = 999) 
 
 advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
                             angle.type = c("r", "deg", "rad"),

@@ -1,4 +1,4 @@
-#' Estimate locations of missing landmarks
+#' Estimate locations of missing landmarks 
 #'
 #' A function for estimating the locations of missing landmarks 
 #' 

@@ -1,4 +1,4 @@
-#' Analysis of bilateral symmetry
+#' Analysis of bilateral symmetry 
 #'
 #' Function performs an analysis of directional and fluctuating asymmetry for bilaterally symmetric objects 
 #'
