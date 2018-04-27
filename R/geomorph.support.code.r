@@ -1697,7 +1697,7 @@ RSS.iter <- function(fitr, fitf, ind, P = NULL, print.progress = TRUE) {
       c(pyy - sum(crossprod(Ur, y)^2),
         pyy - sum(crossprod(Uf, y)^2),
         pyy - sum(crossprod(Uf, yy)^2),
-        pyy - sum(crossprod(Unull,y)^2))
+        pyy - sum(crossprod(Unull,yy)^2))
     })
   } else {
     fitted <- fitr$wFitted.full[[kr]]
@@ -1720,7 +1720,7 @@ RSS.iter <- function(fitr, fitf, ind, P = NULL, print.progress = TRUE) {
       c(pyy - sum(crossprod(Ur, y)^2),
         pyy - sum(crossprod(Uf, y)^2),
         pyy - sum(crossprod(Uf, yy)^2),
-        pyy - sum(crossprod(Unull,y)^2))
+        pyy - sum(crossprod(Unull,yy)^2))
     })
   }
   
