@@ -1545,13 +1545,15 @@ SS.iter <- function(fit, ind, P = NULL, RRPP = TRUE, print.progress = TRUE) {
     }
     rrpp.args$fitted <- fitted
     rrpp.args$residuals <- res
+    yh0 <- fastFit(Unull, Y, n, p)
+    r0 <- Y - yh0
     SS <- lapply(1: perms, function(j){
       step <- j
       if(print.progress) setTxtProgressBar(pb,step)
       x <-ind[[j]]
       rrpp.args$ind.i <- x
       Yi <- do.call(rrpp, rrpp.args)
-      y <- Yi[[1]]
+      y <- yh0 + r0[x,]
       pyy <- sum(y^2)
       c(Map(function(y, ur, uf) sum(crossprod(uf,y)^2) - sum(crossprod(ur,y)^2),
             Yi, Ur, Uf),
@@ -1569,13 +1571,16 @@ SS.iter <- function(fit, ind, P = NULL, RRPP = TRUE, print.progress = TRUE) {
     Ufull <- Uf[[k]]
     int <- attr(fit$Terms, "intercept")
     Unull <- qr.Q(qr(rep(int, n)))
+    yh0 <- fastFit(Unull, Y, n, p)
+    r0 <- Y - yh0
     SS <- lapply(1: perms, function(j){
       step <- j
       if(print.progress) setTxtProgressBar(pb,step)
       x <-ind[[j]]
       rrpp.args$ind.i <- x
       Yi <- do.call(rrpp, rrpp.args)
-      y <- Yi[[1]]
+      Yi <- do.call(rrpp, rrpp.args)
+      y <- yh0 + r0[x,]
       yy <- sum(y^2)
       c(Map(function(y, ur, uf) sum(crossprod(uf,y)^2) - sum(crossprod(ur,y)^2),
             Yi, Ur, Uf),
