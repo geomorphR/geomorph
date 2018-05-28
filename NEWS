@@ -1,11 +1,13 @@
 PENDING CHANGES IN GEOMORPH VERSION 3.0.6
   NEW FEATURES
-    o plotOutliers now allows to plot outlier configurations in order to compare their shape with the consensus.     o plot.mshape function added to plot the consensus configuration with numbers and links
+    o plotOutliers now allows to plot outlier configurations in order to compare their shape with the consensus.     
+    o plot.mshape function added to plot the consensus configuration with numbers and links
     o New function gm.prcomp implements raw and weighted PCA and allows S3 generic plotting of its output
     o New function readland.shapes allows reading a shapes file produced by StereoMorph, including landmark data and (potentially multiple) curves, and sampling semilandmarks from these curves.
     o New function picknplot.shape allows interactively picking points in geomorph scatterplots to visualize shape variation across morphospace.
     
   OTHER CHANGES
+    o Modified previous addition to readland.tps to identify missing data only when all lm dimensions are <0 and interactively prompt the user to confirm if they are to be treated as NAs.  
     o Added ellipsis to bilat.symmetry and geomorphShapes option to allow more flexible gpagen options within
     o Changed procD.pgls to use residuals from GLS model for permutations
     o Added effect type option to advanced.procD.lm
