@@ -107,12 +107,7 @@ readland.tps <- function (file, specID = c("None", "ID", "imageID"),
         kk <- length(pts)
         if(kk > 0) lm[i,1:kk] <- pts
       }
-      lms.na <- which(rowSums(lm<0)==k)
-      if(length(lms.na)!=0){
-        ans <- readline("Negative landmark coordinates have been identified. Should they be considered as NAs? (y/n) ")
-        if(ans=="y") lm[lms.na] <- NA
-      }
-      
+
       if(length(x$scale) == 0) x$scale = 1
       lm*x$scale
     })
@@ -128,12 +123,25 @@ readland.tps <- function (file, specID = c("None", "ID", "imageID"),
         kk <- length(pts)
         if(kk > 0) lm[i,1:kk] <- pts
       }
-      lm[which(lm<0)] <- NA
       if(length(x$scale) == 0) x$scale = 1
       lm*x$scale
     })
   }
+
   lmo <- try(simplify2array(lmo), silent = TRUE)
+  na.tab <- apply(lmo, 3, function(x){rowSums(x<0)})
+  ind.nas <- which(colSums(na.tab)!=0)
+  lm.nas <- apply(na.tab[,ind.nas], 2, function(x){which(x!=0)})
+  
+  if(length(ind.nas)!=0){
+    ans <- readline("Negative landmark coordinates have been identified. Should they be considered as NAs? (y/n) ")
+    if(ans=="y") {
+      for(i in ind.nas){
+        lmo[lm.nas[[which(ind.nas==i)]],,i] <- NA
+      }
+    }
+  }
+
   if(!is.null(p.error) && warnmsg) {
     target <- as.numeric(names(sort(p.error, decreasing = TRUE))[1])
     p.error <- pcheck != target
