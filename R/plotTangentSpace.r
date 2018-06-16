@@ -84,7 +84,7 @@ plotTangentSpace<-function (A, axis1 = 1, axis2 = 2, warpgrids = TRUE, mesh = NU
     cd <-cumsum(d)/sum(d)
     cd <- length(which(cd < 1)) 
     if(length(cd) < length(d)) cd <- cd + 1
-    tol <- max(c(d[cd]/d[1],0.005))
+    if(length(d) > 2) tol <- max(c(d[cd]/d[1],0.005)) else tol <- 0
   }
   pc.res <- prcomp(x, center = center, scale. = scale., retx = retx, tol = tol)
   pcdata <- pc.res$x
