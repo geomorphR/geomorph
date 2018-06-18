@@ -52,7 +52,7 @@ The function quantifies the degree of association between two blocks of shape da
   that the landmarks have previously been aligned using 
   Generalized Procrustes Analysis (GPA) [e.g., with \code{\link{gpagen}}]. If other variables are used, they must be input as a 
   2-Dimensional matrix (rows = specimens, columns = variables).  It is also assumed that the separate inputs
-  have specimens (observations) in the same order.
+  have specimens (observations) in the same order.  Additionally, if names for the objects are specified, these must be the same for both datasets.
   
  The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{two.b.pls}}.
  The generic function, \code{\link{plot}}, produces a two-block.pls plot.  This function calls \code{\link{plot.pls}}, which has two additional
