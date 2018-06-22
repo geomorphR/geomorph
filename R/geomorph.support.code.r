@@ -3076,9 +3076,29 @@ GMfromShapes1 <- function(Shapes, nCurvePts, curve.ends = NULL, continuous.curve
   # define fixed landmarks
   fixedLM  <- out$landmarks
   
+  # check for matching fixedLM and curves
+  fLM.names <- names(fixedLM)
+  cv.names <- names (curves)
+  
+  if(length(fLM.names) != length(cv.names)) {
+    mismatch <- setdiff(fLM.names, cv.names)
+    prob <- paste("\nThese specimens are missing either landmarks or curves:", mismatch, "\n")
+    stop(prob)
+  }
+  
   # define curves
   curves.check <- sapply(1:n, function(j) length(curves[[j]]))
-  if(length(unique(curves.check)) > 1) stop("Specimens have different numbers of curves")
+  if(length(unique(curves.check)) > 1) {
+    names(curves.check) <- names(curves)
+    cat("\nSpecimens have different numbers of curves\n")
+    Mode <- as.numeric(names(which.max(table(curves.check))))
+    cat("\nTypical number of curves:", Mode, "\n")
+    cat("\nCheck these specimens (number of curves indicated)\n")
+    print(curves.check[curves.check != Mode])
+    stop("\nCannot proceed until this issues is resolved")
+  }
+    
+    
   curve.n <- curves.check[1]
   curve.nms <- names(curves[[1]])
   nCurvePts <- unlist(nCurvePts)
