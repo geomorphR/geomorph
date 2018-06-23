@@ -4,7 +4,8 @@
 \alias{rotate.coords}
 \title{Rotate or flip landmark or coordinate configurations}
 \usage{
-rotate.coords(A, type = c("flipX", "flipY", "rotateC", "rotateCC"))
+rotate.coords(A, type = c("flipX", "flipY", "rotateC", "rotateCC"),
+  index = NULL)
 }
 \arguments{
 \item{A}{One of either an array of landmark coordinates (p, 2, n dimensions for n specimens and p 2D points),
@@ -12,6 +13,13 @@ a class gpagen object, or a p x 2 matrix for a single specimen.}
 
 \item{type}{The type of rotation or flip to be performed.  Specimens can be flipped with respect to x or y axes,
 or rotated clockwise (C) or counter-clockwise (CC).}
+
+\item{index}{An index to indicate which specimens should be rotated or flipped.  If NULL (default)
+all specimens are rotated.  A binary index (0 = do not rotate; 1 = rotate) as a vector with the same length as 
+the number of specimens will direct which specimens are manipulated.  A factor with two levels or a numeric vector with 
+two any two values can also be used.  
+The second level (or larger value) will be the level manipulated.  For example, a factor with levels = c("a", "b") 
+will rotate specimens matching level "b".  This function might be useful for reflecting specimens with bilateral structures.}
 }
 \description{
 Function to rotate or flip 2D landmark or coordinate configurations to re-orientate them, as desired.

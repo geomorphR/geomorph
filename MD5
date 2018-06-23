@@ -10,7 +10,7 @@ d8e8360c03c03fe45d2100e9c05d4a89 *data/plethodon.rda
 9ba51ab9be03930a4acdcddde8169b33 *data/scallopPLY.rda
 6e5e71b242462e422b716800ffc3c464 *data/scallops.rda
 e9ef62194c0a84c73289339b44e439e5 *DESCRIPTION
-73f723a130c92f8b84a81465a15add7c *geomorph.Rproj
+f4f2080e745b8d689f17caf549449ab5 *geomorph.Rproj
 e65e81ca3e2c0b6e712bf6f4bafcdaec *inst/CITATION
 c05df007cb86a1833a62a55ae939ec07 *man/advanced.procD.lm.Rd
 5e099c6268d251bf5c98595d9566385a *man/arrayspecs.Rd
@@ -103,7 +103,7 @@ cb46da06afb9b58e54ad31f7a7a02f4c *man/read.morphologika.Rd
 fb4264964a2fb6909633b3499c646b45 *man/readland.shapes.Rd
 c61dc0ddd51cac8b74cb58adbc721819 *man/readland.tps.Rd
 d7ab7b16621a488c2daa709d10af488b *man/readmulti.nts.Rd
-d4f3aa3aa11b3ccc60a044e68c510e64 *man/rotate.coords.Rd
+3ba4916ca7ae958d9a53735f790e7f94 *man/rotate.coords.Rd
 8be198584c10582597e98c6cecbb26f7 *man/scallopPLY.Rd
 c4f3fe2e244677c2504bbe0283590d1c *man/scallops.Rd
 3c5e9b375729f582ab91122f05db443e *man/shape.predictor.Rd
@@ -186,7 +186,7 @@ df3f4cc6406dc0c737ee2ff08c2a0e3d *R/read.morphologika.r
 bc3952f9b6f015b864d014f411c5e9c1 *R/readland.shapes.r
 01bf2384f339206542e93c34673a8a37 *R/readland.tps.r
 945534fe7f30c519cd5a6663a9b882a3 *R/readmulti.nts.r
-9a00f877da670cf4ee9d61b608fb94dd *R/rotate.coords.R
+d514d2502ae9f75727f355ce442668e2 *R/rotate.coords.R
 3197df262b01bddf0c3bba7ba51a0b6d *R/shape.predictor.r
 8f1e96097154494a9483c31a119af928 *R/shapeHulls.r
 9fbfb877280b6ae6877c14a1507070e4 *R/trajectory.analysis.r

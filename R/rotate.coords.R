@@ -16,6 +16,12 @@
 #' a class gpagen object, or a p x 2 matrix for a single specimen.  
 #' @param type The type of rotation or flip to be performed.  Specimens can be flipped with respect to x or y axes,
 #' or rotated clockwise (C) or counter-clockwise (CC).  
+#' @param index An index to indicate which specimens should be rotated or flipped.  If NULL (default)
+#' all specimens are rotated.  A binary index (0 = do not rotate; 1 = rotate) as a vector with the same length as 
+#' the number of specimens will direct which specimens are manipulated.  A factor with two levels or a numeric vector with 
+#' two any two values can also be used.  
+#' The second level (or larger value) will be the level manipulated.  For example, a factor with levels = c("a", "b") 
+#' will rotate specimens matching level "b".  This function might be useful for reflecting specimens with bilateral structures.
 #' @export
 #' @keywords utilities
 #' @author Michael Collyer
@@ -38,9 +44,14 @@
 #' plotAllSpecimens(specs1to3)
 #' specs1to3 <- rotate.coords(specs1to3, "rotateC")
 #' plotAllSpecimens(specs1to3)
-rotate.coords <- function(A, type = c("flipX", "flipY", "rotateC", "rotateCC")) {
-  if(inherits(A, "gpagen")) obj <- "gpagen" else
-    if(is.array(A)) obj <- "array" else 
+rotate.coords <- function(A, type = c("flipX", "flipY", "rotateC", "rotateCC"),
+                          index = NULL) {
+  if(inherits(A, "gpagen")) {
+    obj <- "gpagen" 
+    n <- length(A$Csize)
+  } else
+
+  if(is.array(A)) obj <- "array" else 
       stop("A must be an array or a class gpagen object.")
     
     if(obj == "array") {
@@ -48,7 +59,10 @@ rotate.coords <- function(A, type = c("flipX", "flipY", "rotateC", "rotateCC")) 
       check <- intersect(length(dims), c(2, 3))
       if(length(check) == 0)
         stop("Either a matrix with two columns or an array with three dimensions is required.")
-      if(length(dims) == 2) obj <- "matrix"
+      if(length(dims) == 2) {
+        obj <- "matrix"
+        n <- 1
+      } else n <- dims[[3]]
     }
     
    type <- match.arg(type)
@@ -57,17 +71,38 @@ rotate.coords <- function(A, type = c("flipX", "flipY", "rotateC", "rotateCC")) 
    if(type == "rotateC") rot <- matrix(c(0, 1, -1, 0), 2, 2) 
    if(type == "rotateCC") rot <- matrix(c(0, -1, 1, 0), 2, 2) 
    
+   if(!is.null(index)){
+     if(is.factor(index)) index <- as.numeric(index) - 1
+     if(length(index) != n)
+       stop("\nThe index must be the same length as the number of specimens.\n")
+     ui <- unique(index)
+     sdiff <- setdiff(ui, c(0, 1))
+     if(length(sdiff) > 1) {
+       if(length(ui) != 2)
+         stop("\nThe index is illogical.  It must have two levels only.\n")
+       index <- floor(index/max(index))
+       ui <- unique(index)
+       sdiff <- setdiff(ui, c(0, 1))
+       if(length(sdiff) > 1) 
+         stop("\nThe index cannot be coerced into a binary vector.\n")
+     }
+   } else index <- rep(1, n)
+   
    if(obj == "gpagen") {
      Y <- A$coords
      Y <- lapply(1:(dim(Y)[[3]]), function(j) as.matrix(Y[,,j]))
-     Y <- lapply(Y, function(y) y %*% rot)
+     Y <- lapply(1:length(Y), function(j){
+       if(index[j] == 1) Y[[j]] %*% rot else Y[[j]]
+     })
      A$coords <- simplify2array(Y)
    }
    
    if(obj == "array") {
      Y <- A
      Y <- lapply(1:(dim(Y)[[3]]), function(j) as.matrix(Y[,,j]))
-     Y <- lapply(Y, function(y) y %*% rot)
+     Y <- lapply(1:length(Y), function(j){
+       if(index[j] == 1) Y[[j]] %*% rot else Y[[j]]
+     })
      A <- simplify2array(Y)
    }
    
