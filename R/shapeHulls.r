@@ -88,5 +88,4 @@ shapeHulls <- function(x, groups = NULL, group.cols = NULL,
     points(yy[chp,], type = "l", lty = group.lty[i],
            lwd = group.lwd[i], col = group.cols[i])
   }
-  
 }

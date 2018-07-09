@@ -42,5 +42,4 @@ digit.curves <- function(start, curve, nPoints, closed=TRUE){
   res <- evenPts(curve, nPoints)
   if(closed) res <- res[-NROW(res),]
   res
-
 }
