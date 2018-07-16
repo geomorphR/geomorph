@@ -1,4 +1,9 @@
-PENDING CHANGES IN GEOMORPH VERSION 3.0.6
+PENDING CHANGES IN GEOMORPH VERSION 3.0.7
+  OTHER CHANGES
+    o Modified output in bilat.symmetry so output shapes retain order in 'ind' factor
+    o Modified previous addition to readland.tps to identify missing data only when all lm dimensions are <0 and interactively prompt the user to confirm if they are to be treated as NAs.  
+
+CHANGES IN GEOMORPH VERSION 3.0.6
   NEW FEATURES
     o plotOutliers now allows to plot outlier configurations in order to compare their shape with the consensus.     
     o plot.mshape function added to plot the consensus configuration with numbers and links
