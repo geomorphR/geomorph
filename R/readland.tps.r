@@ -10,7 +10,8 @@
 #'   in their original units.  
 #'   
 #'   Missing data may be present in the file. In this case, they are automatically identified during data import
-#'   and coded as 'NA'. The positions of missing landmarks may then be estimated using \code{\link{estimate.missing}}.
+#'   and the user is prompted to confirm if they are to be coded as 'NA'. The positions of missing landmarks may 
+#'   then be estimated using \code{\link{estimate.missing}}.
 #' 
 #' The user may specify whether specimen names are to be extracted from the 'ID=' field or 'IMAGE=' field 
 #' and included in the resulting 3D array. 
@@ -33,7 +34,7 @@
 #' @param warnmsg A logical value stating whether warnings should be printed
 #' @export
 #' @keywords IO
-#' @author Dean Adams, Emma Sherratt, & Michael Collyer
+#' @author Dean Adams, Emma Sherratt, Michael Collyer & Antigoni Kaliontzopoulou
 #' @return Function returns a (p x k x n) array, where p is the number of landmark points, k is the number 
 #'   of landmark dimensions (2 or 3), and n is the number of specimens. The third dimension of this array 
 #'   contains names for each specimen, which are obtained from the image names in the *.tps file. 
@@ -79,6 +80,7 @@ readland.tps <- function (file, specID = c("None", "ID", "imageID"),
   k.error <- which(kcheck > 1)
   if(length(k.error) == 0) k.error <- NULL else
     cat("\nWarning: improper landmark number or formatting appear for specimen(s):", k.error,"\n")
+  
   pcheck <- sapply(1:n, function(j) tpsf[[j]]$p)
   p.unique <- unique(pcheck)
   if(length(p.unique) > 1) {
@@ -105,7 +107,7 @@ readland.tps <- function (file, specID = c("None", "ID", "imageID"),
         kk <- length(pts)
         if(kk > 0) lm[i,1:kk] <- pts
       }
-      lm[which(lm<0)] <- NA
+
       if(length(x$scale) == 0) x$scale = 1
       lm*x$scale
     })
@@ -121,12 +123,25 @@ readland.tps <- function (file, specID = c("None", "ID", "imageID"),
         kk <- length(pts)
         if(kk > 0) lm[i,1:kk] <- pts
       }
-      lm[which(lm<0)] <- NA
       if(length(x$scale) == 0) x$scale = 1
       lm*x$scale
     })
   }
+
   lmo <- try(simplify2array(lmo), silent = TRUE)
+  na.tab <- apply(lmo, 3, function(x){rowSums(x<0)})
+  ind.nas <- which(colSums(na.tab)!=0)
+  lm.nas <- apply(na.tab[,ind.nas], 2, function(x){which(x!=0)})
+  
+  if(length(ind.nas)!=0){
+    ans <- readline("Negative landmark coordinates have been identified. Should they be considered as NAs? (y/n) ")
+    if(ans=="y") {
+      for(i in ind.nas){
+        lmo[lm.nas[[which(ind.nas==i)]],,i] <- NA
+      }
+    }
+  }
+
   if(!is.null(p.error) && warnmsg) {
     target <- as.numeric(names(sort(p.error, decreasing = TRUE))[1])
     p.error <- pcheck != target

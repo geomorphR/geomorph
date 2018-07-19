@@ -4,6 +4,7 @@ CHANGES IN GEOMORPH VERSION 3.0.6
     o plot.mshape function added to plot the consensus configuration with numbers and links
 
   OTHER CHANGES
+    o Modified previous addition to readland.tps to identify missing data only when all lm dimensions are <0 and interactively prompt the user to confirm if they are to be treated as NAs.  
     o Added ellipsis to bilat.symmetry and geomorphShapes option to allow more flexible gpagen options within
     o Changed procD.pgls to use residuals from GLS model for permutations
     o Added effect type option to advanced.procD.lm
