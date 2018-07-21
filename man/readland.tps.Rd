@@ -34,7 +34,8 @@ This function reads a *.tps file containing two- or three-dimensional landmark c
   in their original units.  
   
   Missing data may be present in the file. In this case, they are automatically identified during data import
-  and coded as 'NA'. The positions of missing landmarks may then be estimated using \code{\link{estimate.missing}}.
+  and the user is prompted to confirm if they are to be coded as 'NA'. The positions of missing landmarks may 
+  then be estimated using \code{\link{estimate.missing}}.
 
 The user may specify whether specimen names are to be extracted from the 'ID=' field or 'IMAGE=' field 
 and included in the resulting 3D array. 
@@ -55,6 +56,6 @@ Rohlf, F. J. 2010. tpsRelw: Relative warps analysis. Version 1.49. Department of
   and Evolution, State University of New York at Stony Brook, Stony Brook, NY.
 }
 \author{
-Dean Adams, Emma Sherratt, & Michael Collyer
+Dean Adams, Emma Sherratt, Michael Collyer & Antigoni Kaliontzopoulou
 }
 \keyword{IO}

@@ -169,13 +169,14 @@ bilat.symmetry<-function(A, ind=NULL, side=NULL, replicate=NULL, object.sym=FALS
       }
   
   if(is.null(data)){
-    if(is.null(ind)) stop("Individuals not specified.") else ind <- factor(ind)
+    if(is.null(ind)) stop("Individuals not specified.") else ind <- factor(ind, levels = unique(ind))
     if(!is.null(side)) side <- factor(side)
     if(!is.null(replicate)) replicate <- factor(replicate)
   } else {
     ind.match <- match(names(data), "ind")
     if(all(is.na(ind.match))) stop("Individuals not specified in geomorph data frame")
     ind <- factor(data[[which(!is.na(ind.match))]])
+    ind <- factor(ind, levels = unique(ind))  
     side.match <- match(names(data), "side")
     if(all(is.na(side.match))) side <- NULL else 
       side <- factor(data[[which(!is.na(side.match))]])
@@ -260,6 +261,8 @@ bilat.symmetry<-function(A, ind=NULL, side=NULL, replicate=NULL, object.sym=FALS
   if(object.sym==FALSE){
     X.ind <- model.matrix(~ind + 0, data = as.data.frame(dat.shape[-1]))
     symm.component <- arrayspecs(coef(lm.fit(X.ind, Y)),p,k)
+    dimnames(symm.component)[[3]] <- substr(dimnames(symm.component)[[3]], start=4,
+               stop=nchar(dimnames(symm.component)[[3]]))
     X.side <- model.matrix(~(side:ind) + 0, data = as.data.frame(dat.shape[-1]))
     avg.side.symm <- coef(lm.fit(X.side, Y))
     n.ind <- nlevels(ind)
@@ -275,6 +278,8 @@ bilat.symmetry<-function(A, ind=NULL, side=NULL, replicate=NULL, object.sym=FALS
   if(object.sym==TRUE){
     X.ind <- model.matrix(~ind + 0, data = as.data.frame(dat.shape[-1]))
     symm.component <- arrayspecs(coef(lm.fit(X.ind, Y)),p,k)
+    dimnames(symm.component)[[3]] <- substr(dimnames(symm.component)[[3]], start=4,
+                stop=nchar(dimnames(symm.component)[[3]]))
     mn.shape<-mshape(A)
     n.ind <- nlevels(ind)
     asymm.component <-simplify2array(lapply(1:n.ind, function(j) 
