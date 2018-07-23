@@ -1,11 +1,13 @@
-PENDING CHANGES IN GEOMORPH VERSION 3.0.7
-  OTHER CHANGES
+PENDING CHANGES IN GEOMORPH VERSION 3.0.8
+
+CHANGES IN GEOMORPH VERSION 3.0.7
+    o Computations for advanced.procD.lm now performed using RRPP package
     o Modified output in bilat.symmetry so output shapes retain order in 'ind' factor
-    o Modified previous addition to readland.tps to identify missing data only when all lm dimensions are <0 and interactively prompt the user to confirm if they are to be treated as NAs.  
+    o Modified readland.tps to identify missing data only when all lm coordinate are <0 and interactively prompt the user to confirm if they are to be treated as NAs  
 
 CHANGES IN GEOMORPH VERSION 3.0.6
   NEW FEATURES
-    o plotOutliers now allows to plot outlier configurations in order to compare their shape with the consensus.     
+    o plotOutliers now allows to plot outlier configurations in order to compare their shape with the consensus     
     o plot.mshape function added to plot the consensus configuration with numbers and links
     o New function gm.prcomp implements raw and weighted PCA and allows S3 generic plotting of its output
     o New function readland.shapes allows reading a shapes file produced by StereoMorph, including landmark data and (potentially multiple) curves, and sampling semilandmarks from these curves.

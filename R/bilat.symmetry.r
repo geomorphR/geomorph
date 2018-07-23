@@ -170,14 +170,13 @@ bilat.symmetry<-function(A, ind=NULL, side=NULL, replicate=NULL, object.sym=FALS
   
   if(is.null(data)){
     if(is.null(ind)) stop("Individuals not specified.") else ind <- factor(ind, levels = unique(ind))
-      #ind <- factor(ind)  #altered: 6/27
     if(!is.null(side)) side <- factor(side)
     if(!is.null(replicate)) replicate <- factor(replicate)
   } else {
     ind.match <- match(names(data), "ind")
     if(all(is.na(ind.match))) stop("Individuals not specified in geomorph data frame")
     ind <- factor(data[[which(!is.na(ind.match))]])
-       ind <- factor(ind, levels = unique(ind))  #added
+       ind <- factor(ind, levels = unique(ind))  
     side.match <- match(names(data), "side")
     if(all(is.na(side.match))) side <- NULL else 
       side <- factor(data[[which(!is.na(side.match))]])
