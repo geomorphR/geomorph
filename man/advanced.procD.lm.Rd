@@ -115,7 +115,17 @@ Pairwise tests are only performed if formulae are provided to compute such resul
   formulas are long, it is recommended to make this argument, \code{formula = FALSE}, in which case 
   "reduced" and "full" models will be acknowledged.
   
- \subsection{Notes for geomorph 3.0.6 and subsequent versions}{
+ \subsection{Notes for geomorph 3.0.7 and subsequent versions}{
+ The \code{advanced.procD.lm} function now defers to the R package, \code{RRPP}, specifically the \code{\link[RRPP]{anova.lm.rrpp}} and
+ \code{\link[RRPP]{pairwise}} functions.  These functions perform all necessary computations needed for \code{advanced.procD.lm}, as well as other
+ analyses.  Therefore, \code{advanced.procD.lm} is now a wrapper for these other functions. 
+ The \code{\link[RRPP]{lm.rrpp}} function can be used for multiple models, if one wishes to work directly in \code{RRPP}, prior to using
+  \code{\link[RRPP]{anova.lm.rrpp}} and \code{\link[RRPP]{pairwise}} functions.  The only difference in results (compared to version 3.0.6 and before) 
+  should occur when comparing univariate slopes.  Version 3.0.6 and earlier versions appended a vector of 1s to slopes as an ad-hoc strategy to make 
+  computations work.  This is no longer needed, as the \code{RRPP} functions can better handle univariate data.
+}
+
+\subsection{Notes for geomorph 3.0.6 and subsequent versions}{
  For pairwise tests, previous versions assumed that pairwise comparisons of least-squares means used models with parallel slopes.
  Under most circumstances, this assumption is safe (and preferred), as the estimation of mean differences otherwise would have to 
  assume something about the mean values of covariates as appropriate locations for estimating means.  Version 3.0.6 and subseqent verisons
@@ -220,7 +230,8 @@ Collyer, M.L., D.J. Sekora, and D.C. Adams. 2015. A method for analysis of pheno
 by high-dimensional data. Heredity. 115:357-365.
 }
 \seealso{
-\code{\link{procD.lm}}, \code{\link{procD.pgls}}, \code{\link{trajectory.analysis}}
+\code{\link{procD.lm}}, \code{\link{procD.pgls}}, \code{\link{trajectory.analysis}},
+\code{\link[RRPP]{lm.rrpp}}, \code{\link[RRPP]{anova.lm.rrpp}}, \code{\link[RRPP]{pairwise}}
 }
 \author{
 Michael Collyer

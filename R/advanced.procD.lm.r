@@ -45,6 +45,16 @@
 #'   formulas are long, it is recommended to make this argument, \code{formula = FALSE}, in which case 
 #'   "reduced" and "full" models will be acknowledged.
 #'   
+#'  \subsection{Notes for geomorph 3.0.7 and subsequent versions}{
+#'  The \code{advanced.procD.lm} function now defers to the R package, \code{RRPP}, specifically the \code{\link[RRPP]{anova.lm.rrpp}} and
+#'  \code{\link[RRPP]{pairwise}} functions.  These functions perform all necessary computations needed for \code{advanced.procD.lm}, as well as other
+#'  analyses.  Therefore, \code{advanced.procD.lm} is now a wrapper for these other functions. 
+#'  The \code{\link[RRPP]{lm.rrpp}} function can be used for multiple models, if one wishes to work directly in \code{RRPP}, prior to using
+#'   \code{\link[RRPP]{anova.lm.rrpp}} and \code{\link[RRPP]{pairwise}} functions.  The only difference in results (compared to version 3.0.6 and before) 
+#'   should occur when comparing univariate slopes.  Version 3.0.6 and earlier versions appended a vector of 1s to slopes as an ad-hoc strategy to make 
+#'   computations work.  This is no longer needed, as the \code{RRPP} functions can better handle univariate data.
+#' }
+#' 
 #'  \subsection{Notes for geomorph 3.0.6 and subsequent versions}{
 #'  For pairwise tests, previous versions assumed that pairwise comparisons of least-squares means used models with parallel slopes.
 #'  Under most circumstances, this assumption is safe (and preferred), as the estimation of mean differences otherwise would have to 
@@ -107,7 +117,8 @@
 #' @keywords analysis
 #' @export
 #' @author Michael Collyer
-#' @seealso \code{\link{procD.lm}}, \code{\link{procD.pgls}}, \code{\link{trajectory.analysis}}
+#' @seealso \code{\link{procD.lm}}, \code{\link{procD.pgls}}, \code{\link{trajectory.analysis}},
+#' \code{\link[RRPP]{lm.rrpp}}, \code{\link[RRPP]{anova.lm.rrpp}}, \code{\link[RRPP]{pairwise}}
 #' @return Function returns an ANOVA table of statistical results for model comparison: error df (for each model), SS, MS,
 #' F ratio, Z, and Prand.  A list of essentially the same components as \code{\link{procD.lm}} is also returned, and additionally
 #' LS means or slopes, pairwise differences comparisons of these, effect sizes, and P-values may also be returned.  If a group formula
@@ -316,7 +327,7 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
   
   if(pairwise.cond == "means") {
     lsms <- PW$LS.means
-    P.dist <- lapply(1:length(lsms), function(j){as.matrix(dist(lsms[[j]]))})
+    P.dist <- PW$means.dist
     Means.dist <- P.dist[[1]]
     P.dist.s <- simplify2array(P.dist)
     P.Means.dist <- Pval.matrix(P.dist.s)
@@ -377,7 +388,7 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
   if(pairwise.cond == "means"){
     out$LS.means <- lsms[[1]]
     out$random.LS.means <- lsms
-    out$random.means.dist <- P.dist
+    out$random.means.dist <- P.dist.s
     out$LS.obs.means.dist <- P.dist[[1]]
     out$Z.means.dist <- Z.Means.dist
     out$P.means.dist <- P.Means.dist
