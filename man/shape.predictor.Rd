@@ -8,7 +8,7 @@ shape.predictor(A, x = NULL, Intercept = FALSE, method = c("LS", "PLS"),
   ...)
 }
 \arguments{
-\item{A}{A 3D array (p x k x n) containing Procrustes residuals either from GPA or fitted values from a previous
+\item{A}{A 3D array (p x k x n) containing Procrustes shape variables either from GPA or fitted values from a previous
 analytical procedure.}
 
 \item{x}{Linear (numeric) predictors.  Can be a vector or a matrix, or a list containing vectors or matrices.  Values must

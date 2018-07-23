@@ -2,7 +2,7 @@
 % Please edit documentation in R/procD.pgls.r
 \name{procD.pgls}
 \alias{procD.pgls}
-\title{Phylogenetic ANOVA/regression for shape data}
+\title{Phylogenetic ANOVA/regression for Procrustes shape variables}
 \usage{
 procD.pgls(f1, phy, iter = 999, seed = NULL, int.first = FALSE,
   effect.type = c("F", "cohen"), data = NULL, print.progress = TRUE, ...)

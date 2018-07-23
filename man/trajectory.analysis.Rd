@@ -68,7 +68,7 @@ An object of class "trajectory.analysis" returns a list of the following:
 }
 \description{
 Function estimates attributes of shape change trajectories or "motion" trajectories for a set of 
- Procrustes-aligned specimens and compares them statistically
+ Procrustes shape variables and compares them statistically
 }
 \details{
 The function quantifies phenotypic shape change trajectories from a set of specimens, and assesses variation 

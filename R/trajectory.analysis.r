@@ -1,7 +1,7 @@
 #'  Quantify and compare shape change trajectories 
 #'
 #'  Function estimates attributes of shape change trajectories or "motion" trajectories for a set of 
-#'  Procrustes-aligned specimens and compares them statistically
+#'  Procrustes shape variables and compares them statistically
 #'
 #'  The function quantifies phenotypic shape change trajectories from a set of specimens, and assesses variation 
 #'  in attributes of the trajectories via permutation. A shape change trajectory is defined by a sequence 

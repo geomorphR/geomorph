@@ -2,14 +2,14 @@
 % Please edit documentation in R/two.b.pls.r
 \name{two.b.pls}
 \alias{two.b.pls}
-\title{Two-block partial least squares analysis for shape data}
+\title{Two-block partial least squares analysis for Procrustes shape variables}
 \usage{
 two.b.pls(A1, A2, iter = 999, seed = NULL, print.progress = TRUE)
 }
 \arguments{
-\item{A1}{A 3D array (p x k x n) containing GPA-aligned coordinates for the first block, or a matrix (n x variables)}
+\item{A1}{A 3D array (p x k x n) containing Procrustes shape variables for the first block, or a matrix (n x variables)}
 
-\item{A2}{A 3D array (p x k x n) containing GPA-aligned coordinates for the second block, or a matrix (n x variables)}
+\item{A2}{A 3D array (p x k x n) containing Procrustes shape variables for the second block, or a matrix (n x variables)}
 
 \item{iter}{Number of iterations for significance testing}
 
@@ -43,16 +43,16 @@ Object of class "pls" that returns a list of the following:
 }
 \description{
 Function performs two-block partial least squares analysis to assess the degree of association between 
-to blocks of Procrustes-aligned coordinates (or other variables)
+to blocks of Procrustes shape variables (or other variables)
 }
 \details{
 The function quantifies the degree of association between two blocks of shape data as 
-  defined by landmark coordinates using partial least squares (see Rohlf and Corti 2000). If geometric morphometric data are 
+  defined by Procrustes shape variables using partial least squares (see Rohlf and Corti 2000). If geometric morphometric data are 
   used, it is assumed 
   that the landmarks have previously been aligned using 
   Generalized Procrustes Analysis (GPA) [e.g., with \code{\link{gpagen}}]. If other variables are used, they must be input as a 
   2-Dimensional matrix (rows = specimens, columns = variables).  It is also assumed that the separate inputs
-  have specimens (observations) in the same order.
+  have specimens (observations) in the same order.  Additionally, if names for the objects are specified, these must be the same for both datasets.
   
  The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{two.b.pls}}.
  The generic function, \code{\link{plot}}, produces a two-block.pls plot.  This function calls \code{\link{plot.pls}}, which has two additional

@@ -1,10 +1,9 @@
 #' Quantify morphological integration between modules
 #'
-#' Function quantifies the degree of morphological integration between modules of Procrustes-aligned 
-#'   coordinates
+#' Function quantifies the degree of morphological integration between modules of Procrustes shape variables
 #'
 #' The function quantifies the degree of morphological integration between modular partitions of shape data as 
-#'   defined by landmark coordinates. It is assumed that the landmarks have previously been aligned using 
+#'   defined by Procrustes shape variables. It is assumed that the landmarks have previously been aligned using 
 #'   Generalized Procrustes Analysis (GPA) [e.g., with \code{\link{gpagen}}]. The function may be used to assess
 #'   the degree of morphological integration between two or more sets of variables. 
 #'   
@@ -52,8 +51,8 @@
 #'  is now a function argument.
 #' }
 #' 
-#' @param A A 3D array (p x k x n) containing GPA-aligned coordinates for all specimens, or a matrix (n x variables)
-#' @param A2 An optional 3D array (p x k x n) containing GPA-aligned coordinates for all specimens, or a matrix (n x variables) for a second partition
+#' @param A A 3D array (p x k x n) containing Procrustes shape variables for all specimens, or a matrix (n x variables)
+#' @param A2 An optional 3D array (p x k x n) containing Procrustes shape variables for all specimens, or a matrix (n x variables) for a second partition
 #' @param partition.gp A list of which landmarks (or variables) belong in which partition (e.g. A,A,A,B,B,B,C,C,C) (required when only 1 dataset provided)
 #' @param iter Number of iterations for significance testing
 #' @param seed An optional argument for setting the seed for random permutations of the resampling procedure.  

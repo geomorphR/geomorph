@@ -1,7 +1,7 @@
-#' Evaluate the degree of phylogenetic modular signal in morphometric datasets
+#' Evaluate the degree of phylogenetic modular signal in Procrustes shape variables
 #'
-#' Function quantifies the degree of modularity between two or more hypothesized modules of Procrustes-aligned 
-#'   landmark coordinates in a phylogenetic context and compares this to patterns found by randomly assigning landmarks into subsets
+#' Function quantifies the degree of modularity between two or more hypothesized modules of Procrustes shape variables
+#'  in a phylogenetic context and compares this to patterns found by randomly assigning landmarks into subsets
 #'
 #' The function quantifies the degree of phylogenetic modularity in two or more hypothesized modules of shape data as 
 #' defined by landmark coordinates, under a Brownian motion model of evolution. The degree of modularity 
@@ -10,7 +10,7 @@
 #' motion model of evolution as the basis of the analysis. This is the same matrix used to evaluate patterns of phylogenetic 
 #' morphological integration as described in Adams and Felice (2014). 
 #' 
-#' Input may be either a 2D matrix of phenotypic values, or a 3D array of aligned Procrustes coordinates. It 
+#' Input may be either a 2D matrix of phenotypic values, or a 3D array of Procrustes shape variables. It 
 #' is assumed that the landmarks have previously been aligned using Generalized Procrustes Analysis (GPA) [e.g., 
 #' with \code{\link{gpagen}}]. The degree of modularity is quantified using the CR coefficient (Adams 2016). If more than 
 #' two modules are defined, the average pairwise CR coefficient is utilized. The CR coefficient for the observed modular 
@@ -22,7 +22,7 @@
 #' result is consistent with the identification of significant modular structure in the data. For landmark data, the CR coefficient 
 #' found from the average CR across a 90 degree rotation of the data is used as the test statistic (see Adams 2016). 
 #'
-#' @param A A 3D array (p x k x n) containing GPA-aligned coordinates for all specimens, or a matrix (n x variables)
+#' @param A A 3D array (p x k x n) containing Procrustes shape variables for all specimens, or a matrix (n x variables)
 #' @param partition.gp A list of which landmarks (or variables) belong in which partition (e.g. A,A,A,B,B,B,C,C,C)
 #' @param CI A logical argument indicating whether bootstrapping should be used for estimating confidence intervals
 #' @param phy A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape

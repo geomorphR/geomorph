@@ -1,8 +1,8 @@
-#' Assessing phylogenetic signal in morphometric data
+#' Assessing phylogenetic signal in Procrustes shape variables
 #'
-#' Function calculates the degree of phylogenetic signal from a set of Procrustes-aligned specimens
+#' Function calculates the degree of phylogenetic signal from a set of Procrustes shape variables
 #'
-#' The function estimates the degree of phylogenetic signal present in shape data for a given phylogeny. 
+#' The function estimates the degree of phylogenetic signal present in Procrustes shape variables for a given phylogeny. 
 #' It is assumed that the landmarks have previously been aligned 
 #'   using Generalized Procrustes Analysis (GPA) [e.g., with \code{\link{gpagen}}].  
 #'   The degree of phylogenetic signal in data is estimated using the multivariate version of the K-statistic 
@@ -27,7 +27,7 @@
 #' }
 #' 
 #' @param phy A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape
-#' @param A A matrix (n x [p x k]) or 3D array (p x k x n) containing GPA-aligned coordinates for a set of specimens
+#' @param A A matrix (n x [p x k]) or 3D array (p x k x n) containing Procrustes shape variables for a set of specimens
 #' @param iter Number of iterations for significance testing
 #' @param seed An optional argument for setting the seed for random permutations of the resampling procedure.  
 #' If left NULL (the default), the exact same P-values will be found for repeated runs of the analysis (with the same number of iterations).

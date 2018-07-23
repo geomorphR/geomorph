@@ -16,7 +16,7 @@
 #'  on surfaces, one must specify a vector listing which landmarks are to be treated as surface semilandmarks 
 #'  using the "surfaces=" option. The "ProcD=TRUE" option will slide the semilandmarks along their tangent 
 #'  directions using the Procrustes distance criterion, while "ProcD=FALSE" will slide the semilandmarks 
-#'  based on minimizing bending energy. The aligned Procrustes residuals can be projected into tangent 
+#'  based on minimizing bending energy. The Procrustes-aligned specimens may be projected into tangent 
 #'  space using the "Proj=TRUE" option. NOTE: Large datasets may exceed the memory limitations of R. 
 #'
 #'  Generalized Procrustes Analysis (GPA: Gower 1975, Rohlf and Slice 1990) is the primary means by which 
@@ -27,8 +27,8 @@
 #'   points align as closely as possible. The resulting aligned Procrustes coordinates represent the shape 
 #'   of each specimen, and are found in a curved space related to Kendall's shape space (Kendall 1984). 
 #'   Typically, these are projected into a linear tangent space yielding Kendall's tangent space coordinates 
-#'   (Dryden and Mardia 1993, Rohlf 1999), which are used for subsequent multivariate analyses. Additionally, 
-#'   any semilandmarks on curves and are slid along their tangent directions or tangent planes during the 
+#'   (i.e., Procrustes shape variables), which are used for subsequent multivariate analyses (Dryden and Mardia 1993, Rohlf 1999). 
+#'   Additionally, any semilandmarks on curves and surfaces are slid along their tangent directions or tangent planes during the 
 #'   superimposition (see Bookstein 1997; Gunz et al. 2005). Presently, two implementations are possible: 
 #'   1) the locations of semilandmarks can be optimized by minimizing the bending energy between the 
 #'   reference and target specimen (Bookstein 1997), or by minimizing the Procrustes distance between the two 
@@ -38,7 +38,7 @@
 #'   The generic function, \code{\link{plot}}, calls \code{\link{plotAllSpecimens}}.
 #'
 #'  \subsection{Notes for geomorph 3.0}{ 
-#' Compared to older versions of geomorph, users might notice subtle differences in Procrustes residuals when using
+#' Compared to older versions of geomorph, users might notice subtle differences in Procrustes shape variables when using
 #' semilandmarks (curves or surfaces).  This difference is a result of using recursive updates of the 
 #' consensus configuration with the sliding algorithms (minimized bending energy or Procrustes distances).  
 #' (Previous versions used a single consensus through the sliding algorithms.)  Shape differences using the recursive 
@@ -47,8 +47,9 @@
 #' inferential analyses using Procrustes residuals. 
 #' }
 
-#' @param A A 3D array (p x k x n) containing landmark coordinates for a set of specimens
-#' @param Proj A logical value indicating whether or not the aligned Procrustes residuals should be projected 
+#' @param A Either an object of class geomorphShapes or a 3D array (p x k x n) containing landmark coordinates 
+#' for a set of specimens.  If A is a geomorphShapes object, the curves argument is not needed.
+#' @param Proj A logical value indicating whether or not the Procrustes-aligned specimens should be projected 
 #'   into tangent space 
 #' @param ProcD A logical value indicating whether or not Procrustes distance should be used as the criterion
 #'   for optimizing the positions of semilandmarks
@@ -56,27 +57,28 @@
 #' @param max.iter The maximum number of GPA iterations to perform before superimposition is halted.  The final
 #' number of iterations could be larger than this, if curves or surface semilandmarks are involved.
 #' @param curves An optional matrix defining which landmarks should be treated as semilandmarks on boundary 
-#'   curves, and which landmarks specify the tangent directions for their sliding
+#'   curves, and which landmarks specify the tangent directions for their sliding.  This matrix is generated automatically
+#'   with \code{\link{readland.shapes}} following digitizing of curves in StereoMorph.
 #' @param surfaces An optional vector defining which landmarks should be treated as semilandmarks on surfaces
 #' @param print.progress A logical value to indicate whether a progress bar should be printed to the screen.  
 #' @keywords analysis
 #' @export
 #' @author Dean Adams and Michael Collyer
 #' @return An object of class gpagen returns a list with the following components:
-#'  \item{coords}{A (p x k x n) array of aligned Procrustes coordinates, where p is the number of landmark 
+#'  \item{coords}{A (p x k x n) array of Procrustes shape variables, where p is the number of landmark 
 #'     points, k is the number of landmark dimensions (2 or 3), and n is the number of specimens. The third 
 #'     dimension of this array contains names for each specimen if specified in the original input array.}
 #'  \item{Csize}{A vector of centroid sizes for each specimen, containing the names for each specimen if 
 #'     specified in the original input array.}
 #'  \item{iter}{The number of GPA iterations until convergence was found (or GPA halted).}
-#'  \item{points.VCV}{Variance-covariance matrix among landmark coordinates.}
+#'  \item{points.VCV}{Variance-covariance matrix among Procrustes shape variables.}
 #'  \item{points.var}{Variances of landmark points.}
 #'  \item{consnsus}{The consensus (mean) configuration.}
 #'  \item{p}{Number of landmarks.}
 #'  \item{k}{Number of landmark dimensions.}
 #'  \item{nsliders}{Number of semilandmarks along curves.}
 #'  \item{nsurf}{Number of semilandmarks as surface points.}
-#'  \item{data}{Data frame with an n x (pk) matrix of Procrustes residuals and centroid size.}
+#'  \item{data}{Data frame with an n x (pk) matrix of Procrustes shape variables and centroid size.}
 #'  \item{Q}{Final convergence criterion value.}
 #'  \item{slide.method}{Method used to slide semilandmarks.}
 #'  \item{call}{The match call.}

@@ -1,9 +1,9 @@
 #' Plot specimens in tangent space
 #'
-#' Function plots a set of Procrustes-aligned specimens in tangent space along their principal component axes
+#' Function plots a set of Procrustes shape variables in tangent space along their principal component axes
 #'
 #' The function performs a principal components analysis of shape variation and plots two 
-#'  dimensions of tangent space for a set of Procrustes-aligned specimens (default is PC1 vs. PC2). 
+#'  dimensions of tangent space for a set of Procrustes shape variables (default is PC1 vs. PC2). 
 #'  The percent variation along each PC-axis is returned. Additionally (and optionally, {warpgrids=T}), 
 #'  deformation grids can be requested, which display the shape of specimens at the ends 
 #'  of the range of variability along PC1. If groups are provided, specimens from 
@@ -14,7 +14,7 @@
 #'  NOTE: previous versions of plotTangentSpace had option 'verbose' to return the PC scores and PC shapes. 
 #'  From version 3.0.2 this is automatic when assigned to an object.
 #'
-#' @param A A 3D array (p x k x n) containing landmark coordinates for a set of aligned specimens 
+#' @param A A 3D array (p x k x n) containing Procrustes shape variables for a set of specimens 
 #' @param warpgrids A logical value indicating whether deformation grids for shapes along X-axis should be displayed
 #' @param mesh A mesh3d object to be warped to represent shape deformation along X-axis (when {warpgrids=TRUE})
 #' as described in \code{\link{plotRefToTarget}}.

@@ -2,12 +2,12 @@
 % Please edit documentation in R/physignal.r
 \name{physignal}
 \alias{physignal}
-\title{Assessing phylogenetic signal in morphometric data}
+\title{Assessing phylogenetic signal in Procrustes shape variables}
 \usage{
 physignal(A, phy, iter = 999, seed = NULL, print.progress = TRUE)
 }
 \arguments{
-\item{A}{A matrix (n x [p x k]) or 3D array (p x k x n) containing GPA-aligned coordinates for a set of specimens}
+\item{A}{A matrix (n x [p x k]) or 3D array (p x k x n) containing Procrustes shape variables for a set of specimens}
 
 \item{phy}{A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape}
 
@@ -30,10 +30,10 @@ Function returns a list with the following components:
   \item{call}{The matched call}
 }
 \description{
-Function calculates the degree of phylogenetic signal from a set of Procrustes-aligned specimens
+Function calculates the degree of phylogenetic signal from a set of Procrustes shape variables
 }
 \details{
-The function estimates the degree of phylogenetic signal present in shape data for a given phylogeny. 
+The function estimates the degree of phylogenetic signal present in Procrustes shape variables for a given phylogeny. 
 It is assumed that the landmarks have previously been aligned 
   using Generalized Procrustes Analysis (GPA) [e.g., with \code{\link{gpagen}}].  
   The degree of phylogenetic signal in data is estimated using the multivariate version of the K-statistic 

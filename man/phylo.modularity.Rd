@@ -2,13 +2,13 @@
 % Please edit documentation in R/phylo.modularity.r
 \name{phylo.modularity}
 \alias{phylo.modularity}
-\title{Evaluate the degree of phylogenetic modular signal in morphometric datasets}
+\title{Evaluate the degree of phylogenetic modular signal in Procrustes shape variables}
 \usage{
 phylo.modularity(A, partition.gp, phy, CI = FALSE, iter = 999,
   seed = NULL, print.progress = TRUE)
 }
 \arguments{
-\item{A}{A 3D array (p x k x n) containing GPA-aligned coordinates for all specimens, or a matrix (n x variables)}
+\item{A}{A 3D array (p x k x n) containing Procrustes shape variables for all specimens, or a matrix (n x variables)}
 
 \item{partition.gp}{A list of which landmarks (or variables) belong in which partition (e.g. A,A,A,B,B,B,C,C,C)}
 
@@ -39,8 +39,8 @@ Objects of class "CR" from modularity.test return a list of the following:
    \item{call}{The match call.}
 }
 \description{
-Function quantifies the degree of modularity between two or more hypothesized modules of Procrustes-aligned 
-  landmark coordinates in a phylogenetic context and compares this to patterns found by randomly assigning landmarks into subsets
+Function quantifies the degree of modularity between two or more hypothesized modules of Procrustes shape variables
+ in a phylogenetic context and compares this to patterns found by randomly assigning landmarks into subsets
 }
 \details{
 The function quantifies the degree of phylogenetic modularity in two or more hypothesized modules of shape data as 
@@ -50,7 +50,7 @@ procedure utilizes the evolutionary covariance matrix among traits found under a
 motion model of evolution as the basis of the analysis. This is the same matrix used to evaluate patterns of phylogenetic 
 morphological integration as described in Adams and Felice (2014).
 
-Input may be either a 2D matrix of phenotypic values, or a 3D array of aligned Procrustes coordinates. It 
+Input may be either a 2D matrix of phenotypic values, or a 3D array of Procrustes shape variables. It 
 is assumed that the landmarks have previously been aligned using Generalized Procrustes Analysis (GPA) [e.g., 
 with \code{\link{gpagen}}]. The degree of modularity is quantified using the CR coefficient (Adams 2016). If more than 
 two modules are defined, the average pairwise CR coefficient is utilized. The CR coefficient for the observed modular 

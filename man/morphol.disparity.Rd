@@ -9,7 +9,7 @@ morphol.disparity(f1, groups = NULL, iter = 999, seed = NULL,
 }
 \arguments{
 \item{f1}{A formula describing the linear model used.  The left-hand portion of the formula should be
-a 3D array (p x k x n) containing GPA-aligned coordinates for a set of specimens, or a matrix (n x variables). 
+a 3D array (p x k x n) containing Procrustes shape variables for a set of specimens, or a matrix (n x variables). 
 The right-hand portion of the formula should be " ~1" to use the overall mean, or "~ x1 + x2 + x3 +...", where each x is a 
 covariate or factor.  (Interactions and nested terms also work.)  Alternatively, one can use an object of class "procD.lm" or
 "advanced.procD.lm", which already has a formula defined.  This is especially helpful for analyses performed with \code{\link{procD.pgls}},

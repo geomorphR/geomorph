@@ -2,23 +2,23 @@
 % Please edit documentation in R/findMeanSpec.r
 \name{findMeanSpec}
 \alias{findMeanSpec}
-\title{Identify specimen closest to the mean of a set of aligned specimens}
+\title{Identify specimen closest to the mean of a set of Procrustes shape variables}
 \usage{
 findMeanSpec(A)
 }
 \arguments{
-\item{A}{A 3D array (p x k x n) containing landmark coordinates for a set of aligned specimens}
+\item{A}{A 3D array (p x k x n) containing landmark coordinates for a set of Procrustes shape variables}
 }
 \value{
 Function returns the name and address of the specimen closest to the mean of the set of 
-aligned specimens.
+Procrustes shape variables.
 }
 \description{
 A function to identify which specimen lies closest to the estimated mean 
-shape for a set of aligned specimens.
+shape for a set of Procrustes shape variables.
 }
 \details{
-Function takes a 3D array of aligned specimens (such as made by \code{\link{gpagen}}, 
+Function takes a 3D array of Procrustes shape variables (such as made by \code{\link{gpagen}}, 
 calculates the distance of each to the estimated mean shape, and returns the name and 
 address of the closest specimen. This function can be used
 to identify the specimen to be used by \code{\link{warpRefMesh}}.

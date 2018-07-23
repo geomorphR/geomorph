@@ -7,17 +7,16 @@
 globalIntegration(A, ShowPlot = TRUE)
 }
 \arguments{
-\item{A}{3D array (p1 x k x n) containing GPA-aligned coordinates}
+\item{A}{3D array (p1 x k x n) containing Procrustes shape variables}
 
 \item{ShowPlot}{A logical value indicating whether or not the plot should be returned}
 }
 \description{
-Function quantifies the overall level of morphological integration for a set of Procrustes-aligned 
-  coordinates
+Function quantifies the overall level of morphological integration for a set of Procrustes shape variables
 }
 \details{
 The function quantifies the overall level of morphological integration for a set of 
-Procrustes coordinates. It is assumed that the landmarks have previously been 
+Procrustes shape coordinates. It is assumed that the landmarks have previously been 
 aligned using Generalized Procrustes Analysis (GPA) [e.g., with \code{\link{gpagen}}]. 
 Based on the set of aligned specimens, the function estimates the set of bending energies at various
 spatial scales, and plots the log of the variance of the partial warps versus the log of their

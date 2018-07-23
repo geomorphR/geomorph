@@ -8,9 +8,9 @@ integration.test(A, A2 = NULL, partition.gp = NULL, iter = 999,
   seed = NULL, print.progress = TRUE)
 }
 \arguments{
-\item{A}{A 3D array (p x k x n) containing GPA-aligned coordinates for all specimens, or a matrix (n x variables)}
+\item{A}{A 3D array (p x k x n) containing Procrustes shape variables for all specimens, or a matrix (n x variables)}
 
-\item{A2}{An optional 3D array (p x k x n) containing GPA-aligned coordinates for all specimens, or a matrix (n x variables) for a second partition}
+\item{A2}{An optional 3D array (p x k x n) containing Procrustes shape variables for all specimens, or a matrix (n x variables) for a second partition}
 
 \item{partition.gp}{A list of which landmarks (or variables) belong in which partition (e.g. A,A,A,B,B,B,C,C,C) (required when only 1 dataset provided)}
 
@@ -47,12 +47,11 @@ Objects of class "pls" from integration.test return a list of the following:
    \item{call}{The match call.}
 }
 \description{
-Function quantifies the degree of morphological integration between modules of Procrustes-aligned 
-  coordinates
+Function quantifies the degree of morphological integration between modules of Procrustes shape variables
 }
 \details{
 The function quantifies the degree of morphological integration between modular partitions of shape data as 
-  defined by landmark coordinates. It is assumed that the landmarks have previously been aligned using 
+  defined by Procrustes shape variables. It is assumed that the landmarks have previously been aligned using 
   Generalized Procrustes Analysis (GPA) [e.g., with \code{\link{gpagen}}]. The function may be used to assess
   the degree of morphological integration between two or more sets of variables. 
   
