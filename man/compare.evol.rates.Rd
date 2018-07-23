@@ -8,7 +8,7 @@ compare.evol.rates(A, phy, gp, iter = 999, method = c("simulation",
   "permutation"), print.progress = TRUE)
 }
 \arguments{
-\item{A}{A 3D array (p x k x n) containing GPA-aligned coordinates for all specimens, or a matrix (n x variables)}
+\item{A}{A 3D array (p x k x n) containing Procrustes shape variables for all specimens, or a matrix (n x variables)}
 
 \item{phy}{A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape}
 
@@ -30,7 +30,7 @@ An object of class "evolrate" returns a list with the following components:
   \item{permutations}{The number of random permutations used.}
 }
 \description{
-Function calculates net rates of shape evolution for two or more groups of species on a phylogeny from a set of Procrustes-aligned specimens
+Function calculates net rates of shape evolution for two or more groups of species on a phylogeny from a set of Procrustes shape variables
 }
 \details{
 The function compares net rates of morphological evolution for two or more groups of species on a phylogeny, under a 

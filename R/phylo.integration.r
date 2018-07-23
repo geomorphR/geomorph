@@ -1,10 +1,10 @@
 #' Quantify phylogenetic morphological integration between two or more sets of variables under Brownian motion
 #' 
 #' Function quantifies the degree of phylogenetic morphological covariation between two or more sets of
-#' Procrustes-aligned coordinates using partial least squares. 
+#' Procrustes shape variables using partial least squares. 
 #' 
-#' The function quantifies the degree of phylogenetic morphological integration between two or more sets of shape data as 
-#'   defined by landmark coordinates. The approach is based on a Brownian motion model of evolution. It is 
+#' The function quantifies the degree of phylogenetic morphological integration between two or more sets of Procrustes shape variables. 
+#' The approach is based on a Brownian motion model of evolution. It is 
 #'   assumed that the landmarks have previously been aligned using 
 #'   Generalized Procrustes Analysis (GPA) [e.g., with \code{\link{gpagen}}].   
 #' 
@@ -24,7 +24,7 @@
 #'  The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{phylo.integration}}.
 #'  The generic function, \code{\link{plot}}, produces a two-block.pls plot.  This function calls \code{\link{plot.pls}}, which has two additional
 #'  arguments (with defaults): label = NULL, warpgrids = TRUE.  These arguments allow one to include a vector to label points and a logical statement to
-#'  include warpgrids, respectively.  Warpgrids can only be included for 3D arrays of Procrustes residuals. The plot is a plot of PLS scores from 
+#'  include warpgrids, respectively.  Warpgrids can only be included for 3D arrays of Procrustes shape variables. The plot is a plot of PLS scores from 
 #'  Block1 versus Block2 performed for the first set of PLS axes. 
 #'  
 #' \subsection{Similarity to \code{\link{two.b.pls}} and \code{\link{compare.pls}} }{ 
@@ -45,8 +45,8 @@
 #'  is now a function argument.
 #' }
 #' 
-#' @param A A 2D array (n x [p1 x k1]) or 3D array (p1 x k1 x n) containing landmark coordinates for the first block
-#' @param A2 An optional 2D array (n x [p2 x k2]) or 3D array (p2 x k2 x n) containing landmark coordinates for the second block 
+#' @param A A 2D array (n x [p1 x k1]) or 3D array (p1 x k1 x n) containing Procrustes shape variables for the first block
+#' @param A2 An optional 2D array (n x [p2 x k2]) or 3D array (p2 x k2 x n) containing Procrustes shape variables for the second block 
 #' @param phy A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape
 #' @param partition.gp A list of which landmarks (or variables) belong in which partition (e.g. A,A,A,B,B,B,C,C,C) (required when only 1 dataset provided)
 #' @param iter Number of iterations for significance testing

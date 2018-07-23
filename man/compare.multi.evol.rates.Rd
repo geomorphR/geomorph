@@ -8,7 +8,7 @@ compare.multi.evol.rates(A, gp, phy, Subset = TRUE, iter = 999,
   print.progress = TRUE)
 }
 \arguments{
-\item{A}{A matrix (n x [p x k]) or 3D array (p x k x n) containing GPA-aligned coordinates for a set of specimens}
+\item{A}{A matrix (n x [p x k]) or 3D array (p x k x n) containing Procrustes shape variables for a set of specimens}
 
 \item{gp}{A factor array designating group membership}
 
@@ -32,7 +32,7 @@ An object of class "evolrate" returns a list of the following:
 }
 \description{
 Function calculates net rates of shape evolution for two or more multi-dimensional traits on a 
-phylogeny from a set of Procrustes-aligned specimens
+phylogeny from a set of Procrustes shape variables
 }
 \details{
 The function compares net rates of morphological evolution for two or more multi-dimensional traits
@@ -49,7 +49,7 @@ for all traits, which contains a common rate for all trait dimensions (Denton an
 If three or more traits are used, pairwise p-values are 
 also returned.
 
-The shape data may be input as either a 3D array (p x k x n) containing GPA-aligned coordinates 
+The shape data may be input as either a 3D array (p x k x n) containing Procrustes shape variables 
 for a set of species, or as a matrix (n x [p x k]) whose rows correspond to each species. In 
 both cases, species names must be provided as rownames (for a matrix) or as the names of the 
 third dimension of the array. Landmark  groups for each trait are then specified by a factor

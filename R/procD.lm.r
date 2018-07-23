@@ -1,12 +1,12 @@
-#' Procrustes ANOVA/regression for shape data
+#' Procrustes ANOVA/regression for Procrustes shape variables
 #'
 #' Function performs Procrustes ANOVA with permutation procedures to assess statistical hypotheses describing 
-#'   patterns of shape variation and covariation for a set of Procrustes-aligned coordinates
+#'   patterns of shape variation and covariation for a set of Procrustes shape variables
 #'
 #' The function quantifies the relative amount of shape variation attributable to one or more factors in a 
 #'   linear model and estimates the probability of this variation ("significance") for a null model, via distributions generated 
 #'   from resampling permutations. Data input is specified by a formula (e.g., 
-#'   y~X), where 'y' specifies the response variables (shape data), and 'X' contains one or more independent 
+#'   y~X), where 'y' specifies the response variables (Procrustes shape variables), and 'X' contains one or more independent 
 #'   variables (discrete or continuous). The response matrix 'y' can be either in the form of a two-dimensional data 
 #'   matrix of dimension (n x [p x k]), or a 3D array (p x n x k).  It is assumed that  -if the data based
 #'   on landmark coordinates - the landmarks have previously been aligned using Generalized Procrustes Analysis (GPA) 

@@ -8,7 +8,7 @@ plotTangentSpace(A, axis1 = 1, axis2 = 2, warpgrids = TRUE, mesh = NULL,
   label = NULL, groups = NULL, legend = FALSE, ...)
 }
 \arguments{
-\item{A}{A 3D array (p x k x n) containing landmark coordinates for a set of aligned specimens}
+\item{A}{A 3D array (p x k x n) containing Procrustes shape variables for a set of specimens}
 
 \item{axis1}{A value indicating which PC axis should be displayed as the X-axis (default = PC1)}
 
@@ -40,11 +40,11 @@ covariance/correlation matrix, as per \code{\link{prcomp}}.}
 \item{rotation}{The matrix of variable loadings, as per \code{\link{prcomp}}.}
 }
 \description{
-Function plots a set of Procrustes-aligned specimens in tangent space along their principal component axes
+Function plots a set of Procrustes shape variables in tangent space along their principal component axes
 }
 \details{
 The function performs a principal components analysis of shape variation and plots two 
- dimensions of tangent space for a set of Procrustes-aligned specimens (default is PC1 vs. PC2). 
+ dimensions of tangent space for a set of Procrustes shape variables (default is PC1 vs. PC2). 
  The percent variation along each PC-axis is returned. Additionally (and optionally, {warpgrids=T}), 
  deformation grids can be requested, which display the shape of specimens at the ends 
  of the range of variability along PC1. If groups are provided, specimens from 

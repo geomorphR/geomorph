@@ -40,7 +40,7 @@
 #'
 #'   Pairwise tests are only performed if formulae are provided to compute such results.
 #'   The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{advanced.procD.lm}}.
-#'   The generic function, \code{\link{plot}}, produces diagnostic plots for Procrustes residuals of the linear fit.  Note that there is an
+#'   The generic function, \code{\link{plot}}, produces diagnostic plots for residuals of the linear fit.  Note that there is an
 #'   argument in print/summary generic functions to print formulas as row names of the ANOVA table.  If
 #'   formulas are long, it is recommended to make this argument, \code{formula = FALSE}, in which case 
 #'   "reduced" and "full" models will be acknowledged.

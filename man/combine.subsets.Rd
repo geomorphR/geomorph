@@ -7,7 +7,7 @@
 combine.subsets(..., gpa = TRUE, CS.sets = NULL)
 }
 \arguments{
-\item{...}{Class gpagen objects, Procrustes coordinates from class gpagen objects, or original landmarks.
+\item{...}{Class gpagen objects, Procrustes shape variables from class gpagen objects, or original landmarks.
 As many data sets as desired can be supplied, separated by commas.  Additionally, arguments passed onto 
 \code{\link{gpagen}} can be provided, but these arguments will be passed onto all GPAs performed.  Therefore,
 it is recommended that GPA is performed first with \code{\link{gpagen}}, to maintain flexibility.  Naming
@@ -41,7 +41,7 @@ Combine separate landmark configurations (subsets) into one landmark set
 }
 \details{
 This function combines landmark configurations (either landmarks requiring GPA
-or Procrustes coordinates following GPA) to create a different morphological data set.  
+or Procrustes shape variables following GPA) to create a different morphological data set.  
 This might be of interest, for example, if one has landmarks digitized on separate images
 collected from the same organisms.  (In the examples below, configurations for heads and tails
 of larval salamanders were collected separately from images taken on the same individuals.)  An

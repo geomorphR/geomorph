@@ -1,7 +1,7 @@
 #' Comparing net rates of shape evolution among traits on phylogenies 
 #'
 #' Function calculates net rates of shape evolution for two or more multi-dimensional traits on a 
-#' phylogeny from a set of Procrustes-aligned specimens
+#' phylogeny from a set of Procrustes shape variables
 #'
 #' The function compares net rates of morphological evolution for two or more multi-dimensional traits
 #' on a phylogeny, under a Brownian motion model of evolution following the procedure of Denton and 
@@ -17,7 +17,7 @@
 #' If three or more traits are used, pairwise p-values are 
 #' also returned. 
 #' 
-#' The shape data may be input as either a 3D array (p x k x n) containing GPA-aligned coordinates 
+#' The shape data may be input as either a 3D array (p x k x n) containing Procrustes shape variables 
 #' for a set of species, or as a matrix (n x [p x k]) whose rows correspond to each species. In 
 #' both cases, species names must be provided as rownames (for a matrix) or as the names of the 
 #' third dimension of the array. Landmark  groups for each trait are then specified by a factor
@@ -39,7 +39,7 @@
 #'  The generic function, \code{\link{plot}}, produces a histogram of random rate-ratios associated with
 #'  the resampling procedure.
 #'
-#' @param A A matrix (n x [p x k]) or 3D array (p x k x n) containing GPA-aligned coordinates for a set of specimens
+#' @param A A matrix (n x [p x k]) or 3D array (p x k x n) containing Procrustes shape variables for a set of specimens
 #' @param gp A factor array designating group membership
 #' @param phy A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape
 #' @param Subset A logical value indicating whether or not the traits are subsets from a single 

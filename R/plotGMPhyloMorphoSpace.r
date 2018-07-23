@@ -1,16 +1,16 @@
 #' Plot phylogenetic tree and specimens in tangent space
 #'
-#' Function plots a phylogenetic tree and a set of Procrustes-aligned specimens in tangent space
+#' Function plots a phylogenetic tree and a set of Procrustes shape variables in tangent space
 #'
-#' The function creates a plot of the principal dimensions of tangent space for a set of Procrustes-aligned 
-#'   specimens. Default is a plot of PC axis 1 and 2. The phylogenetic tree for these specimens is superimposed in this plot revealing how shape 
+#' The function creates a plot of the principal dimensions of tangent space for a set of Procrustes shape variables. 
+#' Default is a plot of PC axis 1 and 2. The phylogenetic tree for these specimens is superimposed in this plot revealing how shape 
 #'   evolves (e.g., Rohlf 2002; Klingenberg and Gidaszewski 2010). The plot also displays the ancestral 
 #'   states for each node of the phylogenetic tree (analogous to from \code{\link[phytools]{fastAnc}} from phytools), whose values can optionally be returned. 
 #'   If a tree with branch lengths scaled by time is used, with the option zaxis = "time", the function plots a 3D phylomorphospace, with internal nodes positioned along the Z-axis scaled 
 #'   to time (a.k.a. Chronophylomorphospace, Sakamoto & Ruta 2012).
 #'
 #' @param phy A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape
-#' @param A A matrix (n x [p x k]) or 3D array (p x k x n) containing GPA-aligned coordinates for a set of specimens
+#' @param A A matrix (n x [p x k]) or 3D array (p x k x n) containing Procrustes shape variables for a set of specimens
 #' @param tip.labels A logical value indicating whether taxa labels (tips) should be included
 #' @param node.labels A logical value indicating whether node labels (ancestors) should be included
 #' @param xaxis A numeric value indicating which PC axis should be displayed as the X-axis (default = PC1)

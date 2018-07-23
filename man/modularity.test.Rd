@@ -2,13 +2,13 @@
 % Please edit documentation in R/modularity.test.r
 \name{modularity.test}
 \alias{modularity.test}
-\title{Evaluate the degree of modular signal in morphometric datasets}
+\title{Evaluate the degree of modular signal in shape data}
 \usage{
 modularity.test(A, partition.gp, iter = 999, CI = FALSE, seed = NULL,
   print.progress = TRUE)
 }
 \arguments{
-\item{A}{A 3D array (p x k x n) containing GPA-aligned coordinates for all specimens, or a matrix (n x variables)}
+\item{A}{A 3D array (p x k x n) containing Procrustes shape variables for all specimens, or a matrix (n x variables)}
 
 \item{partition.gp}{A list of which landmarks (or variables) belong in which partition (e.g. A,A,A,B,B,B,C,C,C)}
 
@@ -36,14 +36,14 @@ An object of class "CR" is a list containing the following
    \item{call}{The match call.}
 }
 \description{
-Function quantifies the degree of modularity between two or more hypothesized modules of Procrustes-aligned 
-landmark coordinates and compares this to patterns found by randomly assigning landmarks into subsets
+Function quantifies the degree of modularity between two or more hypothesized modules of Procrustes shape variables and 
+compares this to patterns found by randomly assigning landmarks into subsets
 }
 \details{
-The function quantifies the degree of modularity in two or more hypothesized modules of shape data as 
-defined by landmark coordinates, and compares this to what is expected under the null hypothesis of random assignment
+The function quantifies the degree of modularity in two or more hypothesized modules of Procrustes shape variables, 
+and compares this to what is expected under the null hypothesis of random assignment
 of variables to partitions (i.e., neither modular nor integrated structure). 
-Input may be either a 2D matrix of phenotypic values, or a 3D array of aligned Procrustes coordinates. It 
+Input may be either a 2D matrix of phenotypic values, or a 3D array of Procrustes shape variables. It 
 is assumed that the landmarks have previously been aligned using Generalized Procrustes Analysis (GPA); e.g., 
 with \code{\link{gpagen}}. The degree of modularity is quantified using the CR coefficient (Adams 2016). If more than 
 two modules are defined, the average pairwise CR coefficient is utilized. The CR coefficient for the observed modular 
@@ -66,7 +66,7 @@ In this case, the partition.gp input should have each variable assigned to a par
 The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{modularity.test}}.
  The generic function, \code{\link{plot}}, produces a two-block.pls plot.  This function calls \code{\link{plot.pls}}, which has two additional
  arguments (with defaults): label = NULL, warpgrids = TRUE.  These arguments allow one to include a vector to label points and a logical statement to
- include warpgrids, respectively.  Warpgrids can only be included for 3D arrays of Procrustes residuals. The plot is a plot of PLS scores from 
+ include warpgrids, respectively.  Warpgrids can only be included for 3D arrays of Procrustes shape variables. The plot is a plot of PLS scores from 
  Block1 versus Block2 performed for the first set of PLS axes.
 }
 \examples{

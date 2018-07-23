@@ -1,4 +1,4 @@
-#' Phylogenetic ANOVA/regression for shape data
+#' Phylogenetic ANOVA/regression for Procrustes shape variables
 #'
 #' Function performs Procrustes ANOVA in a phylogenetic framework and uses permutation procedures to assess 
 #' statistical hypotheses describing patterns of shape variation and covariation for a set of Procrustes-aligned coordinates

@@ -7,7 +7,7 @@
 gm.prcomp(A, phy = NULL, Cov = NULL, ...)
 }
 \arguments{
-\item{A}{A 3D array (p x k x n) containing landmark coordinates for a set of aligned specimens}
+\item{A}{A 3D array (p x k x n) containing Procrustes shape variables for a set of aligned specimens}
 
 \item{phy}{An optional phylogenetic tree of class phylo - see \code{\link{read.tree}} in library ape}
 
@@ -26,7 +26,7 @@ Each of these lists includes the following components:
 \item{ancestors}{The matrix of estimated ancestral shapes, if a phylogeny is used.}
 }
 \description{
-Function performs raw or weighted PCA on superimposed shape coordinates
+Function performs raw or weighted PCA on Procrustes shape coordinates
 }
 \details{
 The function performs a principal components analysis of shape variation, with the possibility

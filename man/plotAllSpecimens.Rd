@@ -8,7 +8,7 @@ plotAllSpecimens(A, mean = TRUE, links = NULL, label = FALSE,
   plot.param = list())
 }
 \arguments{
-\item{A}{A 3D array (p x k x n) containing GPA-aligned coordinates for a set of specimens}
+\item{A}{A 3D array (p x k x n) containing Procrustes shape variables for a set of specimens}
 
 \item{mean}{A logical value indicating whether the mean shape should be included in the plot}
 
@@ -23,7 +23,7 @@ Function plots landmark coordinates for a set of specimens
 }
 \details{
 The function creates a plot of the landmark coordinates for all specimens. This is useful for examining 
- patterns of shape variation after GPA. If "mean=TRUE", the mean shape will be calculated and added to the plot.
+ patterns of variation in Procrustes shape variables, after a GPA has been performed. If "mean=TRUE", the mean shape will be calculated and added to the plot.
  Additionally, if a matrix of links is provided, the landmarks of the mean shape will be connected by lines.  
  The link matrix is an m x 2 matrix, where m is the desired number of links. Each row of the link matrix 
  designates the two landmarks to be connected by that link. The function will plot either two- or 

@@ -1,6 +1,6 @@
 #' Principal components analysis of shape data
 #'
-#' Function performs raw or weighted PCA on superimposed shape coordinates  
+#' Function performs raw or weighted PCA on Procrustes shape coordinates  
 #'
 #' The function performs a principal components analysis of shape variation, with the possibility
 #' of weighing the analysis using a phylogenetic tree, or a variance-covariance matrix, 
@@ -27,7 +27,7 @@
 #' components of the list returned by gm.prcomp.
 #' 
 #'
-#' @param A A 3D array (p x k x n) containing landmark coordinates for a set of aligned specimens
+#' @param A A 3D array (p x k x n) containing Procrustes shape variables for a set of aligned specimens
 #' @param phy An optional phylogenetic tree of class phylo - see \code{\link{read.tree}} in library ape
 #' @param Cov An optional covariance matrix for weighting. See also details.
 #' @param ... Other arguments passed to \code{\link{scale}}

@@ -1,10 +1,9 @@
 #' Quantify global integration relative to self-similarity
 #'
-#' Function quantifies the overall level of morphological integration for a set of Procrustes-aligned 
-#'   coordinates
+#' Function quantifies the overall level of morphological integration for a set of Procrustes shape variables
 #'
 #' The function quantifies the overall level of morphological integration for a set of 
-#' Procrustes coordinates. It is assumed that the landmarks have previously been 
+#' Procrustes shape coordinates. It is assumed that the landmarks have previously been 
 #' aligned using Generalized Procrustes Analysis (GPA) [e.g., with \code{\link{gpagen}}]. 
 #' Based on the set of aligned specimens, the function estimates the set of bending energies at various
 #' spatial scales, and plots the log of the variance of the partial warps versus the log of their
@@ -16,7 +15,7 @@
 #' integrated, while shallower slopes to data that are 'disintegrated (see Bookstein 2015). Isotropic data
 #' will have an expected slope of zero. 
 #'  
-#' @param A 3D array (p1 x k x n) containing GPA-aligned coordinates 
+#' @param A 3D array (p1 x k x n) containing Procrustes shape variables 
 #' @param ShowPlot A logical value indicating whether or not the plot should be returned
 #' @export
 #' @keywords analysis

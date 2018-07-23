@@ -1,20 +1,20 @@
-#' Identify specimen closest to the mean of a set of aligned specimens
+#' Identify specimen closest to the mean of a set of Procrustes shape variables
 #' 
 #' A function to identify which specimen lies closest to the estimated mean 
-#' shape for a set of aligned specimens.
+#' shape for a set of Procrustes shape variables.
 #' 
-#' Function takes a 3D array of aligned specimens (such as made by \code{\link{gpagen}}, 
+#' Function takes a 3D array of Procrustes shape variables (such as made by \code{\link{gpagen}}, 
 #' calculates the distance of each to the estimated mean shape, and returns the name and 
 #' address of the closest specimen. This function can be used
 #' to identify the specimen to be used by \code{\link{warpRefMesh}}. 
 #' 
-#' @param A A 3D array (p x k x n) containing landmark coordinates for a set of aligned specimens
+#' @param A A 3D array (p x k x n) containing landmark coordinates for a set of Procrustes shape variables
 #' @export
 #' @seealso  \code{\link{warpRefMesh}}
 #' @keywords utilities
 #' @author Emma Sherratt
 #' @return Function returns the name and address of the specimen closest to the mean of the set of 
-#' aligned specimens.
+#' Procrustes shape variables.
 findMeanSpec <- function(A){
   if(!is.array(A)) {
     stop("Data matrix not a 3D array (see 'arrayspecs').") }

@@ -1,6 +1,6 @@
 #' Comparing net rates of shape evolution on phylogenies
 #'
-#' Function calculates net rates of shape evolution for two or more groups of species on a phylogeny from a set of Procrustes-aligned specimens
+#' Function calculates net rates of shape evolution for two or more groups of species on a phylogeny from a set of Procrustes shape variables
 #'
 #' The function compares net rates of morphological evolution for two or more groups of species on a phylogeny, under a 
 #'  Brownian motion model of evolution. It is assumed that the landmarks have previously been aligned 
@@ -24,7 +24,7 @@
 #' retain all appropriate statistical properties, including rotation-invariance of significance levels (see results of Adams and Collyer 2018).
 #' }
 #'
-#' @param A A 3D array (p x k x n) containing GPA-aligned coordinates for all specimens, or a matrix (n x variables)
+#' @param A A 3D array (p x k x n) containing Procrustes shape variables for all specimens, or a matrix (n x variables)
 #' @param phy A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape
 #' @param gp A factor array designating group membership
 #' @param method One of "simulation" or "permutation", to choose which approach should be used to assess significance. 

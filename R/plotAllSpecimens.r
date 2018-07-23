@@ -3,13 +3,13 @@
 #' Function plots landmark coordinates for a set of specimens
 #'
 #' The function creates a plot of the landmark coordinates for all specimens. This is useful for examining 
-#'  patterns of shape variation after GPA. If "mean=TRUE", the mean shape will be calculated and added to the plot.
+#'  patterns of variation in Procrustes shape variables, after a GPA has been performed. If "mean=TRUE", the mean shape will be calculated and added to the plot.
 #'  Additionally, if a matrix of links is provided, the landmarks of the mean shape will be connected by lines.  
 #'  The link matrix is an m x 2 matrix, where m is the desired number of links. Each row of the link matrix 
 #'  designates the two landmarks to be connected by that link. The function will plot either two- or 
 #'  three-dimensional data (e.g. see \code{\link{define.links}}).
 #'
-#' @param A A 3D array (p x k x n) containing GPA-aligned coordinates for a set of specimens
+#' @param A A 3D array (p x k x n) containing Procrustes shape variables for a set of specimens
 #' @param mean A logical value indicating whether the mean shape should be included in the plot
 #' @param links An optional matrix defining for links between landmarks (only if mean=TRUE)
 #' @param label A logical value indicating whether landmark numbers will be plotted (only if mean=TRUE)

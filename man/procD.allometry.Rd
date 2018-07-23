@@ -76,13 +76,13 @@ in the formula, and the variable used for size is called "size".}
 }
 \description{
 Function performs Procrustes ANOVA with permutation procedures to facilitate visualization of size-shape patterns (allometry);
-i.e., patterns of shape covariation with size for a set of Procrustes-aligned coordinates.  Results for plotting allometric
+i.e., patterns of shape covariation with size for a set of Procrustes shape variables.  Results for plotting allometric
 patterns based on several approaches in the literature are available.
 }
 \details{
 The function quantifies the relative amount of shape variation attributable to covariation with organism size (allometry)
 plus (potentially) another grouping factor in a linear model, so as to provide initial visualizations of patterns of shape allometry. 
-Data input is specified by formulae (e.g., Y ~ X), where 'Y' specifies the response variables (shape data), 
+Data input is specified by formulae (e.g., Y ~ X), where 'Y' specifies the response variables (Procrustes shape variables), 
 and 'X' contains A SINGLE independent continuous variable representing size. The response matrix 'Y' can be 
 either in the form of a two-dimensional data matrix of dimension (n x [p x k]), or a 3D array (p x n x k).  It is assumed that  
 -if the data are based on landmark coordinates - the landmarks have previously been aligned using Generalized Procrustes Analysis (GPA) 

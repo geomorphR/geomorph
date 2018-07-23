@@ -4,7 +4,7 @@
 #' allometric relationships, or any other least squares or partial least squares regression.  These configurations
 #' can be used with \code{\link{plotRefToTarget}} to generate graphical representations of shape change, based on prediction criteria. 
 #' 
-#' @param A A 3D array (p x k x n) containing Procrustes residuals either from GPA or fitted values from a previous
+#' @param A A 3D array (p x k x n) containing Procrustes shape variables either from GPA or fitted values from a previous
 #' analytical procedure. 
 #' @param x Linear (numeric) predictors.  Can be a vector or a matrix, or a list containing vectors or matrices.  Values must
 #' be numeric.  If a factor is desired, one should use \code{\link[stats]{model.matrix}} to obtain a design matrix.  This will

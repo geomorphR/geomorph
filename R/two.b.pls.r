@@ -1,10 +1,10 @@
-#' Two-block partial least squares analysis for shape data
+#' Two-block partial least squares analysis for Procrustes shape variables
 #'
 #' Function performs two-block partial least squares analysis to assess the degree of association between 
-#' to blocks of Procrustes-aligned coordinates (or other variables)
+#' to blocks of Procrustes shape variables (or other variables)
 #'
 #' The function quantifies the degree of association between two blocks of shape data as 
-#'   defined by landmark coordinates using partial least squares (see Rohlf and Corti 2000). If geometric morphometric data are 
+#'   defined by Procrustes shape variables using partial least squares (see Rohlf and Corti 2000). If geometric morphometric data are 
 #'   used, it is assumed 
 #'   that the landmarks have previously been aligned using 
 #'   Generalized Procrustes Analysis (GPA) [e.g., with \code{\link{gpagen}}]. If other variables are used, they must be input as a 
@@ -47,8 +47,8 @@
 #'  is now a function argument.
 #' }
 #' 
-#' @param A1 A 3D array (p x k x n) containing GPA-aligned coordinates for the first block, or a matrix (n x variables)
-#' @param A2 A 3D array (p x k x n) containing GPA-aligned coordinates for the second block, or a matrix (n x variables)
+#' @param A1 A 3D array (p x k x n) containing Procrustes shape variables for the first block, or a matrix (n x variables)
+#' @param A2 A 3D array (p x k x n) containing Procrustes shape variables for the second block, or a matrix (n x variables)
 #' @param iter Number of iterations for significance testing
 #' @param seed An optional argument for setting the seed for random permutations of the resampling procedure.  
 #' If left NULL (the default), the exact same P-values will be found for repeated runs of the analysis (with the same number of iterations).
