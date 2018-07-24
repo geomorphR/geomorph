@@ -41,6 +41,9 @@ specific single button mice, XQuartz must be configured: go to Preferences > Inp
  }
 }
 }
+\seealso{
+\code{\link[rgl]{rgl-package}} (used in 3D plotting)
+}
 \author{
 Erik Otarola-Castillo & Emma Sherratt
 }

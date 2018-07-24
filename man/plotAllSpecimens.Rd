@@ -35,6 +35,9 @@ Y.gpa<-gpagen(plethodon$land)    #GPA-alignment
 
 plotAllSpecimens(Y.gpa$coords,links=plethodon$links)
 }
+\seealso{
+\code{\link[rgl]{rgl-package}} (used in 3D plotting)
+}
 \author{
 Dean Adams
 }

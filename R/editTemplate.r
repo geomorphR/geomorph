@@ -29,6 +29,7 @@
 #' @export
 #' @keywords digitizing
 #' @author Erik Otarola-Castillo & Emma Sherratt
+#' @seealso  \code{\link[rgl]{rgl-package}} (used in 3D plotting)
 editTemplate<-function(template, fixed, n){
   if (is.null(dim(template))) stop ("File is not a matrix of 3D coordinates.")
   if (dim(template)[2]!=3) stop ("File is not a matrix of 3D coordinates.")

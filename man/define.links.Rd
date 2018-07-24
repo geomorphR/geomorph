@@ -36,6 +36,8 @@ to be used by \code{\link{plotAllSpecimens}} & \code{\link{plotRefToTarget}} opt
 \code{\link{plotAllSpecimens}}
 
 \code{\link{plotRefToTarget}}
+
+\code{\link[rgl]{rgl-package}} (used in 3D plotting)
 }
 \author{
 Emma Sherratt

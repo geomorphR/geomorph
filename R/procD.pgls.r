@@ -79,6 +79,7 @@
 #' @keywords analysis
 #' @export
 #' @author Dean Adams and Michael Collyer
+#' @seealso  \code{\link[ape]{vcv.phylo}} (used in some internal computations)
 #' @return procD.lm.pgls returns an object of class "procD.lm".  
 #' See \code{\link{procD.lm}} for a description of the list of results generated.  Additionally, procD.pgls provides
 #' the phylogenetic correction matrix, Pcor, plus "pgls" adjusted coefficients, fitted values, residuals, and mean.

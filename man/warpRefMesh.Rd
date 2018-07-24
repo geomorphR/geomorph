@@ -55,6 +55,8 @@ Rohlf, F. J. 1998. On Applications of Geometric Morphometrics to Studies of Onto
 }
 \seealso{
 \code{\link{findMeanSpec}}
+
+\code{\link[rgl]{rgl-package}} (used in 3D plotting)
 }
 \author{
 Emma Sherratt

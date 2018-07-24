@@ -41,6 +41,8 @@ to this module. Repeat until all landmarks are assigned to modules.
 }
 \seealso{
 \code{\link{modularity.test}} and \code{\link{integration.test}}
+
+\code{\link[rgl]{rgl-package}} (used in 3D plotting)
 }
 \author{
 Emma Sherratt

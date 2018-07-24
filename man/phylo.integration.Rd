@@ -121,6 +121,8 @@ Adams, D.C. and M.L. Collyer. 2017. Multivariate comparative methods: evaluation
 recommendations. Systematic Biology. In press.
 }
 \seealso{
+\code{\link[ape]{vcv.phylo}} (used in some internal computations)
+
 \code{\link{integration.test}}, \code{\link{modularity.test}}, and 
 \code{\link{two.b.pls}}
 }

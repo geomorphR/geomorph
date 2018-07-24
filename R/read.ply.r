@@ -16,6 +16,7 @@
 #' @export
 #' @keywords IO
 #' @author Dean Adams & Emma Sherratt
+#' @seealso  \code{\link[rgl]{rgl-package}} (used in 3D plotting)
 #' @return Function returns the following components:
 #'   \item{mesh3d}{list of class mesh3d- see rgl for details}
 #' @examples 

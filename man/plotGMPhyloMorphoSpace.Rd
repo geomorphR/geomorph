@@ -65,6 +65,11 @@ Rohlf, F. J. 2002. Geometric morphometrics and phylogeny. Pp.175-193 in N. Macle
 Sakamoto, M. and Ruta, M. 2012. Convergence and Divergence in the Evolution of Cat
 Skulls: Temporal and Spatial Patterns of Morphological Diversity. PLoSONE 7(7): e39752.
 }
+\seealso{
+\code{\link[ape]{vcv.phylo}}, \code{\link[ape]{ace}} (used in some internal computations)
+
+\code{\link[rgl]{rgl-package}} (used in 3D plotting)
+}
 \author{
 Dean Adams & Emma Sherratt
 }

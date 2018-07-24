@@ -23,6 +23,7 @@
 #' @seealso  \code{\link{plotAllSpecimens}}
 #' @seealso  \code{\link{plotRefToTarget}}
 #' @author Emma Sherratt
+#' @seealso  \code{\link[rgl]{rgl-package}} (used in 3D plotting)
 #' 
 define.links <- function(spec, ptsize=1, links = NULL){
   spec.name <- deparse(substitute(spec))

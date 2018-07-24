@@ -78,6 +78,9 @@ plotTangentSpace(Y.gpa$coords, groups = col.gp)
 plotTangentSpace(arrayspecs(resid(lm(two.d.array(Y.gpa$coords)~Y.gpa$Csize))+
          predict(lm(two.d.array(Y.gpa$coords)~1)),12,2))
 }
+\seealso{
+\code{\link[rgl]{rgl-package}} (used in 3D plotting)
+}
 \author{
 Dean Adams & Emma Sherratt
 }

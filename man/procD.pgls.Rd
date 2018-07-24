@@ -134,6 +134,9 @@ datasets. Evolution. 70:2623-2631.
 Adams, D.C. and M.L. Collyer. 2018. Multivariate phylogenetic comparative methods: evaluations, comparisons, and
 recommendations. Systematic Biology. 67:14-31.
 }
+\seealso{
+\code{\link[ape]{vcv.phylo}} (used in some internal computations)
+}
 \author{
 Dean Adams and Michael Collyer
 }

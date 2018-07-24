@@ -66,6 +66,8 @@ NOTE: there is no pan (translate) functionality in rgl library for all platforms
 }
 \seealso{
 \code{\link{read.ply}}
+
+\code{\link[rgl]{rgl-package}} (used in 3D plotting)
 }
 \author{
 Erik Otarola-Castillo & Emma Sherratt

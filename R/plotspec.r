@@ -27,6 +27,7 @@
 #' # digitdat <- scallopPLY$coords
 #' # plotspec(spec=ply,digitspec=digitdat,fixed=16, centered =TRUE)
 #' @author Erik Otarola-Castillo & Emma Sherratt
+#' @seealso  \code{\link[rgl]{rgl-package}} (used in 3D plotting)
 plotspec <- function (spec, digitspec, fixed=NULL, ptsize = 1, centered = FALSE, ...) 
 {
   mesh <- NULL

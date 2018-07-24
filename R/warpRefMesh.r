@@ -35,6 +35,7 @@
 #' @keywords utilities
 #' @keywords visualization
 #' @author Emma Sherratt
+#' @seealso  \code{\link[rgl]{rgl-package}} (used in 3D plotting)
 #' @return Function returns a mesh3d object, which is a list of class mesh3d (see rgl for details)
 #' @references  Bookstein, F. L. 1989 Principal Warps: Thin-Plate Splines and the Decomposition
 #' of Deformations. IEEE Transactions on Pattern Analysis and Machine Intelligence 11(6):567-585.
