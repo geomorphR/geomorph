@@ -37,6 +37,7 @@
 #' This is helpful for long-running analyses.
 #' @keywords analysis
 #' @author Dean Adams
+#' @seealso  \code{\link[ape]{vcv.phylo}} (used in some internal computations)
 #' @export
 #' @return Function returns a list with the following components: 
 #'   \item{phy.signal}{The estimate of phylogenetic signal}

@@ -100,6 +100,8 @@ Claude, J. 2008. Morphometrics with R. Springer, New York.
 \code{\link{warpRefMesh}}
 
 \code{\link{warpRefOutline}}
+
+\code{\link[rgl]{rgl-package}} (used in 3D plotting)
 }
 \author{
 Dean Adams, Emma Sherratt, Antigoni Kaliontzopoulou & Michael Collyer

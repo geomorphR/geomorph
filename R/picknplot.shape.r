@@ -18,7 +18,7 @@
 #' @export
 #' @author Antigoni Kaliontzopoulou & Emma Sherratt
 #' @seealso  \code{\link{shape.predictor}}, \code{\link{plotRefToTarget}}
-#' 
+#' @seealso  \code{\link[rgl]{rgl-package}} (used in 3D plotting)
 #' @examples
 #' # 2d
 #' data(plethodon) 

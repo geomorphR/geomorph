@@ -17,6 +17,7 @@
 #' @export
 #' @keywords visualization
 #' @author Dean Adams
+#' @seealso  \code{\link[rgl]{rgl-package}} (used in 3D plotting)
 #' @examples
 #' data(plethodon) 
 #' Y.gpa<-gpagen(plethodon$land)    #GPA-alignment

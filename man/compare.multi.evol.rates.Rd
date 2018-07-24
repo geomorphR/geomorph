@@ -90,6 +90,10 @@ Denton, J.S.S., and D.C. Adams. 2015. A new phylogenetic test for comparing
 multiple high-dimensional evolutionary rates suggests interplay of evolutionary rates and 
 modularity in lanternfishes (Myctophiformes; Myctophidae). Evolution. 69:2425-2440.
 }
+\seealso{
+\code{\link[ape]{vcv.phylo}}, \code{\link[geiger]{sim.char}}, \code{\link[Matrix]{nearPD}}
+ (used in some internal computations)
+}
 \author{
 Dean Adams
 }

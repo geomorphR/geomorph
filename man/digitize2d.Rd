@@ -66,6 +66,9 @@ If verbose = FALSE the digitizing of landmarks is continuous and uninterrupted. 
   scale by using the option MultScale=TRUE.
   }
 }
+\seealso{
+\code{\link[jpeg]{readJPEG}} (for JPEG input)
+}
 \author{
 Dean Adams, Erik Otarola-Castillo and Emma Sherratt
 }

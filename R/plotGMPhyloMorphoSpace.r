@@ -24,6 +24,8 @@
 #' @export
 #' @keywords visualization
 #' @author Dean Adams & Emma Sherratt
+#' @seealso  \code{\link[ape]{vcv.phylo}}, \code{\link[ape]{ace}} (used in some internal computations)
+#' @seealso  \code{\link[rgl]{rgl-package}} (used in 3D plotting)
 #' @return Function returns estimated ancestral states if {ancStates=TRUE}
 #' @references Klingenberg, C. P., and N. A. Gidaszewski. 2010. Testing and quantifying phylogenetic 
 #'   signals and homoplasy in morphometric data. Syst. Biol. 59:245-261.

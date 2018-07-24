@@ -103,6 +103,8 @@ Group Differences in Outline Shape. Medical Image Analysis 1(3):225-243.
 }
 \seealso{
 \code{\link{digitize2d}}, \code{\link{digit.fixed}}, \code{\link{gpagen}}, \code{\link{digit.curves}}
+
+\code{\link[rgl]{rgl-package}} (used in 3D plotting)
 }
 \author{
 Emma Sherratt & Dean Adams

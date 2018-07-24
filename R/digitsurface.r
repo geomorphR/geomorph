@@ -62,6 +62,7 @@
 #' @export
 #' @keywords digitizing
 #' @author Erik Otarola-Castillo & Emma Sherratt
+#' @seealso  \code{\link[rgl]{rgl-package}} (used in 3D plotting)
 
 digitsurface<-function(spec, fixed, ptsize = 1, center = TRUE)    {
   if(length(fixed)==1 && fixed<4){stop ("Number of fixed points is not sufficient.")}

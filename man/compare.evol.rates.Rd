@@ -76,6 +76,10 @@ modularity in lanternfishes (Myctophiformes; Myctophidae). Evolution. 69:2425-24
 Adams, D.C. and M.L. Collyer. 2018. Multivariate comparative methods: evaluations, comparisons, and
 recommendations. Systematic Biology. 67:14-31.
 }
+\seealso{
+\code{\link[ape]{vcv.phylo}}, \code{\link[geiger]{sim.char}}, \code{\link[Matrix]{nearPD}}
+ (used in some internal computations)
+}
 \author{
 Dean Adams
 }

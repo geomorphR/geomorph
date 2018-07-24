@@ -80,6 +80,9 @@ Adams, D.C. and R. Felice. 2014. Assessing phylogenetic morphological
 integration and trait covariation in morphometric data using evolutionary covariance 
 matrices. PLOS ONE. 9(4):e94335.
 }
+\seealso{
+\code{\link[ape]{vcv.phylo}} (used in some internal computations)
+}
 \author{
 Dean Adams
 }

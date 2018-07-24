@@ -118,7 +118,8 @@
 #' @export
 #' @author Michael Collyer
 #' @seealso \code{\link{procD.lm}}, \code{\link{procD.pgls}}, \code{\link{trajectory.analysis}},
-#' \code{\link[RRPP]{lm.rrpp}}, \code{\link[RRPP]{anova.lm.rrpp}}, \code{\link[RRPP]{pairwise}}
+#' @seealso \code{\link[RRPP]{lm.rrpp}}, \code{\link[RRPP]{anova.lm.rrpp}}, \code{\link[RRPP]{pairwise}} 
+#' (used in some internal computations)
 #' @return Function returns an ANOVA table of statistical results for model comparison: error df (for each model), SS, MS,
 #' F ratio, Z, and Prand.  A list of essentially the same components as \code{\link{procD.lm}} is also returned, and additionally
 #' LS means or slopes, pairwise differences comparisons of these, effect sizes, and P-values may also be returned.  If a group formula

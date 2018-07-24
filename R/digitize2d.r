@@ -52,6 +52,7 @@
 #' @keywords digitizing
 #' @export
 #' @author Dean Adams, Erik Otarola-Castillo and Emma Sherratt
+#' @seealso  \code{\link[jpeg]{readJPEG}} (for JPEG input)
 digitize2d <- function (filelist, nlandmarks, scale=NULL, tpsfile, MultScale=FALSE,verbose = TRUE) 
 {
   flist <- dir()

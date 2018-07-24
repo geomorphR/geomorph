@@ -80,6 +80,8 @@ Mitteroecker P & Gunz P (2009) Advances in Geometric Morphometrics. Evolutionary
 \code{\link{read.ply}}
 
 \code{\link{digit.fixed}}
+
+\code{\link[rgl]{rgl-package}} (used in 3D plotting)
 }
 \author{
 Erik Otarola-Castillo & Emma Sherratt

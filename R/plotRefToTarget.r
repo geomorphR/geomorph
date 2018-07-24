@@ -50,6 +50,7 @@
 #' @seealso  \code{\link{define.links}}
 #' @seealso  \code{\link{warpRefMesh}}
 #' @seealso  \code{\link{warpRefOutline}}
+#' @seealso  \code{\link[rgl]{rgl-package}} (used in 3D plotting)
 #' @examples
 #' # Two dimensional data
 #' data(plethodon) 

@@ -30,6 +30,7 @@
 #' @keywords utilities
 #' @seealso  \code{\link{modularity.test}} and \code{\link{integration.test}} 
 #' @author Emma Sherratt
+#' @seealso  \code{\link[rgl]{rgl-package}} (used in 3D plotting)
 #' 
 define.modules <- function(spec, nmodules){
   spec.name <- deparse(substitute(spec))

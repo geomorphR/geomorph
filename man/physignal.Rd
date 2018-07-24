@@ -78,6 +78,9 @@ data: behavioral traits are more labile. Evolution, 57:717-745.
 Adams, D.C. 2014. A generalized K statistic for estimating phylogenetic signal from shape and 
 other high-dimensional multivariate data. Systematic Biology.  63:685-697.
 }
+\seealso{
+\code{\link[ape]{vcv.phylo}} (used in some internal computations)
+}
 \author{
 Dean Adams
 }

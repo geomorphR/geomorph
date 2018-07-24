@@ -69,6 +69,7 @@
 #' @keywords utilities
 #' @seealso  \code{\link{digitize2d}}, \code{\link{digit.fixed}}, \code{\link{gpagen}}, \code{\link{digit.curves}}
 #' @author Emma Sherratt & Dean Adams 
+#' @seealso  \code{\link[rgl]{rgl-package}} (used in 3D plotting)
 #' @examples  
 #' ## (not run) Use interactive function in rgl window
 #'  # data(scallops)

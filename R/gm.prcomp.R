@@ -47,7 +47,7 @@
 #' @references Revell, L.J. (2009) Size-correction and principal components for interspecific comparative studies. 
 #' Evolution, 63, 3258-3268.
 #' Polly, P.D.P. et al. (2013) Phylogenetic principal components analysis and geometric morphometrics, 
-#' Hystrix, the Italian Journal of Mammalogy, 24(1), 33–41.
+#' Hystrix, the Italian Journal of Mammalogy, 24:33-41.
 #' @examples
 #'  data(plethspecies) 
 #'  Y.gpa <- gpagen(plethspecies$land)    #GPA-alignment

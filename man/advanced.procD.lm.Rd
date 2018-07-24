@@ -232,7 +232,9 @@ by high-dimensional data. Heredity. 115:357-365.
 }
 \seealso{
 \code{\link{procD.lm}}, \code{\link{procD.pgls}}, \code{\link{trajectory.analysis}},
-\code{\link[RRPP]{lm.rrpp}}, \code{\link[RRPP]{anova.lm.rrpp}}, \code{\link[RRPP]{pairwise}}
+
+\code{\link[RRPP]{lm.rrpp}}, \code{\link[RRPP]{anova.lm.rrpp}}, \code{\link[RRPP]{pairwise}} 
+(used in some internal computations)
 }
 \author{
 Michael Collyer

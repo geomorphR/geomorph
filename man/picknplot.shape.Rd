@@ -57,6 +57,8 @@ picknplot.shape(scallops.pca.plot) #May change method for plotRefToTarget
 }
 \seealso{
 \code{\link{shape.predictor}}, \code{\link{plotRefToTarget}}
+
+\code{\link[rgl]{rgl-package}} (used in 3D plotting)
 }
 \author{
 Antigoni Kaliontzopoulou & Emma Sherratt
