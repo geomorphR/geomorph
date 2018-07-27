@@ -136,7 +136,7 @@
 #'   trajectories in evolutionary studies. Evolution 63:1143-1154.
 #' @references Adams, D.C. and M.L. Collyer. 2016.  On the comparison of the strength of morphological integration across morphometric
 #' datasets. Evolution. 70:2623-2631.
-#' @references Adams, D.C. and M.L. Collyer. 2017. Multivariate phylogenetic comparative methods: evaluations, comparisons, and
+#' @references Adams, D.C. and M.L. Collyer. 2018. Multivariate phylogenetic comparative methods: evaluations, comparisons, and
 #' recommendations. Systematic Biology. 67:14-31.
 #' @references Collyer, M.L., and D.C. Adams. 2007. Analysis of two-state multivariate phenotypic change 
 #' in ecological studies. Ecology 88:683-692.
@@ -239,7 +239,7 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
     id <- rownames(Y)
     Cov <- C[id, id]
  } 
-  
+
   # initial model evaluations
   if(!is.null(data)) dat.temp <- gdf.to.df(data) else
     dat.temp <- pfit1$data
@@ -394,7 +394,7 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
     out$Z.means.dist <- Z.Means.dist
     out$P.means.dist <- P.Means.dist
   }
-    
+  
   if(pairwise.cond == "slopes"){
     if(angle.type == "r"){
       out$slopes <- PW$slopes[[1]]
@@ -409,7 +409,7 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
       out$random.cor <- P.cor
       out$P.slopes.cor <- P.val.cor
       out$Z.slopes.cor <- Z.cor
-       
+    
     } else {
       
       out$slopes <- PW$slopes[[1]]
