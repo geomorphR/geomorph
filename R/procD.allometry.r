@@ -223,7 +223,8 @@
 #' plot(tailAllometry, method = "PredLine")
 #' 
 #' # procD.lm approach, including interaction
-#' tailAllometry2 <- procD.lm(coords ~ log(Csize) * Treatment, data = gdf, iter = 149, print.progress = FALSE)
+#' tailAllometry2 <- procD.lm(coords ~ log(Csize) * Treatment, data = gdf, iter = 149, 
+#'      print.progress = FALSE)
 #' plot(tailAllometry2, type = "regression", 
 #' predictor = log(gdf$Csize), 
 #' reg.type = "PredLine", 
