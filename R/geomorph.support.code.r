@@ -188,7 +188,7 @@ mshape<-function(A){
 # used by readland.tps
 scanTPS <- function(file) {
   ignore.case = TRUE
-  tpsfile <- scan(file = file, what = "char", sep = "\t", quiet = TRUE)
+  tpsfile <- scan(file = file, what = "char", sep = "\n", quiet = TRUE)
   commline <- grep("COMMENT=", tpsfile, ignore.case)
   if(length(commline) != 0) tpsfile <- tpsfile[-commline] # removes COMMENT= lines
   lmline <- grep("LM=", tpsfile, ignore.case)
