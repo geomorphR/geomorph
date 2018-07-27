@@ -308,7 +308,7 @@ procD.allometry<- function(f1, f2 = NULL, logsz = TRUE,
     cat("\nHomogeneity of Slopes Test\n")
     HOS <- advanced.procD.lm(form4, form5, data=datHOS, iter=iter, seed=seed, 
                              print.progress = print.progress)$anova.table
-    rownames(HOS) = c("Common Allometry", "Group Allometries")
+    rownames(HOS) = c("Common Allometry", "Group Allometries", "Total")
     hos.pval <- HOS[2,7]
     if(hos.pval > alpha){ 
       if(logsz) rhs.formfull <- paste(c("log(size)", attr(g.Terms, "term.labels")),  collapse="+") else
