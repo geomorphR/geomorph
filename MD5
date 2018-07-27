@@ -11,7 +11,7 @@ d8e8360c03c03fe45d2100e9c05d4a89 *data/plethodon.rda
 9ba51ab9be03930a4acdcddde8169b33 *data/scallopPLY.rda
 6e5e71b242462e422b716800ffc3c464 *data/scallops.rda
 a1f551cf606d0959230fbb30dfe5cef1 *DESCRIPTION
-73f723a130c92f8b84a81465a15add7c *geomorph.Rproj
+f4f2080e745b8d689f17caf549449ab5 *geomorph.Rproj
 e65e81ca3e2c0b6e712bf6f4bafcdaec *inst/CITATION
 68cd7f216515b1f3efa5567bf10fbb63 *man/advanced.procD.lm.Rd
 5a8e62b1b33e226fb4e4d5ed92630fe7 *man/arrayspecs.Rd
@@ -147,7 +147,7 @@ ef3bc04cea3abbb43ab8f27e89fabc2a *R/estimate.missing.r
 aac6a4f8a759473e8c37048e5c8e3d91 *R/findMeanSpec.r
 b56e53ac307d84a05efee9525dd6868a *R/fixed.angle.r
 c7f93c567b464e532952bb4f24f71883 *R/geomorph.data.frame.r
-0bfc2d4e101cd4d63ed289c998d27d8c *R/geomorph.support.code.r
+a8bb9f709c513dd1cbe3adbc39055c91 *R/geomorph.support.code.r
 e48969d2bc20bb6f5f5b00b845416d05 *R/geomorph.utils.r
 12c2e95da57d0773cc2d19f771db379c *R/globalIntegration.r
 0d2270182b4573571ab1fc9ec596698f *R/gpagen.r
