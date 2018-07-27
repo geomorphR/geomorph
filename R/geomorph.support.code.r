@@ -17,6 +17,9 @@
 #' @importFrom geiger sim.char
 #' @importFrom jpeg readJPEG
 #' @importFrom Matrix nearPD
+#' @importFrom RRPP lm.rrpp
+#' @importFrom RRPP anova.lm.rrpp
+#' @importFrom RRPP pairwise
 #'
 #' @section geomorph TOC:
 #' geomorph-package
@@ -1666,91 +1669,92 @@ SS.iter.null <- function(fit, ind, P = NULL, RRPP=TRUE, print.progress = TRUE) {
   SS
 }
 
-RSS.iter <- function(fitr, fitf, ind, P = NULL, print.progress = TRUE) {
-  if(!is.null(P)) gls = TRUE else gls = FALSE
-  RRPP <- TRUE
-  perms <- length(ind)
-  Y <- fitf$wY
-  dims <- dim(as.matrix(Y))
-  n <- dims[1]; p <- dims[2]
-  kf <- length(fitf$term.labels)
-  kr <- length(fitr$term.labels)
-  if(kr == 0) kr = 1
-  w <- sqrt(fitf$weights)
-  o <- fitf$offset
-  if(sum(o) != 0) offset = TRUE else offset = FALSE
-  rrpp.args <- list(fitted = NULL, residuals = NULL,
-                    ind.i = NULL, w = NULL, o = NULL)
-  if(offset) rrpp.args$o <- o
-  if(print.progress){
-    cat(paste("\nSums of Squares calculations:", perms, "permutations.\n"))
-    pb <- txtProgressBar(min = 0, max = perms+1, initial = 0, style=3)
-  }
-  if(gls){
-    Y <- crossprod(P, Y)
-    dims <- dim(Y)
-    n <- dims[1]; p <- dims[2]
-    Xf <- crossprod(P, fitf$wXfs[[kf]])
-    Xr <- crossprod(P, fitr$wXfs[[kr]])
-    Uf <- qr.Q(qr(Xf))
-    Ur <- qr.Q(qr(Xr))
-    int <- attr(fitf$Terms, "intercept")
-    Unull <- qr.Q(qr(crossprod(P, rep(int, n))))
-    fitted <- as.matrix(fastFit(Ur, Y, n, p))
-    res <- as.matrix(Y) - fitted
-    fitted0 <- as.matrix(fastFit(Unull, Y, n, p))
-    res0 <- as.matrix(Y) - fitted0
-    rrpp.args$fitted <- list(fitted)
-    rrpp.args$residuals <- list(res)
-    SS <- lapply(1: perms, function(j){
-      step <- j
-      if(print.progress) setTxtProgressBar(pb,step)
-      x <-ind[[j]]
-      rrpp.args$ind.i <- x
-      Yi <- do.call(rrpp, rrpp.args)
-      y <- Yi[[1]]
-      yy <- fitted0 + res0[x,]
-      pyy <- sum(yy^2)
-      c(pyy - sum(crossprod(Ur, y)^2),
-        pyy - sum(crossprod(Uf, y)^2),
-        pyy - sum(crossprod(Uf, yy)^2),
-        pyy - sum(crossprod(Unull,yy)^2))
-    })
-  } else {
-    fitted <- fitr$wFitted.full[[kr]]
-    res <- fitr$wResiduals.full[[kr]]
-    rrpp.args$fitted <- list(fitted)
-    rrpp.args$residuals <- list(res)
-    Uf <- qr.Q(fitf$wQRs.full[[kf]])
-    Ur <- qr.Q(fitr$wQRs.full[[kr]])
-    int <- attr(fitf$Terms, "intercept")
-    Unull <- qr.Q(qr(rep(int, n)))
-    SS <- lapply(1: perms, function(j){
-      step <- j
-      if(print.progress) setTxtProgressBar(pb,step)
-      x <-ind[[j]]
-      rrpp.args$ind.i <- x
-      Yi <- do.call(rrpp, rrpp.args)
-      y <- Yi[[1]]
-      yy <- Y[x,]
-      pyy <- sum(yy^2)
-      c(pyy - sum(crossprod(Ur, y)^2),
-        pyy - sum(crossprod(Uf, y)^2),
-        pyy - sum(crossprod(Uf, yy)^2),
-        pyy - sum(crossprod(Unull,yy)^2))
-    })
-  }
-  
-  step <- perms + 1
-  if(print.progress) {
-    setTxtProgressBar(pb,step)
-    close(pb)
-  }
-  SS <-matrix(unlist(SS), 4, perms)
-  colnames(SS) <- c("obs", paste("iter", 1:(perms-1), sep=":"))
-  rownames(SS) <- c("RSSr", "RSSf", "RSSm", "SSY")
-  SS
-}
+#JUly 2018: Function no longer used. RRPP package called in advanced.procD.lm
+#RSS.iter <- function(fitr, fitf, ind, P = NULL, print.progress = TRUE) {
+#  if(!is.null(P)) gls = TRUE else gls = FALSE
+#  RRPP <- TRUE
+#  perms <- length(ind)
+#  Y <- fitf$wY
+#  dims <- dim(as.matrix(Y))
+#  n <- dims[1]; p <- dims[2]
+#  kf <- length(fitf$term.labels)
+#  kr <- length(fitr$term.labels)
+#  if(kr == 0) kr = 1
+#  w <- sqrt(fitf$weights)
+#  o <- fitf$offset
+#  if(sum(o) != 0) offset = TRUE else offset = FALSE
+#  rrpp.args <- list(fitted = NULL, residuals = NULL,
+#                    ind.i = NULL, w = NULL, o = NULL)
+#  if(offset) rrpp.args$o <- o
+#  if(print.progress){
+#    cat(paste("\nSums of Squares calculations:", perms, "permutations.\n"))
+#    pb <- txtProgressBar(min = 0, max = perms+1, initial = 0, style=3)
+#  }
+#  if(gls){
+#    Y <- crossprod(P, Y)
+#    dims <- dim(Y)
+#    n <- dims[1]; p <- dims[2]
+#    Xf <- crossprod(P, fitf$wXfs[[kf]])
+#    Xr <- crossprod(P, fitr$wXfs[[kr]])
+#    Uf <- qr.Q(qr(Xf))
+#    Ur <- qr.Q(qr(Xr))
+#    int <- attr(fitf$Terms, "intercept")
+#    Unull <- qr.Q(qr(crossprod(P, rep(int, n))))
+#    fitted <- as.matrix(fastFit(Ur, Y, n, p))
+#    res <- as.matrix(Y) - fitted
+#    fitted0 <- as.matrix(fastFit(Unull, Y, n, p))
+#    res0 <- as.matrix(Y) - fitted0
+#    rrpp.args$fitted <- list(fitted)
+#    rrpp.args$residuals <- list(res)
+#    SS <- lapply(1: perms, function(j){
+#      step <- j
+#      if(print.progress) setTxtProgressBar(pb,step)
+#      x <-ind[[j]]
+#      rrpp.args$ind.i <- x
+#      Yi <- do.call(rrpp, rrpp.args)
+#      y <- Yi[[1]]
+#      yy <- fitted0 + res0[x,]
+#      pyy <- sum(yy^2)
+#      c(pyy - sum(crossprod(Ur, y)^2),
+#        pyy - sum(crossprod(Uf, y)^2),
+#        pyy - sum(crossprod(Uf, yy)^2),
+#        pyy - sum(crossprod(Unull,yy)^2))
+#    })
+#  } else {
+#    fitted <- fitr$wFitted.full[[kr]]
+#    res <- fitr$wResiduals.full[[kr]]
+#    rrpp.args$fitted <- list(fitted)
+#    rrpp.args$residuals <- list(res)
+#    Uf <- qr.Q(fitf$wQRs.full[[kf]])
+#    Ur <- qr.Q(fitr$wQRs.full[[kr]])
+#    int <- attr(fitf$Terms, "intercept")
+#    Unull <- qr.Q(qr(rep(int, n)))
+#    SS <- lapply(1: perms, function(j){
+#      step <- j
+#      if(print.progress) setTxtProgressBar(pb,step)
+#      x <-ind[[j]]
+#      rrpp.args$ind.i <- x
+#      Yi <- do.call(rrpp, rrpp.args)
+#      y <- Yi[[1]]
+#      yy <- Y[x,]
+#      pyy <- sum(yy^2)
+#      c(pyy - sum(crossprod(Ur, y)^2),
+#        pyy - sum(crossprod(Uf, y)^2),
+#        pyy - sum(crossprod(Uf, yy)^2),
+#        pyy - sum(crossprod(Unull,yy)^2))
+#    })
+#  }
+#  
+#  step <- perms + 1
+#  if(print.progress) {
+#    setTxtProgressBar(pb,step)
+#    close(pb)
+#  }
+#  SS <-matrix(unlist(SS), 4, perms)
+#  colnames(SS) <- c("obs", paste("iter", 1:(perms-1), sep=":"))
+#  rownames(SS) <- c("RSSr", "RSSf", "RSSm", "SSY")
+#  SS
+#}
 
 # anova.parts
 # makes an ANOVA table based on SS from SS.iter

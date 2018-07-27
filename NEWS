@@ -2,6 +2,7 @@ CHANGES IN GEOMORPH VERSION 3.0.7
     o Modified output in bilat.symmetry so output shapes retain order in 'ind' factor
     o Modified readland.tps to identify missing data only when all lm coordinates are <0 and interactively prompt the user to confirm if they are to be treated as NAs
     o Fixed readland.tps whitespace delimitation
+    o RRPP package now used for computations in advanced.procD.lm
 
 CHANGES IN GEOMORPH VERSION 3.0.6
   NEW FEATURES

@@ -110,10 +110,31 @@ The SS calculated is the same as the sum of squared Procrustes distances among s
 
 Pairwise tests are only performed if formulae are provided to compute such results.
   The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{advanced.procD.lm}}.
-  The generic function, \code{\link{plot}}, produces diagnostic plots for Procrustes residuals of the linear fit.  Note that there is an
+  The generic function, \code{\link{plot}}, produces diagnostic plots for residuals of the linear fit.  Note that there is an
   argument in print/summary generic functions to print formulas as row names of the ANOVA table.  If
   formulas are long, it is recommended to make this argument, \code{formula = FALSE}, in which case 
   "reduced" and "full" models will be acknowledged.
+  
+ \subsection{Notes for geomorph 3.0.7 and subsequent versions}{
+ The \code{advanced.procD.lm} function now defers to the R package, \code{RRPP}, specifically the \code{\link[RRPP]{anova.lm.rrpp}} and
+ \code{\link[RRPP]{pairwise}} functions.  These functions perform all necessary computations needed for \code{advanced.procD.lm}, as well as other
+ analyses.  Therefore, \code{advanced.procD.lm} is now a wrapper for these other functions. 
+ The \code{\link[RRPP]{lm.rrpp}} function can be used for multiple models, if one wishes to work directly in \code{RRPP}, prior to using
+  \code{\link[RRPP]{anova.lm.rrpp}} and \code{\link[RRPP]{pairwise}} functions.  The only difference in results (compared to version 3.0.6 and before) 
+  should occur when comparing univariate slopes.  Version 3.0.6 and earlier versions appended a vector of 1s to slopes as an ad-hoc strategy to make 
+  computations work.  This is no longer needed, as the \code{RRPP} functions can better handle univariate data.
+}
+
+\subsection{Notes for geomorph 3.0.6 and subsequent versions}{
+ For pairwise tests, previous versions assumed that pairwise comparisons of least-squares means used models with parallel slopes.
+ Under most circumstances, this assumption is safe (and preferred), as the estimation of mean differences otherwise would have to 
+ assume something about the mean values of covariates as appropriate locations for estimating means.  Version 3.0.6 and subseqent versions
+ find least-squares means that are truer to the model defined.  For example, if a user defines a full model with parallel slopes, e.g.,
+ shape ~ x + A + B + A:B, where x is a covariate and A and B are factors, results should be no different than before.  However, if a user 
+ defines a full model which allows unique slopes, e.g., shape ~ x + A + B + x:A + x:B + A:B + x:A:B, least squares means will now be estimated
+ for mean values of x using the coefficients for x:A, x:B, and x:A:B (previous versions did not).  This change is to made to
+ be consistent with other least-squares means estimation functions in other packages.
+}
 
 \subsection{Notes for geomorph 3.0.4 and subsequent versions}{
  Compared to previous versions of geomorph, users might notice differences in effect sizes.  Previous versions used z-scores calculated with
@@ -184,7 +205,8 @@ advanced.procD.lm(coords ~ Csize, ~1, phy = gdf$tree, data = gdf, iter = 999)
 
 # Could also do this with ape function
 # phyCov <- vcv.phylo(plethspecies$phy)
-# advanced.procD.lm(coords ~ Csize, ~1, Cov = phyCov, data = gdf, iter = 999) 
+# advanced.procD.lm(coords ~ Csize, ~1, Cov = phyCov, data = gdf, iter = 999)
+
 }
 \references{
 Adams, D.C., and M.L. Collyer. 2007. The analysis of character divergence along environmental 
@@ -209,7 +231,10 @@ Collyer, M.L., D.J. Sekora, and D.C. Adams. 2015. A method for analysis of pheno
 by high-dimensional data. Heredity. 115:357-365.
 }
 \seealso{
-\code{\link{procD.lm}}, \code{\link{procD.pgls}}, \code{\link{trajectory.analysis}}
+\code{\link{procD.lm}}, \code{\link{procD.pgls}}, \code{\link{trajectory.analysis}},
+
+\code{\link[RRPP]{lm.rrpp}}, \code{\link[RRPP]{anova.lm.rrpp}}, \code{\link[RRPP]{pairwise}} 
+(used in some internal computations)
 }
 \author{
 Michael Collyer

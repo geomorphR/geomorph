@@ -1,5 +1,5 @@
 #' Procrustes ANOVA and pairwise tests for shape data, using complex linear models
-#'
+#' 
 #' The function quantifies the relative amount of shape variation explained by a suite of factors
 #' and covariates in a "full" model, after accounting for variation in a "reduced" model. Inputs are
 #' formulae for full and reduced models (order is not important, but it is better to list the model
@@ -40,10 +40,31 @@
 #'
 #'   Pairwise tests are only performed if formulae are provided to compute such results.
 #'   The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{advanced.procD.lm}}.
-#'   The generic function, \code{\link{plot}}, produces diagnostic plots for Procrustes residuals of the linear fit.  Note that there is an
+#'   The generic function, \code{\link{plot}}, produces diagnostic plots for residuals of the linear fit.  Note that there is an
 #'   argument in print/summary generic functions to print formulas as row names of the ANOVA table.  If
 #'   formulas are long, it is recommended to make this argument, \code{formula = FALSE}, in which case 
 #'   "reduced" and "full" models will be acknowledged.
+#'   
+#'  \subsection{Notes for geomorph 3.0.7 and subsequent versions}{
+#'  The \code{advanced.procD.lm} function now defers to the R package, \code{RRPP}, specifically the \code{\link[RRPP]{anova.lm.rrpp}} and
+#'  \code{\link[RRPP]{pairwise}} functions.  These functions perform all necessary computations needed for \code{advanced.procD.lm}, as well as other
+#'  analyses.  Therefore, \code{advanced.procD.lm} is now a wrapper for these other functions. 
+#'  The \code{\link[RRPP]{lm.rrpp}} function can be used for multiple models, if one wishes to work directly in \code{RRPP}, prior to using
+#'   \code{\link[RRPP]{anova.lm.rrpp}} and \code{\link[RRPP]{pairwise}} functions.  The only difference in results (compared to version 3.0.6 and before) 
+#'   should occur when comparing univariate slopes.  Version 3.0.6 and earlier versions appended a vector of 1s to slopes as an ad-hoc strategy to make 
+#'   computations work.  This is no longer needed, as the \code{RRPP} functions can better handle univariate data.
+#' }
+#' 
+#'  \subsection{Notes for geomorph 3.0.6 and subsequent versions}{
+#'  For pairwise tests, previous versions assumed that pairwise comparisons of least-squares means used models with parallel slopes.
+#'  Under most circumstances, this assumption is safe (and preferred), as the estimation of mean differences otherwise would have to 
+#'  assume something about the mean values of covariates as appropriate locations for estimating means.  Version 3.0.6 and subseqent versions
+#'  find least-squares means that are truer to the model defined.  For example, if a user defines a full model with parallel slopes, e.g.,
+#'  shape ~ x + A + B + A:B, where x is a covariate and A and B are factors, results should be no different than before.  However, if a user 
+#'  defines a full model which allows unique slopes, e.g., shape ~ x + A + B + x:A + x:B + A:B + x:A:B, least squares means will now be estimated
+#'  for mean values of x using the coefficients for x:A, x:B, and x:A:B (previous versions did not).  This change is to made to
+#'  be consistent with other least-squares means estimation functions in other packages.
+#' }
 #'
 #'  \subsection{Notes for geomorph 3.0.4 and subsequent versions}{
 #'  Compared to previous versions of geomorph, users might notice differences in effect sizes.  Previous versions used z-scores calculated with
@@ -96,7 +117,9 @@
 #' @keywords analysis
 #' @export
 #' @author Michael Collyer
-#' @seealso \code{\link{procD.lm}}, \code{\link{procD.pgls}}, \code{\link{trajectory.analysis}}
+#' @seealso \code{\link{procD.lm}}, \code{\link{procD.pgls}}, \code{\link{trajectory.analysis}},
+#' @seealso \code{\link[RRPP]{lm.rrpp}}, \code{\link[RRPP]{anova.lm.rrpp}}, \code{\link[RRPP]{pairwise}} 
+#' (used in some internal computations)
 #' @return Function returns an ANOVA table of statistical results for model comparison: error df (for each model), SS, MS,
 #' F ratio, Z, and Prand.  A list of essentially the same components as \code{\link{procD.lm}} is also returned, and additionally
 #' LS means or slopes, pairwise differences comparisons of these, effect sizes, and P-values may also be returned.  If a group formula
@@ -176,8 +199,8 @@
 #'
 #' # Could also do this with ape function
 #' # phyCov <- vcv.phylo(plethspecies$phy)
-#' # advanced.procD.lm(coords ~ Csize, ~1, Cov = phyCov, data = gdf, iter = 999) 
-
+#' # advanced.procD.lm(coords ~ Csize, ~1, Cov = phyCov, data = gdf, iter = 999)
+#' 
 advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
                             angle.type = c("r", "deg", "rad"),
                             phy = NULL, Cov = NULL,
@@ -196,6 +219,7 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
   n <- dim(Y)[1]; p <- dim(Y)[2]
   
   # covariance matrices
+  if(is.null(Cov) && is.null(phy)) Cov <- NULL
   if(!is.null(phy)) {
     phy.name <- deparse(substitute(phy))
     if(!inherits(phy, "phylo")) 
@@ -208,15 +232,14 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
         stop("Tree missing some taxa in the data matrix.")
       C <- vcv.phylo(phy)
       id <- rownames(Y)
-      Pcov <- Cov.proj(C, id)
+      Cov <- C[id, id]
     }
   }
   if(!is.null(Cov)) {
     id <- rownames(Y)
-    Pcov <- Cov.proj(Cov, id)
+    Cov <- C[id, id]
  } 
-  if(is.null(Cov) && is.null(phy)) Pcov <- NULL
-  
+
   # initial model evaluations
   if(!is.null(data)) dat.temp <- gdf.to.df(data) else
     dat.temp <- pfit1$data
@@ -252,137 +275,78 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
         No pairwise tests will be performed\n")
     pairwise.cond <-"none"
   }
-  data.types <- lapply(data, class)
-  keep = sapply(data.types, function(x) x != "array" & x != "phylo"  & x != "dist")
-  if(!is.null(data)) dat2 <- as.data.frame(data[keep]) else dat2 <- pfitf$data
-  if(!is.null(groups)){
-    g.match <- match(names(dat2), attr(terms(groups), "term.labels"))
-    if(!all(is.na(g.match))) gps <- dat2[,which(!is.na(g.match))] else
-      gps <- model.frame(groups, data = dat2)
-  } else gps <- NULL
-  if(!is.null(slope)){
-    s.match <- match(names(dat2), attr(terms(slope), "term.labels"))
-    if(!all(is.na(s.match))) slp <- dat2[,which(!is.na(s.match))] else
-      slp <- model.frame(slope, data = dat2)
-  } else slp <- NULL
-
-  # AOV Table
-  effect.type <- match.arg(effect.type)
-  SS.args <- list(fitr = pfitr, fitf = pfitf,
-                  ind = ind, P = Pcov, print.progress = print.progress)
-  RSS <- do.call(RSS.iter, SS.args)
-  RSSr <- RSS[1,]
-  RSSf <- RSS[2,]
-  RSSm <- RSS[3,]
-  SSY <- RSS[4,]
-  SS <- RSSr - RSSf
-  Fs <- (SS/(dfr - dff))/(RSSm/dff)
-  Rsq <- SS/SSY
-  if(effect.type == "SS"){
-    P.val <- pval(SS)
-    Z.score <- effect.size(log(SS))
-  } else if(effect.type == "Rsq"){
-    P.val <- pval(Rsq)
-    Z.score <- effect.size(log(Rsq))
-  } else {
-    P.val <- pval(Fs)
-    Z.score <- effect.size(log(Fs))
-  }
   
-  # for pairwise tests
-  o <- pfitf$offset
-  if(sum(o) != 0) offset = TRUE else offset = FALSE
-  rrpp.args <- list(fitted = NULL, residuals = NULL,
-                    ind.i = NULL, w = NULL, o = NULL)
-  if(offset) rrpp.args$o <- o
-  if(!is.null(Pcov)){
-    Y <- crossprod(Pcov, Y)
-    dims <- dim(Y)
-    n <- dims[1]; p <- dims[2]
-    Xf <- crossprod(Pcov, pfitf$wXfs[[kf]])
-    Xr <- crossprod(Pcov, pfitr$wXrs[[kr]])
-    gFit <- lm.fit(Xf, Y)
-    fitted <- gFit$fitted.values
-    res <- Y - fitted
-    rrpp.args$fitted <- list(fitted)
-    rrpp.args$residuals <- list(res)
-  } else {
-    fitted <- pfitr$wFitted.full[[kr]]
-    res <- pfitr$wResiduals.full[[kr]]
-    rrpp.args$fitted <- list(fitted)
-    rrpp.args$residuals <- list(res)
-  }
+  # Start RRPP here
+  
+  if(print.progress) cat("\nObtaining initial full model fit:")
+  pfitF <- lm.rrpp(formula(pfitf$Terms), data = pfitf$data, iter=iter, seed = seed, 
+                   Cov = Cov, print.progress = print.progress)
+  
+  if(print.progress) cat("\nObtaining initial reduced model fit:")
+  pfitR <- lm.rrpp(formula(pfitr$Terms), data = pfitr$data, iter=iter, seed = seed, 
+                   Cov = Cov, print.progress = print.progress)
+  
+
+  # ANOVA Table
+  effect.type <- match.arg(effect.type)
+  
+  if(print.progress) cat("\nPerforming ANOVA:")
+  anova.res <- anova.lm.rrpp(pfitR, pfitF, 
+                    effect.type = effect.type, print.progress = print.progress)
   
   # pairwise means
   if(pairwise.cond == "means") {
-    if(print.progress) {
-      cat("\nCalculating LS means for", (iter+1), "permutations\n")
-      pb <- txtProgressBar(min = 0, max = iter+1, initial = 0, style=3)
-    }
-    lss <- quick.ls.means.set.up(pfitf, g=gps, data=dat2)
-    lsm.args <- list(X0 = lss$X0, X= lss$X, Y = NULL, 
-                     fac = lss$fac)
-    if(!is.null(Pcov)) lsm.args$Pcor <- as.matrix(Pcov)
-    lsms <- lapply(1:(iter+1), function(j){
-      step <- j
-      x <- ind[[j]]
-      rrpp.args$ind.i <- x
-      Yi <- do.call(rrpp, rrpp.args)
-      yr <- Yi[[1]]
-      lsm.args$Y <- yr
-      if(print.progress) setTxtProgressBar(pb,step)
-      do.call(quick.ls.means, lsm.args)
-    })
-    if(print.progress) close(pb)
-    P.dist <- lapply(1:length(lsms), function(j){as.matrix(dist(lsms[[j]]))})
+    GT <- attr(terms(groups, data = dat.temp), "term.labels")
+    nms <- strsplit(GT, ":")
+    nml <- sapply(nms, length)
+    gp <- GT[which(nml == 1)]
+    dat.gp <- dat.temp[names(dat.temp) %in% gp]
+    gp <- factor(apply(dat.gp, 1, paste, collapse = "."))
+    
+    if(print.progress) cat("\nCalculating LS means:")
+    PW <-  pairwise(pfitF, fit.null = pfitR, groups = gp, 
+                    covariate = NULL, print.progress = print.progress)
+  }
+  
+
+  # pairwise slopes
+  if(pairwise.cond == "slopes") {
+    GT <- attr(terms(groups, data = dat.temp), "term.labels")
+    nms <- strsplit(GT, ":")
+    nml <- sapply(nms, length)
+    gp <- GT[which(nml == 1)]
+    dat.gp <- dat.temp[names(dat.temp) %in% gp]
+    gp <- factor(apply(dat.gp, 1, paste, collapse = "."))
+    covariate <- model.frame(slope, data = dat.temp)
+    if(NCOL(covariate) > 1) stop("This analysis is limited to one covariate (slope).") else
+      covariate <- as.vector(covariate[[1]])
+    PW <-  pairwise(pfitF, fit.null = pfitR, groups = gp, 
+                    covariate = covariate, print.progress = print.progress)
+  }
+
+  # pairwise output
+  
+  if(pairwise.cond == "means") {
+    lsms <- PW$LS.means
+    P.dist <- PW$means.dist
     Means.dist <- P.dist[[1]]
     P.dist.s <- simplify2array(P.dist)
     P.Means.dist <- Pval.matrix(P.dist.s)
     Z.Means.dist <- Effect.size.matrix(P.dist.s)
   }
 
-  # pairwise slopes
   if(pairwise.cond == "slopes") {
-    if(print.progress) {
-      cat("\nCalculating group slopes for", (iter+1), "permutations\n")
-      pb <- txtProgressBar(min = 0, max = iter+1, initial = 0, style=3)
-    }
-    gss <- quick.slopes.set.up(pfitf, g=gps, slope=slp, data=dat2)
-    gs.args <- list(covs = gss$covs, fac = gss$fac, Y= NULL)
-    if(!is.null(Pcov)) gs.args$Pcor <- Pcov
-    g.slopes <- lapply(1:(iter+1), function(j){
-      step <- j
-      x <- ind[[j]]
-      rrpp.args$ind.i <- x
-      Yi <- do.call(rrpp, rrpp.args)
-      yr <- Yi[[1]]
-      gs.args$Y <- yr
-      if(print.progress) setTxtProgressBar(pb,step)
-      do.call(quick.slopes, gs.args)
-    })
-    slope.lengths <- Map(function(y) sqrt(diag(tcrossprod(y))), g.slopes)
-    P.slopes.dist <- Map(function(y) as.matrix(dist(matrix(y))), slope.lengths)
-    P.cor <- Map(function(y) vec.cor.matrix(y), g.slopes)
+    angle.type = match.arg(angle.type)
+    P.cor <- PW$slopes.vec.cor
+    slope.lengths <- PW$slopes.length
+    P.slopes.dist <- PW$slopes.dist
     P.slopes.dist.s <-simplify2array(P.slopes.dist)
     P.val.slopes.dist <- Pval.matrix(P.slopes.dist.s)
     Z.slopes.dist <- Effect.size.matrix(P.slopes.dist.s)
     P.cor.t <- 1 - simplify2array(P.cor)
     P.val.cor <- Pval.matrix(P.cor.t)
     Z.cor <- Effect.size.matrix(P.cor.t)
-  }
-
-  # output
-  anova.table <- data.frame(df = c(dfr,dff), RSS = c(RSSr[1], RSSf[1]), SS = c(NA, SS[1]),
-                            Rsq = c(NA, Rsq[1]), F = c(NA, Fs[1]), Z = c(NA, Z.score), P = c(NA,P.val))
-  rownames(anova.table) <- c(formula(pfitr$Terms), formula(pfitf$Terms))
-  colnames(anova.table)[1] <- "Df"
-  colnames(anova.table)[ncol(anova.table)] <- "Pr(>F)"
-  if(effect.type == "SS") colnames(anova.table)[ncol(anova.table)] <- "Pr(>SS)"
-  if(effect.type == "Rsq") colnames(anova.table)[ncol(anova.table)] <- "Pr(>Rsq)"
-  class(anova.table) <- c("anova", class(anova.table))
-
-  if(pairwise.cond == "slopes") {
-    angle.type = match.arg(angle.type)
+    options(warn = -1)
     random.angles <- acos(simplify2array(P.cor))
     angles.obs <-random.angles[,,1]
     diag(angles.obs) <- 0
@@ -392,48 +356,51 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
       angles.obs <-random.angles[,,1]
       diag(angles.obs) <- 0
     }
+    options(warn = 0)
     obs.slope.lengths <- slope.lengths[[1]]
     obs.slope.dist <- as.matrix(dist(obs.slope.lengths))
     dimnames(P.val.slopes.dist) <- dimnames(Z.slopes.dist) <- dimnames(obs.slope.dist)
   }
 
 # output
-  out <- list(anova.table = anova.table,
-              Y=pfitf$Y, X=pfitf$X,
-              QR = pfitf$wQRs.full[[kf]],
-              coefficients = pfitf$wCoefficients.full,
-              fitted = pfitf$wFitted.full[[kf]],
-              residuals = pfitf$wResiduals.full[[kf]],
-              weights = w, data = dat2, random.SS = RSS, random.F = Fs,
+  out <- list(anova.table = anova.res$table,
+              Y=pfitF$LM$Y, X=pfitF$LM$X,
+              QR = pfitF$LM$QR,
+              coefficients = pfitF$LM$coefficients,
+              fitted = pfitF$LM$fitted,
+              residuals = pfitF$LM$residuals,
+              weights = pfitF$LM$weights, data = pfitF$LM$data, 
+              random.SS = anova.res$SS, random.F = anova.res$F,
               effect.type = effect.type,
               OLS = TRUE, GLS = FALSE,
-              Terms = pfitf$Terms, term.labels = pfitf$term.labels, permutations = iter+1,
+              Terms = pfitF$LM$Terms, term.labels = pfitF$LM$term.labels, 
+              permutations = iter+1,
               call= match.call()
   )
-  if(!is.null(Pcov)) {
-    out$PCov = Pcov
+  if(!is.null(Cov)) {
+    out$PCov = pfitF$LM$Pcov
     out$GLS = TRUE
     out$OLS = FALSE
-    gls.fitted = fitted
-    gls.residuals = res
-    gls.coefficients = gFit$coefficients
+    gls.fitted = pfitF$LM$gls.fitted
+    gls.residuals = pfitF$LM$gls.residuals
+    gls.coefficients = pfitF$LM$gls.coefficients
   }
   
   if(pairwise.cond == "means"){
     out$LS.means <- lsms[[1]]
     out$random.LS.means <- lsms
-    out$random.means.dist <- P.dist
+    out$random.means.dist <- P.dist.s
     out$LS.obs.means.dist <- P.dist[[1]]
     out$Z.means.dist <- Z.Means.dist
     out$P.means.dist <- P.Means.dist
   }
-    
+  
   if(pairwise.cond == "slopes"){
     if(angle.type == "r"){
-      out$slopes <- g.slopes[[1]]
+      out$slopes <- PW$slopes[[1]]
       out$obs.slope.lengths <- obs.slope.lengths
       out$obs.slopes.dist <- obs.slope.dist
-      out$random.slopes <- g.slopes
+      out$random.slopes <- PW$slopes
       out$random.slope.lengths <- slope.lengths
       out$random.slopes.dist <- P.slopes.dist
       out$P.slopes.dist <- P.val.slopes.dist
@@ -442,13 +409,13 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
       out$random.cor <- P.cor
       out$P.slopes.cor <- P.val.cor
       out$Z.slopes.cor <- Z.cor
-       
+    
     } else {
       
-      out$slopes <- g.slopes[[1]]
+      out$slopes <- PW$slopes[[1]]
       out$obs.slope.lengths <- obs.slope.lengths
       out$obs.slopes.dist <- obs.slope.dist
-      out$random.slopes <- g.slopes
+      out$random.slopes <- PW$slopes
       out$random.slope.lengths <- slope.lengths
       out$random.slopes.dist <- P.slopes.dist
       out$P.slopes.dist <- P.val.slopes.dist
@@ -459,6 +426,13 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
       out$Z.angles <- Z.cor
     }
   }
+  rownames(out$anova.table) <- c(formula(pfitr$Terms)[-2],
+                                 formula(pfitf$Terms)[-2], "Total")
+  rownames(out$anova.table)[1] <- paste(rownames(out$anova.table)[1], "(Null)")
+  Rsq.fix <- out$anova.table$Rsq 
+  out$anova.table$Rsq <- c(NA, Rsq.fix[2] - Rsq.fix[1], NA)
+  out$anova.table <- out$anova.table[,-2]
+  
   class(out) <- "advanced.procD.lm"
   out
 }
