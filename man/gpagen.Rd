@@ -12,8 +12,7 @@ gpagen(A, curves = NULL, surfaces = NULL, PrinAxes = TRUE,
 for a set of specimens.  If A is a geomorphShapes object, the curves argument is not needed.}
 
 \item{curves}{An optional matrix defining which landmarks should be treated as semilandmarks on boundary 
-curves, and which landmarks specify the tangent directions for their sliding.  This matrix is generated automatically
-with \code{\link{readland.shapes}} following digitizing of curves in StereoMorph.}
+curves, and which landmarks specify the tangent directions for their sliding.}
 
 \item{surfaces}{An optional vector defining which landmarks should be treated as semilandmarks on surfaces}
 
