@@ -345,9 +345,9 @@ printAllometry.HOS <- function(x){
   cat(deparse(x$call), fill=TRUE, "\n\n")
   cat("\nHomogeneity of Slopes Test\n")
   print(x$HOS.test)
-  if(x$HOS.test[2,7] > x$alpha) cat(paste("\nThe null hypothesis of parallel slopes is supported
+  if(x$HOS.test[2,8] > x$alpha) cat(paste("\nThe null hypothesis of parallel slopes is supported
   based on a significance criterion of alpha =", x$alpha,"\n")) 
-  if(x$HOS.test[2,7] <= x$alpha) cat(paste("\nThe null hypothesis of parallel slopes is rejected
+  if(x$HOS.test[2,8] <= x$alpha) cat(paste("\nThe null hypothesis of parallel slopes is rejected
   based on a significance criterion of alpha =", x$alpha,"\n"))
   cat("\nBased on the results of this test, the following ANOVA table is most appropriate\n")
   cat("\nType I (Sequential) Sums of Squares and Cross-products\n")
