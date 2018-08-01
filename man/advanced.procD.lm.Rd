@@ -218,7 +218,7 @@ Adams, D.C., and M.L. Collyer. 2009. A general framework for the analysis of phe
 Adams, D.C. and M.L. Collyer. 2016.  On the comparison of the strength of morphological integration across morphometric
 datasets. Evolution. 70:2623-2631.
 
-Adams, D.C. and M.L. Collyer. 2017. Multivariate phylogenetic comparative methods: evaluations, comparisons, and
+Adams, D.C. and M.L. Collyer. 2018. Multivariate phylogenetic comparative methods: evaluations, comparisons, and
 recommendations. Systematic Biology. 67:14-31.
 
 Collyer, M.L., and D.C. Adams. 2007. Analysis of two-state multivariate phenotypic change 
