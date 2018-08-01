@@ -27,7 +27,11 @@ coords.subset <- function(A, group){
   if(length(group) != n) stop("number of specimens do not match between coords and grouping factor")
   Y <- as.data.frame(two.d.array(A))
   X <- split(Y, group)
-  redo <- function(x) arrayspecs(x, p, k)
+  redo <- function(x) {
+    y <- lapply(1:NROW(x), function(j) matrix(x[j,], p, k, byrow = TRUE))
+    names(y) <- rownames(x)
+    simplify2array(y)
+  } 
   out <- lapply(X, redo)
   out
 }	

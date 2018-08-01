@@ -142,7 +142,7 @@ f291ed28156a2d7c9a73a6846944cbeb *R/build.template.r
 cce60fd45354c1149bece0224ce6a11a *R/compare.evol.rates.r
 25a3e9826113664b0114e0010db11acf *R/compare.multi.evol.rates.r
 89186a1d747e88be123b6e34456cd9ba *R/compare.pls.r
-cd75978b06ea34fd5a8a59c40feee6d1 *R/coords.subset.r
+f1c62e17d88221f3158a9b61635f112e *R/coords.subset.r
 c77f2f19e63d93ec9a76ac9c2236f1bc *R/define.links.r
 ddcc6629196b8e66ef9a2e92c093f041 *R/define.modules.r
 40fc3f0daa4f943ce38979e67f2565ac *R/define.sliders.r
