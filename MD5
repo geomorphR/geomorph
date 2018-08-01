@@ -11,7 +11,7 @@ d8e8360c03c03fe45d2100e9c05d4a89 *data/plethodon.rda
 9ba51ab9be03930a4acdcddde8169b33 *data/scallopPLY.rda
 6e5e71b242462e422b716800ffc3c464 *data/scallops.rda
 2df28a841db87ba70a2c88bc1de1daae *DESCRIPTION
-73f723a130c92f8b84a81465a15add7c *geomorph.Rproj
+f4f2080e745b8d689f17caf549449ab5 *geomorph.Rproj
 e65e81ca3e2c0b6e712bf6f4bafcdaec *inst/CITATION
 17413757da78fe87e47da5b960f18107 *man/advanced.procD.lm.Rd
 5a8e62b1b33e226fb4e4d5ed92630fe7 *man/arrayspecs.Rd
@@ -133,7 +133,7 @@ b250240e7d59ef26fee088283d135a6f *R/combine.subsets.R
 768a34b02355f05fad015baaa7852abd *R/compare.evol.rates.r
 25a3e9826113664b0114e0010db11acf *R/compare.multi.evol.rates.r
 89186a1d747e88be123b6e34456cd9ba *R/compare.pls.r
-f1dd9c66b82a3713184080a311e41c2e *R/coords.subset.r
+c3b3ff4d4d1660eaf9c2ec20014d34e1 *R/coords.subset.r
 c77f2f19e63d93ec9a76ac9c2236f1bc *R/define.links.r
 ddcc6629196b8e66ef9a2e92c093f041 *R/define.modules.r
 abcd038dc7d83d4319dce90204c4c1be *R/define.sliders.r
