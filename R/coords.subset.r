@@ -28,6 +28,7 @@ coords.subset <- function(A, group){
   Y <- as.data.frame(two.d.array(A))
   X <- split(Y, group)
   redo <- function(x) {
+    x <- as.matrix(x)
     y <- lapply(1:NROW(x), function(j) matrix(x[j,], p, k, byrow = TRUE))
     names(y) <- rownames(x)
     simplify2array(y) 
