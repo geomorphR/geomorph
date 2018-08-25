@@ -73,7 +73,7 @@ c77d894ae48bbee0119ed393f168982f *man/plotGMPhyloMorphoSpace.Rd
 4542a404d1dabb2f1f237f087e4c9ea1 *man/plotOutliers.Rd
 5defec4d77361915a43381389b0c331e *man/plotRefToTarget.Rd
 5eaddfebc11b14c6a1b21367086e66cf *man/plotspec.Rd
-b8f9570a12528e183df54fc32cd77182 *man/plotTangentSpace.Rd
+b415c6408556cdc480c3b32583edb302 *man/plotTangentSpace.Rd
 2bbd4780fef67d6ef97022e0ddf59d54 *man/print.advanced.procD.lm.Rd
 bf735457c885585781fa8dd86e2671b8 *man/print.bilat.symmetry.Rd
 61b3a2b02fa0a9976973470034a6f9d6 *man/print.combined.set.Rd
@@ -133,7 +133,7 @@ da1241dd835f95675cc7126b2a7ec61a *man/two.d.array.Rd
 4678254db827c8ff8caf6c5beb8157be *man/warpRefOutline.Rd
 d9119f721918f22c267db843023a86fe *man/writeland.tps.Rd
 611f010d17b25ca9efc45508d08f1dd0 *NAMESPACE
-6277db50f311571871ec51fce1cfb175 *NEWS
+af6e7d569584d65e91ce1cedb028fa18 *NEWS
 5040ce72630e05ebd54b8315d2ee994f *R/advanced.procD.lm.r
 92239d51a080ccd3fc3a9f7ef67d1b8c *R/arrayspecs.r
 be1113da875ebed938f30355d79b57a5 *R/bilat.symmetry.r
@@ -176,7 +176,7 @@ d0cfb9fe35226ee6799a2f40ad5f39c1 *R/plotGMPhyloMorphoSpace.r
 aab74b98af1c98726fe373d9759ccdbd *R/plotOutliers.r
 a2dcc839c82368a3f476cb8985b19b88 *R/plotRefToTarget.r
 3a6faf4779152e188422fa4f673cb175 *R/plotspec.r
-8763799b95c5246e8e43fce72193b3d5 *R/plotTangentSpace.r
+73ac80da493ab3bfb84376c62406da77 *R/plotTangentSpace.r
 9dcae1545c6102509552d9a8dcb15e3c *R/procD.allometry.r
 6223d121fd846b662263d66a1205752e *R/procD.lm.r
 8fcef2f7a6a883f132152acfa4157ed3 *R/procD.pgls.r

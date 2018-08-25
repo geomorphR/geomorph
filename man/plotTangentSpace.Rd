@@ -75,7 +75,7 @@ col.gp <- col.gp[match(gp, names(col.gp))] # col.gp must NOT be a factor
 plotTangentSpace(Y.gpa$coords, groups = col.gp)
 
 ## To plot residual shapes from an allometry regression (note: must add mean back in!) 
-plotTangentSpace(arrayspecs(resid(lm(two.d.array(Y.gpa$coords)~Y.gpa$Csize))+
+plotTangentSpace(arrayspecs(resid(lm(two.d.array(Y.gpa$coords)~log(Y.gpa$Csize)))+
          predict(lm(two.d.array(Y.gpa$coords)~1)),12,2))
 }
 \seealso{
