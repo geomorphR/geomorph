@@ -226,9 +226,10 @@ bilat.symmetry<-function(A, ind=NULL, side=NULL, replicate=NULL, object.sym=FALS
     newZ <- apply(log(random.shape.F + 0.000001), 1, effect.size)
     PSh$aov.table$F[1:3] <- random.shape.F[1:3, 1]
     PSh$aov.table$Z[1:3] <- newZ[1:3]
-    rownames(PSh$aov.table) <- form.names
   }
+  rownames(PSh$aov.table) <- form.names
   shape.anova <- PSh$aov.table
+  
   if(object.sym==FALSE){  
     if(!is.null(replicate)) {
       form.size <- size ~ ind + side + ind/side 
