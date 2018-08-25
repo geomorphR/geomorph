@@ -1,5 +1,6 @@
 PENDING CHANGES IN GEOMORPH VERSION 3.0.8
     o Updated coords.subset to avoid issue with arrayspecs and naming subsetted data.
+    o Changed the default for sliding to ProcD=FALSE in gpagen
     
 CHANGES IN GEOMORPH VERSION 3.0.7
     o Computations for advanced.procD.lm now performed using RRPP package

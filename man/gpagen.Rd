@@ -5,7 +5,7 @@
 \title{Generalized Procrustes analysis of points, curves, and surfaces}
 \usage{
 gpagen(A, curves = NULL, surfaces = NULL, PrinAxes = TRUE,
-  max.iter = NULL, ProcD = TRUE, Proj = TRUE, print.progress = TRUE)
+  max.iter = NULL, ProcD = FALSE, Proj = TRUE, print.progress = TRUE)
 }
 \arguments{
 \item{A}{Either an object of class geomorphShapes or a 3D array (p x k x n) containing landmark coordinates 
@@ -40,7 +40,8 @@ An object of class gpagen returns a list with the following components:
  \item{iter}{The number of GPA iterations until convergence was found (or GPA halted).}
  \item{points.VCV}{Variance-covariance matrix among Procrustes shape variables.}
  \item{points.var}{Variances of landmark points.}
- \item{consnsus}{The consensus (mean) configuration.}
+ \item{consensus}{The consensus (mean) configuration.}
+ \item{procD}{Procrustes distance matrix for all specimens (see details).}
  \item{p}{Number of landmarks.}
  \item{k}{Number of landmark dimensions.}
  \item{nsliders}{Number of semilandmarks along curves.}
@@ -66,10 +67,12 @@ The function performs a Generalized Procrustes Analysis (GPA) on two-dimensional
  direction for sliding. The matrix may be generated using the function \code{\link{define.sliders}}). Likewise, 
  to include semilandmarks 
  on surfaces, one must specify a vector listing which landmarks are to be treated as surface semilandmarks 
- using the "surfaces=" option. The "ProcD=TRUE" option will slide the semilandmarks along their tangent 
- directions using the Procrustes distance criterion, while "ProcD=FALSE" will slide the semilandmarks 
- based on minimizing bending energy. The Procrustes-aligned specimens may be projected into tangent 
- space using the "Proj=TRUE" option. NOTE: Large datasets may exceed the memory limitations of R.
+ using the "surfaces=" option. The "ProcD=FALSE" option (the default) will slide the semilandmarks 
+ based on minimizing bending energy, while "ProcD=TRUE" will slide the semilandmarks along their tangent 
+ directions using the Procrustes distance criterion. The Procrustes-aligned specimens may be projected into tangent
+ space using the "Proj=TRUE" option. 
+ The function also outputs a matrix of pairwise Procrustes Distances, which correspond to Euclidean distances between specimens in tangent space if "Proj=TRUE", or to the geodesic distances in shape space if "Proj=FALSE".   
+ NOTE: Large datasets may exceed the memory limitations of R.
 
 Generalized Procrustes Analysis (GPA: Gower 1975, Rohlf and Slice 1990) is the primary means by which 
   shape variables are obtained from landmark data (for a general overview of geometric morphometrics see 

@@ -14,10 +14,12 @@
 #'  direction for sliding. The matrix may be generated using the function \code{\link{define.sliders}}). Likewise, 
 #'  to include semilandmarks 
 #'  on surfaces, one must specify a vector listing which landmarks are to be treated as surface semilandmarks 
-#'  using the "surfaces=" option. The "ProcD=TRUE" option will slide the semilandmarks along their tangent 
-#'  directions using the Procrustes distance criterion, while "ProcD=FALSE" will slide the semilandmarks 
-#'  based on minimizing bending energy. The Procrustes-aligned specimens may be projected into tangent 
-#'  space using the "Proj=TRUE" option. NOTE: Large datasets may exceed the memory limitations of R. 
+#'  using the "surfaces=" option. The "ProcD=FALSE" option (the default) will slide the semilandmarks 
+#'  based on minimizing bending energy, while "ProcD=TRUE" will slide the semilandmarks along their tangent 
+#'  directions using the Procrustes distance criterion. The Procrustes-aligned specimens may be projected into tangent
+#'  space using the "Proj=TRUE" option. 
+#'  The function also outputs a matrix of pairwise Procrustes Distances, which correspond to Euclidean distances between specimens in tangent space if "Proj=TRUE", or to the geodesic distances in shape space if "Proj=FALSE".   
+#'  NOTE: Large datasets may exceed the memory limitations of R. 
 #'
 #'  Generalized Procrustes Analysis (GPA: Gower 1975, Rohlf and Slice 1990) is the primary means by which 
 #'   shape variables are obtained from landmark data (for a general overview of geometric morphometrics see 
@@ -73,7 +75,8 @@
 #'  \item{iter}{The number of GPA iterations until convergence was found (or GPA halted).}
 #'  \item{points.VCV}{Variance-covariance matrix among Procrustes shape variables.}
 #'  \item{points.var}{Variances of landmark points.}
-#'  \item{consnsus}{The consensus (mean) configuration.}
+#'  \item{consensus}{The consensus (mean) configuration.}
+#'  \item{procD}{Procrustes distance matrix for all specimens (see details).}
 #'  \item{p}{Number of landmarks.}
 #'  \item{k}{Number of landmark dimensions.}
 #'  \item{nsliders}{Number of semilandmarks along curves.}
@@ -137,7 +140,7 @@
 #' # NOTE can summarize as: summary(Y.gpa)
 #' # NOTE can plot as: plot(Y.gpa) 
 gpagen = function(A, curves=NULL, surfaces=NULL, PrinAxes = TRUE, 
-                  max.iter = NULL, ProcD=TRUE, Proj = TRUE,
+                  max.iter = NULL, ProcD=FALSE, Proj = TRUE,
                   print.progress = TRUE){
   if(inherits(A, "geomorphShapes")) {
     Y <- A$landmarks
@@ -208,6 +211,7 @@ gpagen = function(A, curves=NULL, surfaces=NULL, PrinAxes = TRUE,
   two.d.coords = two.d.array(coords)
   if(is.null(colnames(two.d.coords))) colnames(two.d.coords) <- pt.names
   names(Csize) <- dimnames(A)[[3]]
+  procD <- dist(coords)
   if(!is.null(curves) || !is.null(surf)) {
     nsliders <- nrow(curves)
     nsurf <- length(surf)
@@ -221,8 +225,8 @@ gpagen = function(A, curves=NULL, surfaces=NULL, PrinAxes = TRUE,
   out <- list(coords=coords, Csize=Csize, 
               iter=iter, 
               points.VCV = pt.VCV, points.var = pt.var, 
-              consensus = M, p=p,k=k, 
-              nsliders=nsliders, nsurf = nsurf,
+              consensus = M, procD = procD, 
+              p=p,k=k, nsliders=nsliders, nsurf = nsurf,
               data = data.frame(coords = two.d.coords, Csize = Csize),
               Q = gpa$Q, slide.method = smeth, call= match.call())
   class(out) <- "gpagen"
