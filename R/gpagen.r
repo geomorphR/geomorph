@@ -76,7 +76,10 @@
 #'  \item{points.VCV}{Variance-covariance matrix among Procrustes shape variables.}
 #'  \item{points.var}{Variances of landmark points.}
 #'  \item{consensus}{The consensus (mean) configuration.}
-#'  \item{procD}{Procrustes distance matrix for all specimens (see details).}
+#'  \item{procD}{Procrustes distance matrix for all specimens (see details). Note that for large data
+#'  sets, R might return a memory allocation error, in which case the error will be supressed and this component will be NULL.
+#'  For such cases, users can augment memory allocation and create distances with the dist function, independent from gpagen,
+#'  using the coords or data output.}
 #'  \item{p}{Number of landmarks.}
 #'  \item{k}{Number of landmark dimensions.}
 #'  \item{nsliders}{Number of semilandmarks along curves.}
@@ -211,7 +214,8 @@ gpagen = function(A, curves=NULL, surfaces=NULL, PrinAxes = TRUE,
   two.d.coords = two.d.array(coords)
   if(is.null(colnames(two.d.coords))) colnames(two.d.coords) <- pt.names
   names(Csize) <- dimnames(A)[[3]]
-  procD <- dist(coords)
+  procD <- try(dist(coords), silent = TRUE)
+  if(inherits(procD, "try-error")) procD <- NULL
   if(!is.null(curves) || !is.null(surf)) {
     nsliders <- nrow(curves)
     nsurf <- length(surf)
