@@ -3,6 +3,10 @@ PENDING CHANGES IN GEOMORPH VERSION 3.0.8
     o Changed the default for sliding to ProcD=FALSE in gpagen
     o Added Procrustes distance matrix to gpagen output
     o Added Procrustes distance matrix to gpagen output
+    o Added partial disparity option to morphol.disparity
+    
+BUG FIXES
+    o Added a trap for large distance matrices to gpagen, to avoid errors
     
 CHANGES IN GEOMORPH VERSION 3.0.7
     o Computations for advanced.procD.lm now performed using RRPP package
