@@ -43,7 +43,7 @@ a598044482a6c3e39517b798b654c57e *man/hummingbirds.Rd
 9ab40cb3c3d8ccec94850abe377bd773 *man/interlmkdist.Rd
 833da133e435c10f2fcb2857439f10f1 *man/larvalMorph.Rd
 c971ee431344adcf29329d08936971dd *man/modularity.test.Rd
-c62cd09f690adb9a9b4c9933f2941406 *man/morphol.disparity.Rd
+53fe2c3fde8281f5a2b1e49a9e019741 *man/morphol.disparity.Rd
 00e77dd77ac4f29ace5334a4df4aa23e *man/mosquito.Rd
 56d6ab3a337de1529cae2da20bd9ac08 *man/motionpaths.Rd
 869c60d686d6e631ab23e77de8986031 *man/mshape.Rd
@@ -165,7 +165,7 @@ f9fbb4a45b97b2223312621f678b0232 *R/gm.prcomp.R
 2b338eb56d6c8e743d2240ed4d7b5297 *R/integration.test.r
 c35bcae1a6ea59c924cf7dc9eec3e013 *R/interlmkdist.r
 22bfc5e775ee6102b970e5b79231eea0 *R/modularity.test.r
-c043404a6b68ce1f4b037ae57aa9c5ee *R/morphol.disparity.r
+81ef5fcf4c6f49d0c72024c8ff2e6f88 *R/morphol.disparity.r
 99223d1374859b824c539afeb400b224 *R/nested.update.r
 b64996289927a48622a73adaa75da155 *R/phylo.integration.r
 72e8226347cb62ffa0886ccd577f86a0 *R/phylo.modularity.r
