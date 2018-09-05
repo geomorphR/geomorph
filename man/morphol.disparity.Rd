@@ -4,8 +4,8 @@
 \alias{morphol.disparity}
 \title{Morphological disparity for one or more groups of specimens}
 \usage{
-morphol.disparity(f1, groups = NULL, iter = 999, seed = NULL,
-  data = NULL, print.progress = TRUE, ...)
+morphol.disparity(f1, groups = NULL, partial = FALSE, iter = 999,
+  seed = NULL, data = NULL, print.progress = TRUE, ...)
 }
 \arguments{
 \item{f1}{A formula describing the linear model used.  The left-hand portion of the formula should be
@@ -18,6 +18,10 @@ as residuals from PGLS will be used for analysis (see examples).}
 \item{groups}{A formula designating groups, e.g., groups = ~ groups.  If NULL, morphol.disparity
 will attempt to define groups based on the linear model formula, f1.  If there are no groups inherently
 indicated in f1 and groups is NULL, a single Procrustes variance will be returned for the entire data set.}
+
+\item{partial}{A logical value to indicate whether partial disparities should be calculated, sensu
+Foote (1993).  If TRUE, the model formula should have only an intercept (e.g., coords ~ 1); otherwise an error 
+will be returned.}
 
 \item{iter}{Number of iterations for permutation test}
 
@@ -42,6 +46,7 @@ Objects of class "morphol.disparity" return a list with the following components
   \item{PV.dist.Pval}{P-values associated with pairwise differences.}
   \item{random.PV.dist}{Pairwise distance matrices produced in the resampling procedure.}
   \item{permutations}{Number of random permutations in resampling procedure.}
+  \item{partial}{Logical value to indicate if partial disparities were calculated.}
   \item{call}{The match call}
 }
 \description{
@@ -49,12 +54,17 @@ Function estimates morphological disparity and performs pairwise comparisons amo
 }
 \details{
 The function estimates morphological disparity and performs pairwise comparisons to identify differences
-between groups. Morphological disparity is estimated as the Procrustes variance, overall or for groups, 
+among groups. Morphological disparity is estimated as the Procrustes variance, overall or for groups, 
 using residuals of a linear model fit.  Procrustes variance is the same sum of the diagonal elements 
 of the group covariance matrix divided by the number of observations in the group (e.g., Zelditch et al. 2012).
 The function takes as input a formula to describe the linear model fit,
 plus a formulaic indication of groups (e.g., ~ groups).  It is assumed that the formula describes shape data that 
 have been GPA-aligned [e.g., \code{\link{gpagen}}], although the function can work with any multivariate data.
+
+Partial disparities (Foote 1993) can also be calculated, but only for model formulas containing only an intercept 
+(e.g., coords ~ 1).  Partial disparity has the same numerator as Procrustes variance (with respect to an overall mean)
+but the denominator is N - 1 for all N observations, rather than n, the group size.  (The sum of all group n equals N.)
+Partial disparities have the appeal that the sum of group partial disparities it the total disparitiy.
 
 Absolute differences in Procrustes variances are test statistics that can be used to test differences
 in morphological disparity among groups.  These differences are  statistically evaluated through permutation, 
@@ -86,6 +96,9 @@ morphol.disparity(coords ~ Csize, groups= NULL, data = gdf, iter=499)
 
 # Morphological disparity without covariates, using overall mean
 morphol.disparity(coords ~ 1, groups= ~ species*site, data = gdf, iter=499)
+
+# Morphological parital disparities for overal mean
+morphol.disparity(coords ~ 1, groups= ~ species*site, partial = TRUE, data = gdf, iter=499)
 
 # Morphological disparity without covariates, using group means
 morphol.disparity(coords ~ species*site, groups= ~species*site, data = gdf, iter=499)
@@ -122,6 +135,9 @@ morphol.disparity(f1 = pleth.pgls, groups = ~ gp.end, data = gdf, iter = 999)
 \references{
 Zelditch, M. L., D. L. Swiderski, H. D. Sheets, and W. L. Fink. 2012. Geometric morphometrics 
   for biologists: a primer. 2nd edition. Elsevier/Academic Press, Amsterdam.
+
+Foote, M. 1993. Contributions of individual taxa to overall morphological disparity. 
+Paleobiology, 19: 403-419.
 }
 \author{
 Emma Sherratt and Michael Collyer

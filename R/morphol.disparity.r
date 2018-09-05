@@ -3,12 +3,17 @@
 #' Function estimates morphological disparity and performs pairwise comparisons among groups. 
 #'
 #' The function estimates morphological disparity and performs pairwise comparisons to identify differences
-#' between groups. Morphological disparity is estimated as the Procrustes variance, overall or for groups, 
+#' among groups. Morphological disparity is estimated as the Procrustes variance, overall or for groups, 
 #' using residuals of a linear model fit.  Procrustes variance is the same sum of the diagonal elements 
 #' of the group covariance matrix divided by the number of observations in the group (e.g., Zelditch et al. 2012).
 #' The function takes as input a formula to describe the linear model fit,
 #' plus a formulaic indication of groups (e.g., ~ groups).  It is assumed that the formula describes shape data that 
 #' have been GPA-aligned [e.g., \code{\link{gpagen}}], although the function can work with any multivariate data.
+#' 
+#' Partial disparities (Foote 1993) can also be calculated, but only for model formulas containing only an intercept 
+#' (e.g., coords ~ 1).  Partial disparity has the same numerator as Procrustes variance (with respect to an overall mean)
+#' but the denominator is N - 1 for all N observations, rather than n, the group size.  (The sum of all group n equals N.)
+#' Partial disparities have the appeal that the sum of group partial disparities it the total disparitiy.
 #' 
 #' Absolute differences in Procrustes variances are test statistics that can be used to test differences
 #' in morphological disparity among groups.  These differences are  statistically evaluated through permutation, 
@@ -36,6 +41,9 @@
 #' @param groups A formula designating groups, e.g., groups = ~ groups.  If NULL, morphol.disparity
 #' will attempt to define groups based on the linear model formula, f1.  If there are no groups inherently
 #' indicated in f1 and groups is NULL, a single Procrustes variance will be returned for the entire data set.
+#' @param partial A logical value to indicate whether partial disparities should be calculated, sensu
+#' Foote (1993).  If TRUE, the model formula should have only an intercept (e.g., coords ~ 1); otherwise an error 
+#' will be returned.
 #' @param iter Number of iterations for permutation test
 #' @param seed An optional argument for setting the seed for random permutations of the resampling procedure.  
 #' If left NULL (the default), the exact same P-values will be found for repeated runs of the analysis (with the same number of iterations).
@@ -56,10 +64,14 @@
 #'   \item{PV.dist.Pval}{P-values associated with pairwise differences.}
 #'   \item{random.PV.dist}{Pairwise distance matrices produced in the resampling procedure.}
 #'   \item{permutations}{Number of random permutations in resampling procedure.}
+#'   \item{partial}{Logical value to indicate if partial disparities were calculated.}
 #'   \item{call}{The match call}
 #'   
 #' @references Zelditch, M. L., D. L. Swiderski, H. D. Sheets, and W. L. Fink. 2012. Geometric morphometrics 
 #'   for biologists: a primer. 2nd edition. Elsevier/Academic Press, Amsterdam.
+#' @references Foote, M. 1993. Contributions of individual taxa to overall morphological disparity. 
+#' Paleobiology, 19: 403-419.
+#' 
 #' @examples
 #' data(plethodon)
 #' Y.gpa<-gpagen(plethodon$land, print.progress = FALSE)    #GPA-alignment
@@ -73,6 +85,9 @@
 #' 
 #' # Morphological disparity without covariates, using overall mean
 #' morphol.disparity(coords ~ 1, groups= ~ species*site, data = gdf, iter=499)
+#' 
+#' # Morphological parital disparities for overal mean
+#' morphol.disparity(coords ~ 1, groups= ~ species*site, partial = TRUE, data = gdf, iter=499)
 #' 
 #' # Morphological disparity without covariates, using group means
 #' morphol.disparity(coords ~ species*site, groups= ~species*site, data = gdf, iter=499)
@@ -105,11 +120,16 @@
 #' morphol.disparity(f1 = pleth.ols, groups = ~ gp.end, data = gdf, iter = 999)
 #' morphol.disparity(f1 = pleth.pgls, groups = ~ gp.end, data = gdf, iter = 999)
 #' 
-morphol.disparity <- function(f1, groups = NULL, iter = 999, seed = NULL, 
+morphol.disparity <- function(f1, groups = NULL, partial = FALSE, iter = 999, seed = NULL, 
                               data = NULL, print.progress = TRUE, ...){
   if(!is.null(data)) data <- droplevels(data)
   if(!is.null(groups) & class(groups) != "formula") stop("groups must be a formula; e.g., groups = ~ X")
   if(class(f1) == "formula") {
+    f1.terms <- terms(f1)
+    if(length(attr(f1.terms, "term.labels")) == 0) int.model <- TRUE else
+      int.model = FALSE
+    if(!int.model && partial) 
+      stop("\n It is not possible to calculate partial disparities unless the formula contains only an intercept; e.g., coords ~ 1\n")
     pfit <- procD.fit(f1, data=data, pca=TRUE, ...)
     if(is.null(groups)) gps <- single.factor(pfit) else {
       data.types <- lapply(data, class)
@@ -124,11 +144,15 @@ morphol.disparity <- function(f1, groups = NULL, iter = 999, seed = NULL,
     w <- sqrt(pfit$weights)
     if(length(gps) == 0) pv = sum(R^2)/nrow(R) else {
       Xgps <- model.matrix(~ gps + 0) * w
-      d <- diag(tcrossprod(R))
+      d <- rowSums(R^2)
       pv <- coef(lm.fit(Xgps, d))
     }
   }
   if(class(f1) == "procD.lm" || class(f1) == "advanced.procD.lm"){
+    if(length(f1$term.labels) == 0) int.model <- TRUE else
+      int.model = FALSE
+    if(!int.model && partial) 
+      stop("\n It is not possible to calculate partial disparities unless the model formula contains only an intercept; e.g., coords ~ 1\n")
     if(is.null(f1$pgls.residuals)) R <- as.matrix(f1$residuals) else 
       R <- as.matrix(f1$pgls.residuals)
     w <- sqrt(f1$weights)
@@ -149,7 +173,7 @@ morphol.disparity <- function(f1, groups = NULL, iter = 999, seed = NULL,
       if(is.null(gps)) pv = sum(R^2)/nrow(R) else {
         Xgps <- model.matrix(~ gps + 0, data = datasub) * w
         if(!is.null(f1$pgls.residuals)) Xgps <- crossprod(f1$Pcov, Xgps)
-        d <- diag(tcrossprod(R))
+        d <- rowSums(R^2)
         pv <- coef(lm.fit(Xgps, d))
       }
     } else {
@@ -162,7 +186,7 @@ morphol.disparity <- function(f1, groups = NULL, iter = 999, seed = NULL,
       if(length(gps) == 0) pv = sum(R^2)/nrow(R) else {
         Xgps <- model.matrix(~ gps + 0) * w
         if(!is.null(f1$pgls.residuals)) Xgps <- crossprod(f1$Pcov, Xgps)
-        d <- diag(tcrossprod(R))
+        d <- rowSums(R^2)
         pv <- coef(lm.fit(Xgps, d))
       }
     }
@@ -170,18 +194,28 @@ morphol.disparity <- function(f1, groups = NULL, iter = 999, seed = NULL,
   names(pv) <- levels(gps)
   if(length(gps) == 0) {
     cat("No factor in formula from which to define groups.\n")
-    cat("Procrustes variance:\n")
+    cat("Procrustes variance")
+    N <- NROW(R)
+    if(partial) {
+      pv <- as.numeric(pv) * N / (N-1)
+      cat("(Foote's disparity):\n")
+    } else cat(":\n")
     out <- as.numeric(pv)
   } else{
     if(print.progress){
       ind <- perm.index(nrow(R),iter, seed=seed)
       pb <- txtProgressBar(min = 0, max = iter, initial = 0, style=3) 
+      if(partial) {
+        gpn <- colSums(Xgps)
+        N <- nrow(Xgps)
+        }
       P <- lapply(1:(iter+1), function(j){
-        r <- R[ind[[j]],]
+        r <- as.matrix(R[ind[[j]],])
         setTxtProgressBar(pb,j)
-        d <- diag(tcrossprod(r))
+        d <- rowSums(r^2)
         pvr <- coef(lm.fit(Xgps, d))
-        names(pvr)<-levels(gps)
+        if(partial) pvr <- pvr * gpn / (N - 1)
+        names(pvr) <- levels(gps)
         as.matrix(dist(pvr))
       } )
       close(pb)
@@ -189,21 +223,28 @@ morphol.disparity <- function(f1, groups = NULL, iter = 999, seed = NULL,
       p.val <- Pval.matrix(simplify2array(P))
       pvd <- P[[1]]
       out <- list(Procrustes.var = pv, PV.dist = pvd, PV.dist.Pval = p.val,
-                  random.PV.dist = P, permutations = iter+1, call = match.call())
+                  random.PV.dist = P, permutations = iter+1, 
+                  partial = partial, call = match.call())
     } else {
       ind <- perm.index(nrow(R),iter, seed=seed)
+      if(partial) {
+        gpn <- colSums(Xgps)
+        N <- nrow(Xgps)
+      }
       P <- lapply(1:(iter+1), function(j){
         r <- R[ind[[j]],]
-        d <- diag(tcrossprod(r))
+        d <- rowSums(r^2)
         pvr <- coef(lm.fit(Xgps, d))
-      names(pvr)<-levels(gps)
-      as.matrix(dist(pvr))
+        if(partial) pvr <- pvr * gpn / (N - 1)
+        names(pvr)<-levels(gps)
+        as.matrix(dist(pvr))
       } )
       if(iter > 0) names(P) <- c("obs", 1:iter)
       p.val <- Pval.matrix(simplify2array(P))
       pvd <- P[[1]]
       out <- list(Procrustes.var = pv, PV.dist = pvd, PV.dist.Pval = p.val,
-                  random.PV.dist = P, permutations = iter+1, call = match.call())
+                  random.PV.dist = P, permutations = iter+1, 
+                  partial = partial, call = match.call())
     }
       
       class(out) <-"morphol.disparity"

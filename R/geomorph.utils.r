@@ -523,8 +523,14 @@ print.morphol.disparity <- function (x, ...) {
   cat(deparse(x$call), fill=TRUE, "\n\n")
   cat("\nRandomized Residual Permutation Procedure Used\n")
   cat(paste(x$permutations, "Permutations\n"))
-  cat("\nProcrustes variances for defined groups\n")
+  cat("\nProcrustes variances for defined groups")
+  if(x$partial) cat("; partial variances (disparities) were calculated.\n") else cat("\n")
   print(x$Procrustes.var)
+  if(x$partial) {
+    propor <- x$Procrustes.var / sum(x$Procrustes.var)
+    cat("\nProportion of total disparity for each group:\n")
+    print(propor)
+  }
   cat("\n")
   cat("\nPairwise absolute differences between variances\n")
   print(x$PV.dist)
