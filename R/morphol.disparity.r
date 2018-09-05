@@ -142,10 +142,20 @@ morphol.disparity <- function(f1, groups = NULL, partial = FALSE, iter = 999, se
     k <- length(pfit$wResiduals.full)
     R <- as.matrix(pfit$wResiduals.full[[k]])
     w <- sqrt(pfit$weights)
-    if(length(gps) == 0) pv = sum(R^2)/nrow(R) else {
+    if(length(gps) == 0){
+      N <- NROW(R)
+      pv = sum(R^2)/N
+      if(partial) pv <- pv * N / (N - 1)
+      
+    }  else {
       Xgps <- model.matrix(~ gps + 0) * w
       d <- rowSums(R^2)
       pv <- coef(lm.fit(Xgps, d))
+      if(partial){
+        gpn <- colSums(Xgps)
+        N <- nrow(Xgps)
+        pv <- pv * gpn / (N - 1)
+      }
     }
   }
   if(class(f1) == "procD.lm" || class(f1) == "advanced.procD.lm"){
@@ -170,11 +180,21 @@ morphol.disparity <- function(f1, groups = NULL, partial = FALSE, iter = 999, se
         datasub <- f1$data[check]
         gps <- apply(datasub, 1 , paste , collapse = "." )
       }
-      if(is.null(gps)) pv = sum(R^2)/nrow(R) else {
+      if(is.null(gps)) {
+        N <- NROW(R)
+        pv = sum(R^2)/N
+        if(partial) pv <- pv * N / (N - 1)
+        }
+      else {
         Xgps <- model.matrix(~ gps + 0, data = datasub) * w
         if(!is.null(f1$pgls.residuals)) Xgps <- crossprod(f1$Pcov, Xgps)
         d <- rowSums(R^2)
         pv <- coef(lm.fit(Xgps, d))
+        if(partial){
+          gpn <- colSums(Xgps)
+          N <- nrow(Xgps)
+          pv <- pv * gpn / (N - 1)
+        }
       }
     } else {
       data.types <- lapply(data, class)
@@ -183,11 +203,20 @@ morphol.disparity <- function(f1, groups = NULL, partial = FALSE, iter = 999, se
       gps <- model.frame(groups, data= dat2)
       if(ncol(gps) > 1) gps <- factor(apply(gps, 1,function(x) paste(x, collapse=":"))) else 
         gps <- as.factor(unlist(gps))
-      if(length(gps) == 0) pv = sum(R^2)/nrow(R) else {
+      if(length(gps) == 0) {
+        N <- NROW(R)
+        pv = sum(R^2)/N
+        if(partial) pv <- pv * N / (N - 1)
+      } else {
         Xgps <- model.matrix(~ gps + 0) * w
         if(!is.null(f1$pgls.residuals)) Xgps <- crossprod(f1$Pcov, Xgps)
         d <- rowSums(R^2)
         pv <- coef(lm.fit(Xgps, d))
+        if(partial){
+          gpn <- colSums(Xgps)
+          N <- nrow(Xgps)
+          pv <- pv * gpn / (N - 1)
+        }
       }
     }
   }
