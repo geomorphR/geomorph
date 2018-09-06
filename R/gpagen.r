@@ -214,7 +214,7 @@ gpagen = function(A, curves=NULL, surfaces=NULL, PrinAxes = TRUE,
   two.d.coords = two.d.array(coords)
   if(is.null(colnames(two.d.coords))) colnames(two.d.coords) <- pt.names
   names(Csize) <- dimnames(A)[[3]]
-  procD <- try(dist(two.dcoords), silent = TRUE)
+  procD <- try(dist(two.d.coords), silent = TRUE)
   if(inherits(procD, "try-error")) procD <- NULL
   if(!is.null(curves) || !is.null(surf)) {
     nsliders <- nrow(curves)
