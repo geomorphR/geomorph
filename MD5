@@ -100,7 +100,7 @@ e186bde97e98a204b53457a14eb0a52d *man/print.procD.lm.Rd
 cb46da06afb9b58e54ad31f7a7a02f4c *man/read.morphologika.Rd
 b44aeb03963c35970dbdd2dc2923d215 *man/read.ply.Rd
 64f811957932c1d67cc8324ee2f706e5 *man/readland.nts.Rd
-fb4264964a2fb6909633b3499c646b45 *man/readland.shapes.Rd
+0dd6d2b6184a56612b523beab049ce9b *man/readland.shapes.Rd
 c61dc0ddd51cac8b74cb58adbc721819 *man/readland.tps.Rd
 d7ab7b16621a488c2daa709d10af488b *man/readmulti.nts.Rd
 3ba4916ca7ae958d9a53735f790e7f94 *man/rotate.coords.Rd
@@ -156,7 +156,7 @@ ea70d8797d372e6b7043722cce194e7a *R/digitsurface.r
 aac6a4f8a759473e8c37048e5c8e3d91 *R/findMeanSpec.r
 3500a38ed091fe0d8c66d138f216f1ab *R/fixed.angle.r
 c7f93c567b464e532952bb4f24f71883 *R/geomorph.data.frame.r
-5d953960d2f1b72d658865e2cde8e4cd *R/geomorph.support.code.r
+cbbb7070471a3e5b11c620a863339bac *R/geomorph.support.code.r
 bcb26bbd2db252d08babc01afb78a568 *R/geomorph.utils.r
 48ad1d05fbe54c70769453fd53a74d47 *R/globalIntegration.r
 f9fbb4a45b97b2223312621f678b0232 *R/gm.prcomp.R
@@ -183,7 +183,7 @@ a2dcc839c82368a3f476cb8985b19b88 *R/plotRefToTarget.r
 df3f4cc6406dc0c737ee2ff08c2a0e3d *R/read.morphologika.r
 ad570247a565a6e0d2468639b3c7245f *R/read.ply.r
 e1d1c6e3339c3f1199f60c91baf09146 *R/readland.nts.r
-2c0d7d3b400de2de3b82e739f44cdebc *R/readland.shapes.r
+46dd4fc7debdff37f55e52b6ec3e0741 *R/readland.shapes.r
 01bf2384f339206542e93c34673a8a37 *R/readland.tps.r
 1dbca61c2285445a2005917a17d571ba *R/readmulti.nts.r
 d514d2502ae9f75727f355ce442668e2 *R/rotate.coords.R

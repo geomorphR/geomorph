@@ -3108,7 +3108,7 @@ GMfromShapes1 <- function(Shapes, nCurvePts, curve.ends = NULL, continuous.curve
     cat("\nTypical number of curves:", Mode, "\n")
     cat("\nCheck these specimens (number of curves indicated)\n")
     print(curves.check[curves.check != Mode])
-    stop("\nCannot proceed until this issues is resolved")
+    stop("\nCannot proceed until this issue is resolved")
   }
     
     

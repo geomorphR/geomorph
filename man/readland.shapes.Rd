@@ -25,7 +25,7 @@ be initiated to find a curve around the eye and back to the point.  This point w
 could use this argument to indicate which curves are continuous; e.g., continuous.curve = c(2, 5) to indicate curves 2 and 5
 have starting points that are not fixed landmarks but really sliding semilandmarks, as part of a closed curve.}
 
-\item{scaled}{A logical value (stating whether warnings should be printed (TRUE as default) to indicate whether scaled landmarks and curve
+\item{scaled}{A logical value (TRUE as default) to indicate whether scaled landmarks and curve
 points should be used.  If any scales are missing, the function will default to scaled = FALSE.}
 }
 \value{
