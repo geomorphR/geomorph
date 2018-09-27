@@ -1548,6 +1548,8 @@ SS.iter <- function(fit, ind, P = NULL, RRPP = TRUE, print.progress = TRUE) {
     Ufull <- Uf[[k]]
     int <- attr(fit$Terms, "intercept")
     Unull <- qr.Q(qr(crossprod(P, rep(int, n))))
+    yh0 <- fastFit(Unull, Y, n, p)
+    r0 <- Y - yh0
     if(!RRPP) {
       fitted <- lapply(fitted, function(.) matrix(0, n, p))
       res <- lapply(res, function(.) Y)
@@ -1557,8 +1559,6 @@ SS.iter <- function(fit, ind, P = NULL, RRPP = TRUE, print.progress = TRUE) {
     }
     rrpp.args$fitted <- fitted
     rrpp.args$residuals <- res
-    yh0 <- fastFit(Unull, Y, n, p)
-    r0 <- Y - yh0
     SS <- lapply(1: perms, function(j){
       step <- j
       if(print.progress) setTxtProgressBar(pb,step)
@@ -1634,7 +1634,7 @@ SS.iter.null <- function(fit, ind, P = NULL, RRPP=TRUE, print.progress = TRUE) {
       int <- attr(fit$Terms, "intercept")
       U <- qr.Q(qr(crossprod(P, rep(int, n))))
       fitted <- crossprod(tcrossprod(U), Y)
-      res <- lapply(fitted, function(f) Y - f)
+      res <- Y - fitted
     }
     SS <- lapply(1:perms, function(j){
       x <-ind[[j]]
