@@ -60,7 +60,7 @@ fixed.angle<-function(A, art.pt=NULL, angle.pts.1, angle.pts.2,
   
   if(is.null(rot.pts)) rot.pts <- angle.pts.2
   
-   if(length(angle.pts.1) > n-1 || length(angle.pts.1) > n-1)
+   if(length(angle.pts.1) > p-1 || length(angle.pts.1) > p-1)
     stop("Too many points from which to calculate angle points")
   
    if(length(intersect(angle.pts.1, angle.pts.2) > 0))
@@ -94,15 +94,18 @@ fixed.angle<-function(A, art.pt=NULL, angle.pts.1, angle.pts.2,
     angle.pts(a, angle.pts.1, angle.pts.2, art.pt)
   })
   
+  options(warn = -1)
   angl<- sapply(1:n, function(j){
     a <- A.list[[j]]
     acos(crossprod(a$ay1/sqrt(sum(a$ay1^2)),
                    a$ay2/sqrt(sum(a$ay2^2))))
   })
+  options(warn = 0)
   
   if(any(is.na(angl)))
-    stop("There is a problem with the choice of articulated subsets.\n
-         At least one angle is flipped compared to others.")
+    stop("There is a problem with the choice of articulated subsets.
+         The vectors defining articulation angles switch positions in
+         at least one specimen.")
   
   if(degrees)  angle = angle*pi/180
   dev.angle <- (angl - mean(angl)) + angle
