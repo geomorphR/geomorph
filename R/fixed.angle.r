@@ -103,7 +103,8 @@ fixed.angle<-function(A, art.pt=NULL, angle.pts.1, angle.pts.2,
   options(warn = 0)
   
   if(any(is.na(angl)))
-    stop("There is a problem with the choice of articulated subsets.
+    stop("
+         There is a problem with the choice of articulated subsets.
          The vectors defining articulation angles switch positions in
          at least one specimen.")
   
