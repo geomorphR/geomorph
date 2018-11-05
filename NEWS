@@ -1,4 +1,5 @@
 PENDING CHANGES IN GEOMORPH VERSION 3.0.8
+    o Updated fixed.angle to allow centroids from mutiple points to be used as angle points.
     o Updated coords.subset to avoid issue with arrayspecs and naming subsetted data.
     o Changed the default for sliding to ProcD=FALSE in gpagen
     o Added Procrustes distance matrix to gpagen output
