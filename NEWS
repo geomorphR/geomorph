@@ -34,6 +34,7 @@ CHANGES IN GEOMORPH VERSION 3.0.6
     o Added catch for missing data to readland.tps, to identify negative values and recode them as NAs
     
   BUG FIXES
+    o Fixed multi-group output in phylo.modularity
     o Fixed issue with compare.evol.rates permutation method for univariate trait
     o Fixed issues with estimate.missing regression approach
     o Fixed issues with phylo.integration where Y-dataset contained a single variable
