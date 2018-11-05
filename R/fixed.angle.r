@@ -13,7 +13,7 @@
 #' @param angle.pts.1 A vector or single value specifying the angle point of one subset.  If more that one value
 #' is provided, the centroid of the landmarks described by the vector will be used; a single value
 #' indentifies a specific landmark to use.  
-#' @param angle.pts.2 A vector or single value specifying the angle point of the second subset. This could be ideally
+#' @param angle.pts.2 A vector or single value specifying the angle point of the second subset. This could be 
 #' the entire set of points of an articulated structure to be rotated.
 #' @param rot.pts A vector containing numbers specifying which landmarks are in the subset to be rotated.  If NULL,
 #' it is assumed that the points to be rotated are the same as those in angle.pts.2.

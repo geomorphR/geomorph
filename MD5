@@ -31,7 +31,7 @@ fb8fa07c58db4f8fec5120be3253c986 *man/digit.fixed.Rd
 87f53db5748b3d0e5a7805f88aecae10 *man/editTemplate.Rd
 304be7cec73ac387ebda7decb730a5ae *man/estimate.missing.Rd
 e5ea7eb05043e14bf36bb1c553de0576 *man/findMeanSpec.Rd
-10ba55b40f6140a28d5ee5fc8478e0a5 *man/fixed.angle.Rd
+a6c005260c713b4801dd00e76df73d1c *man/fixed.angle.Rd
 f9221a7b4261484793b945d7be4bbec6 *man/geomorph-package.Rd
 45d7c8b1f1bc4a804c238e8ecf89f055 *man/geomorph.data.frame.Rd
 868983a77b9ebb8a858901ba3a82c3ec *man/globalIntegration.Rd
@@ -154,7 +154,7 @@ ea70d8797d372e6b7043722cce194e7a *R/digitsurface.r
 2a875f90a59b86dead7b3b1094559556 *R/editTemplate.r
 26c330a8b236e2ceedc6b4502ac69b4c *R/estimate.missing.r
 aac6a4f8a759473e8c37048e5c8e3d91 *R/findMeanSpec.r
-ab2681b5d370b8dc549329909d67595e *R/fixed.angle.r
+859a863403eec9aefecc2b8d11995c05 *R/fixed.angle.r
 c7f93c567b464e532952bb4f24f71883 *R/geomorph.data.frame.r
 e3ae3164c290772332dbb2fbad38b5c1 *R/geomorph.support.code.r
 bcb26bbd2db252d08babc01afb78a568 *R/geomorph.utils.r
