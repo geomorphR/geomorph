@@ -97,7 +97,8 @@ phylo.modularity<-function(A,partition.gp,phy, CI=FALSE, iter=999, seed=NULL, pr
     p.val <- 1-pval(CR.rand)  #b/c smaller values more significant
     if (p.val==0){p.val<-1/(iter+1)}
     if(CI=="TRUE"){
-      CR.boot<- boot.CR(x, gps, k,iter=iter, seed=seed)
+#      CR.boot<- boot.CR(x, gps, k,iter=iter, seed=seed)
+      CR.boot<- boot.phylo.CR(x, invC, gps, k,iter=iter, seed=seed)
       CR.CI<-quantile(CR.boot, c(.025, .975)) 
     }
     if(CI=="FALSE"){
@@ -151,7 +152,8 @@ phylo.modularity<-function(A,partition.gp,phy, CI=FALSE, iter=999, seed=NULL, pr
     if(ngps > 2) CR.mat <- CR.phylo(x,invC,gps)$CR.mat else CR.mat <- NULL
     p.val <- pval(1/CR.rand)  #b/c smaller values more significant
     if(CI=="TRUE"){
-      CR.boot<- boot.CR(x, gps, k,iter=iter, seed=seed)
+#      CR.boot<- boot.CR(x, gps, k,iter=iter, seed=seed)
+      CR.boot<- boot.phylo.CR(x, invC, gps, k,iter=iter, seed=seed)
       CR.CI<-quantile(CR.boot, c(.025, .975)) 
     }
     if(CI=="FALSE"){
