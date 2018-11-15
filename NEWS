@@ -8,6 +8,7 @@ PENDING CHANGES IN GEOMORPH VERSION 3.0.8
     
 BUG FIXES
     o Added a trap for large distance matrices to gpagen, to avoid errors
+    o Fixed bug to allow for a single specimen with missing data in readland.tps
     
 CHANGES IN GEOMORPH VERSION 3.0.7
     o Computations for advanced.procD.lm now performed using RRPP package

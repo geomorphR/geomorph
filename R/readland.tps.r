@@ -131,8 +131,8 @@ readland.tps <- function (file, specID = c("None", "ID", "imageID"),
   lmo <- try(simplify2array(lmo), silent = TRUE)
   na.tab <- apply(lmo, 3, function(x){rowSums(x<0)})
   ind.nas <- which(colSums(na.tab)!=0)
-  lm.nas <- apply(na.tab[,ind.nas], 2, function(x){which(x!=0)})
-  
+  lm.nas <- apply(as.matrix(na.tab[,ind.nas]), 2, function(x){which(x!=0)})
+
   if(length(ind.nas)!=0){
     ans <- readline("Negative landmark coordinates have been identified. Should they be considered as NAs? (y/n) ")
     if(ans=="y") {
