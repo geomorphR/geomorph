@@ -7,6 +7,9 @@ CHANGES IN GEOMORPH VERSION 3.0.7
     o Fixed readland.tps whitespace delimitation
     o RRPP package now used for computations in advanced.procD.lm
 
+BUG FIXES 
+      o Fixed bug for HOS result mismatching criterion for procD.allometry
+
 CHANGES IN GEOMORPH VERSION 3.0.6
   NEW FEATURES
     o plotOutliers now allows to plot outlier configurations in order to compare their shape with the consensus
