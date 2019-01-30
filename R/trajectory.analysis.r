@@ -255,26 +255,28 @@ trajectory.analysis <- function(f1, f2=NULL, iter=999, seed=NULL, traj.pts = NUL
     means2 <- t(matrix(matrix(t(means)),p,length(means)/p))
     Y2 <- t(matrix(matrix(t(Y)),p,length(Y)/p))
     pca.means <- prcomp(means2)
-  } else pca.means <- prcomp(means)
-  pc.means <- pca.means$x
-  if(length(datClasses) == 1) {
+    pc.means <- means2 %*% pca.means$rotation
+    pc.data <- center(Y2) %*% pca.means$rotation
     col.names <- rep(colnames(pc.means), npoints)
     pc.means <- matrix(matrix(t(pc.means)),length(pc.means)/(p*npoints),
                        p*npoints, byrow=TRUE)
     colnames(pc.means) <- col.names
-    pc.data <- center(Y2)%*%pca.means$rotation
     pc.data <- matrix(matrix(t(pc.data)),length(pc.data)/(p*npoints),
                       p*npoints, byrow=TRUE)
     colnames(pc.data) <- col.names
     pc.trajectories = trajset.gps(pc.data, traj.pts)
+    
   } else {
+    
+    pca.means <- prcomp(pda$fitted)
+    pc.means <- means %*% pca.means$rotation
     pc.data <- center(Y)%*%pca.means$rotation
     pc.trajectories = trajset.int(pc.means, npoints, ngroups)
   }
   rownames(P.MD) <- rownames(P.angle) <- rownames(P.SD) <- 
-    rownames(Z.MD) <- rownames(Z.angle) <- rownames(Z.SD) <-
-    colnames(P.MD) <- colnames(P.angle) <- colnames(P.SD) <- 
-    colnames(Z.MD) <- colnames(Z.angle) <- colnames(Z.SD) <- gp.names
+  rownames(Z.MD) <- rownames(Z.angle) <- rownames(Z.SD) <-
+  colnames(P.MD) <- colnames(P.angle) <- colnames(P.SD) <- 
+  colnames(Z.MD) <- colnames(Z.angle) <- colnames(Z.SD) <- gp.names
   out <- list(aov.table = pda$aov.table, 
               means = means, pc.means =pc.means, pc.data = pc.data,
               pc.summary = summary(pca.means),
