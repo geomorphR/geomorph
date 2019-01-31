@@ -255,7 +255,7 @@ trajectory.analysis <- function(f1, f2=NULL, iter=999, seed=NULL, traj.pts = NUL
     means2 <- t(matrix(matrix(t(means)),p,length(means)/p))
     Y2 <- t(matrix(matrix(t(Y)),p,length(Y)/p))
     pca.means <- prcomp(means2)
-    pc.means <- means2 %*% pca.means$rotation
+    pc.means <- center(means2) %*% pca.means$rotation
     pc.data <- center(Y2) %*% pca.means$rotation
     col.names <- rep(colnames(pc.means), npoints)
     pc.means <- matrix(matrix(t(pc.means)),length(pc.means)/(p*npoints),
@@ -269,8 +269,10 @@ trajectory.analysis <- function(f1, f2=NULL, iter=999, seed=NULL, traj.pts = NUL
   } else {
     
     pca.means <- prcomp(pda$fitted)
-    pc.means <- means %*% pca.means$rotation
-    pc.data <- center(Y)%*%pca.means$rotation
+    p.cent <- matrix(colMeans(pda$fitted), nrow(means), 
+                     ncol(pda$fitted), byrow = TRUE)
+    pc.means <- (means - p.cent) %*% pca.means$rotation
+    pc.data <- center(Y) %*% pca.means$rotation
     pc.trajectories = trajset.int(pc.means, npoints, ngroups)
   }
   rownames(P.MD) <- rownames(P.angle) <- rownames(P.SD) <- 
@@ -278,7 +280,7 @@ trajectory.analysis <- function(f1, f2=NULL, iter=999, seed=NULL, traj.pts = NUL
   colnames(P.MD) <- colnames(P.angle) <- colnames(P.SD) <- 
   colnames(Z.MD) <- colnames(Z.angle) <- colnames(Z.SD) <- gp.names
   out <- list(aov.table = pda$aov.table, 
-              means = means, pc.means =pc.means, pc.data = pc.data,
+              means = means, pc.means = pc.means, pc.data = pc.data,
               pc.summary = summary(pca.means),
               pc.trajectories = pc.trajectories,
               random.means = pta$means,
