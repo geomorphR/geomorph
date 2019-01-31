@@ -7,6 +7,7 @@ PENDING CHANGES IN GEOMORPH VERSION 3.0.8
     o Added partial disparity option to morphol.disparity
     
 BUG FIXES
+    o Updated trajectory.analysis to properly center mean values for PC plotting.
     o Added a trap for large distance matrices to gpagen, to avoid errors
     o Fixed bug to allow for a single specimen with missing data in readland.tps
     o Fixed bug for HOS result mismatching criterion for procD.allometry
