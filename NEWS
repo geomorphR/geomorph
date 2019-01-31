@@ -1,5 +1,6 @@
 GITHUB UPDATES
     o Updated coords.subset to avoid issue with arrayspecs and naming subsetted data.
+    o Updated trajectory.analysis to properly center mean values for PC plotting.
 
 CHANGES IN GEOMORPH VERSION 3.0.7
     o Modified output in bilat.symmetry so output shapes retain order in 'ind' factor
