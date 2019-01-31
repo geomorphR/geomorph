@@ -4,10 +4,10 @@
 \alias{advanced.procD.lm}
 \title{Procrustes ANOVA and pairwise tests for shape data, using complex linear models}
 \usage{
-advanced.procD.lm(f1, f2, groups = NULL, slope = NULL,
-  angle.type = c("r", "deg", "rad"), phy = NULL, Cov = NULL,
-  pc.shape = FALSE, effect.type = c("F", "SS", "Rsq"), iter = 999,
-  seed = NULL, print.progress = TRUE, data = NULL, ...)
+advanced.procD.lm(f1, f2, groups = NULL, slope = NULL, angle.type = c("r",
+  "deg", "rad"), phy = NULL, Cov = NULL, pc.shape = FALSE,
+  effect.type = c("F", "SS", "Rsq"), iter = 999, seed = NULL,
+  print.progress = TRUE, data = NULL, ...)
 }
 \arguments{
 \item{f1}{A formula for a linear model, containing the response matrix (e.g., y ~ x1 + x2)}

@@ -4,9 +4,9 @@
 \alias{procD.lm}
 \title{Procrustes ANOVA/regression for Procrustes shape variables}
 \usage{
-procD.lm(f1, iter = 999, seed = NULL, RRPP = TRUE,
-  effect.type = c("F", "SS", "cohen"), int.first = FALSE, Cov = NULL,
-  data = NULL, print.progress = TRUE, ...)
+procD.lm(f1, iter = 999, seed = NULL, RRPP = TRUE, effect.type = c("F",
+  "SS", "cohen"), int.first = FALSE, Cov = NULL, data = NULL,
+  print.progress = TRUE, ...)
 }
 \arguments{
 \item{f1}{A formula for the linear model (e.g., y~x1+x2)}

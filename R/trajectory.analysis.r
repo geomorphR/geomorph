@@ -252,18 +252,20 @@ trajectory.analysis <- function(f1, f2=NULL, iter=999, seed=NULL, traj.pts = NUL
   means <- pta$means[[1]]
   if(length(datClasses) == 1) {
     p <- NCOL(means)/npoints
-    means2 <- t(matrix(matrix(t(means)),p,length(means)/p))
+    p.fitted <- matrix(pda$fitted, length(pda$fitted)/p, p, byrow = TRUE)
+    pca.means <- prcomp(p.fitted)
+    p.cent <- matrix(colMeans(p.fitted), nrow(p.fitted), 
+                     ncol(p.fitted), byrow = TRUE)
     Y2 <- t(matrix(matrix(t(Y)),p,length(Y)/p))
-    pca.means <- prcomp(means2)
-    pc.means <- center(means2) %*% pca.means$rotation
     pc.data <- center(Y2) %*% pca.means$rotation
+    means2 <- t(matrix(matrix(t(means)),p,length(means)/p))
+    pc.means <- (means2 - p.cent[1:nrow(means2), ]) %*% pca.means$rotation
     col.names <- rep(colnames(pc.means), npoints)
-    pc.means <- matrix(matrix(t(pc.means)),length(pc.means)/(p*npoints),
-                       p*npoints, byrow=TRUE)
-    colnames(pc.means) <- col.names
     pc.data <- matrix(matrix(t(pc.data)),length(pc.data)/(p*npoints),
                       p*npoints, byrow=TRUE)
-    colnames(pc.data) <- col.names
+    pc.means <- matrix(matrix(t(pc.means)),length(pc.means)/(p*npoints),
+                       p*npoints, byrow=TRUE)
+    colnames(pc.data) <- colnames(pc.means) <- col.names
     pc.trajectories = trajset.gps(pc.data, traj.pts)
     
   } else {

@@ -4,9 +4,9 @@
 \alias{plot.procD.allometry}
 \title{Plot Function for geomorph}
 \usage{
-\method{plot}{procD.allometry}(x, method = c("CAC", "RegScore",
-  "PredLine"), warpgrids = TRUE, label = NULL, gp.label = FALSE,
-  mesh = NULL, shapes = FALSE, ...)
+\method{plot}{procD.allometry}(x, method = c("CAC", "RegScore", "PredLine"),
+  warpgrids = TRUE, label = NULL, gp.label = FALSE, mesh = NULL,
+  shapes = FALSE, ...)
 }
 \arguments{
 \item{x}{plot object (from \code{\link{procD.allometry}})}

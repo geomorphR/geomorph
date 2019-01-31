@@ -5,8 +5,8 @@
 \title{Plot Function for geomorph}
 \usage{
 \method{plot}{gm.prcomp}(x, axis1 = 1, axis2 = 2, phylo = FALSE,
-  phylo.par = list(edge.color = "black", edge.width = 1, edge.lty = 1,
-  node.bg = "black", node.pch = 21, node.cex = 1), ...)
+  phylo.par = list(edge.color = "black", edge.width = 1, edge.lty = 1, node.bg
+  = "black", node.pch = 21, node.cex = 1), ...)
 }
 \arguments{
 \item{x}{An object of class \code{\link{gm.prcomp}}}
