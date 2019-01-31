@@ -1208,7 +1208,7 @@ trajplot.by.groups<-function(Data, TM, groups, group.cols = NULL,
   n <- length(TM); tp <- nrow(TM[[1]]); p <- ncol(TM[[1]])
   if(length(pattern) != 3) stop("Point sequence color pattern must contain three values")
   Data2 <- t(matrix(matrix(t(Data)),p,))
-  pmax <- max(Data[,1]); pmin <- min(Data2[,1])
+  pmax <- max(Data2[,1]); pmin <- min(Data2[,1])
   plot(Data2[,1:2], type="n",
        xlim = c(2*pmin, pmax),
        xlab="PC I", ylab="PC II",
