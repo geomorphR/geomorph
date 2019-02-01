@@ -260,8 +260,9 @@ bilat.symmetry<-function(A, ind=NULL, side=NULL, replicate=NULL, object.sym=FALS
   }
   # build shape components for output
   X.ind <- model.matrix(~ind + 0, data = as.data.frame(dat.shape[-1]))
-  ind.names <- colnames(X.ind)
   symm.component <- arrayspecs(coef(lm.fit(X.ind, Y)),p,k)
+  ind.names <- substr(dimnames(symm.component)[[3]], start=4,
+                      stop=nchar(dimnames(symm.component)[[3]]))
   dimnames(symm.component)[[3]] <- ind.names
   X.side <- model.matrix(~(side:ind) + 0, data = as.data.frame(dat.shape[-1]))
   avg.side.symm <- coef(lm.fit(X.side, Y))
