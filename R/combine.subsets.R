@@ -156,7 +156,11 @@ combine.subsets <- function(..., gpa = TRUE, CS.sets = NULL){
 	CS.tot <- as.matrix(simplify2array(all.CS))
 	CS.part <- CS.tot/rowSums(CS.tot)
 	coords.part <- lapply(1:g, function(j){
-	  all.coords[[j]]*CS.part[,j]
+	  ac <- all.coords[[j]]
+	  sc <- CS.part[,j]
+	  cp <- array(NA, dim(ac))
+	  for(i in 1:n) cp[,,i] <- ac[,,i]*sc[i]
+	  cp
 	})
 	new.coords <- array(0, c(sum(p),k,n))
 	if(g > 1) {
