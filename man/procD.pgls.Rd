@@ -5,7 +5,8 @@
 \title{Phylogenetic ANOVA/regression for Procrustes shape variables}
 \usage{
 procD.pgls(f1, phy, iter = 999, seed = NULL, int.first = FALSE,
-  effect.type = c("F", "cohen"), data = NULL, print.progress = TRUE, ...)
+  effect.type = c("F", "cohen"), data = NULL, print.progress = TRUE,
+  ...)
 }
 \arguments{
 \item{f1}{A formula for the linear model (e.g., y ~ x1 + x2)}

@@ -4,7 +4,8 @@
 \alias{define.sliders}
 \title{Select points to "slide" along curves}
 \usage{
-define.sliders(landmarks, nsliders, surfsliders = NULL, write.file = TRUE)
+define.sliders(landmarks, nsliders, surfsliders = NULL,
+  write.file = TRUE)
 }
 \arguments{
 \item{landmarks}{A matrix containing 2D or 3D landmark coordinates of landmarks and semilandmarks, OR A vector containing a sequence of numbers corresponding to the landmarks in the order they appear along the curve (for AUTO mode)}

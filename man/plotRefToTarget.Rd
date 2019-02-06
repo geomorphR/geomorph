@@ -4,9 +4,10 @@
 \alias{plotRefToTarget}
 \title{Plot shape differences between a reference and target specimen}
 \usage{
-plotRefToTarget(M1, M2, mesh = NULL, outline = NULL, method = c("TPS",
-  "vector", "points", "surface"), mag = 1, links = NULL, label = FALSE,
-  axes = FALSE, gridPars = NULL, useRefPts = FALSE, ...)
+plotRefToTarget(M1, M2, mesh = NULL, outline = NULL,
+  method = c("TPS", "vector", "points", "surface"), mag = 1,
+  links = NULL, label = FALSE, axes = FALSE, gridPars = NULL,
+  useRefPts = FALSE, ...)
 }
 \arguments{
 \item{M1}{Matrix of landmark coordinates for the first (reference) specimen}

@@ -1432,30 +1432,16 @@ plot.mshape <- function(x, links=NULL,...){
 #' @keywords utilities
 print.gm.prcomp <- function (x, ...) {
   sum.tab <- function(x) {
-    if(!"phyloPCA"%in%class(x)){
-      y <- rbind(x[["d"]], x[["d"]]/sum(x[["d"]]), cumsum(x[["d"]]/sum(x[["d"]])))
-    } else {
-      var.PCs <- apply(x$x, 2, var)
-      y <- rbind(x[["d"]], var.PCs/sum(var.PCs), cumsum(var.PCs/sum(var.PCs)))
-    }
+    var.PCs <- apply(x$x, 2, var)
+    y <- rbind(x[["d"]], var.PCs/sum(var.PCs), cumsum(var.PCs/sum(var.PCs)))
+    
     colnames(y) <- paste("PC", 1:ncol(y), sep="")
     rownames(y) <- c("Eigenvalues", "Proportion of variance", "Cumulative Proportion")
     y
   }
-  if(!"list"%in%class(x)){
     tab.list <- sum.tab(x)
     cat("Importance of components:", "\n")
     print(tab.list); cat("\n")
-  } else {
-    meths <- which(lapply(x, is.null)==F)
-    cat("Methods applied: "); cat(names(meths), sep=", ", append = T); cat("\n")
-    tab.list <- lapply(x[meths], sum.tab)
-    lapply(1:length(tab.list), function(x){
-      cat("Method:", names(tab.list)[x], "\n")
-      cat("Importance of components:", "\n")
-      print(tab.list[[x]]); cat("\n")
-      })
-  }
     invisible(tab.list)
 }
 
@@ -1495,9 +1481,6 @@ summary.gm.prcomp <- function (object, ...) {
 plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, phylo = FALSE, 
                            phylo.par = list(edge.color = "black", edge.width = 1, edge.lty = 1,
                                             node.bg = "black", node.pch = 21, node.cex = 1), ...) {
-  if("list"%in%class(x)){
-    stop("You are trying to plot multiple results, please choose a specific PCA result.")
-  }
   options(warn = -1)
   pcdata <- x$x[, c(axis1, axis2)]
   dots <- list(...)
@@ -1508,10 +1491,7 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, phylo = FALSE,
     plot.window(1.05*range(pcdata[,1]), 1.05*range(pcdata[,2]), asp=1,...)
     plot.xy(xy.coords(pcdata), type="p",...)
   } else {
-    if(as.character(as.list(match.call())$x)[3] %in% c("rawPCA", "wPCA")) {
-      stop("PCA method used does not allow the projection of a phylogeny.")
-    }
-    phy <- attributes(get(as.character(as.list(match.call())$x)[2]))$phy
+    phy <- attributes(x)$phy
     pcdata <- rbind(pcdata, x$anc.x[,c(axis1, axis2)])
     plot.new()
     plot.window(1.05*range(pcdata[,1]), 1.05*range(pcdata[,2]), log = "", asp=1, ...)
@@ -1533,6 +1513,7 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, phylo = FALSE,
   out <- list(points = pcdata,   
               call = match.call())
   class(out) <- "plot.gm.prcomp"
+  attributes(out)$A <- attributes(x)$A
   invisible(out)
   
 }

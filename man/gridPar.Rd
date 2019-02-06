@@ -4,12 +4,13 @@
 \alias{gridPar}
 \title{Set up parameters for grids, points, and links in plotRefToTarget}
 \usage{
-gridPar(pt.bg = "gray", pt.size = 1.5, link.col = "gray", link.lwd = 2,
-  link.lty = 1, out.col = "gray", out.cex = 0.1, tar.pt.bg = "black",
-  tar.pt.size = 1, tar.link.col = "black", tar.link.lwd = 2,
-  tar.link.lty = 1, tar.out.col = "black", tar.out.cex = 0.1,
-  n.col.cell = 20, grid.col = "black", grid.lwd = 1, grid.lty = 1,
-  txt.adj = 0.5, txt.pos = 1, txt.cex = 0.8, txt.col = "black")
+gridPar(pt.bg = "gray", pt.size = 1.5, link.col = "gray",
+  link.lwd = 2, link.lty = 1, out.col = "gray", out.cex = 0.1,
+  tar.pt.bg = "black", tar.pt.size = 1, tar.link.col = "black",
+  tar.link.lwd = 2, tar.link.lty = 1, tar.out.col = "black",
+  tar.out.cex = 0.1, n.col.cell = 20, grid.col = "black",
+  grid.lwd = 1, grid.lty = 1, txt.adj = 0.5, txt.pos = 1,
+  txt.cex = 0.8, txt.col = "black")
 }
 \arguments{
 \item{pt.bg}{Background color of reference configuration points (single value or vector of values)}

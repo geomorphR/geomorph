@@ -42,9 +42,9 @@ data(plethspecies)
 Y.gpa <- gpagen(plethspecies$land)
 gps <- as.factor(c(rep("gp1", 5), rep("gp2", 4))) # Two random groups
 pleth.phylo <- gm.prcomp(Y.gpa$coords, plethspecies$phy)
-pleth.phylomorphospace <- plot(pleth.phylo$phylomorphospace, phylo = TRUE, cex = 2, pch = 22, bg = gps, 
-                               phylo.par = list(edge.color = "blue", edge.width = 2, edge.lty = 2,
-                                                node.pch = 22, node.bg = "black"))
+pleth.phylomorphospace <- plot(pleth.phylo$phylomorphospace, phylo = TRUE, cex = 2, pch = 22, 
+bg = gps, phylo.par = list(edge.color = "blue", edge.width = 2, edge.lty = 2,
+node.pch = 22, node.bg = "black"))
 links.species <- plethodon$links[-11,]
 links.species[11, 1] <- 11
 picknplot.shape(pleth.phylomorphospace, method = "points", links = links.species)

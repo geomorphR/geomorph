@@ -4,14 +4,12 @@
 \alias{gm.prcomp}
 \title{Principal components analysis of shape data}
 \usage{
-gm.prcomp(A, phy = NULL, Cov = NULL, ...)
+gm.prcomp(A, phy = NULL, ...)
 }
 \arguments{
 \item{A}{A 3D array (p x k x n) containing Procrustes shape variables for a set of aligned specimens}
 
 \item{phy}{An optional phylogenetic tree of class phylo - see \code{\link{read.tree}} in library ape}
-
-\item{Cov}{An optional covariance matrix for weighting. See also details.}
 
 \item{...}{Other arguments passed to \code{\link{scale}}}
 }
@@ -26,26 +24,13 @@ Each of these lists includes the following components:
 \item{ancestors}{The matrix of estimated ancestral shapes, if a phylogeny is used.}
 }
 \description{
-Function performs raw or weighted PCA on Procrustes shape coordinates
+Function performs PCA on Procrustes shape coordinates
 }
 \details{
-The function performs a principal components analysis of shape variation, with the possibility
-of weighing the analysis using a phylogenetic tree, or a variance-covariance matrix, 
-to incorporate the expected covariance among dependent observations 
-(e.g. due to spatial autocorrelation). At present combined analysis allowing the use of both 
-a phylogeny and another covariance matrix is not implemented.
-Several complementary types of analyses are available when using a phylogeny, namely:
-     1) phyloPCA: A phylogenetic PCA, where a phylogenetic transformation is applied to take expected
-     covariance due to shared phylogenetic history into account (sensu Revell 2009).
-     2) phylomorphospace: A non-weighted PCA of the raw data, followed by a projection to PCA space of 
-     the estimated ancestral shape values for the nodes of the phylogeny.
-     3) alldataPCA: A non-weighted PCA of both the tip and estimated ancestor shapes together. This is
-     a legacy version of the operations previously included in plotGMPhyloMorphoSpace.
-
-WARNING: Note that in the case of a phylogenetic PCA, the sum of eigenvalues does not correspond to the
-total variance of the data, or the variance of PC scores. Also, note that due to the phylogenetic centering
-and weighting applied, this method distorts shape space. For more details on phylogenetic PCA and its
-properties, users are strongly encouraged to consult Polly et al. 2013.
+The function performs a principal components analysis of shape variation.
+It also allows a phylomorphospace approach, where the user can provide a phylogeny
+and obtain a graph with estimated ancestral shape values and the tree projected
+into PCA space.
 
 PLOTTING: Contrary to previous geomorph implementations, gm.prcomp does not produce plots. 
 For plotting options of gm.prcomp class objects combine \code{\link{plot.gm.prcomp}} and 
@@ -57,55 +42,37 @@ components of the list returned by gm.prcomp.
  data(plethspecies) 
  Y.gpa <- gpagen(plethspecies$land)    #GPA-alignment
  
- ### PCA on raw data
+ ### PCA 
  pleth.raw <- gm.prcomp(Y.gpa$coords)
  summary(pleth.raw)
  
- ### PCA with phylogeny
+ ### PCA with phylogeny (result is same as above, but with additional components)
  pleth.phylo <- gm.prcomp(Y.gpa$coords, phy = plethspecies$phy)
  summary(pleth.phylo)
- summary(pleth.phylo$phylomorphospace)
  
  #### Plotting
- plot(pleth.raw$rawPCA)
+ plot(pleth.raw)
  gps <- as.factor(c(rep("gp1", 5), rep("gp2", 4))) # Two random groups
  par(mar=c(2, 2, 2, 2))
- plot(pleth.raw$rawPCA, pch=22, cex = 1.5, bg = gps) # Modify options as desired
+ plot(pleth.raw, pch=22, cex = 1.5, bg = gps) # Modify options as desired
  #  Add things as desired using standard R plotting
  text(par()$usr[1], 0.1*par()$usr[3], labels = "PC1 - 45.64\%", pos = 4, font = 2)
  text(0, 0.95*par()$usr[4], labels = "PC2 - 18.80\%", pos = 4, font = 2)
  legend("topleft", pch=22, pt.bg = unique(gps), legend = levels(gps))
  
- ### Plotting including a phylogeny
- plot(pleth.phylo$phyloPCA, phylo = TRUE, cex = 1.5, pch = 22, bg = gps, xlim = c(-0.05, 0.015),
-      phylo.par = list(edge.color = "grey", edge.width = 2,
-                       node.bg = "black", node.pch = 22, node.cex = 0.5))
- text(pleth.phylo$phyloPCA$x, labels = labels(pleth.phylo$phyloPCA$x)[[1]],
+ ### Phylomorphospace plot
+ plot(pleth.phylo, pch=21, bg=1:nrow(pleth.phylo$x), phylo = TRUE,
+      phylo.par = list(edge.color="grey", node.cex=0)); title(main="phylomorphospace")
+ text(pleth.phylo$x, labels = labels(pleth.phylo$x)[[1]],
       pos = 2, font = 4) 
- text(pleth.phylo$phyloPCA$anc.x, labels = 1:nrow(pleth.phylo$phyloPCA$anc.x),
+ text(pleth.phylo$anc.x, labels = 1:nrow(pleth.phylo$anc.x),
       adj = c(-0.1, -0.1), font = 2) 
  
  ### Visualize shape variation using picknplot.shape 
  # For detailed options, see the picknplot help file
- picknplot.shape(plot(pleth.phylo$phyloPCA))
+ picknplot.shape(plot(pleth.phylo))
  
- ### All methods 
- layout(matrix(1:4, nrow=2, byrow=TRUE))
- plot(pleth.phylo$rawPCA, pch=21, bg=1:nrow(pleth.phylo$rawPCA$x)); title(main="rawPCA")
- plot(pleth.phylo$phyloPCA, pch=21, bg=1:nrow(pleth.phylo$rawPCA$x), phylo = TRUE,
-      phylo.par = list(edge.color="grey", node.cex=0)); title(main="phyloPCA")
- plot(pleth.phylo$phylomorphospace, pch=21, bg=1:nrow(pleth.phylo$rawPCA$x), phylo = TRUE,
-      phylo.par = list(edge.color="grey", node.cex=0)); title(main="phylomorphospace")
- plot(pleth.phylo$alldataPCA, pch=21, bg=1:nrow(pleth.phylo$rawPCA$x), phylo = TRUE,
-      phylo.par = list(edge.color="grey", node.cex=0)); title(main="alldataPCA")
 
-
-}
-\references{
-Revell, L.J. (2009) Size-correction and principal components for interspecific comparative studies. 
-Evolution, 63, 3258-3268.
-Polly, P.D.P. et al. (2013) Phylogenetic principal components analysis and geometric morphometrics, 
-Hystrix, the Italian Journal of Mammalogy, 24:33-41.
 }
 \seealso{
 \code{\link{plot.gm.prcomp}}
