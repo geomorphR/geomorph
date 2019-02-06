@@ -1002,8 +1002,16 @@ pcoa <- function(D){
   if(class(D) != "dist") stop("function only works with distance matrices")
   cmd <- cmdscale(D, k=attr(D, "Size") -1, eig=TRUE)
   options(warn=0)
-  p <- which(zapsmall(abs(cmd$eig)) > 0)
-  Yp <- cmd$points[,p]
+  d <- cmd$eig
+  min.d <- min(d)
+  if(min.d < 0) {
+    options(warn=-1)
+    cmd.c <- cmdscale(D, k=attr(D, "Size") -1, eig=TRUE, add= TRUE)
+    options(warn=0)
+    d <- cmd.c$eig
+  } else cmd.c <- cmd
+  p <- length(cmd.c$eig[zapsmall(d) > 0])
+  Yp <- cmd.c$points[,1:p]
   Yp
 }
 
