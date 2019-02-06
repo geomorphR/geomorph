@@ -1,4 +1,5 @@
 GITHUB UPDATES
+    o Fixed bilat.symmetry asymm shape issue for replicates.
     o Fixed combine.subsets scaling issue.
     o Updated coords.subset to avoid issue with arrayspecs and naming subsetted data.
     o Updated trajectory.analysis to properly center mean values for PC plotting.
