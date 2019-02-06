@@ -14,7 +14,8 @@
 #'  As input, the function receives either A 3D array (p x k x n) containing raw landmarks (requiring 
 #'  GPA to be performed) or a gpagen object (if GPA has been previously performed) or a geomorphShapes object.
 #'  If one wishes to incorporate semilandmarks, GPA can either be performed first using gpagen, or within bilat.symmetry
-#'  by passing adequate GPA arguments (i.e. curves, surfaces, ProcD etc, see \code{\link{gpagen}}. 
+#'  by passing adequate GPA arguments (i.e. curves, surfaces, ProcD etc, see \code{\link{gpagen}}. If a geomorphShapes
+#'  object is provided, semilandmarks are automatically identified and slided during GPA.
 #'  For "object.sym = FALSE, landmarks should be of dimension (p x k x 2n), as each specimen is 
 #'  represented by both left and right configurations.
 #'    
@@ -51,9 +52,8 @@
 #'  
 #'  The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{bilat.symmetry}}.
 #'
-#' @param A Either A 3D array (p x k x n) containing raw landmarks (requiring GPA to be performed) or a gpagen object (if GPA has been previously performed).  If one 
-#' wishes to incorporate semilandmarks, GPA should be performed first using \code{\link{gpagen}}.  Otherwise, bilat.symmetry can perform the initial GPA, assuming all landmarks
-#' are fixed.  For "object.sym = FALSE, landmarks should be of dimension (p x k x 2n), as each specimen is represented by both left and right configurations.
+#' @param A One of either A 3D array (p x k x n) containing raw landmarks (requiring GPA to be performed) or a gpagen object (if GPA has been previously performed) or a
+#' geomorphShapes object (requiring GPA to be performed).  Any gpagen argument should work within bilat.symmetry.
 #' @param ind A vector containing labels for each individual. For matching symmetry, the matched pairs receive the same 
 #' label (replicates also receive the same label).
 #' @param side An optional vector (for matching symmetry) designating which object belongs to which 'side-group'
@@ -166,7 +166,7 @@ bilat.symmetry<-function(A, ind=NULL, side=NULL, replicate=NULL, object.sym=FALS
           size <- A$Csize
           A <- A$coords
         }
-      }
+    }
   
   if(is.null(data)){
     if(is.null(ind)) stop("Individuals not specified.") else ind <- factor(ind, levels = unique(ind))
@@ -176,7 +176,7 @@ bilat.symmetry<-function(A, ind=NULL, side=NULL, replicate=NULL, object.sym=FALS
     ind.match <- match(names(data), "ind")
     if(all(is.na(ind.match))) stop("Individuals not specified in geomorph data frame")
     ind <- factor(data[[which(!is.na(ind.match))]])
-    ind <- factor(ind, levels = unique(ind))  
+       ind <- factor(ind, levels = unique(ind))  
     side.match <- match(names(data), "side")
     if(all(is.na(side.match))) side <- NULL else 
       side <- factor(data[[which(!is.na(side.match))]])
@@ -184,10 +184,10 @@ bilat.symmetry<-function(A, ind=NULL, side=NULL, replicate=NULL, object.sym=FALS
     if(all(is.na(replicate.match))) replicate <- NULL else 
       replicate <- factor(data[[which(!is.na(replicate.match))]])
   }
-  
+    
   n<-dim(A)[3]; k<-dim(A)[2]; p<-dim(A)[1]; nind<-nlevels(ind); spec.names<-dimnames(A)[[3]]
-  if(object.sym == FALSE && is.null(side)) stop("Sides not specified.") 
-  if(object.sym == TRUE){
+  if(!object.sym && is.null(side)) stop("Sides not specified.") 
+  if(object.sym){
     if(is.null(land.pairs)) {stop("Landmark pairs not specified.")} 
     npairs <- nrow(land.pairs); nl <- p-2*npairs
     A2 <- A
@@ -212,8 +212,8 @@ bilat.symmetry<-function(A, ind=NULL, side=NULL, replicate=NULL, object.sym=FALS
   }
   if(print.progress) cat("\nShape Analysis")
   PSh <- procD.lm(form.shape, data = dat.shape, RRPP = RRPP, 
-            seed = seed, iter= iter, print.progress = print.progress, 
-            effect.type = "F")
+           seed = seed, iter= iter, print.progress = print.progress, 
+           effect.type = "F")
   random.shape.F <- PSh$random.F
   if(length(form.names) > 4) {
     SS <- PSh$random.SS
@@ -230,7 +230,7 @@ bilat.symmetry<-function(A, ind=NULL, side=NULL, replicate=NULL, object.sym=FALS
   rownames(PSh$aov.table) <- form.names
   shape.anova <- PSh$aov.table
   
-  if(object.sym==FALSE){  
+  if(!object.sym){  
     if(!is.null(replicate)) {
       form.size <- size ~ ind + side + ind/side 
       dat.size <- geomorph.data.frame(size = size, ind = ind, side = side, replicate = replicate)
@@ -254,40 +254,27 @@ bilat.symmetry<-function(A, ind=NULL, side=NULL, replicate=NULL, object.sym=FALS
       newZ <- apply(log(random.size.F + 0.000001), 1, effect.size)
       PSz$aov.table$F[1:3] <- random.size.F[1:3, 1]
       PSz$aov.table$Z[1:3] <- newZ[1:3]
-      rownames(PSz$aov.table) <- form.names
     }
+    rownames(PSz$aov.table) <- form.names
     size.anova <- PSz$aov.table
   }
   # build shape components for output
-  if(object.sym==FALSE){
-    X.ind <- model.matrix(~ind + 0, data = as.data.frame(dat.shape[-1]))
-    symm.component <- arrayspecs(coef(lm.fit(X.ind, Y)),p,k)
-    dimnames(symm.component)[[3]] <- substr(dimnames(symm.component)[[3]], start=4,
-               stop=nchar(dimnames(symm.component)[[3]]))
-    X.side <- model.matrix(~(side:ind) + 0, data = as.data.frame(dat.shape[-1]))
-    avg.side.symm <- coef(lm.fit(X.side, Y))
-    n.ind <- nlevels(ind)
-    n.side <- nlevels(side)
-    indsq <- seq(n.side, (n.ind*n.side), n.side)
-    asymm.component <- avg.side.symm[indsq,] - avg.side.symm[-indsq,]
-    mn.shape <- mshape(A)
-    asymm.component<-simplify2array(lapply(1:n.ind, function(j) 
-    {t(matrix(asymm.component[j,],k,p)) + mn.shape}))
-    dimnames(asymm.component)[[3]] <- dimnames(symm.component)[[3]]
-    
-  }
-  if(object.sym==TRUE){
-    X.ind <- model.matrix(~ind + 0, data = as.data.frame(dat.shape[-1]))
-    symm.component <- arrayspecs(coef(lm.fit(X.ind, Y)),p,k)
-    dimnames(symm.component)[[3]] <- substr(dimnames(symm.component)[[3]], start=4,
-                stop=nchar(dimnames(symm.component)[[3]]))
-    mn.shape<-mshape(A)
-    n.ind <- nlevels(ind)
-    asymm.component <-simplify2array(lapply(1:n.ind, function(j) 
-    {mn.shape + A[,,j] - symm.component[,,j]}))
-    dimnames(asymm.component)[[3]] <- dimnames(symm.component)[[3]] 
-  }
-  X.side <- model.matrix(~side + 0, data = as.data.frame(dat.shape[-1]))
+  X.ind <- model.matrix(~ind + 0, data = as.data.frame(dat.shape[-1]))
+  symm.component <- arrayspecs(coef(lm.fit(X.ind, Y)),p,k)
+  ind.names <- substr(dimnames(symm.component)[[3]], start=4,
+                      stop=nchar(dimnames(symm.component)[[3]]))
+  dimnames(symm.component)[[3]] <- ind.names
+  X.side <- model.matrix(~(side:ind) + 0, data = as.data.frame(dat.shape[-1]))
+  avg.side.symm <- coef(lm.fit(X.side, Y))
+  n.ind <- nlevels(ind)
+  n.side <- nlevels(side)
+  indsq <- seq(n.side, (n.ind*n.side), n.side)
+  asymm.component <- avg.side.symm[indsq,] - avg.side.symm[-indsq,]
+  mn.shape <- mshape(A)
+  asymm.component<-simplify2array(lapply(1:n.ind, function(j) 
+  {t(matrix(asymm.component[j,],k,p)) + mn.shape}))
+  dimnames(asymm.component)[[3]] <- ind.names
+  
   DA.mns <- arrayspecs(coef(.lm.fit(X.side, Y)),p,k)
   X.ind.side <- model.matrix(~(side:ind) + 0, data = as.data.frame(dat.shape[-1]))
   ind.mns <- coef(.lm.fit(X.ind.side, Y))
@@ -299,28 +286,22 @@ bilat.symmetry<-function(A, ind=NULL, side=NULL, replicate=NULL, object.sym=FALS
   mn.shape<-mshape(A)
   FA.component<-simplify2array(lapply(1:n.ind, function(j) 
   {t(matrix(FA.component[j,],k,p)) + mn.shape - mn.DA}))
-  dimnames(FA.component)[[3]] <- dimnames(symm.component)[[3]] 
-
-  if(object.sym==FALSE){
-    out<-list(size.anova = size.anova, shape.anova = shape.anova, symm.shape = symm.component,
-              asymm.shape = asymm.component, DA.component = DA.mns, FA.component = FA.component,
-              data.type = ifelse(object.sym==TRUE,"Object", "Matching"),
-              FA.mns = FA.component, DA.mns = DA.mns,
-              permutations = iter+1,
-              random.shape.F = random.shape.F, random.size.F = random.size.F,
-              perm.method = ifelse(RRPP==TRUE,"RRPP", "Raw"),
-              procD.lm.shape = PSh, procD.lm.size = PSz,
-              call=match.call()) }
-  if(object.sym==TRUE){
-    out<-list(size.anova = NULL, shape.anova = shape.anova, symm.shape = symm.component,
-              asymm.shape = asymm.component, DA.component = DA.mns, FA.component = FA.component,
-              data.type = ifelse(object.sym==TRUE,"Object", "Matching"),
-              FA.mns = FA.component, DA.mns = DA.mns,
-              permutations = iter+1,
-              random.shape.F = random.shape.F, random.size.F = NULL,
-              perm.method = ifelse(RRPP==TRUE,"RRPP", "Raw"),
-              procD.lm.shape = PSh,
-              call=match.call()) }
+  dimnames(FA.component)[[3]] <- ind.names 
+  
+  out<-list(shape.anova = shape.anova, symm.shape = symm.component,
+            asymm.shape = asymm.component, DA.component = DA.mns, FA.component = FA.component,
+            data.type = ifelse(object.sym==TRUE,"Object", "Matching"),
+            FA.mns = FA.component, DA.mns = DA.mns,
+            permutations = iter+1,
+            random.shape.F = random.shape.F, 
+            perm.method = ifelse(RRPP==TRUE,"RRPP", "Raw"),
+            procD.lm.shape = PSh)
+  if(!object.sym) {
+    out$size.anova = size.anova
+    out$procD.lm.size = PSz
+    out$random.size.F = random.size.F
+  }
+  out$call <- match.call()
   class(out) <- "bilat.symmetry"
   out  
 }
