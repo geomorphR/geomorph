@@ -11,7 +11,8 @@ CHANGES IN GEOMORPH VERSION 3.0.7
     o RRPP package now used for computations in advanced.procD.lm
 
 BUG FIXES 
-      o Fixed bug for HOS result mismatching criterion for procD.allometry
+    o Fixed bug in phylo.modularity call when groups > 2
+    o Fixed bug for HOS result mismatching criterion for procD.allometry
 
 CHANGES IN GEOMORPH VERSION 3.0.6
   NEW FEATURES

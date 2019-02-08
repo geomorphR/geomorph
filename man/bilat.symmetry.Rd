@@ -9,9 +9,8 @@ bilat.symmetry(A, ind = NULL, side = NULL, replicate = NULL,
   seed = NULL, RRPP = TRUE, print.progress = TRUE, ...)
 }
 \arguments{
-\item{A}{Either A 3D array (p x k x n) containing raw landmarks (requiring GPA to be performed) or a gpagen object (if GPA has been previously performed).  If one 
-wishes to incorporate semilandmarks, GPA should be performed first using \code{\link{gpagen}}.  Otherwise, bilat.symmetry can perform the initial GPA, assuming all landmarks
-are fixed.  For "object.sym = FALSE, landmarks should be of dimension (p x k x 2n), as each specimen is represented by both left and right configurations.}
+\item{A}{One of either A 3D array (p x k x n) containing raw landmarks (requiring GPA to be performed) or a gpagen object (if GPA has been previously performed) or a
+geomorphShapes object (requiring GPA to be performed).  Any gpagen argument should work within bilat.symmetry.}
 
 \item{ind}{A vector containing labels for each individual. For matching symmetry, the matched pairs receive the same 
 label (replicates also receive the same label).}
@@ -75,7 +74,8 @@ The function quantifies components of shape variation for a set of specimens as 
  As input, the function receives either A 3D array (p x k x n) containing raw landmarks (requiring 
  GPA to be performed) or a gpagen object (if GPA has been previously performed) or a geomorphShapes object.
  If one wishes to incorporate semilandmarks, GPA can either be performed first using gpagen, or within bilat.symmetry
- by passing adequate GPA arguments (i.e. curves, surfaces, ProcD etc, see \code{\link{gpagen}}. 
+ by passing adequate GPA arguments (i.e. curves, surfaces, ProcD etc, see \code{\link{gpagen}}. If a geomorphShapes
+ object is provided, semilandmarks are automatically identified and slided during GPA.
  For "object.sym = FALSE, landmarks should be of dimension (p x k x 2n), as each specimen is 
  represented by both left and right configurations.
    

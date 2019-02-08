@@ -4,8 +4,8 @@
 \alias{digitize2d}
 \title{Digitize 2D landmarks on .jpg files}
 \usage{
-digitize2d(filelist, nlandmarks, scale = NULL, tpsfile, MultScale = FALSE,
-  verbose = TRUE)
+digitize2d(filelist, nlandmarks, scale = NULL, tpsfile,
+  MultScale = FALSE, verbose = TRUE)
 }
 \arguments{
 \item{filelist}{A list of names of jpeg images to be digitized.}

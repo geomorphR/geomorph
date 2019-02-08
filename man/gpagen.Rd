@@ -5,7 +5,8 @@
 \title{Generalized Procrustes analysis of points, curves, and surfaces}
 \usage{
 gpagen(A, curves = NULL, surfaces = NULL, PrinAxes = TRUE,
-  max.iter = NULL, ProcD = TRUE, Proj = TRUE, print.progress = TRUE)
+  max.iter = NULL, ProcD = TRUE, Proj = TRUE,
+  print.progress = TRUE)
 }
 \arguments{
 \item{A}{Either an object of class geomorphShapes or a 3D array (p x k x n) containing landmark coordinates 
