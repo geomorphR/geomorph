@@ -237,7 +237,7 @@ advanced.procD.lm<-function(f1, f2, groups = NULL, slope = NULL,
   }
   if(!is.null(Cov)) {
     id <- rownames(Y)
-    Cov <- C[id, id]
+    Cov <- Cov[id, id]
  } 
 
   # initial model evaluations
