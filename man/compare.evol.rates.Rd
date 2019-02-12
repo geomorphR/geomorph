@@ -5,7 +5,7 @@
 \title{Comparing net rates of shape evolution on phylogenies}
 \usage{
 compare.evol.rates(A, phy, gp, iter = 999, method = c("simulation",
-  "permutation"), print.progress = TRUE)
+  "permutation"), print.progress = TRUE, seed = NULL)
 }
 \arguments{
 \item{A}{A 3D array (p x k x n) containing Procrustes shape variables for all specimens, or a matrix (n x variables)}
@@ -20,6 +20,11 @@ compare.evol.rates(A, phy, gp, iter = 999, method = c("simulation",
 
 \item{print.progress}{A logical value to indicate whether a progress bar should be printed to the screen.
 This is helpful for long-running analyses.}
+
+\item{seed}{An optional argument for setting the seed for random permutations of the resampling procedure.
+If left NULL (the default), the exact same P-values will be found for repeated runs of the analysis (with the same number of iterations).
+If seed = "random", a random seed will be used, and P-values will vary.  One can also specify an integer for specific seed values,
+which might be of interest for advanced users.}
 }
 \value{
 An object of class "evolrate" returns a list with the following components: 
