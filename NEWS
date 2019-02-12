@@ -1,8 +1,11 @@
-GITHUB UPDATES
+GITHUB UPDATES    
+    o Fixed ratio call for permutations in compare.evol.rates
+    o Added mean-centering to compare.evol.rates for permutations
     o Fixed bilat.symmetry asymm shape issue for replicates.
     o Fixed combine.subsets scaling issue.
     o Updated coords.subset to avoid issue with arrayspecs and naming subsetted data.
     o Updated trajectory.analysis to properly center mean values for PC plotting.
+
 
 CHANGES IN GEOMORPH VERSION 3.0.7
     o Added mean-centering to compare.evol.rates for permutations

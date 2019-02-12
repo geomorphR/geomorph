@@ -129,7 +129,8 @@ compare.evol.rates<-function(A,phy,gp,iter=999,method=c("simulation","permutatio
     if(nlevels(gp) == 2) 
       sigma.rand <- random.sigma <- c(sigma.obs$sigma.d.gp.ratio, sigma.rand) else {
         sigma.rand <- cbind(as.vector(sigma.obs$sigma.d.gp.ratio), sigma.rand)
-        random.sigma<- sapply(1:(iter+1), function(j) {x <- sigma.rand[,j]; max(x)/min(x)})
+#        random.sigma<- sapply(1:(iter+1), function(j) {x <- sigma.rand[,j]; max(x)/min(x)})
+        random.sigma<- sapply(1:(iter+1), function(j) {max(sigma.rand[,j])})
       }
     p.val <- pval(random.sigma)
     if(nlevels(gp) > 2) {

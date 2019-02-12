@@ -124,13 +124,13 @@ f78341c87ee3804663048fa39e0a6c9b *man/summary.procD.lm.Rd
 5b917c86f2b7831f548f7a81d6c1de9a *man/warpRefOutline.Rd
 aac14dd389a4f2cd73e97e8fbc0bfbad *man/writeland.tps.Rd
 297c44ce6820bb56c5eed062648e23ba *NAMESPACE
-73eacc81b7d1ad26676f22f61374ce42 *NEWS
+af869fca2ed6fb2bc86b39f9fec6adac *NEWS
 c0f568fa2c8a7c187663d37a0abd40cf *R/advanced.procD.lm.r
 311a910118a6b60a5ab89a58349e1f69 *R/arrayspecs.r
 9ee6b834b37c13b41738c7c3749779f3 *R/bilat.symmetry.r
 14713bbb2ad126d777d95e359c71bf1a *R/build.template.r
 0bbd986af95ea6c4949f0738cae5367e *R/combine.subsets.R
-5d749fea793bb9ce27ae9a55311a7b7e *R/compare.evol.rates.r
+d6e9afa38cfe93f87fc46ba168480ddd *R/compare.evol.rates.r
 25a3e9826113664b0114e0010db11acf *R/compare.multi.evol.rates.r
 89186a1d747e88be123b6e34456cd9ba *R/compare.pls.r
 ddb5c0387b15d96a2a68e706556e337e *R/coords.subset.r
