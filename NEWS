@@ -8,6 +8,7 @@ PENDING CHANGES IN GEOMORPH VERSION 3.0.8
     o Added partial disparity option to morphol.disparity
     
 BUG FIXES
+    o Fixed ratio call for permutations in compare.evol.rates
     o Fixed bug in phylo.modularity call when groups > 2
     o Fixed sacaling fault in combine.subsets
     o Updated trajectory.analysis to properly center mean values for PC plotting.
