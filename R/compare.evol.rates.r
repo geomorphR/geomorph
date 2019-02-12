@@ -29,6 +29,10 @@
 #' @param gp A factor array designating group membership
 #' @param method One of "simulation" or "permutation", to choose which approach should be used to assess significance. 
 #' @param iter Number of iterations for significance testing
+#' @param seed An optional argument for setting the seed for random permutations of the resampling procedure.  
+#' If left NULL (the default), the exact same P-values will be found for repeated runs of the analysis (with the same number of iterations).
+#' If seed = "random", a random seed will be used, and P-values will vary.  One can also specify an integer for specific seed values,
+#' which might be of interest for advanced users.
 #' @param print.progress A logical value to indicate whether a progress bar should be printed to the screen.  
 #' This is helpful for long-running analyses.
 #' @keywords analysis
@@ -59,7 +63,7 @@
 #' ER<-compare.evol.rates(A=Y.gpa$coords, phy=plethspecies$phy,method="simulation",gp=gp.end,iter=999)
 #' summary(ER)
 #' plot(ER)
-compare.evol.rates<-function(A,phy,gp,iter=999,method=c("simulation","permutation"),print.progress=TRUE ){
+compare.evol.rates<-function(A,phy,gp,iter=999,method=c("simulation","permutation"),print.progress=TRUE,seed=NULL){
   gp<-as.factor(gp)
   if (length(dim(A))==3){ 
       if(is.null(dimnames(A)[[3]])){
@@ -97,7 +101,7 @@ compare.evol.rates<-function(A,phy,gp,iter=999,method=c("simulation","permutatio
   diag(rate.mat)<-sigma.obs$sigma.d.all
   rate.mat<-matrix(nearPD(rate.mat,corr=FALSE)$mat,nrow=ncol(rate.mat),ncol=ncol(rate.mat))
   if(method == "permutation"){
-    ind<-perm.index(N,iter)
+    ind<-perm.index(N,iter,seed=seed)
     x <- x - apply(x,2,mean)  #mean-center
     if(ncol(x)==1){
       x.r <-simplify2array(lapply(1:iter, function(i) x[ind[[i]]]))

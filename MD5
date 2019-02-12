@@ -18,7 +18,7 @@ e65e81ca3e2c0b6e712bf6f4bafcdaec *inst/CITATION
 f167b2b15c4a274b9d9df1d1029aad85 *man/bilat.symmetry.Rd
 da8b187ac0217f9f31b72bd7fd72e2ed *man/buildtemplate.Rd
 807e1fccbb319db96cd275ff6a155caf *man/combine.subsets.Rd
-f7a25ea6f27c1c142b7bef5e53c6eabf *man/compare.evol.rates.Rd
+86774794c64fa24fb1f86ed7fab976e8 *man/compare.evol.rates.Rd
 5648e97c43693094384f92fc67cda690 *man/compare.multi.evol.rates.Rd
 1777891866698ef67ba33c02b3c02589 *man/compare.pls.Rd
 f8b98d216a9b9d554e1ea9a9cd307f5f *man/coords.subset.Rd
@@ -130,7 +130,7 @@ c0f568fa2c8a7c187663d37a0abd40cf *R/advanced.procD.lm.r
 9ee6b834b37c13b41738c7c3749779f3 *R/bilat.symmetry.r
 14713bbb2ad126d777d95e359c71bf1a *R/build.template.r
 0bbd986af95ea6c4949f0738cae5367e *R/combine.subsets.R
-351a96835c511d8fed47c6cc6794cd2e *R/compare.evol.rates.r
+5d749fea793bb9ce27ae9a55311a7b7e *R/compare.evol.rates.r
 25a3e9826113664b0114e0010db11acf *R/compare.multi.evol.rates.r
 89186a1d747e88be123b6e34456cd9ba *R/compare.pls.r
 ddb5c0387b15d96a2a68e706556e337e *R/coords.subset.r
