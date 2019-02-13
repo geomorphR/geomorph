@@ -102,7 +102,7 @@ compare.evol.rates<-function(A,phy,gp,iter=999,method=c("simulation","permutatio
   rate.mat<-matrix(nearPD(rate.mat,corr=FALSE)$mat,nrow=ncol(rate.mat),ncol=ncol(rate.mat))
   if(method == "permutation"){
     ind<-perm.index(N,iter,seed=seed)
-    x <- x - apply(x,2,mean)  #mean-center
+    x <- scale(x,scale = FALSE)   #mean-center
     if(ncol(x)==1){
       x.r <-simplify2array(lapply(1:iter, function(i) x[ind[[i]]]))
       dim(x.r) <- c(nrow(x.r), 1, iter); dimnames(x.r)[[1]]<-names(x)
