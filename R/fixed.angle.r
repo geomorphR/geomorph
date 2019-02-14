@@ -33,14 +33,18 @@
 #'
 #' data(plethspecies) 
 #' # Using specific points:
-#' newLM1 <- fixed.angle(plethspecies$land,art.pt=1, angle.pts.1 = 5, 
+#' newLM1 <- fixed.angle(plethspecies$land,
+#' art.pt=1, angle.pts.1 = 5, 
 #' angle.pts.2 = 6, rot.pts = c(2,3,4,5))
 #' Y.gpa1 <- gpagen(newLM1)
 #' plot(Y.gpa1)
 #' 
 #' # Using centroids from subsets
-#' newLM2 <- fixed.angle(plethspecies$land,art.pt=1, angle.pts.1 = c(1, 6:11), 
-#' angle.pts.2 = 2:5, rot.pts = NULL, angle = 20, degrees = TRUE) # rotated points same as second partition
+#' newLM2 <- fixed.angle(plethspecies$land,art.pt=1, 
+#' angle.pts.1 = c(1, 6:11), 
+#' angle.pts.2 = 2:5, 
+#' rot.pts = NULL, angle = 20, 
+#' degrees = TRUE) # rotated points same as second partition
 #' Y.gpa2 <- gpagen(newLM2)
 #' plot(Y.gpa2)
 #' 
