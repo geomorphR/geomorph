@@ -1482,7 +1482,9 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, phylo = FALSE,
                            phylo.par = list(edge.color = "black", edge.width = 1, edge.lty = 1,
                                             node.bg = "black", node.pch = 21, node.cex = 1), ...) {
   options(warn = -1)
-  pcdata <- x$x[, c(axis1, axis2)]
+  if(NCOL(x$x) == 1) stop("Only one PC.  No plotting capability with this function.\n", 
+                          call. = FALSE)
+  pcdata <- as.matrix(x$x[, c(axis1, axis2)])
   dots <- list(...)
   if(!is.null(dots$axes)) axes <- dots$axes else axes <- TRUE
   if(!is.logical(axes)) axes <- as.logical(axes)

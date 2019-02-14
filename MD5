@@ -51,7 +51,7 @@ c971ee431344adcf29329d08936971dd *man/modularity.test.Rd
 247dbaf8c55a345763971e5f514e4aff *man/phylo.integration.Rd
 59fd32006db524981131808b5a2b1548 *man/phylo.modularity.Rd
 baa6e400dec88ae1128fd3e195d6a1ec *man/physignal.Rd
-1e695b5294752aa9e8ce3fdedc5e547d *man/picknplot.shape.Rd
+e67eff455a395a2f1b4c638eca3e6918 *man/picknplot.shape.Rd
 af93ecd1b6eb7fb84c529ee5d5ca59b4 *man/plethodon.Rd
 67af5edfcfef3d23440b41c805d143c6 *man/plethShapeFood.Rd
 d975879b9cfb692a95bd331d298d79d2 *man/plethspecies.Rd
@@ -157,7 +157,7 @@ aac6a4f8a759473e8c37048e5c8e3d91 *R/findMeanSpec.r
 a4ba6017c20c6c21e2ada36cfdc0c962 *R/fixed.angle.r
 c7f93c567b464e532952bb4f24f71883 *R/geomorph.data.frame.r
 794075fae0597bbe979828fe0909037b *R/geomorph.support.code.r
-1c801d1a944863476a3934b149bf14c9 *R/geomorph.utils.r
+5e278a54770b4e5112b20c475bdfb175 *R/geomorph.utils.r
 48ad1d05fbe54c70769453fd53a74d47 *R/globalIntegration.r
 2a94347ef24150a86b65c1f6955f8d46 *R/gm.prcomp.R
 06274b13eb53bb29d9e66153a6cb0897 *R/gpagen.r
@@ -170,7 +170,7 @@ c35bcae1a6ea59c924cf7dc9eec3e013 *R/interlmkdist.r
 b64996289927a48622a73adaa75da155 *R/phylo.integration.r
 b887153547baef51627968220db1e6b5 *R/phylo.modularity.r
 208c3d8b92718b84910c7692588607ec *R/physignal.r
-af3f6ca9be0ba473a7aea3d42f2a8a54 *R/picknplot.shape.r
+7779924f29e38d08e84a20e878ace17e *R/picknplot.shape.r
 c1cead3306cb3d7b1bd3ed5d99fc89af *R/plotAllSpecimens.r
 d0cfb9fe35226ee6799a2f40ad5f39c1 *R/plotGMPhyloMorphoSpace.r
 aab74b98af1c98726fe373d9759ccdbd *R/plotOutliers.r
