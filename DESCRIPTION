@@ -6,7 +6,7 @@ Version: 3.0.8
 Author: Dean Adams, Michael Collyer, Antigoni Kaliontzopoulou
 Maintainer: Dean Adams <dcadams@iastate.edu>
 Depends: rgl, ape, R(>= 3.1.0)
-Imports: graphics, grDevices, stats, utils, jpeg, geiger, Matrix, RRPP
+Imports: graphics, grDevices, stats, utils, jpeg, RRPP
 Description: Read, manipulate, and digitize landmark data, generate shape
     variables via Procrustes analysis for points, curves and surfaces, perform
     shape analyses, and provide graphical depictions of shapes and patterns of
@@ -16,4 +16,5 @@ Packaged: 2016-01-26 08:44:02 UTC; Dean
 Repository: CRAN
 Date/Publication: 2015-12-15 00:00:00
 RoxygenNote: 6.1.1
+Encoding: UTF-8
 NeedsCompilation: no

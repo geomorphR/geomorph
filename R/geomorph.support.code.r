@@ -14,9 +14,7 @@
 #' @import utils
 #' @import graphics
 #' @import grDevices
-#' @importFrom geiger sim.char
 #' @importFrom jpeg readJPEG
-#' @importFrom Matrix nearPD
 #' @importFrom RRPP lm.rrpp
 #' @importFrom RRPP anova.lm.rrpp
 #' @importFrom RRPP pairwise
@@ -3430,4 +3428,159 @@ cov.mat <- function(x, COV) {
   list(invC = invC, D.mat = D.mat, C = C)
 }
 
+
+# sim.char.BM
+# An alternative to sim.char for BM
+# comapred to sim.char, uses better memoization
+
+
+# sim.char has a similar function to this but it is called in every simulation
+# and defers to C for help.  This is done once only here. (Produces a projection matrix)
+phy.sim.mat <- function(phy) {
+  N <- Ntip(phy)
+  n <- nrow(phy$edge)
+  m <- matrix(0, N, n)
+  edg <- phy$edge.length
+  idx <- phy$edge[, 2]
+  anc <- phy$edge[, 1]
+  tips <- which(idx <= N)
+  non.tips <- which(idx > N)
+  for(i in 1:length(tips)) m[idx[tips[i]], tips[i]] <- sqrt(edg[tips[i]])
+  for(i in 1:length(non.tips)) {
+    x <- idx[non.tips[i]]
+    anc.i <- which(anc == x)
+    edg.i <- idx[anc.i]
+    if(any(edg.i > N)) {
+      edg.i <- as.list(edg.i)
+      while(any(edg.i > N)) {
+        edg.i <- lapply(1:length(edg.i), function(j){
+          edg.i.j <- edg.i[[j]]
+          if(edg.i.j > N) {
+            idx[which(anc == edg.i.j)]
+          } else edg.i.j <- edg.i.j
+        })
+        edg.i <- unlist(edg.i)
+      }
+    }
+    m[edg.i, which(idx == x)] <- sqrt(edg[which(idx == x)])
+  }
+  rownames(m) <- phy$tip.label
+  m
+}
+
+# A function to extract eigen values, as per mvrnorm
+# But does not incorporate other traps and options, as in mvnorm.
+Sig.eigen <- function(Sig, tol = 1e-06){
+  E <- eigen(Sig)
+  ev <- E$values
+  if (!all(ev >= -tol * abs(ev[1L]))) {
+    k <- which(ev >= -tol * abs(ev[1L]))
+    E$values <- ev[k]
+    E$vectors <- E$vectors[,k]
+  }
+  E$scaled.vectors <- E$vectors %*% diag(sqrt(E$values))
+  rownames(E$vectors) <- rownames(E$scaled.vectors) <- 
+    names(E$values) <- rownames(Sig)
+  E$p <- length(ev)
+  E
+}
+
+# For a single permutation, simulate traits
+# Requires estabished scaled eigenvectors (E)
+# and a projection matrix (M),  sim.char re-estimates
+# E and M in every permutation
+fast.sim.BM <- function(E, M, R, root = 1) {
+  N <- ncol(M)
+  p <- E$p
+  v <- E$scaled.vectors
+  X <- v %*% t(matrix(R, N, p))
+  res <- tcrossprod(M, X) + root
+  rownames(res) <- rownames(M)
+  res
+}
+
+sim.set.up <- function(E, M, nsim, seed = NULL){
+  if(is.null(seed)) seed = nsim else
+    if(seed == "random") seed = sample(1:nsim, 1) else
+      if(!is.numeric(seed)) seed = nsim 
+      N <- ncol(M)
+      p <- E$p
+      n <- N * p
+      NN <- n * nsim
+      set.seed(seed)
+      R <- rnorm(NN)
+      rm(.Random.seed, envir=globalenv())
+      if(nsim > 1) {
+        r.start <- seq(1,(NN-n+1), n)
+        r.stop <- seq(n, NN, n)
+      } else {
+        r.start <- 1
+        r.stop <- NN
+      }
+      
+      lapply(1:nsim, function(j) R[r.start[j] : r.stop[j]])
+}
+
+# Put everything together to make a list of results
+sim.char.BM <- function(phy, par, nsim = 1, root = 1, seed = NULL){
+  M <- phy.sim.mat(phy)
+  E <- Sig.eigen(par)
+  sim.set <- sim.set.up(E, M, nsim, seed = seed)
+  sim.args <- list(E=E, M=M, R=0, root=root)
+  if(nsim == 1) {
+    sim.args$R <- sim.set[[1]]
+    res <- do.call(fast.sim.BM, sim.args)
+  } else 
+    res <- lapply(1:nsim, function(j){
+      sim.args$R <- sim.set[[j]]
+      do.call(fast.sim.BM, sim.args)
+    })
+  
+  res
+}
+
+
+# makePD
+# Alternative to nearPD in Matrix
+
+makePD <- function (x) {
+  eig.tol <- conv.tol <- 1e-06
+  posd.tol <- 1e-08
+  maxit <- 50
+  n <- ncol(x)
+  X <-x
+  D <- matrix(0, n, n)
+  iter <- 0
+  converged <- FALSE
+  conv <- Inf
+  while (iter < maxit && !converged) {
+    Y <- X
+    R <- Y - D
+    e <- eigen(R, symmetric = TRUE)
+    Q <- e$vectors
+    d <- e$values
+    p <- d > eig.tol * d[1]
+    if (!any(p)) 
+      stop("Matrix seems negative semi-definite")
+    Q <- Q[, p, drop = FALSE]
+    X <- tcrossprod(Q * rep(d[p], each = nrow(Q)), Q)
+    D <- X - R
+    conv <- norm(Y - X, type = "I")/norm(Y, type = "I")
+    iter <- iter + 1
+    converged <- (conv <= conv.tol)
+  }
+  
+  e <- eigen(X, symmetric = TRUE)
+  d <- e$values
+  Eps <- posd.tol * abs(d[1])
+  if (d[n] < Eps) {
+    d[d < Eps] <- Eps
+    Q <- e$vectors
+    o.diag <- diag(X)
+    X <- Q %*% (d * t(Q))
+    D <- sqrt(pmax(Eps, o.diag)/diag(X))
+    X <- D * X * rep(D, each = n)
+  }
+  X
+}
 

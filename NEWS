@@ -1,4 +1,6 @@
 PENDING CHANGES IN GEOMORPH VERSION 3.0.8
+
+    o Reduced dependencies on geiger and Matrix
     o Added mean-centering to compare.evol.rates for permutations
     o Updated fixed.angle to allow centroids from mutiple points to be used as angle points.
     o Updated coords.subset to avoid issue with arrayspecs and naming subsetted data.

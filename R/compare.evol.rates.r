@@ -1,6 +1,6 @@
 #' Comparing net rates of shape evolution on phylogenies
 #'
-#' Function calculates net rates of shape evolution for two or more groups of species on a phylogeny from a set of Procrustes shape variables
+#' Function calculates net rates of shape evolution for two or more groups of species on a phylogeny from a set of Procrustes-aligned specimens
 #'
 #' The function compares net rates of morphological evolution for two or more groups of species on a phylogeny, under a 
 #'  Brownian motion model of evolution. It is assumed that the landmarks have previously been aligned 
@@ -20,11 +20,11 @@
 #' common evolutionary rate matrix for all species is used, with the multi-dimensional rate used along the diagonal elements (see 
 #' Denton and Adams 2015). This procedure is more general than the original simulation procedure, and retains the desirable 
 #' statistical properties of earlier methods, and under a wider array of data types.  Second, significance may be accomplished via 
-#' permutation, where data values at the tips are permuted relative to the (see Adams and Collyer 2018). This procedure is shown to 
-#' retain all appropriate statistical properties, including rotation-invariance of significance levels (see results of Adams and Collyer 2018).
+#' permutation, where data values at the tips are permuted relative to the (see Adams and Collyer 2017). This procedure is shown to 
+#' retain all appropriate statistical properties, including rotation-invariance of significance levels (see results of Adams and Collyer 2017).
 #' }
 #'
-#' @param A A 3D array (p x k x n) containing Procrustes shape variables for all specimens, or a matrix (n x variables)
+#' @param A A 3D array (p x k x n) containing GPA-aligned coordinates for all specimens, or a matrix (n x variables)
 #' @param phy A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape
 #' @param gp A factor array designating group membership
 #' @param method One of "simulation" or "permutation", to choose which approach should be used to assess significance. 
@@ -36,9 +36,7 @@
 #' @param print.progress A logical value to indicate whether a progress bar should be printed to the screen.  
 #' This is helpful for long-running analyses.
 #' @keywords analysis
-#' @author Dean Adams
-#' @seealso  \code{\link[ape]{vcv.phylo}}, \code{\link[geiger]{sim.char}}, \code{\link[Matrix]{nearPD}}
-#'  (used in some internal computations)
+#' @author Dean Adams & Emma Sherratt
 #' @export
 #' @return An object of class "evolrate" returns a list with the following components: 
 #'   \item{sigma.d.ratio}{The ratio of maximum to minimum net evolutionary rates.}
@@ -52,8 +50,8 @@
 #' @references Denton, J.S.S., and D.C. Adams. 2015. A new phylogenetic test for comparing 
 #' multiple high-dimensional evolutionary rates suggests interplay of evolutionary rates and 
 #' modularity in lanternfishes (Myctophiformes; Myctophidae). Evolution. 69:2425-2440.
-#' @references Adams, D.C. and M.L. Collyer. 2018. Multivariate comparative methods: evaluations, comparisons, and
-#' recommendations. Systematic Biology. 67:14-31.
+#' @references Adams, D.C. and M.L. Collyer. 2017. Multivariate comparative methods: evaluations, comparisons, and
+#' recommendations. Systematic Biology. In press.
 #' @examples
 #' data(plethspecies) 
 #' Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment    
@@ -63,16 +61,16 @@
 #' ER<-compare.evol.rates(A=Y.gpa$coords, phy=plethspecies$phy,method="simulation",gp=gp.end,iter=999)
 #' summary(ER)
 #' plot(ER)
-compare.evol.rates<-function(A,phy,gp,iter=999,method=c("simulation","permutation"),print.progress=TRUE,seed=NULL){
+compare.evol.rates<-function(A,phy,gp,iter=999,seed=NULL,method=c("simulation","permutation"),print.progress=TRUE ){
   gp<-as.factor(gp)
   if (length(dim(A))==3){ 
-      if(is.null(dimnames(A)[[3]])){
+    if(is.null(dimnames(A)[[3]])){
       stop("Data matrix does not include taxa names as dimnames for 3rd dimension.")  }
-      x<-two.d.array(A)}
+    x<-two.d.array(A)}
   if (length(dim(A))==2){ 
-      if(is.null(rownames(A))){
+    if(is.null(rownames(A))){
       stop("Data matrix does not include taxa names as dimnames for rows.")  }
-      x<-A }
+    x<-A }
   if (is.vector(A)== TRUE){ 
     if(is.null(names(A))){
       stop("Data vector does not include taxa names as names.")  }
@@ -99,17 +97,12 @@ compare.evol.rates<-function(A,phy,gp,iter=999,method=c("simulation","permutatio
   sigma.obs<-sigma.d(x,invC,D.mat,gp)
   rate.mat<-sigma.obs$R
   diag(rate.mat)<-sigma.obs$sigma.d.all
-  rate.mat<-matrix(nearPD(rate.mat,corr=FALSE)$mat,nrow=ncol(rate.mat),ncol=ncol(rate.mat))
+  rate.mat<-makePD(rate.mat)
   if(method == "permutation"){
-    ind<-perm.index(N,iter,seed=seed)
-    x <- scale(x,scale = FALSE)   #mean-center
-    if(ncol(x)==1){
-      x.r <-simplify2array(lapply(1:iter, function(i) x[ind[[i]]]))
-      dim(x.r) <- c(nrow(x.r), 1, iter); dimnames(x.r)[[1]]<-names(x)
-    }else
+    ind<-perm.index(N,iter, seed=seed)
     x.r <-simplify2array(lapply(1:iter, function(i) x[ind[[i]],]))
   }
-  if(method != "permutation") {x.r<-sim.char(phy=phy,par=rate.mat,nsim=iter,model="BM") }
+  if(method != "permutation") {x.r<-simplify2array(sim.char.BM(phy=phy,par=rate.mat,nsim=iter, seed=seed)) }
   ones <- matrix(1,N,N); I <- diag(1,N)
   Xadj <- I -crossprod(ones,invC)/sum(invC) 
   Ptrans <- D.mat%*%Xadj
@@ -129,9 +122,7 @@ compare.evol.rates<-function(A,phy,gp,iter=999,method=c("simulation","permutatio
     if(nlevels(gp) == 2) 
       sigma.rand <- random.sigma <- c(sigma.obs$sigma.d.gp.ratio, sigma.rand) else {
         sigma.rand <- cbind(as.vector(sigma.obs$sigma.d.gp.ratio), sigma.rand)
-#        random.sigma<- sapply(1:(iter+1), function(j) {x <- sigma.rand[,j]; max(x)/min(x)})
-        random.sigma<- sapply(1:(iter+1), function(j) {max(sigma.rand[,j])})
-        
+        random.sigma<- sapply(1:(iter+1), function(j) {x <- sigma.rand[,j]; max(x)/min(x)})
       }
     p.val <- pval(random.sigma)
     if(nlevels(gp) > 2) {
