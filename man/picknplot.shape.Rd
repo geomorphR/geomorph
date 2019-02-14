@@ -28,32 +28,36 @@ shape is to be saved as a png file, in which case the name of the file needs to 
 Interactive plots are at present available for plots produced by \code{\link{plot.gm.prcomp}}.
 }
 \examples{
+
+### Because picknplot requires user decisions, the following examples
+### are not run (but can be with removal of #s)
+
 # 2d
-data(plethodon) 
-Y.gpa <- gpagen(plethodon$land)
-pleth.pca <- gm.prcomp(Y.gpa$coords)
-pleth.pca.plot <- plot(pleth.pca)
-picknplot.shape(pleth.pca.plot) 
+# data(plethodon) 
+# Y.gpa <- gpagen(plethodon$land)
+# pleth.pca <- gm.prcomp(Y.gpa$coords)
+# pleth.pca.plot <- plot(pleth.pca)
+# picknplot.shape(pleth.pca.plot) 
 # May change arguments for plotRefToTarget
-picknplot.shape(plot(pleth.pca), method = "points", mag = 3, links=plethodon$links)
+# picknplot.shape(plot(pleth.pca), method = "points", mag = 3, links=plethodon$links)
 
 # 2d with phylogeny
-data(plethspecies) 
-Y.gpa <- gpagen(plethspecies$land)
-gps <- as.factor(c(rep("gp1", 5), rep("gp2", 4))) # Two random groups
-pleth.phylo <- gm.prcomp(Y.gpa$coords, plethspecies$phy)
-pleth.phylomorphospace <- plot(pleth.phylo, phylo = TRUE, cex = 2, pch = 22, 
-bg = gps, phylo.par = list(edge.color = "blue", edge.width = 2, edge.lty = 2,
-node.pch = 22, node.bg = "black"))
-links.species <- plethodon$links[-11,]
-links.species[11, 1] <- 11
-picknplot.shape(pleth.phylomorphospace, method = "points", links = links.species)
+# data(plethspecies) 
+# Y.gpa <- gpagen(plethspecies$land)
+# gps <- as.factor(c(rep("gp1", 5), rep("gp2", 4))) # Two random groups
+# pleth.phylo <- gm.prcomp(Y.gpa$coords, plethspecies$phy)
+# pleth.phylomorphospace <- plot(pleth.phylo, phylo = TRUE, cex = 2, pch = 22, 
+# bg = gps, phylo.par = list(edge.color = "blue", edge.width = 2, edge.lty = 2,
+# node.pch = 22, node.bg = "black"))
+# links.species <- plethodon$links[-11,]
+# links.species[11, 1] <- 11
+# picknplot.shape(pleth.phylomorphospace, method = "points", links = links.species)
 # 3d
-data(scallops)
-Y3d.gpa <- gpagen(A=scallops$coorddata, curves=scallops$curvslide, surfaces=scallops$surfslide)
-scallops.pca <- gm.prcomp(Y3d.gpa$coords)
-scallops.pca.plot <- plot(scallops.pca)
-picknplot.shape(scallops.pca.plot) # May change method for plotRefToTarget
+# data(scallops)
+# Y3d.gpa <- gpagen(A=scallops$coorddata, curves=scallops$curvslide, surfaces=scallops$surfslide)
+# scallops.pca <- gm.prcomp(Y3d.gpa$coords)
+# scallops.pca.plot <- plot(scallops.pca)
+# picknplot.shape(scallops.pca.plot) # May change method for plotRefToTarget
 }
 \seealso{
 \code{\link{shape.predictor}}, \code{\link{plotRefToTarget}}

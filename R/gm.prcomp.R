@@ -60,9 +60,11 @@
 #'  text(pleth.phylo$anc.x, labels = 1:nrow(pleth.phylo$anc.x),
 #'       adj = c(-0.1, -0.1), font = 2) 
 #'  
-#'  ### Visualize shape variation using picknplot.shape 
-#'  # For detailed options, see the picknplot help file
-#'  picknplot.shape(plot(pleth.phylo))
+#'  ### Visualize shape variation using picknplot.shape Because picknplot requires 
+#'  ### user decisions, the following example
+#'  ### is not run (but can be with removal of #).
+#'  ### For detailed options, see the picknplot help file
+#'  # picknplot.shape(plot(pleth.phylo))
 #'  
 #' 
 

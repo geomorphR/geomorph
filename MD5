@@ -35,7 +35,7 @@ e5ea7eb05043e14bf36bb1c553de0576 *man/findMeanSpec.Rd
 f9221a7b4261484793b945d7be4bbec6 *man/geomorph-package.Rd
 45d7c8b1f1bc4a804c238e8ecf89f055 *man/geomorph.data.frame.Rd
 868983a77b9ebb8a858901ba3a82c3ec *man/globalIntegration.Rd
-cb91c027ddc08fe41175d86f746df720 *man/gm.prcomp.Rd
+a696207b68b8c0b5b1aeecf65381dfbb *man/gm.prcomp.Rd
 99b0e9f72986e94f94fd98a557fa3689 *man/gpagen.Rd
 6e3973381aaf10ec056aa50add392948 *man/gridPar.Rd
 a598044482a6c3e39517b798b654c57e *man/hummingbirds.Rd
@@ -51,7 +51,7 @@ c971ee431344adcf29329d08936971dd *man/modularity.test.Rd
 247dbaf8c55a345763971e5f514e4aff *man/phylo.integration.Rd
 59fd32006db524981131808b5a2b1548 *man/phylo.modularity.Rd
 baa6e400dec88ae1128fd3e195d6a1ec *man/physignal.Rd
-e67eff455a395a2f1b4c638eca3e6918 *man/picknplot.shape.Rd
+8a22e52b896b4d1095865026d50eb98d *man/picknplot.shape.Rd
 af93ecd1b6eb7fb84c529ee5d5ca59b4 *man/plethodon.Rd
 67af5edfcfef3d23440b41c805d143c6 *man/plethShapeFood.Rd
 d975879b9cfb692a95bd331d298d79d2 *man/plethspecies.Rd
@@ -159,7 +159,7 @@ c7f93c567b464e532952bb4f24f71883 *R/geomorph.data.frame.r
 794075fae0597bbe979828fe0909037b *R/geomorph.support.code.r
 5e278a54770b4e5112b20c475bdfb175 *R/geomorph.utils.r
 48ad1d05fbe54c70769453fd53a74d47 *R/globalIntegration.r
-2a94347ef24150a86b65c1f6955f8d46 *R/gm.prcomp.R
+2a08d1ef43ac3c5dd195b6f64b9c9a48 *R/gm.prcomp.R
 06274b13eb53bb29d9e66153a6cb0897 *R/gpagen.r
 8c06e49837953d941a01c82b0111935a *R/gridPar.r
 2b338eb56d6c8e743d2240ed4d7b5297 *R/integration.test.r
@@ -170,7 +170,7 @@ c35bcae1a6ea59c924cf7dc9eec3e013 *R/interlmkdist.r
 b64996289927a48622a73adaa75da155 *R/phylo.integration.r
 b887153547baef51627968220db1e6b5 *R/phylo.modularity.r
 208c3d8b92718b84910c7692588607ec *R/physignal.r
-7779924f29e38d08e84a20e878ace17e *R/picknplot.shape.r
+6f70952fe56d8b61a3de601228842704 *R/picknplot.shape.r
 c1cead3306cb3d7b1bd3ed5d99fc89af *R/plotAllSpecimens.r
 d0cfb9fe35226ee6799a2f40ad5f39c1 *R/plotGMPhyloMorphoSpace.r
 aab74b98af1c98726fe373d9759ccdbd *R/plotOutliers.r
