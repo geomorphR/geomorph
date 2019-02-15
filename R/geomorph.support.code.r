@@ -2800,7 +2800,8 @@ sigma.d<-function(x,invC,D.mat,gp){
 # same as sigma.d but only calculates sigma.d.ratio - fast in loops
 # used in: compare.evol.rates
 fast.sigma.d<-function(x,Ptrans,g, ngps, gps.combo, N,p){
-  xp <- Ptrans%*%x
+#  xp <- Ptrans%*%x
+  xp <- x
   vec.d2<-diag(tcrossprod(xp))
   sigma.d.all<-sum(vec.d2)/N/p
   sigma.d.gp<-sapply(split(vec.d2, g), mean)/p

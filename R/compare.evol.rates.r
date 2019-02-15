@@ -94,28 +94,29 @@ compare.evol.rates<-function(A,phy,gp,iter=999,method=c("simulation","permutatio
     stop("Tree missing some taxa in the data matrix.")
   p<-ncol(x)
   gp<-gp[rownames(x)]
+  x <- scale(x,center = TRUE, scale = FALSE)
   phy.parts<-phylo.mat(x,phy)
   invC<-phy.parts$invC; D.mat<-phy.parts$D.mat;C = phy.parts$C
   sigma.obs<-sigma.d(x,invC,D.mat,gp)
-  rate.mat<-sigma.obs$R
-  diag(rate.mat)<-sigma.obs$sigma.d.all
-  rate.mat<-matrix(nearPD(rate.mat,corr=FALSE)$mat,nrow=ncol(rate.mat),ncol=ncol(rate.mat))
-  if(method == "permutation"){
-    ind<-perm.index(N,iter,seed=seed)
-    x <- scale(x,scale = FALSE)  #mean-center
-    if(ncol(x)==1){
-      x.r <-simplify2array(lapply(1:iter, function(i) x[ind[[i]]]))
-      dim(x.r) <- c(nrow(x.r), 1, iter); dimnames(x.r)[[1]]<-names(x)
-    }else
-    x.r <-simplify2array(lapply(1:iter, function(i) x[ind[[i]],]))
-  }
-  if(method != "permutation") {x.r<-sim.char(phy=phy,par=rate.mat,nsim=iter,model="BM") }
   ones <- matrix(1,N,N); I <- diag(1,N)
   Xadj <- I -crossprod(ones,invC)/sum(invC) 
   Ptrans <- D.mat%*%Xadj
   g<-factor(as.numeric(gp))
   ngps<-nlevels(g)
   gps.combo <- combn(ngps, 2)
+  if(method != "permutation") {
+    rate.mat<-sigma.obs$R
+    diag(rate.mat)<-sigma.obs$sigma.d.all
+    rate.mat<-matrix(nearPD(rate.mat,corr=FALSE)$mat,nrow=ncol(rate.mat),ncol=ncol(rate.mat))
+    x.sim<-sim.char(phy=phy,par=rate.mat,nsim=iter,model="BM") 
+    x.r <- simplify2array(lapply(1:iter, function(j) Ptrans%*%x.sim[,,1]))
+  }
+  if(method == "permutation"){
+    ind<-perm.index(N,iter, seed=seed)
+    xp <- Ptrans%*%x
+    x.r <-simplify2array(lapply(1:iter, function(i) xp[ind[[i]],]))
+  }
+  
   if(nlevels(gp) > 1){
     if(print.progress){
       pb <- txtProgressBar(min = 0, max = iter, initial = 0, style=3) 
