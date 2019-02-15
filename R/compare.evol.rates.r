@@ -92,23 +92,29 @@ compare.evol.rates<-function(A,phy,gp,iter=999,seed=NULL,method=c("simulation","
     stop("Tree missing some taxa in the data matrix.")
   p<-ncol(x)
   gp<-gp[rownames(x)]
+  x <- scale(x,center = TRUE, scale = FALSE)
   phy.parts<-phylo.mat(x,phy)
   invC<-phy.parts$invC; D.mat<-phy.parts$D.mat;C = phy.parts$C
   sigma.obs<-sigma.d(x,invC,D.mat,gp)
-  rate.mat<-sigma.obs$R
-  diag(rate.mat)<-sigma.obs$sigma.d.all
-  rate.mat<-makePD(rate.mat)
-  if(method == "permutation"){
-    ind<-perm.index(N,iter, seed=seed)
-    x.r <-simplify2array(lapply(1:iter, function(i) x[ind[[i]],]))
-  }
-  if(method != "permutation") {x.r<-simplify2array(sim.char.BM(phy=phy,par=rate.mat,nsim=iter, seed=seed)) }
   ones <- matrix(1,N,N); I <- diag(1,N)
   Xadj <- I -crossprod(ones,invC)/sum(invC) 
   Ptrans <- D.mat%*%Xadj
   g<-factor(as.numeric(gp))
   ngps<-nlevels(g)
   gps.combo <- combn(ngps, 2)
+  if(method != "permutation") {
+    rate.mat<-sigma.obs$R
+    diag(rate.mat)<-sigma.obs$sigma.d.all
+    rate.mat<-makePD(rate.mat)
+    x.sim<-simplify2array(sim.char.BM(phy=phy,par=rate.mat,nsim=iter, seed=seed)) 
+    x.r <- simplify2array(lapply(1:iter, function(j) Ptrans%*%x.sim[,,1]))
+  }
+  if(method == "permutation"){
+    ind<-perm.index(N,iter, seed=seed)
+    xp <- Ptrans%*%x
+    x.r <-simplify2array(lapply(1:iter, function(i) xp[ind[[i]],]))
+  }
+    
   if(nlevels(gp) > 1){
     if(print.progress){
       pb <- txtProgressBar(min = 0, max = iter, initial = 0, style=3) 
@@ -122,7 +128,7 @@ compare.evol.rates<-function(A,phy,gp,iter=999,seed=NULL,method=c("simulation","
     if(nlevels(gp) == 2) 
       sigma.rand <- random.sigma <- c(sigma.obs$sigma.d.gp.ratio, sigma.rand) else {
         sigma.rand <- cbind(as.vector(sigma.obs$sigma.d.gp.ratio), sigma.rand)
-        random.sigma<- sapply(1:(iter+1), function(j) {x <- sigma.rand[,j]; max(x)/min(x)})
+        random.sigma<- sapply(1:(iter+1), function(j) {max(sigma.rand[,j])})
       }
     p.val <- pval(random.sigma)
     if(nlevels(gp) > 2) {
