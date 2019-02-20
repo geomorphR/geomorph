@@ -28,6 +28,9 @@
 #' lineardists <- interlmkdist(A, lmks)
 
 interlmkdist <- function(A, lmks){
+  if(is.matrix(A)) A <- array(A, c(NROW(A), NCOL(A), 1))
+  dims <- dim(A); n <- dims[[3]]; p <- dims[[1]]; k <- dims[[2]]
+  if(k < 2 || k > 3) stop("Landmarks must be 2 or 3 dimensions\n")
   if(!is.array(A)) {
     stop("Data matrix not a 3D array (see 'arrayspecs').") }
   lmks <- as.matrix(lmks)
@@ -61,9 +64,13 @@ interlmkdist <- function(A, lmks){
       } 
     }
   }
-  lindist <- matrix(NA,ncol=nrow(lmks), nrow=dim(A)[3])
+  lindist <- matrix(NA, ncol=nrow(lmks), nrow=dim(A)[3])
   if(!is.null(rownames(lmks))) colnames(lindist) <- rownames(lmks)   
   if(!is.null(dimnames(A)[[3]])) rownames(lindist) <- dimnames(A)[[3]] 
-  for(i in 1:nrow(lmks)){lindist[,i] <- apply(A[lmks[i,],,], 3, dist)}
+  for(i in 1:nrow(lmks)){
+    if (n > 1) res <- apply(A[lmks[i,],,], 3, dist) else
+      res <- dist(A[lmks[i,],,])
+  lindist[,i] <- res
+  }
   return(lindist)
 }

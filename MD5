@@ -11,7 +11,7 @@ d8e8360c03c03fe45d2100e9c05d4a89 *data/plethodon.rda
 9ba51ab9be03930a4acdcddde8169b33 *data/scallopPLY.rda
 6e5e71b242462e422b716800ffc3c464 *data/scallops.rda
 c0cb6cbbcf46fb48943422be26c988b7 *DESCRIPTION
-73f723a130c92f8b84a81465a15add7c *geomorph.Rproj
+f4f2080e745b8d689f17caf549449ab5 *geomorph.Rproj
 e65e81ca3e2c0b6e712bf6f4bafcdaec *inst/CITATION
 4872cd0fc5cec7659980691c1e7a6618 *man/advanced.procD.lm.Rd
 5a8e62b1b33e226fb4e4d5ed92630fe7 *man/arrayspecs.Rd
@@ -153,7 +153,7 @@ ecd9407c44b8a96f0be5630da9825020 *R/geomorph.utils.r
 3cceb0734ae40999b3f795a46f609ad6 *R/gpagen.r
 2d8ab3c6fea452711a7cf091ffba8ff5 *R/gridPar.r
 2aa10cb431ce80c0f4a2ba486c6b05b5 *R/integration.test.r
-c35bcae1a6ea59c924cf7dc9eec3e013 *R/interlmkdist.r
+0cbfe6b5655e2751cdd03ca2a1550768 *R/interlmkdist.r
 22bfc5e775ee6102b970e5b79231eea0 *R/modularity.test.r
 004a31f03d83d97be097c14ffda6f141 *R/morphol.disparity.r
 edef90baa8e51a2cb4c96be281e83980 *R/nested.update.r
