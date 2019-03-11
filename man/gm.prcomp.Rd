@@ -9,7 +9,7 @@ gm.prcomp(A, phy = NULL, ...)
 \arguments{
 \item{A}{A 3D array (p x k x n) containing Procrustes shape variables for a set of aligned specimens}
 
-\item{phy}{An optional phylogenetic tree of class phylo - see \code{\link{read.tree}} in library ape}
+\item{phy}{An optional phylogenetic tree of class phylo}
 
 \item{...}{Other arguments passed to \code{\link{scale}}}
 }

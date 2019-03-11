@@ -15,7 +15,7 @@
 #' 
 #'
 #' @param A A 3D array (p x k x n) containing Procrustes shape variables for a set of aligned specimens
-#' @param phy An optional phylogenetic tree of class phylo - see \code{\link{read.tree}} in library ape
+#' @param phy An optional phylogenetic tree of class phylo 
 #' @param ... Other arguments passed to \code{\link{scale}}
 #' @return An object of class "gm.prcomp" contains a list of results for each of the PCA approaches implemented.
 #' Each of these lists includes the following components:
@@ -96,8 +96,8 @@ gm.prcomp <- function (A, phy = NULL, ...) {
       A <- A[,,phy$tip.label]
       Y <- Y[phy$tip.label, ]
     }
-    anc.raw <- shape.ace(two.d.array(A), phy)
-    ancY <- shape.ace(Y, phy)
+    anc.raw <- anc.BM(phy, two.d.array(A))
+    ancY <- anc.BM(phy, Y)
     all.dt <- rbind(Y, ancY)
     vcv.a <- crossprod(all.dt) / (nrow(all.dt)-1)
     svd.a <- svd(vcv.a)

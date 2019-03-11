@@ -9,7 +9,7 @@
 #' shape is to be saved as a png file, in which case the name of the file needs to be provided (without quotation marks).
 #' Interactive plots are at present available for plots produced by \code{\link{plot.gm.prcomp}}.
 #' 
-#' @param x a geomorph plot object of class plot.gm.prcomp, plot.procD.lm, plot.trajectory.analysis or plot.pls 
+#' @param x a geomorph plot object of class plot.gm.prcomp, plot.procD.lm, or plot.pls 
 #' @param ... other arguments passed to \code{\link{plotRefToTarget}}
 #' @return A list with the following components:
 #' \item{points}{A list with the xy coordinates of the selected points.}

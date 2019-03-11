@@ -36,7 +36,6 @@
 #' @export
 #' @keywords analysis
 #' @author Dean Adams
-#' @seealso  \code{\link[ape]{vcv.phylo}} (used in some internal computations)
 #' @return Objects of class "CR" from modularity.test return a list of the following:
 #'    \item{CR}{Covariance ratio: The estimate of the observed modular signal.}
 #'    \item{CInterval}{The bootstrapped 95 percent confidence intervals of the CR, if CI = TRUE.}

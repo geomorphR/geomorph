@@ -104,11 +104,18 @@ two.b.pls <- function (A1, A2,  iter = 999, seed = NULL, print.progress=TRUE){
   if (length(dim(A1)) == 3) x <- two.d.array(A1) else x <- as.matrix(A1)
   if (length(dim(A2)) == 3) y <- two.d.array(A2) else y <- as.matrix(A2)
   if (nrow(x) != nrow(y)) stop("Data matrices have different numbers of specimens.")
-  if (!is.null(rownames(x))  && !is.null(rownames(y))) {y <- y[rownames(x), ] }
   n <- nrow(x)
+  
+  if (is.null(rownames(x))) rownames(x) <- 1:n
+  if (is.null(rownames(y))) rownames(y) <- 1:n
+  
+  if(length(na.omit(match(rownames(x), rownames(y)))) != n) 
+    stop("Mismatched specimen names for A1 and A2.\n", call. = FALSE)
+  
+  y <- y[rownames(x), ]
+
   pls.obs <- pls(x, y, RV=FALSE, verbose=TRUE)
-  rownames(pls.obs$pls.svd$u) <- colnames(x)
-  rownames(pls.obs$pls.svd$v) <- colnames(pls.obs$pls.svd$vt) <- colnames(y)
+  
   if(NCOL(x) > n){
     pcax <- prcomp(x)
     d <- which(zapsmall(pcax$sdev) > 0)

@@ -8,7 +8,7 @@ shapeHulls(x, groups = NULL, group.cols = NULL, group.lwd = NULL,
   group.lty = NULL)
 }
 \arguments{
-\item{x}{A \code{\link{plot.procD.lm}} or \code{\link{trajectory.analysis}} object}
+\item{x}{A \code{\link{plot.procD.lm}}}
 
 \item{groups}{An optional vector or factor to define groups for hull.  If NULL, an attempt to coerce groups
 from the analytical design first used will be made.  If "none", only one hull will be generated for all points.}
@@ -19,17 +19,17 @@ exist, the general R color sequence (black, red, green, blue, etc.) will be used
 \item{group.lwd}{An optional vector equal in length to the number of group levels, and arranged in the order of group levels,
 to modify hull line width.}
 
-\item{group.lty}{An optional vector equal in length to the number of group levels, and arannged in the order of group levels,
+\item{group.lty}{An optional vector equal in length to the number of group levels, and arranged in the order of group levels,
 to modify hull line type.}
 }
 \description{
-This function is used to update \code{\link{plot.procD.lm}} and \code{\link{plot.trajectory.analysis}}
-objects with convex hull for different groups.  This function does not currently work with 
+This function is used to update \code{\link{plot.procD.lm}} 
+objects with convex hulls for different groups.  This function does not currently work with 
 \code{\link{plotTangentSpace}}.  If no groups are defined, an attempt to define groups from 
-the original \code{\link{procD.lm}} or \code{\link{trajectory.analysis}} analysis will be made.  Failing this, just a single
+the original \code{\link{procD.lm}} analysis will be made.  Failing this, just a single
 convex hull will be returned.  The user can also choose to plot only one hull with groups = "none", which is 
-different than a NULL argument.  Groups can also differ from the groups originally considered for the original \code{\link{procD.lm}} 
-or \code{\link{trajectory.analysis}} analysis.
+different than a NULL argument.  Groups can also differ from the groups originally considered for the original 
+\code{\link{procD.lm}} analysis.
 }
 \details{
 This function is a wrapper for the \code{\link{points}} function. It is intentionally limited, so
@@ -42,14 +42,18 @@ as to not interfere with other plot parameter adjustments.
 data("pupfish")
 gdf <- geomorph.data.frame(coords = pupfish$coords, Sex = pupfish$Sex,
 Pop = pupfish$Pop)
-fit <- procD.lm(coords ~ Pop * Sex, data = gdf)
+fit <- procD.lm(coords ~ Pop * Sex, data = gdf, print.progress = FALSE)
 pc.plot <- plot(fit, type = "PC", pch = 19)
 shapeHulls(pc.plot)
 
 pc.plot <- plot(fit, type = "PC", pch = 19)
-shapeHulls(pc.plot, group.cols = c("dark red", "dark red", "dark blue", "dark blue"),
+groups <- interaction(gdf$Pop, gdf$Sex)
+
+shapeHulls(pc.plot, groups = groups, 
+group.cols = c("dark red", "dark red", "dark blue", "dark blue"),
 group.lwd = rep(2, 4), group.lty = c(2, 1, 2, 1))
-legend("topright", levels(pc.plot$groups), 
+
+legend("topright", levels(groups), 
 col = c("dark red", "dark red", "dark blue", "dark blue"),
 lwd = rep(2,4), lty = c(2, 1, 2, 1))
 shapeHulls(pc.plot, groups = "none", group.lwd = 3, group.cols = "dark grey")
@@ -59,15 +63,6 @@ shapeHulls(pc.plot, groups = gdf$Sex, group.cols = c("black", "black"),
 group.lwd = rep(2, 2), group.lty = c(2, 1))
 legend("topright", levels(gdf$Sex), lwd = 2, lty = c(2, 1))
 
-# Via trajectory.analysis
-
-TA <- trajectory.analysis(coords ~ Pop * Sex, data = gdf, iter = 1)
-ta.plot <- plot(TA)
-shapeHulls(ta.plot) # based on trajectory.analysis groups
-
-ta.plot <- plot(TA)
-shapeHulls(ta.plot, groups = interaction(gdf$Pop, gdf$Sex),
-group.cols = c(1, 1, 2, 2)) # based on defined groups
 }
 \seealso{
 \code{\link{procD.lm}}

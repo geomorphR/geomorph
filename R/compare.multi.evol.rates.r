@@ -53,7 +53,6 @@
 #' This is helpful for long-running analyses.
 #' @keywords analysis
 #' @author Dean Adams
-#' @seealso  \code{\link[ape]{vcv.phylo}}, \code{\link[geiger]{sim.char}}, \code{\link[Matrix]{nearPD}}
 #'  (used in some internal computations)
 #' @export
 #' @return An object of class "evolrate" returns a list of the following: 

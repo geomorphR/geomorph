@@ -5,8 +5,8 @@ Title: Geometric Morphometric Analyses of 2D/3D Landmark Data
 Version: 3.0.8
 Author: Dean Adams, Michael Collyer, Antigoni Kaliontzopoulou
 Maintainer: Dean Adams <dcadams@iastate.edu>
-Depends: rgl, ape, R(>= 3.1.0)
-Imports: graphics, grDevices, stats, utils, jpeg, RRPP
+Depends: RRPP, rgl, R(>= 3.1.0)
+Imports: graphics, grDevices, stats, utils, jpeg
 Description: Read, manipulate, and digitize landmark data, generate shape
     variables via Procrustes analysis for points, curves and surfaces, perform
     shape analyses, and provide graphical depictions of shapes and patterns of

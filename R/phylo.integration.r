@@ -59,7 +59,6 @@
 #' @export
 #' @keywords analysis
 #' @author Dean Adams
-#' @seealso  \code{\link[ape]{vcv.phylo}} (used in some internal computations)
 #' @return Objects of class "pls" from integration.test return a list of the following:
 #'  \item{r.pls}{The estimate of morphological integration: PLS.corr. The mean of pairwise
 #'  PLS correlations between partitions is used when there are more than two partitions.}

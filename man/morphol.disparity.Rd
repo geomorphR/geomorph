@@ -12,12 +12,13 @@ morphol.disparity(f1, groups = NULL, partial = FALSE, iter = 999,
 a 3D array (p x k x n) containing Procrustes shape variables for a set of specimens, or a matrix (n x variables). 
 The right-hand portion of the formula should be " ~1" to use the overall mean, or "~ x1 + x2 + x3 +...", where each x is a 
 covariate or factor.  (Interactions and nested terms also work.)  Alternatively, one can use an object of class "procD.lm" or
-"advanced.procD.lm", which already has a formula defined.  This is especially helpful for analyses performed with \code{\link{procD.pgls}},
+"lm.rrpp", which already has a formula defined.  This is especially helpful for analyses performed with \code{\link{procD.pgls}},
 as residuals from PGLS will be used for analysis (see examples).}
 
-\item{groups}{A formula designating groups, e.g., groups = ~ groups.  If NULL, morphol.disparity
-will attempt to define groups based on the linear model formula, f1.  If there are no groups inherently
-indicated in f1 and groups is NULL, a single Procrustes variance will be returned for the entire data set.}
+\item{groups}{Either a formula designating groups, e.g., groups = ~ groups, or a factor, or 
+a vector coercible to factor.  If NULL and if f1 is a procD.lm or lm.rrpp model fit, morphol.disparity
+will attempt to define groups based on the terms of the model.  If there are no groups inherently
+indicated in f1 and groups is NULL, a single Procrustes variance will be returned for the entire data set.#'}
 
 \item{partial}{A logical value to indicate whether partial disparities should be calculated, sensu
 Foote (1993).  If TRUE, the model formula should have only an intercept (e.g., coords ~ 1); otherwise an error 
@@ -35,7 +36,8 @@ which might be of interest for advanced users.}
 \item{print.progress}{A logical value to indicate whether a progress bar should be printed to the screen.
 This is helpful for long-running analyses.}
 
-\item{...}{Arguments passed on to procD.fit (typically associated with the lm function)}
+\item{...}{Arguments passed on to procD.lm (typically associated with the lm function,
+such as weights or offset, plus SS.type).}
 }
 \value{
 Objects of class "morphol.disparity" return a list with the following components 
@@ -76,7 +78,7 @@ linear regression described.  Finally, different factors can be indicated in the
 compare morphological disparities for groups comprising only a portion of or collapsing of the groups in a more complex model 
 (see examples).
 
-This function can be used with an object of class "procD.lm" or "advanced.procD.lm", if such analyses have already been performed.  This is especially helpful for analyses performed with \code{\link{gpagen}},
+This function can be used with an object of class "procD.lm" or "lm.rrpp, if such analyses have already been performed.  
 This is specially useful for analyses performed with  \code{\link{procD.pgls}}.  In this case, residuals obtained from PGLS estimation
 of coefficients, rather than OLS estimation, will be used in the analysis.  Thus, one can account for phylogeny when comparing
 morphological disparity among groups.  However, one should be aware that this approach only adjusts expected values because of phylogeny
@@ -86,32 +88,42 @@ because of phylogenetic relatedness, but the null hypothesis of equal variances 
 \examples{
 data(plethodon)
 Y.gpa<-gpagen(plethodon$land, print.progress = FALSE)    #GPA-alignment
-gdf <- geomorph.data.frame(Y.gpa, species = plethodon$species, site = plethodon$site)
+gdf <- geomorph.data.frame(Y.gpa, species = plethodon$species, 
+site = plethodon$site)
 
 # Morphological disparity for entire data set
-morphol.disparity(coords ~ 1, groups= NULL, data = gdf, iter=499)
+morphol.disparity(coords ~ 1, groups = NULL, data = gdf, 
+iter = 999, print.progress = FALSE)
 
 # Morphological disparity for entire data set, accounting for allometry
-morphol.disparity(coords ~ Csize, groups= NULL, data = gdf, iter=499)
+morphol.disparity(coords ~ Csize, groups= NULL, data = gdf, 
+iter = 999, print.progress = FALSE)
 
 # Morphological disparity without covariates, using overall mean
-morphol.disparity(coords ~ 1, groups= ~ species*site, data = gdf, iter=499)
+morphol.disparity(coords ~ 1, groups= ~ species*site, data = gdf, 
+iter = 999, print.progress = FALSE)
 
-# Morphological parital disparities for overal mean
-morphol.disparity(coords ~ 1, groups= ~ species*site, partial = TRUE, data = gdf, iter=499)
+# Morphological partial disparities for overal mean
+morphol.disparity(coords ~ 1, groups= ~ species*site, partial = TRUE, 
+data = gdf, iter = 999, print.progress = FALSE)
 
 # Morphological disparity without covariates, using group means
-morphol.disparity(coords ~ species*site, groups= ~species*site, data = gdf, iter=499)
+morphol.disparity(coords ~ species*site, groups= ~species*site, 
+data = gdf, iter = 999, print.progress = FALSE)
 
-# Morphological disparity of different groups than those described by the linear model
-morphol.disparity(coords ~ Csize + species*site, groups= ~ species, data = gdf, iter=499)
+# Morphological disparity of different groups than those 
+# described by the linear model
+morphol.disparity(coords ~ Csize + species*site, groups= ~ species, 
+data = gdf, iter = 999, print.progress = FALSE)
 
 # Extracting components
-MD <- morphol.disparity(coords ~ Csize + species*site, groups= ~ species, data = gdf, iter=499)
+MD <- morphol.disparity(coords ~ Csize + species*site, groups= ~ species, 
+data = gdf, iter = 999, print.progress = FALSE)
 MD$Procrustes.var # just the Procrustes variances
 
 
-### Morphol.disparity can be used with procD.lm or advanced.procD.lm class objects
+### Morphol.disparity can be used with previously-defined 
+### procD.lm or lm.rrpp class objects
 
 data(plethspecies)
 Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment
@@ -128,8 +140,10 @@ data = gdf, iter = 999) # phylogenetic generalized least squares
 summary(pleth.ols)
 summary(pleth.pgls)
 
-morphol.disparity(f1 = pleth.ols, groups = ~ gp.end, data = gdf, iter = 999)
-morphol.disparity(f1 = pleth.pgls, groups = ~ gp.end, data = gdf, iter = 999)
+morphol.disparity(f1 = pleth.ols, groups = ~ gp.end, data = gdf, 
+iter = 999, print.progress = FALSE)
+morphol.disparity(f1 = pleth.pgls, groups = ~ gp.end, data = gdf, 
+iter = 999, print.progress = FALSE)
 
 }
 \references{

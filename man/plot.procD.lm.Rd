@@ -26,9 +26,7 @@ This vector is a vector of covariate values equal to the number of observations.
 
 \item{reg.type}{If "regression" is chosen for plot type, this argument
 indicates whether a common regression component (CRC) plot, prediction line 
-(Predline) plot, or regression score (RegScore) plotting is performed.  These plots
-are the same as those available from \code{\link{procD.allometry}} without the constraint
-that the predictor is size.}
+(Predline) plot, or regression score (RegScore) plotting is performed.}
 
 \item{...}{other arguments passed to plot (helpful to employ
 different colors or symbols for different groups).  See

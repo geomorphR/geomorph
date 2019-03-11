@@ -17,7 +17,7 @@ For Mac users:  please also install XQuartz from <https://www.xquartz.org/>. Thi
 
 <code> devtools::install_github("geomorphR/geomorph",ref = "Stable")</code>
 
-This installs a stable release of the current version of geomorph on CRAN, allowing us to quickly fix errors that slip thorugh the cracks and are uploaded with the CRAN version.
+This installs a stable release of the current version of geomorph on CRAN, allowing us to quickly fix errors that slip thorough the cracks and are uploaded with the CRAN version.
 
 ### To install the Development version (beta) of geomorph R-package from Github using devtools:
 

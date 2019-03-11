@@ -77,7 +77,7 @@
 #'  \item{points.var}{Variances of landmark points.}
 #'  \item{consensus}{The consensus (mean) configuration.}
 #'  \item{procD}{Procrustes distance matrix for all specimens (see details). Note that for large data
-#'  sets, R might return a memory allocation error, in which case the error will be supressed and this component will be NULL.
+#'  sets, R might return a memory allocation error, in which case the error will be suppressed and this component will be NULL.
 #'  For such cases, users can augment memory allocation and create distances with the dist function, independent from gpagen,
 #'  using the coords or data output.}
 #'  \item{p}{Number of landmarks.}
@@ -145,6 +145,7 @@
 gpagen = function(A, curves=NULL, surfaces=NULL, PrinAxes = TRUE, 
                   max.iter = NULL, ProcD=FALSE, Proj = TRUE,
                   print.progress = TRUE){
+  
   if(inherits(A, "geomorphShapes")) {
     Y <- A$landmarks
     if(any(unlist(lapply(Y, is.na)))) stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').")
@@ -153,12 +154,29 @@ gpagen = function(A, curves=NULL, surfaces=NULL, PrinAxes = TRUE,
     p <- A$p
     k <- A$k
     
+    spec.names <- names(Y)
+    p.names <- dimnames(Y[[1]])[[1]]
+    k.names <- c("X", "Y", "Z")[1:k] 
+    
   } else {
     
     if(!is.array(A)) stop("Coordinates must be a 3D array")
     if(length(dim(A)) != 3) stop("Coordinates array does not have proper dimensions")
     if(any(is.na(A))) stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').")
     n <- dim(A)[[3]]; p <- dim(A)[[1]]; k <- dim(A)[[2]]
+    
+    spec.names <- 1:n
+    p.names <- 1:p
+    k.names <- c("X", "Y", "Z")[1:k] 
+    
+    dim.names <- dimnames(A)
+    if(length(dim.names) != 0) {
+      dim.name.check <- sapply(1:length(dim.names), is.null)
+      if(!dim.name.check[[1]]) spec.names <- dim.names[[1]]
+      if(!dim.name.check[[2]]) spec.names <- dim.names[[2]]
+      if(!dim.name.check[[3]]) spec.names <- dim.names[[3]]
+    }
+    
     Y <- lapply(1:n, function(j) A[,,j])
   }
   
@@ -190,30 +208,27 @@ gpagen = function(A, curves=NULL, surfaces=NULL, PrinAxes = TRUE,
   
   coords <- gpa$coords
   M <- gpa$consensus
+  dimnames(M) <- list(p.names, k.names)
+    
   if (Proj == TRUE) {
     coords <- orp(coords)
     M <- Reduce("+",coords)/n
-    colnames(M) <- dimnames(A)[[2]]
-    rownames(M) <- dimnames(A)[[1]]
+    dimnames(M) <- list(p.names, k.names)
   }
   Csize <- gpa$CS
+  names(Csize) <- spec.names
   iter <- gpa$iter
   pt.var <- Reduce("+",Map(function(y) y^2/n, coords))
   coords <- simplify2array(coords)
-  if(inherits(A, "geomorphShapes")) dimnames(coords)[[3]] <- names(A$landmarks) else
-    dimnames(coords) <- dimnames(A)
-  pt.VCV <- var(two.d.array(coords))
-  rownames(pt.var) <- dimnames(coords)[[1]]
-  colnames(pt.var) <- if(k==3) c("Var.X", "Var.Y", "Var.Z") else 
-    c("Var.X", "Var.Y") 
-  pt.names <- if(k==3) paste(c("X","Y","Z"), sort(rep(1:p,k)), sep=".") else
-    paste(c("X","Y"), sort(rep(1:p,k)), sep=".")
-  if(is.null(colnames(pt.VCV))) rownames(pt.VCV) <- 
-    colnames(pt.VCV) <- pt.names
-  if(is.null(colnames(M))) colnames(M) <- if(k==3) c("X", "Y", "Z") else c("X", "Y")
+  dimnames(coords) <- list(p.names, k.names, spec.names)
   two.d.coords = two.d.array(coords)
-  if(is.null(colnames(two.d.coords))) colnames(two.d.coords) <- pt.names
-  names(Csize) <- dimnames(A)[[3]]
+  rownames(two.d.coords) <- spec.names
+  pt.VCV <- var(two.d.coords)
+  rownames(pt.var) <- p.names
+  colnames(pt.var) <- c("Var.X", "Var.Y", "Var.Z")[1:k]
+
+  if(is.null(colnames(M))) colnames(M) <- c("X", "Y", "Z")[1:k] 
+
   procD <- try(dist(two.d.coords), silent = TRUE)
   if(inherits(procD, "try-error")) procD <- NULL
   if(!is.null(curves) || !is.null(surf)) {
@@ -226,6 +241,7 @@ gpagen = function(A, curves=NULL, surfaces=NULL, PrinAxes = TRUE,
     smeth <- NULL
   }
   if(is.null(nsliders)) nsliders <- 0; if(is.null(nsurf)) nsurf <- 0
+
   out <- list(coords=coords, Csize=Csize, 
               iter=iter, 
               points.VCV = pt.VCV, points.var = pt.var, 
