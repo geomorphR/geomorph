@@ -138,7 +138,7 @@ procD.pgls<-function(f1, phy, Cov = NULL, iter=999, seed=NULL, int.first = FALSE
            ...)
   
   names(pgls) <- gsub("gls", "pgls", x = names(pgls))
-  names(pgls$GM) <- gsub("gls", "pgls", x = names(pgls$GM))
+  if(!is.null(pgls$GM)) names(pgls$GM) <- gsub("gls", "pgls", x = names(pgls$GM))
   
   pgls
 }
