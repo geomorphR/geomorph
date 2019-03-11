@@ -2186,7 +2186,7 @@ Sig.eigen <- function(Sig, tol = 1e-06){
     E$values <- ev[k]
     E$vectors <- E$vectors[,k]
   }
-  E$scaled.vectors <- E$vectors %*% diag(sqrt(E$values))
+  E$scaled.vectors <- E$vectors %*% diag(sqrt(E$values), k)
   rownames(E$vectors) <- rownames(E$scaled.vectors) <- 
     names(E$values) <- rownames(Sig)
   E$p <- length(ev)
