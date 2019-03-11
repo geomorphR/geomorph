@@ -2374,15 +2374,20 @@ pics <- function(ntip, nnode, edge1, edge2, edge_len, phe, contr,
     k <- which(edge2 == anc)
     edge_len[k] <- edge_len[k] + edge_len[i] * edge_len[j] / sumbl
   }
-  out <- phe[-(1:ntip),]
-  dimnames(out) <- list((ntip +1):N, colnames(x))
-  out
+ phe
 }
 
 anc.BM <- function(phy, Y) {
   preps <- pic.prep(phy, NROW(Y), NCOL(Y))
   preps$x <- Y
-  do.call(pics, preps)
+  out <- do.call(pics, preps)
+  ntip <- length(phy$tip.label)
+  nnode <- phy$Nnode
+  N <- nnode + ntip
+  out <- out[-(1:ntip), ]
+
+  dimnames(out) <- list((ntip + 1):N, colnames(Y))
+  out
 }
 
 # getNode Depth
