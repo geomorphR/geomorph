@@ -2333,54 +2333,56 @@ fix.phylo <- function(phy) { # merges a couple ape functions
     }
 }
 
-# anc.BM.prep
-# Set up for a function as an alternative to ace. fastAnc
-
-anc.BM.prep <- function(phy, x){
+# anc.BM 
+# via PICs
+# same as ace, but multivariate
+pic.prep <- function(phy, nx, px){
   phy <- fix.phylo(phy)
   ntip <- length(phy$tip.label)
-  out <- list(ntip = ntip, nnode = phy$Nnode,
-              edge1 = phy$edge[,1], edge2 = phy$edge[,2], 
-              edge_len = phy$edge.length)
-  out$tip <- phy$edge[, 2] <= ntip
-  out$x <- x
+  nnode <- phy$Nnode
+  edge <- phy$edge
+  edge1 <- edge[, 1]
+  edge2 <- edge[,2]
+  edge_len <- phy$edge.length
+  phe <- matrix(0, ntip + nnode, px)
+  contr <- matrix(0, nnode, px)
+  var_contr <- rep(0, nnode)
+  i.seq <- seq(1, ntip * 2 -2, 2)
+  list(ntip = ntip, nnode = nnode, edge1 = edge1,
+       edge2 = edge2, edge_len = edge_len, phe = phe,
+       contr = contr, var_contr = var_contr,
+       i.seq = i.seq)
+}
+
+pics <- function(ntip, nnode, edge1, edge2, edge_len, phe, contr,
+                 var_contr, i.seq, x) {
+  phe[1:ntip,] <- if (is.null(names(x))) x else x[phy$tip.label,]
+  N <- ntip + nnode
+  for(ii in 1:nnode) {
+    anc <- edge1[i.seq[ii]]
+    ij <- which(edge1 == anc)
+    i <- ij[1]
+    j <- ij[2]
+    d1 <- edge2[i]
+    d2 <- edge2[j]
+    sumbl <- edge_len[i] + edge_len[j]
+    ic <- anc - ntip 
+    ya <- (phe[d1,] - phe[d2,])/sqrt(sumbl)
+    contr[ic, ] <- ya
+    var_contr[ic] <- sumbl
+    phe[anc,] <- (phe[d1, ] * edge_len[j] + phe[d2, ] * edge_len[i])/sumbl
+    k <- which(edge2 == anc)
+    edge_len[k] <- edge_len[k] + edge_len[i] * edge_len[j] / sumbl
+  }
+  out <- phe[-(1:ntip),]
+  dimnames(out) <- list((ntip +1):N, colnames(x))
   out
 }
-
-# anc1.BM.prep
-# univariate function like ace
-
-anc1.BM <- function(ntip, nnode, edge1, edge2, edge_len, tip, x){
-  dev.BM <- function(p) {
-    options(warn = -1)
-    if(p[1] < 0) return(1e+100)
-    x1 <- p[-1][edge1 - ntip]
-    x2 <- numeric(length(x1))
-    x2[tip] <- x[edge2[tip]]
-    x2[!tip] <- p[-1][edge2[!tip] - ntip]
-    -2 * (-sum((x1 - x2)^2/edge_len)/(2 *p[1]) - nnode * log(p[1]))
-  }
-  out <- nlm(function(p) dev.BM(p), p = c(1, rep(mean(x), nnode)), hessian = TRUE)
-  options(warn = 0)
-  out$estimate[-1]
-}
-
-# anc.BM
-# The univariate function applied to multivariate data, only BM model
 
 anc.BM <- function(phy, Y) {
-  Y <- as.matrix(Y)
-  dims <- dim(Y)
-  n <- dims[1]
-  p <- dims[2]
-  anc.args <- anc.BM.prep(phy, x = Y[,1])
-  out <- sapply(1:p, function(j){
-    anc.args$x <- Y[,j]
-    do.call(anc1.BM, anc.args)
-  })
-  dimnames(out) <- list(1:anc.args$nnode + anc.args$ntip, 
-                        if(!is.null(colnames(Y))) colnames(Y) else 1:p)
-  out
+  preps <- pic.prep(phy, NROW(Y), NCOL(Y))
+  preps$x <- Y
+  do.call(pics, preps)
 }
 
 # getNode Depth
