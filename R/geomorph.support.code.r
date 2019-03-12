@@ -15,6 +15,8 @@
 #' @import graphics
 #' @import grDevices
 #' @importFrom jpeg readJPEG
+#' @importFrom ape multi2di.phylo
+#' @importFrom ape root.phylo
 
 #'
 #' @section geomorph TOC:
@@ -2305,39 +2307,23 @@ fast.phy.vcv <- function (phy) tcrossprod(phy.sim.mat(phy))
 reorder.phy <- function(phy){
   edge <- phy$edge
   edge.length <- phy$edge.length
+  edge <- cbind(edge, edge.length)
   n <- nrow(edge)
   ind <-rank(edge[,1], ties.method = "last")
   edge <- edge[order(ind, decreasing = TRUE), ]
-  edge.length <- edge.length[order(ind, decreasing = TRUE)]
-  phy$edge <- edge
+  edge.length <- edge[,3]
+  phy$edge <- edge[,-3]
   phy$edge.length <- edge.length
   attr(phy, "order") <- "postorder"
   return(phy)
 }
 
-# fix.phylo
-# same as a combination of reorder and multi2di, but without options
-
-fix.phylo <- function(phy) { # merges a couple ape functions
-  random <- TRUE
-  n <- length(phy$tip.label)
-  phy <- reorder.phy(phy)
-  degree <- tabulate(phy$edge[, 1])
-  target <- which(degree > 2)
-  if (!length(target)) 
-    return(phy) else {
-      stop("
-           geomorph does not have the capability to adjust the tree.  Consider
-           using multi2di in the ape package and rerunning this analysis after.
-           \n", call. = FALSE)
-    }
-}
 
 # anc.BM 
 # via PICs
 # same as ace, but multivariate
 pic.prep <- function(phy, nx, px){
-  phy <- fix.phylo(phy)
+  phy <- reorder.phy(phy)
   ntip <- length(phy$tip.label)
   nnode <- phy$Nnode
   edge <- phy$edge
@@ -2350,13 +2336,14 @@ pic.prep <- function(phy, nx, px){
   i.seq <- seq(1, ntip * 2 -2, 2)
   list(ntip = ntip, nnode = nnode, edge1 = edge1,
        edge2 = edge2, edge_len = edge_len, phe = phe,
-       contr = contr, var_contr = var_contr,
+       contr = contr, var_contr = var_contr, 
+       tip.label = phy$tip.label,
        i.seq = i.seq)
 }
 
-pics <- function(ntip, nnode, edge1, edge2, edge_len, phe, contr,
-                 var_contr, i.seq, x) {
-  phe[1:ntip,] <- if (is.null(names(x))) x else x[phy$tip.label,]
+ace.pics <- function(ntip, nnode, edge1, edge2, edge_len, phe, contr,
+                 var_contr, tip.label, i.seq, x) {
+  phe[1:ntip,] <- if (is.null(names(x))) x else x[tip.label,]
   N <- ntip + nnode
   for(ii in 1:nnode) {
     anc <- edge1[i.seq[ii]]
@@ -2377,16 +2364,20 @@ pics <- function(ntip, nnode, edge1, edge2, edge_len, phe, contr,
  phe
 }
 
-anc.BM <- function(phy, Y) {
-  preps <- pic.prep(phy, NROW(Y), NCOL(Y))
-  preps$x <- Y
-  out <- do.call(pics, preps)
-  ntip <- length(phy$tip.label)
-  nnode <- phy$Nnode
-  N <- nnode + ntip
-  out <- out[-(1:ntip), ]
+# anc.BM
+# multivariate as opposed to fastAnc
 
-  dimnames(out) <- list((ntip + 1):N, colnames(Y))
+anc.BM <- function(phy, Y){
+  phy <- reorder.phy(phy)
+  n <- length(phy$tip.label)
+  out <- t(sapply(1:phy$Nnode, function(j){
+    phy.j <- multi2di.phylo(root.phylo(phy, node = j + n))
+    preps <- pic.prep(phy.j, NROW(Y), NCOL(Y))
+    preps$x <- Y
+    out <- do.call(ace.pics, preps)
+    out[n + 1,]
+  }))
+  dimnames(out) <- list(1:phy$Nnode + length(phy$tip.label), colnames(Y))
   out
 }
 
@@ -2394,7 +2385,7 @@ anc.BM <- function(phy, Y) {
 # replaces node.depth.edgelength
 
 getNodeDepth <- function(phy){
-  phy <- fix.phylo(phy)
+  phy <- reorder.phy(phy)
   E <- phy$edge
   anc <- E[,1]
   des <- E[,2]

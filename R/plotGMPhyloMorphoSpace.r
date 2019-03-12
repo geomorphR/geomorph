@@ -54,7 +54,7 @@ plotGMPhyloMorphoSpace<-function(phy,A,tip.labels=TRUE,node.labels=TRUE,ancState
     x<-A }
   if (!inherits(phy, "phylo"))
     stop("tree must be of class 'phylo.'")
-  phy <- fix.phylo(phy)
+  phy <- reorder.phy(phy)
   N<-length(phy$tip.label)
   Nnode <- phy$Nnode
   if(!(N - phy$Nnode + (tabulate(phy$edge[, 1])[N + 1] >= 2)) == 2)
