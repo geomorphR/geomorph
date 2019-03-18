@@ -55,7 +55,8 @@
 #' @export
 #' @author Michael Collyer
 #' @return An object of class plotAllometry returns CAC values, the residual shape component (RSC, associated with CAC approach),
-#' PredLine values, RegScore values, PC points for the size-shape PCA, and PCA statistics.
+#' PredLine values, RegScore values, the size variable,
+#' PC points for the size-shape PCA, and PCA statistics.
 #' @references Adams, D. C., and A. Nistri. 2010. Ontogenetic convergence and evolution of foot morphology 
 #'   in European cave salamanders (Family: Plethodontidae). BMC Evol. Biol. 10:1-10.
 #' @references Adams, D.C., F.J. Rohlf, and D.E. Slice. 2013. A field comes of age: geometric morphometrics 
@@ -174,7 +175,7 @@ plotAllometry <- function(fit, size, logsz = TRUE,
   }
   
   out <- list(CAC = CAC, PredLine = PL, RegScore = Reg.proj, PC.points = PC.points,
-              size.shape.PCA = PCA)
+              size.var = xc, size.shape.PCA = PCA, logsz = logsz)
   class(out) <- "plotAllometry"
   invisible(out)
   
