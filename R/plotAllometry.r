@@ -16,7 +16,7 @@
 #' model basis (more detail below).  The common allometric component (CAC) and size-shape PCA (Mitteroecker et al. 2004) are plotting 
 #' strategies that do not have results
 #' that vary with linear model parameters.  By contrast, predicition lines (PredLine, Adams and Nistri 2010) and regression scores 
-#' (RegScore, Drake and Klingenberg 2008) use based on fitted values and regression coefficients, respectively, to visualize allometric patterns.  
+#' (RegScore, Drake and Klingenberg 2008) are based on fitted values and regression coefficients, respectively, to visualize allometric patterns.  
 #' The plotAllometry function will extract necessary components from a \code{\link{procD.lm}} fit to calculate these various statistics 
 #' (although the variables used in the \code{\link{procD.lm}} fit are inconsequntial for CAC and size-shape PCA; only the shape variables are used).
 #' 
@@ -32,23 +32,26 @@
 #' more informative.  The following are the three most general models:
 #' 
 #' simple allometry: shape ~ size
+#' 
 #' common allometry, different means: shape ~ size + groups
+#' 
 #' unique allometries: shape ~ size * groups
 #' 
-#' However, other covariates can be added to these models.  One could define these models with \code{\link{procvD.lm}}
+#' However, other covariates can be added to these models.  One could define these models with \code{\link{procD.lm}}
 #' and use \code{\link{anova.lm.rrpp}} to explicity test which model
 #' is most appropriate.  The function, \code{\link{pairwise}} can also be used to test pairwise differences among least-squares means or slopes.
 #' To visualize different allometric patterns, wither prediction lines (PredLine; Adams and Nistri 2010) or regression scores 
 #' (RegScore; Drake and Klingenberg 2008) can be used.  The former plots first PCs of fitted values against size; the latter calculates a regression score
-#' as a prohjection of data on normalized vector that expresses teh covariation between shape and the regression coefficients for size, conditioned
-#' on other model effects.  For a simple allometry model, CAC and RegScore are the same (Adams et al. 2013) but RegScore generalizes to complex models.
-#' Either of these two approaches can help elucidate divergence in allometry vectors among groups.
+#' as a projection of data on normalized vector that expresses the covariation between shape and the regression coefficients for size, conditioned
+#' on other model effects.  For a simple allometry model, CAC and RegScore are the same (Adams et al. 2013) but RegScore, like PredLine but unlike CAC,
+#'  generalizes to complex models.
+#' Either PredLine or RegScore can help elucidate divergence in allometry vectors among groups.
 #' 
 #' If the variable for size is used in the \code{\link{procD.lm}} fit, the plot options will resemble past allometry plots found in
 #' geomorph.  However, with this updated function philosophy, the model fit does not have to necessarily contain size.  This might be useful if 
 #' one wishes to visualize whether shape, size, and some other variable covary in some way (by first performing a \code{\link{procD.lm}} fit 
 #' between shape and another covariate, then performing plotAllometry with that fit and size).  For example, one can entertain the question,
-#' "Are species differences in shape merely a manifestation of shape allometry, when species are different sizes?"  By fitting a model, shape ~ species,
+#' "Are species differences in shape merely a manifestation of shape allometry, when species differ in size?"  By fitting a model, shape ~ species,
 #'  then using plotAllometry for the model fit (with either PredLine or RegScore), the plot will help reveal if allometry and species effects are confounded.
 #'
 #' 
