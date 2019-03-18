@@ -11,6 +11,8 @@ d8e8360c03c03fe45d2100e9c05d4a89 *data/plethodon.rda
 0a502fbac135a91e0398d6340377a010 *DESCRIPTION
 f4f2080e745b8d689f17caf549449ab5 *geomorph.Rproj
 bca924827ccdd63b91a6faa7c4b36472 *inst/CITATION
+14d494f6238001a038ec278fd4673653 *inst/doc/geomorph.assistance.html
+f45e697af929465acec55ea80b63ee7b *inst/doc/geomorph.assistance.Rmd
 28716370a3061eda0a124956b609765a *man/advanced.procD.lm.Rd
 5e099c6268d251bf5c98595d9566385a *man/arrayspecs.Rd
 aedd854ebbb437a660df88e33b7ed33c *man/bilat.symmetry.Rd
@@ -63,6 +65,7 @@ d946aa109dae49755739d7a06f3ca390 *man/plot.gm.prcomp.Rd
 c243df60434118dddca6904f3d6de9b0 *man/plot.physignal.Rd
 9d4ec1bd48ccacc5f1b26bae162256be *man/plot.pls.Rd
 a6e46ed02d27e74abc39893cf44d4543 *man/plot.procD.lm.Rd
+80727e0c5020236c21d2cad03cb203d1 *man/plotAllometry.Rd
 88f2f2a21e8b29f479daa13a92bb4942 *man/plotAllSpecimens.Rd
 43b904cd7bbcce9c9817bbe5c180c70c *man/plotGMPhyloMorphoSpace.Rd
 4542a404d1dabb2f1f237f087e4c9ea1 *man/plotOutliers.Rd
@@ -120,7 +123,7 @@ da1241dd835f95675cc7126b2a7ec61a *man/two.d.array.Rd
 7fbdd172510897e674f9fd2df418a154 *man/warpRefMesh.Rd
 4678254db827c8ff8caf6c5beb8157be *man/warpRefOutline.Rd
 d9119f721918f22c267db843023a86fe *man/writeland.tps.Rd
-45ceef8b58f30550fb0c40f5399739bf *NAMESPACE
+0df5eeb3a58209101f79b3cd74726ff5 *NAMESPACE
 406a105536ff57b5a4a54aee84f703c0 *NEWS
 92239d51a080ccd3fc3a9f7ef67d1b8c *R/arrayspecs.r
 c7cbd9c9a2de38757e9ed8245eedcb12 *R/bilat.symmetry.r
@@ -157,6 +160,7 @@ fad28e6c398befed621c58af24a9e6a2 *R/phylo.integration.r
 0fa60abf1efbd58eb9fd44082d35f1d7 *R/phylo.modularity.r
 208c3d8b92718b84910c7692588607ec *R/physignal.r
 570897f327de040eff54eba2ed89a6b6 *R/picknplot.shape.r
+f9956dfead3329cc20026078dc0d84b1 *R/plotAllometry.r
 c1cead3306cb3d7b1bd3ed5d99fc89af *R/plotAllSpecimens.r
 bfbf7cc964820a6eb054c2308d827a20 *R/plotGMPhyloMorphoSpace.r
 aab74b98af1c98726fe373d9759ccdbd *R/plotOutliers.r

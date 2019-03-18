@@ -1,0 +1,85 @@
+---
+title: "Addition by Subtration: Improving geomorph with fewer functions"
+author: "Michael Collyer"
+date: "3/12/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Data example: larval Salamanders
+
+```{r, include=TRUE}
+library(geomorph)
+data("larvalMorph")
+
+Y.gpa <- gpagen(larvalMorph$tailcoords, curves = larvalMorph$tail.sliders,
+                print.progress = FALSE)
+plot(Y.gpa)
+```
+
+## How to perform allometry analyses
+
+
+
+The following analyses replace **procD.allometry**.  It includes fitting two models: one with separate group allometrices and one with a common allometry (but different group intercepts.)
+
+```{r, include=TRUE}
+gdf <- geomorph.data.frame(Y.gpa, treatment = larvalMorph$treatment,
+                           family = larvalMorph$family, 
+                           logSize = log(Y.gpa$Csize))
+fit.gp.allom <- procD.lm(coords ~ logSize * treatment,
+                         data = gdf, print.progress = FALSE)
+fit.common.allom <- procD.lm(coords ~ logSize + treatment,
+                         data = gdf, print.progress = FALSE)
+```
+
+A Homogeneity of slopes test is an ANOVA comparing these models
+
+```{r, include=TRUE}
+anova(fit.common.allom, fit.gp.allom, print.progress = FALSE)
+```
+
+Based on the results, one might conclude that a common slopes model is preferred.  
+
+```{r, include=TRUE}
+anova(fit.common.allom)
+```
+
+Now for some plotting.
+
+```{r, include=TRUE}
+par(mfcol = c(2, 2))
+
+# Diagnostics
+plot(fit.common.allom)
+par(mfcol = c(1,1))
+
+# Regression plot, with PC of fitted values
+plot(fit.common.allom, type = "regression", reg.type = "PredLine",
+     predictor = logSize,
+     pch = 19, col = as.numeric(gdf$treatment),
+     xlab = "Log tail size")
+
+# Regression plot, with Regression scores
+plot(fit.common.allom, type = "regression", reg.type = "RegScore",
+     predictor = logSize,
+     pch = 19, col = as.numeric(gdf$treatment),
+     xlab = "Log tail size")
+
+# Regression plot, with Common Regression (Allometric) Component
+plot(fit.gp.allom, type = "regression", reg.type = "CRC",
+     predictor = logSize,
+     pch = 19, col = as.numeric(gdf$treatment)
+     )
+```
+
+
+
+
+
+
+
+
