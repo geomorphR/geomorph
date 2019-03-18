@@ -51,7 +51,8 @@
 #'   The generic function, \code{\link{plot}} has several options for plotting, using \code{\link{plot.procD.lm}}.  Diagnostics plots, 
 #'   principal component plots (rotated to first PC of covariance matrix of fitted values), and regression plots can be performed.  
 #'   One must provide a linear predictor, and
-#'   can choose among common regression component (CRC), predicted values (PredLine), or regression scores (RegScore). In these plotting options, the predictor does not need to be size, and fitted values and residuals from the procD.lm fit are used rather 
+#'   can choose among predicted values (PredLine) or regression scores (RegScore). 
+#'   In these plotting options, the predictor does not need to be size, and fitted values and residuals from the procD.lm fit are used rather 
 #'   than mean-centered values. 
 #'   
 #'  \subsection{Notes for geomorph 3.0.8 and subsequent versions}{ 
@@ -218,7 +219,7 @@
 #' plot(fit, type = "PC", pch = 19, col = "blue") 
 #' # Uses residuals from model to find the commonom regression component 
 #' # for a predictor from the model
-#' plot(fit, type = "regression", predictor = gdf$Csize, reg.type = "CRC", 
+#' plot(fit, type = "regression", predictor = gdf$Csize, reg.type = "RegScore", 
 #' pch = 19, col = "green")
 #' # Uses residuals from model to find the projected regression scores
 #' rat.plot <- plot(fit, type = "regression", predictor = gdf$Csize, reg.type = "RegScore", 
