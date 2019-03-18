@@ -4,8 +4,8 @@
 \alias{plotAllometry}
 \title{Plotting to assist visualization of shape-size covariation (allometry)}
 \usage{
-plotAllometry(fit, size, logsz = TRUE, method = c("CAC", "PredLine",
-  "RegScore", "size.shape"), ...)
+plotAllometry(fit, size, logsz = TRUE, method = c("PredLine",
+  "RegScore", "size.shape", "CAC"), ...)
 }
 \arguments{
 \item{fit}{A procD.lm fit.}
@@ -33,40 +33,67 @@ when procD.allometry was launched with geomorph 3.0.0, which performed homogenei
 if a common allometry or unique group allometries were more appropriate as a model.  The S3 generic, plot.procD.allometry
 provided the same plotting as plotAllometry before it.  In geomorph 3.0.8, procD.allometry has been deprectaed in favor of using
 \code{\link{procD.lm}} and \code{\link{pairwise}} for analyses, which can include additional variables, 
-thus eliminating plot.procD.allometry.
-
-Typical allometric plots can still be generated using procD.lm (for PredLine and RegScore plots) or two.b.pls (for CAC).  This
-function is merely a wrapper for condensing such different allometry plot options, following shape analysis with \code{\link{procD.lm}}.
+thus eliminating plot.procD.allometry.  This function coalesces a few plotting options found in other functions, 
+as a wrapper, for the purpose of retaining the plot.procD.allometry options in one place.
 
 There are fundamentally two different kinds of allometry plots: those based on linear models and those that do not have a linear
-model basis.  The common allometric component (CAC) and size-shape PCA (Mitteroecker et al. 2004) are plotting strategies that do not have results
+model basis (more detail below).  The common allometric component (CAC) and size-shape PCA (Mitteroecker et al. 2004) are plotting 
+strategies that do not have results
 that vary with linear model parameters.  By contrast, predicition lines (PredLine, Adams and Nistri 2010) and regression scores 
-(RegScore, Drake and Klingenberg 2008) use fitted values and regression coefficients, respectively, to visualize allometric patterns.  The plotAllometry
-function will extract necessary components from a \code{\link{procD.lm}} fit to calculate these various statistics (although the variables
-used in the \code{\link{procD.lm}} fit are inconsequntial for CAC and size-shape PCA; only the shape variables are used).
+(RegScore, Drake and Klingenberg 2008) use based on fitted values and regression coefficients, respectively, to visualize allometric patterns.  
+The plotAllometry function will extract necessary components from a \code{\link{procD.lm}} fit to calculate these various statistics 
+(although the variables used in the \code{\link{procD.lm}} fit are inconsequntial for CAC and size-shape PCA; only the shape variables are used).
+
+There are multipe ways to visualize allometry.  One way is to simply append a size variable to shape variables and perform a principal component analysis
+(PCA).  In the event that size and shape strongly covary, the first PC scores might reflect this (Mitteroecker et al. 2004).  Alternatively, the major
+axis of covariation between size and shape can be found by a singular value decomposition of their cross-products, a process known as two-block partial 
+least squares (PLS; Rohlf and Corti 2000).  This major axis of variation is often referred to as the common allometric component 
+(CAC; Mitteroecker et al. 2004).  Neither of these methods is associated with a model of allometric shape change, especially as such change might vary
+for different groups.  As such, these methods have limited appeal for comapring group allometries (although color-coding groups in plots might reveal
+different trends in the plot scatter).
+
+By contrast, describing a linear model (with \code{\link{procD.lm}}) that has an explicit definition of how shape allometries vary by group can be 
+more informative.  The following are the three most general models:
+
+simple allometry: shape ~ size
+common allometry, different means: shape ~ size + groups
+unique allometries: shape ~ size * groups
+
+However, other covariates can be added to these models.  One could define these models with \code{\link{procvD.lm}}
+and use \code{\link{anova.lm.rrpp}} to explicity test which model
+is most appropriate.  The function, \code{\link{pairwise}} can also be used to test pairwise differences among least-squares means or slopes.
+To visualize different allometric patterns, wither prediction lines (PredLine; Adams and Nistri 2010) or regression scores 
+(RegScore; Drake and Klingenberg 2008) can be used.  The former plots first PCs of fitted values against size; the latter calculates a regression score
+as a prohjection of data on normalized vector that expresses teh covariation between shape and the regression coefficients for size, conditioned
+on other model effects.  For a simple allometry model, CAC and RegScore are the same (Adams et al. 2013) but RegScore generalizes to complex models.
+Either of these two approaches can help elucidate divergence in allometry vectors among groups.
 
 If the variable for size is used in the \code{\link{procD.lm}} fit, the plot options will resemble past allometry plots found in
 geomorph.  However, with this updated function philosophy, the model fit does not have to necessarily contain size.  This might be useful if 
 one wishes to visualize whether shape, size, and some other variable covary in some way (by first performing a \code{\link{procD.lm}} fit 
-between shape and another covariate, then performing plotAllometry with that fit and size).
+between shape and another covariate, then performing plotAllometry with that fit and size).  For example, one can entertain the question,
+"Are species differences in shape merely a manifestation of shape allometry, when species are different sizes?"  By fitting a model, shape ~ species,
+ then using plotAllometry for the model fit (with either PredLine or RegScore), the plot will help reveal if allometry and species effects are confounded.
 
 The following are brief descriptions of the different plotting methods, with references.
 
 \itemize{
-\item {If "method=CAC" (the default) the function calculates the 
+  \item {If "method = PredLine" (the default) the function calculates fitted values from a \code{\link{procD.lm}} fit, and 
+  plots the first principal component of the "predicted" values versus size as a stylized graphic of the 
+  allometric trend (Adams and Nistri 2010). This method is based on linear models and 
+  can allow for other model variable to be incorporated.}
+  \item {If "method = RegScore" the function calculates standardized shape scores 
+  from the regression of shape on size, and plots these versus size (Drake and Klingenberg 2008). 
+  For a single allometry, these shape scores are mathematically identical to the CAC (Adams et al. 2013).  
+  This method is based on linear models and can allow for other model variable to be incorporated.}
+  \item {If "method = size.shape" the function perform principal components analysis on a data space containing both shape 
+  and size (sensu Mitteroecker et al. 2004).  This method is not based on linear models and results will not be changed by 
+  changing the allometry model.}
+  \item {If "method = CAC"  the function calculates the 
   common allometric component of the shape data, which is an estimate of the average allometric trend 
   for group-mean centered data (Mitteroecker et al. 2004). The function also calculates the residual shape component (RSC) for 
-  the data.}
-  \item {If "method = RegScore" the function calculates shape scores 
-  from the regression of shape on size, and plots these versus size (Drake and Klingenberg 2008). 
-  For a single allometry, these shape scores are mathematically identical to the CAC (Adams et al. 2013).  This method can
-  allow for other model variable to be incorporated.}
-  \item {If "method = PredLine" the function calculates predicted values from a regression of shape on size, and 
-  plots the first principal component of the predicted values versus size as a stylized graphic of the 
-  allometric trend (Adams and Nistri 2010). This method can
-  allow for other model variable to be incorporated.}
-  \item {If "method = size.shape" the function perform principal components analysis on a data space containing both shape 
-  and size (sensu Mitteroecker et al. 2004).}
+  the data.  This method is not based on linear models and results will not be changed by 
+  changing the allometry model.}
   }
   
 The function returns values that can be used with \code{\link{picknplot.shape}} to visualize shape changes in the plot.
@@ -142,6 +169,9 @@ Drake, A. G., and C. P. Klingenberg. 2008. The pace of morphological change: His
 
 Mitteroecker, P., P. Gunz, M. Bernhard, K. Schaefer, and F. L. Bookstein. 2004. 
   Comparison of cranial ontogenetic trajectories among great apes and humans. J. Hum. Evol. 46:679-698.
+
+Rohlf, F.J., and M. Corti. 2000. The use of partial least-squares to study covariation in shape. 
+Systematic Biology 49: 740-753.
 }
 \author{
 Michael Collyer
