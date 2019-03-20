@@ -1,8 +1,13 @@
 ---
 title: "Addition by Subtraction: Improving geomorph with fewer functions"
 author: "Michael Collyer"
-date: "3/12/2019"
-output: html_document
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Using RRPP}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+  
 ---
 
 ```{r setup, include=FALSE}

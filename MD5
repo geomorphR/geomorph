@@ -12,7 +12,7 @@ d8e8360c03c03fe45d2100e9c05d4a89 *data/plethodon.rda
 f4f2080e745b8d689f17caf549449ab5 *geomorph.Rproj
 bca924827ccdd63b91a6faa7c4b36472 *inst/CITATION
 6320d9fded2859ccf70855c04ef48f63 *inst/doc/geomorph.assistance.html
-5e797e0a3527bb9f7a845323655003c1 *inst/doc/geomorph.assistance.Rmd
+6db70fd83bb647c7b3e1a4e1aece3b25 *inst/doc/geomorph.assistance.Rmd
 28716370a3061eda0a124956b609765a *man/advanced.procD.lm.Rd
 5e099c6268d251bf5c98595d9566385a *man/arrayspecs.Rd
 aedd854ebbb437a660df88e33b7ed33c *man/bilat.symmetry.Rd
@@ -42,7 +42,7 @@ f75d8d3684ccbf4d90ab2547f0c2d5b8 *man/gpagen.Rd
 a598044482a6c3e39517b798b654c57e *man/hummingbirds.Rd
 9ca6dd36cfe4569f3d4b50fce2ba00b5 *man/integration.test.Rd
 9ab40cb3c3d8ccec94850abe377bd773 *man/interlmkdist.Rd
-833da133e435c10f2fcb2857439f10f1 *man/larvalMorph.Rd
+250260d69741416238284d376d952378 *man/larvalMorph.Rd
 c971ee431344adcf29329d08936971dd *man/modularity.test.Rd
 dbfd36c83dc85814a5bf0fabd5a6f27b *man/morphol.disparity.Rd
 00e77dd77ac4f29ace5334a4df4aa23e *man/mosquito.Rd
@@ -185,3 +185,4 @@ b40fd66951a96a35b9d7b2662b07e787 *R/shapeHulls.r
 59d493f9cc61f036c40f49bf8b7bb3e0 *R/warpRefOutline.r
 ad572d6203f667d37641cee3adbc72b7 *R/writeland.tps.r
 1fe9a3909cce870d2263fb8cdfd1e639 *README.md
+6db70fd83bb647c7b3e1a4e1aece3b25 *vignettes/geomorph.assistance.Rmd
