@@ -11,8 +11,8 @@ d8e8360c03c03fe45d2100e9c05d4a89 *data/plethodon.rda
 0a502fbac135a91e0398d6340377a010 *DESCRIPTION
 f4f2080e745b8d689f17caf549449ab5 *geomorph.Rproj
 bca924827ccdd63b91a6faa7c4b36472 *inst/CITATION
-14d494f6238001a038ec278fd4673653 *inst/doc/geomorph.assistance.html
-f45e697af929465acec55ea80b63ee7b *inst/doc/geomorph.assistance.Rmd
+6320d9fded2859ccf70855c04ef48f63 *inst/doc/geomorph.assistance.html
+5e797e0a3527bb9f7a845323655003c1 *inst/doc/geomorph.assistance.Rmd
 28716370a3061eda0a124956b609765a *man/advanced.procD.lm.Rd
 5e099c6268d251bf5c98595d9566385a *man/arrayspecs.Rd
 aedd854ebbb437a660df88e33b7ed33c *man/bilat.symmetry.Rd
@@ -146,7 +146,7 @@ ea70d8797d372e6b7043722cce194e7a *R/digitsurface.r
 aac6a4f8a759473e8c37048e5c8e3d91 *R/findMeanSpec.r
 caaaee9efd03d4be2333ee91de608a3d *R/fixed.angle.r
 c7f93c567b464e532952bb4f24f71883 *R/geomorph.data.frame.r
-857de7eab5c2e1adc9d176ba3bdc2ec3 *R/geomorph.support.code.r
+8643b711d0c4c7a8c6a45b12919ef2b1 *R/geomorph.support.code.r
 24f7d620afad3b4626e34bdeec155145 *R/geomorph.utils.r
 48ad1d05fbe54c70769453fd53a74d47 *R/globalIntegration.r
 07ea0ee76671c70d031c2828590d2d16 *R/gm.prcomp.R
@@ -155,7 +155,7 @@ ee4e04f411c176afc2106966ffcf6c95 *R/gpagen.r
 2b338eb56d6c8e743d2240ed4d7b5297 *R/integration.test.r
 0cbfe6b5655e2751cdd03ca2a1550768 *R/interlmkdist.r
 22bfc5e775ee6102b970e5b79231eea0 *R/modularity.test.r
-1a43a75eaa09473b1281f5b62ee0156e *R/morphol.disparity.r
+d88d65992819efa0861e963c18a7756a *R/morphol.disparity.r
 fad28e6c398befed621c58af24a9e6a2 *R/phylo.integration.r
 0fa60abf1efbd58eb9fd44082d35f1d7 *R/phylo.modularity.r
 208c3d8b92718b84910c7692588607ec *R/physignal.r
