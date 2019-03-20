@@ -238,6 +238,8 @@ morphol.disparity <- function(f1, groups = NULL, partial = FALSE, iter = 999, se
       H %*% d[ind[[j]]]
     })
     
+    if(print.progress) close(pb)
+    
     if(partial){
       gpn <- as.vector(by(groups, groups, length))
       part.mat <- matrix(gpn, length(gpn), NCOL(pv))/(N - 1)
@@ -258,15 +260,18 @@ morphol.disparity <- function(f1, groups = NULL, partial = FALSE, iter = 999, se
   }
   
   if(is.null(groups)) {
+    pv.obs <- pv
     cat("No factor in formula or model terms from which to define groups.\n")
     cat("Procrustes variance")
     if(partial) cat("(Foote's disparity)")
     cat(":\n")
     cat(pv, "\n")
   } else {
-    
-    if(is.null(groups)) pv.obs <- pv else pv.obs <- pv[,1]
-    out <- list(Procrustes.var = pv.obs, PV.dist = pvd[[1]], PV.dist.Pval = p.val,
+    PV.dist = pvd[[1]]
+    dimnames(PV.dist) <- dimnames(p.val) <- list(levels(groups), levels(groups))
+    pv.obs <- pv[,1]
+    names(pv.obs) <- levels(groups)
+    out <- list(Procrustes.var = pv.obs, PV.dist = PV.dist, PV.dist.Pval = p.val,
                 random.PV.dist = pvd, permutations = iter+1, 
                 partial = partial, call = match.call())
     

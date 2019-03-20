@@ -134,7 +134,7 @@ NULL
 #' the egg masses (clutches) sampled in the wild from which individual eggs were randomly assigned to treatment.
 #' See Levis et al. (2016) for more experimental details.
 #' @references Levis, N.A, M.L. Schooler, J.R. Johnson, and M.L. Collyer. 2016. The effects of terrestrial and aquatic herbicides on
-#' larval salamander morphology and swim speed. Biological Journal of the Linnean Society.  Accepted.
+#' larval salamander morphology and swim speed. Biological Journal of the Linnean Society. 118:569-581.
 NULL
 
 #' Estimate mean shape for a set of aligned specimens
