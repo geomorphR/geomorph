@@ -4,7 +4,7 @@ author: "Michael Collyer"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{geomorph Assistance}
+  %\VignetteIndexEntry{geomorph version 3.1.0 Assistance}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
   
@@ -33,7 +33,7 @@ By eliminating or updating some of the older functions, the overall functionalit
 
 These data consiste of head landmarks, tail landmarks, and indicators for their semilandmarks (sliders) for larval salamanders, from an experimental study (Levis et al. 2016).  Salamanders from different families (egg clutches) were exposed to different herbicide treatments.  For our examples, we will focus on tail shape.  First, let's perform GPA.
 
-```{r, include=TRUE}
+```{r, include=TRUE, fig.height=4, fig.width=5}
 library(geomorph)
 data("larvalMorph")
 
@@ -94,7 +94,7 @@ summary(fit.size)
 
 It is clear that there is a significant association between shape and size.  To visualize this relationship, there are many options.  First, we can use the **plot** generic for procD.lm and vary some of the arguments.  Let's do that, using two different ways to visualize shape change: prediction lines (PredLine) and regression scores (RegScore).  The former are first principal component scores for fitted values from the procD.lm fit (Adams and Nistri 2010); the latter are standardized projected shape scores, along the axis defined by the regression of shape on size (Drake and Klingenberg 2008).  These plot options were formerly found in plot.procD.allometry, as well as plot.procD.lm (as shown below).
 
-```{r, include=TRUE}
+```{r, include=TRUE, fig.height=4, fig.width=5}
 plot(fit.size, type = "regression", reg.type = "PredLine", predictor = log(gdf$Csize),
      xlab = "log(Csize)")
 plot(fit.size, type = "regression", reg.type = "RegScore", predictor = log(gdf$Csize),
@@ -103,7 +103,7 @@ plot(fit.size, type = "regression", reg.type = "RegScore", predictor = log(gdf$C
 
 The plot.procD.lm function is for any procD.lm fit.  If one wishes to work specifically with allometry models, the **plotAllometry** function performs the same analysis as a convenient wrapper for plot.procD.lm.  For example,
 
-```{r, include=TRUE}
+```{r, include=TRUE, fig.height=4, fig.width=5}
 plotAllometry(fit.size, size = gdf$Csize, logsz = TRUE, method = "PredLine")
 plotAllometry(fit.size, size = gdf$Csize, logsz = TRUE, method = "RegScore")
 ```
@@ -112,7 +112,7 @@ plotAllometry(fit.size, size = gdf$Csize, logsz = TRUE, method = "RegScore")
 
 We could also perform a two-block partial least squares (PLS) analysis to find the correaltion between shape and size, which is not based on a particular model.
 
-```{r, include=TRUE}
+```{r, include=TRUE, fig.height=4, fig.width=5}
 PLS <- two.b.pls(log(gdf$Csize), gdf$coords, print.progress = FALSE)
 PLS
 plot(PLS, warpgrids = FALSE)
@@ -120,7 +120,7 @@ plot(PLS, warpgrids = FALSE)
 
 An astute observer might catch that the PLS plot is exactly the same as the RegScore plot.  It is, in this case of a simple allometry model.  They are also both the same as a plot of the common allometric component (CAC, Mitteroecker et al. 2004); i.e.,
 
-```{r, include=TRUE}
+```{r, include=TRUE, fig.height=4, fig.width=6}
 plotAllometry(fit.size, size = gdf$Csize, logsz = TRUE, method = "CAC")
 ```
 
@@ -128,7 +128,7 @@ The CAC plot will always be the same as the PLS plot, irrespective of the type o
 
 One can also append a size vector to a matrix of shape variables and perform principal components analysis (PCA), called size-shape PCA (Mitteroecker et al. 2004).
 
-```{r, include=TRUE}
+```{r, include=TRUE, fig.height=4, fig.width=5}
 plotAllometry(fit.size, size = gdf$Csize, logsz = TRUE, method = "size.shape")
 ```
 
@@ -148,7 +148,7 @@ anova(fit.common, fit.unique, print.progress = FALSE)
 
 The ANOVA above was formerly carried out by advanced.procD.lm as a homogeneity of slopes (HOS) test in the function procD.allometry (although nested effects were not possible.)  Because this model comparison did not yield a significant result, we can conlude that a common allometry model is appropriate.  Thus, we might want to plot the results, color-coding the points by treatment
 
-```{r, include=TRUE}
+```{r, include=TRUE,  fig.height=4, fig.width=5}
 plotAllometry(fit.common, size = gdf$Csize, logsz = TRUE, method = "PredLine",
               pch = 19, col = as.numeric(gdf$treatment))
 plotAllometry(fit.common, size = gdf$Csize, logsz = TRUE, method = "RegScore",
@@ -235,7 +235,7 @@ The **pairwise** function in *RRPP* is really versatile and far less cumbersome 
 
 The trajectory,analysis function has been modified and now resides in *RRPP*, as it is a wrapper for the **pairwise** function.  It has the same basic arguments as the pairwise function, but also has an argument for trajectory points (which can be a single value, if data are already trajectories or a factor to indicate trajectory point levels).  Following the example above, trajectory analysis can be considered a pairwise function where treatments are trajectories and families are trajectory points.  The following highlights the steps involved for one type of example (but the plotting options are quite numerous):
 
-```{r, include=TRUE}
+```{r, include=TRUE, fig.height=4, fig.width=5}
 TA <- trajectory.analysis(fit.common, 
                           groups = gdf$treatment, traj.pts = gdf$family,
                           pca = TRUE, print.progress = FALSE)

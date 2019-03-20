@@ -11,8 +11,8 @@ d8e8360c03c03fe45d2100e9c05d4a89 *data/plethodon.rda
 0a502fbac135a91e0398d6340377a010 *DESCRIPTION
 f4f2080e745b8d689f17caf549449ab5 *geomorph.Rproj
 bca924827ccdd63b91a6faa7c4b36472 *inst/CITATION
-b468db5d40944c050520c42add7baf90 *inst/doc/geomorph.assistance.html
-6db70fd83bb647c7b3e1a4e1aece3b25 *inst/doc/geomorph.assistance.Rmd
+deb09a7c60608781c38d60ae476f466c *inst/doc/geomorph.assistance.html
+a6b9a0f9c60dfe8aedb33a517f8b7df0 *inst/doc/geomorph.assistance.Rmd
 28716370a3061eda0a124956b609765a *man/advanced.procD.lm.Rd
 5e099c6268d251bf5c98595d9566385a *man/arrayspecs.Rd
 aedd854ebbb437a660df88e33b7ed33c *man/bilat.symmetry.Rd
@@ -185,4 +185,4 @@ b40fd66951a96a35b9d7b2662b07e787 *R/shapeHulls.r
 59d493f9cc61f036c40f49bf8b7bb3e0 *R/warpRefOutline.r
 ad572d6203f667d37641cee3adbc72b7 *R/writeland.tps.r
 1fe9a3909cce870d2263fb8cdfd1e639 *README.md
-6db70fd83bb647c7b3e1a4e1aece3b25 *vignettes/geomorph.assistance.Rmd
+a6b9a0f9c60dfe8aedb33a517f8b7df0 *vignettes/geomorph.assistance.Rmd
