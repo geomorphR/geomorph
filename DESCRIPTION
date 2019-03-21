@@ -1,11 +1,11 @@
 Package: geomorph
-Date: 2019-03-12
+Date: 2019-03-20
 Type: Package
 Title: Geometric Morphometric Analyses of 2D/3D Landmark Data
-Version: 3.0.8
+Version: 3.1.0
 Author: Dean Adams, Michael Collyer, Antigoni Kaliontzopoulou
 Maintainer: Dean Adams <dcadams@iastate.edu>
-Depends: RRPP, rgl, R(>= 3.1.0)
+Depends: RRPP, rgl, R(>= 3.5.0)
 Imports: graphics, grDevices, stats, utils, jpeg, ape
 Description: Read, manipulate, and digitize landmark data, generate shape
     variables via Procrustes analysis for points, curves and surfaces, perform
@@ -16,5 +16,8 @@ Packaged: 2016-01-26 08:44:02 UTC; Dean
 Repository: CRAN
 Date/Publication: 2015-12-15 00:00:00
 RoxygenNote: 6.1.1
+Suggests: knitr,
+    rmarkdown,
+    testthat
 Encoding: UTF-8
-NeedsCompilation: no
+
