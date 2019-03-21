@@ -13,7 +13,7 @@ f4f2080e745b8d689f17caf549449ab5 *geomorph.Rproj
 bca924827ccdd63b91a6faa7c4b36472 *inst/CITATION
 deb09a7c60608781c38d60ae476f466c *inst/doc/geomorph.assistance.html
 a6b9a0f9c60dfe8aedb33a517f8b7df0 *inst/doc/geomorph.assistance.Rmd
-28716370a3061eda0a124956b609765a *man/advanced.procD.lm.Rd
+71303f6d562524cf09f2e0cd4be5a46e *man/advanced.procD.lm.Rd
 5e099c6268d251bf5c98595d9566385a *man/arrayspecs.Rd
 aedd854ebbb437a660df88e33b7ed33c *man/bilat.symmetry.Rd
 5a3e03eb2accf1269a9cf8c049adae78 *man/buildtemplate.Rd
@@ -47,7 +47,7 @@ c971ee431344adcf29329d08936971dd *man/modularity.test.Rd
 dbfd36c83dc85814a5bf0fabd5a6f27b *man/morphol.disparity.Rd
 00e77dd77ac4f29ace5334a4df4aa23e *man/mosquito.Rd
 869c60d686d6e631ab23e77de8986031 *man/mshape.Rd
-a77c2729297e1c1d3d9f3583825a98b7 *man/nested.update.Rd
+1568730ef6ac1237622ae188e1928c1b *man/nested.update.Rd
 797e802c0fe5ca1617d6d3b056f19f62 *man/phylo.integration.Rd
 d30e21a610d02ea46a1573643e6d101e *man/phylo.modularity.Rd
 baa6e400dec88ae1128fd3e195d6a1ec *man/physignal.Rd
@@ -87,7 +87,7 @@ c099404c82877d5f4efc349589e2d21d *man/print.physignal.Rd
 ed693e07c72843a8da98c722b7e1ba98 *man/print.plotTangentSpace.Rd
 c9459503ec13f843f971edda31289dc6 *man/print.pls.Rd
 e186bde97e98a204b53457a14eb0a52d *man/print.procD.lm.Rd
-8c1657c6188fc350a142610b9504ef34 *man/procD.allometry.Rd
+9b573f0adfa8a7289c49fd549a5a1e9c *man/procD.allometry.Rd
 4114c67f34fca73a7d4d766df0b28742 *man/procD.lm.Rd
 49c0768ac849a82d8564366d673e475a *man/procD.pgls.Rd
 2e915d39d1b79932fb1633dbdcc28ce8 *man/pupfish.Rd
@@ -136,7 +136,7 @@ d07ba05e9c4ba71ee07b20df5b7e0de9 *R/compare.multi.evol.rates.r
 c77f2f19e63d93ec9a76ac9c2236f1bc *R/define.links.r
 ddcc6629196b8e66ef9a2e92c093f041 *R/define.modules.r
 40fc3f0daa4f943ce38979e67f2565ac *R/define.sliders.r
-722fbb105ac3f91abb391b1f17863872 *R/deprecated.defunct.r
+b557de0a864900966143895a54c14350 *R/deprecated.defunct.r
 a38ff2f2af270bf26299b1569cc734fc *R/digit.curves.r
 9f05955421767dcdf76fed2b965f149d *R/digit.fixed.r
 58ac3c6102b455136e748471fb62df29 *R/digitize2d.r
