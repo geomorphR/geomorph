@@ -74,7 +74,7 @@ plot(MT) # Histogram of CR sampling distribution
 }
 \references{
 Adams, D.C. 2016.Evaluating modularity in morphometric data: Challenges with the RV coefficient and a 
-new test measure. Methods in Ecology and Evolution. (Accepted).
+new test measure. Methods in Ecology and Evolution. 7:565-572.
 
 Adams, D.C. and R. Felice. 2014. Assessing phylogenetic morphological 
 integration and trait covariation in morphometric data using evolutionary covariance 

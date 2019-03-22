@@ -18,7 +18,7 @@ as residuals from PGLS will be used for analysis (see examples).}
 \item{groups}{Either a formula designating groups, e.g., groups = ~ groups, or a factor, or 
 a vector coercible to factor.  If NULL and if f1 is a procD.lm or lm.rrpp model fit, morphol.disparity
 will attempt to define groups based on the terms of the model.  If there are no groups inherently
-indicated in f1 and groups is NULL, a single Procrustes variance will be returned for the entire data set.#'}
+indicated in f1 and groups is NULL, a single Procrustes variance will be returned for the entire data set.}
 
 \item{partial}{A logical value to indicate whether partial disparities should be calculated, sensu
 Foote (1993).  If TRUE, the model formula should have only an intercept (e.g., coords ~ 1); otherwise an error 
@@ -52,7 +52,7 @@ Objects of class "morphol.disparity" return a list with the following components
   \item{call}{The match call}
 }
 \description{
-Function estimates morphological disparity and performs pairwise comparisons among groups.
+Function estimates morphological disparity and performs pairwise comparisons among groups
 }
 \details{
 The function estimates morphological disparity and performs pairwise comparisons to identify differences
@@ -78,12 +78,17 @@ linear regression described.  Finally, different factors can be indicated in the
 compare morphological disparities for groups comprising only a portion of or collapsing of the groups in a more complex model 
 (see examples).
 
-This function can be used with an object of class "procD.lm" or "lm.rrpp, if such analyses have already been performed.  
+This function can be used with an object of class "procD.lm" or "lm.rrpp", if such analyses have already been performed.  
 This is specially useful for analyses performed with  \code{\link{procD.pgls}}.  In this case, residuals obtained from PGLS estimation
 of coefficients, rather than OLS estimation, will be used in the analysis.  Thus, one can account for phylogeny when comparing
 morphological disparity among groups.  However, one should be aware that this approach only adjusts expected values because of phylogeny
 and does not assert a null hypothesis of equal variances based on phylogenetic relatedness.  (For example, species means can be adjusted
 because of phylogenetic relatedness, but the null hypothesis of equal variances is conditioned on the estimation of means.)
+
+\subsection{Notes for geomorph 3.1.0 and subsequent versions}{ 
+ The function \code{\link{pairwise}} in the \code{RRPP} package can also be used to evaluate morphological 
+ disparity, and will yield results identical to those of the current function. A simple example is shown below
+ }
 }
 \examples{
 data(plethodon)
@@ -144,6 +149,10 @@ morphol.disparity(f1 = pleth.ols, groups = ~ gp.end, data = gdf,
 iter = 999, print.progress = FALSE)
 morphol.disparity(f1 = pleth.pgls, groups = ~ gp.end, data = gdf, 
 iter = 999, print.progress = FALSE)
+
+ ### Morphol.disparity using RRPP
+ PW <- pairwise(pleth.ols, groups = gp.end)
+ summary(PW, test.type = 'var')
 
 }
 \references{

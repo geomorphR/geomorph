@@ -57,7 +57,7 @@
 #'   
 #'  \subsection{Notes for geomorph 3.1.0 and subsequent versions}{ 
 #'  The procD.lm function is now a wrapper for the \code{\link{lm.rrpp}} function
-#'  in the \code{RRPP} package.  Examples illustrate how to utilize
+#'  in the \code{RRPP} package.  Examples below illustrate how to utilize
 #'  \code{RRPP} functions along with \code{geomorph} functions for procD.lm objects,
 #'  increasing the breadth of possible downstream analyses.
 #' }

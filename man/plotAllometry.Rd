@@ -31,7 +31,7 @@ Prior to geomorph 3.0.0, the function, plotAllometry, was used to perform linear
 of shape variables and size, and produce plots to visualize shape allometries.  This function was deprecated
 when procD.allometry was launched with geomorph 3.0.0, which performed homogeneity of slopes tests to determine
 if a common allometry or unique group allometries were more appropriate as a model.  The S3 generic, plot.procD.allometry
-provided the same plotting as plotAllometry before it.  In geomorph 3.0.8, procD.allometry has been deprectaed in favor of using
+provided the same plotting as plotAllometry before it.  In geomorph 3.1.0, procD.allometry has been deprectaed in favor of using
 \code{\link{procD.lm}} and \code{\link{pairwise}} for analyses, which can include additional variables, 
 thus eliminating plot.procD.allometry.  This function coalesces a few plotting options found in other functions, 
 as a wrapper, for the purpose of retaining the plot.procD.allometry options in one place.
@@ -49,7 +49,7 @@ There are multipe ways to visualize allometry.  One way is to simply append a si
 axis of covariation between size and shape can be found by a singular value decomposition of their cross-products, a process known as two-block partial 
 least squares (PLS; Rohlf and Corti 2000).  This major axis of variation is often referred to as the common allometric component 
 (CAC; Mitteroecker et al. 2004).  Neither of these methods is associated with a model of allometric shape change, especially as such change might vary
-for different groups.  As such, these methods have limited appeal for comapring group allometries (although color-coding groups in plots might reveal
+for different groups.  As such, these methods have limited appeal for comparing group allometries (although color-coding groups in plots might reveal
 different trends in the plot scatter).
 
 By contrast, describing a linear model (with \code{\link{procD.lm}}) that has an explicit definition of how shape allometries vary by group can be 

@@ -27,7 +27,7 @@ Function to rotate or flip 2D landmark or coordinate configurations to re-orient
 \details{
 This function will allow a user to rotate or flip one or several configurations of raw landmarks or
 Procrustes residuals from GPA, as desired.  This function only works with two-dimensional configurations.
-This is a useful tool if importing coordiantes or performing GPA produces undesired orientations (such as flipping
+This is a useful tool if importing coordinates or performing GPA produces undesired orientations (such as flipping
 configurations upside down, when aligning them to their PCs).  It is not as useful with 3D coordinates, as the plotting tools 
 for 3D coordinates already have built-in rotation capabilities.
 

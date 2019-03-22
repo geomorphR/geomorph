@@ -8,6 +8,11 @@
 #'   states for each node of the phylogenetic tree (analogous to  fastAnc from phytools), whose values can optionally be returned. 
 #'   If a tree with branch lengths scaled by time is used, with the option zaxis = "time", the function plots a 3D phylomorphospace, with internal nodes positioned along the Z-axis scaled 
 #'   to time (a.k.a. Chronophylomorphospace, Sakamoto & Ruta 2012).
+#'   
+#' \subsection{Notes for geomorph 3.1.0 and subsequent versions}{ 
+#'  The function \code{\link{gm.prcomp}} can also be used to generate phylomorphospace plots,
+#'  and will yield plots identical to those of the current function. 
+#'  }
 #'
 #' @param phy A phylogenetic tree of {class phylo} 
 #' @param A A matrix (n x [p x k]) or 3D array (p x k x n) containing Procrustes shape variables for a set of specimens
@@ -24,7 +29,7 @@
 #' @export
 #' @keywords visualization
 #' @author Dean Adams & Emma Sherratt
-#' @seealso  \code{\link[rgl]{rgl-package}} (used in 3D plotting)
+#' @seealso \code{\link{gm.prcomp}}
 #' @return Function returns estimated ancestral states if {ancStates=TRUE}
 #' @references Klingenberg, C. P., and N. A. Gidaszewski. 2010. Testing and quantifying phylogenetic 
 #'   signals and homoplasy in morphometric data. Syst. Biol. 59:245-261.

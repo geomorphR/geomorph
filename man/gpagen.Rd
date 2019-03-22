@@ -14,7 +14,8 @@ for a set of specimens.  If A is a geomorphShapes object, the curves argument is
 
 \item{curves}{An optional matrix defining which landmarks should be treated as semilandmarks on boundary 
 curves, and which landmarks specify the tangent directions for their sliding.  This matrix is generated automatically
-with \code{\link{readland.shapes}} following digitizing of curves in StereoMorph.}
+with \code{\link{readland.shapes}} following digitizing of curves in StereoMorph, or may be generated
+using the function \code{\link{define.sliders}}.}
 
 \item{surfaces}{An optional vector defining which landmarks should be treated as semilandmarks on surfaces}
 
@@ -24,7 +25,7 @@ with \code{\link{readland.shapes}} following digitizing of curves in StereoMorph
 number of iterations could be larger than this, if curves or surface semilandmarks are involved.}
 
 \item{ProcD}{A logical value indicating whether or not Procrustes distance should be used as the criterion
-for optimizing the positions of semilandmarks}
+for optimizing the positions of semilandmarks (if not, bending energy is used)}
 
 \item{Proj}{A logical value indicating whether or not the Procrustes-aligned specimens should be projected 
 into tangent space}
@@ -119,15 +120,17 @@ data(hummingbirds)
 ###Slider matrix
 hummingbirds$curvepts
 
-# Using Procrustes Distance for sliding
-Y.gpa <- gpagen(hummingbirds$land,curves=hummingbirds$curvepts)   
-summary(Y.gpa)
-plot(Y.gpa)
-
 # Using bending energy for sliding
 Y.gpa <- gpagen(hummingbirds$land,curves=hummingbirds$curvepts,ProcD=FALSE)   
 summary(Y.gpa)
 plot(Y.gpa)
+
+
+# Using Procrustes Distance for sliding
+Y.gpa <- gpagen(hummingbirds$land,curves=hummingbirds$curvepts,ProcD=TRUE)   
+summary(Y.gpa)
+plot(Y.gpa)
+
 
 # Example 3: points, curves and surfaces
 data(scallops)

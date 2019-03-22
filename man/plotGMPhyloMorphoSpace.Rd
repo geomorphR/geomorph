@@ -44,6 +44,11 @@ Default is a plot of PC axis 1 and 2. The phylogenetic tree for these specimens 
   states for each node of the phylogenetic tree (analogous to  fastAnc from phytools), whose values can optionally be returned. 
   If a tree with branch lengths scaled by time is used, with the option zaxis = "time", the function plots a 3D phylomorphospace, with internal nodes positioned along the Z-axis scaled 
   to time (a.k.a. Chronophylomorphospace, Sakamoto & Ruta 2012).
+  
+\subsection{Notes for geomorph 3.1.0 and subsequent versions}{ 
+ The function \code{\link{gm.prcomp}} can also be used to generate phylomorphospace plots,
+ and will yield plots identical to those of the current function. 
+ }
 }
 \examples{
 data(plethspecies) 
@@ -66,7 +71,7 @@ Sakamoto, M. and Ruta, M. 2012. Convergence and Divergence in the Evolution of C
 Skulls: Temporal and Spatial Patterns of Morphological Diversity. PLoSONE 7(7): e39752.
 }
 \seealso{
-\code{\link[rgl]{rgl-package}} (used in 3D plotting)
+\code{\link{gm.prcomp}}
 }
 \author{
 Dean Adams & Emma Sherratt

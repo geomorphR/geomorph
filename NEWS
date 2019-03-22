@@ -1,5 +1,9 @@
-PENDING CHANGES IN GEOMORPH VERSION 3.0.8
+CHANGES IN GEOMORPH VERSION 3.1.0
 
+    o Permutation computations now performed in RRPP 
+    o New functions added: plotAllometry, gm.prcomp, picknplot.shape, shape.hulls
+    o Deprecated: advanced.procD.lm, nested.update, procD.allometry (features of these functions now found using procD.lm)
+    o Generalized plotting options
     o Reduced dependencies on geiger and Matrix
     o Added mean-centering to compare.evol.rates for permutations
     o Updated fixed.angle to allow centroids from mutiple points to be used as angle points.

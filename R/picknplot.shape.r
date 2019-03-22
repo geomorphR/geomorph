@@ -44,13 +44,13 @@
 #' # links.species <- plethodon$links[-11,]
 #' # links.species[11, 1] <- 11
 #' # picknplot.shape(pleth.phylomorphospace, method = "points", links = links.species)
-
+#' 
 #' # 3d
 #' # data(scallops)
 #' # Y3d.gpa <- gpagen(A=scallops$coorddata, curves=scallops$curvslide, surfaces=scallops$surfslide)
 #' # scallops.pca <- gm.prcomp(Y3d.gpa$coords)
 #' # scallops.pca.plot <- plot(scallops.pca)
-#' # picknplot.shape(scallops.pca.plot) # May change method for plotRefToTarget
+#' # picknplot.shape(scallops.pca.plot) 
 
 picknplot.shape <- function(x, ...){
   if(!inherits(x, c("gm.prcomp", "plot.procD.lm", "plotAlometry", "plot.pls"))){
