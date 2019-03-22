@@ -112,9 +112,13 @@ summary.procD.lm <- function(object,...){
 plot.procD.lm <- function(x, type = c("diagnostics", "regression",
                                       "PC"), outliers=FALSE, predictor = NULL,
                           reg.type = c("CRC", "PredLine", "RegScore"), ...){
+  type <- match.arg(type)
+  reg.type <- match.arg(reg.type)
   out <- plot.lm.rrpp(x, type = type,  predictor = predictor,
                reg.type = reg.type, ...)
   if(type == "diagnostics" && outliers) plotOutliers(x$GM$residuals)
+  if(!is.null(x$GM)) out$GM <- x$GM
+  class(out) <- "plot.procD.lm"
   invisible(out)
 }
 
@@ -213,139 +217,28 @@ summary.pls <- function(object, ...) {
 #' @author Michael Collyer
 #' @keywords utilities
 #' @keywords visualization
-plot.pls <- function(x, label = NULL, warpgrids=TRUE, shapes=FALSE, ...){
-  dots <- list(...)
-  if(!is.null(dots$gridPars)) gridPars <- dots$gridPars else gridPars <- NULL
-  if(!is.null(dots$mesh)) mesh <- dots$mesh else mesh <- NULL
-  if(!is.null(dots$outline)) outline <- dots$outline else outline <- NULL
-  if(!is.null(x$A1)){
-    A1 <- x$A1; A2 <- x$A2
-    XScores <- x$XScores; YScores <- x$YScores
-    if(is.matrix(XScores)) XScores <- XScores[,1]
-    if(is.matrix(YScores)) YScores <- YScores[,1]
-    Xmin <- min(XScores); Xmax <- max(XScores)
-    Ymin <- min(YScores); Ymax <- max(YScores)
-    plsRaw <- pls(x$A1.matrix, x$A2.matrix, verbose=TRUE)
-    XScoresRaw <- plsRaw$XScores[,1]; YScoresRaw <- plsRaw$YScores[,1]
-    pc <- prcomp(cbind(XScores, YScores))$x[,1]
-    px <- predict(lm(XScores~pc))
-    py <- predict(lm(YScores~pc))
-    pxmax <- max(px); pxmin <- min(px)
-    pymax <- max(py); pymin <- min(py)
-    pcRaw <- prcomp(cbind(XScoresRaw, YScoresRaw))$x[,1]
-    pxRaw <- predict(lm(XScoresRaw~pcRaw))
-    pyRaw <- predict(lm(YScoresRaw~pcRaw))
-    
-    if (length(dim(A1)) == 3) {
-      A1.ref <- mshape(A1)
-      preds <- shape.predictor(A1, x=XScores, method="LS", 
-                               Intercept=TRUE, pred1 = Xmin, pred2 = Xmax)
-      pls1.min <- preds$pred1
-      pls1.max <- preds$pred2
-    }
-    
-    if (length(dim(A2)) == 3) {
-      A2.ref <- mshape(A2)
-      preds <- shape.predictor(A2, x=YScores, method="LS", 
-                               Intercept=TRUE, pred1 = Ymin, pred2 = Ymax)
-      pls2.min <- preds$pred1
-      pls2.max <- preds$pred2
-    }
-    if (length(dim(A1)) != 3 && length(dim(A2)) != 3) {
-      plot(XScores, YScores, pch = 21, bg = "black", 
-           main = "PLS Plot", xlab = "PLS1 Block 1", ylab = "PLS1 Block 2")
-      abline(lm(py~px), col="red")
-      if (length(label != 0)) {
-        text(XScores, YScores, label, adj = c(-0.7, -0.7))
-      }
-    }
-    if (length(dim(A1)) == 3 || length(dim(A2)) == 3) {
-      
-      par(mar = c(1, 1, 1, 1) + 0.1)
-      split.screen(matrix(c(0.22, 1, 0.22, 1, 0.19, 0.39, 0, 
-                            0.19, 0.8, 1, 0, 0.19, 0, 0.19, 0.19, 0.39, 0, 0.19, 
-                            0.8, 1), byrow = TRUE, ncol = 4))
-      screen(1)
-      plot(XScores, YScores, pch = 21, bg = "black", 
-           main = "PLS1 Plot: Block 1 (X) vs. Block 2 (Y) ", 
-           xlab = "PLS1 Block 1", ylab = "PLS1 Block 2")
-      abline(lm(py~px), col="red")
-      if (length(label != 0)) {
-        text(XScores, YScores, label, adj = c(-0.7, -0.7))    
-      }
-      if (warpgrids == TRUE) {
-        if (length(dim(A1)) == 3 && dim(A1)[2] == 2) {
-          screen(2)
-          plotRefToTarget(A1.ref, pls1.min, ...)
-          screen(3)
-          plotRefToTarget(A1.ref, pls1.max,  ...)
-        }
-        if (length(dim(A2)) == 3 && dim(A2)[2] == 2) {
-          screen(4)
-          plotRefToTarget(A2.ref, pls2.min,  ...)
-          screen(5)
-          plotRefToTarget(A2.ref, pls2.max,  ...)
-        }
-      }
-      close.screen(all.screens = TRUE)
-      par(mar = c(5.1, 4.1, 4.1, 2.1))
-    }
-    if (length(dim(A1)) == 3 && dim(A1)[2] == 3) {
-      plot(XScores, YScores, pch = 21, bg = "black", 
-           main = "PLS Plot", xlab = "PLS1 Block 1", ylab = "PLS1 Block 2")
-      if (length(label != 0)) {
-        text(XScores, YScores, label, adj = c(-0.7, -0.7))
-      }
-      abline(lm(py~px), col="red")
-      open3d() ; mfrow3d(1, 2) 
-      if(!is.null(mesh)) {
-        warp1.PLY <- warp2.PLY <- mesh
-        vb <- as.matrix(t(mesh$vb)[,-4])
-        cat("\nWarping mesh\n")
-        warp1 <- tps2d3d(vb, A1.ref, pls1.min)
-        warp1.PLY$vb <- rbind(t(warp1), 1)
-        shade3d(warp1.PLY, main = paste("PLS Block1 negative"), ...)
-        warp2 <- tps2d3d(vb, A1.ref, pls1.max)
-        warp2.PLY$vb <- rbind(t(warp2), 1)
-        shade3d(warp2.PLY, main = paste("PLS Block1 positive"), ...)
-      } else {
-        plot3d(pls1.min, type = "s", col = "gray", main = paste("PLS Block1 negative"), 
-               size = 1.25, aspect = FALSE,xlab="",ylab="",zlab="",box=FALSE, axes=FALSE)
-        plot3d(pls1.max, type = "s", col = "gray", main = paste("PLS Block1 positive"), 
-               size = 1.25, aspect = FALSE,xlab="",ylab="",zlab="",box=FALSE, axes=FALSE)
-      }
-    }
-    if (length(dim(A2)) == 3 && dim(A2)[2] == 3) {
-      open3d() ; mfrow3d(1, 2) 
-      if(!is.null(mesh)) {
-        warp1.PLY <- warp2.PLY <- mesh
-        vb <- as.matrix(t(mesh$vb)[,-4])
-        cat("\nWarping mesh\n")
-        warp1 <- tps2d3d(vb, A2.ref, pls2.min)
-        warp1.PLY$vb <- rbind(t(warp1), 1)
-        shade3d(warp1.PLY, main = paste("PLS Block2 negative"), ...)
-        warp2 <- tps2d3d(vb, A2.ref, pls2.max)
-        warp2.PLY$vb <- rbind(t(warp2), 1)
-        shade3d(warp2.PLY, main = paste("PLS Block2 positive"), ...)
-      } else {
-        plot3d(pls2.min, type = "s", col = "gray", main = paste("PLS Block2 negative"), 
-               size = 1.25, aspect = FALSE,xlab="",ylab="",zlab="",box=FALSE, axes=FALSE)
-        plot3d(pls2.max, type = "s", col = "gray", main = paste("PLS Block2 positive"), 
-               size = 1.25, aspect = FALSE,xlab="",ylab="",zlab="",box=FALSE, axes=FALSE)
-      }
-    } 
-    layout(1)
-    if(shapes == TRUE){
-      if (length(dim(A1)) == 3 || length(dim(A2)) == 3) { 
-        rtrn <- list() 
-        if (length(dim(A1)) == 3) { rtrn$pls1.min = pls1.min ; rtrn$pls1.max = pls1.max }
-        if (length(dim(A2)) == 3) { rtrn$pls2.min = pls2.min ; rtrn$pls2.max = pls2.max }
-      }
-      if (length(dim(A1)) == 3 || length(dim(A2)) == 3) return(rtrn)
-    }   
-  }
-  else stop("No PLS vectors detected. With 3+ partitions in analysis consider pairwise plots via two.b.pls.")
+#' 
+plot.pls <- function(x, ...) {
+  XScores <- x$XScores
+  YScores <- x$YScores
+  if(is.matrix(XScores)) XScores <- XScores[,1]
+  if(is.matrix(YScores)) YScores <- YScores[,1]
+  plot.args <- list(x = XScores, y = YScores,
+                    main = "PLS Plot", xlab = "PLS1 Block 1", 
+                    ylab = "PLS1 Block 2", ...)
+  do.call(plot, plot.args)
+  pc <- prcomp(cbind(XScores, YScores))$x[,1]
+  px <- predict(lm(XScores~pc))
+  py <- predict(lm(YScores~pc))
+  abline(lm(py ~ px), col = "red")
+  out <- list()
+  out$plot.args <- ploy.args
+  out$A1 <- x$A1
+  out$A2 <- x$A2
+  clas(out) <- "plot.pls"
+  invisible(out)
 }
+
 
 ## bilat.symmetry
 

@@ -9,7 +9,7 @@
 #' shape is to be saved as a png file, in which case the name of the file needs to be provided (without quotation marks).
 #' Interactive plots are at present available for plots produced by \code{\link{plot.gm.prcomp}}.
 #' 
-#' @param x a geomorph plot object of class plot.gm.prcomp, plot.procD.lm, or plot.pls 
+#' @param x a geomorph plot object of class plot.gm.prcomp, plot.procD.lm, plot.pls, or plotAllometry 
 #' @param ... other arguments passed to \code{\link{plotRefToTarget}}
 #' @return A list with the following components:
 #' \item{points}{A list with the xy coordinates of the selected points.}
@@ -53,43 +53,92 @@
 #' # picknplot.shape(scallops.pca.plot) # May change method for plotRefToTarget
 
 picknplot.shape <- function(x, ...){
-  if(class(x)!="plot.gm.prcomp"){
-    stop("Class of plot object not compatible with picknplot.shape. \n Please see the help file for allowed plot objects")
+  if(!inherits(x, c("gm.prcomp", "plot.procD.lm", "plotAlometry", "plot.pls"))){
+    stop("Class of plot object not compatible with picknplot.shape. \nPlease see the help file for allowed plot objects\n",
+         call. = FALSE)
   }
-  options(warn = -1)
-  plot.args <- list(...)
-  if(is.null(plot.args$method)) {plot.args$method <- "TPS"}
-  eval(x$call)
+  
+  do.call(plot, x$plot.args)
   continue <- "y"
   p = 1
-  picked.pts <- list()
-  picked.shapes <- list()
+  picked.pts <- picked.shapes <- list()
+  
+  prt.arg.names <- formalArgs(plotRefToTarget)
+  prt.arg.names <- prt.arg.names[- (length(prt.arg.names))]
+  prt.args <- vector("list", length(prt.arg.names))
+  names(prt.args) <- prt.arg.names
+  dots <- list(...)
+  if(length(dots) >= 1) {
+    m <- match(prt.arg.names, names(dots), 0L)
+    for(i in 1:length(m)) if(m[i] > 0) prt.args[i] <- dots[m[i]]
+  }
+  if(is.null(prt.args$method)) prt.args$method <- "TPS"
+  if(is.null(prt.args$mag)) prt.args$mag <- 1
+  if(is.null(prt.args$label)) prt.args$label <- FALSE
+  if(is.null(prt.args$axes)) prt.args$axes <- FALSE
+  if(is.null(prt.args$useRefPts )) prt.args$useRefPts <- FALSE
+  
+  if(!inherits(x, "plot.pls")) {
+    type <- "LM"
+    A1 <- x$GM$fitted
+    if(is.null(A1)) stop("No shape data provided\n", call. = FALSE)
+    A2 <- NULL
+    if(!is.null(x$CAC)) A1 <- A1 + x$GM$residuals
+  } else {
+    type <- "PLS"
+    A1 <- x$A1
+    A2 <- x$A2
+    if(length(dim(A1)) != 3) A1 <- NULL
+    if(length(dim(A2)) != 3) A2 <- NULL
+    if(is.null(A1) && is.null(A2)) stop("No shape data provided\n", call. = FALSE)
+  }
+  
   while(continue == "y"){
     cat("Pick a point in the shape space", "\n")
     picked.pts[[p]] <- unlist(locator(n = 1, type = "p", pch = 20, col = "red", cex = 1))
     cat("Picked point coordinates are:", "\n")
     cat(picked.pts[[p]], "\n")
-    
-    A <- attributes(x)$A
-    picked.shapes[[p]] <- shape.predictor(A, x = x$points[1:dim(A)[3],], pred1 = picked.pts[[p]])$pred1 
-    if (dim(A)[2]==2) {
-      plot.args$M1 <- cbind(mshape(A), 0)
-      plot.args$M2 <- cbind(picked.shapes[[p]], 0)
-      class(plot.args$M2) <- "predshape.k2"
-      view3d(phi = 0, fov = 30, interactive = FALSE) 
-      do.call(plotRefToTarget, plot.args)
+
+  
+    if(type == "LM") {
+      X <- as.matrix(cbind(x$plot.args$x, x$plot.args$y))
+      picked.shapes[[p]] <- shape.predictor(A1, X, 
+                                            pred1 = picked.pts[[p]])$pred1 
     }
-    if (dim(A)[2]==3){
-      plot.args$M1 <- mshape(A)
-      plot.args$M2 <- picked.shapes[[p]]
-      class(plot.args$M2) <- "predshape.k3"
-      if(plot.args$method == "TPS"){
-        view3d(phi = 0, fov = 30, interactive = FALSE)
+
+    if(type == "PLS") {
+      X <- as.matrix(cbind(x$plot.args$x, x$plot.args$y))
+      picked.shapes[[p]] <- list(P1 = shape.predictor(A1, X, 
+                                                      pred1 = picked.pts[[p]])$pred1,
+                                 P2 = shape.predictor(A2, X,  
+                                                      pred1 = picked.pts[[p]])$pred1)
+    }
+
+    if(type == "LM") {
+      
+      if (dim(A1)[2] == 2) {
+        prt.args$M1 <- cbind(mshape(A1), 0)
+        prt.args$M2 <- cbind(picked.shapes[[p]], 0)
+        class(prt.args$M2) <- "predshape.k2"
+        view3d(phi = 0, fov = 30, interactive = FALSE) 
+        do.call(plotRefToTarget, prt.args)
+      }
+      if (dim(A1)[2] == 3){
+        prt.args$M1 <- mshape(A1)
+        prt.args$M2 <- picked.shapes[[p]]
+        class(prt.args$M2) <- "predshape.k3"
+        if(prt.args$method == "TPS"){
+          view3d(phi = 0, fov = 30, interactive = FALSE)
         } else {
           view3d(phi = 0, fov = 30, interactive = TRUE)
         }
-      do.call(plotRefToTarget,  args = plot.args)
+        do.call(plotRefToTarget,  prt.args)
+      }
+      
     }
+    
+    if(type == "PLS") cat("Hold on for a moment...\n")
+
     ans <- readline("Save deformation grid as png file (y/n)? ")
     if(ans=="y") {
       file.name <- readline("Please provide file name for saving deformation grid (without quotes) ")

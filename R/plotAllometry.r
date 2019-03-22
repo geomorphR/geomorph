@@ -181,35 +181,46 @@ plotAllometry <- function(fit, size, logsz = TRUE,
   PC.points <-PCA$x
   
   if(type == "CAC") {
+    
     par(mfcol = c(1,2))
-    plot(xc, CAC, 
-         xlab = if(logsz) "log(Size)" else "Size",
-         ...)
-    plot(CAC, RSC[,1],
-         ylab = "RSC1", ...)
+    plot.args <- list(x = xc, y = CAC,
+    xlab = if(logsz) "log(Size)" else "Size",
+    ylab = "CAC", ...)
+    plot2.args <- list(x = CAC, y = RSC[, 1],
+         xlab = "CAC", ylab = "RSC1", ...)
+    do.call(plot, plot.args)
+    do.call(plot, plot2.args)
     par(mfcol = c(1,1))
     
   } else if(type == "RegScore") {
-    plot(xc, Reg.proj,
-         xlab = if(logsz) "log(Size)" else "Size",
-         ylab = "Regression Score",
-         ...)
+    
+    plot.args <- list(x = xc, y = PL,
+                      xlab = if(logsz) "log(Size)" else "Size",
+                      ylab = "Regression Score", ...)
+    do.call(plot, plot.args)
+    
   } else if(type == "size.shape") {
+    
     v <- round(PCA$sdev^2/sum(PCA$sdev^2) * 100, 2)
-    plot(PC.points, 
-         main = "Size-Shape PC plot",
-         xlab = paste("PC 1: ", v[1], "%", sep = ""),
-         ylab = paste("PC 2: ", v[2], "%", sep = ""),
-         ...)
+    plot.args <- list(x = PC.points[,1], y = PC.points[,2],
+                      xlab = paste("PC 1: ", v[1], "%", sep = ""), 
+                      ylab = paste("PC 2: ", v[2], "%", sep = ""),
+                      ...)
+    do.call(plot, plot.args)
+    title("Size-Shape PC plot")
+    
     } else {
-    plot(xc, PL,
-         xlab = if(logsz) "log(Size)" else "Size",
-         ylab = "PC 1 for fitted values",
-         ...)
+      
+      plot.args <- list(x = xc, y = PL,
+                        xlab = if(logsz) "log(Size)" else "Size",
+                        ylab = "PC 1 for fitted values", ...)
+      
+    do.call(plot, plot.args)
   }
   
   out <- list(CAC = CAC, PredLine = PL, RegScore = Reg.proj, PC.points = PC.points,
-              size.var = xc, size.shape.PCA = PCA, logsz = logsz)
+              size.var = xc, size.shape.PCA = PCA, logsz = logsz, plot.args = plot.args,
+              GM =fit$GM)
   class(out) <- "plotAllometry"
   invisible(out)
   
