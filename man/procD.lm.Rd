@@ -127,9 +127,9 @@ The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\li
   In these plotting options, the predictor does not need to be size, and fitted values and residuals from the procD.lm fit are used rather 
   than mean-centered values. 
   
- \subsection{Notes for geomorph 3.0.8 and subsequent versions}{ 
+ \subsection{Notes for geomorph 3.1.0 and subsequent versions}{ 
  The procD.lm function is now a wrapper for the \code{\link{lm.rrpp}} function
- in the \code{RRPP} package.  Examples illustrate how to utilize
+ in the \code{RRPP} package.  Examples below illustrate how to utilize
  \code{RRPP} functions along with \code{geomorph} functions for procD.lm objects,
  increasing the breadth of possible downstream analyses.
 }

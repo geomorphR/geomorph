@@ -30,7 +30,7 @@ gdf <- geomorph.data.frame(Y.gpa, species = plethodon$species, site = plethodon$
 attributes(gdf)
 
 # Using geomorph.data.frame to facilitate analysis
-procD.lm(coords ~ Csize + species * site, data = gdf)
+anova(procD.lm(coords ~ Csize + species * site, data = gdf))
 }
 \author{
 Michael Collyer

@@ -65,7 +65,7 @@ utilized as the test statistic. The observed value is statistically assessed usi
 one partition are permuted relative to the other partitions. Note that this permutation is performed on phylogenetically-
 transformed data, so that the probability of phylogenetic association of A vs. B is similar to that of B vs. A: 
 i.e., prob(A,B|phy)~prob(B,A|phy); thus, shuffling the correct exchangeable units under the null 
-hypothesis of no integration (Adams and Collyer 2017).
+hypothesis of no integration (Adams and Collyer 2018).
 
 Input for the analysis can take one of two forms. First, one can input a single dataset (as a matrix or 3D array, along with 
  a vector describing which variables correspond to which partitions (for the case of a 3D array, which landmarks belong to which 
@@ -117,8 +117,8 @@ by high-dimensional data. Heredity. 115:357-365.
 Adams, D.C. and M.L. Collyer. 2016.  On the comparison of the strength of morphological integration across morphometric 
 datasets. Evolution. 70:2623-2631.
 
-Adams, D.C. and M.L. Collyer. 2017. Multivariate comparative methods: evaluations, comparisons, and
-recommendations. Systematic Biology. In press.
+Adams, D.C. and M.L. Collyer. 2018. Multivariate comparative methods: evaluations, comparisons, and
+recommendations. Systematic Biology. 67:14-31.
 }
 \seealso{
 \code{\link{integration.test}}, \code{\link{modularity.test}}, and 

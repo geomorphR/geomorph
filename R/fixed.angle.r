@@ -37,7 +37,7 @@
 #' art.pt=1, angle.pts.1 = 5, 
 #' angle.pts.2 = 6, rot.pts = c(2,3,4,5))
 #' Y.gpa1 <- gpagen(newLM1)
-#' plot(Y.gpa1)
+#' plot(Y.gpa1, mean = FALSE)
 #' 
 #' # Using centroids from subsets
 #' newLM2 <- fixed.angle(plethspecies$land,art.pt=1, 
@@ -46,7 +46,7 @@
 #' rot.pts = NULL, angle = 20, 
 #' degrees = TRUE) # rotated points same as second partition
 #' Y.gpa2 <- gpagen(newLM2)
-#' plot(Y.gpa2)
+#' plot(Y.gpa2, mean = FALSE)
 #' 
 fixed.angle<-function(A, art.pt=NULL, angle.pts.1, angle.pts.2, 
                       rot.pts=NULL, angle=0, degrees = FALSE){

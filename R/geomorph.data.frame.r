@@ -22,7 +22,7 @@
 #' attributes(gdf)
 #' 
 #' # Using geomorph.data.frame to facilitate analysis
-#' procD.lm(coords ~ Csize + species * site, data = gdf)
+#' anova(procD.lm(coords ~ Csize + species * site, data = gdf))
 geomorph.data.frame <- function(...) {
 dots <- list(...)
 list.check0 <- sapply(1:length(dots), function(j) any(is.geomorph.data.frame(dots[[j]])))
