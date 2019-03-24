@@ -101,6 +101,14 @@
 #' IT <- integration.test(Y.gpa$coords, partition.gp=land.gps, iter=999)
 #' summary(IT) # Test summary
 #' plot(IT) # PLS plot
+#' 
+#'  
+#'  ### Visualize shape variation using picknplot.shape Because picknplot requires 
+#'  ### user decisions, the following example
+#'  ### is not run (but can be with removal of #).
+#'  ### For detailed options, see the picknplot help file
+#'  # picknplot.shape(plot(IT))
+#' 
 #' IT$left.pls.vectors # extracting just the left (first block) singular vectors
 
 integration.test<-function(A, A2=NULL,partition.gp=NULL,iter=999, seed=NULL, print.progress=TRUE){

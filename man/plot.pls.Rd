@@ -11,8 +11,9 @@
 
 \item{label}{Optional vector to label points}
 
-\item{...}{other arguments passed to plot and plotRefToTarget (in a limited capacity).  In most cases, greater flexibility
-can be attained with using \code{\link{plotRefToTarget}} and \code{\link{shape.predictor}}.}
+\item{...}{other arguments passed to plot. The function returns values that can be used with 
+\code{\link{picknplot.shape}} or a combination of \code{\link{shape.predictor}} and 
+\code{\link{plotRefToTarget}} to visualize shape changes in the plot.}
 }
 \value{
 If shapes = TRUE, function returns a list containing the shape coordinates of the extreme ends of axis1 and axis2 

@@ -27,8 +27,7 @@ An object of class "plot.gm.prcomp" is a list with components
  that can be used in other plot functions, such as the type of plot, points, 
  a group factor, and other information depending on the plot parameters used.
  
- NOTE: To visualize shape variation across PC axes, use plotRefToTarget (link below)
- with the $pc.shapes component of your gm.prcomp object.
+ NOTE: To visualize shape variation across PC axes, use \code{\link{picknplot.shape}}.
 }
 \description{
 Plot Function for geomorph

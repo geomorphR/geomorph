@@ -92,6 +92,14 @@
 #' PLS <-two.b.pls(Y.gpa$coords,plethShapeFood$food,iter=999)
 #' summary(PLS)
 #' plot(PLS)
+#'  
+#'  ### Visualize shape variation using picknplot.shape Because picknplot requires 
+#'  ### user decisions, the following example
+#'  ### is not run (but can be with removal of #).
+#'  ### For detailed options, see the picknplot help file
+#'  # picknplot.shape(plot(PLS))
+#'  
+#' 
 
 two.b.pls <- function (A1, A2,  iter = 999, seed = NULL, print.progress=TRUE){
     if (any(is.na(A1)) == T) 

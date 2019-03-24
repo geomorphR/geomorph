@@ -207,8 +207,9 @@ summary.pls <- function(object, ...) {
 #' 
 #' @param x plot object (from \code{\link{phylo.integration}} or \code{\link{two.b.pls}})
 #' @param label Optional vector to label points
-#' @param ... other arguments passed to plot and plotRefToTarget (in a limited capacity).  In most cases, greater flexibility
-#' can be attained with using \code{\link{plotRefToTarget}} and \code{\link{shape.predictor}}.
+#' @param ... other arguments passed to plot. The function returns values that can be used with 
+#' \code{\link{picknplot.shape}} or a combination of \code{\link{shape.predictor}} and 
+#' \code{\link{plotRefToTarget}} to visualize shape changes in the plot.
 #' @return If shapes = TRUE, function returns a list containing the shape coordinates of the extreme ends of axis1 and axis2 
 #' if 3D arrays were originally provided for each
 #' @export
@@ -775,8 +776,7 @@ summary.gm.prcomp <- function (object, ...) {
 #'  that can be used in other plot functions, such as the type of plot, points, 
 #'  a group factor, and other information depending on the plot parameters used.
 #'  
-#'  NOTE: To visualize shape variation across PC axes, use plotRefToTarget (link below)
-#'  with the $pc.shapes component of your gm.prcomp object.
+#'  NOTE: To visualize shape variation across PC axes, use \code{\link{picknplot.shape}}.
 #' @export
 #' @author Antigoni Kaliontzopoulou
 #' @keywords utilities

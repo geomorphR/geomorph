@@ -96,6 +96,14 @@ Y.gpa<-gpagen(plethShapeFood$land)    #GPA-alignment
 PLS <-two.b.pls(Y.gpa$coords,plethShapeFood$food,iter=999)
 summary(PLS)
 plot(PLS)
+ 
+ ### Visualize shape variation using picknplot.shape Because picknplot requires 
+ ### user decisions, the following example
+ ### is not run (but can be with removal of #).
+ ### For detailed options, see the picknplot help file
+ # picknplot.shape(plot(PLS))
+ 
+
 }
 \references{
 Rohlf, F.J., and M. Corti. 2000. The use of partial least-squares to study covariation in shape. 

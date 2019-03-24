@@ -100,6 +100,12 @@
 #' summary(IT) # Test summary
 #' plot(IT) # PLS plot
 #' 
+#'  ### Visualize shape variation using picknplot.shape Because picknplot requires 
+#'  ### user decisions, the following example
+#'  ### is not run (but can be with removal of #).
+#'  ### For detailed options, see the picknplot help file
+#'  # picknplot.shape(plot(IT))
+#'
 phylo.integration <-function(A, A2=NULL, phy, partition.gp=NULL,iter=999, seed=NULL, print.progress=TRUE){ 
   if(any(is.na(A))==T){
     stop("Data matrix 1 contains missing values. Estimate these first(see 'estimate.missing').")  } 

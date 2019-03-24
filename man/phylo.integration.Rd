@@ -105,6 +105,12 @@ IT<- phylo.integration(Y.gpa$coords,partition.gp=land.gps,phy=plethspecies$phy,i
 summary(IT) # Test summary
 plot(IT) # PLS plot
 
+ ### Visualize shape variation using picknplot.shape Because picknplot requires 
+ ### user decisions, the following example
+ ### is not run (but can be with removal of #).
+ ### For detailed options, see the picknplot help file
+ # picknplot.shape(plot(IT))
+
 }
 \references{
 Adams, D.C. and R. Felice. 2014. Assessing phylogenetic morphological 
