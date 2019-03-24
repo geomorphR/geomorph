@@ -12,7 +12,6 @@ CHANGES IN GEOMORPH VERSION 3.1.0
     o Added Procrustes distance matrix to gpagen output
     o Moved trajectory.analysis to RRPP package and updated its arguments.
     o Added partial disparity option to morphol.disparity
-    o Added gm.prcomp option to shapeHulls.
     
 BUG FIXES
     o Fixed ratio call for permutations in compare.evol.rates
