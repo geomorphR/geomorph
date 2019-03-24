@@ -22,7 +22,7 @@
 #' @param yaxis A numeric value indicating which PC axis should be displayed as the Y-axis (default = PC2)
 #' @param zaxis Optional, a numeric value indicating which PC axis should be displayed as the Z-axis (e.g. PC3) or if zaxis="time", 
 #' internal nodes are plotted along the Z-axis relative to time
-#' @param ancStates Either a logical value indicating whether ancestral state values should be returned, or a matrix of ancestral states (i.e. calculated with \code{\link[phytools]{fastAnc}} or \code{\link[ape]{ace}})
+#' @param ancStates Either a logical value indicating whether ancestral state values should be returned, or a matrix of ancestral states
 #' @param plot.param A list of plotting parameters for the tips (t.bg, t.pch, t.cex), nodes (n.bg, n.pch, n.cex), 
 #' branches (l.col, lwd), taxa labels (txt.cex, txt.adj, txt.col) and node labels (n.txt.cex, n.txt.adj, n.txt.col)
 #' @param shadow A logical value indicating whether a 2D phylomorphospace should be plotted at the base when zaxis="time"

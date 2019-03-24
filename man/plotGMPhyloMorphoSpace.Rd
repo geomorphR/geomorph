@@ -17,7 +17,7 @@ plotGMPhyloMorphoSpace(phy, A, tip.labels = TRUE, node.labels = TRUE,
 
 \item{node.labels}{A logical value indicating whether node labels (ancestors) should be included}
 
-\item{ancStates}{Either a logical value indicating whether ancestral state values should be returned, or a matrix of ancestral states (i.e. calculated with \code{\link[phytools]{fastAnc}} or \code{\link[ape]{ace}})}
+\item{ancStates}{Either a logical value indicating whether ancestral state values should be returned, or a matrix of ancestral states}
 
 \item{xaxis}{A numeric value indicating which PC axis should be displayed as the X-axis (default = PC1)}
 
