@@ -129,7 +129,7 @@
 #' 
 #' # same (first plot) as
 #' PLS <- two.b.pls(log(gdf$Csize), gdf$coords, print.progress = FALSE)
-#' plot(PLS, warpgrids = FALSE)
+#' plot(PLS)
 #' 
 #' # Group Allometries
 #' fit2 <- procD.lm(coords ~ Csize * species * site, data=gdf, iter=0, print.progress = FALSE)
@@ -195,7 +195,7 @@ plotAllometry <- function(fit, size, logsz = TRUE,
     
   } else if(type == "RegScore") {
     
-    plot.args <- list(x = xc, y = PL,
+    plot.args <- list(x = xc, y = Reg.proj,
                       xlab = if(logsz) "log(Size)" else "Size",
                       ylab = "Regression Score", ...)
     do.call(plot, plot.args)

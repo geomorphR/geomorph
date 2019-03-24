@@ -130,7 +130,7 @@ plotAllometry(fit, size = gdf$Csize, logsz = TRUE, method = "CAC", pch = 19)
 
 # same (first plot) as
 PLS <- two.b.pls(log(gdf$Csize), gdf$coords, print.progress = FALSE)
-plot(PLS, warpgrids = FALSE)
+plot(PLS)
 
 # Group Allometries
 fit2 <- procD.lm(coords ~ Csize * species * site, data=gdf, iter=0, print.progress = FALSE)
