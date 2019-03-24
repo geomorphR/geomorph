@@ -59,7 +59,12 @@
 #'  The procD.lm function is now a wrapper for the \code{\link{lm.rrpp}} function
 #'  in the \code{RRPP} package.  Examples below illustrate how to utilize
 #'  \code{RRPP} functions along with \code{geomorph} functions for procD.lm objects,
-#'  increasing the breadth of possible downstream analyses.
+#'  increasing the breadth of possible downstream analyses.  
+#'  
+#'  An important update in version 3.1.0 is that advanced.procD.lm and nested.update have been deprecated.  
+#'  The examples emphasize how pairwise comparisons can now be accomplished with \code{\link{pairwise}} and
+#'  ANOVA updates for nested factors can be made with the \code{\link{anova.lm.rrpp}}, utilizing the error argument.
+#'  These functions work on procD.lm objects that have already been created.
 #' }
 #' 
 #'  \subsection{Notes for geomorph 3.0.6 and subsequent versions}{ 

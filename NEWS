@@ -10,14 +10,14 @@ CHANGES IN GEOMORPH VERSION 3.1.0
     o Updated coords.subset to avoid issue with arrayspecs and naming subsetted data.
     o Changed the default for sliding to ProcD=FALSE in gpagen
     o Added Procrustes distance matrix to gpagen output
-    o Added Procrustes distance matrix to gpagen output
+    o Moved trajectory.analysis to RRPP package and updated its arguments.
     o Added partial disparity option to morphol.disparity
     
 BUG FIXES
     o Fixed ratio call for permutations in compare.evol.rates
     o Fixed bug in phylo.modularity call when groups > 2
-    o Fixed sacaling fault in combine.subsets
-    o Updated trajectory.analysis to properly center mean values for PC plotting.
+    o Fixed scaling fault in combine.subsets
+    o Updated trajectory.analysis to properly center mean values for PC plotting (now in RRPP)
     o Added a trap for large distance matrices to gpagen, to avoid errors
     o Fixed bug to allow for a single specimen with missing data in readland.tps
     o Fixed bug for HOS result mismatching criterion for procD.allometry
