@@ -76,7 +76,8 @@
 #'   changing the allometry model.}
 #'   }
 #'   
-#' The function returns values that can be used with \code{\link{picknplot.shape}} to visualize shape changes in the plot.
+#' The function returns values that can be used with \code{\link{picknplot.shape}} or a combination of 
+#' \code{\link{shape.predictor}} and \code{\link{plotRefToTarget}} to visualize shape changes in the plot.
 #' 
 #' @param fit A procD.lm fit.
 #' @param size A vector of the same length as the numner of observations in the fit.

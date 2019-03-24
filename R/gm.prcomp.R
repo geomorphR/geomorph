@@ -88,12 +88,12 @@ gm.prcomp <- function (A, phy = NULL, ...) {
     if (!inherits(phy, "phylo"))
       stop("Tree must be of class 'phylo.'")
     N <- length(phy$tip.label); Nnode <- phy$Nnode
-    if(N!=n)
+    if(N != n)
       stop("Number of taxa in data matrix and tree are not equal.")
     if(is.null(rownames(Y))) {
       warning("Shape dataset does not include species names. Assuming the order of data matches phy$tip.label")
     } else {
-      A <- A[,,phy$tip.label]
+      A <- A[,, phy$tip.label]
       Y <- Y[phy$tip.label, ]
     }
     anc.raw <- anc.BM(phy, two.d.array(A))
@@ -133,6 +133,7 @@ gm.prcomp <- function (A, phy = NULL, ...) {
     names(phylomorphospace$shapes) <- paste("shapes.PC", 1:nPC, sep = "")
     phylomorphospace$ancestors <- anc.raw
     class(phylomorphospace) <- c("gm.prcomp", "phylomorphospace")
+    phylomorphospace$phy <- phy
     }
 
   if(is.null(phy)) {
@@ -140,9 +141,10 @@ gm.prcomp <- function (A, phy = NULL, ...) {
   } else {
     out <- phylomorphospace
   }
+  
+  out$A <- A
 
   class(out) = c("gm.prcomp")
-  attributes(out)$phy <- phy
-  attributes(out)$A <- A
-  return(out)
+  
+  out
 }

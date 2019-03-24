@@ -4,17 +4,12 @@
 \alias{plot.pls}
 \title{Plot Function for geomorph}
 \usage{
-\method{plot}{pls}(x, label = NULL, warpgrids = TRUE, shapes = FALSE,
-  ...)
+\method{plot}{pls}(x, label = NULL, ...)
 }
 \arguments{
 \item{x}{plot object (from \code{\link{phylo.integration}} or \code{\link{two.b.pls}})}
 
 \item{label}{Optional vector to label points}
-
-\item{warpgrids}{Logical argument whether to include warpgrids}
-
-\item{shapes}{Logical argument whether to return the the shape coordinates of the extreme ends of axis1 and axis2}
 
 \item{...}{other arguments passed to plot and plotRefToTarget (in a limited capacity).  In most cases, greater flexibility
 can be attained with using \code{\link{plotRefToTarget}} and \code{\link{shape.predictor}}.}

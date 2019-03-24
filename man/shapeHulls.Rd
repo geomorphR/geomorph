@@ -8,10 +8,10 @@ shapeHulls(x, groups = NULL, group.cols = NULL, group.lwd = NULL,
   group.lty = NULL)
 }
 \arguments{
-\item{x}{A \code{\link{plot.procD.lm}}}
+\item{x}{A \code{\link{plot.procD.lm}} or \code{\link{plot.gm.prcomp}} plot object.}
 
 \item{groups}{An optional vector or factor to define groups for hull.  If NULL, an attempt to coerce groups
-from the analytical design first used will be made.  If "none", only one hull will be generated for all points.}
+from the analytical design (must be \code{\link{plot.procD.lm}} object).  If "none", only one hull will be generated for all points.}
 
 \item{group.cols}{An optional vector to define hull colors, arranged in the same order as factor levels.  If NULL and if multiple groups
 exist, the general R color sequence (black, red, green, blue, etc.) will be used.}
@@ -23,7 +23,7 @@ to modify hull line width.}
 to modify hull line type.}
 }
 \description{
-This function is used to update \code{\link{plot.procD.lm}} 
+This function is used to update \code{\link{plot.procD.lm}} and \code{\link{plot.gm.prcomp}} ordination plot
 objects with convex hulls for different groups.  This function does not currently work with 
 \code{\link{plotTangentSpace}}.  If no groups are defined, an attempt to define groups from 
 the original \code{\link{procD.lm}} analysis will be made.  Failing this, just a single
@@ -63,6 +63,19 @@ shapeHulls(pc.plot, groups = gdf$Sex, group.cols = c("black", "black"),
 group.lwd = rep(2, 2), group.lty = c(2, 1))
 legend("topright", levels(gdf$Sex), lwd = 2, lty = c(2, 1))
 
+# Via gm.prcomp and plot.gm.prcomp
+
+data(plethspecies) 
+Y.gpa <- gpagen(plethspecies$land)    #GPA-alignment
+pleth.phylo <- gm.prcomp(Y.gpa$coords, phy = plethspecies$phy)
+summary(pleth.phylo)
+
+pc.plot <- plot(pleth.phylo, phylo = TRUE)
+gp <- factor(c(rep(1, 5), rep(2, 4)))
+shapeHulls(pc.plot, groups = gp, group.cols = 1:2, 
+group.lwd = rep(2, 2), group.lty = c(2, 1))
+legend("topright", c("P. cinereus clade", "P. hubrichti clade"), 
+col = 1:2, lwd = 2, lty = c(2, 1))
 }
 \seealso{
 \code{\link{procD.lm}}

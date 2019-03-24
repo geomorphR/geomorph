@@ -159,9 +159,9 @@ site = plethodon$site,
 species = plethodon$species) # geomorph data frame
 
 fit1 <- procD.lm(coords ~ species * site, 
-data = gdf, iter = 999, RRPP = FALSE) # randomize raw values
+data = gdf, iter = 499, RRPP = FALSE) # randomize raw values
 fit2 <- procD.lm(coords ~ species * site, 
-data = gdf, iter = 999, RRPP = TRUE) # randomize residuals
+data = gdf, iter = 499, RRPP = TRUE) # randomize residuals
 
 summary(fit1)
 summary(fit2)
@@ -185,12 +185,13 @@ plotRefToTarget(M, fit2$GM$fitted[,,20], mag = 3)
 ### THE FOLLOWING ILLUSTRATES SIMPLER SOLUTIONS FOR 
 ### THE NOW DEPRECATED advanced.procD.lm FUNCTION AND
 ### PERFORM ANALYSES ALSO FOUND VIA THE morphol.disparity FUNCTION
+### USING THE pairwise FUNCTION
 
 # Comparison of LS means, with log(Csize) as a covariate
 
 # Model fits
-fit.null <- procD.lm(coords ~ log(Csize) + species + site, data = gdf, iter = 999)
-fit.full <- procD.lm(coords ~ log(Csize) + species * site, data = gdf, iter = 999)
+fit.null <- procD.lm(coords ~ log(Csize) + species + site, data = gdf, iter = 499)
+fit.full <- procD.lm(coords ~ log(Csize) + species * site, data = gdf, iter = 499)
 
 # ANOVA, using anova.lm.rrpp function from the RRPP package (replaces advanced.procD.lm)
 anova(fit.null, fit.full)
@@ -222,13 +223,16 @@ summary(fit)
 plot(fit, type = "diagnostics") 
 # diagnostic plots, including plotOutliers
 plot(fit, type = "diagnostics", outliers = TRUE) 
+
 # PC plot rotated to major axis of fitted values
 plot(fit, type = "PC", pch = 19, col = "blue") 
-# Uses residuals from model to find the commonom regression component 
-# for a predictor from the model
+# Regression-type plots
+
+# Use fitted values from the model to make prediction lines
 plot(fit, type = "regression", predictor = gdf$Csize, reg.type = "RegScore", 
 pch = 19, col = "green")
-# Uses residuals from model to find the projected regression scores
+
+# Uses coefficients from the model to find the projected regression scores
 rat.plot <- plot(fit, type = "regression", predictor = gdf$Csize, reg.type = "RegScore", 
 pch = 21, bg = "yellow") 
 
@@ -244,7 +248,21 @@ attributes(fit)
 fit$fitted[1:3, ] # the fitted values (first three specimens)
 fit$GM$fitted[,, 1:3] # the fitted values as Procrustes coordinates (same specimens)
 
-### 
+### THE FOLLOWING ILLUSTRATES SIMPLER SOLUTIONS FOR 
+### THE NOW DEPRECATED nested.update FUNCTION USING
+### THE anova GENERIC FUNCTION
+
+data("larvalMorph")
+Y.gpa <- gpagen(larvalMorph$tailcoords, curves = larvalMorph$tail.sliders,
+ProcD = FALSE, print.progress = FALSE)
+gdf <- geomorph.data.frame(Y.gpa, treatment = larvalMorph$treatment, 
+family = larvalMorph$family)
+fit <- procD.lm(coords ~ treatment/family, data = gdf, print.progress = FALSE, iter = 199)
+anova(fit) # treatment effect not adjusted
+anova(fit, error = c("treatment:family", "Residuals")) # treatment effect updated (adjusted)
+
+
+
 }
 \references{
 Anderson MJ. 2001. A new method for non-parametric multivariate analysis of variance. 

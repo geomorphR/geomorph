@@ -207,8 +207,6 @@ summary.pls <- function(object, ...) {
 #' 
 #' @param x plot object (from \code{\link{phylo.integration}} or \code{\link{two.b.pls}})
 #' @param label Optional vector to label points
-#' @param warpgrids Logical argument whether to include warpgrids
-#' @param shapes Logical argument whether to return the the shape coordinates of the extreme ends of axis1 and axis2
 #' @param ... other arguments passed to plot and plotRefToTarget (in a limited capacity).  In most cases, greater flexibility
 #' can be attained with using \code{\link{plotRefToTarget}} and \code{\link{shape.predictor}}.
 #' @return If shapes = TRUE, function returns a list containing the shape coordinates of the extreme ends of axis1 and axis2 
@@ -218,24 +216,27 @@ summary.pls <- function(object, ...) {
 #' @keywords utilities
 #' @keywords visualization
 #' 
-plot.pls <- function(x, ...) {
+plot.pls <- function(x, label = NULL, ...) {
   XScores <- x$XScores
   YScores <- x$YScores
   if(is.matrix(XScores)) XScores <- XScores[,1]
   if(is.matrix(YScores)) YScores <- YScores[,1]
   plot.args <- list(x = XScores, y = YScores,
-                    main = "PLS Plot", xlab = "PLS1 Block 1", 
+                    main = "PLS1 Plot: Block 1 (X) vs. Block 2 (Y)", xlab = "PLS1 Block 1", 
                     ylab = "PLS1 Block 2", ...)
   do.call(plot, plot.args)
   pc <- prcomp(cbind(XScores, YScores))$x[,1]
   px <- predict(lm(XScores~pc))
   py <- predict(lm(YScores~pc))
   abline(lm(py ~ px), col = "red")
+  if (length(label != 0)) {
+    text(XScores, YScores, label, adj = c(-0.7, -0.7))
+  }
   out <- list()
-  out$plot.args <- ploy.args
+  out$plot.args <- plot.args
   out$A1 <- x$A1
   out$A2 <- x$A2
-  clas(out) <- "plot.pls"
+  class(out) <- "plot.pls"
   invisible(out)
 }
 
@@ -789,38 +790,59 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, phylo = FALSE,
   options(warn = -1)
   if(NCOL(x$x) == 1) stop("Only one PC.  No plotting capability with this function.\n", 
                           call. = FALSE)
+  v <- x$d/sum(x$d)
+  xlabel <- paste("PC ", axis1, ": ", round(v[axis1] * 100, 2), "%", sep = "")
+  ylabel <- paste("PC ", axis2, ": ", round(v[axis2] * 100, 2), "%", sep = "")
+  plot.args <- list(x = x$x[, axis1], y = x$x[, axis2], xlab = xlabel, ylab = ylabel, ...)
   pcdata <- as.matrix(x$x[, c(axis1, axis2)])
-  dots <- list(...)
-  if(!is.null(dots$axes)) axes <- dots$axes else axes <- TRUE
+  if(!is.null(plot.args$axes)) axes <- plot.args$axes else axes <- TRUE
   if(!is.logical(axes)) axes <- as.logical(axes)
-  if(phylo == FALSE){
-    plot.new()
-    plot.window(1.05*range(pcdata[,1]), 1.05*range(pcdata[,2]), asp=1,...)
-    plot.xy(xy.coords(pcdata), type="p",...)
-  } else {
-    phy <- attributes(x)$phy
-    pcdata <- rbind(pcdata, x$anc.x[,c(axis1, axis2)])
-    plot.new()
-    plot.window(1.05*range(pcdata[,1]), 1.05*range(pcdata[,2]), log = "", asp=1, ...)
+  plot.args$xlim <- 1.05*range(plot.args$x)
+  plot.args$ylim <- 1.05*range(plot.args$y)
+  if(is.null(plot.args$asp)) plot.args$asp <- 1
+  
+  if(phylo) {
+    phy <- x$phy
+    phy.pcdata <- rbind(x$x, x$anc.x)
+    phy.pcdata <- as.matrix(phy.pcdata[, c(axis1, axis2)])
+    plot.args$x <- pcdata[,1]
+    plot.args$y <- pcdata[,2]
+
+  }
+  
+  do.call(plot, plot.args)
+  
+  if(phylo) {
     for (i in 1:nrow(phy$edge)) {
-      dt.xy <- xy.coords(pcdata[(phy$edge[i,]),])
+      dt.xy <- xy.coords(phy.pcdata[phy$edge[i,], ])
       plot.xy(dt.xy, type="l", col = phylo.par$edge.color, 
               lwd = phylo.par$edge.width, lty = phylo.par$edge.lty)
     }
-    plot.xy(xy.coords(pcdata[1:length(phy$tip),]), type="p",...)
-    plot.xy(xy.coords(pcdata[(length(phy$tip)+1):nrow(pcdata),]), type="p",
+    plot.xy(xy.coords(phy.pcdata[1:length(phy$tip),]), type="p",...)
+    plot.xy(xy.coords(phy.pcdata[(length(phy$tip)+1):nrow(phy.pcdata),]), type="p",
             pch = phylo.par$node.pch, cex = phylo.par$node.cex, bg = phylo.par$node.bg)
   }
+
   if(axes){
     abline(h = 0, lty=2, ...)
     abline(v = 0, lty=2, ...)
   }
 
   options(warn = 0)
-  out <- list(points = pcdata,   
+  out <- list(PC.points = pcdata,   
               call = match.call())
+  out$GM <- list()
+  out$GM$A <- x$A
+  
+  out$plot.args <- plot.args
+  if(phylo) {
+    out$phylo <- list()
+    out$phylo$phy <- phy
+    out$phylo$phylo.par <- phylo.par
+    out$phylo$phy.pcdata <- phy.pcdata
+    
+  }
   class(out) <- "plot.gm.prcomp"
-  attributes(out)$A <- attributes(x)$A
   invisible(out)
   
 }

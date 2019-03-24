@@ -99,7 +99,8 @@ The following are brief descriptions of the different plotting methods, with ref
   changing the allometry model.}
   }
   
-The function returns values that can be used with \code{\link{picknplot.shape}} to visualize shape changes in the plot.
+The function returns values that can be used with \code{\link{picknplot.shape}} or a combination of 
+\code{\link{shape.predictor}} and \code{\link{plotRefToTarget}} to visualize shape changes in the plot.
 }
 \examples{
 
