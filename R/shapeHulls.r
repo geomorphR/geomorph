@@ -2,18 +2,14 @@
 #' 
 #' This function is used to update \code{\link{plot.procD.lm}} and \code{\link{plot.gm.prcomp}} ordination plot
 #' objects with convex hulls for different groups.  This function does not currently work with 
-#' \code{\link{plotTangentSpace}}.  If no groups are defined, an attempt to define groups from 
-#' the original \code{\link{procD.lm}} analysis will be made.  Failing this, just a single
-#' convex hull will be returned.  The user can also choose to plot only one hull with groups = "none", which is 
-#' different than a NULL argument.  Groups can also differ from the groups originally considered for the original 
-#' \code{\link{procD.lm}} analysis.
+#' \code{\link{plotTangentSpace}}.  If no groups are defined (groups is NULL) just a single
+#' convex hull will be returned.  Groups do not need to be a factor in the original \code{\link{procD.lm}} fit.
 #' 
 #' This function is a wrapper for the \code{\link{points}} function. It is intentionally limited, so
 #' as to not interfere with other plot parameter adjustments.
 #' 
 #' @param x A \code{\link{plot.procD.lm}} or \code{\link{plot.gm.prcomp}} plot object.
-#' @param groups An optional vector or factor to define groups for hull.  If NULL, an attempt to coerce groups
-#' from the analytical design (must be \code{\link{plot.procD.lm}} object).  If "none", only one hull will be generated for all points.
+#' @param groups An optional vector or factor to define groups for hull.  If NULL, only one hull will be generated for all points.
 #' @param group.cols An optional vector to define hull colors, arranged in the same order as factor levels.  If NULL and if multiple groups
 #' exist, the general R color sequence (black, red, green, blue, etc.) will be used.
 #' @param group.lwd An optional vector equal in length to the number of group levels, and arranged in the order of group levels,
@@ -45,6 +41,7 @@
 #' legend("topright", levels(groups), 
 #' col = c("dark red", "dark red", "dark blue", "dark blue"),
 #' lwd = rep(2,4), lty = c(2, 1, 2, 1))
+#' shapeHulls(pc.plot, groups = "none", group.lwd = 3, group.cols = "dark grey")
 #' 
 #' pc.plot <- plot(fit, type = "PC", pch = 19)
 #' shapeHulls(pc.plot, groups = gdf$Sex, group.cols = c("black", "black"), 
@@ -71,14 +68,13 @@ shapeHulls <- function(x, groups = NULL, group.cols = NULL,
   if(NCOL(y) < 2) stop("Cannot generate hulls in fewer than 2 dimensions")
   if(NCOL(y) > 2) y <- y[,1:2]
   n <- NROW(y)
-  if(!is.null(groups) && any(groups == "none")) groups <- rep(1, n)
-  if(is.null(groups)) {
-    groups <- x$groups
-    if(is.null(groups)) groups <- rep(1, n)
-  }
+  if(!is.null(groups) && length(groups) != n ) stop("Different number of observations between groups factor and PC plot.\n",
+                                                    call. = FALSE)
+
+  if(is.null(groups)) groups <- rep(1, n)
   groups <- as.factor(groups)
   if(length(unique(groups)) != length(levels(groups)))
-    cat("Warning: the levels in the grouping factor do not match the number of unique factor levels.")
+    cat("Warning: the levels in the grouping factor do not match the number of unique factor levels.\n")
   ug <- unique(groups)
   g <- length(ug)
   if(is.null(group.cols)) group.cols <- 1:g

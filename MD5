@@ -9,7 +9,7 @@ d8e8360c03c03fe45d2100e9c05d4a89 *data/plethodon.rda
 9ba51ab9be03930a4acdcddde8169b33 *data/scallopPLY.rda
 6e5e71b242462e422b716800ffc3c464 *data/scallops.rda
 26a2b69e34c6aa95a946f713a4a404e7 *DESCRIPTION
-73f723a130c92f8b84a81465a15add7c *geomorph.Rproj
+f4f2080e745b8d689f17caf549449ab5 *geomorph.Rproj
 f926ce8a00d113b94bd7a08b69b5bfc3 *inst/CITATION
 8efb18cde494ac4fa6b8392eec005b34 *inst/doc/geomorph.assistance.html
 2db8bd28eaf7a1004c858a11c2b42465 *inst/doc/geomorph.assistance.Rmd
@@ -102,7 +102,7 @@ d7ab7b16621a488c2daa709d10af488b *man/readmulti.nts.Rd
 8be198584c10582597e98c6cecbb26f7 *man/scallopPLY.Rd
 c4f3fe2e244677c2504bbe0283590d1c *man/scallops.Rd
 c700211e6bf0aa9735bd54888b6390a6 *man/shape.predictor.Rd
-6fe8467fbcf909dcd215003ee43bf7c4 *man/shapeHulls.Rd
+206fee523d7ec04400ba15a8018970ec *man/shapeHulls.Rd
 35068c84146bc696b201169eb0009e0e *man/summary.bilat.symmetry.Rd
 8289c419e5231edfdfe9db2cd1ea4bc4 *man/summary.combined.set.Rd
 b1e22f76b9e8ba3abc2f107ec599b6a7 *man/summary.compare.pls.Rd
@@ -177,7 +177,7 @@ daaffbf090012a23469eaabbef833d3e *R/readland.tps.r
 1dbca61c2285445a2005917a17d571ba *R/readmulti.nts.r
 73ce1481733305a19848121fd2c90203 *R/rotate.coords.R
 4d9585ab961643a7147c1b9c5be2a35b *R/shape.predictor.r
-2a2fc21dd6cc90b99e8e76f53f7def89 *R/shapeHulls.r
+1c9cd841fce53b9f316dddf561958db3 *R/shapeHulls.r
 89843e939b7cd289a5b651730bae8b8f *R/shared.support.code.R
 d9170bf4815f09297472b5986b2b5854 *R/two.b.pls.r
 2e693d8b4f3c21d742737b97d1773119 *R/two.d.array.r
