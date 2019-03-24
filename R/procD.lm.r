@@ -151,15 +151,15 @@
 #' @examples
 #' ### ANOVA example for Goodall's F test (multivariate shape vs. factors)
 #' data(plethodon) 
-#' Y.gpa <- gpagen(plethodon$land)    #GPA-alignment  
+#' Y.gpa <- gpagen(plethodon$land, print.progress = FALSE)    #GPA-alignment  
 #' gdf <- geomorph.data.frame(Y.gpa, 
 #' site = plethodon$site, 
 #' species = plethodon$species) # geomorph data frame
 #'
 #' fit1 <- procD.lm(coords ~ species * site, 
-#' data = gdf, iter = 249, RRPP = FALSE) # randomize raw values
+#' data = gdf, iter = 249, RRPP = FALSE, print.progress = FALSE) # randomize raw values
 #' fit2 <- procD.lm(coords ~ species * site, 
-#' data = gdf, iter = 249, RRPP = TRUE) # randomize residuals
+#' data = gdf, iter = 249, RRPP = TRUE, print.progress = FALSE) # randomize residuals
 #' 
 #' summary(fit1)
 #' summary(fit2)
@@ -188,8 +188,10 @@
 #' # Comparison of LS means, with log(Csize) as a covariate
 #' 
 #' # Model fits
-#' fit.null <- procD.lm(coords ~ log(Csize) + species + site, data = gdf, iter = 249)
-#' fit.full <- procD.lm(coords ~ log(Csize) + species * site, data = gdf, iter = 249)
+#' fit.null <- procD.lm(coords ~ log(Csize) + species + site, data = gdf, iter = 249,
+#'  print.progress = FALSE)
+#' fit.full <- procD.lm(coords ~ log(Csize) + species * site, data = gdf, iter = 249,
+#'  print.progress = FALSE)
 #' 
 #' # ANOVA, using anova.lm.rrpp function from the RRPP package (replaces advanced.procD.lm)
 #' anova(fit.null, fit.full)
@@ -206,14 +208,15 @@
 #' # Pairwise comaprisons of group variances, two ways (same as morphol.disaprity):
 #' summary(PW, test.type = "var", confidence = 0.95, stat.table = TRUE)
 #' summary(PW, test.type = "var", confidence = 0.95, stat.table = FALSE)
-#' morphol.disparity(fit.full, groups = gp, iter=249)
+#' morphol.disparity(fit.full, groups = gp, iter=249, print.progress = FALSE)
 #' 
 #' ### Regression example
 #' data(ratland)
-#' rat.gpa<-gpagen(ratland)         #GPA-alignment
+#' rat.gpa<-gpagen(ratland, print.progress = FALSE)         #GPA-alignment
 #' gdf <- geomorph.data.frame(rat.gpa) # geomorph data frame is easy without additional input
 #' 
-#' fit <- procD.lm(coords ~ Csize, data = gdf, iter = 249, RRPP = TRUE) # randomize raw values
+#' fit <- procD.lm(coords ~ Csize, data = gdf, iter = 249, RRPP = TRUE,
+#'  print.progress = FALSE) # randomize raw values
 #' summary(fit)
 #' 
 #' ### Extracting objects and plotting options
