@@ -164,9 +164,11 @@ site = plethodon$site,
 species = plethodon$species) # geomorph data frame
 
 fit1 <- procD.lm(coords ~ species * site, 
-data = gdf, iter = 249, RRPP = FALSE) # randomize raw values
+data = gdf, iter = 249, 
+RRPP = FALSE, print.progress = FALSE) # randomize raw values
 fit2 <- procD.lm(coords ~ species * site, 
-data = gdf, iter = 249, RRPP = TRUE) # randomize residuals
+data = gdf, iter = 249, 
+RRPP = TRUE, print.progress = FALSE) # randomize residuals
 
 summary(fit1)
 summary(fit2)
@@ -179,7 +181,9 @@ anova(fit2) # same as summary
 anova(fit2, effect.type = "Rsq")
 # if species and site were modeled as random effects ...
 anova(fit2, error = c("species:site", "species:site", "Residuals"))  
-predict(fit2)
+# not run, because it is a large object to print 
+# remove # to run
+# predict(fit2) 
 
 # TPS plots for fitted values of some specimens
 
@@ -195,16 +199,18 @@ plotRefToTarget(M, fit2$GM$fitted[,,20], mag = 3)
 # Comparison of LS means, with log(Csize) as a covariate
 
 # Model fits
-fit.null <- procD.lm(coords ~ log(Csize) + species + site, data = gdf, iter = 249)
-fit.full <- procD.lm(coords ~ log(Csize) + species * site, data = gdf, iter = 249)
+fit.null <- procD.lm(coords ~ log(Csize) + species + site, data = gdf, 
+iter = 249, print.progress = FALSE)
+fit.full <- procD.lm(coords ~ log(Csize) + species * site, data = gdf, 
+iter = 249, print.progress = FALSE)
 
 # ANOVA, using anova.lm.rrpp function from the RRPP package (replaces advanced.procD.lm)
-anova(fit.null, fit.full)
+anova(fit.null, fit.full, print.progress = FALSE)
 
 # Pairwise tests, using pairwise function from the RRPP package
 gp <-  interaction(gdf$species, gdf$site)
 
-PW <- pairwise(fit.full, fit.null = fit.null, groups = gp, covariate = NULL)
+PW <- pairwise(fit.full, groups = gp, covariate = NULL)
 
 # Pairwise distances between means, summarized two ways (replaces advanced.procD.lm):
 summary(PW, test.type = "dist", confidence = 0.95, stat.table = TRUE)
@@ -220,7 +226,8 @@ data(ratland)
 rat.gpa<-gpagen(ratland)         #GPA-alignment
 gdf <- geomorph.data.frame(rat.gpa) # geomorph data frame is easy without additional input
 
-fit <- procD.lm(coords ~ Csize, data = gdf, iter = 249, RRPP = TRUE) # randomize raw values
+fit <- procD.lm(coords ~ Csize, data = gdf, iter = 249, 
+RRPP = TRUE, print.progress = FALSE) 
 summary(fit)
 
 ### Extracting objects and plotting options
@@ -234,11 +241,13 @@ plot(fit, type = "PC", pch = 19, col = "blue")
 # Regression-type plots
 
 # Use fitted values from the model to make prediction lines
-plot(fit, type = "regression", predictor = gdf$Csize, reg.type = "RegScore", 
+plot(fit, type = "regression", 
+predictor = gdf$Csize, reg.type = "RegScore", 
 pch = 19, col = "green")
 
 # Uses coefficients from the model to find the projected regression scores
-rat.plot <- plot(fit, type = "regression", predictor = gdf$Csize, reg.type = "RegScore", 
+rat.plot <- plot(fit, type = "regression", 
+predictor = gdf$Csize, reg.type = "RegScore", 
 pch = 21, bg = "yellow") 
 
 # TPS grids for min and max scores in previous plot
@@ -259,10 +268,15 @@ fit$GM$fitted[,, 1:3] # the fitted values as Procrustes coordinates (same specim
 
 data("larvalMorph")
 Y.gpa <- gpagen(larvalMorph$tailcoords, curves = larvalMorph$tail.sliders,
-ProcD = FALSE, print.progress = FALSE)
+ProcD = TRUE, print.progress = FALSE)
 gdf <- geomorph.data.frame(Y.gpa, treatment = larvalMorph$treatment, 
 family = larvalMorph$family)
-fit <- procD.lm(coords ~ treatment/family, data = gdf, print.progress = FALSE, iter = 199)
+
+# Normally, all coordinates **should** be used but for computational efficientcy in this
+# example (to run in less than 1s), just the first 10 principal components will be used.
+
+gdf$P <- gm.prcomp(Y.gpa$coords)$x[, 1:10]
+fit <- procD.lm(P ~ treatment/family, data = gdf, print.progress = FALSE, iter = 99)
 anova(fit) # treatment effect not adjusted
 anova(fit, error = c("treatment:family", "Residuals")) # treatment effect updated (adjusted)
 
