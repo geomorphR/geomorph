@@ -11,8 +11,6 @@ d8e8360c03c03fe45d2100e9c05d4a89 *data/plethodon.rda
 26a2b69e34c6aa95a946f713a4a404e7 *DESCRIPTION
 73f723a130c92f8b84a81465a15add7c *geomorph.Rproj
 f926ce8a00d113b94bd7a08b69b5bfc3 *inst/CITATION
-8efb18cde494ac4fa6b8392eec005b34 *inst/doc/geomorph.assistance.html
-2db8bd28eaf7a1004c858a11c2b42465 *inst/doc/geomorph.assistance.Rmd
 b0288b9f285d4e4664aef6e576fa6db4 *man/advanced.procD.lm.Rd
 5a8e62b1b33e226fb4e4d5ed92630fe7 *man/arrayspecs.Rd
 f167b2b15c4a274b9d9df1d1029aad85 *man/bilat.symmetry.Rd
@@ -88,7 +86,7 @@ abfcefdb3af11790e378368261c6cddc *man/print.gpagen.Rd
 aa9104be734ce6ed986a76ae3a1b8dda *man/print.pls.Rd
 1c020ff2d475e36230387f1a5505cdbd *man/print.procD.lm.Rd
 85a11034b23e98d51cc6133561efe505 *man/procD.allometry.Rd
-b33c8a641e901f917269716b84bb026b *man/procD.lm.Rd
+717bdc33470c432175185e76223ccd0a *man/procD.lm.Rd
 33939446979e6e62215967e83f715bd1 *man/procD.pgls.Rd
 72b91c59988d64411b7538795533db3b *man/pupfish.Rd
 a9e642b1b58f83a93ab678d6be98df1c *man/ratland.Rd
@@ -167,7 +165,7 @@ aab74b98af1c98726fe373d9759ccdbd *R/plotOutliers.r
 a2dcc839c82368a3f476cb8985b19b88 *R/plotRefToTarget.r
 3a6faf4779152e188422fa4f673cb175 *R/plotspec.r
 eb6f16f6c9aec444f2b91e74373d6ee5 *R/plotTangentSpace.r
-2de62f0fefd67b4f9ccb9feb74c201d5 *R/procD.lm.r
+d7803eb5555720dfbc0becddf67af917 *R/procD.lm.r
 342033e7ff051fcb644a36658c8e212f *R/procD.pgls.r
 df3f4cc6406dc0c737ee2ff08c2a0e3d *R/read.morphologika.r
 ad570247a565a6e0d2468639b3c7245f *R/read.ply.r
@@ -177,7 +175,7 @@ daaffbf090012a23469eaabbef833d3e *R/readland.tps.r
 1dbca61c2285445a2005917a17d571ba *R/readmulti.nts.r
 73ce1481733305a19848121fd2c90203 *R/rotate.coords.R
 4d9585ab961643a7147c1b9c5be2a35b *R/shape.predictor.r
-408a61999e47696599062d6d6d6a347c *R/shapeHulls.r
+2cd047b3883fa56d4652001af813beac *R/shapeHulls.r
 89843e939b7cd289a5b651730bae8b8f *R/shared.support.code.R
 d9170bf4815f09297472b5986b2b5854 *R/two.b.pls.r
 2e693d8b4f3c21d742737b97d1773119 *R/two.d.array.r
