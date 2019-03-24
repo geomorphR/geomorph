@@ -10,8 +10,7 @@ shapeHulls(x, groups = NULL, group.cols = NULL, group.lwd = NULL,
 \arguments{
 \item{x}{A \code{\link{plot.procD.lm}} or \code{\link{plot.gm.prcomp}} plot object.}
 
-\item{groups}{An optional vector or factor to define groups for hull.  If NULL, an attempt to coerce groups
-from the analytical design (must be \code{\link{plot.procD.lm}} object).  If "none", only one hull will be generated for all points.}
+\item{groups}{An optional vector or factor to define groups for hull.  If NULL, only one hull will be generated for all points.}
 
 \item{group.cols}{An optional vector to define hull colors, arranged in the same order as factor levels.  If NULL and if multiple groups
 exist, the general R color sequence (black, red, green, blue, etc.) will be used.}
@@ -25,11 +24,8 @@ to modify hull line type.}
 \description{
 This function is used to update \code{\link{plot.procD.lm}} and \code{\link{plot.gm.prcomp}} ordination plot
 objects with convex hulls for different groups.  This function does not currently work with 
-\code{\link{plotTangentSpace}}.  If no groups are defined, an attempt to define groups from 
-the original \code{\link{procD.lm}} analysis will be made.  Failing this, just a single
-convex hull will be returned.  The user can also choose to plot only one hull with groups = "none", which is 
-different than a NULL argument.  Groups can also differ from the groups originally considered for the original 
-\code{\link{procD.lm}} analysis.
+\code{\link{plotTangentSpace}}.  If no groups are defined (groups is NULL) just a single
+convex hull will be returned.  Groups do not need to be a factor in the original \code{\link{procD.lm}} fit.
 }
 \details{
 This function is a wrapper for the \code{\link{points}} function. It is intentionally limited, so
