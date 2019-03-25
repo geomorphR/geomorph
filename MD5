@@ -1,3 +1,5 @@
+a43390f808371e7f0b84b00ddb7478ef *cran-comments.md
+8d6a7be71687d29cca27a091887ec92e *CRAN-RELEASE
 247b6e5658356e87edfd560687b239fc *data/hummingbirds.rda
 56558754725fea156eb0820f67a4f508 *data/larvalMorph.rda
 2abf7b7d088204662abf4c6acf673ff5 *data/mosquito.rda
@@ -127,7 +129,7 @@ ad1198560c6922c3dbe96b40f3f804f1 *NEWS
 c7cbd9c9a2de38757e9ed8245eedcb12 *R/bilat.symmetry.r
 f291ed28156a2d7c9a73a6846944cbeb *R/build.template.r
 a4000545c9b02a4e399438951cc3cc5f *R/combine.subsets.R
-e36bcdbfc5b6a31e00b02e24f921c414 *R/compare.evol.rates.r
+bbeac77f9ca6094ea8283e64ecc2ef2a *R/compare.evol.rates.r
 d07ba05e9c4ba71ee07b20df5b7e0de9 *R/compare.multi.evol.rates.r
 89186a1d747e88be123b6e34456cd9ba *R/compare.pls.r
 5e4b285ed0e6499f26af9d913d0c48e4 *R/coords.subset.r
