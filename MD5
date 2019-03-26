@@ -63,7 +63,7 @@ d92329d637882c046cba870a4cee4386 *man/plot.gm.prcomp.Rd
 3bc59c4db0a98b796000c1e0f726deb5 *man/plot.gpagen.Rd
 32f8a2cf1f71b0332583a602faaaa77e *man/plot.mshape.Rd
 2e2bd4c739c5b071a2acc39472f91b09 *man/plot.physignal.Rd
-7ed6e6f1bc9e9d09a9a61e59611ada9a *man/plot.pls.Rd
+45b20f1e858ea8448cd7032e4ff5f88e *man/plot.pls.Rd
 01bc71a70482f434ec9e2035576fe781 *man/plot.procD.lm.Rd
 050bd7e77024fbd1f44193ce5e163c5a *man/plotAllometry.Rd
 594e35d98d0b946c0435400cfcbc0f08 *man/plotAllSpecimens.Rd
@@ -147,7 +147,7 @@ aac6a4f8a759473e8c37048e5c8e3d91 *R/findMeanSpec.r
 028a6b3f1571324628c6747b73d1f6b7 *R/fixed.angle.r
 d4da6eba1dc1a56c0b1ad94c0839c825 *R/geomorph.data.frame.r
 8643b711d0c4c7a8c6a45b12919ef2b1 *R/geomorph.support.code.r
-33d066c0dc14e6a797266e267c418595 *R/geomorph.utils.r
+cf112098256133e55688523099c22eab *R/geomorph.utils.r
 48ad1d05fbe54c70769453fd53a74d47 *R/globalIntegration.r
 85f132fe6dad77cc29c77ef6517a119e *R/gm.prcomp.R
 bf0750e2582fc2c3b5454ad48b7f3cbb *R/gpagen.r
