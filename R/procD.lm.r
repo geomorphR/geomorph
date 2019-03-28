@@ -157,10 +157,10 @@
 #' species = plethodon$species) # geomorph data frame
 #'
 #' fit1 <- procD.lm(coords ~ species * site, 
-#' data = gdf, iter = 249, 
+#' data = gdf, iter = 999, 
 #' RRPP = FALSE, print.progress = FALSE) # randomize raw values
 #' fit2 <- procD.lm(coords ~ species * site, 
-#' data = gdf, iter = 249, 
+#' data = gdf, iter = 999, 
 #' RRPP = TRUE, print.progress = FALSE) # randomize residuals
 #' 
 #' summary(fit1)
@@ -193,9 +193,9 @@
 #' 
 #' # Model fits
 #' fit.null <- procD.lm(coords ~ log(Csize) + species + site, data = gdf, 
-#' iter = 249, print.progress = FALSE)
+#' iter = 999, print.progress = FALSE)
 #' fit.full <- procD.lm(coords ~ log(Csize) + species * site, data = gdf, 
-#' iter = 249, print.progress = FALSE)
+#' iter = 999, print.progress = FALSE)
 #' 
 #' # ANOVA, using anova.lm.rrpp function from the RRPP package (replaces advanced.procD.lm)
 #' anova(fit.null, fit.full, print.progress = FALSE)
@@ -212,14 +212,14 @@
 #' # Pairwise comaprisons of group variances, two ways (same as morphol.disaprity):
 #' summary(PW, test.type = "var", confidence = 0.95, stat.table = TRUE)
 #' summary(PW, test.type = "var", confidence = 0.95, stat.table = FALSE)
-#' morphol.disparity(fit.full, groups = gp, iter=249)
+#' morphol.disparity(fit.full, groups = gp, iter=999)
 #' 
 #' ### Regression example
 #' data(ratland)
 #' rat.gpa<-gpagen(ratland)         #GPA-alignment
 #' gdf <- geomorph.data.frame(rat.gpa) # geomorph data frame is easy without additional input
 #' 
-#' fit <- procD.lm(coords ~ Csize, data = gdf, iter = 249, 
+#' fit <- procD.lm(coords ~ Csize, data = gdf, iter = 999, 
 #' RRPP = TRUE, print.progress = FALSE) 
 #' summary(fit)
 #' 
@@ -266,11 +266,8 @@
 #' gdf <- geomorph.data.frame(Y.gpa, treatment = larvalMorph$treatment, 
 #' family = larvalMorph$family)
 #' 
-#' # Normally, all coordinates **should** be used but for computational efficientcy in this
-#' # example (to run in less than 1s), just the first 10 principal components will be used.
-#'
-#' gdf$P <- gm.prcomp(Y.gpa$coords)$x[, 1:10]
-#' fit <- procD.lm(P ~ treatment/family, data = gdf, print.progress = FALSE, iter = 99)
+#' fit <- procD.lm(coords ~ treatment/family, data = gdf, 
+#' print.progress = FALSE, iter = 199)
 #' anova(fit) # treatment effect not adjusted
 #' anova(fit, error = c("treatment:family", "Residuals")) # treatment effect updated (adjusted)
 #'
