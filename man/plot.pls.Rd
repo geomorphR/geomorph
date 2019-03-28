@@ -11,12 +11,12 @@
 
 \item{label}{Optional vector to label points}
 
-\item{...}{other arguments passed to plot. The function returns values that can be used with
-\code{\link{picknplot.shape}} (in a limited capacity). In most cases, greater
+\item{...}{other arguments passed to plot. The function returns values that can be used with 
+\code{\link{picknplot.shape}} (in a limited capacity). In most cases, greater 
 flexibility can be attained with using \code{\link{plotRefToTarget}} and \code{\link{shape.predictor}}.}
 }
 \value{
-If shapes = TRUE, function returns a list containing the shape coordinates of the extreme ends of axis1 and axis2
+If shapes = TRUE, function returns a list containing the shape coordinates of the extreme ends of axis1 and axis2 
 if 3D arrays were originally provided for each
 }
 \description{
