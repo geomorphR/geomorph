@@ -310,7 +310,7 @@ procD.lm <- function(f1, iter = 999, seed=NULL, RRPP = TRUE,
                  seed = seed, RRPP = RRPP,
                  SS.type = SS.type, 
                  int.first = int.first,  
-                 Cov = Cov, 
+                 Cov = Cov, iter = iter,
                  print.progress = print.progress, ...)
   
   out$ANOVA$effect.type <- match.arg(effect.type)
