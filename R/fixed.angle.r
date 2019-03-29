@@ -123,7 +123,7 @@ fixed.angle<-function(A, art.pt=NULL, angle.pts.1, angle.pts.2,
   
   for (i in 1:n){   
     r <- matrix(c(cos(dev.angle[i]),-sin(dev.angle[i]),
-                 sin(dev.angle[i]),cos(dev.angle[i])),2, 2)
+                 sin(dev.angle[i]),cos(dev.angle[i])),2, 2, byrow = TRUE)
     y <- A.list[[i]]$y
     A[,,i] <- y
     A[rot.pts,,i] = y[rot.pts,] %*% r
