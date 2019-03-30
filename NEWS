@@ -3,6 +3,7 @@ CHANGES in Geomorph Version 3.1.1
 BUG FIXES
     o Updated simulator for compar.evol.rates to utilize all simulated datasets
     o Updated rotation in fixed.angle
+    o Removed code causing warning in GMfromShapes1
 
 CHANGES IN GEOMORPH VERSION 3.1.0
 
