@@ -146,7 +146,7 @@ c38531b2e37e698a0ae0ea5a7062bcd8 *R/estimate.missing.r
 aac6a4f8a759473e8c37048e5c8e3d91 *R/findMeanSpec.r
 edd9262112c0002e3be81df22872f89f *R/fixed.angle.r
 d4da6eba1dc1a56c0b1ad94c0839c825 *R/geomorph.data.frame.r
-8643b711d0c4c7a8c6a45b12919ef2b1 *R/geomorph.support.code.r
+ea20a00f96e165462444d3b4180582fe *R/geomorph.support.code.r
 cf112098256133e55688523099c22eab *R/geomorph.utils.r
 48ad1d05fbe54c70769453fd53a74d47 *R/globalIntegration.r
 85f132fe6dad77cc29c77ef6517a119e *R/gm.prcomp.R
@@ -185,4 +185,5 @@ d9170bf4815f09297472b5986b2b5854 *R/two.b.pls.r
 59d493f9cc61f036c40f49bf8b7bb3e0 *R/warpRefOutline.r
 ad572d6203f667d37641cee3adbc72b7 *R/writeland.tps.r
 1fe9a3909cce870d2263fb8cdfd1e639 *README.md
+689b04214469df022e35855c17361a9f *vignettes/geomorph.assistance.html
 2db8bd28eaf7a1004c858a11c2b42465 *vignettes/geomorph.assistance.Rmd

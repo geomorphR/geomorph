@@ -1812,7 +1812,7 @@ evenPts <- function(x, n){
 # GMfromShapes1
 # function to read landmarks with sliders from a StereoMorph shapes object
 # used in: readland.shapes
-GMfromShapes1 <- function(Shapes, nCurvePts, curve.ends = NULL, continuous.curve = NULL, scaled = TRUE){ # with Curves
+GMfromShapes1 <- function(Shapes, nCurvePts, continuous.curve = NULL, scaled = TRUE){ # with Curves
   out <- GMfromShapes0(Shapes, scaled = scaled)
   scaled = out$scaled
   if(scaled) curves <- Shapes$curves.scaled else 
@@ -1869,10 +1869,10 @@ GMfromShapes1 <- function(Shapes, nCurvePts, curve.ends = NULL, continuous.curve
   
   # determine which curve points become landmarks
   curve.refs <- list()
-  curve.ends <- rep(1, p)
+  
   for(i in 1:curve.n) {
     cp <- nCurvePts[i]
-    ce <- c(2, cp+1) - curve.ends
+    ce <- c(2, cp+1) - 1
     cvr <- (1:cp)[-ce]
     curve.refs[[i]] <- cvr
   }
