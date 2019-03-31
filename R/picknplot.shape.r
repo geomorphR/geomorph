@@ -109,16 +109,18 @@ picknplot.shape <- function(x, ...){
     if(is.null(A1)) stop("No shape data provided\n", call. = FALSE)
     A2 <- NULL
     
-    if(!is.null(x$CAC)) {
-      if(identical(x$plot.args$y, x$CAC)) {
-        A1 <- A1 + x$GM$residuals
-        type <- "regression2"
+    if(!is.null(x$PredLine)) {
+      if(!is.null(x$CAC)) {
+        if(identical(x$plot.args$y, x$CAC)) {
+          A1 <- A1 + x$GM$residuals
+          type <- "regression2"
+        }
       }
       if(identical(x$plot.args$y, x$PredLine) || identical(x$plot.args$y, x$RegScore))
         type <- "regression2"
       if(length(dim(A1)) != 3) stop("No shape data provided\n", call. = FALSE)
     }
-    
+   
   } else {
     type <- "PLS"
     A1 <- x$A1
