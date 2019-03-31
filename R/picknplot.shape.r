@@ -155,7 +155,7 @@ picknplot.shape <- function(x, ...){
 
   
     if(type == "PC") {
-      X <- x$PC.points
+      X <- as.matrix(cbind(x$plot.args$x, x$plot.args$y))
       picked.shapes[[p]] <- shape.predictor(A1, X, 
                                        pred1 = picked.pts[[p]])$pred1 
     }
