@@ -104,7 +104,7 @@ picknplot.shape <- function(x, ...){
 
   if(!inherits(x, "plot.pls")) {
     type <- "PC"
-    if(is.null(x$GM$A)) A1 <- x$GM$fitted + x$GM$residuals else
+    if(is.null(x$GM$A)) A1 <- x$GM$fitted else
       A1 <- x$GM$A
     if(is.null(A1)) stop("No shape data provided\n", call. = FALSE)
     A2 <- NULL
