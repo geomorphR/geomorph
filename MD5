@@ -1,5 +1,4 @@
-a43390f808371e7f0b84b00ddb7478ef *cran-comments.md
-8d6a7be71687d29cca27a091887ec92e *CRAN-RELEASE
+c2ddb0dca7cd4ac90e37c381205d4291 *cran-comments.md
 247b6e5658356e87edfd560687b239fc *data/hummingbirds.rda
 56558754725fea156eb0820f67a4f508 *data/larvalMorph.rda
 2abf7b7d088204662abf4c6acf673ff5 *data/mosquito.rda
@@ -10,7 +9,7 @@ d8e8360c03c03fe45d2100e9c05d4a89 *data/plethodon.rda
 80c6fa53b642b23b378cf036d1b962f1 *data/ratland.rda
 9ba51ab9be03930a4acdcddde8169b33 *data/scallopPLY.rda
 6e5e71b242462e422b716800ffc3c464 *data/scallops.rda
-59340474af44826419825244116da550 *DESCRIPTION
+4a38f0e13093092ec00d1cbd79f149c2 *DESCRIPTION
 f4f2080e745b8d689f17caf549449ab5 *geomorph.Rproj
 f926ce8a00d113b94bd7a08b69b5bfc3 *inst/CITATION
 b0288b9f285d4e4664aef6e576fa6db4 *man/advanced.procD.lm.Rd
@@ -185,5 +184,4 @@ d9170bf4815f09297472b5986b2b5854 *R/two.b.pls.r
 59d493f9cc61f036c40f49bf8b7bb3e0 *R/warpRefOutline.r
 ad572d6203f667d37641cee3adbc72b7 *R/writeland.tps.r
 1fe9a3909cce870d2263fb8cdfd1e639 *README.md
-689b04214469df022e35855c17361a9f *vignettes/geomorph.assistance.html
 2db8bd28eaf7a1004c858a11c2b42465 *vignettes/geomorph.assistance.Rmd
