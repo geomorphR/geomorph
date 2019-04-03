@@ -1,28 +1,47 @@
-GITHUB UPDATES    
-    o Fixed ratio call for permutations in compare.evol.rates
+CHANGES in Geomorph Version 3.1.1
+
+BUG FIXES
+    o Updated simulator for compar.evol.rates to utilize all simulated datasets
+    o Updated rotation in fixed.angle
+    o Removed code causing warning in GMfromShapes1
+
+CHANGES IN GEOMORPH VERSION 3.1.0
+
+    o Permutation computations now performed in RRPP 
+    o New functions added: plotAllometry, gm.prcomp, picknplot.shape, shape.hulls
+    o Deprecated: advanced.procD.lm, nested.update, procD.allometry (features of these functions now found using procD.lm)
+    o Generalized plotting options
+    o Reduced dependencies on geiger and Matrix
     o Added mean-centering to compare.evol.rates for permutations
-    o Fixed bilat.symmetry asymm shape issue for replicates.
-    o Fixed combine.subsets scaling issue.
+    o Updated fixed.angle to allow centroids from mutiple points to be used as angle points.
     o Updated coords.subset to avoid issue with arrayspecs and naming subsetted data.
-    o Updated trajectory.analysis to properly center mean values for PC plotting.
-
-
-CHANGES IN GEOMORPH VERSION 3.0.7
-    o Added mean-centering to compare.evol.rates for permutations
-    o Modified output in bilat.symmetry so output shapes retain order in 'ind' factor
-    o Modified readland.tps to identify missing data only when all lm coordinates are <0 and interactively prompt the user to confirm if they are to be treated as NAs
-    o Fixed readland.tps whitespace delimitation
-    o RRPP package now used for computations in advanced.procD.lm
-
-BUG FIXES 
+    o Changed the default for sliding to ProcD=FALSE in gpagen
+    o Added Procrustes distance matrix to gpagen output
+    o Moved trajectory.analysis to RRPP package and updated its arguments.
+    o Added partial disparity option to morphol.disparity
+    
+BUG FIXES
+    o Fixed ratio call for permutations in compare.evol.rates
     o Fixed bug in phylo.modularity call when groups > 2
+    o Fixed scaling fault in combine.subsets
+    o Updated trajectory.analysis to properly center mean values for PC plotting (now in RRPP)
+    o Added a trap for large distance matrices to gpagen, to avoid errors
+    o Fixed bug to allow for a single specimen with missing data in readland.tps
     o Fixed bug for HOS result mismatching criterion for procD.allometry
+    
+CHANGES IN GEOMORPH VERSION 3.0.7
+    o Computations for advanced.procD.lm now performed using RRPP package
+    o Modified output in bilat.symmetry so output shapes retain order in 'ind' factor
+    o Modified readland.tps to identify missing data only when all lm coordinate are <0 and interactively prompt the user to confirm if they are to be treated as NAs  
 
 CHANGES IN GEOMORPH VERSION 3.0.6
   NEW FEATURES
-    o plotOutliers now allows to plot outlier configurations in order to compare their shape with the consensus
+    o plotOutliers now allows to plot outlier configurations in order to compare their shape with the consensus     
     o plot.mshape function added to plot the consensus configuration with numbers and links
-
+    o New function gm.prcomp implements raw and weighted PCA and allows S3 generic plotting of its output
+    o New function readland.shapes allows reading a shapes file produced by StereoMorph, including landmark data and (potentially multiple) curves, and sampling semilandmarks from these curves.
+    o New function picknplot.shape allows interactively picking points in geomorph scatterplots to visualize shape variation across morphospace.
+    
   OTHER CHANGES
     o Modified previous addition to readland.tps to identify missing data only when all lm dimensions are <0 and interactively prompt the user to confirm if they are to be treated as NAs.  
     o Added ellipsis to bilat.symmetry and geomorphShapes option to allow more flexible gpagen options within
@@ -33,18 +52,18 @@ CHANGES IN GEOMORPH VERSION 3.0.6
     o Modified plot.procD.allometry to allow direct control of all plotting arguments by the user
     o Modified plotRefToTarget and tps to use plot.xy instead of plot, and thus avoid conflicts with plot.mshape
     o Added catch for missing data to readland.tps, to identify negative values and recode them as NAs
-
-  BUG FIXES 
+    
+  BUG FIXES
+    o Fixed multi-group output in phylo.modularity
     o Fixed issue with compare.evol.rates permutation method for univariate trait
     o Fixed issues with estimate.missing regression approach
     o Fixed issues with phylo.integration where Y-dataset contained a single variable
     o Fixed issue with integration.test when 3+ partitions with non-contiguous variables
     o Fixed effect size calculation error in procD.lm for single factor OLS models. 
     o Fixed ellipses options in procD.fit
-    o Fixed code to allow for a single specimen with missing data in readland.tps.
-
-CHANGES IN GEOMORPH VERSION 3.0.5
-  OTHER CHANGES 
+    
+CHANGES IN GEOMORPH VERSION 3.0.5 
+  OTHER CHANGES
     o Simplified options available in procD.allometry
     
   BUG FIXES
@@ -52,39 +71,38 @@ CHANGES IN GEOMORPH VERSION 3.0.5
     o Fixed dimnames error in readland.nts when file contained a single specimen's data
     o Fixed PGLS weights for factors in morphol.disparity when phylogeny utilized
     o Fixed readland.tps to be general to whitespace delimitation
-
-    
 CHANGES IN GEOMORPH VERSION 3.0.4
   NEW FEATURES
-    o An option to use types I, II, or III sums of squares and cross-products for ANOVA analyses (e.g., procD.lm, procD.pgls)
+    o New function: interlmkdist() to calculate linear distances between landmarks (interlandmark distances)
     o PGLS option for advanced.procD.lm
-    o An option to choose between SS, F-values, or Cohen's f-squared to calculate effect sizes for ANOVA analyses.
+    o An option to use types I, II, or III sums of squares and cross-products for ANOVA analyses (e.g., procD.lm(), procD.pgls())
+    o An option to choose between SS, F-values, or Cohen's f-squared to calculate effect sizes for ANOVA analyses
     o Effect sizes are now centered on mean values from distributions of random statistics.  Statistics are also log-transformed in certain cases to normalize distributions.
-    o An option to use only an intercept as a model for procD.lm and procD.pgls, with limited output.
-    o An option to use permutation tests when comparing net evolutionary rates for compare.evol.rates
-    o New function interlmkdist to calculate linear distances between landmarks
+    o An option to use only an intercept as a model for procD.lm() and procD.pgls(), with limited output
+    o An option to use permutation tests when comparing net evolutionary rates for compare.evol.rates()
 
   OTHER CHANGES
-    o Enhanced landmark labeling in arrayspecs.
-    o Created transferability of dimnames between arraysepcs and two.d.array.
-    o Updated Rd files for PLS functions to better cross-reference the similar functions.
-    o Added data frame output to procD.lm
-    o Change to plotGMPhyloMorphoSpace to center data by phylogenetic mean
+    o Added ellipsis programming to plotTangentSpace to pass arguments to prcomp().  Also, adjusted default tolerance to remove redundant PC dimensions.
+    o Enhanced landmark labeling in arrayspecs()
+    o Created transferability of dimnames between arraysepcs and two.d.array()
+    o Updated Rd files for PLS functions to better cross-reference the similar functions
+    o Added data frame output to procD.lm()
+    o Change to plotGMPhyloMorphoSpace() to center data by phylogenetic mean
     o read.morphologika now supports lists of file names to return a single data object
-    o Updated Rd files for readland.nts and readmulti.nts to avoid ambiguity and resolve misinformation in previous versions
-    o Updated readland.nts to accept specimen labels with spaces in name
-    
+    o Updated Rd files for readland.nts and readmulti.nts() to avoid ambiguity and resolve misinformation in previous versions
+    o Updated readland.nts() to accept specimen labels with spaces in name
+        
   BUG FIXES
-    o Fixed grids in tps to match reference not target, so that points are in the correct cells
+    o Fixed problem with incoporating lm arguments in procD.fit
     o Fixed univariate PLS to allow negative correlations
-    o Fixed permutation issues with advanced.procD.lm
+    o Fixed permutation issues with advanced.procD.lm()
     o Fixed links not plotting in plotAllSpecimens if no colour specified
     o Added missing random.r output to integration.test and phylo.integration
-    
-CHANGES IN GEOMORPH VERSION 3.0.3
 
+CHANGES IN GEOMORPH VERSION 3.0.3
+  
   NEW FEATURES
-    o New functions: compare.pls, coords.subset, shape.predictor
+    o New functions: compare.pls(), coords.subset(), shape.predictor()
     o droplevels.geomorph.data.frame added to support code
 
   OTHER CHANGES
@@ -99,16 +117,14 @@ CHANGES IN GEOMORPH VERSION 3.0.3
     o Fixed single.factor function to properly maintain factor levels when combining factors
     o Fixed plotting issues with phylo.integration
 
-
 CHANGES IN GEOMORPH VERSION 3.0.2
 
   NEW FEATURES
     o Added return of min/max shape matrices to plot.procD.allometry() and plot.pls()
     o Added option to save specimen ID to ID= line in writeland.tps()
-    o Added option to hide axes in plotRefToTarget()
-    
+
   OTHER CHANGES
-    o Continued optimization of analytical functions for faster computations
+    o Optimized analytical functions for faster computations
     o Added force match of specimen order between blocks in two.b.pls()
     o Updated A, Ahat, ref, p and k outputs when 2D matrix is used in procD.allometry()
     o Added option to plot group labels in plot.procD.allometry(method="PredLine")
@@ -123,29 +139,29 @@ CHANGES IN GEOMORPH VERSION 3.0.2
     o Fixed reading of ape::chronos phylogenies in 'phylo' functions
     o Fixed error in reading names in readland.tps() for some tps files
     
-    
 CHANGES IN GEOMORPH VERSION 3.0.1
 
   OTHER CHANGES
     o Removed dependency on phytools
     o Small addition to outputs in procD.pgls()
-    o added reading polygons in read.morphologika()
+    o Added reading polygons in read.morphologika()
+    o Plots of 3D shapes now plotted in pairs in single rgl window for: plotTangentSpace(), plot.bilat.symmetry(), plot.procD.allometry(), plot.pls()
+    o Functions performing warping of 3D meshes now present progress bar
+    o Added option pt.col to plot.procD.allometry() to designate plotting colors
 
   BUG FIXES
-    o Fixed label output for matrices in bilat.symmetry
-    o Fixed output formatting of pairwise pvalue matrix in compare.evol.rates
     o Fixed error in output order in plotOutliers
-    o Fixed error in calculation slope distances in advanced.procD.lm  
+    o Fixed error in calculation slope distances in advanced.procD.lm()  
     o Fixed 2D data input error for phylo.modularity
-    o Fixed centering error for CAC scores in procDAllometry
-    o Fixed deformation plot issue with phylo.integration (via plot.pls)
-    o Fixed two small issues with plot.pls, regarding best fit line and matrix reduction.
-    o Fixed generalized inverse for tps2d()
-    o Fixed three small issues with gpagen source files: indexing errors, arbitrary PC rotations for surface points, maximum iteration disparity.
+    o Fixed centering error for CAC scores in procD.Allometry
+    o Fixed deformation plot issue with phylo.integration (via plot.pls())
+    o Fixed two small issues with plot.pls(), regarding best fit line and matrix reduction.
+    o Fixed three small issues with gpagen() source files: indexing errors, arbitrary PC rotations for surface points, maximum iteration disparity.
     o Fixed digitize2D() scaling issue when different scales used in each image
     o Fixed phylo.integration() error when 3+ partitions examined
     o Fixed typo in modularity.test() for CI intervals into matrix input
     o Updated permutation procedure in phylo.integration so that prob(A,B|phy)~prob(B,A|phy)
+    o Fixed typo in plotAllSpecimens where links were not being plotted
 
 
 CHANGES IN GEOMORPH VERSION 3.0.0

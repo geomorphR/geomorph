@@ -30,7 +30,7 @@ Function returns a list with the following components:
   \item{call}{The matched call}
 }
 \description{
-Function calculates the degree of phylogenetic signal from a set of Procrustes shape variables
+Function calculates the degree of phylogenetic signal from Procrustes shape variables
 }
 \details{
 The function estimates the degree of phylogenetic signal present in Procrustes shape variables for a given phylogeny. 
@@ -77,9 +77,6 @@ data: behavioral traits are more labile. Evolution, 57:717-745.
 
 Adams, D.C. 2014. A generalized K statistic for estimating phylogenetic signal from shape and 
 other high-dimensional multivariate data. Systematic Biology.  63:685-697.
-}
-\seealso{
-\code{\link[ape]{vcv.phylo}} (used in some internal computations)
 }
 \author{
 Dean Adams

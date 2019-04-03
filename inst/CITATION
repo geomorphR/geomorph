@@ -1,12 +1,35 @@
-citHeader("To cite package 'geomorph' in a publication use:")
+citHeader("To cite package 'geomorph' in a publication use the first reference.  If analyses with RRPP were used, cite the subsequent two references:")
 
 citEntry(entry="Misc",
-	title = "Geomorph: Software for geometric morphometric analyses. R package version 3.0.6. https://cran.r-project.org/package=geomorph.",
+	title = "Geomorph: Software for geometric morphometric analyses. R package version 3.1.0.",
         author = personList(as.person("D.C. Adams"),
 			    as.person("M.L. Collyer"),
 			    as.person("A. Kaliontzopoulou")),
+  	year = "2019",
+  	  	url = " https://cran.r-project.org/package=geomorph",
+
+        textVersion = paste("Adams, D. C., M. L. Collyer, and A. Kaliontzopoulou. 2019. Geomorph: Software for geometric morphometric analyses. R package version 3.1.0. https://cran.r-project.org/package=geomorph.",sep=""))
+        
+        citEntry(entry = "Misc",
+	title = "{RRPP}: Linear Model Evaluation with Randomized Residuals in a Permutation Procedure, R package version 0.4.0.",
+    author = personList(as.person("M. L. Collyer"),
+			    as.person("D. C. Adams")),
+  	year = "2019",
+  	url = "https://cran.r-project.org/package=RRPP",
+  	textVersion = paste("Collyer, M. L. and D. C. Adams. 2019. RRPP: Linear Model Evaluation with Randomized Residuals in a Permutation Procedure. ", "https://cran.r-project.org/web/packages/RRPP", sep = ""))
+  
+citEntry(entry = "Misc",
+	title = "{RRPP}: An R package for fitting linear models to high‐dimensional data using residual randomization. ",
+        author = personList(as.person("M. L. Collyer"),
+			    as.person("D. C. Adams")),
   	year = "2018",
-
-        textVersion = paste("Adams, D. C., M. L. Collyer, and A. Kaliontzopoulou. 2018. Geomorph: Software for geometric morphometric analyses. R package version 3.0.6. https://cran.r-project.org/package=geomorph.",sep=""))
-
-citFooter("As geomorph is evolving quickly, you may want to cite also its version number (found with 'library(help = geomorph)').")
+  	journal = "Methods in Ecology and Evolution",
+  	volume = "9",
+  	issue = "2",
+  	pages = "1772-1779",
+  	url = "https://besjournals.onlinelibrary.wiley.com/doi/10.1111/2041-210X.13029",
+  	textVersion = paste("Collyer, M. L. and D. C. Adams. 2018. RRPP: RRPP: An R package for fitting linear models to high‐dimensional data using residual randomization. Methods in Ecology and Evolution. 9(2): 1772-1779. ", 
+  	"https://besjournals.onlinelibrary.wiley.com/doi/10.1111/2041-210X.13029",
+  	sep = ""))
+  	
+citFooter("As geomorph is evolving quickly, you may want to cite also its version number (found with 'library(help = geomorph)').  Additionally, the RRPP package should also be cited for any analyses using RRPP. (See 'library(help = RRPP)' or 'citation('RRPP')'.)")

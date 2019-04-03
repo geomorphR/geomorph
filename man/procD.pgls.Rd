@@ -4,7 +4,8 @@
 \alias{procD.pgls}
 \title{Phylogenetic ANOVA/regression for Procrustes shape variables}
 \usage{
-procD.pgls(f1, phy, iter = 999, seed = NULL, int.first = FALSE,
+procD.pgls(f1, phy, Cov = NULL, iter = 999, seed = NULL,
+  int.first = FALSE, SS.type = c("I", "II", "III"),
   effect.type = c("F", "cohen"), data = NULL, print.progress = TRUE,
   ...)
 }
@@ -12,6 +13,11 @@ procD.pgls(f1, phy, iter = 999, seed = NULL, int.first = FALSE,
 \item{f1}{A formula for the linear model (e.g., y ~ x1 + x2)}
 
 \item{phy}{A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape}
+
+\item{Cov}{An optional covariance matrix that can be used for generalized least squares estimates of
+coefficients and sums of squares and cross-products (see Adams and Collyer 2018), if one wishes to override the
+calculation of a covariance matrix based on a Brownian Motion model of evolution.  Using this argument essentially turns this 
+function into an alternate version of \code{\link{procD.lm}}.}
 
 \item{iter}{Number of iterations for significance testing}
 
@@ -21,6 +27,9 @@ If seed = "random", a random seed will be used, and P-values will vary.  One can
 which might be of interest for advanced users.}
 
 \item{int.first}{A logical value to indicate if interactions of first main effects should precede subsequent main effects}
+
+\item{SS.type}{SS.type A choice between type I (sequential), type II (hierarchical), or type III (marginal)
+sums of squares and cross-products computations.}
 
 \item{effect.type}{One of "F" or "cohen", to choose from which random distribution to estimate effect size.
 (The default is "F".  The option, "cohen", refers to Cohen's f-squared values. 
@@ -106,18 +115,18 @@ The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\li
 data(plethspecies)
 Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment
 gdf <- geomorph.data.frame(Y.gpa, phy = plethspecies$phy)
-procD.pgls(coords ~ Csize, phy = phy, data = gdf, iter = 999) 
-
-# The same analysis with procD.lm
-PCov <- vcv.phylo(plethspecies$phy) # requires ape package
-procD.lm(coords ~ Csize, Cov = PCov, data = gdf, iter = 999, RRPP = TRUE)
-
-### Extracting objects
 pleth.pgls <- procD.pgls(coords ~ Csize, phy = phy, data = gdf, iter = 999)
-summary(pleth.pgls) 
-plot(pleth.pgls)
-pleth.pgls$Pcov # the projection matrix derived from the phylogenetic covariance matrix
-pleth.pgls$pgls.fitted #the PGLS fitted values 
+anova(pleth.pgls)
+summary(pleth.pgls)  #similar output
+
+### Working with procD.pgls objects
+predict(pleth.pgls)
+plot(pleth.pgls, type="regression", reg.type="RegScore", predictor = gdf$Csize)
+attributes(pleth.pgls) # Note the PGLS object
+attributes(pleth.pgls$PGLS) # PGLS details embedded within PGLS object
+pleth.pgls$LM$Pcov # the projection matrix derived from the phylogenetic covariance matrix
+pleth.pgls$pgls.fitted # the PGLS fitted values 
+pleth.pgls$GM$pgls.fitted # The same fitted values, in a 3D array
 }
 \references{
 Adams, D.C. 2014. A method for assessing phylogenetic least squares models for shape and other high-dimensional 
@@ -132,11 +141,8 @@ by high-dimensional data. Heredity. 115:357-365.
 Adams, D.C. and M.L. Collyer. 2016.  On the comparison of the strength of morphological integration across morphometric 
 datasets. Evolution. 70:2623-2631.
 
-Adams, D.C. and M.L. Collyer. 2018. Multivariate phylogenetic comparative methods: evaluations, comparisons, and
+Adams, D.C. and M.L. Collyer. 2018. Multivariate comparative methods: evaluations, comparisons, and
 recommendations. Systematic Biology. 67:14-31.
-}
-\seealso{
-\code{\link[ape]{vcv.phylo}} (used in some internal computations)
 }
 \author{
 Dean Adams and Michael Collyer

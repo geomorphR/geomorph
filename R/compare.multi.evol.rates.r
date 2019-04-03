@@ -45,11 +45,14 @@
 #' @param Subset A logical value indicating whether or not the traits are subsets from a single 
 #' landmark configuration (default is TRUE)
 #' @param iter Number of iterations for significance testing
+#' @param seed An optional argument for setting the seed for random permutations of the resampling procedure.  
+#' If left NULL (the default), the exact same P-values will be found for repeated runs of the analysis (with the same number of iterations).
+#' If seed = "random", a random seed will be used, and P-values will vary.  One can also specify an integer for specific seed values,
+#' which might be of interest for advanced users.
 #' @param print.progress A logical value to indicate whether a progress bar should be printed to the screen.  
 #' This is helpful for long-running analyses.
 #' @keywords analysis
 #' @author Dean Adams
-#' @seealso  \code{\link[ape]{vcv.phylo}}, \code{\link[geiger]{sim.char}}, \code{\link[Matrix]{nearPD}}
 #'  (used in some internal computations)
 #' @export
 #' @return An object of class "evolrate" returns a list of the following: 
@@ -74,7 +77,7 @@
 #'     Subset=TRUE, phy= plethspecies$phy,iter=999)
 #' summary(EMR)
 #' plot(EMR)
-compare.multi.evol.rates<-function(A,gp,phy,Subset=TRUE,iter=999, print.progress=TRUE){
+compare.multi.evol.rates<-function(A,gp,phy,Subset=TRUE,iter=999,seed=NULL,print.progress=TRUE){
   if(any(is.na(A))==T){
     stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').")}
   gp<-as.factor(gp)
@@ -104,8 +107,8 @@ compare.multi.evol.rates<-function(A,gp,phy,Subset=TRUE,iter=999, print.progress
   invC<-phy.parts$invC; D.mat<-phy.parts$D.mat;C = phy.parts$C
   sigma.obs<-sigma.d.multi(x,invC,D.mat,gps,Subset)
   R<-sigma.obs$R; diag(R)<-sigma.obs$rate.global
-  R<-matrix(nearPD(R,corr=FALSE)$mat,nrow=ncol(R),ncol=ncol(R))
-  x.sim<-sim.char(phy,R,nsim=iter) 
+  R<-makePD(R)
+  x.sim<-simplify2array(sim.char.BM(phy,R,nsim=iter,seed=seed) )
   g<-factor(as.numeric(gps))
   glevs <- unique(g)
   gindx <- lapply(1:ngps, function(j) which(g==glevs[j]))

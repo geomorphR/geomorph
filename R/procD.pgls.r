@@ -63,12 +63,18 @@
 #' 
 #' @param f1 A formula for the linear model (e.g., y ~ x1 + x2)
 #' @param phy A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape
+#' @param Cov An optional covariance matrix that can be used for generalized least squares estimates of
+#' coefficients and sums of squares and cross-products (see Adams and Collyer 2018), if one wishes to override the
+#' calculation of a covariance matrix based on a Brownian Motion model of evolution.  Using this argument essentially turns this 
+#' function into an alternate version of \code{\link{procD.lm}}.
 #' @param iter Number of iterations for significance testing
 #' @param seed An optional argument for setting the seed for random permutations of the resampling procedure.  
 #' If left NULL (the default), the exact same P-values will be found for repeated runs of the analysis (with the same number of iterations).
 #' If seed = "random", a random seed will be used, and P-values will vary.  One can also specify an integer for specific seed values,
 #' which might be of interest for advanced users.
 #' @param int.first A logical value to indicate if interactions of first main effects should precede subsequent main effects
+#' @param SS.type SS.type A choice between type I (sequential), type II (hierarchical), or type III (marginal)
+#' sums of squares and cross-products computations.
 #' @param effect.type One of "F" or "cohen", to choose from which random distribution to estimate effect size.
 #' (The default is "F".  The option, "cohen", refers to Cohen's f-squared values. 
 #' Values are log-transformed before z-score calculation to assure normally distributed effect sizes.)
@@ -79,7 +85,6 @@
 #' @keywords analysis
 #' @export
 #' @author Dean Adams and Michael Collyer
-#' @seealso  \code{\link[ape]{vcv.phylo}} (used in some internal computations)
 #' @return procD.lm.pgls returns an object of class "procD.lm".  
 #' See \code{\link{procD.lm}} for a description of the list of results generated.  Additionally, procD.pgls provides
 #' the phylogenetic correction matrix, Pcor, plus "pgls" adjusted coefficients, fitted values, residuals, and mean.
@@ -91,56 +96,50 @@
 #' by high-dimensional data. Heredity. 115:357-365.
 #' @references Adams, D.C. and M.L. Collyer. 2016.  On the comparison of the strength of morphological integration across morphometric 
 #' datasets. Evolution. 70:2623-2631.
-#' @references Adams, D.C. and M.L. Collyer. 2018. Multivariate phylogenetic comparative methods: evaluations, comparisons, and
+#' @references Adams, D.C. and M.L. Collyer. 2018. Multivariate comparative methods: evaluations, comparisons, and
 #' recommendations. Systematic Biology. 67:14-31.
 #' @examples
 #' ### Example of D-PGLS for high-dimensional data 
 #' data(plethspecies)
 #' Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment
 #' gdf <- geomorph.data.frame(Y.gpa, phy = plethspecies$phy)
-#' procD.pgls(coords ~ Csize, phy = phy, data = gdf, iter = 999) 
-#' 
-#' # The same analysis with procD.lm
-#' PCov <- vcv.phylo(plethspecies$phy) # requires ape package
-#' procD.lm(coords ~ Csize, Cov = PCov, data = gdf, iter = 999, RRPP = TRUE)
-#' 
-#' ### Extracting objects
 #' pleth.pgls <- procD.pgls(coords ~ Csize, phy = phy, data = gdf, iter = 999)
-#' summary(pleth.pgls) 
-#' plot(pleth.pgls)
-#' pleth.pgls$Pcov # the projection matrix derived from the phylogenetic covariance matrix
-#' pleth.pgls$pgls.fitted #the PGLS fitted values 
-procD.pgls<-function(f1, phy, iter=999, seed=NULL, int.first = FALSE, 
+#' anova(pleth.pgls)
+#' summary(pleth.pgls)  #similar output
+#' 
+#' ### Working with procD.pgls objects
+#' predict(pleth.pgls)
+#' plot(pleth.pgls, type="regression", reg.type="RegScore", predictor = gdf$Csize)
+#' attributes(pleth.pgls) # Note the PGLS object
+#' attributes(pleth.pgls$PGLS) # PGLS details embedded within PGLS object
+#' pleth.pgls$LM$Pcov # the projection matrix derived from the phylogenetic covariance matrix
+#' pleth.pgls$pgls.fitted # the PGLS fitted values 
+#' pleth.pgls$GM$pgls.fitted # The same fitted values, in a 3D array
+procD.pgls<-function(f1, phy, Cov = NULL, iter=999, seed=NULL, int.first = FALSE, 
+                     SS.type = c("I", "II", "III"),
                      effect.type = c("F", "cohen"),
                      data=NULL, print.progress = TRUE, ...){
-  if(int.first==TRUE) ko = TRUE else ko = FALSE
-  if(!is.null(data)) data <- droplevels(data)
-  pfit <- procD.fit(f1, data=data, keep.order=ko, pca=FALSE, ... )
-  n <- dim(pfit$Y)[[1]]
-  p <- dim(pfit$Y)[[2]]
-  k <- length(pfit$term.labels)
-  Y <- as.matrix(pfit$wY)
-  if(p > n) pfitr <- procD.fit(f1, data=data, keep.order=ko,  pca=TRUE, ...) else
-    pfitr <- pfit
-  phy.name <- deparse(substitute(phy))
-  phy.match <- match(phy.name, names(data))
-  if(length(phy.match) > 1) stop("More than one object of class phylo in data frame")
-  if(all(is.na(phy.match))) phy <- phy else phy <- data[[phy.match]]
-  N<-length(phy$tip.label)
-  if(length(match(rownames(Y), phy$tip.label))!=N) 
-    stop("Data matrix missing some taxa present on the tree.")
-  if(length(match(phy$tip.label,rownames(Y)))!=N) 
-    stop("Tree missing some taxa in the data matrix.")
-  C <- vcv.phylo(phy)
-  effect.type = match.arg(effect.type)
+  
+  SS.type <- match.arg(SS.type)
+  effect.type <- match.arg(effect.type)
+  if(is.null(Cov)) {
+    phy.name <- deparse(substitute(phy))
+    phy.match <- match(phy.name, names(data))
+    if(length(phy.match) > 1) stop("More than one phylo object matches tree name.\n", 
+                                   call. = FALSE)
+    if(all(is.na(phy.match))) phy <- phy else phy <- data[phy.match][[1]]
+    if(!inherits(phy, "phylo"))
+      stop(paste("No phylo object called,", phy.name,", found in data or global environment.\n"),
+         call. = FALSE)
+    Cov <- fast.phy.vcv(phy)
+  }
+    
   pgls <- procD.lm(f1, iter = iter, seed = seed, RRPP = TRUE, effect.type = effect.type,
-           int.first = int.first, Cov = C, data = data, print.progress = print.progress,
+           int.first = int.first, Cov = Cov, data = data, print.progress = print.progress,
            ...)
-  pgls$call = match.call()
-  pgls.names <- names(pgls)
-  pgls.names[pgls.names == "gls.coefficients"] = "pgls.coefficients"
-  pgls.names[pgls.names == "gls.residuals"] = "pgls.residuals"
-  pgls.names[pgls.names == "gls.fitted"] = "pgls.fitted"
-  names(pgls) <- pgls.names
+  
+  names(pgls) <- gsub("gls", "pgls", x = names(pgls))
+  if(!is.null(pgls$GM)) names(pgls$GM) <- gsub("gls", "pgls", x = names(pgls$GM))
+  
   pgls
 }

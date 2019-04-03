@@ -43,7 +43,7 @@ Function quantifies the degree of modularity between two or more hypothesized mo
  in a phylogenetic context and compares this to patterns found by randomly assigning landmarks into subsets
 }
 \details{
-The function quantifies the degree of phylogenetic modularity in two or more hypothesized modules of shape data as 
+The function quantifies the degree of phylogenetic modularity in two or more hypothesized modules of Procrustes shape variables as 
 defined by landmark coordinates, under a Brownian motion model of evolution. The degree of modularity 
 is characterized by the covariance ratio covariance ratio (CR: see Adams 2016). The phylogenetic version of the approach 
 procedure utilizes the evolutionary covariance matrix among traits found under a Brownian
@@ -74,14 +74,11 @@ plot(MT) # Histogram of CR sampling distribution
 }
 \references{
 Adams, D.C. 2016.Evaluating modularity in morphometric data: Challenges with the RV coefficient and a 
-new test measure. Methods in Ecology and Evolution. (Accepted).
+new test measure. Methods in Ecology and Evolution. 7:565-572.
 
 Adams, D.C. and R. Felice. 2014. Assessing phylogenetic morphological 
 integration and trait covariation in morphometric data using evolutionary covariance 
 matrices. PLOS ONE. 9(4):e94335.
-}
-\seealso{
-\code{\link[ape]{vcv.phylo}} (used in some internal computations)
 }
 \author{
 Dean Adams

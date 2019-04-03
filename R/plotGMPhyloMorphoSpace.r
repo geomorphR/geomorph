@@ -5,11 +5,16 @@
 #' The function creates a plot of the principal dimensions of tangent space for a set of Procrustes shape variables. 
 #' Default is a plot of PC axis 1 and 2. The phylogenetic tree for these specimens is superimposed in this plot revealing how shape 
 #'   evolves (e.g., Rohlf 2002; Klingenberg and Gidaszewski 2010). The plot also displays the ancestral 
-#'   states for each node of the phylogenetic tree (analogous to from \code{\link[phytools]{fastAnc}} from phytools), whose values can optionally be returned. 
+#'   states for each node of the phylogenetic tree (analogous to  fastAnc from phytools), whose values can optionally be returned. 
 #'   If a tree with branch lengths scaled by time is used, with the option zaxis = "time", the function plots a 3D phylomorphospace, with internal nodes positioned along the Z-axis scaled 
 #'   to time (a.k.a. Chronophylomorphospace, Sakamoto & Ruta 2012).
+#'   
+#' \subsection{Notes for geomorph 3.1.0 and subsequent versions}{ 
+#'  The function \code{\link{gm.prcomp}} can also be used to generate phylomorphospace plots,
+#'  and will yield plots identical to those of the current function. 
+#'  }
 #'
-#' @param phy A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape
+#' @param phy A phylogenetic tree of {class phylo} 
 #' @param A A matrix (n x [p x k]) or 3D array (p x k x n) containing Procrustes shape variables for a set of specimens
 #' @param tip.labels A logical value indicating whether taxa labels (tips) should be included
 #' @param node.labels A logical value indicating whether node labels (ancestors) should be included
@@ -17,15 +22,14 @@
 #' @param yaxis A numeric value indicating which PC axis should be displayed as the Y-axis (default = PC2)
 #' @param zaxis Optional, a numeric value indicating which PC axis should be displayed as the Z-axis (e.g. PC3) or if zaxis="time", 
 #' internal nodes are plotted along the Z-axis relative to time
-#' @param ancStates Either a logical value indicating whether ancestral state values should be returned, or a matrix of ancestral states (i.e. calculated with \code{\link[phytools]{fastAnc}} or \code{\link[ape]{ace}})
+#' @param ancStates Either a logical value indicating whether ancestral state values should be returned, or a matrix of ancestral states
 #' @param plot.param A list of plotting parameters for the tips (t.bg, t.pch, t.cex), nodes (n.bg, n.pch, n.cex), 
 #' branches (l.col, lwd), taxa labels (txt.cex, txt.adj, txt.col) and node labels (n.txt.cex, n.txt.adj, n.txt.col)
 #' @param shadow A logical value indicating whether a 2D phylomorphospace should be plotted at the base when zaxis="time"
 #' @export
 #' @keywords visualization
 #' @author Dean Adams & Emma Sherratt
-#' @seealso  \code{\link[ape]{vcv.phylo}}, \code{\link[ape]{ace}} (used in some internal computations)
-#' @seealso  \code{\link[rgl]{rgl-package}} (used in 3D plotting)
+#' @seealso \code{\link{gm.prcomp}}
 #' @return Function returns estimated ancestral states if {ancStates=TRUE}
 #' @references Klingenberg, C. P., and N. A. Gidaszewski. 2010. Testing and quantifying phylogenetic 
 #'   signals and homoplasy in morphometric data. Syst. Biol. 59:245-261.
@@ -55,10 +59,12 @@ plotGMPhyloMorphoSpace<-function(phy,A,tip.labels=TRUE,node.labels=TRUE,ancState
     x<-A }
   if (!inherits(phy, "phylo"))
     stop("tree must be of class 'phylo.'")
-  if (!is.binary.tree(phy)) 
-    stop("tree is not fully bifurcating (consider 'multi2di' in ape.")
+  phy <- reorder.phy(phy)
   N<-length(phy$tip.label)
   Nnode <- phy$Nnode
+  if(!(N - phy$Nnode + (tabulate(phy$edge[, 1])[N + 1] >= 2)) == 2)
+    stop("tree is not fully bifurcating (consider 'multi2di' in ape.")
+ 
   if(N!=dim(x)[1]){
     stop("Number of taxa in data matrix and tree are not not equal.")  }
   if(length(match(rownames(x), phy$tip.label))!=N) 
@@ -66,17 +72,7 @@ plotGMPhyloMorphoSpace<-function(phy,A,tip.labels=TRUE,node.labels=TRUE,ancState
   if(length(match(phy$tip.label,rownames(x)))!=N) 
     stop("Tree missing some taxa in the data matrix.")
   x<-x[phy$tip.label, ]  
-  anc.states<-NULL   #follows fastAnc in phytools
-  for (i in 1:ncol(x)){
-    x1<-x[,i]
-    tmp <- vector()
-    for (j in 1:Nnode + N) {
-      a <- multi2di(root(phy, node = j))
-      tmp[j - N] <- ace(x1, a, method = "pic")$ace[1]
-    }
-    anc.states<-cbind(anc.states,tmp)   }
-  colnames(anc.states)<-NULL
-  row.names(anc.states)<-1:length(tmp)
+  anc.states <- anc.BM(phy, x)
   all.data<-rbind(x,anc.states)  
   pcdata<-prcomp(all.data)$x 
   pcdata<-pcdata-matrix(rep(pcdata[(N+1),],nrow(pcdata)), nrow=nrow(pcdata),byrow=T)  #phylogenetic mean adjustment
@@ -135,8 +131,8 @@ plotGMPhyloMorphoSpace<-function(phy,A,tip.labels=TRUE,node.labels=TRUE,ancState
   }
   # 3d phylomorphospace in rgl with time on Z-axis
   if(is.character(zaxis)){
-    zaxis <- node.depth.edgelength(phy)
-    zaxis <- abs(node.depth.edgelength(phy) - max(zaxis))
+    zaxis <- getNodeDepth(phy)
+    zaxis <- abs(zaxis - max(zaxis))
     view3d(phi=90, fov=30)
     plot3d(pcdata[,xaxis],pcdata[,yaxis],zaxis,type="n",xlim=limits(pcdata[,xaxis],1.5),
              ylim=limits(pcdata[,yaxis],1.5),

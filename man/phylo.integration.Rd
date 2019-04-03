@@ -65,17 +65,17 @@ utilized as the test statistic. The observed value is statistically assessed usi
 one partition are permuted relative to the other partitions. Note that this permutation is performed on phylogenetically-
 transformed data, so that the probability of phylogenetic association of A vs. B is similar to that of B vs. A: 
 i.e., prob(A,B|phy)~prob(B,A|phy); thus, shuffling the correct exchangeable units under the null 
-hypothesis of no integration (Adams and Collyer 2017).
+hypothesis of no integration (Adams and Collyer 2018).
 
 Input for the analysis can take one of two forms. First, one can input a single dataset (as a matrix or 3D array, along with 
  a vector describing which variables correspond to which partitions (for the case of a 3D array, which landmarks belong to which 
  partitions is specified). Alternatively, when evaluating the integration between two structures or partitions, two datasets may be provided.
 
-The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{phylo.integration}}.
- The generic function, \code{\link{plot}}, produces a two-block.pls plot.  This function calls \code{\link{plot.pls}}, which has two additional
- arguments (with defaults): label = NULL, warpgrids = TRUE.  These arguments allow one to include a vector to label points and a logical statement to
- include warpgrids, respectively.  Warpgrids can only be included for 3D arrays of Procrustes shape variables. The plot is a plot of PLS scores from 
- Block1 versus Block2 performed for the first set of PLS axes. 
+The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{phylo.integration}}.  
+ The generic function, \code{\link{plot}}, produces a two-block.pls plot.  This function calls \code{\link{plot.pls}}, which produces an ordination plot.  
+ An additional argument allows one to include a vector to label points.  Starting with version 3.1.0, warpgrids are no longer available with \code{\link{plot.pls}}
+ but after making a plot, the function returns values that can be used with \code{\link{picknplot.shape}} or a combination of 
+\code{\link{shape.predictor}} and \code{\link{plotRefToTarget}} to visualize shape changes in the plot (via warpgrids).
  
 \subsection{Similarity to \code{\link{two.b.pls}} and \code{\link{compare.pls}} }{ 
 Note that \code{phylo.integration} performed on two matrices or arrays returns the same results as a phylogenetic variation of
@@ -105,6 +105,12 @@ IT<- phylo.integration(Y.gpa$coords,partition.gp=land.gps,phy=plethspecies$phy,i
 summary(IT) # Test summary
 plot(IT) # PLS plot
 
+ ### Visualize shape variation using picknplot.shape Because picknplot requires 
+ ### user decisions, the following example
+ ### is not run (but can be with removal of #).
+ ### For detailed options, see the picknplot help file
+ # picknplot.shape(plot(IT))
+
 }
 \references{
 Adams, D.C. and R. Felice. 2014. Assessing phylogenetic morphological 
@@ -117,12 +123,10 @@ by high-dimensional data. Heredity. 115:357-365.
 Adams, D.C. and M.L. Collyer. 2016.  On the comparison of the strength of morphological integration across morphometric 
 datasets. Evolution. 70:2623-2631.
 
-Adams, D.C. and M.L. Collyer. 2017. Multivariate comparative methods: evaluations, comparisons, and
-recommendations. Systematic Biology. In press.
+Adams, D.C. and M.L. Collyer. 2018. Multivariate comparative methods: evaluations, comparisons, and
+recommendations. Systematic Biology. 67:14-31.
 }
 \seealso{
-\code{\link[ape]{vcv.phylo}} (used in some internal computations)
-
 \code{\link{integration.test}}, \code{\link{modularity.test}}, and 
 \code{\link{two.b.pls}}
 }

@@ -4,7 +4,7 @@
 \alias{fixed.angle}
 \title{Rotate a subset of 2D landmarks to common articulation angle}
 \usage{
-fixed.angle(A, art.pt = NULL, angle.pts = NULL, rot.pts = NULL,
+fixed.angle(A, art.pt = NULL, angle.pts.1, angle.pts.2, rot.pts = NULL,
   angle = 0, degrees = FALSE)
 }
 \arguments{
@@ -12,11 +12,19 @@ fixed.angle(A, art.pt = NULL, angle.pts = NULL, rot.pts = NULL,
 
 \item{art.pt}{A number specifying which landmark is the articulation point between the two landmark subsets}
 
-\item{angle.pts}{A vector containing numbers specifying which two points used to define the angle (one per subset)}
+\item{angle.pts.1}{A vector or single value specifying the angle point of one subset.  If more that one value
+is provided, the centroid of the landmarks described by the vector will be used; a single value
+indentifies a specific landmark to use.}
 
-\item{rot.pts}{A vector containing numbers specifying which landmarks are in the subset to be rotated}
+\item{angle.pts.2}{A vector or single value specifying the angle point of the second subset. This could be 
+the entire set of points of an articulated structure to be rotated.}
 
-\item{angle}{An optional value specifying the additional amount by which the rotation should be augmented (in radians)}
+\item{rot.pts}{A vector containing numbers specifying which landmarks are in the subset to be rotated.  If NULL,
+it is assumed that the points to be rotated are the same as those in angle.pts.2.}
+
+\item{angle}{An optional value specifying the additional amount by which the rotation should be augmented (in radians).
+It might be essential to use a negative angle if centroids from multiple points are used for angle points.  It should be 
+clear if this is the case, upon plotting results.}
 
 \item{degrees}{A logical value specifying whether the additional rotation angle is expressed in degrees or radians (radians is default)}
 }
@@ -30,7 +38,8 @@ A function for rotating a subset of landmarks so that the articulation angle bet
 This function standardizes the angle between two subsets of landmarks for a set of specimens. The approach assumes a simple
  hinge-point articulation between the two subsets, and rotates all specimens such that the angle between landmark subsets 
  is equal across specimens (see Adams 1999).  As a default, the mean angle is used, though the user may specify an additional amount by which 
- this may be augmented.
+ this may be augmented. To quantify the angle, users may specify a single landmark in each subset as angle endpoints, or may specify a set of landmarks.
+ If the latter, the centroid of those points is used.
 
 Presently, the function is only implemented for two-dimensional landmark data.
 }
@@ -39,12 +48,27 @@ Presently, the function is only implemented for two-dimensional landmark data.
 #Articulation point is landmark 1, rotate mandibular landmarks (2-5) relative to cranium
 
 data(plethspecies) 
-fixed.angle(plethspecies$land,art.pt=1,angle.pts=c(5,6),rot.pts=c(2,3,4,5))
+# Using specific points:
+newLM1 <- fixed.angle(plethspecies$land,
+art.pt=1, angle.pts.1 = 5, 
+angle.pts.2 = 6, rot.pts = c(2,3,4,5))
+Y.gpa1 <- gpagen(newLM1)
+plot(Y.gpa1, mean = FALSE)
+
+# Using centroids from subsets
+newLM2 <- fixed.angle(plethspecies$land,art.pt=1, 
+angle.pts.1 = c(1, 6:11), 
+angle.pts.2 = 2:5, 
+rot.pts = NULL, angle = 20, 
+degrees = TRUE) # rotated points same as second partition
+Y.gpa2 <- gpagen(newLM2)
+plot(Y.gpa2, mean = FALSE)
+
 }
 \references{
 Adams, D. C. 1999. Methods for shape analysis of landmark data from articulated structures. Evolutionary Ecology Research. 1:959-970.
 }
 \author{
-Dean Adams
+Dean Adams and Michael Collyer
 }
 \keyword{utilities}

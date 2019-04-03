@@ -65,21 +65,28 @@
 #'plotRefToTarget(M, preds$predmin, mag=3)
 #'plotRefToTarget(M, preds$predmax, mag=3)
 #'
-#'# allometry example - using RegScore or PredLine via procD.allometry
+#'# allometry example - using RegScore or PredLine via procD.lm
 #'
 #'gdf <- geomorph.data.frame(Y.gpa)
-#'plethAllometry <- procD.allometry(coords~Csize, data=gdf, logsz = TRUE)
-#'plot(plethAllometry, method="RegScore")
-#'preds <- shape.predictor(plethAllometry$Ahat, x= plethAllometry$Reg.proj, Intercept = FALSE, 
-#'                         predmin = min(plethAllometry$Reg.proj), 
-#'                         predmax = max(plethAllometry$Reg.proj)) 
+#'plethAllometry <- procD.lm(coords ~ log(Csize), data=gdf)
+#'allom.plot <- plot(plethAllometry, 
+#'type = "regression", 
+#'predictor = log(gdf$Csize),
+#'reg.type ="RegScore") # make sure to have a predictor 
+#'
+#'preds <- shape.predictor(plethAllometry$GM$fitted, x= allom.plot$RegScore, Intercept = FALSE, 
+#'                         predmin = min(allom.plot$RegScore), 
+#'                         predmax = max(allom.plot$RegScore)) 
 #'plotRefToTarget(M, preds$predmin, mag=3)
 #'plotRefToTarget(M, preds$predmax, mag=3)
 #'
-#'plot(plethAllometry, method="PredLine")
-#'preds <- shape.predictor(plethAllometry$Ahat, x= plethAllometry$pred.val, Intercept = FALSE, 
-#'                         predmin = min(plethAllometry$pred.val), 
-#'                         predmax = max(plethAllometry$pred.val)) 
+#'allom.plot <- plot(plethAllometry, 
+#'type = "regression", 
+#'predictor = log(gdf$Csize),
+#'reg.type ="PredLine")
+#'preds <- shape.predictor(plethAllometry$GM$fitted, x= allom.plot$PredLine, Intercept = FALSE, 
+#'                         predmin = min(allom.plot$PredLine), 
+#'                         predmax = max(allom.plot$PredLine)) 
 #'plotRefToTarget(M, preds$predmin, mag=3)
 #'plotRefToTarget(M, preds$predmax, mag=3)
 #'
@@ -122,7 +129,7 @@
 #'Y.gpa<-gpagen(plethShapeFood$land)    #GPA-alignment    
 #'
 #'# 2B-PLS between head shape and food use data
-#'PLS <-two.b.pls(plethShapeFood$food,Y.gpa$coords, iter=999) 
+#'PLS <-two.b.pls(A1 = plethShapeFood$food, A2 = Y.gpa$coords, iter=999) 
 #'summary(PLS)
 #'plot(PLS)
 #'

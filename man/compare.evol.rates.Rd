@@ -4,11 +4,11 @@
 \alias{compare.evol.rates}
 \title{Comparing net rates of shape evolution on phylogenies}
 \usage{
-compare.evol.rates(A, phy, gp, iter = 999, method = c("simulation",
-  "permutation"), print.progress = TRUE, seed = NULL)
+compare.evol.rates(A, phy, gp, iter = 999, seed = NULL,
+  method = c("simulation", "permutation"), print.progress = TRUE)
 }
 \arguments{
-\item{A}{A 3D array (p x k x n) containing Procrustes shape variables for all specimens, or a matrix (n x variables)}
+\item{A}{A 3D array (p x k x n) containing GPA-aligned coordinates for all specimens, or a matrix (n x variables)}
 
 \item{phy}{A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape}
 
@@ -16,15 +16,15 @@ compare.evol.rates(A, phy, gp, iter = 999, method = c("simulation",
 
 \item{iter}{Number of iterations for significance testing}
 
-\item{method}{One of "simulation" or "permutation", to choose which approach should be used to assess significance.}
-
-\item{print.progress}{A logical value to indicate whether a progress bar should be printed to the screen.
-This is helpful for long-running analyses.}
-
 \item{seed}{An optional argument for setting the seed for random permutations of the resampling procedure.
 If left NULL (the default), the exact same P-values will be found for repeated runs of the analysis (with the same number of iterations).
 If seed = "random", a random seed will be used, and P-values will vary.  One can also specify an integer for specific seed values,
 which might be of interest for advanced users.}
+
+\item{method}{One of "simulation" or "permutation", to choose which approach should be used to assess significance.}
+
+\item{print.progress}{A logical value to indicate whether a progress bar should be printed to the screen.
+This is helpful for long-running analyses.}
 }
 \value{
 An object of class "evolrate" returns a list with the following components: 
@@ -35,7 +35,7 @@ An object of class "evolrate" returns a list with the following components:
   \item{permutations}{The number of random permutations used.}
 }
 \description{
-Function calculates net rates of shape evolution for two or more groups of species on a phylogeny from a set of Procrustes shape variables
+Function calculates net rates of shape evolution for two or more groups of species on a phylogeny from a set of Procrustes-aligned specimens
 }
 \details{
 The function compares net rates of morphological evolution for two or more groups of species on a phylogeny, under a 
@@ -81,11 +81,7 @@ modularity in lanternfishes (Myctophiformes; Myctophidae). Evolution. 69:2425-24
 Adams, D.C. and M.L. Collyer. 2018. Multivariate comparative methods: evaluations, comparisons, and
 recommendations. Systematic Biology. 67:14-31.
 }
-\seealso{
-\code{\link[ape]{vcv.phylo}}, \code{\link[geiger]{sim.char}}, \code{\link[Matrix]{nearPD}}
- (used in some internal computations)
-}
 \author{
-Dean Adams
+Dean Adams & Emma Sherratt
 }
 \keyword{analysis}

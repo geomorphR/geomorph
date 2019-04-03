@@ -54,12 +54,10 @@ The function quantifies the degree of association between two blocks of shape da
   2-Dimensional matrix (rows = specimens, columns = variables).  It is also assumed that the separate inputs
   have specimens (observations) in the same order.  Additionally, if names for the objects are specified, these must be the same for both datasets.
   
- The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{two.b.pls}}.
- The generic function, \code{\link{plot}}, produces a two-block.pls plot.  This function calls \code{\link{plot.pls}}, which has two additional
- arguments (with defaults): label = NULL, warpgrids = TRUE.  These arguments allow one to include a vector to label points and a logical statement to
- include warpgrids, respectively.  Warpgrids can only be included for 3D arrays of Procrustes residuals. The plot is a plot of PLS scores from 
- Block1 versus Block2 performed for the first set of PLS axes. It is imperative that one understands the arguments for plot parameters and
- \code{\link{plotRefToTarget}} because arguments can be passed to both of these functions.
+ The generic function, \code{\link{plot}}, produces a two-block.pls plot.  This function calls \code{\link{plot.pls}}, which produces an ordination plot.  
+ An additional argument allows one to include a vector to label points.  Starting with version 3.1.0, warpgrids are no longer available with \code{\link{plot.pls}}
+ but after making a plot, the function returns values that can be used with \code{\link{picknplot.shape}} or a combination of 
+\code{\link{shape.predictor}} and \code{\link{plotRefToTarget}} to visualize shape changes in the plot (via warpgrids).
  
  \subsection{For more than two blocks}{ 
 If one wishes to consider 3+ arrays or matrices, there are multiple options.  First, one could perform multiple two.b.pls analyses and use
@@ -98,6 +96,14 @@ Y.gpa<-gpagen(plethShapeFood$land)    #GPA-alignment
 PLS <-two.b.pls(Y.gpa$coords,plethShapeFood$food,iter=999)
 summary(PLS)
 plot(PLS)
+ 
+ ### Visualize shape variation using picknplot.shape Because picknplot requires 
+ ### user decisions, the following example
+ ### is not run (but can be with removal of #).
+ ### For detailed options, see the picknplot help file
+ # picknplot.shape(plot(PLS))
+ 
+
 }
 \references{
 Rohlf, F.J., and M. Corti. 2000. The use of partial least-squares to study covariation in shape. 

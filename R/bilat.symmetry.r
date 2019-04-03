@@ -214,21 +214,25 @@ bilat.symmetry<-function(A, ind=NULL, side=NULL, replicate=NULL, object.sym=FALS
   PSh <- procD.lm(form.shape, data = dat.shape, RRPP = RRPP, 
            seed = seed, iter= iter, print.progress = print.progress, 
            effect.type = "F")
-  random.shape.F <- PSh$random.F
+  shape.anova <- anova(PSh, print.progress = FALSE, effect.type = "F")$table
+  shape.anova$Z[is.nan(shape.anova$Z)] <- NA
+  
+  MS <- PSh$ANOVA$MS
+  RSS <- PSh$ANOVA$RSS
+  MSE <- RSS / matrix(PSh$ANOVA$df[nrow(RSS) + 1], nrow(RSS), ncol(RSS))
+  random.shape.F <- MS/MSE
+  
   if(length(form.names) > 4) {
-    SS <- PSh$random.SS
-    df.mat <- matrix(PSh$df, NROW(SS), NCOL(SS))
-    MS <- SS/df.mat
+    MS.mod <- PSh$ANOVA$RSS.model/PSh$ANOVA$df[4]
     random.shape.F[1,] <- MS[1,]/MS[3,]
     random.shape.F[2,] <- MS[2,]/MS[3,]
-    random.shape.F[3,] <- MS[3,]/MS[4,]
-    PSh$random.F <- random.shape.F
+    random.shape.F[3,] <- MS[3,]/MS.mod
+    
     newZ <- apply(log(random.shape.F + 0.000001), 1, effect.size)
-    PSh$aov.table$F[1:3] <- random.shape.F[1:3, 1]
-    PSh$aov.table$Z[1:3] <- newZ[1:3]
+    shape.anova$F[1:3] <- random.shape.F[1:3, 1]
+    shape.anova$Z[1:3] <- newZ
   }
-  rownames(PSh$aov.table) <- form.names
-  shape.anova <- PSh$aov.table
+  rownames(shape.anova) <- form.names
   
   if(!object.sym){  
     if(!is.null(replicate)) {
@@ -242,18 +246,23 @@ bilat.symmetry<-function(A, ind=NULL, side=NULL, replicate=NULL, object.sym=FALS
     PSz <- procD.lm(form.size, data = dat.size, RRPP = RRPP, 
                     seed = seed, iter= iter, print.progress = print.progress, 
                     effect.type = "F")
-    random.size.F <- PSz$random.F
+    size.anova <- anova(PSz, print.progress = FALSE, effect.type = "F")$table
+    size.anova$Z[is.nan(size.anova$Z)] <- NA
+    
+    MS <- PSz$ANOVA$MS
+    RSS <- PSz$ANOVA$RSS
+    MSE <- RSS / matrix(PSz$ANOVA$df[nrow(RSS) + 1], nrow(RSS), ncol(RSS))
+    random.size.F <- MS/MSE
+
     if(length(form.names) > 4) {
-      SS <- PSz$random.SS
-      df.mat <- matrix(PSz$df, NROW(SS), NCOL(SS))
-      MS <- SS/df.mat
+      MS <- random.size.F <- PSz$ANOVA$MS
+      MS.mod <- PSz$ANOVA$RSS.model/PSz$ANOVA$df[4]
       random.size.F[1,] <- MS[1,]/MS[3,]
       random.size.F[2,] <- MS[2,]/MS[3,]
-      random.size.F[3,] <- MS[3,]/MS[4,]
-      PSz$random.F <- random.size.F
+      random.size.F[3,] <- MS[3,]/MS.mod
       newZ <- apply(log(random.size.F + 0.000001), 1, effect.size)
-      PSz$aov.table$F[1:3] <- random.size.F[1:3, 1]
-      PSz$aov.table$Z[1:3] <- newZ[1:3]
+      size.anova$F[1:3] <- random.size.F[1:3, 1]
+      size.anova$Z[1:3] <- newZ
     }
     rownames(PSz$aov.table) <- form.names
     size.anova <- PSz$aov.table
