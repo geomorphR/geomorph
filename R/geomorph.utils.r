@@ -113,7 +113,6 @@ plot.procD.lm <- function(x, type = c("diagnostics", "regression",
                                       "PC"), outliers=FALSE, predictor = NULL,
                           reg.type = c("CRC", "PredLine", "RegScore"), ...){
   type <- match.arg(type)
-<<<<<<< HEAD
   if(is.na(match(type, c("diagnostics", "regression", "PC")))) 
     type <- "diagnostics"
   CRC <- PL <- Reg.proj <- P <- NULL
@@ -212,13 +211,11 @@ plot.procD.lm <- function(x, type = c("diagnostics", "regression",
   }
   out <- list(CRC = CRC, PredLine = PL, RegScore = Reg.proj, PC.scores = P,
               points = pts, residuals = r, fitted = f, groups = groups)
-=======
   reg.type <- match.arg(reg.type)
   out <- plot.lm.rrpp(x, type = type,  predictor = predictor,
                reg.type = reg.type, ...)
   if(type == "diagnostics" && outliers) plotOutliers(x$GM$residuals)
   if(!is.null(x$GM)) out$GM <- x$GM
->>>>>>> ea80f2a9bb56410eac46db1fb677d3aa52da7b58
   class(out) <- "plot.procD.lm"
   invisible(out)
 }
