@@ -1,4 +1,5 @@
 GITHUB UPDATES    
+    o Fixed single landmark issue in readland.shapes
     o Fixed ratio call for permutations in compare.evol.rates
     o Added mean-centering to compare.evol.rates for permutations
     o Fixed bilat.symmetry asymm shape issue for replicates.

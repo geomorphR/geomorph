@@ -3116,6 +3116,7 @@ GMfromShapes1 <- function(Shapes, nCurvePts, curve.ends = NULL, continuous.curve
   anchors <- lapply(1:curve.n, function(j){
     cv <- curves[[1]][[j]]
     lm <- fixedLM[[1]]
+    if(!is.matrix(lm)) lm <- matrix(lm, nrow = 1)
     ends <- rbind(cv[1,], cv[nrow(cv),])
     a <- which(apply(lm, 1,function(x) identical(x, ends[1,])))
     b <- which(apply(lm, 1,function(x) identical(x, ends[2,])))

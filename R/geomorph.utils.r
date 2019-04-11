@@ -240,7 +240,7 @@ plot.procD.lm <- function(x, type = c("diagnostics", "regression",
       par(mfcol = c(1,2))
       par(mar = c(4,4,1,1))
       plot(predictor, CRC,  ...)
-      plot(CRC, RSC[,1], asp=1, xlab = "CRC", ylab = "RSC 1", ...)
+      plot(CRC, RSC[,1], xlab = "CRC", ylab = "RSC 1", ...)
       par(mar = c(5,4,4,2) + 0.1)
       par(mfcol=c(1,1))
     } else if(reg.type == "RegScore") {
