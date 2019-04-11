@@ -62,32 +62,9 @@ plot.gpagen <- function(x, ...){
 #' @author Michael Collyer
 #' @keywords utilities
 #' @keywords utilities
-print.procD.lm <- function (x, ...) {
-  cat("\nCall:\n")
-  cat(deparse(x$call), fill=TRUE)
-  if(is.null(x$SS.type)){
-    cat("\n\n")
-    print(x$aov.table)
-    cat("\n")
-    if(!is.null(x$phylo.mean)){
-      cat("\nPhylogenetically-corrected mean vector\n\n")
-      print(x$phylo.mean)
-      cat("\n")
-    }
-  }
-  if(!is.null(x$SS.type)){
-    if(x$SS.type == "I") cat("\nType I (Sequential) Sums of Squares and Cross-products\n")
-    if(x$SS.type == "II") cat("\nType II Sums of Squares and Cross-products\n")
-    if(x$SS.type == "III") cat("\nType III (Marginal) Sums of Squares and Cross-products\n")
-    if(x$perm.method == "RRPP") cat ("Randomized Residual Permutation Procedure Used\n") else
-      cat("Randomization of Raw Values used\n")
-    cat(paste(x$permutations, "Permutations"))
-    if(x$effect.type == "cohen") x$effect.type = "Cohen f-squared"
-    cat("\nANOVA effect sizes and P-values based on empirical", x$effect.type, "distributions\n")
-    cat("\n\n")
-    print(x$aov.table)
-  }
-  invisible(x)
+print.procD.lm<- function(x,...) {
+  class(x) <- "lm.rrpp"
+  print.lm.rrpp(x, ...)
 }
 
 #' Print/Summary Function for geomorph
@@ -97,36 +74,13 @@ print.procD.lm <- function (x, ...) {
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities
-summary.procD.lm <- function(object, ...) {
-  x <- object
-  print.procD.lm(x, ...)
-}
-
-plot.het <- function(r,f){
-  r <- center(r)
-  f <- center(f)
-  r <- sqrt(diag(tcrossprod(r)))
-  f <- sqrt(diag(tcrossprod(f)))
-  lfr <- loess(r~f, span = 1)
-  lfr <- cbind(lfr$x, lfr$y, lfr$fitted)
-  lfr <- lfr[order(lfr[,1]),]
-  plot(lfr, pch=19, asp=1, 
-       xlab = "Procrustes Distance Fitted Values",
-       ylab = "Procrustes Distance Residuals", 
-       main = "Residuals vs. Fitted")
-  points(lfr[,1], lfr[,3], type="l", col="red")
-}
-
-plot.QQ <- function(r){
-  r <- center(r)
-  r <- sqrt(diag(tcrossprod(r)))
-  r <- sort(r)
-  n <- length(r)
-  tq <- (seq(1,n)-0.5)/n
-  tq <- qnorm(tq)
-  plot(tq, r, pch=19, xlab = "Theoretical Quantiles",
-       ylab = "Procrustes Distance Residuals", 
-       main = "Q-Q plot")
+summary.procD.lm <- function(object,...){
+  class(object) <- "lm.rrpp"
+  effect.type <- object$ANOVA$effect.type
+  if(any(is.na(match(effect.type, 
+                     c("SS", "MS", "Rsq", "F", "cohen")))))
+    effect.type = "F"
+  anova.lm.rrpp(object, effect.type=effect.type, ...)
 }
 
 #' Plot Function for geomorph
@@ -144,9 +98,7 @@ plot.QQ <- function(r){
 #' This vector is a vector of covariate values equal to the number of observations.
 #' @param reg.type If "regression" is chosen for plot type, this argument
 #' indicates whether a common regression component (CRC) plot, prediction line 
-#' (Predline) plot, or regression score (RegScore) plotting is performed.  These plots
-#' are the same as those available from \code{\link{procD.allometry}} without the constraint
-#' that the predictor is size.
+#' (Predline) plot, or regression score (RegScore) plotting is performed.  
 #' @param ... other arguments passed to plot (helpful to employ
 #' different colors or symbols for different groups).  See
 #' \code{\link{plot.default}} and \code{\link{par}}
@@ -160,18 +112,8 @@ plot.QQ <- function(r){
 plot.procD.lm <- function(x, type = c("diagnostics", "regression",
                                       "PC"), outliers=FALSE, predictor = NULL,
                           reg.type = c("CRC", "PredLine", "RegScore"), ...){
-  x.names <- names(x)
-  x.names[x.names == "pgls.residuals"] = "gls.residuals"
-  x.names[x.names == "pgls.fitted"] = "gls.fitted"
-  x.names[x.names == "pgls.coefficients"] = "gls.coefficients"
-  names(x) <- x.names
-  r <- as.matrix(x$residuals)
-  f <- as.matrix(x$fitted)
-  if(!is.null(x$Pcov)) {
-    r <- as.matrix(x$gls.residuals)
-    f <- as.matrix(x$gls.fitted)
-  }
   type <- match.arg(type)
+<<<<<<< HEAD
   if(is.na(match(type, c("diagnostics", "regression", "PC")))) 
     type <- "diagnostics"
   CRC <- PL <- Reg.proj <- P <- NULL
@@ -270,243 +212,15 @@ plot.procD.lm <- function(x, type = c("diagnostics", "regression",
   }
   out <- list(CRC = CRC, PredLine = PL, RegScore = Reg.proj, PC.scores = P,
               points = pts, residuals = r, fitted = f, groups = groups)
+=======
+  reg.type <- match.arg(reg.type)
+  out <- plot.lm.rrpp(x, type = type,  predictor = predictor,
+               reg.type = reg.type, ...)
+  if(type == "diagnostics" && outliers) plotOutliers(x$GM$residuals)
+  if(!is.null(x$GM)) out$GM <- x$GM
+>>>>>>> ea80f2a9bb56410eac46db1fb677d3aa52da7b58
   class(out) <- "plot.procD.lm"
   invisible(out)
-}
-
-## advanced.procD.lm
-
-#' Print/Summary Function for geomorph
-#' 
-#' @param x print/summary object (from \code{\link{advanced.procD.lm}})
-#' @param formula logical for whether to print the model formulas as data frame row names
-#' @param ... other arguments passed to print/summary
-#' @export
-#' @author Michael Collyer
-#' @keywords utilities
-print.advanced.procD.lm <- function (x, formula = TRUE, ...) {
-  cat("\nCall:\n")
-  cat(deparse(x$call), fill=TRUE, "\n\n")
-  cat("\nRandomized Residual Permutation Procedure Used\n")
-  cat(paste(x$permutations, "Permutations"))
-  cat("\nANOVA effect sizes and P-values based on empirical", x$effect.type, "distributions\n")
-  cat("\nANOVA Table")
-  cat("\n\n")
-  atab <- x$anova.table
-  if(!formula) rownames(atab)[1:2] <- c("Reduced Model", "Full Model")
-  print(atab); cat("\n\n")
-  if(!is.null(x$LS.means)) {cat("LS means\n"); print(x$LS.means); cat("\n")}
-  if(!is.null(x$slopes)) {cat("Slopes\n");print(x$slopes); cat("\n\n")}
-  if(!is.null(x$LS.obs.means.dist)) {cat("LS means distance matrix\n");print(x$LS.obs.means.dist); cat("\n")}
-  if(!is.null(x$Z.means.dist)) {cat("Effect sizes (Z)\n");print(x$Z.means.dist); cat("\n")}
-  if(!is.null(x$P.means.dist)) {cat("P-values\n");print(x$P.means.dist); cat("\n\n")}
-  if(!is.null(x$obs.slopes.dist)) {cat("Contrasts in slope vector length\n");print(x$obs.slopes.dist); cat("\n")}
-  if(!is.null(x$Z.slopes.dist)) {cat("Effect sizes (Z)\n");print(x$Z.slopes.dist); cat("\n")}
-  if(!is.null(x$P.slopes.dist)) {cat("P-values\n");print(x$P.slopes.dist); cat("\n\n")}
-  if(!is.null(x$obs.slopes.cor)) {cat("Correlations between slope vectors\n");print(x$obs.slopes.cor); cat("\n")}
-  if(!is.null(x$Z.slopes.cor)) {cat("Effects sizes (Z)\n");print(x$Z.slopes.cor); cat("\n")}
-  if(!is.null(x$P.slopes.cor)) {cat("P-values\n");print(x$P.slopes.cor); cat("\n\n")}
-  if(!is.null(x$obs.slopes.angles)) {cat("Angles between slope vectors\n");print(x$obs.slopes.angles); cat("\n")}
-  if(!is.null(x$Z.angles)) {cat("Effects sizes (Z)\n");print(x$Z.angles); cat("\n")}
-  if(!is.null(x$P.angles)) {cat("P-values\n");print(x$P.angles); cat("\n\n")}
-  invisible(x)
-}
-
-#' Print/Summary Function for geomorph
-#' 
-#' @param object print/summary object (from \code{\link{advanced.procD.lm}})
-#' @param ... other arguments passed to print/summary
-#' @export
-#' @author Michael Collyer
-#' @keywords utilities
-summary.advanced.procD.lm <- function(object, ...) {
-  x <- object
-  print.advanced.procD.lm(x, ...)
-}
-
-#' Plot Function for geomorph
-#' 
-#' @param x plot object (from \code{\link{advanced.procD.lm}})
-#' @param ... other arguments passed to  \code{\link{plot.procD.lm}}
-#' @export
-#' @author Michael Collyer
-#' @keywords utilities
-#' @keywords visualization
-plot.advanced.procD.lm <- function(x, ...) {
-  plot.procD.lm(x,  ...)
-}
-
-## procD.allometry
-
-# Two print options
-
-printAllometry.HOS <- function(x){
-  cat("\nCall:\n")
-  cat(deparse(x$call), fill=TRUE, "\n\n")
-  cat("\nHomogeneity of Slopes Test\n")
-  print(x$HOS.test)
-  if(x$HOS.test[2,8] > x$alpha) cat(paste("\nThe null hypothesis of parallel slopes is supported
-  based on a significance criterion of alpha =", x$alpha,"\n")) 
-  if(x$HOS.test[2,8] <= x$alpha) cat(paste("\nThe null hypothesis of parallel slopes is rejected
-  based on a significance criterion of alpha =", x$alpha,"\n"))
-  cat("\nBased on the results of this test, the following ANOVA table is most appropriate\n")
-  cat("\nType I (Sequential) Sums of Squares and Cross-products\n")
-  if(x$perm.method == "RRPP") cat ("Randomized Residual Permutation Procedure Used\n") else
-    cat("Randomization of Raw Values used\n")
-  cat(paste(x$permutations, "Permutations"))
-  if(x$effect.type == "cohen") x$effect.type = "Cohen f-squared"
-  cat("\nANOVA effect sizes and P-values based on empirical", x$effect.type, "distributions\n")
-  cat("\n\n")
-  print(x$aov.table)
-}
-
-printAllometry.noHOS <- function(x){
-  cat("\nCall:\n")
-  cat(deparse(x$call), fill=TRUE, "\n\n")
-  cat("\nType I (Sequential) Sums of Squares and Cross-products\n")
-  if(x$perm.method == "RRPP") cat ("Randomized Residual Permutation Procedure Used\n") else
-    cat("Randomization of Raw Values used\n")
-  cat(paste(x$permutations, "Permutations"))
-  if(x$effect.type == "cohen") x$effect.type = "Cohen f-squared"
-  cat("\nANOVA effect sizes and P-values based on empirical", x$effect.type, "distributions\n")
-  cat("\n\n")
-  print(x$aov.table)
-}
-
-#' Print/Summary Function for geomorph
-#' 
-#' @param x print/summary object (from \code{\link{procD.allometry}})
-#' @param ... other arguments passed to print/summary
-#' @export
-#' @author Michael Collyer
-#' @keywords utilities
-print.procD.allometry <- function (x, ...) {
-  if(!is.null(x$HOS.test)) printAllometry.HOS(x) else printAllometry.noHOS(x)
-  invisible(x)
-}
-
-#' Print/Summary Function for geomorph
-#' 
-#' @param object print/summary object (from \code{\link{procD.allometry}})
-#' @param ... other arguments passed to print/summary
-#' @export
-#' @author Michael Collyer
-#' @keywords utilities
-summary.procD.allometry <- function(object, ...) {
-  x <- object
-  print.procD.allometry(x,...)
-}
-
-#' Plot Function for geomorph
-#' 
-#' The following are brief descriptions of the different plotting methods, with references.
-#'\itemize{
-#' \item {If "method=CAC" (the default) the function calculates the 
-#'   common allometric component of the shape data, which is an estimate of the average allometric trend 
-#'   within groups (Mitteroecker et al. 2004). The function also calculates the residual shape component (RSC) for 
-#'   the data.}
-#'   \item {If "method=RegScore" the function calculates shape scores 
-#'   from the regression of shape on size, and plots these versus size (Drake and Klingenberg 2008). 
-#'   For a single group, these shape scores are mathematically identical to the CAC (Adams et al. 2013).}
-#'   \item {If "method=PredLine" the function calculates predicted values from a regression of shape on size, and 
-#'   plots the first principal component of the predicted values versus size as a stylized graphic of the 
-#'   allometric trend (Adams and Nistri 2010). }
-#'   }
-#' 
-#' @param x plot object (from \code{\link{procD.allometry}})
-#' @param method Method for estimating allometric shape components
-#' @param warpgrids A logical value indicating whether deformation grids for small and large shapes 
-#'  should be displayed (note: if groups are provided no TPS grids are shown)
-#' @param label An optional vector indicating labels for each specimen that are to be displayed
-#' @param gp.label A logical value indicating labels for each group to be displayed (if group was originally included); "PredLine" only
-#' @param mesh A mesh3d object to be warped to represent shape deformation of the minimum and maximum size 
-#' if {warpgrids=TRUE} (see \code{\link{warpRefMesh}}).
-#' @param shapes Logical argument whether to return the the shape coordinates shape coordinates of the small and large shapes
-#' @param ... other arguments passed to plot
-#' @return If shapes = TRUE, function returns a list containing the shape coordinates of the small and large shapes
-#' @export
-#' @author Michael Collyer
-#' @keywords utilities
-#' @keywords visualization
-#' @references Adams, D.C., F.J. Rohlf, and D.E. Slice. 2013. A field comes of age: geometric morphometrics 
-#'   in the 21st century. Hystrix. 24:7-14. 
-#' @references Adams, D. C., and A. Nistri. 2010. Ontogenetic convergence and evolution of foot morphology 
-#'   in European cave salamanders (Family: Plethodontidae). BMC Evol. Biol. 10:1-10.
-#' @references Drake, A. G., and C. P. Klingenberg. 2008. The pace of morphological change: Historical 
-#'   transformation of skull shape in St Bernard dogs. Proc. R. Soc. B. 275:71-76.
-#' @references Mitteroecker, P., P. Gunz, M. Bernhard, K. Schaefer, and F. L. Bookstein. 2004. 
-#'   Comparison of cranial ontogenetic trajectories among great apes and humans. J. Hum. Evol. 46:679-698.
-plot.procD.allometry <- function(x, method=c("CAC","RegScore","PredLine"), warpgrids=TRUE,
-                                 label=NULL, gp.label=FALSE, mesh=NULL, shapes=FALSE, ...) {
-  method <- match.arg(method)
-  if(x$logsz) xlab <- "log(Size)" else xlab <- "Size"
-  if(x$logsz) size <- log(x$size) else size <- x$size
-  n <- length(size)
-  if(!is.null(x$gps)) pt.col <- as.numeric(x$gps) 
-  if(is.null(x$gps)) pt.col <- rep(1, length(size))
-  if(method == "CAC"){
-    layout(matrix(c(3,1,1,1,1,1,1,1,4,2,2,2,2,2,2,2,2,2),3,6))   
-    plot(size, x$CAC, xlab=xlab, ylab="CAC", col=pt.col, ...)
-    if (!is.null(label)) {
-      if(isTRUE(label)){text(size,x$CAC,seq(1, n),adj=c(-0.7,-0.7)) }
-      else{text(size,x$CAC,label,adj=c(-0.1,-0.1))}
-    }
-    plot(x$CAC,x$RSC[,1], xlab="CAC",ylab="RSC 1", col=pt.col, ...)
-    if (!is.null(label)) {
-      if(!is.null(label)){text(x$CAC,x$RSC,seq(1, n),adj=c(-0.7,-0.7)) }
-      else{text(x$CAC,x$RSC,label,adj=c(-0.1,-0.1))}
-    }
-  }
-  if(method=="PredLine"){
-    layout(matrix(c(2,1,1,1,1,1,1,1,3),3,3))   
-    plot(size,x$pred.val,xlab=xlab, ylab="Shape (Predicted)", col=pt.col, ...)
-    if (!is.null(label)) {
-      if(isTRUE(label)){text(size,x$pred.val,seq(1, n),adj=c(-0.7,-0.7)) }
-      else{text(size,x$pred.val,label,adj=c(-0.1,-0.1))}
-    }
-    if (!isTRUE(gp.label)) {
-      for(i in levels(x$gps)){
-        text(max(size[which(x$gps==i)]) , max(x$pred.val[which(x$gps==i)]), i ,pos=1)}
-    }
-  }
-  if(method=="RegScore"){
-    layout(matrix(c(2,1,1,1,1,1,1,1,3),3,3))   
-    plot(size,x$Reg.proj,xlab=xlab, ylab="Shape (Regression Score)", col=pt.col, ...)
-    if (!is.null(label)) {
-      if(isTRUE(label)){text(size,x$Reg.proj,seq(1, n),adj=c(-0.7,-0.7)) }
-      else{text(size,x$Reg.proj,label,adj=c(-0.1,-0.1))}
-    }
-  } 
-  if(method=="CAC") y <- x$CAC else if (method=="RegScore") y <- x$Reg.proj else
-    y <- x$pred.val
-  
-  if(is.null(x$gps) && !is.null(x$k)){
-    if(warpgrids==TRUE && x$k==2){
-      arrows(min(size), (0.7 * max(y)), min(size), 0, length = 0.1,lwd = 2)
-      arrows(max(size), (0.7 * min(y)), max(size), 0, length = 0.1,lwd = 2)
-      tps(x$ref,x$Ahat[,,which.min(size)],20)
-      tps(x$ref,x$Ahat[,,which.max(size)],20)
-    }
-  if(warpgrids==TRUE && x$k==3){
-    if(is.null(mesh)){
-      open3d() ; mfrow3d(1, 2)
-      plot3d(x$Ahat[,,which.min(size)],type="s",col="gray",main="Shape at minimum size",
-             size=1.25,aspect=FALSE,xlab="",ylab="",zlab="",box=FALSE, axes=FALSE)
-      plot3d(x$Ahat[,,which.max(size)],type="s",col="gray",main="Shape at maximum size",
-             size=1.25,aspect=FALSE,xlab="",ylab="",zlab="",box=FALSE, axes=FALSE)
-      if(!is.null(mesh)){
-        open3d() ; mfrow3d(1, 2) 
-        cat("\nWarping mesh to minimum size\n")
-        plotRefToTarget(x$ref, x$Ahat[,,which.min(size)], mesh, method = "surface")
-        title3d(main="Shape at minimum size")
-        next3d()
-        cat("\nWarping mesh to maximum size")
-        plotRefToTarget(x$ref, x$Ahat[,,which.max(size)], mesh, method = "surface")
-        title3d(main="Shape at maximum size")
-      }}}
-  }
-  layout(1) 
-  if(shapes==TRUE && !is.null(x$k)){ return(list(min.shape = x$Ahat[,,which.min(size)], max.shape = x$Ahat[,,which.max(size)])) }
 }
 
 ## morphol.disparity
@@ -523,8 +237,14 @@ print.morphol.disparity <- function (x, ...) {
   cat(deparse(x$call), fill=TRUE, "\n\n")
   cat("\nRandomized Residual Permutation Procedure Used\n")
   cat(paste(x$permutations, "Permutations\n"))
-  cat("\nProcrustes variances for defined groups\n")
+  cat("\nProcrustes variances for defined groups")
+  if(x$partial) cat("; partial variances (disparities) were calculated.\n") else cat("\n")
   print(x$Procrustes.var)
+  if(x$partial) {
+    propor <- x$Procrustes.var / sum(x$Procrustes.var)
+    cat("\nProportion of total disparity for each group:\n")
+    print(propor)
+  }
   cat("\n")
   cat("\nPairwise absolute differences between variances\n")
   print(x$PV.dist)
@@ -588,149 +308,40 @@ summary.pls <- function(object, ...) {
 #' 
 #' @param x plot object (from \code{\link{phylo.integration}} or \code{\link{two.b.pls}})
 #' @param label Optional vector to label points
-#' @param warpgrids Logical argument whether to include warpgrids
-#' @param shapes Logical argument whether to return the the shape coordinates of the extreme ends of axis1 and axis2
-#' @param ... other arguments passed to plot and plotRefToTarget (in a limited capacity).  In most cases, greater flexibility
-#' can be attained with using \code{\link{plotRefToTarget}} and \code{\link{shape.predictor}}.
+#' @param ... other arguments passed to plot. The function returns values that can be used with 
+#' \code{\link{picknplot.shape}} (in a limited capacity). In most cases, greater 
+#' flexibility can be attained with using \code{\link{plotRefToTarget}} and \code{\link{shape.predictor}}.
 #' @return If shapes = TRUE, function returns a list containing the shape coordinates of the extreme ends of axis1 and axis2 
 #' if 3D arrays were originally provided for each
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities
 #' @keywords visualization
-plot.pls <- function(x, label = NULL, warpgrids=TRUE, shapes=FALSE, ...){
-  dots <- list(...)
-  if(!is.null(dots$gridPars)) gridPars <- dots$gridPars else gridPars <- NULL
-  if(!is.null(dots$mesh)) mesh <- dots$mesh else mesh <- NULL
-  if(!is.null(dots$outline)) outline <- dots$outline else outline <- NULL
-  if(!is.null(x$A1)){
-    A1 <- x$A1; A2 <- x$A2
-    XScores <- x$XScores; YScores <- x$YScores
-    if(is.matrix(XScores)) XScores <- XScores[,1]
-    if(is.matrix(YScores)) YScores <- YScores[,1]
-    Xmin <- min(XScores); Xmax <- max(XScores)
-    Ymin <- min(YScores); Ymax <- max(YScores)
-    plsRaw <- pls(x$A1.matrix, x$A2.matrix, verbose=TRUE)
-    XScoresRaw <- plsRaw$XScores[,1]; YScoresRaw <- plsRaw$YScores[,1]
-    pc <- prcomp(cbind(XScores, YScores))$x[,1]
-    px <- predict(lm(XScores~pc))
-    py <- predict(lm(YScores~pc))
-    pxmax <- max(px); pxmin <- min(px)
-    pymax <- max(py); pymin <- min(py)
-    pcRaw <- prcomp(cbind(XScoresRaw, YScoresRaw))$x[,1]
-    pxRaw <- predict(lm(XScoresRaw~pcRaw))
-    pyRaw <- predict(lm(YScoresRaw~pcRaw))
-    
-    if (length(dim(A1)) == 3) {
-      A1.ref <- mshape(A1)
-      preds <- shape.predictor(A1, x=XScores, method="LS", 
-                               Intercept=TRUE, pred1 = Xmin, pred2 = Xmax)
-      pls1.min <- preds$pred1
-      pls1.max <- preds$pred2
-    }
-    
-    if (length(dim(A2)) == 3) {
-      A2.ref <- mshape(A2)
-      preds <- shape.predictor(A2, x=YScores, method="LS", 
-                               Intercept=TRUE, pred1 = Ymin, pred2 = Ymax)
-      pls2.min <- preds$pred1
-      pls2.max <- preds$pred2
-    }
-    if (length(dim(A1)) != 3 && length(dim(A2)) != 3) {
-      plot(XScores, YScores, pch = 21, bg = "black", 
-           main = "PLS Plot", xlab = "PLS1 Block 1", ylab = "PLS1 Block 2")
-      abline(lm(py~px), col="red")
-      if (length(label != 0)) {
-        text(XScores, YScores, label, adj = c(-0.7, -0.7))
-      }
-    }
-    if (length(dim(A1)) == 3 || length(dim(A2)) == 3) {
-      
-      par(mar = c(1, 1, 1, 1) + 0.1)
-      split.screen(matrix(c(0.22, 1, 0.22, 1, 0.19, 0.39, 0, 
-                            0.19, 0.8, 1, 0, 0.19, 0, 0.19, 0.19, 0.39, 0, 0.19, 
-                            0.8, 1), byrow = TRUE, ncol = 4))
-      screen(1)
-      plot(XScores, YScores, pch = 21, bg = "black", 
-           main = "PLS1 Plot: Block 1 (X) vs. Block 2 (Y) ", 
-           xlab = "PLS1 Block 1", ylab = "PLS1 Block 2")
-      abline(lm(py~px), col="red")
-      if (length(label != 0)) {
-        text(XScores, YScores, label, adj = c(-0.7, -0.7))    
-      }
-      if (warpgrids == TRUE) {
-        if (length(dim(A1)) == 3 && dim(A1)[2] == 2) {
-          screen(2)
-          plotRefToTarget(A1.ref, pls1.min, ...)
-          screen(3)
-          plotRefToTarget(A1.ref, pls1.max,  ...)
-        }
-        if (length(dim(A2)) == 3 && dim(A2)[2] == 2) {
-          screen(4)
-          plotRefToTarget(A2.ref, pls2.min,  ...)
-          screen(5)
-          plotRefToTarget(A2.ref, pls2.max,  ...)
-        }
-      }
-      close.screen(all.screens = TRUE)
-      par(mar = c(5.1, 4.1, 4.1, 2.1))
-    }
-    if (length(dim(A1)) == 3 && dim(A1)[2] == 3) {
-      plot(XScores, YScores, pch = 21, bg = "black", 
-           main = "PLS Plot", xlab = "PLS1 Block 1", ylab = "PLS1 Block 2")
-      if (length(label != 0)) {
-        text(XScores, YScores, label, adj = c(-0.7, -0.7))
-      }
-      abline(lm(py~px), col="red")
-      open3d() ; mfrow3d(1, 2) 
-      if(!is.null(mesh)) {
-        warp1.PLY <- warp2.PLY <- mesh
-        vb <- as.matrix(t(mesh$vb)[,-4])
-        cat("\nWarping mesh\n")
-        warp1 <- tps2d3d(vb, A1.ref, pls1.min)
-        warp1.PLY$vb <- rbind(t(warp1), 1)
-        shade3d(warp1.PLY, main = paste("PLS Block1 negative"), ...)
-        warp2 <- tps2d3d(vb, A1.ref, pls1.max)
-        warp2.PLY$vb <- rbind(t(warp2), 1)
-        shade3d(warp2.PLY, main = paste("PLS Block1 positive"), ...)
-      } else {
-        plot3d(pls1.min, type = "s", col = "gray", main = paste("PLS Block1 negative"), 
-               size = 1.25, aspect = FALSE,xlab="",ylab="",zlab="",box=FALSE, axes=FALSE)
-        plot3d(pls1.max, type = "s", col = "gray", main = paste("PLS Block1 positive"), 
-               size = 1.25, aspect = FALSE,xlab="",ylab="",zlab="",box=FALSE, axes=FALSE)
-      }
-    }
-    if (length(dim(A2)) == 3 && dim(A2)[2] == 3) {
-      open3d() ; mfrow3d(1, 2) 
-      if(!is.null(mesh)) {
-        warp1.PLY <- warp2.PLY <- mesh
-        vb <- as.matrix(t(mesh$vb)[,-4])
-        cat("\nWarping mesh\n")
-        warp1 <- tps2d3d(vb, A2.ref, pls2.min)
-        warp1.PLY$vb <- rbind(t(warp1), 1)
-        shade3d(warp1.PLY, main = paste("PLS Block2 negative"), ...)
-        warp2 <- tps2d3d(vb, A2.ref, pls2.max)
-        warp2.PLY$vb <- rbind(t(warp2), 1)
-        shade3d(warp2.PLY, main = paste("PLS Block2 positive"), ...)
-      } else {
-        plot3d(pls2.min, type = "s", col = "gray", main = paste("PLS Block2 negative"), 
-               size = 1.25, aspect = FALSE,xlab="",ylab="",zlab="",box=FALSE, axes=FALSE)
-        plot3d(pls2.max, type = "s", col = "gray", main = paste("PLS Block2 positive"), 
-               size = 1.25, aspect = FALSE,xlab="",ylab="",zlab="",box=FALSE, axes=FALSE)
-      }
-    } 
-    layout(1)
-    if(shapes == TRUE){
-      if (length(dim(A1)) == 3 || length(dim(A2)) == 3) { 
-        rtrn <- list() 
-        if (length(dim(A1)) == 3) { rtrn$pls1.min = pls1.min ; rtrn$pls1.max = pls1.max }
-        if (length(dim(A2)) == 3) { rtrn$pls2.min = pls2.min ; rtrn$pls2.max = pls2.max }
-      }
-      if (length(dim(A1)) == 3 || length(dim(A2)) == 3) return(rtrn)
-    }   
+#' 
+plot.pls <- function(x, label = NULL, ...) {
+  XScores <- x$XScores
+  YScores <- x$YScores
+  if(is.matrix(XScores)) XScores <- XScores[,1]
+  if(is.matrix(YScores)) YScores <- YScores[,1]
+  plot.args <- list(x = XScores, y = YScores,
+                    main = "PLS1 Plot: Block 1 (X) vs. Block 2 (Y)", xlab = "PLS1 Block 1", 
+                    ylab = "PLS1 Block 2", ...)
+  do.call(plot, plot.args)
+  pc <- prcomp(cbind(XScores, YScores))$x[,1]
+  px <- predict(lm(XScores~pc))
+  py <- predict(lm(YScores~pc))
+  abline(lm(py ~ px), col = "red")
+  if (length(label != 0)) {
+    text(XScores, YScores, label, adj = c(-0.7, -0.7))
   }
-  else stop("No PLS vectors detected. With 3+ partitions in analysis consider pairwise plots via two.b.pls.")
+  out <- list()
+  out$plot.args <- plot.args
+  out$A1 <- x$A1
+  out$A2 <- x$A2
+  class(out) <- "plot.pls"
+  invisible(out)
 }
+
 
 ## bilat.symmetry
 
@@ -1080,203 +691,6 @@ plot.evolrate <- function(x, ...){
 }
 
 
-## trajectory.analysis
-
-#' Print/Summary Function for geomorph
-#' 
-#' @param x print/summary object
-#' @param angle.type Choice between vector correlation or vector angles, in radians or degrees
-#' for summarizing results ("r", "rad", "deg", respectively)
-#' @param ... other arguments passed to print/summary
-#' @export
-#' @author Michael Collyer
-#' @keywords utilities
-print.trajectory.analysis <- function(x, 
-                angle.type = c("r", "rad", "deg"), ...) {
-  angle.type = match.arg(angle.type)
-  cat(deparse(x$call), fill=TRUE, "\n\n")
-  cat("\nType I (Sequential) Sums of Squares and Cross-products\n")
-  cat ("Randomized Residual Permutation Procedure Used\n") 
-  cat(paste(x$permutations, "Permutations"))
-  cat("\n\n")
-  print(x$aov.table)
-  cat("\n\n")
-  cat("Pairwise statistical results:\n")
-  cat("\n\n*** Path Distances\n")
-  cat("\nObserved Path Distances\n")
-  print(x$path.distances)
-  cat("\nPairwise Absolute Differences Between Path Distances\n")
-  print(x$magnitude.diff)
-  cat("\nEffect Sizes\n")
-  print(x$Z.magnitude.diff)
-  cat("\nP-Values\n")
-  print(x$P.magnitude.diff)
-  cat("\n")
-  if(angle.type == "r"){
-    cat("\n*** Principal Vector Correlations\n")
-    cat("\nPairwise Correlations\n")
-    print(x$trajectory.cor)
-    cat("\nEffect Sizes\n")
-    print(x$Z.angle)
-    cat("\nP-Values\n")
-    print(x$P.angle)
-    cat("\n")
-  } else if(angle.type == "rad"){
-    cat("\n*** Principal Vector Angles\n")
-    cat("\nPairwise Angles (in radians)\n")
-    print(x$trajectory.angle.rad)
-    cat("\nEffect Sizes\n")
-    print(x$Z.angle)
-    cat("\nP-Values\n")
-    print(x$P.angle)
-    cat("\n")
-  } else {
-    cat("\n*** Principal Vector Angles\n")
-    cat("\nPairwise Angles (in degrees)\n")
-    print(x$trajectory.angle.deg)
-    cat("\nEffect Sizes\n")
-    print(x$Z.angle)
-    cat("\nP-Values\n")
-    print(x$P.angle)
-    cat("\n")
-  }
-  tr1 <- x$random.trajectories[[1]][[1]]
-  tp <- nrow(tr1)
-  if(tp > 2){
-    cat("\n*** Trajectory Shape Differences\n")
-    cat("\nPairwise Shape Differences (Procrustes Distance)\n")
-    print(x$trajectory.shape.dist)
-    cat("\nEffect Sizes\n")
-    print(x$Z.shape.diff)
-    cat("\nP-Values\n")
-    print(x$P.shape.diff)
-  }
-  invisible(x)
-}
-
-#' Print/Summary Function for geomorph
-#' 
-#' @param object print/summary object
-#' @param angle.type Choice between vector correlation or vector angles, in radians or degrees
-#' for summarizing results ("r", "rad", "deg", respectively)
-#' @param ... other arguments passed to print/summary
-#' @export
-#' @author Michael Collyer
-#' @keywords utilities
-summary.trajectory.analysis <- function(object,
-                  angle.type = c("r", "rad", "deg"), ...) {
-  x <- object
-  angle.type <- match.arg(angle.type)
-  print.trajectory.analysis(x, angle.type=angle.type, ...)
-}
-
-# general plotting functions for phenotypic trajectories
-trajplot.w.int<-function(Data, M, TM, groups, group.cols = NULL, 
-                         pattern = c("white", "gray", "black"), pt.scale = 1, ...){ # TM = trajectories from means
-  n <- length(TM); tp<-dim(TM[[1]])[1]; p<-dim(TM[[1]])[2]
-  if(length(pattern) != 3) stop("Point sequence color pattern must contain three values")
-  pmax <- max(Data[,1]); pmin <- min(Data[,1])
-  plot(Data[,1:2],type="n",
-       xlim = c(2*pmin, pmax),
-       xlab="PC I", ylab="PC II",
-       main="Two Dimensional View  of Phenotypic Trajectories",asp=1)
-  
-  if(is.null(group.cols)) gp.cols <- unique(as.numeric(groups)) else gp.cols <- group.cols
-  if(length(gp.cols) != nlevels(groups)) 
-    stop("group.cols is not logical with respect to group levels") 
-  
-  points(Data[,1:2],pch=21,bg=pattern[2],cex=.75*pt.scale)
-  # Sequence lines
-  for(i in 1:n){
-    y <- TM[[i]]
-    for(ii in 1:(tp-1)) points(y[ii:(ii+1),1:2],  type="l", lwd=1.5*pt.scale, col=gp.cols[i])
-  }
-  # Sequence points
-  points(M[,1:2], pch=21, bg=pattern[2], cex=1.5*pt.scale)
-  for(i in 1:n){
-    y <- TM[[i]]
-    k <- nrow(y)
-    points(y[1,1], y[1,2], pch=21, cex=1.5*pt.scale, bg=pattern[1])
-    points(y[k,1], y[k,2], pch=21, cex=1.5*pt.scale, bg=pattern[3])
-  }
-  
-  legend("topleft", levels(groups), lwd=2, col=gp.cols)
-}
-
-trajplot.by.groups<-function(Data, TM, groups, group.cols = NULL, 
-            pattern = c("white", "gray", "black"), pt.scale = 1, ...) {
-  n <- length(TM); tp <- nrow(TM[[1]]); p <- ncol(TM[[1]])
-  if(length(pattern) != 3) stop("Point sequence color pattern must contain three values")
-  Data2 <- t(matrix(matrix(t(Data)),p,))
-  pmax <- max(Data2[,1]); pmin <- min(Data2[,1])
-  plot(Data2[,1:2], type="n",
-       xlim = c(2*pmin, pmax),
-       xlab="PC I", ylab="PC II",
-       main="Two Dimensional View  of Phenotypic Trajectories",asp=1)
-  if(is.null(group.cols)) gp.cols <- as.numeric(groups) else gp.cols <- group.cols
-  if(length(gp.cols) != length(groups)) {
-    if(length(gp.cols) != nlevels(groups)) 
-      stop("group.cols is not logical with respect to either groups or group levels") else
-      {
-         new.gp.cols <-array(,n)
-         for(i in 1:n) new.gp.cols[i] <- gp.cols[match(groups[i], levels(groups))]
-      } 
-    gp.cols <- new.gp.cols
-  }
-  gp.index <- unique(gp.cols)
-  point.seq <- function(x, p, tp, pt.col, pt.scale){
-    for(i in 1:(tp-1)){
-      y <- matrix(x[1:(2*p)],2,, byrow=TRUE)
-      points(y, type="l", col=pt.col, lwd=1*pt.scale)
-      x <- x[-(1:p)]
-    }
-  }
-  for(i in 1:nrow(Data)) point.seq(Data[i,], p=p, tp=tp, pt.col = gp.cols[i], pt.scale=pt.scale)
-  points(Data2, pch = 21, bg = pattern[2], cex = 1*pt.scale)
-  for(i in 1:length(TM)){
-    y <- TM[[i]]
-    points(y[1,1], y[1,2], pch=21, bg = pattern[1], cex=1*pt.scale)
-    points(y[nrow(y),1], y[nrow(y),2], pch=21, bg = pattern[3], cex=1*pt.scale)
-  }
-  legend("topleft", levels(groups), lwd=2, col=gp.index)
-}
-
-#' Plot Function for geomorph
-#' 
-#' @param x plot object (from \code{\link{trajectory.analysis}})
-#' @param group.cols An optional vector of colors for group levels
-#' @param pt.seq.pattern The sequence of colors for starting, middle, and end points of 
-#' trajectories, respectively.  E.g., c("green", "gray", "red") for gray points
-#' but initial points with green color and end points with red color.
-#' @param pt.scale An optional value to magnify or reduce points (1 = no change)
-#' @param ... other arguments passed to plot
-#' @return An object of class "plot.trajectory.analysis" is a list with components
-#'  that can be used in other plot functions, such as the type of plot, points, 
-#'  a group factor, and other information depending on the plot parameters used.
-#' @export
-#' @author Michael Collyer
-#' @keywords utilities
-#' @keywords visualization
-plot.trajectory.analysis <- function(x, group.cols = NULL, 
-            pt.seq.pattern  = c("white", "gray", "black"), pt.scale = 1,...){
-  if(x$trajectory.type == 2) {
-    trajplot.w.int(Data=x$pc.data, M =x$pc.means,
-                   TM = x$pc.trajectories, groups = x$groups, 
-                   group.cols=group.cols, pattern = pt.seq.pattern, pt.scale=pt.scale)
-    out <- list(points = x$pc.data[,1:2], pc.data = x$pc.data, pc.means = x$pc.means,
-                pc.trajectories = x$pc.trajectories, groups = x$groups)
-  }
-  if(x$trajectory.type == 1) {
-    trajplot.by.groups(Data=x$pc.data, 
-                       TM = x$pc.trajectories, groups = x$groups, 
-                       group.cols=group.cols, pattern = pt.seq.pattern, pt.scale=pt.scale)
-    out <- list(points = x$pc.data[,1:2], pc.data = x$pc.data, pc.means = NULL,
-                pc.trajectories = x$pc.trajectories, groups = x$groups)
-  }
-  class(out) <- "plot.trajectory.analysis"
-  invisible(out)
-}
-
 # plotTangentSpace
 
 #' Print/Summary Function for geomorph
@@ -1413,4 +827,158 @@ plot.mshape <- function(x, links=NULL,...){
     text3d(x, texts=1:nrow(x), cex=0.7, font=2)
   }
   }
+}
+
+# gm.prcomp
+
+#' Print/Summary function for geomorph
+#' 
+#' @param x print/summary object
+#' @param ... other arguments passed to print/summary
+#' @export
+#' @author Antigoni Kaliontzopoulou
+#' @keywords utilities
+print.gm.prcomp <- function (x, ...) {
+  sum.tab <- function(x) {
+    var.PCs <- apply(x$x, 2, var)
+    y <- rbind(x[["d"]], var.PCs/sum(var.PCs), cumsum(var.PCs/sum(var.PCs)))
+    
+    colnames(y) <- paste("PC", 1:ncol(y), sep="")
+    rownames(y) <- c("Eigenvalues", "Proportion of variance", "Cumulative Proportion")
+    y
+  }
+    tab.list <- sum.tab(x)
+    cat("Importance of components:", "\n")
+    print(tab.list); cat("\n")
+    invisible(tab.list)
+}
+
+#' Print/Summary Function for geomorph
+#' 
+#' @param object print/summary object
+#' @param ... other arguments passed to print/summary
+#' @export
+#' @author Antigoni Kaliontzopoulou
+#' @keywords utilities
+summary.gm.prcomp <- function (object, ...) {
+  print.gm.prcomp(object, ...)
+}
+
+#' Plot Function for geomorph
+#' 
+#' @param x An object of class \code{\link{gm.prcomp}}
+#' @param axis1 A value indicating which PC axis should be displayed as the X-axis (default = PC1)
+#' @param axis2 A value indicating which PC axis should be displayed as the Y-axis (default = PC2)
+#' @param phylo A logical value indicating whether the phylogeny should be projected to PC space
+#' @param phylo.par A list of plotting parameters for the phylogeny edges (edge.color, edge.width, edge.lty)
+#' and nodes (node.bg, node.pch, node.cex)
+#' @param ... other arguments passed to plot
+#' @return An object of class "plot.gm.prcomp" is a list with components
+#'  that can be used in other plot functions, such as the type of plot, points, 
+#'  a group factor, and other information depending on the plot parameters used.
+#'  
+#'  NOTE: To visualize shape variation across PC axes, use \code{\link{picknplot.shape}}.
+#' @export
+#' @author Antigoni Kaliontzopoulou
+#' @keywords utilities
+#' @keywords visualization
+#' @seealso  \code{\link{plotRefToTarget}}
+
+
+plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, phylo = FALSE, 
+                           phylo.par = list(edge.color = "black", edge.width = 1, edge.lty = 1,
+                                            node.bg = "black", node.pch = 21, node.cex = 1), ...) {
+  options(warn = -1)
+  if(NCOL(x$x) == 1) stop("Only one PC.  No plotting capability with this function.\n", 
+                          call. = FALSE)
+  v <- x$d/sum(x$d)
+  xlabel <- paste("PC ", axis1, ": ", round(v[axis1] * 100, 2), "%", sep = "")
+  ylabel <- paste("PC ", axis2, ": ", round(v[axis2] * 100, 2), "%", sep = "")
+  plot.args <- list(x = x$x[, axis1], y = x$x[, axis2], xlab = xlabel, ylab = ylabel, ...)
+  pcdata <- as.matrix(x$x[, c(axis1, axis2)])
+  if(!is.null(plot.args$axes)) axes <- plot.args$axes else axes <- TRUE
+  if(!is.logical(axes)) axes <- as.logical(axes)
+  plot.args$xlim <- 1.05*range(plot.args$x)
+  plot.args$ylim <- 1.05*range(plot.args$y)
+  if(is.null(plot.args$asp)) plot.args$asp <- 1
+  
+  if(phylo) {
+    phy <- x$phy
+    phy.pcdata <- rbind(x$x, x$anc.x)
+    phy.pcdata <- as.matrix(phy.pcdata[, c(axis1, axis2)])
+    plot.args$x <- pcdata[,1]
+    plot.args$y <- pcdata[,2]
+
+  }
+  
+  do.call(plot, plot.args)
+  
+  if(phylo) {
+    for (i in 1:nrow(phy$edge)) {
+      dt.xy <- xy.coords(phy.pcdata[phy$edge[i,], ])
+      plot.xy(dt.xy, type="l", col = phylo.par$edge.color, 
+              lwd = phylo.par$edge.width, lty = phylo.par$edge.lty)
+    }
+    plot.xy(xy.coords(phy.pcdata[1:length(phy$tip),]), type="p",...)
+    plot.xy(xy.coords(phy.pcdata[(length(phy$tip)+1):nrow(phy.pcdata),]), type="p",
+            pch = phylo.par$node.pch, cex = phylo.par$node.cex, bg = phylo.par$node.bg)
+  }
+
+  if(axes){
+    abline(h = 0, lty=2, ...)
+    abline(v = 0, lty=2, ...)
+  }
+
+  options(warn = 0)
+  out <- list(PC.points = pcdata,   
+              call = match.call())
+  out$GM <- list()
+  out$GM$A <- x$A
+  
+  out$plot.args <- plot.args
+  if(phylo) {
+    out$phylo <- list()
+    out$phylo$phy <- phy
+    out$phylo$phylo.par <- phylo.par
+    out$phylo$phy.pcdata <- phy.pcdata
+    
+  }
+  class(out) <- "plot.gm.prcomp"
+  invisible(out)
+  
+}
+
+
+# geomorphShapes
+
+#' Print/Summary function for geomorph
+#' 
+#' @param x print/summary object
+#' @param ... other arguments passed to print/summary
+#' @export
+#' @author Michael Collyer
+#' @keywords utilities
+print.geomorphShapes <- function (x, ...) {
+  cat("\nLandmark data for", x$n, "specimens")
+  cat("\nNumber of fixed landmarks:", length(x$fixed))
+  cat("\nNumber of (sliding) semilandmarks:", length(x$sliders))
+  cat("\nNumber of total landmarks:", x$p)
+  if(x$scaled) cat("\nlandmarks have been scaled.") else
+    cat("\nLandmarks have not been scaled.")
+  cat("\n\nThis information is based on information available from a class 'shapes' object,")
+  cat("\nas it was originally read.  (It might have been since edited but this summary will not change.)")
+  cat("\nThe curves matrix (for use in gpagen) is also based on the same information.")
+  cat("\nThis matrix can be modified to alter which landmarks are semilandmarks.\n")
+  invisible(x)
+}
+
+#' Print/Summary Function for geomorph
+#' 
+#' @param object print/summary object
+#' @param ... other arguments passed to print/summary
+#' @export
+#' @author Michael Collyer
+#' @keywords utilities
+summary.geomorphShapes <- function (object, ...) {
+  print.geomorphShapes(object, ...)
 }

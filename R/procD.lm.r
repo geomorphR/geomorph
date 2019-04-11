@@ -49,12 +49,24 @@
 #'
 #'   The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{procD.lm}}.
 #'   The generic function, \code{\link{plot}} has several options for plotting, using \code{\link{plot.procD.lm}}.  Diagnostics plots, 
-#'   principal component plots (rotated to first PC of covariance matrix of fitted values), and regression plots can be performed.  The
-#'   latter is fundamentally similar to the plotting options for \code{\link{procD.allometry}}.  One must provide a linear predictor, and
-#'   can choose among common regression component (CRC), predicted values (PredLine), or regression scores (RegScore).  See \code{\link{procD.allometry}} 
-#'   for details. In these plotting options, the predictor does not need to be size, and fitted values and residuals from the procD.lm fit are used rather 
+#'   principal component plots (rotated to first PC of covariance matrix of fitted values), and regression plots can be performed.  
+#'   One must provide a linear predictor, and
+#'   can choose among predicted values (PredLine) or regression scores (RegScore). 
+#'   In these plotting options, the predictor does not need to be size, and fitted values and residuals from the procD.lm fit are used rather 
 #'   than mean-centered values. 
 #'   
+#'  \subsection{Notes for geomorph 3.1.0 and subsequent versions}{ 
+#'  The procD.lm function is now a wrapper for the \code{\link{lm.rrpp}} function
+#'  in the \code{RRPP} package.  Examples below illustrate how to utilize
+#'  \code{RRPP} functions along with \code{geomorph} functions for procD.lm objects,
+#'  increasing the breadth of possible downstream analyses.  
+#'  
+#'  An important update in version 3.1.0 is that advanced.procD.lm and nested.update have been deprecated.  
+#'  The examples emphasize how pairwise comparisons can now be accomplished with \code{\link{pairwise}} and
+#'  ANOVA updates for nested factors can be made with the \code{\link{anova.lm.rrpp}}, utilizing the error argument.
+#'  These functions work on procD.lm objects that have already been created.
+#' }
+#' 
 #'  \subsection{Notes for geomorph 3.0.6 and subsequent versions}{ 
 #'  Compared to previous versions, GLS computations in random permutations are now possible in procD.lm.  One should use
 #'  RRPP = TRUE if a covariance matrix is provided as an argument.  The method of SS calculations follows
@@ -78,6 +90,8 @@
 #' If seed = "random", a random seed will be used, and P-values will vary.  One can also specify an integer for specific seed values,
 #' which might be of interest for advanced users.
 #' @param RRPP A logical value indicating whether residual randomization should be used for significance testing
+#' @param SS.type SS.type A choice between type I (sequential), type II (hierarchical), or type III (marginal)
+#' sums of squares and cross-products computations.
 #' @param effect.type One of "F", "SS", or "cohen", to choose from which random distribution to estimate effect size.
 #' (The option, "cohen", is for Cohen's f-squared values.  The default is "F".  Values are log-transformed before z-score calculation to
 #' assure normally distributed data.)
@@ -87,11 +101,7 @@
 #' @param data A data frame for the function environment, see \code{\link{geomorph.data.frame}} 
 #' @param print.progress A logical value to indicate whether a progress bar should be printed to the screen.  
 #' This is helpful for long-running analyses.
-#' @param ... Arguments passed on to procD.fit (typically associated with the lm function,
-#' such as weights or offset).  The function procD.fit can also currently
-#' handle either type I, type II, or type III sums of squares and cross-products (SSCP) calculations.  Choice of SSCP type can be made with the argument,
-#' SS.type; i.e., SS.type = "I" or SS.type = "III".  Only advanced users should consider using these additional arguments, as such arguments
-#' are experimental in nature. 
+#' @param ... Arguments passed on to \code{\link{lm.rrpp}}, like weights and offset.
 #' @keywords analysis
 #' @export
 #' @author Dean Adams and Michael Collyer
@@ -133,171 +143,222 @@
 #' by high-dimensional data. Heredity. 115:357-365.
 #' @references Adams, D.C. and M.L. Collyer. 2016.  On the comparison of the strength of morphological integration across morphometric 
 #' datasets. Evolution. 70:2623-2631.
-#' @references Adams, D.C. and M.L. Collyer. 2018. Multivariate phylogenetic comparative methods: evaluations, comparisons, and
+#' @references Adams, D.C. and M.L. Collyer. 2018. Multivariate comparative methods: evaluations, comparisons, and
 #' recommendations. Systematic Biology. 67:14-31.
-#' @seealso \code{\link{advanced.procD.lm}}, \code{\link{procD.pgls}}, and 
-#' \code{\link{nested.update}} within geomorph; \code{\link[stats]{lm}} for more on linear model fits.
+#' @seealso \code{\link{procD.pgls}} and 
+#' \code{\link{lm.rrpp}} for more on linear model fits with RRPP. See \code{\link{RRPP-package}} for further
+#' details on functions that can use procD.lm objects.
 #' @examples
-#' ### MANOVA example for Goodall's F test (multivariate shape vs. factors)
+#' ### ANOVA example for Goodall's F test (multivariate shape vs. factors)
 #' data(plethodon) 
 #' Y.gpa <- gpagen(plethodon$land)    #GPA-alignment  
-#' gdf <- geomorph.data.frame(shape = Y.gpa$coords, 
-#' site = plethodon$site, species = plethodon$species) # geomorph data frame
+#' gdf <- geomorph.data.frame(Y.gpa, 
+#' site = plethodon$site, 
+#' species = plethodon$species) # geomorph data frame
 #'
-#' procD.lm(shape ~ species * site, data = gdf, iter = 999, RRPP = FALSE) # randomize raw values
-#' procD.lm(shape ~ species * site, data = gdf, iter = 999, RRPP = TRUE) # randomize residuals
-#'
+#' fit1 <- procD.lm(coords ~ species * site, 
+#' data = gdf, iter = 999, 
+#' RRPP = FALSE, print.progress = FALSE) # randomize raw values
+#' fit2 <- procD.lm(coords ~ species * site, 
+#' data = gdf, iter = 999, 
+#' RRPP = TRUE, print.progress = FALSE) # randomize residuals
+#' 
+#' summary(fit1)
+#' summary(fit2)
+#' 
+#' # RRPP example applications
+#' 
+#' coef(fit2)
+#' coef(fit2, test = TRUE)
+#' anova(fit2) # same as summary
+#' anova(fit2, effect.type = "Rsq")
+#' # if species and site were modeled as random effects ...
+#' anova(fit2, error = c("species:site", "species:site", "Residuals"))  
+#' # not run, because it is a large object to print 
+#' # remove # to run
+#' # predict(fit2) 
+#' 
+#' # TPS plots for fitted values of some specimens
+#' 
+#' M <- Y.gpa$consensus
+#' plotRefToTarget(M, fit2$GM$fitted[,,1], mag = 3)
+#' plotRefToTarget(M, fit2$GM$fitted[,,20], mag = 3)
+#' 
+#' ### THE FOLLOWING ILLUSTRATES SIMPLER SOLUTIONS FOR 
+#' ### THE NOW DEPRECATED advanced.procD.lm FUNCTION AND
+#' ### PERFORM ANALYSES ALSO FOUND VIA THE morphol.disparity FUNCTION
+#' ### USING THE pairwise FUNCTION
+#' 
+#' # Comparison of LS means, with log(Csize) as a covariate
+#' 
+#' # Model fits
+#' fit.null <- procD.lm(coords ~ log(Csize) + species + site, data = gdf, 
+#' iter = 999, print.progress = FALSE)
+#' fit.full <- procD.lm(coords ~ log(Csize) + species * site, data = gdf, 
+#' iter = 999, print.progress = FALSE)
+#' 
+#' # ANOVA, using anova.lm.rrpp function from the RRPP package (replaces advanced.procD.lm)
+#' anova(fit.null, fit.full, print.progress = FALSE)
+#' 
+#' # Pairwise tests, using pairwise function from the RRPP package
+#' gp <-  interaction(gdf$species, gdf$site)
+#' 
+#' PW <- pairwise(fit.full, groups = gp, covariate = NULL)
+#' 
+#' # Pairwise distances between means, summarized two ways (replaces advanced.procD.lm):
+#' summary(PW, test.type = "dist", confidence = 0.95, stat.table = TRUE)
+#' summary(PW, test.type = "dist", confidence = 0.95, stat.table = FALSE)
+#' 
+#' # Pairwise comaprisons of group variances, two ways (same as morphol.disaprity):
+#' summary(PW, test.type = "var", confidence = 0.95, stat.table = TRUE)
+#' summary(PW, test.type = "var", confidence = 0.95, stat.table = FALSE)
+#' morphol.disparity(fit.full, groups = gp, iter=999)
+#' 
 #' ### Regression example
 #' data(ratland)
 #' rat.gpa<-gpagen(ratland)         #GPA-alignment
 #' gdf <- geomorph.data.frame(rat.gpa) # geomorph data frame is easy without additional input
 #' 
-#' procD.lm(coords ~ Csize, data = gdf, iter = 999, RRPP = FALSE) # randomize raw values
-#' procD.lm(coords ~ Csize, data = gdf, iter = 999, RRPP = TRUE) # randomize raw values
-#' # Outcomes should be exactly the same
+#' fit <- procD.lm(coords ~ Csize, data = gdf, iter = 999, 
+#' RRPP = TRUE, print.progress = FALSE) 
+#' summary(fit)
 #' 
 #' ### Extracting objects and plotting options
-#' rat.anova <- procD.lm(coords ~ Csize, data = gdf, iter = 999, RRPP = TRUE)
-#' summary(rat.anova)
 #' # diagnostic plots
-#' plot(rat.anova, type = "diagnostics") 
+#' plot(fit, type = "diagnostics") 
 #' # diagnostic plots, including plotOutliers
-#' plot(rat.anova, type = "diagnostics", outliers = TRUE) 
+#' plot(fit, type = "diagnostics", outliers = TRUE) 
+#' 
 #' # PC plot rotated to major axis of fitted values
-#' plot(rat.anova, type = "PC", pch = 19, col = "blue") 
-#' # Uses residuals from model to find the commonom regression component 
-#' # for a predictor from the model
-#' plot(rat.anova, type = "regression", predictor = gdf$Csize, reg.type = "CRC", 
+#' plot(fit, type = "PC", pch = 19, col = "blue") 
+
+#' # Regression-type plots
+#' 
+#' # Use fitted values from the model to make prediction lines
+#' plot(fit, type = "regression", 
+#' predictor = gdf$Csize, reg.type = "RegScore", 
 #' pch = 19, col = "green")
-#' # Uses residuals from model to find the projected regression scores
-#' rat.plot <- plot(rat.anova, type = "regression", predictor = gdf$Csize, reg.type = "RegScore", 
+#' 
+#' # Uses coefficients from the model to find the projected regression scores
+#' rat.plot <- plot(fit, type = "regression", 
+#' predictor = gdf$Csize, reg.type = "RegScore", 
 #' pch = 21, bg = "yellow") 
 #' 
 #' # TPS grids for min and max scores in previous plot
-#' preds <- shape.predictor(gdf$coords, x = rat.plot$RegScore, 
+#' preds <- shape.predictor(fit$GM$fitted, x = rat.plot$RegScore, 
 #'                         predmin = min(rat.plot$RegScore), 
 #'                         predmax = max(rat.plot$RegScore))
 #' M <- rat.gpa$consensus
-#' plotRefToTarget(M, preds$predmin, mag=3)
-#' plotRefToTarget(M, preds$predmax, mag=3)
+#' plotRefToTarget(M, preds$predmin, mag=2)
+#' plotRefToTarget(M, preds$predmax, mag=2)
 #'                         
-#' attributes(rat.anova)
-#' rat.anova$fitted # just the fitted values
-procD.lm<- function(f1, iter = 999, seed=NULL, RRPP = TRUE, effect.type = c("F", "SS", "cohen"),
-                    int.first = FALSE,  Cov = NULL, data=NULL, print.progress = TRUE, ...){
-  if(int.first) ko = TRUE else ko = FALSE
-  if(!is.null(data)) data <- droplevels(data)
-  pfit <- procD.fit(f1, data=data, keep.order=ko,  pca=FALSE, ...)
-  Y <- pfit$Y
-  n <- dim(pfit$Y)[[1]]
-  p <- dim(pfit$Y)[[2]]
-  k <- length(pfit$term.labels)
-  if(p > n) pfitr <- procD.fit(f1, data=data, keep.order=ko,  pca=TRUE, ...) else
-    pfitr <- pfit
-  id <- rownames(Y)
-  ind <- perm.index(n, iter=iter, seed = seed)
-  SS.args <- list(fit = pfitr, ind = ind, P = NULL,
-                  RRPP = RRPP, print.progress = print.progress)
-  if(!is.null(Cov)){
-    Cov.name <- deparse(substitute(Cov))
-    Cov.match <- match(Cov.name, names(data))
-    if(length(Cov.match) > 1) stop("More than one object matches covariance matrix name")
-    if(all(is.na(Cov.match))) Cov <- Cov else Cov <- data[[Cov.match]]
-    if(!is.matrix(Cov)) stop("The covariance matrix must be a matrix.")
-    dimsC <- dim(Cov)
-    if(!all(dimsC == n))
-      stop("Either one or both of the dimensions of the covariance matrix do not match the number of observations.")
-    if(is.null(id) || is.null(rownames(Cov))) 
-      cat("\nWarning: No names to match between data and covariance matrix; consistent order is assumed.\n")
-    Pcov <- Cov.proj(Cov, id)
-    SS.args$P <- Pcov
-  } else {
-    Pcov <- NULL
-  }
-  if(k > 0) {
-    SS <- do.call(SS.iter, SS.args)
-    anova.parts.obs <- anova.parts(pfitr, SS) 
-    anova.tab <-anova.parts.obs$anova.table 
-    df <- anova.parts.obs$df
-    effect.type <- match.arg(effect.type)
-    if(effect.type == "SS" && !is.null(Cov)) {
-      cat("\nWarning: Measuring effect size on SS with GLS does not make sense; F used instead.\n")
-      effect.type = "F"
-    }
-    SS.type <- pfit$SS.type
-    SSE <- SS[k + 1, ]
-    SSY <- SS[k + 2, ]
-    MSE <- SSE/df[k + 1]
-    SSE.mat <- matrix(SSE, k, length(SSE), byrow = TRUE)
-    MSE.mat <- matrix(MSE, k, length(MSE), byrow = TRUE)
-    Fs <- (SS[1:k,]/df[1:k])/MSE.mat
-    if(SS.type == "III") {
-      if(k == 1) etas <- SS/(SS + SSE.mat) else etas <- SS[1:k,]/(SS[1:k,]+SSE.mat)
-      cohenf <- etas/(1-etas)
+#' attributes(fit)
+#' fit$fitted[1:3, ] # the fitted values (first three specimens)
+#' fit$GM$fitted[,, 1:3] # the fitted values as Procrustes coordinates (same specimens)
+#' 
+#' ### THE FOLLOWING ILLUSTRATES SIMPLER SOLUTIONS FOR 
+#' ### THE NOW DEPRECATED nested.update FUNCTION USING
+#' ### THE anova GENERIC FUNCTION
+#' 
+#' data("larvalMorph")
+#' Y.gpa <- gpagen(larvalMorph$tailcoords, curves = larvalMorph$tail.sliders,
+#' ProcD = TRUE, print.progress = FALSE)
+#' gdf <- geomorph.data.frame(Y.gpa, treatment = larvalMorph$treatment, 
+#' family = larvalMorph$family)
+#' 
+#' fit <- procD.lm(coords ~ treatment/family, data = gdf, 
+#' print.progress = FALSE, iter = 199)
+#' anova(fit) # treatment effect not adjusted
+#' anova(fit, error = c("treatment:family", "Residuals")) # treatment effect updated (adjusted)
+#'
+#' 
+#' 
+procD.lm <- function(f1, iter = 999, seed=NULL, RRPP = TRUE, 
+                     SS.type = c("I", "II", "III"),
+                     effect.type = c("SS", "MS", "Rsq", "F", "cohen"),
+                     int.first = FALSE,  Cov = NULL, data=NULL, print.progress = TRUE, ...){
+  
+  data <- try(eval(data, parent.frame()), silent = TRUE)
+  if(inherits(data, "try-error")) data <- NULL 
+
+  if(inherits(f1, "formula")){
+    Y <- try(eval(f1[[2]], envir = data , enclos = parent.frame()), silent = TRUE)
+    if(inherits(Y, "try-error"))
+      Y <- try(eval(f1[[2]], envir = parent.frame), silent = TRUE)
+    if(inherits(Y, "try-error")) stop("Cannot find data in data frame or global environment.\n",
+                                      call. = FALSE)
+    dims.Y <- dim(Y)
+    f <- update(f1, Y ~ .)
+    if(length(dims.Y) == 3) {
+      GM <- TRUE
+      Y <- two.d.array(Y) 
     } else {
-      if(k == 1) etas <- SS/SSY else etas <- SS[1:k,]/SSY
-      unexp <- 1 - apply(etas, 2, cumsum)
-      cohenf <- etas/unexp
+      GM <- FALSE
+      Y <- as.matrix(Y)
     }
-    if(k == 1) P.val <- pval(Fs) else P.val <- apply(Fs, 1, pval)
-    if(effect.type == "SS") Z <- apply(log(SS[1:k,]), 1, effect.size) else
-      if(effect.type == "F") Z <- apply(log(Fs), 1, effect.size) else
-        Z <- apply(log(cohenf), 1, effect.size) 
-    colnames(SS) <- colnames(Fs) <- colnames(cohenf) <- c("obs", paste("iter", 1:iter, sep=":"))
-    tab <- data.frame(anova.tab, Z = c(Z, NA, NA), Pr = c(P.val, NA, NA))
-    colnames(tab)[1] <- "Df"
-    colnames(tab)[ncol(tab)] <- "Pr(>F)"
-    if(effect.type == "SS") colnames(tab)[ncol(tab)] <- "Pr(>SS)"
-    if(effect.type == "cohen") colnames(tab)[ncol(tab)] <- "Pr(>Cohen f-sq)"
-    class(tab) <- c("anova", class(tab))
-    rownames(SS) <- c(pfit$term.labels, "Residuals", "Total")
-    out <- list(aov.table = tab, call = match.call(),
-                coefficients=pfit$wCoefficients.full[[k]], 
-                Y=pfit$Y,  X=pfit$X, 
-                QR = pfit$wQRs.full[[k]], fitted=pfit$wFitted.full[[k]],
-                residuals = pfit$wResiduals.full[[k]], 
-                weights = pfit$weights, Terms = pfit$Terms, term.labels = pfit$term.labels,
-                data = pfit$data,
-                SS = anova.parts.obs$SS, SS.type = SS.type, df = anova.parts.obs$df, 
-                R2 = anova.parts.obs$R2[1:k], F = anova.parts.obs$Fs[1:k], permutations = iter+1,
-                random.SS = SS, random.F = Fs, random.cohenf = cohenf, effect.type=effect.type,
-                perm.method = ifelse(RRPP==TRUE,"RRPP", "Raw"))
+    data$Y <- Y
+    
   } else {
-    SS <- do.call(SS.iter.null, SS.args)
-    P.val <- pval(SS)
-    Z <- effect.size(SS)
-    n <- NROW(Y)
-    df <- n - 1
-    tab <- data.frame(Df = df,SS = SS[1],
-                      MS = SS[1]/df, Rsq = 1,
-                      F = NA, P = P.val)
-    rownames(tab) <- "Residuals"
-    colnames(tab)[NCOL(tab)] <- "Pr(>SS)"
-    class(tab) = c("anova", class(tab))
-    out <- list(aov.table = tab, call = match.call(),
-                coefficients=pfit$wCoefficients.full[[1]], 
-                Y=pfit$Y,  X=pfit$X, 
-                QR = pfit$wQRs.full[[1]], fitted=pfit$wFitted.full[[1]],
-                residuals = pfit$wResiduals.full[[1]], 
-                weights = pfit$weights, Terms = pfit$Terms, term.labels = pfit$term.labels,
-                data = pfit$data,
-                random.SS = SS, 
-                GLS = FALSE,
-                OLS = TRUE)
+      f <- f1
+      GM <- FALSE
+    }
+
+  out <- lm.rrpp(f, data = data, 
+                 seed = seed, RRPP = RRPP,
+                 SS.type = SS.type, 
+                 int.first = int.first,  
+                 Cov = Cov, iter = iter,
+                 print.progress = print.progress, ...)
+  
+  out$ANOVA$effect.type <- match.arg(effect.type)
+  out$GM <- NULL
+  if(GM) {
+    p <- dims.Y[[1]]
+    k <- dims.Y[[2]]
+    kk <- NROW(out$LM$coefficients)
+    out$GM$p <- p
+    out$GM$k <- k
+    out$GM$n <- out$LM$n
+    out$GM$fitted <- arrayspecs(out$LM$fitted, p, k)
+    out$GM$residuals <- arrayspecs(out$LM$residuals, p, k)
+    if(kk > 1) out$GM$coefficients <- arrayspecs(out$LM$coefficients, p, k) else {
+      out$GM$coefficients <- array(matrix(out$LM$coefficients, p, k, byrow = TRUE), c(p,k,1))
+    }
+   
+    if(out$LM$gls) {
+      out$gls.fitted <- out$LM$gls.fitted
+      out$GM$gls.fitted <- arrayspecs(out$LM$gls.fitted, p, k)
+      out$gls.residuals <- out$LM$gls.residuals
+      out$GM$gls.residuals <- arrayspecs(out$LM$gls.residuals, p, k)
+      out$gls.coefficients <- out$LM$gls.coefficients
+      out$gls.mean <- out$LM$gls.mean
+      out$GM$gls.mean <- matrix(out$LM$gls.mean, out$GM$p, out$GM$k, byrow = TRUE)
+      out$gls.centroid <- out$LM$gls.centroid
+      out$GM$gls.centroid <- matrix(out$LM$gls.centroid, out$GM$p, out$GM$k, byrow = TRUE)
+      if(kk > 1) out$GM$gls.coefficients <- arrayspecs(out$LM$gls.coefficients, p, k) else {
+        out$GM$coefficients <- array(matrix(out$LM$gls.coefficients, p, k, byrow = TRUE), c(p,k,1))
+      }
+    }
   }
-  if(!is.null(Pcov)) {
-    PY <- as.matrix(crossprod(Pcov, pfit$Y))
-    PX <- as.matrix(crossprod(Pcov, pfit$X))
-    glsFit <- lm.wfit(PX, PY, pfit$weights)
-    out$gls.coefficients <- glsFit$coefficients
-    out$gls.fitted <- pfit$X %*% glsFit$coefficients
-    out$gls.residuals <- pfit$Y - pfit$X %*% glsFit$coefficients
-    GLS.mean = apply(PY, 2, mean)
-    out$Cov = Cov
-    out$Pcov = Pcov
-    out$GLS = TRUE
-    out$OLS = FALSE
-  }
-  class(out) <- "procD.lm"
+  
+  o.class <- class(out)
+  out2 <- list()
+  out2$aov.table <- anova.lm.rrpp(out)$table
+  out2$call <- match.call()
+  out$call <- out2$call
+  out2$coefficients <- out$LM$wCoefficients
+  out2$Y <- out$LM$Y
+  out2$X <- out$LM$X
+  out2$QR <- out$LM$QR
+  out2$fitted <- out$LM$wFitted
+  out2$residuals <- out$LM$wResiduals
+  out2$weights <- out$LM$weights
+  out2$Terms <- out$LM$Terms
+  out2$term.labels <- out$LM$term.labels
+  out2$data <- out$LM$data
+  out2$random.SS <- out2$ANOVA$SS
+  out <- c(out2, out)
+  class(out) <- c("procD.lm", o.class)
   out
+  
 }

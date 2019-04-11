@@ -5,7 +5,7 @@
 \title{Comparing net rates of shape evolution among traits on phylogenies}
 \usage{
 compare.multi.evol.rates(A, gp, phy, Subset = TRUE, iter = 999,
-  print.progress = TRUE)
+  seed = NULL, print.progress = TRUE)
 }
 \arguments{
 \item{A}{A matrix (n x [p x k]) or 3D array (p x k x n) containing Procrustes shape variables for a set of specimens}
@@ -18,6 +18,11 @@ compare.multi.evol.rates(A, gp, phy, Subset = TRUE, iter = 999,
 landmark configuration (default is TRUE)}
 
 \item{iter}{Number of iterations for significance testing}
+
+\item{seed}{An optional argument for setting the seed for random permutations of the resampling procedure.
+If left NULL (the default), the exact same P-values will be found for repeated runs of the analysis (with the same number of iterations).
+If seed = "random", a random seed will be used, and P-values will vary.  One can also specify an integer for specific seed values,
+which might be of interest for advanced users.}
 
 \item{print.progress}{A logical value to indicate whether a progress bar should be printed to the screen.
 This is helpful for long-running analyses.}
@@ -90,11 +95,8 @@ Denton, J.S.S., and D.C. Adams. 2015. A new phylogenetic test for comparing
 multiple high-dimensional evolutionary rates suggests interplay of evolutionary rates and 
 modularity in lanternfishes (Myctophiformes; Myctophidae). Evolution. 69:2425-2440.
 }
-\seealso{
-\code{\link[ape]{vcv.phylo}}, \code{\link[geiger]{sim.char}}, \code{\link[Matrix]{nearPD}}
- (used in some internal computations)
-}
 \author{
 Dean Adams
+ (used in some internal computations)
 }
 \keyword{analysis}

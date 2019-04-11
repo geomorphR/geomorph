@@ -5,7 +5,7 @@
 \title{Generalized Procrustes analysis of points, curves, and surfaces}
 \usage{
 gpagen(A, curves = NULL, surfaces = NULL, PrinAxes = TRUE,
-  max.iter = NULL, ProcD = TRUE, Proj = TRUE,
+  max.iter = NULL, ProcD = FALSE, Proj = TRUE,
   print.progress = TRUE)
 }
 \arguments{
@@ -13,7 +13,9 @@ gpagen(A, curves = NULL, surfaces = NULL, PrinAxes = TRUE,
 for a set of specimens.  If A is a geomorphShapes object, the curves argument is not needed.}
 
 \item{curves}{An optional matrix defining which landmarks should be treated as semilandmarks on boundary 
-curves, and which landmarks specify the tangent directions for their sliding.}
+curves, and which landmarks specify the tangent directions for their sliding.  This matrix is generated automatically
+with \code{\link{readland.shapes}} following digitizing of curves in StereoMorph, or may be generated
+using the function \code{\link{define.sliders}}.}
 
 \item{surfaces}{An optional vector defining which landmarks should be treated as semilandmarks on surfaces}
 
@@ -23,7 +25,7 @@ curves, and which landmarks specify the tangent directions for their sliding.}
 number of iterations could be larger than this, if curves or surface semilandmarks are involved.}
 
 \item{ProcD}{A logical value indicating whether or not Procrustes distance should be used as the criterion
-for optimizing the positions of semilandmarks}
+for optimizing the positions of semilandmarks (if not, bending energy is used)}
 
 \item{Proj}{A logical value indicating whether or not the Procrustes-aligned specimens should be projected 
 into tangent space}
@@ -40,7 +42,11 @@ An object of class gpagen returns a list with the following components:
  \item{iter}{The number of GPA iterations until convergence was found (or GPA halted).}
  \item{points.VCV}{Variance-covariance matrix among Procrustes shape variables.}
  \item{points.var}{Variances of landmark points.}
- \item{consnsus}{The consensus (mean) configuration.}
+ \item{consensus}{The consensus (mean) configuration.}
+ \item{procD}{Procrustes distance matrix for all specimens (see details). Note that for large data
+ sets, R might return a memory allocation error, in which case the error will be suppressed and this component will be NULL.
+ For such cases, users can augment memory allocation and create distances with the dist function, independent from gpagen,
+ using the coords or data output.}
  \item{p}{Number of landmarks.}
  \item{k}{Number of landmark dimensions.}
  \item{nsliders}{Number of semilandmarks along curves.}
@@ -66,10 +72,12 @@ The function performs a Generalized Procrustes Analysis (GPA) on two-dimensional
  direction for sliding. The matrix may be generated using the function \code{\link{define.sliders}}). Likewise, 
  to include semilandmarks 
  on surfaces, one must specify a vector listing which landmarks are to be treated as surface semilandmarks 
- using the "surfaces=" option. The "ProcD=TRUE" option will slide the semilandmarks along their tangent 
- directions using the Procrustes distance criterion, while "ProcD=FALSE" will slide the semilandmarks 
- based on minimizing bending energy. The Procrustes-aligned specimens may be projected into tangent 
- space using the "Proj=TRUE" option. NOTE: Large datasets may exceed the memory limitations of R.
+ using the "surfaces=" option. The "ProcD=FALSE" option (the default) will slide the semilandmarks 
+ based on minimizing bending energy, while "ProcD=TRUE" will slide the semilandmarks along their tangent 
+ directions using the Procrustes distance criterion. The Procrustes-aligned specimens may be projected into tangent
+ space using the "Proj=TRUE" option. 
+ The function also outputs a matrix of pairwise Procrustes Distances, which correspond to Euclidean distances between specimens in tangent space if "Proj=TRUE", or to the geodesic distances in shape space if "Proj=FALSE".   
+ NOTE: Large datasets may exceed the memory limitations of R.
 
 Generalized Procrustes Analysis (GPA: Gower 1975, Rohlf and Slice 1990) is the primary means by which 
   shape variables are obtained from landmark data (for a general overview of geometric morphometrics see 
@@ -112,15 +120,17 @@ data(hummingbirds)
 ###Slider matrix
 hummingbirds$curvepts
 
-# Using Procrustes Distance for sliding
-Y.gpa <- gpagen(hummingbirds$land,curves=hummingbirds$curvepts)   
-summary(Y.gpa)
-plot(Y.gpa)
-
 # Using bending energy for sliding
 Y.gpa <- gpagen(hummingbirds$land,curves=hummingbirds$curvepts,ProcD=FALSE)   
 summary(Y.gpa)
 plot(Y.gpa)
+
+
+# Using Procrustes Distance for sliding
+Y.gpa <- gpagen(hummingbirds$land,curves=hummingbirds$curvepts,ProcD=TRUE)   
+summary(Y.gpa)
+plot(Y.gpa)
+
 
 # Example 3: points, curves and surfaces
 data(scallops)

@@ -22,10 +22,10 @@
 #'  partitions is specified). Alternatively, when evaluating the integration between two structures or partitions, two datasets may be provided.
 #'
 #'  The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{integration.test}}.
-#'  The generic function, \code{\link{plot}}, produces a two-block.pls plot.  This function calls \code{\link{plot.pls}}, which has two additional
-#'  arguments (with defaults): label = NULL, warpgrids = TRUE.  These arguments allow one to include a vector to label points and a logical statement to
-#'  include warpgrids, respectively.  Warpgrids can only be included for 3D arrays of Procrustes residuals. The plot is a plot of PLS scores from 
-#'  Block1 versus Block2 performed for the first set of PLS axes. 
+#'  The generic function, \code{\link{plot}}, produces a two-block.pls plot.  This function calls \code{\link{plot.pls}}, which produces an ordination plot.  
+#'  An additional argument allows one to include a vector to label points.  Starting with version 3.1.0, warpgrids are no longer available with \code{\link{plot.pls}}
+#'  but after making a plot, the function returns values that can be used with \code{\link{picknplot.shape}} or a combination of 
+#' \code{\link{shape.predictor}} and \code{\link{plotRefToTarget}} to visualize shape changes in the plot (via warpgrids).
 #'  
 #' \subsection{Similarity to \code{\link{two.b.pls}} and \code{\link{compare.pls}} }{ 
 #' Note that \code{integration.test} performed on two matrices or arrays returns the same results as \code{\link{two.b.pls}}.  
@@ -101,6 +101,14 @@
 #' IT <- integration.test(Y.gpa$coords, partition.gp=land.gps, iter=999)
 #' summary(IT) # Test summary
 #' plot(IT) # PLS plot
+#' 
+#'  
+#'  ### Visualize shape variation using picknplot.shape Because picknplot requires 
+#'  ### user decisions, the following example
+#'  ### is not run (but can be with removal of #).
+#'  ### For detailed options, see the picknplot help file
+#'  # picknplot.shape(plot(IT))
+#' 
 #' IT$left.pls.vectors # extracting just the left (first block) singular vectors
 
 integration.test<-function(A, A2=NULL,partition.gp=NULL,iter=999, seed=NULL, print.progress=TRUE){

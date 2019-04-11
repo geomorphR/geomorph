@@ -64,10 +64,7 @@ of n rows of specimens and variables arranged in columns.
 In this case, the partition.gp input should have each variable assigned to a partition.
 
 The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{modularity.test}}.
- The generic function, \code{\link{plot}}, produces a two-block.pls plot.  This function calls \code{\link{plot.pls}}, which has two additional
- arguments (with defaults): label = NULL, warpgrids = TRUE.  These arguments allow one to include a vector to label points and a logical statement to
- include warpgrids, respectively.  Warpgrids can only be included for 3D arrays of Procrustes shape variables. The plot is a plot of PLS scores from 
- Block1 versus Block2 performed for the first set of PLS axes.
+ The generic function, \code{\link{plot}}, produces a histogram of random CR values associated with the resampling procedure.
 }
 \examples{
 data(pupfish) 

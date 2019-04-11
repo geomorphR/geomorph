@@ -52,6 +52,11 @@ The function performs a principal components analysis of shape variation and plo
  and using R's standard color palette: black, red, green, blue, cyan, magenta, yellow, and gray. NOTE: to change
  the colors of the groups, simply substitute a vector of the desired colors for each specimen (see example below).
  
+ \subsection{Notes for geomorph 3.1.0 and subsequent versions}{ 
+ The function \code{\link{gm.prcomp}} can also be used to generate principal components plots of 
+ tangent space, and will yield plots identical to those of the current function. 
+ }
+ 
  NOTE: previous versions of plotTangentSpace had option 'verbose' to return the PC scores and PC shapes. 
  From version 3.0.2 this is automatic when assigned to an object.
 }
@@ -75,11 +80,11 @@ col.gp <- col.gp[match(gp, names(col.gp))] # col.gp must NOT be a factor
 plotTangentSpace(Y.gpa$coords, groups = col.gp)
 
 ## To plot residual shapes from an allometry regression (note: must add mean back in!) 
-plotTangentSpace(arrayspecs(resid(lm(two.d.array(Y.gpa$coords)~Y.gpa$Csize))+
+plotTangentSpace(arrayspecs(resid(lm(two.d.array(Y.gpa$coords)~log(Y.gpa$Csize)))+
          predict(lm(two.d.array(Y.gpa$coords)~1)),12,2))
 }
 \seealso{
-\code{\link[rgl]{rgl-package}} (used in 3D plotting)
+\code{\link{gm.prcomp}}
 }
 \author{
 Dean Adams & Emma Sherratt

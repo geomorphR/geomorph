@@ -1,6 +1,6 @@
 #' Assessing phylogenetic signal in Procrustes shape variables
 #'
-#' Function calculates the degree of phylogenetic signal from a set of Procrustes shape variables
+#' Function calculates the degree of phylogenetic signal from Procrustes shape variables
 #'
 #' The function estimates the degree of phylogenetic signal present in Procrustes shape variables for a given phylogeny. 
 #' It is assumed that the landmarks have previously been aligned 
@@ -37,7 +37,6 @@
 #' This is helpful for long-running analyses.
 #' @keywords analysis
 #' @author Dean Adams
-#' @seealso  \code{\link[ape]{vcv.phylo}} (used in some internal computations)
 #' @export
 #' @return Function returns a list with the following components: 
 #'   \item{phy.signal}{The estimate of phylogenetic signal}

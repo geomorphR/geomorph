@@ -1,4 +1,4 @@
-#' Estimate locations of missing landmarks 
+#' Estimate locations of missing landmarks
 #'
 #' A function for estimating the locations of missing landmarks 
 #' 
@@ -27,12 +27,14 @@
 #' landmark coordinates is to proceed with subsequent analyses EXCLUDING
 #' specimens with missing values. 
 #' 
-#' @param A An array (p x k x n) containing landmark coordinates for a set of specimens
+#' @param A An array (p x k x n) containing landmark coordinates for a set of specimens or a geomorphShapes object
 #' @param method Method for estimating missing landmark locations
 #' @author Dean Adams
 #' @keywords utilities
 #' @return Function returns an array (p x k x n) of the same dimensions as input A, including coordinates for the target specimens 
-#' (the original landmarks plus the estimated coordinates for the missing landmarks). These data need to be Procrustes Superimposed prior to analysis (see \code{\link{gpagen}}).
+#' (the original landmarks plus the estimated coordinates for the missing landmarks).
+#' If the input is a geomorphShapes object, this is returned with the original and estimated coordinates in $landmarks
+#' In both cases, these data need to be Procrustes Superimposed prior to analysis, including sliding of semilandmarks (see \code{\link{gpagen}}).
 #' @export
 #' @references Claude, J. 2008. Morphometrics with R. Springer, New York.
 #' @references  Bookstein, F. L., K. Schafer, H. Prossinger, H. Seidler, M. Fieder, G. Stringer, G. W. Weber, 
@@ -62,7 +64,7 @@ estimate.missing <- function(A, method=c("TPS","Reg")){
   if(method=="TPS"){
     A2 <- A
     spec.NA <- which(rowSums(is.na(two.d.array(A)))>0)
-    Y.gpa <- gpagen(A[,,-spec.NA], PrinAxes=FALSE)
+    Y.gpa <- gpagen(A[,,-spec.NA], PrinAxes=FALSE, print.progress = FALSE)
     p <- dim(Y.gpa$coords)[1]; k <- dim(Y.gpa$coords)[2]; n <- dim(Y.gpa$coords)[3]    
     ref <- mshape(arrayspecs(two.d.array(Y.gpa$coords)*Y.gpa$Csize, p, k))
     for (i in 1:length(spec.NA)){
@@ -78,7 +80,7 @@ estimate.missing <- function(A, method=c("TPS","Reg")){
     A2 <- A
     complete <- A[,,-spec.NA]
     incomplete <- A[,,spec.NA]
-    Y.gpa <- gpagen(complete, PrinAxes=FALSE)
+    Y.gpa <- gpagen(complete, PrinAxes=FALSE, print.progress = FALSE)
     ref <- mshape(arrayspecs(two.d.array(Y.gpa$coords)*Y.gpa$Csize, p, k))
     complete <- arrayspecs(two.d.array(Y.gpa$coords)*Y.gpa$Csize, p, k)
     if(length(dim(incomplete))>2){

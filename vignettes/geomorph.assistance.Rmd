@@ -1,0 +1,270 @@
+---
+title: "Addition by Subtraction: Improving geomorph with fewer functions"
+author: "Michael Collyer"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{geomorph version 3.1.0 Assistance}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+  
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+The evolution of an R package includes both additions and deletions.  Some functions remain necessary, some are replaced by better functions, and others prove either problematic or redundant if there are better alternatives.  Over the last few years, geomorph has mostly evolved by additions.  The repertoire of functions is now rather impressive.  However, recently, some of the functions have become redundant, especially as functions in the package, *RRPP*, have offered better alternatives for the analytical functions in geomorph (specifically, those that use randomization of residuals in permutation procedures, RRPP).  Therefore, with version 3.1.0, we decided to deprecate some functions in lieu of better options available in *RRPP*.  This vignette illustrates how to use alternative functions and update scripts for veterans, but should also be a good introduction for new users.
+
+The following is a summary of major changes in version 3.1.0, showing old functions and new alternatives:
+
+geomorph 3.0.7 function | status | geomorph 3.1.0 / RRPP alternative
+:-------- | :------- | :--------
+advanced.procD.lm | deprecated | procD.lm + pairwise (*RRPP*)
+procD.allometry | deprecated | procD.lm + anova (*RRPP*) + plotAllometry (new *geomorph* function)
+nested.update | deprectaed | anova (*RRPP*) (Can do much more than nested.update could)
+trajectory.analysis | moved | Now in *RRPP* with improved functionality
+
+By eliminating or updating some of the older functions, the overall functionality of geomorph has increased (addition by subtraction).  To illustrate the improvements in detail, we focus on one data example below.
+
+## Data example: larval Salamanders
+
+These data consist of head landmarks, tail landmarks, and indicators for their semilandmarks (sliders) for larval salamanders, from an experimental study (Levis et al. 2016).  Salamanders from different families (egg clutches) were exposed to different herbicide treatments.  For our examples, we will focus on tail shape.  First, let's perform GPA.
+
+```{r, include=TRUE, fig.height=4, fig.width=5}
+library(geomorph)
+data("larvalMorph")
+
+Y.gpa <- gpagen(larvalMorph$tailcoords, curves = larvalMorph$tail.sliders,
+                ProcD = FALSE, print.progress = FALSE)
+plot(Y.gpa)
+```
+
+
+Next, let's define some putative models of shape variation that would be biologically relevant. 
+
+
+```{r, include=TRUE}
+gdf <- geomorph.data.frame(Y.gpa, treatment = larvalMorph$treatment, 
+                           family = larvalMorph$family)
+
+fit.size <- procD.lm(coords ~ log(Csize), 
+                     data = gdf, print.progress = FALSE) # simple allometry model
+fit.family<- procD.lm(coords ~ log(Csize) * family, 
+                     data = gdf, print.progress = FALSE) # unique family allometries
+fit.treatment<- procD.lm(coords ~ log(Csize) * treatment/family, 
+                     data = gdf, print.progress = FALSE) # unique treatment: family allometries
+
+fit.size
+fit.family
+fit.treatment
+```
+
+In geomorph 3.0.7, one could use **summary** to produce an ANOVA table.  That still works in geomorph 3.1.0, but the **anova** function (in *RRPP*) is much more flexible!
+
+## How to perform ANOVA and model comparisons in geomorph 3.1.0 
+### Replaces advanced.procD.lm and enhances functionality
+
+The following are the typical ANOVA tables for each model:
+
+```{r, include=TRUE}
+anova(fit.size)
+anova(fit.family)
+anova(fit.treatment)
+```
+
+In geomorph 3.0.7, one could use advanced.procD.lm to perform ANOVA on one reduced and one full model.  With **anova** in *RRPP*, one can directly compare any number of models.  For example
+
+```{r, include=TRUE}
+anova(fit.size, fit.family, fit.treatment, print.progress = FALSE)
+```
+
+One might ascertain that models that include paramaters for family and treatment are significant improvements over a model that only contains size.  **Like advanced.procD.lm, one can perform model comparisons, but now one can do that on any number of models with one model serving as the null model for comparisons.**  Note that the model fits can use types I, II, or III, sums of squares and cross-products (SSCP), ordinary or generalized least squares, and the ANOVA can be performed on a number of different test statistics (see anova.lm.rrpp help file for more details).
+
+## How to perform allometry analyses
+### Alternatives to procD.allometry and advanced.procD.lm, with increased flexibility
+
+The following analyses replace **procD.allometry**, primarily, and reiterate the enhanced method of multiple model comparisons.  First, let's just consider the simple allometry model
+
+```{r, include=TRUE}
+summary(fit.size)
+```
+
+It is clear that there is a significant association between shape and size.  To visualize this relationship, there are many options.  First, we can use the **plot** generic for procD.lm and vary some of the arguments.  Let's do that, using two different ways to visualize shape change: prediction lines (PredLine) and regression scores (RegScore).  The former are first principal component scores for fitted values from the procD.lm fit (Adams and Nistri 2010); the latter are standardized projected shape scores, along the axis defined by the regression of shape on size (Drake and Klingenberg 2008).  These plot options were formerly found in plot.procD.allometry, as well as plot.procD.lm (as shown below).
+
+```{r, include=TRUE, fig.height=4, fig.width=5}
+plot(fit.size, type = "regression", reg.type = "PredLine", predictor = log(gdf$Csize))
+plot(fit.size, type = "regression", reg.type = "RegScore", predictor = log(gdf$Csize))
+```
+
+The plot.procD.lm function is for any procD.lm fit.  If one wishes to work specifically with allometry models, the **plotAllometry** function performs the same analysis as a convenient wrapper for plot.procD.lm.  For example,
+
+```{r, include=TRUE, fig.height=4, fig.width=5}
+plotAllometry(fit.size, size = gdf$Csize, logsz = TRUE, method = "PredLine")
+plotAllometry(fit.size, size = gdf$Csize, logsz = TRUE, method = "RegScore")
+```
+
+#### An important detail with these plots is that PredLine and RegScore are model-based projections of shape data.  As we will see below, changing the model changes the outcome of the plot.  
+
+We could also perform a two-block partial least squares (PLS) analysis to find the correaltion between shape and size, which is not based on a particular model.
+
+```{r, include=TRUE, fig.height=4, fig.width=5}
+PLS <- two.b.pls(log(gdf$Csize), gdf$coords, print.progress = FALSE)
+PLS
+plot(PLS)
+```
+
+An astute observer might catch that the PLS plot is exactly the same as the RegScore plot.  It is, in this case of a simple allometry model.  They are also both the same as a plot of the common allometric component (CAC, Mitteroecker et al. 2004); i.e.,
+
+```{r, include=TRUE, fig.height=4, fig.width=6}
+plotAllometry(fit.size, size = gdf$Csize, logsz = TRUE, method = "CAC")
+```
+
+The CAC plot will always be the same as the PLS plot, irrespective of the type of shape-allometry model.  The RegScore plot is the same in this simple case because only one vector of regression coefficients is produced, which aligns perfectly with the major axis of covariation between shape and size (the CAC or the shape PLS vector; Adams et al. 2013)
+
+One can also append a size vector to a matrix of shape variables and perform principal components analysis (PCA), called size-shape PCA (Mitteroecker et al. 2004).
+
+```{r, include=TRUE, fig.height=4, fig.width=5}
+plotAllometry(fit.size, size = gdf$Csize, logsz = TRUE, method = "size.shape")
+```
+
+#### More complex allometry models
+
+We already learned that family and treatment were "significant" model effects.  Now let's focus on whether we should believe that families or treatments have unique allometries or a common allometry
+
+```{r, include = TRUE}
+
+fit.unique <- procD.lm(coords ~ log(Csize) * treatment/family, 
+                     data = gdf, print.progress = FALSE) # unique allometries
+fit.common <- procD.lm(coords ~ log(Csize) + treatment/family, 
+                     data = gdf, print.progress = FALSE) # common allometry
+anova(fit.common, fit.unique, print.progress = FALSE)
+
+```
+
+The ANOVA above was formerly carried out by advanced.procD.lm as a homogeneity of slopes (HOS) test in the function procD.allometry (although nested effects were not possible.)  Because this model comparison did not yield a significant result, we can conlude that a common allometry model is appropriate.  Thus, we might want to plot the results, color-coding the points by treatment
+
+```{r, include=TRUE,  fig.height=4, fig.width=5}
+plotAllometry(fit.common, size = gdf$Csize, logsz = TRUE, method = "PredLine",
+              pch = 19, col = as.numeric(gdf$treatment))
+plotAllometry(fit.common, size = gdf$Csize, logsz = TRUE, method = "RegScore",
+              pch = 19, col = as.numeric(gdf$treatment))
+```
+
+The next section focuses on ANOVA for model effects and pairwise comparisons.
+
+## How to update ANOVA and perform pairwise comparisons in geomorph 3.1.0 
+### Replaces advanced.procD.lm and nested.update, and enhances functionality
+
+In our example, we have both fixed and random effects.  Treatment is a fixed effect and family is a random effect, nested within our fixed effect (as egg clutches were "randomly"" sampled from the wild).  Generally, when evaluating model effects, ANOVA involves assessing the probability of observed F-values which are ratios of mean squared (MS) values for effects to MS values for the appropriate random effect, usually the residuals.  (For procD.lm models, the distribution of F-values is generated over many random permutations.)  For example,
+
+```{r, include=TRUE}
+anova(fit.common)
+```
+
+Notice that the F-value for the three effects - log(Csize), Treatment, and Treament:Family - is calculated as MS effect / MS Residuals.  This is the default.  However, in our mixed-model ANOVA, we would prefer to calculate the F-value for treatment as MS Treatment / MS Treatment:Family, to determine if the treatment effect is meaningful compared to shape variation among families we sampled randomly and assigned to treatments.  We can update our ANOVA by specifying what the denominator (error term) should be, as a sequence of error terms for the ANOVA; e.g.,
+
+```{r, include=TRUE}
+anova(fit.common, error = c("Residuals", "treatment:family", "Residuals"))
+```
+
+Notice the F-value and effect size decreased a bit with recalculation of the F-value for treatment, but remained significant.  What this function did was recalculate every treatment F-value in every random permutation to generate a new distribution for measuring effect size (Z) and P-value.
+
+This same procedure was accomplished with the nested.update function in geomorph 3.0.7, but was limited to one term nested within another.  The anova function with error argument presented here can work on any number of random effects and interactions, allowing much more complex models to be evaluated!
+
+#### Pairwise comparisons to determine which treatments differ
+
+Now that we know that shape covaries with size, but in a common way for each treatment, we might wish to compare treatment least-squares (LS) means to see which treatments differ in shape, accounting for allometry and accounting for family effects.  In geomorph 3.0.7, this was accomplished with advanced.procD.lm.  In geomorph 3.1.0, we use the **pairwise** function from *RRPP*.  There are several advantages to using the pairwise function.  The most prominent are: (1) the ability to quickly change among different test types and summaries without re-analysis, (2) alternative summary options, (3) an option to use grouping variables not included in the original model fit, and (4) much faster computation for straightforward tests.
+
+The pairwise function has this general format:
+
+pairwise(fit, groups, covariate),
+
+where fit is an already fitted object, using procD.lm, groups is a factor to designate groups to be compared, and covariate is a vector if slopes are to be compared.  This format assumes the inherent null model of "fit" is appropriate.  If an alternative null model is desired, the function can be updated as:
+
+pairwise(fit, fit.null, groups, covariate),
+
+where fit.null is a second procD.lm fit.  If one is not sure about the inherent null model, they can use the **reveal.model.designs** function of *RRPP* to discover the eaxt null model used; e.g.,
+
+```{r, include=TRUE}
+reveal.model.designs(fit.common)
+```
+
+The results tell us that if we run pairwise on fit.common, the null model would be ~ log(Csize) + treatment and the full model would be ~ log(Csize) + treatment + treatment:family.  This is the case because we used type I (sequential) sums of squares and cross-products (the default).  However, it is maybe not ideal.  We might prefer to have as a null model, ~ log(Csize) + family.  Thus, let's first establish that model and then run the pairwise function
+
+```{r, include=TRUE}
+fit.null <- procD.lm(coords ~ log(Csize) + family, data = gdf, print.progress = FALSE)
+PW <- pairwise(fit.common, fit.null, groups = gdf$treatment, print.progress = FALSE)
+PW
+```
+
+There are now many options for summarizing results; i.e., we can perform multiple tests!  Here is one option:
+
+```{r, include=TRUE}
+summary(PW, test.type = "dist", confidence = 0.95)
+```
+
+The test statistics used, "dist", is the distance between LS means.  By specifying a confidence level, we are given upper confidence limits (UCL) from the distributions of pairwise distances.  We can see that if the observed distance is larger than the UCL, the P-value is less than 1 - confidence; i.e., it is "significant".  The default is this "stats table", but we could also produce pairwise tables.  In fact, we can reproduce the old format for advanced.procD.lm like so:
+
+```{r, include=TRUE}
+anova(fit.null, fit.common, print.progress = FALSE)
+summary(PW, test.type = "dist", confidence = 0.95, stat.table = FALSE)
+```
+
+Because we have already performed the pairwise procedure, we could also summarize a different test.  For example, let's say we wish to compare morphological disparities (variances) among treatments.  We simply change the summary:
+
+```{r, include=TRUE}
+summary(PW, test.type = "var", confidence = 0.95)
+```
+
+This should be exactly the same as performing a morphological disparity test
+
+```{r, include=TRUE}
+morphol.disparity(fit.common, groups = gdf$treatment, print.progress = FALSE)
+```
+
+The **pairwise** function in *RRPP* is really versatile and far less cumbersome than advanced.procD.lm was.  More examples are provided in the help file for the function, and greater detail for how to summarize different tests is found in the summary.pairwise help file.
+
+
+## How to perform trajectory analysis in geomorph 3.1.0
+### Uses trajectory.analysis, now in *RRPP* but formerly in geomorph
+
+The trajectory,analysis function has been modified and now resides in *RRPP*, as it is a wrapper for the **pairwise** function.  It has the same basic arguments as the pairwise function, but also has an argument for trajectory points (which can be a single value, if data are already trajectories or a factor to indicate trajectory point levels).  Following the example above, trajectory analysis can be considered a pairwise function where treatments are trajectories and families are trajectory points.  The following highlights the steps involved for one type of example (but the plotting options are quite numerous):
+
+```{r, include=TRUE, fig.height=4, fig.width=5}
+TA <- trajectory.analysis(fit.common, 
+                          groups = gdf$treatment, traj.pts = gdf$family,
+                          pca = TRUE, print.progress = FALSE)
+summary(TA, attribute = "MD")
+TP <- plot(TA, pch = 19, cex = 0.7, col = as.numeric(gdf$treatment))
+add.trajectories(TP, traj.bg = 1:nlevels(gdf$treatment), 
+                 start.bg = 1:nlevels(gdf$treatment),
+                 end.bg = 1:nlevels(gdf$treatment))
+```
+
+The argument, attribute = "MD", indicates that the differences between trajectory magnitudes - the path length of trajectories - is considered.  The trajectory analysis could also be summarized for trajectory correlations (TC), which are angles between trajectory directions (major axes of variation), or shape differences (SD).  More examples are given in the **trajectory.analysis** help file.  The plotting options for trajectory.analysis in geomorph 3.0.7 were somewhat constrained but have been enhanced in *RRPP*.  The function, plot.trajectory.analysis plots the data points projected on the PCs for fitted values and the function, add.trajectories, superimposes the trajectories on these points.  The help files for these functions have further details.
+
+## Summary
+
+This vignette hopefully illustrates that the goals of former functions - advanced.procD.lm, procD.allometry, and nested.update - are as easily accomplished with alternative functions that have fewer constraints.  If you are new to geomorph, then this vignette should give you some ideas for how to analyze data with pairwise comparisons.
+
+## References
+
+Levis, N.A, M.L. Schooler, J.R. Johnson, and M.L. Collyer. 2016. The effects of terrestrial and aquatic herbicides on larval salamander morphology and swim speed. Biological Journal of the Linnean Society. 118:569-581.
+
+Adams, D. C., and A. Nistri. 2010. Ontogenetic convergence and evolution of foot morphology 
+in European cave salamanders (Family: Plethodontidae). BMC Evol. Biol. 10:1-10.
+
+Adams, D.C., F.J. Rohlf, and D.E. Slice. 2013. A field comes of age: geometric morphometrics in the 21st century. Hystrix. 24:7-14.
+
+Drake, A. G., and C. P. Klingenberg. 2008. The pace of morphological change: Historical transformation of skull shape in St Bernard dogs. Proc. R. Soc. B. 275:71-76.
+
+Mitteroecker, P., P. Gunz, M. Bernhard, K. Schaefer, and F. L. Bookstein. 2004. 
+Comparison of cranial ontogenetic trajectories among great apes and humans. J. Hum. Evol. 46:679-698.
+
+Rohlf, F.J., and M. Corti. 2000. The use of partial least-squares to study covariation in shape. Systematic Biology 49: 740-753.
+
+
+
