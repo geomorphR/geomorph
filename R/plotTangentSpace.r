@@ -13,11 +13,12 @@
 #'  
 #'  \subsection{Notes for geomorph 3.1.0 and subsequent versions}{ 
 #'  The function \code{\link{gm.prcomp}} can also be used to generate principal components plots of 
-#'  tangent space, and will yield plots identical to those of the current function. 
+#'  tangent space, and will yield plots identical to those of the current function. Notice that in the next release of geomorph, \strong{plotTangentSpace will be deprecated} and replaced by gm.prcomp.
 #'  }
 #'  
 #'  NOTE: previous versions of plotTangentSpace had option 'verbose' to return the PC scores and PC shapes. 
 #'  From version 3.0.2 this is automatic when assigned to an object.
+#'  
 #'
 #' @param A A 3D array (p x k x n) containing Procrustes shape variables for a set of specimens 
 #' @param warpgrids A logical value indicating whether deformation grids for shapes along X-axis should be displayed
