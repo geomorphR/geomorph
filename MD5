@@ -36,7 +36,7 @@ e5ea7eb05043e14bf36bb1c553de0576 *man/findMeanSpec.Rd
 8bff52d4704f9b1e65c17baffe670425 *man/fixed.angle.Rd
 f9221a7b4261484793b945d7be4bbec6 *man/geomorph-package.Rd
 529d968d52f701dda526c62cd174a6c3 *man/geomorph.data.frame.Rd
-868983a77b9ebb8a858901ba3a82c3ec *man/globalIntegration.Rd
+0763a0796feeacf89702a12ede433cb3 *man/globalIntegration.Rd
 1a62ea3627d6b0a24b44b320fed603fc *man/gm.prcomp.Rd
 f4321fc7e893a0b607e4b15a735fe233 *man/gpagen.Rd
 6e3973381aaf10ec056aa50add392948 *man/gridPar.Rd
@@ -149,7 +149,7 @@ edd9262112c0002e3be81df22872f89f *R/fixed.angle.r
 d4da6eba1dc1a56c0b1ad94c0839c825 *R/geomorph.data.frame.r
 5822a1b8aac1a31029430a5e90ef5562 *R/geomorph.support.code.r
 617932427a6bf38f17c01f7a8591d479 *R/geomorph.utils.r
-48ad1d05fbe54c70769453fd53a74d47 *R/globalIntegration.r
+da04ce8ab14c8a0a7bf2751654bbab6e *R/globalIntegration.r
 85f132fe6dad77cc29c77ef6517a119e *R/gm.prcomp.R
 bf0750e2582fc2c3b5454ad48b7f3cbb *R/gpagen.r
 8c06e49837953d941a01c82b0111935a *R/gridPar.r
