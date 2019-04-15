@@ -14,6 +14,8 @@ f4f2080e745b8d689f17caf549449ab5 *geomorph.Rproj
 f926ce8a00d113b94bd7a08b69b5bfc3 *inst/CITATION
 a27e660ba66601ddf07a5810a7322a16 *inst/doc/geomorph.assistance.html
 2db8bd28eaf7a1004c858a11c2b42465 *inst/doc/geomorph.assistance.Rmd
+bfbab393e6844a7f781fb3db4c8e1dba *inst/doc/geomorph.functions.html
+7c56536c539ec586a2bbeb66895b05d7 *inst/doc/geomorph.functions.Rmd
 71303f6d562524cf09f2e0cd4be5a46e *man/advanced.procD.lm.Rd
 5e099c6268d251bf5c98595d9566385a *man/arrayspecs.Rd
 aedd854ebbb437a660df88e33b7ed33c *man/bilat.symmetry.Rd
@@ -185,6 +187,7 @@ d9170bf4815f09297472b5986b2b5854 *R/two.b.pls.r
 5e40160582124b60c39fdb35959a57dc *R/warpRefMesh.r
 59d493f9cc61f036c40f49bf8b7bb3e0 *R/warpRefOutline.r
 ad572d6203f667d37641cee3adbc72b7 *R/writeland.tps.r
-1fe9a3909cce870d2263fb8cdfd1e639 *README.md
+ba685ee02f8f9e6c5b54f5b0295f350a *README.md
 689b04214469df022e35855c17361a9f *vignettes/geomorph.assistance.html
 2db8bd28eaf7a1004c858a11c2b42465 *vignettes/geomorph.assistance.Rmd
+7c56536c539ec586a2bbeb66895b05d7 *vignettes/geomorph.functions.Rmd
