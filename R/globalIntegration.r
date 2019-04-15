@@ -7,7 +7,7 @@
 #' aligned using Generalized Procrustes Analysis (GPA) [e.g., with \code{\link{gpagen}}]. 
 #' Based on the set of aligned specimens, the function estimates the set of bending energies at various
 #' spatial scales, and plots the log of the variance of the partial warps versus the log of their
-#' corresponding bending energies (Bookstein 2015). For slope of a regression of these data provides information
+#' corresponding bending energies (Bookstein 2015). The slope of a regression of these data provides information
 #' regarding the degree of overall morphological integration (or lack thereof).
 #' 
 #' A slope of negative one corresponds to self-similarity, implying that patterns of shape variation are
