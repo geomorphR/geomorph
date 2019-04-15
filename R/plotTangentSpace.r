@@ -18,6 +18,7 @@
 #'  
 #'  NOTE: previous versions of plotTangentSpace had option 'verbose' to return the PC scores and PC shapes. 
 #'  From version 3.0.2 this is automatic when assigned to an object.
+#'  
 #'
 #' @param A A 3D array (p x k x n) containing Procrustes shape variables for a set of specimens 
 #' @param warpgrids A logical value indicating whether deformation grids for shapes along X-axis should be displayed
