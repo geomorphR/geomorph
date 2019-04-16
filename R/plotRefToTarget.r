@@ -338,7 +338,7 @@ plotRefToTarget<-function(M1, M2, mesh= NULL, outline=NULL,
       cat("\nWarping mesh\n")
       warp <- tps2d3d(vb, M1, M2)
       warp.PLY$vb <- rbind(t(warp), 1)
-      shade3d(warp.PLY, ...)
+      shade3d(warp.PLY, meshColor="legacy", ...)
       return(warp.PLY)
     }
   }

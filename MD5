@@ -10,7 +10,7 @@ d8e8360c03c03fe45d2100e9c05d4a89 *data/plethodon.rda
 9ba51ab9be03930a4acdcddde8169b33 *data/scallopPLY.rda
 6e5e71b242462e422b716800ffc3c464 *data/scallops.rda
 922e98586424c1c90964a7574e801e17 *DESCRIPTION
-f4f2080e745b8d689f17caf549449ab5 *geomorph.Rproj
+73f723a130c92f8b84a81465a15add7c *geomorph.Rproj
 f926ce8a00d113b94bd7a08b69b5bfc3 *inst/CITATION
 a27e660ba66601ddf07a5810a7322a16 *inst/doc/geomorph.assistance.html
 2db8bd28eaf7a1004c858a11c2b42465 *inst/doc/geomorph.assistance.Rmd
@@ -167,7 +167,7 @@ bec62a0f9ec0c3e55b162338e4d977f9 *R/picknplot.shape.r
 c1cead3306cb3d7b1bd3ed5d99fc89af *R/plotAllSpecimens.r
 9f51066884f71bfc06335604055beead *R/plotGMPhyloMorphoSpace.r
 aab74b98af1c98726fe373d9759ccdbd *R/plotOutliers.r
-a2dcc839c82368a3f476cb8985b19b88 *R/plotRefToTarget.r
+5b718a3e1cca7e31ecb83880cb1d556c *R/plotRefToTarget.r
 7c20c0e7bf103c27e831c2e0815c71f4 *R/plotspec.r
 ffeb4fb45afe9b0e8fe9c22bd5747931 *R/plotTangentSpace.r
 6110a1ea4131ccf4ec01fc72d57b2f27 *R/procD.lm.r
