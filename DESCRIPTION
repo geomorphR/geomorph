@@ -1,8 +1,8 @@
 Package: geomorph
-Date: 2019-04-02
+Date: 2019-04-16
 Type: Package
 Title: Geometric Morphometric Analyses of 2D/3D Landmark Data
-Version: 3.1.1
+Version: 3.1.2
 Author: Dean Adams, Michael Collyer, Antigoni Kaliontzopoulou
 Maintainer: Dean Adams <dcadams@iastate.edu>
 Depends: RRPP, rgl, R(>= 3.1.0)

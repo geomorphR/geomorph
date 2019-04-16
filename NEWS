@@ -1,3 +1,8 @@
+Incipient CHANGES in Geomorph Version 3.1.2
+
+BUG FIXES
+    o Added meshColor specification in plotting of 3d meshes (to match RGL change)
+
 CHANGES in Geomorph Version 3.1.1
 
 BUG FIXES

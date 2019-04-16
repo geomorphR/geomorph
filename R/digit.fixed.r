@@ -71,7 +71,7 @@ digit.fixed <- function(spec, fixed, index=FALSE, ptsize = 1, center = TRUE)    
     if (center == FALSE){ specimen <- spec }
   } else { stop ("File is not matrix in form: vertices by xyz")} 
   clear3d(); ids <- plot3d(specimen[,1],specimen[,2],specimen[,3],size=ptsize,aspect=FALSE)
-  if (!is.null(mesh)) { shade3d(mesh, add=TRUE) }
+  if (!is.null(mesh)) { shade3d(mesh, meshColor="legacy", add=TRUE) }
   selected<-matrix(NA,nrow=fixed,ncol=3);fix<-NULL    
   for (i in 1:fixed)      {
     keep<-ans<-NULL
@@ -93,7 +93,7 @@ digit.fixed <- function(spec, fixed, index=FALSE, ptsize = 1, center = TRUE)    
       fix<-fix[-i] 
       rgl.bringtotop(stay = FALSE)
       clear3d();ids <- plot3d(specimen[,1],specimen[,2],specimen[,3],size=ptsize,aspect=FALSE)
-      if (!is.null(mesh)) { shade3d(mesh, add=TRUE) }
+      if (!is.null(mesh)) { shade3d(mesh, meshColor="legacy",add=TRUE) }
       if(sum(1-is.na(selected))>0){
         points3d(selected[,1],selected[,2],selected[,3],size=10,color="red",add=TRUE)
       }      

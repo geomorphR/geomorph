@@ -74,7 +74,7 @@ read.ply <- function (file, ShowSpecimen = TRUE, addNormals = TRUE)
   if(ShowSpecimen==TRUE){ 
     clear3d()
     if (length(face) == 0) { dot3d(mesh) }
-    if (length(material) != 0){ shade3d(mesh) }
-    shade3d(mesh, color="gray") }
+    if (length(material) != 0){ shade3d(mesh, meshColor="legacy") }
+    shade3d(mesh, meshColor="legacy") }
   return(mesh)
 }

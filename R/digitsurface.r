@@ -109,7 +109,7 @@ digitsurface<-function(spec, fixed, ptsize = 1, center = TRUE)    {
   clear3d();plot3d(specimen[,1],specimen[,2],specimen[,3],size=ptsize,aspect=FALSE)
   if (!is.null(mesh)) { 
     mesh$vb <- rbind(t(specimen), 1)
-    shade3d(mesh, add=TRUE) 
+    shade3d(mesh, meshColor="legacy", add=TRUE) 
   }
   points3d(specimen[lmk.add,],col="red",size=10)
   points3d(template.tps,col="blue",size=10)
