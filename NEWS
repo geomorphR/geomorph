@@ -3,6 +3,10 @@ Incipient CHANGES in Geomorph Version 3.1.2
 BUG FIXES
     o Added meshColor specification in plotting of 3d meshes (to match RGL change)
 
+NEW FEATURES
+    o readland.tps now includes an argument (negNA = FALSE) to define whether negative landmark coordinates should be transformed to NAs (by setting the argument to TRUE)      
+    
+
 CHANGES in Geomorph Version 3.1.1
 
 BUG FIXES

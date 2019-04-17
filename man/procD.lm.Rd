@@ -137,6 +137,10 @@ The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\li
  The examples emphasize how pairwise comparisons can now be accomplished with \code{\link{pairwise}} and
  ANOVA updates for nested factors can be made with the \code{\link{anova.lm.rrpp}}, utilizing the error argument.
  These functions work on procD.lm objects that have already been created.
+ 
+ A thorough review of these changes and detailed assistance for users to make the transition from the
+ previous functions to the current way of implementing the same analysis is also available in the 
+ \href{geomorph.assistance.html}{vignette}
 }
 
 \subsection{Notes for geomorph 3.0.6 and subsequent versions}{ 
