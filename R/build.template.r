@@ -102,7 +102,7 @@ buildtemplate<-function(spec, fixed, surface.sliders, ptsize = 1, center = TRUE)
       lmk.add <- rbind(lmk.add, which.min(sqrt((fixed[i,1]-specimen[,1])^2+(fixed[i,2]-specimen[,2])^2+(fixed[i,3]-specimen[,3])^2))[1])}
     fixed <- nrow(fixed)} 
   surfs<-specimen[-lmk.add,]
-  template<-rbind(lmk.coords,kmeans(x=surfs,centers=surface.sliders,iter.max=100)$centers)
+  template<-rbind(lmk.coords,kmeans(x=surfs,centers=surface.sliders,iter.max=10)$centers)
   points3d(template[-(1:fixed),1],template[-(1:fixed),2],template[-(1:fixed),3],size=10,col="blue")
   writeland.nts(template, spec.name, comment="Landmark coordinates for digitized template")
   write.table(template,file="template.txt",row.names=F,col.names=TRUE)
