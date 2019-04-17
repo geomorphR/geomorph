@@ -68,7 +68,7 @@
 #'  
 #'  A thorough review of these changes and detailed assistance for users to make the transition from the
 #'  previous functions to the current way of implementing the same analysis is also available in the 
-#'  \href{geomorph.assistance.html}{vignette}
+#'  vignette, which can be accessed using vignette("geomorph.assistance").
 #' }
 #' 
 #'  \subsection{Notes for geomorph 3.0.6 and subsequent versions}{ 
