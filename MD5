@@ -33,7 +33,7 @@ db6cbd31768f1fd06f29c6a7f3d42412 *man/compare.pls.Rd
 c7537e44a2ee577ca4212ed2e9d21c7e *man/digit.curves.Rd
 d3043b58c15c922d149af2c97e0b8cb7 *man/digit.fixed.Rd
 bc084e117ab076edf964cedaf0915cc8 *man/digitize2d.Rd
-270fc39015788a60af2ee9eecd7b2c70 *man/digitsurface.Rd
+05eef85111725affb6091e8b66d6601f *man/digitsurface.Rd
 2c0305355c82969e032f5d031e96aaaa *man/editTemplate.Rd
 304be7cec73ac387ebda7decb730a5ae *man/estimate.missing.Rd
 e5ea7eb05043e14bf36bb1c553de0576 *man/findMeanSpec.Rd
@@ -145,7 +145,7 @@ b557de0a864900966143895a54c14350 *R/deprecated.defunct.r
 a38ff2f2af270bf26299b1569cc734fc *R/digit.curves.r
 9ba820d500028f22f97a64a9796abc8f *R/digit.fixed.r
 58ac3c6102b455136e748471fb62df29 *R/digitize2d.r
-926787e269084513fc85d6d1ce452fd4 *R/digitsurface.r
+73ec077b72b6ad3c9a990c7181cc5fa0 *R/digitsurface.r
 068db4d412d39586d25d20bf3f4118fe *R/editTemplate.r
 c38531b2e37e698a0ae0ea5a7062bcd8 *R/estimate.missing.r
 aac6a4f8a759473e8c37048e5c8e3d91 *R/findMeanSpec.r
