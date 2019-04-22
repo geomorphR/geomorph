@@ -2,8 +2,9 @@
 #'
 #' An interactive function to remove landmarks from a 3D template file. 
 #' 
-#' Function edits a 'template.txt' file made by \code{\link{buildtemplate}}, which must be in current working directory.
-#'  Function overwrites 'template.txt' in working directory with edited version. Use read.table("template.txt", header = T).
+#' The function edits a 'template.txt' file made by \code{\link{buildtemplate}}, which must be in the current
+#' working directory, and which is overwritten. Use read.table("template.txt", header = T) to read in the template
+#' first.
 #' \subsection{Selection}{ 
 #' Choosing which landmarks will be deleted involves landmark selection using a mouse in the rgl plot window. 
 #' With a standard 3-button (PC) buildtemplate uses:
@@ -21,11 +22,11 @@
 #'  \item the mouse SCROLLER or trackpad two finger scroll is used to zoom in an out.
 #'  }
 #' }
-#' @param template Matrix of template 3D coordinates.
+#' @param template Matrix of template 3D coordinates
 #' @param fixed Number of "fixed" landmark points (non surface sliding points)
 #' @param n Number of points to be removed 
 #' @return Function returns a matrix containing the x,y,z coordinates of the new template landmarks.
-#' Function also writes to working directory 'template.txt' containing the x,y,z coordinates of the template 
+#' Function also writes to the working directory 'template.txt' containing the x,y,z coordinates of the updated template 
 #' @export
 #' @keywords digitizing
 #' @author Erik Otarola-Castillo & Emma Sherratt

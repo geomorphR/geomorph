@@ -21,7 +21,7 @@ bfbab393e6844a7f781fb3db4c8e1dba *inst/doc/geomorph.functions.html
 71303f6d562524cf09f2e0cd4be5a46e *man/advanced.procD.lm.Rd
 5e099c6268d251bf5c98595d9566385a *man/arrayspecs.Rd
 aedd854ebbb437a660df88e33b7ed33c *man/bilat.symmetry.Rd
-5a3e03eb2accf1269a9cf8c049adae78 *man/buildtemplate.Rd
+69dc1b38a63364449b026a2ff02c5186 *man/buildtemplate.Rd
 27ec671933fb105323fe0a2b87e45c87 *man/combine.subsets.Rd
 f3f57a72cb0380cf605c9bbe3d3e4458 *man/compare.evol.rates.Rd
 25078bd5c76bb7ab2a16e6898fbacc92 *man/compare.multi.evol.rates.Rd
@@ -31,10 +31,10 @@ db6cbd31768f1fd06f29c6a7f3d42412 *man/compare.pls.Rd
 57a667aa3db32e5e0ead54721aeb17af *man/define.modules.Rd
 18324705acdb8b304aafe8e4e4e3e38c *man/define.sliders.Rd
 c7537e44a2ee577ca4212ed2e9d21c7e *man/digit.curves.Rd
-fb8fa07c58db4f8fec5120be3253c986 *man/digit.fixed.Rd
+d3043b58c15c922d149af2c97e0b8cb7 *man/digit.fixed.Rd
 bc084e117ab076edf964cedaf0915cc8 *man/digitize2d.Rd
-907f30032fe9ae0170d56be64dd3152f *man/digitsurface.Rd
-87f53db5748b3d0e5a7805f88aecae10 *man/editTemplate.Rd
+270fc39015788a60af2ee9eecd7b2c70 *man/digitsurface.Rd
+2c0305355c82969e032f5d031e96aaaa *man/editTemplate.Rd
 304be7cec73ac387ebda7decb730a5ae *man/estimate.missing.Rd
 e5ea7eb05043e14bf36bb1c553de0576 *man/findMeanSpec.Rd
 8bff52d4704f9b1e65c17baffe670425 *man/fixed.angle.Rd
@@ -132,7 +132,7 @@ d9119f721918f22c267db843023a86fe *man/writeland.tps.Rd
 4e91b69fb3781ec06fa35975c5c70368 *NEWS
 92239d51a080ccd3fc3a9f7ef67d1b8c *R/arrayspecs.r
 c7cbd9c9a2de38757e9ed8245eedcb12 *R/bilat.symmetry.r
-deece3d6dec57e09c199be8022c52d28 *R/build.template.r
+a032dd6d0bb6e9d565ea12e840249697 *R/build.template.r
 a4000545c9b02a4e399438951cc3cc5f *R/combine.subsets.R
 bbeac77f9ca6094ea8283e64ecc2ef2a *R/compare.evol.rates.r
 d07ba05e9c4ba71ee07b20df5b7e0de9 *R/compare.multi.evol.rates.r
@@ -143,10 +143,10 @@ ddcc6629196b8e66ef9a2e92c093f041 *R/define.modules.r
 40fc3f0daa4f943ce38979e67f2565ac *R/define.sliders.r
 b557de0a864900966143895a54c14350 *R/deprecated.defunct.r
 a38ff2f2af270bf26299b1569cc734fc *R/digit.curves.r
-6a1b41d62ddc186541a64507ed82fee7 *R/digit.fixed.r
+9ba820d500028f22f97a64a9796abc8f *R/digit.fixed.r
 58ac3c6102b455136e748471fb62df29 *R/digitize2d.r
-5a3773f10ae5afc685d18d6be9b91fd4 *R/digitsurface.r
-2a875f90a59b86dead7b3b1094559556 *R/editTemplate.r
+926787e269084513fc85d6d1ce452fd4 *R/digitsurface.r
+068db4d412d39586d25d20bf3f4118fe *R/editTemplate.r
 c38531b2e37e698a0ae0ea5a7062bcd8 *R/estimate.missing.r
 aac6a4f8a759473e8c37048e5c8e3d91 *R/findMeanSpec.r
 edd9262112c0002e3be81df22872f89f *R/fixed.angle.r
