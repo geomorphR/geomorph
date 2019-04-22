@@ -4,6 +4,7 @@ BUG FIXES
     o Added meshColor specification in plotting of 3d meshes (to match RGL change)
 
 NEW FEATURES
+    o Three vignettes have been added: one assists the user in implementing analyses previously included in the deprecated functions procD.allometry, advanced.procD.lm and nested.update through procD.lm and other RRPP tools; the second provides a comprehensive list of main geomorph functions and their use; and the third is a step-by-step demonstration of 3D digitizing procedures.
     o readland.tps now includes an argument (negNA = FALSE) to define whether negative landmark coordinates should be transformed to NAs (by setting the argument to TRUE)      
     
 
