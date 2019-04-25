@@ -1,5 +1,8 @@
-<<<<<<< HEAD
+
 GITHUB UPDATES    
+    o Added meshColor specification in plotting of 3d meshes (to match RGL change).
+    o Added missing gls component in procD.lm output.
+    o Fixed missing SS.types for pgls.
     o Fixed single landmark issue in readland.shapes
     o Fixed ratio call for permutations in compare.evol.rates
     o Added mean-centering to compare.evol.rates for permutations
@@ -909,4 +912,4 @@ CHANGES IN GEOMORPH VERSION 1.1-0
 
   OTHER CHANGES
     o read.morphologika() accepts greater variety of input file formats
->>>>>>> ea80f2a9bb56410eac46db1fb677d3aa52da7b58
+
