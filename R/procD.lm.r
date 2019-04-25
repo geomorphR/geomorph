@@ -65,10 +65,6 @@
 #'  The examples emphasize how pairwise comparisons can now be accomplished with \code{\link{pairwise}} and
 #'  ANOVA updates for nested factors can be made with the \code{\link{anova.lm.rrpp}}, utilizing the error argument.
 #'  These functions work on procD.lm objects that have already been created.
-#'  
-#'  A thorough review of these changes and detailed assistance for users to make the transition from the
-#'  previous functions to the current way of implementing the same analysis is also available in the 
-#'  vignette, which can be accessed using vignette("geomorph.assistance").
 #' }
 #' 
 #'  \subsection{Notes for geomorph 3.0.6 and subsequent versions}{ 
@@ -284,7 +280,7 @@ procD.lm <- function(f1, iter = 999, seed=NULL, RRPP = TRUE,
   
   data <- try(eval(data, parent.frame()), silent = TRUE)
   if(inherits(data, "try-error")) data <- NULL 
-
+  
   if(inherits(f1, "formula")){
     Y <- try(eval(f1[[2]], envir = data , enclos = parent.frame()), silent = TRUE)
     if(inherits(Y, "try-error"))
@@ -303,10 +299,10 @@ procD.lm <- function(f1, iter = 999, seed=NULL, RRPP = TRUE,
     data$Y <- Y
     
   } else {
-      f <- f1
-      GM <- FALSE
-    }
-
+    f <- f1
+    GM <- FALSE
+  }
+  
   out <- lm.rrpp(f, data = data, 
                  seed = seed, RRPP = RRPP,
                  SS.type = SS.type, 
@@ -328,20 +324,22 @@ procD.lm <- function(f1, iter = 999, seed=NULL, RRPP = TRUE,
     if(kk > 1) out$GM$coefficients <- arrayspecs(out$LM$coefficients, p, k) else {
       out$GM$coefficients <- array(matrix(out$LM$coefficients, p, k, byrow = TRUE), c(p,k,1))
     }
-   
-    if(out$LM$gls) {
-      out$gls.fitted <- out$LM$gls.fitted
-      out$GM$gls.fitted <- arrayspecs(out$LM$gls.fitted, p, k)
-      out$gls.residuals <- out$LM$gls.residuals
-      out$GM$gls.residuals <- arrayspecs(out$LM$gls.residuals, p, k)
-      out$gls.coefficients <- out$LM$gls.coefficients
-      out$gls.mean <- out$LM$gls.mean
-      out$GM$gls.mean <- matrix(out$LM$gls.mean, out$GM$p, out$GM$k, byrow = TRUE)
-      out$gls.centroid <- out$LM$gls.centroid
-      out$GM$gls.centroid <- matrix(out$LM$gls.centroid, out$GM$p, out$GM$k, byrow = TRUE)
-      if(kk > 1) out$GM$gls.coefficients <- arrayspecs(out$LM$gls.coefficients, p, k) else {
-        out$GM$coefficients <- array(matrix(out$LM$gls.coefficients, p, k, byrow = TRUE), c(p,k,1))
-      }
+  }
+  
+  if(out$LM$gls) {
+    out$gls.fitted <- out$LM$gls.fitted
+    out$gls.residuals <- out$LM$gls.residuals
+    out$gls.coefficients <- out$LM$gls.coefficients
+    out$gls.mean <- out$LM$gls.mean
+    out$gls.centroid <- out$LM$gls.centroid
+  }
+  if(GM) {
+    out$GM$gls.fitted <- arrayspecs(out$LM$gls.fitted, p, k)
+    out$GM$gls.residuals <- arrayspecs(out$LM$gls.residuals, p, k)
+    out$GM$gls.mean <- matrix(out$LM$gls.mean, out$GM$p, out$GM$k, byrow = TRUE)
+    out$GM$gls.centroid <- matrix(out$LM$gls.centroid, out$GM$p, out$GM$k, byrow = TRUE)
+    if(kk > 1) out$GM$gls.coefficients <- arrayspecs(out$LM$gls.coefficients, p, k) else {
+      out$GM$coefficients <- array(matrix(out$LM$gls.coefficients, p, k, byrow = TRUE), c(p,k,1))
     }
   }
   

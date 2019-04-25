@@ -134,8 +134,9 @@ procD.pgls<-function(f1, phy, Cov = NULL, iter=999, seed=NULL, int.first = FALSE
     Cov <- fast.phy.vcv(phy)
   }
     
-  pgls <- procD.lm(f1, iter = iter, seed = seed, RRPP = TRUE, effect.type = effect.type,
-           int.first = int.first, Cov = Cov, data = data, print.progress = print.progress,
+  pgls <- procD.lm(f1, iter = iter, seed = seed, RRPP = TRUE, SS.type = SS.type,
+                   effect.type = effect.type,int.first = int.first, Cov = Cov, 
+                   data = data, print.progress = print.progress,
            ...)
   
   names(pgls) <- gsub("gls", "pgls", x = names(pgls))

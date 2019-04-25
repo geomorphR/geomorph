@@ -10,13 +10,13 @@ d8e8360c03c03fe45d2100e9c05d4a89 *data/plethodon.rda
 9ba51ab9be03930a4acdcddde8169b33 *data/scallopPLY.rda
 6e5e71b242462e422b716800ffc3c464 *data/scallops.rda
 922e98586424c1c90964a7574e801e17 *DESCRIPTION
-73f723a130c92f8b84a81465a15add7c *geomorph.Rproj
+f4f2080e745b8d689f17caf549449ab5 *geomorph.Rproj
 f926ce8a00d113b94bd7a08b69b5bfc3 *inst/CITATION
 a27e660ba66601ddf07a5810a7322a16 *inst/doc/geomorph.assistance.html
 2db8bd28eaf7a1004c858a11c2b42465 *inst/doc/geomorph.assistance.Rmd
 30fbb5d467b9c6481af6ce4983046591 *inst/doc/geomorph.digitize3D.html
 c70a9f2cce4ec913c6ed3633659f5bdb *inst/doc/geomorph.digitize3D.Rmd
-bfbab393e6844a7f781fb3db4c8e1dba *inst/doc/geomorph.functions.html
+5874c79bc253d3dd772008a727ebe444 *inst/doc/geomorph.functions.html
 7c56536c539ec586a2bbeb66895b05d7 *inst/doc/geomorph.functions.Rmd
 71303f6d562524cf09f2e0cd4be5a46e *man/advanced.procD.lm.Rd
 5e099c6268d251bf5c98595d9566385a *man/arrayspecs.Rd
@@ -172,8 +172,8 @@ aab74b98af1c98726fe373d9759ccdbd *R/plotOutliers.r
 5b718a3e1cca7e31ecb83880cb1d556c *R/plotRefToTarget.r
 ead584f72100ad2eb1767f60521e9e58 *R/plotspec.r
 ffeb4fb45afe9b0e8fe9c22bd5747931 *R/plotTangentSpace.r
-6576e0f0f1a1f69e2ba4f330c218a63f *R/procD.lm.r
-342033e7ff051fcb644a36658c8e212f *R/procD.pgls.r
+5557bf8f6382a511934c93e382fb04f3 *R/procD.lm.r
+5037db11c59a8f6e9932467ae2b8e657 *R/procD.pgls.r
 df3f4cc6406dc0c737ee2ff08c2a0e3d *R/read.morphologika.r
 78cce3e5bd8c5616cdc6e505485fad4e *R/read.ply.r
 e1d1c6e3339c3f1199f60c91baf09146 *R/readland.nts.r
