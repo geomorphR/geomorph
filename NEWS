@@ -1,7 +1,9 @@
 Incipient CHANGES in Geomorph Version 3.1.2
 
 BUG FIXES
-    o Added meshColor specification in plotting of 3d meshes (to match RGL change)
+    o Added meshColor specification in plotting of 3d meshes (to match RGL change).
+    o Added missing gls component in procD.lm output.
+    o Fixed missing SS.types for pgls.
 
 NEW FEATURES
     o Three vignettes have been added: one assists the user in implementing analyses previously included in the deprecated functions procD.allometry, advanced.procD.lm and nested.update through procD.lm and other RRPP tools; the second provides a comprehensive list of main geomorph functions and their use; and the third is a step-by-step demonstration of 3D digitizing procedures.
