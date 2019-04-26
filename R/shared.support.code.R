@@ -69,6 +69,7 @@ apply.pPsup<-function(M, Ya) {	# M = mean (reference); Ya all Y targets
 # same as ginv, but without traps (faster)
 # used in any function requiring a generalized inverse
 fast.ginv <- function(X, tol = sqrt(.Machine$double.eps)){
+  X <- as.matrix(X)
   k <- ncol(X)
   Xsvd <- La.svd(X, k, k)
   Positive <- Xsvd$d > max(tol * Xsvd$d[1L], 0)
@@ -81,10 +82,11 @@ fast.ginv <- function(X, tol = sqrt(.Machine$double.eps)){
 # same as solve, but without traps (faster)
 # used in any function requiring a generalized inverse
 fast.solve <- function(x) { 
+  x <- as.matrix(x)
   if(det(x) > 1e-8) {
     res <- try(chol2inv(chol(x)), silent = TRUE)
     if(class(res) == "try-error") res <- fast.ginv(x)
-  } else  res <- fast.ginv(x)
+  } else res <- fast.ginv(x)
   return(res)
 }
 
