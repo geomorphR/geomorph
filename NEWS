@@ -1,5 +1,6 @@
 
 GITHUB UPDATES    
+    o Fixed p-value miscalculation in bila.symmetry.
     o Added meshColor specification in plotting of 3d meshes (to match RGL change).
     o Added missing gls component in procD.lm output.
     o Fixed missing SS.types for pgls.
