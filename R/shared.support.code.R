@@ -86,7 +86,7 @@ fast.solve <- function(x) {
   if(det(x) > 1e-8) {
     res <- try(chol2inv(chol(x)), silent = TRUE)
     if(class(res) == "try-error") res <- fast.ginv(x)
-  } else res <- solve(x)
+  } else res <- fast.ginv(x)
   return(res)
 }
 
