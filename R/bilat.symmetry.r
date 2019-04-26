@@ -229,8 +229,10 @@ bilat.symmetry<-function(A, ind=NULL, side=NULL, replicate=NULL, object.sym=FALS
     random.shape.F[3,] <- MS[3,]/MS.mod
     
     newZ <- apply(log(random.shape.F + 0.000001), 1, effect.size)
+    newP <- apply(random.shape.F , 1, pval)
     shape.anova$F[1:3] <- random.shape.F[1:3, 1]
     shape.anova$Z[1:3] <- newZ
+    shape.anova[[ncol(shape.anova)]][1:3] <- newP
   }
   rownames(shape.anova) <- form.names
   
@@ -261,8 +263,10 @@ bilat.symmetry<-function(A, ind=NULL, side=NULL, replicate=NULL, object.sym=FALS
       random.size.F[2,] <- MS[2,]/MS[3,]
       random.size.F[3,] <- MS[3,]/MS.mod
       newZ <- apply(log(random.size.F + 0.000001), 1, effect.size)
+      newP <- apply(random.size.F , 1, pval)
       size.anova$F[1:3] <- random.size.F[1:3, 1]
       size.anova$Z[1:3] <- newZ
+      size.anova[[ncol(size.anova)]][1:3] <- newP
     }
     rownames(PSz$aov.table) <- form.names
     size.anova <- PSz$aov.table
