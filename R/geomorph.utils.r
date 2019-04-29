@@ -97,7 +97,7 @@ summary.procD.lm <- function(object,...){
 #' and is a variable likely used in \code{\link{procD.lm}}.
 #' This vector is a vector of covariate values equal to the number of observations.
 #' @param reg.type If "regression" is chosen for plot type, this argument
-#' indicates whether a common regression component (CRC) plot, prediction line 
+#' indicates whether a prediction line 
 #' (Predline) plot, or regression score (RegScore) plotting is performed.  
 #' @param ... other arguments passed to plot (helpful to employ
 #' different colors or symbols for different groups).  See
@@ -111,106 +111,8 @@ summary.procD.lm <- function(object,...){
 #' @keywords visualization
 plot.procD.lm <- function(x, type = c("diagnostics", "regression",
                                       "PC"), outliers=FALSE, predictor = NULL,
-                          reg.type = c("CRC", "PredLine", "RegScore"), ...){
+                          reg.type = c("PredLine", "RegScore"), ...){
   type <- match.arg(type)
-  if(is.na(match(type, c("diagnostics", "regression", "PC")))) 
-    type <- "diagnostics"
-  CRC <- PL <- Reg.proj <- P <- NULL
-  if(type == "diagnostics") {
-    pts <- NULL
-    pca.r <- prcomp(r)
-    var.r <- round(pca.r$sdev^2/sum(pca.r$sdev^2)*100,2)
-    plot(pca.r$x, pch=19, asp =1,
-         xlab = paste("PC 1", var.r[1],"%"),
-         ylab = paste("PC 2", var.r[2],"%"),
-         main = "PCA Residuals")
-    pca.f <- prcomp(f)
-    var.f <- round(pca.f$sdev^2/sum(pca.f$sdev^2)*100,2)
-    dr <- sqrt(diag(tcrossprod(center(r))))
-    plot.QQ(r)
-    plot(pca.f$x[,1], dr, pch=19, asp =1,
-         xlab = paste("PC 1", var.f[1],"%"),
-         ylab = "Procrustes Distance Residuals",
-         main = "Residuals vs. PC 1 fitted")
-    lfr <- loess(dr~pca.f$x[,1], span = 1)
-    lfr <- cbind(lfr$x, lfr$fitted); lfr <- lfr[order(lfr[,1]),]
-    points(lfr, type="l", col="red")
-    plot.het(r,f)
-    p <- ncol(r)
-    if(outliers==TRUE){
-      if(p/3 == round(p/3)) ra <- arrayspecs(r,p/3,3) else 
-        ra <- arrayspecs(r,p/2,2)
-      plotOutliers(ra)
-    }
-  }
-  if(type == "regression"){
-    reg.type <- match.arg(reg.type)
-    if(is.na(match(reg.type, c("CRC", "PredLine", "RegScore")))) 
-      if(is.null(x$predictor))
-        stop("This plot type is not available without a predictor.")
-    n <- NROW(r); p <- NCOL(r)
-    if(!is.vector(predictor)) stop("Predictor must be a vector")
-    if(length(predictor) != n) 
-      stop("Observations in predictor must equal observations if procD.lm fit")
-    X <- x$X * sqrt(x$weights)
-    if(!is.null(x$Pcov)) B <- x$gls.coefficients else B <- x$coefficients
-    xc <- predictor
-    pred.match <- sapply(1:NCOL(X), function(j){
-      any(is.na(match(xc, X[,j])))
-    })
-    if(all(pred.match)) {
-      b <- lm(f ~ xc)$coefficients
-      if(is.matrix(b)) b <- b[2,] else b <- b[2]
-    } else {
-      Xcrc <- as.matrix(X)
-      Xcrc[,!pred.match] <- 0
-      f <- Xcrc %*% B
-      r <- x$Y - f
-      b <- lm(f ~ xc)$coefficients
-      if(is.matrix(b)) b <- b[2,] else b <- b[2]
-    }
-    a <- crossprod(r, xc)/sum(xc^2)
-    a <- a/sqrt(sum(a^2))
-    CRC <- r%*%a  
-    resid <- r%*%(diag(p) - matrix(crossprod(a),p,p))
-    RSC <- prcomp(resid)$x
-    Reg.proj <- x$Y%*%b%*%sqrt(solve(crossprod(b)))
-    PL <- prcomp(f)$x[,1]
-    if(reg.type == "CRC"){
-      pts <- CRC
-      par(mfcol = c(1,2))
-      par(mar = c(4,4,1,1))
-      plot(predictor, CRC,  ...)
-      plot(CRC, RSC[,1], xlab = "CRC", ylab = "RSC 1", ...)
-      par(mar = c(5,4,4,2) + 0.1)
-      par(mfcol=c(1,1))
-    } else if(reg.type == "RegScore") {
-      pts <- Reg.proj
-      plot(predictor, Reg.proj, 
-           ylab = "Regression Score", ...)
-    } else {
-      pts <- PL
-      plot(predictor, PL, 
-           ylab = "PC 1 for fitted values", ...)
-    }
-  }
-  if(type == "PC"){
-    eigs <- prcomp(f)$rotation
-    P <- x$Y%*%eigs
-    pts <- P
-    plot(P, asp=1,
-         xlab = "PC 1 for fitted values",
-         ylab = "PC 2 for fitted values", ...)
-  }
-  
-  gp.check <- sapply(x$data, is.factor)
-  if(all(!gp.check)) groups <- NULL else {
-    groups <- x$data[gp.check]
-    if(length(groups) > 1) 
-      groups <- as.factor(apply(groups, 1, paste, collapse = "."))
-  }
-  out <- list(CRC = CRC, PredLine = PL, RegScore = Reg.proj, PC.scores = P,
-              points = pts, residuals = r, fitted = f, groups = groups)
   reg.type <- match.arg(reg.type)
   out <- plot.lm.rrpp(x, type = type,  predictor = predictor,
                reg.type = reg.type, ...)
