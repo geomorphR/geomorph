@@ -97,7 +97,7 @@ summary.procD.lm <- function(object,...){
 #' and is a variable likely used in \code{\link{procD.lm}}.
 #' This vector is a vector of covariate values equal to the number of observations.
 #' @param reg.type If "regression" is chosen for plot type, this argument
-#' indicates whether a common regression component (CRC) plot, prediction line 
+#' indicates whether a prediction line 
 #' (Predline) plot, or regression score (RegScore) plotting is performed.  
 #' @param ... other arguments passed to plot (helpful to employ
 #' different colors or symbols for different groups).  See
@@ -111,7 +111,7 @@ summary.procD.lm <- function(object,...){
 #' @keywords visualization
 plot.procD.lm <- function(x, type = c("diagnostics", "regression",
                                       "PC"), outliers=FALSE, predictor = NULL,
-                          reg.type = c("CRC", "PredLine", "RegScore"), ...){
+                          reg.type = c("PredLine", "RegScore"), ...){
   type <- match.arg(type)
   reg.type <- match.arg(reg.type)
   out <- plot.lm.rrpp(x, type = type,  predictor = predictor,

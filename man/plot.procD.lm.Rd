@@ -5,7 +5,7 @@
 \title{Plot Function for geomorph}
 \usage{
 \method{plot}{procD.lm}(x, type = c("diagnostics", "regression", "PC"),
-  outliers = FALSE, predictor = NULL, reg.type = c("CRC", "PredLine",
+  outliers = FALSE, predictor = NULL, reg.type = c("PredLine",
   "RegScore"), ...)
 }
 \arguments{
@@ -25,7 +25,7 @@ and is a variable likely used in \code{\link{procD.lm}}.
 This vector is a vector of covariate values equal to the number of observations.}
 
 \item{reg.type}{If "regression" is chosen for plot type, this argument
-indicates whether a common regression component (CRC) plot, prediction line 
+indicates whether a prediction line 
 (Predline) plot, or regression score (RegScore) plotting is performed.}
 
 \item{...}{other arguments passed to plot (helpful to employ
