@@ -332,14 +332,14 @@ procD.lm <- function(f1, iter = 999, seed=NULL, RRPP = TRUE,
     out$gls.coefficients <- out$LM$gls.coefficients
     out$gls.mean <- out$LM$gls.mean
     out$gls.centroid <- out$LM$gls.centroid
-  }
-  if(GM) {
-    out$GM$gls.fitted <- arrayspecs(out$LM$gls.fitted, p, k)
-    out$GM$gls.residuals <- arrayspecs(out$LM$gls.residuals, p, k)
-    out$GM$gls.mean <- matrix(out$LM$gls.mean, out$GM$p, out$GM$k, byrow = TRUE)
-    out$GM$gls.centroid <- matrix(out$LM$gls.centroid, out$GM$p, out$GM$k, byrow = TRUE)
-    if(kk > 1) out$GM$gls.coefficients <- arrayspecs(out$LM$gls.coefficients, p, k) else {
-      out$GM$coefficients <- array(matrix(out$LM$gls.coefficients, p, k, byrow = TRUE), c(p,k,1))
+    if(GM) {
+      out$GM$gls.fitted <- arrayspecs(out$LM$gls.fitted, p, k)
+      out$GM$gls.residuals <- arrayspecs(out$LM$gls.residuals, p, k)
+      out$GM$gls.mean <- matrix(out$LM$gls.mean, out$GM$p, out$GM$k, byrow = TRUE)
+      out$GM$gls.centroid <- matrix(out$LM$gls.centroid, out$GM$p, out$GM$k, byrow = TRUE)
+      if(kk > 1) out$GM$gls.coefficients <- arrayspecs(out$LM$gls.coefficients, p, k) else {
+        out$GM$coefficients <- array(matrix(out$LM$gls.coefficients, p, k, byrow = TRUE), c(p,k,1))
+      }
     }
   }
   
