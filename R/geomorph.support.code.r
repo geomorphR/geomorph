@@ -1470,7 +1470,7 @@ phylo.mat<-function(x,phy){
   if(any(lambda == 0)){
     warning("Singular phylogenetic covariance matrix. Proceed with caution")
   }
-  D.mat <- fast.solve(eigC.vect%*% diag(sqrt(abs(eigC$values))) %*% t(eigC.vect))
+  D.mat <- fast.solve(eigC$vectors%*% diag(sqrt(abs(eigC$values))) %*% t(eigC$vectors))
   rownames(D.mat) <- colnames(D.mat) <- colnames(C)
   rownames(invC) <- colnames(invC) <- colnames(C)
   list(invC = invC, D.mat = D.mat,C = C)
