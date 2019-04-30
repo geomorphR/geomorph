@@ -1466,13 +1466,13 @@ phylo.mat<-function(x,phy){
   C<-C[rownames(x),rownames(x)]
   invC <-fast.solve(C)
   eigC <- eigen(C)
-  lambda <- zapsmall(eigC$values)
+  lambda <- zapsmall(abs(eigC$values))
   if(any(lambda == 0)){
     warning("Singular phylogenetic covariance matrix. Proceed with caution")
     lambda = lambda[lambda > 0]
   }
   eigC.vect = eigC$vectors[,1:(length(lambda))]
-  D.mat <- fast.solve(eigC.vect%*% diag(sqrt(lambda)) %*% t(eigC.vect))
+  D.mat <- fast.solve(eigC.vect%*% diag(sqrt(abs(lambda))) %*% t(eigC.vect))
   rownames(D.mat) <- colnames(D.mat) <- colnames(C)
   rownames(invC) <- colnames(invC) <- colnames(C)
   list(invC = invC, D.mat = D.mat,C = C)
@@ -2124,13 +2124,13 @@ cov.mat <- function(x, COV) {
   }
   invC <- fast.solve(C)
   eigC <- eigen(C)
-  lambda <- zapsmall(eigC$values)
+  lambda <- zapsmall(abs(eigC$values))
   if(any(lambda == 0)){
     warning("Singular covariance matrix. Proceed with caution")
     lambda = lambda[lambda > 0]
   }
   eigC.vect <- eigC$vectors[,1:(length(lambda))]
-  D.mat <- fast.solve(eigC.vect%*% diag(sqrt(lambda)) %*% t(eigC.vect))
+  D.mat <- fast.solve(eigC.vect%*% diag(sqrt(abs(lambda))) %*% t(eigC.vect))
   rownames(D.mat) <- colnames(D.mat) <- colnames(C)
   rownames(invC) <- colnames(invC) <- colnames(C)
   list(invC = invC, D.mat = D.mat, C = C)
