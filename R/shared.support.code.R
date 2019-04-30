@@ -223,15 +223,16 @@ Effect.size.matrix <- function(M, center=TRUE){
 Cov.proj <- function(Cov, id){
   if(is.null(id)) Cov <- Cov else
     Cov <- Cov[id, id]
-  invC <- fast.solve(Cov)
-  eigC <- eigen(Cov)
-  lambda <- zapsmall(eigC$values)
+  sym <- isSymmetric(Cov)
+  eigC <- eigen(Cov, symmetric = sym)
+  lambda <- zapsmall(abs(Re(eigC$values)))
   if(any(lambda == 0)){
     cat("\nWarning: singular covariance matrix. Proceed with caution\n")
-    lambda = lambda[lambda > 0]
   }
-  eigC.vect = eigC$vectors[,1:(length(lambda))]
-  P <- fast.solve((eigC.vect%*% diag(sqrt(lambda)) %*% t(eigC.vect)))
+  
+  eigC.vect = t(eigC$vectors)
+  L <- eigC.vect *sqrt(abs(eigC$values))
+  P <- fast.solve(crossprod(L, eigC.vect))
   dimnames(P) <- dimnames(Cov)
   P
 }
