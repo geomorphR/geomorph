@@ -275,6 +275,7 @@ morphol.disparity <- function(f1, groups = NULL, partial = FALSE, iter = 999, se
     if(partial) cat("(Foote's disparity)")
     cat(":\n")
     cat(pv, "\n")
+    return(pv.obs)
   } else {
     PV.dist = pvd[[1]]
     dimnames(PV.dist) <- dimnames(p.val) <- list(levels(groups), levels(groups))
