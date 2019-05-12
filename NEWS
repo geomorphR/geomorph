@@ -1,6 +1,7 @@
 Incipient CHANGES in Geomorph Version 3.1.2
 
 BUG FIXES
+    o Tweaked procD.lm to work better with missing data frames.
     o Fixed p-value miscalculation in bila.symmetry.
     o Added meshColor specification in plotting of 3d meshes (to match RGL change).
     o Fixed text plot for 3D (to match RGL changes).

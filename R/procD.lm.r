@@ -278,8 +278,19 @@ procD.lm <- function(f1, iter = 999, seed=NULL, RRPP = TRUE,
                      effect.type = c("SS", "MS", "Rsq", "F", "cohen"),
                      int.first = FALSE,  Cov = NULL, data=NULL, print.progress = TRUE, ...){
   
-  data <- try(eval(data, parent.frame()), silent = TRUE)
-  if(inherits(data, "try-error")) data <- NULL 
+  if(is.null(data)) {
+    vars <- rownames(attr(terms(f1), "factors"))
+    data <- list()
+    data <- data[vars]
+    names(data) <- vars
+    for(i in 1:length(vars)) {
+      f <- as.formula(paste("~", vars[i]))
+      temp <- try(eval(f[[2]]), silent = TRUE)
+      if(inherits(temp, "try-error")) stop("Cannot find data in global environment.\n",
+                                           call. = FALSE) else
+                                             data[[i]] <- temp
+    }
+  }
   
   if(inherits(f1, "formula")){
     Y <- try(eval(f1[[2]], envir = data , enclos = parent.frame()), silent = TRUE)
