@@ -280,15 +280,17 @@ procD.lm <- function(f1, iter = 999, seed=NULL, RRPP = TRUE,
   
   if(is.null(data)) {
     vars <- rownames(attr(terms(f1), "factors"))
-    data <- list()
-    data <- data[vars]
-    names(data) <- vars
-    for(i in 1:length(vars)) {
-      f <- as.formula(paste("~", vars[i]))
-      temp <- try(eval(f[[2]]), silent = TRUE)
-      if(inherits(temp, "try-error")) stop("Cannot find data in global environment.\n",
-                                           call. = FALSE) else
-                                             data[[i]] <- temp
+    if(!is.null(vars)) {
+      data <- list()
+      data <- data[vars]
+      names(data) <- vars
+      for(i in 1:length(vars)) {
+        f <- as.formula(paste("~", vars[i]))
+        temp <- try(eval(f[[2]]), silent = TRUE)
+        if(inherits(temp, "try-error")) stop("Cannot find data in global environment.\n",
+                                             call. = FALSE) else
+                                               data[[i]] <- temp
+      }
     }
   }
   
