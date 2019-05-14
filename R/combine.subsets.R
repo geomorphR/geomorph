@@ -115,7 +115,8 @@ combine.subsets <- function(..., gpa = TRUE, CS.sets = NULL){
 		dim.n.check <-  dim.k.check <- array(0,g)
 		for(i in 1:g){
 			x = sets[[i]]
-			if(class(x) == "gpagen") y <- x else {
+			x = sets[[i]]
+			if(inherits(x, "gpagen")) y <- x else {
 			  if(length(dim(x)) != 3) stop("\nCoordinates must be a  [p x k x n] array.\n  
 			                               Use arrayspecs first")
 			  y <- gpagen(x, curves = curves, surfaces = surfaces, PrinAxes = PrinAxes,
@@ -139,6 +140,7 @@ combine.subsets <- function(..., gpa = TRUE, CS.sets = NULL){
 		dim.n.check = dim.k.check = array(0,g)
 		for(i in 1:g){
 			x = sets[[i]]
+			if(inherits(x, "gpagen")) x <- x$coords
 			if(length(dim(x)) != 3) stop("Coordinates must be a [p x k x n] array.\n  Use arrayspecs first")
 			all.coords[[i]] = x
 			if(is.null(CS.sets)) cs = rep(1,dim(x)[3]) else cs = CS.sets[[i]]
