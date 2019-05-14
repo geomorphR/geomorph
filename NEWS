@@ -1,5 +1,6 @@
 
 GITHUB UPDATES    
+    o Fixed bug with combine.subsets for gpagen objects.
     o Tweaked procD.lm to work better with missing data frames.
     o Fixed p-value miscalculation in bilat.symmetry.
     o Added meshColor specification in plotting of 3d meshes (to match RGL change).
