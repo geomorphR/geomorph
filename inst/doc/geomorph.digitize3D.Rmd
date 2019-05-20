@@ -4,7 +4,7 @@ author: "Antigoni Kaliontzopoulou"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{geomorph version 3.1.1 Synopsis}
+  %\VignetteIndexEntry{geomorph digitizing Synopsis}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
   
