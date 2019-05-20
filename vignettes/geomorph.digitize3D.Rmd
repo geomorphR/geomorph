@@ -48,7 +48,7 @@ fixed.lms1 <- digit.fixed(spec = my.ply, fixed = 5)
 Once you have completed the digitizing of the specimen, your digitizing device should look something like this:
 
 ```{r, echo = FALSE, out.width="80%"}
-knitr::include_graphics("fixed.3D.png")  
+knitr::include_graphics("figs/fixed.3D.png")  
 ```
 
 Now have a look at your working directory. A new file has been created, called my.ply.nts. This contains the coordinates of the digitized 3D fixed landmarks for your specimen.
@@ -76,7 +76,7 @@ surf.pts1 <- buildtemplate(spec = my.ply, fixed = fixed.lms1, surface.sliders = 
 When running `buildtemplate` you will see the sampled surface semilandmarks in an rgl device, which will look (3D rotations notwithstanding) more or less like this:
 
 ```{r, echo = FALSE, out.width="80%"}
-knitr::include_graphics("example_template.png")  
+knitr::include_graphics("figs/example_template.png")  
 ```
 
 Note that a txt file containing the coordinates of the sampled surface semilandmarks has been created in your working directory, with the name template.txt. Also, note that the file my.ply.nts has been modified, and it now contains the coordinates of the fixed landmarks AND surface semilandmarks. Finally, a csv file containing the index of sliding semilandmarks has been created, and can be read for use with the argument *surfaces* of `gpagen`.
@@ -93,7 +93,7 @@ surf.pts2 <- digitsurface(spec = my.ply.2, fixed = fixed.lms2)
 Once the surface semilandmarks have been sampled, you will see a graph with their position in specimen 2.
 
 ```{r, echo = FALSE, out.width="80%"}
-knitr::include_graphics("example_spec2.png")  
+knitr::include_graphics("figs/example_spec2.png")  
 ```
 
 As before, the file my.ply.2.nts has been modified, and it now contains the coordinates of the fixed landmarks AND surface semilandmarks for specimen 2. 
