@@ -200,7 +200,7 @@ plotRefToTarget<-function(M1, M2, mesh= NULL, outline=NULL,
         }
       }
       if(label == TRUE){text3d(M2, texts = paste(1:dim(M2)[1]), adj=(gP$txt.adj+gP$pt.size),
-                               pos=(gP$txt.pos+gP$pt.size),cex=gP$txt.cex,col=gP$txt.col)}
+                               cex=gP$txt.cex,col=gP$txt.col)} #pos=(gP$txt.pos+gP$pt.size),
       if(!is.null(outline)){
         curve.warp <- tps2d(outline, M1[,1:2],M2[,1:2])
         points3d(cbind(curve.warp,0), size=gP$tar.out.cex, col=gP$tar.out.col) 
@@ -223,7 +223,7 @@ plotRefToTarget<-function(M1, M2, mesh= NULL, outline=NULL,
         }
       }
       if(label == TRUE){text3d(M2, texts = paste(1:dim(M2)[1]), adj=(gP$txt.adj+gP$pt.size),
-                               pos=(gP$txt.pos+gP$pt.size),cex=gP$txt.cex,col=gP$txt.col)} 
+                               cex=gP$txt.cex,col=gP$txt.col)} #pos=(gP$txt.pos+gP$pt.size),
       if(!is.null(outline)){
         curve.warp <- tps2d(outline, M1[,1:2],M2[,1:2])
         points3d(cbind(curve.warp,0), size=gP$tar.out.cex, col=gP$tar.out.col) 
@@ -243,7 +243,7 @@ plotRefToTarget<-function(M1, M2, mesh= NULL, outline=NULL,
         }
       }
       if(label == TRUE){text3d(M2[,c(1,3,2)], texts = paste(1:dim(M2)[1]), adj=(gP$txt.adj+gP$pt.size),
-                               pos=(gP$txt.pos+gP$pt.size),cex=gP$txt.cex,col=gP$txt.col)} # doesn't work?
+                               cex=gP$txt.cex,col=gP$txt.col)} # doesn't work? #pos=(gP$txt.pos+gP$pt.size),
       if(!is.null(outline)){
         curve.warp <- tps2d(outline, M1[,b],M2[,b])
         points3d(cbind(curve.warp,0), size=gP$tar.out.cex, col=gP$tar.out.col) 
@@ -290,7 +290,7 @@ plotRefToTarget<-function(M1, M2, mesh= NULL, outline=NULL,
       if(!axes){
         plot3d(M1,type="s",col=gP$pt.bg,size=gP$pt.size,aspect=FALSE,xlab="",ylab="",zlab="",axes=F,...)}
       if(label){text3d(M1, texts = paste(1:dim(M1)[1]), adj=(gP$txt.adj+gP$pt.size),
-                               pos=(gP$txt.pos+gP$pt.size),cex=gP$txt.cex,col=gP$txt.col)}
+                               cex=gP$txt.cex,col=gP$txt.col)} #pos=(gP$txt.pos+gP$pt.size),
       for (i in 1:nrow(M1)){
         segments3d(rbind(M1[i,],M2[i,]),lwd=2)
       }
@@ -313,7 +313,7 @@ plotRefToTarget<-function(M1, M2, mesh= NULL, outline=NULL,
         plot3d(M2,type="s",col=gP$tar.pt.bg,size=gP$tar.pt.size,add=TRUE)}
       
       if(label){text3d(M1, texts = paste(1:dim(M1)[1]), adj=(gP$txt.adj+gP$pt.size),
-                               pos=(gP$txt.pos+gP$pt.size),cex=gP$txt.cex,col=gP$txt.col)}
+                               cex=gP$txt.cex,col=gP$txt.col)} #pos=(gP$txt.pos+gP$pt.size),
       if(!is.null(links)){
         linkcol <- rep(gP$link.col,nrow(links))[1:nrow(links)]
         linklwd <- rep(gP$link.lwd,nrow(links))[1:nrow(links)]
@@ -338,7 +338,7 @@ plotRefToTarget<-function(M1, M2, mesh= NULL, outline=NULL,
       cat("\nWarping mesh\n")
       warp <- tps2d3d(vb, M1, M2)
       warp.PLY$vb <- rbind(t(warp), 1)
-      shade3d(warp.PLY, ...)
+      shade3d(warp.PLY, meshColor="legacy", ...)
       return(warp.PLY)
     }
   }

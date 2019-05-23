@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="Antigoni Kaliontzopoulou" />
+
+<meta name="date" content="2019-05-20" />
+
+<title>A synopsis of geomorph functions</title>
+
+
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#header {
+text-align: center;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">A synopsis of geomorph functions</h1>
+<h4 class="author">Antigoni Kaliontzopoulou</h4>
+<h4 class="date">2019-05-20</h4>
+
+
+
+<p>The tables below provide a summary index of <code>geomorph</code> functions and their main purpose, to assist users to find available tools. They are organized into: 1) Analytical, 2) Utility, and 3) Plotting functions. At the end, a separate table provides an overview of the example datasets available.</p>
+<p><em>NOTE: Deprecated (or soon to be) functions are not included.</em></p>
+<div id="analytical-functions" class="section level2">
+<h2>Analytical functions</h2>
+<p>These are the core analytical functions of <code>geomorph</code>. Many of them produce S3 objects which can then be further explored using <code>summary()</code> and <code>plot()</code>.</p>
+<table>
+<colgroup>
+<col width="13%"></col>
+<col width="68%"></col>
+<col width="9%"></col>
+<col width="9%"></col>
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Function name</th>
+<th align="left">Brief description</th>
+<th align="center"><code>summary()</code></th>
+<th align="center"><code>plot()</code></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><code>bilat.symmetry</code></td>
+<td align="left">Symmetry analysis and calculation of symmetric and asymmetric shape components</td>
+<td align="center">X</td>
+<td align="center">X</td>
+</tr>
+<tr class="even">
+<td align="left"><code>compare.evol.rates</code></td>
+<td align="left">Calculate and compare rates of shape evolution among groups on a phylogeny</td>
+<td align="center">X</td>
+<td align="center">X</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>compare.multi.evol.rates</code></td>
+<td align="left">Calculate and compare evolutionary rates for two or more shape traits on a phylogeny</td>
+<td align="center">X</td>
+<td align="center">X</td>
+</tr>
+<tr class="even">
+<td align="left"><code>compare.pls</code></td>
+<td align="left">Compare effect sizes of two or more PLS fits</td>
+<td align="center">X</td>
+<td align="center"></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>estimate.missing</code></td>
+<td align="left">Estimate the position of missing landmarks using regression or the TPS</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>fixed.angle</code></td>
+<td align="left">Standardize the angle of articulated structures</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>globalIntegration</code></td>
+<td align="left">Calculate global integration as the slope of the log-variance of partial warps vs. their bending energy</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>gm.prcomp</code></td>
+<td align="left">Principal components analysis of Procrustes shape coordinates</td>
+<td align="center">X</td>
+<td align="center">X</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>gpagen</code></td>
+<td align="left">Generalized Procrustes Analysis</td>
+<td align="center">X</td>
+<td align="center">X</td>
+</tr>
+<tr class="even">
+<td align="left"><code>integration.test</code></td>
+<td align="left">Test for morphological integration using PLS</td>
+<td align="center">X</td>
+<td align="center">X</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>modularity.test</code></td>
+<td align="left">Test for morphological modularity using the Covariance Ratio</td>
+<td align="center">X</td>
+<td align="center">X</td>
+</tr>
+<tr class="even">
+<td align="left"><code>morphol.disparity</code></td>
+<td align="left">Estimate and compare across groups morphological disparity</td>
+<td align="center">X</td>
+<td align="center"></td>
+</tr>
+<tr class="odd">
+<td align="left"><code>mshape</code></td>
+<td align="left">Calculate the mean shape of a landmark configuration</td>
+<td align="center"></td>
+<td align="center">X</td>
+</tr>
+<tr class="even">
+<td align="left"><code>phylo.integration</code></td>
+<td align="left">Test for morphological integration across species while accounting for phylogeny using PLS</td>
+<td align="center">X</td>
+<td align="center">X</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>phylo.modularity</code></td>
+<td align="left">Test for morphological modularity across species using the Covariance Ratio, while accounting for phylogeny</td>
+<td align="center">X</td>
+<td align="center">X</td>
+</tr>
+<tr class="even">
+<td align="left"><code>physignal</code></td>
+<td align="left">Calculate phylogenetic signal for shape data</td>
+<td align="center">X</td>
+<td align="center">X</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>procD.lm</code></td>
+<td align="left">Linear model and Procrustes ANOVA with permutation procedures</td>
+<td align="center">X</td>
+<td align="center">X</td>
+</tr>
+<tr class="even">
+<td align="left"><code>procD.pgls</code></td>
+<td align="left">Linear model and Procrustes ANOVA in a phylogenetic framework with permutation procedures</td>
+<td align="center">X</td>
+<td align="center">X</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>shape.predictor</code></td>
+<td align="left">Estimate shape configurations based on linear predictors</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr class="even">
+<td align="left"><code>two.b.pls</code></td>
+<td align="left">Two-block partial least squares analysis</td>
+<td align="center">X</td>
+<td align="center">X</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="utility-functions" class="section level2">
+<h2>Utility functions</h2>
+<p>These include functions for reading and writing data, digitizing, data-formatting operations</p>
+<table>
+<colgroup>
+<col width="11%"></col>
+<col width="88%"></col>
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Function name</th>
+<th align="left">Brief description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><code>arrayspecs</code></td>
+<td align="left">Transform a matrix of landmark coordinates into an array</td>
+</tr>
+<tr class="even">
+<td align="left"><code>buildtemplate</code></td>
+<td align="left">Build template of 3D surface semilandmarks</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>combine.subsets</code></td>
+<td align="left">Combine subsets of landmarks into a single configuration by specimen</td>
+</tr>
+<tr class="even">
+<td align="left"><code>coords.subset</code></td>
+<td align="left">Subset landmark coordinates by grouping factor</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>define.links</code></td>
+<td align="left">Interactively make link definition matrix</td>
+</tr>
+<tr class="even">
+<td align="left"><code>define.modules</code></td>
+<td align="left">Interactively make module definition matrix</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>define.sliders</code></td>
+<td align="left">Interactively make sliding semilandmark definition matrix</td>
+</tr>
+<tr class="even">
+<td align="left"><code>digit.curves</code></td>
+<td align="left">Digitize 3D curve semilandmarks in a 3D surface object</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>digit.fixed</code></td>
+<td align="left">Digitize fixed 3D landmarks in a 3D surface object</td>
+</tr>
+<tr class="even">
+<td align="left"><code>digitize2d</code></td>
+<td align="left">Digitize 2D landmarks in jpg files</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>digitsurface</code></td>
+<td align="left">Digitize 3D fixed landmarks and surface semilandmarks in a 3D surface object using an already created template</td>
+</tr>
+<tr class="even">
+<td align="left"><code>editTemplate</code></td>
+<td align="left">Manually remove surface semilandmarks from a 3D template</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>findMeanSpec</code></td>
+<td align="left">Idsentify specimen closest to the mean</td>
+</tr>
+<tr class="even">
+<td align="left"><code>geomorph.data.frame</code></td>
+<td align="left">Combine data for analyses into a geomorph data frame</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>interlmkdist</code></td>
+<td align="left">Calculate linear distances between landmarks</td>
+</tr>
+<tr class="even">
+<td align="left"><code>read.morphologika</code></td>
+<td align="left">Read morphologika file</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>read.ply</code></td>
+<td align="left">Read ply file</td>
+</tr>
+<tr class="even">
+<td align="left"><code>readland.nts</code></td>
+<td align="left">Read nts file</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>readland.shapes</code></td>
+<td align="left">Read <code>StereoMorph</code> shapes object</td>
+</tr>
+<tr class="even">
+<td align="left"><code>readland.tps</code></td>
+<td align="left">Read tps file</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>readmulti.nts</code></td>
+<td align="left">Read multiple nts files simultaneously</td>
+</tr>
+<tr class="even">
+<td align="left"><code>rotate.coords</code></td>
+<td align="left">Rotate or flip landmark coordinates</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>two.d.array</code></td>
+<td align="left">Transform an array of landmark coordinates into a matrix</td>
+</tr>
+<tr class="even">
+<td align="left"><code>writeland.tps</code></td>
+<td align="left">Save landmarks in tps file</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="plotting-functions" class="section level2">
+<h2>Plotting functions</h2>
+<p>Stand-alone <code>geomorph</code> plotting functions. For S3 plot functions of <code>geomorph</code> objects see the section of analytical functions.</p>
+<table>
+<colgroup>
+<col width="11%"></col>
+<col width="88%"></col>
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Function name</th>
+<th align="left">Brief description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><code>picknplot.shape</code></td>
+<td align="left">Interactively pick a point in a scatterplot (output from another <code>geomorph</code> function) and visualize the corresponding shape</td>
+</tr>
+<tr class="even">
+<td align="left"><code>plotAllometry</code></td>
+<td align="left">Different options for visualizing allometric plots from an lm fit</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>plotAllSpecimens</code></td>
+<td align="left">Plot all the specimens in a sample</td>
+</tr>
+<tr class="even">
+<td align="left"><code>plotGMPhyloMorphoSpace</code></td>
+<td align="left">Phylomorphospace plot, with the possibility of visualizing time as the z axis</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>plotOutliers</code></td>
+<td align="left">Visualization of outliers through inspection of the distribution of Procrustes distances of individual shapes from the consensus configuration</td>
+</tr>
+<tr class="even">
+<td align="left"><code>plotRefToTarget</code></td>
+<td align="left">Obtain deformation grids between a reference and plot specimen using the TPS</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>plotspec</code></td>
+<td align="left">Single 3D specimen plotting</td>
+</tr>
+<tr class="even">
+<td align="left"><code>shapeHulls</code></td>
+<td align="left">Update procD.lm or gm.prcomp plots to add convex hulls for groups</td>
+</tr>
+<tr class="odd">
+<td align="left"><code>warpRefMesh</code></td>
+<td align="left">Warp a 3D mesh into the mean shape</td>
+</tr>
+<tr class="even">
+<td align="left"><code>warpRefOutline</code></td>
+<td align="left">Warp a 2D outline into the mean shape</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="example-datasets" class="section level2">
+<h2>Example datasets</h2>
+<p>Example datasets included in <code>geomorph</code> are:</p>
+<table>
+<colgroup>
+<col width="11%"></col>
+<col width="11%"></col>
+<col width="11%"></col>
+<col width="4%"></col>
+<col width="60%"></col>
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Dataset</th>
+<th align="center">landmarks + semilandmarks (p)</th>
+<th align="center">Landmark dimensions (k)</th>
+<th align="center">Sample size (n)</th>
+<th align="center">Content</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><code>hummingbirds</code></td>
+<td align="center">10 + 15</td>
+<td align="center">2</td>
+<td align="center">44</td>
+<td align="center">Hummingbird bill shape data, and slider definition matrix</td>
+</tr>
+<tr class="even">
+<td align="center"><code>larvalMorph</code></td>
+<td align="center">1 + 25 / 6 + 58</td>
+<td align="center">2</td>
+<td align="center">114</td>
+<td align="center">Salamander larvae head and tail landmark coordinates, and corresponding slider definition matrices and treatment and family indices</td>
+</tr>
+<tr class="odd">
+<td align="center"><code>mosquito</code></td>
+<td align="center">18</td>
+<td align="center">2</td>
+<td align="center">40</td>
+<td align="center">Mosquito wings with individual, side and replicate indices for symmetry analysis</td>
+</tr>
+<tr class="even">
+<td align="center"><code>plethodon</code></td>
+<td align="center">12</td>
+<td align="center">2</td>
+<td align="center">40</td>
+<td align="center">Salamander skulls with links, outline, and species and site indices</td>
+</tr>
+<tr class="odd">
+<td align="center"><code>plethShapeFood</code></td>
+<td align="center">13</td>
+<td align="center">2</td>
+<td align="center">69</td>
+<td align="center">Salamander skulls and corresponding food items matrix</td>
+</tr>
+<tr class="even">
+<td align="center"><code>plethspecies</code></td>
+<td align="center">11</td>
+<td align="center">2</td>
+<td align="center">9</td>
+<td align="center">Skull shape data for 11 salamander species and corresponding phylogeny</td>
+</tr>
+<tr class="odd">
+<td align="center"><code>pupfish</code></td>
+<td align="center">56</td>
+<td align="center">2</td>
+<td align="center">54</td>
+<td align="center">Pupfish shape data (superimposed) and corresponding centroid size, sex and population indices</td>
+</tr>
+<tr class="even">
+<td align="center"><code>ratland</code></td>
+<td align="center">8</td>
+<td align="center">2</td>
+<td align="center">164</td>
+<td align="center">Rat skull landmark data</td>
+</tr>
+<tr class="odd">
+<td align="center"><code>scallopPLY</code></td>
+<td align="center">166</td>
+<td align="center">3</td>
+<td align="center">1</td>
+<td align="center">Scallop 3D scan in ply format, and corresponding matrix with digitized surface sliding semilandmarks</td>
+</tr>
+<tr class="even">
+<td align="center"><code>scallops</code></td>
+<td align="center">46 + 11 + 30</td>
+<td align="center">3</td>
+<td align="center">5</td>
+<td align="center">Fixed landmarks, curve and surface semilandmarks for scallop specimens, and corresponding matrix of symmetric landmark pairs</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

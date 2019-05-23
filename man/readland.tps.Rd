@@ -4,13 +4,16 @@
 \alias{readland.tps}
 \title{Read landmark data from tps file}
 \usage{
-readland.tps(file, specID = c("None", "ID", "imageID"),
+readland.tps(file, specID = c("None", "ID", "imageID"), negNA = FALSE,
   readcurves = FALSE, warnmsg = TRUE)
 }
 \arguments{
 \item{file}{A *.tps file containing two- or three-dimensional landmark data}
 
 \item{specID}{a character specifying whether to extract the specimen ID names from the ID or IMAGE lines (default is "None").}
+
+\item{negNA}{A logical value indicating whether negative landmark coordinates in the tps file should be imported as missing 
+values and coded as 'NA' (TRUE), or imported as such.}
 
 \item{readcurves}{A logical value stating whether CURVES= field and associated coordinate data will be read as semilandmarks (TRUE)
 or ignored (FALSE).}
@@ -33,9 +36,11 @@ This function reads a *.tps file containing two- or three-dimensional landmark c
   provided for all specimens. If one or more specimens are missing the scale factor, landmarks are treated 
   in their original units.  
   
-  Missing data may be present in the file. In this case, they are automatically identified during data import
-  and the user is prompted to confirm if they are to be coded as 'NA'. The positions of missing landmarks may 
-  then be estimated using \code{\link{estimate.missing}}.
+ Missing data may be present in the file. If data were digitized in geomorph or StereoMorph, these are 
+ automatically identified. If, instead, data digitizing took place in a software package that records missing
+ values as negative coordinates (e.g. tpsDig), the user needs to specify whether negative values should be
+ transformed to 'NAs' through the argument neg.NA = TRUE. The positions of missing landmarks may 
+ then be estimated using \code{\link{estimate.missing}}.
 
 The user may specify whether specimen names are to be extracted from the 'ID=' field or 'IMAGE=' field 
 and included in the resulting 3D array. 

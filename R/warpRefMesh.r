@@ -59,6 +59,6 @@ warpRefMesh <- function(mesh, mesh.coord, ref, color=NULL, centered=FALSE){
      if(is.null(color)==FALSE){ mesh$material <- color }
      if(is.null(color)==TRUE && is.null(mesh$material)==TRUE) { mesh$material <- "gray" }
   if(!is.null(mesh$normals)){ mesh <- addNormals(mesh)}
-  open3d(); shade3d(mesh); title3d(main="Warped Ref Mesh")
+  open3d(); shade3d(mesh,  meshColor="legacy"); title3d(main="Warped Ref Mesh")
   return(mesh)
 }

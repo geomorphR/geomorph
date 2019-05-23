@@ -7,49 +7,52 @@
 buildtemplate(spec, fixed, surface.sliders, ptsize = 1, center = TRUE)
 }
 \arguments{
-\item{spec}{Name of surface file, as either an object of class shape3d/mesh3d, or matrix of three-dimensional vertex coordinates.}
+\item{spec}{An object of class shape3d/mesh3d, or matrix of 3D vertex coordinates}
 
-\item{fixed}{numeric Either: a single value designating the number of fixed template landmarks to be selected by \code{\link{digit.fixed}}, OR a p-x-k matrix of 3D coordinates collected previously}
+\item{fixed}{Either a numeric value designating the number of fixed landmarks to be selected by \code{\link{digit.fixed}}, or a matrix of 3D coordinates collected previously}
 
-\item{surface.sliders}{numeric: The number of template surface sliders desired}
+\item{surface.sliders}{The number of desired surface sliders}
 
-\item{ptsize}{numeric: Size to plot the mesh points (vertices), e.g. 0.1 for dense meshes, 3 for sparse meshes}
+\item{ptsize}{Size of mesh points (vertices), e.g. 0.1 for dense meshes, 3 for sparse meshes}
 
-\item{center}{Logical Whether the object 'spec' should be centered prior to digitizing (default {center=TRUE})}
+\item{center}{Should the object 'spec' be centered prior to digitizing?}
 }
 \value{
-Function writes to the working directory three files: an NTS file with the name of the specimen and .nts suffix containing 
+The function writes to the working directory three files: an NTS file with the name of the specimen and .nts suffix containing 
 the landmark coordinates, "template.txt" containing the same coordinates for use with the function \code{\link{digitsurface}}, 
 and "surfslide.csv", a file containing the address of the landmarks defined as "surface sliders" for use with \code{\link{gpagen}}.
-Function also returns to console an n x 3 matrix containing the x,y,z coordinates of the digitized landmarks.
+The function also returns to the console an n x 3 matrix containing the x,y,z coordinates of the digitized landmarks.
 }
 \description{
-An interactive function to build template of three-dimensional (3D) surface sliding semilandmarks.
-Input for the function is either a matrix of vertex coordinates defining a 3D surface object
-or a mesh3d object as obtained from \code{\link{read.ply}}.
+An interactive function to build a template for the digitization across specimens of three-dimensional (3D) 
+surface sliding semilandmarks. Input for the function is either a matrix of vertex coordinates
+ defining a 3D surface object or a mesh3d object as obtained from \code{\link{read.ply}}.
 }
 \details{
-Function constructs a template of fixed landmarks and n "surface sliders", semilandmarks that slide over a surface.
- The user digitizes the fixed points (see digitizing below), then the function finds n surface semilandmarks following 
- algorithm outlined in Gunz et al. (2005) and Mitteroecker and Gunz (2009). Surface semilandmarks are 
- roughly equidistant set of predetermined number of points, chosen over the mesh automatically using a nearest-neighbor approach.
- The set of fixed and surface slider landmarks are exported as a "template", which is used to extract a set of similarly numbered 
- landmarks on every specimen using function \code{\link{digitsurface}}. Some of the "fixed" landmarks can be later designated as
- "curve sliders" using function \code{\link{define.sliders}} if required - see details in \code{\link{digit.fixed}}.  Because template 
- matching is based on the correspondence of fixed landmark points in the template and the specimen, a minimum of four fixed landmarks must be used.
- 
-To ensure a strong match between the scan and the template, it is recommended that a reasonable number of fixed points be used.
- These fixed points can be designated as "curve sliders" later using function \code{\link{define.sliders}}, 
- see the function \code{\link{digit.fixed}} for details.
- NOTE: Function centers the mesh before digitizing by default (center=TRUE). If one chooses not to center,
+Function constructs a template of surface slider semilandmarks. If desired, the user can simultaneously 
+digitize the fixed points (see digitizing below), however these may have been previously digitized separately 
+using \code{\link{digit.fixed}}.
+
+The function finds surface semilandmarks, chosen automatically from the mesh at roughly equal distances,
+using the nearest-neighbor algorithm outlined in Gunz et al. (2005) and Mitteroecker and Gunz (2009).
+
+The set of fixed and surface slider landmarks are saved in the working directory as a txt file named "template". 
+This file will then be used to extract a set of similarly numbered surface semilandmarks on subsequent specimens 
+using the function \code{\link{digitsurface}}. Because template matching is based on the correspondence of fixed 
+landmark points in the template and the target specimen, a minimum of four fixed landmarks must be used. However,  
+to ensure a strong match between the scan and the template, it is recommended that a higher number of fixed points is used.
+
+#' For more details on the full procedure one needs to follow to digitize fixed 3D landmarks and surface
+sliding semilandmarks, see also the relevant vignette by running \code{vignette("geomorph.digitize3D")}.
+
+NOTE: Function centers the mesh before digitizing by default (center=TRUE). If one chooses not to center,
  specimen may be difficult to manipulate in rgl window.
 
 \subsection{Digitizing}{
-Digitizing using buildtemplate is interactive between landmark selection using a mouse (see below for instructions), 
- and the R console. Once a point is selected, the user is asked if the system should keep or discard the 
- selection #'(y/n). If "y", the user is asked to continue to select the next landmark. If "n" the removes the last chosen
- landmark, and the user is asked to select it again. This can be repeated until the user is comfortable with the landmark
- chosen.
+Digitizing of fixed landmarks is interactive. Once a point is selected, the user is asked if the system should keep or discard the 
+selection (y/n). If "y", the user is asked to continue to select the next landmark. If "n" the removes the last chosen
+landmark, and the user is asked to select it again. This can be repeated until the user is comfortable with the landmark
+chosen.
 
 To digitize with a standard 3-button (PC):
 \enumerate{
