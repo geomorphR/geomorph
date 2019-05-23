@@ -260,7 +260,7 @@ rotate.mat <- function(M,Y){
 
 # tangents
 # finds tangents in a matrix based on sliders
-# used in all functions associated with pPga.wCurvs
+# used in all functions associated with pPga.wCurves
 tangents = function(s,x, scaled=FALSE){ # s = curves, x = landmarks
   ts <- x[s[,3],] - x[s[,1],]
   if(scaled==TRUE) {
@@ -275,10 +275,10 @@ tangents = function(s,x, scaled=FALSE){ # s = curves, x = landmarks
 # nearest
 # finds nearest points on surfaces for sliding semilandmakrs
 # used in all functions associated with pPga.wCurves
-nearest <- function(X,m,k=4) {
+nearest <- function(X, m, k = 4) {
   a <- X[m,]
   b <- sapply(1:nrow(X), function (j) sum((a-X[j,])^2))
-  match(sort(b)[2:(k+1)],b)
+  match(sort(b)[2:(k + 1)], b)
 }
 
 # getU
@@ -424,12 +424,15 @@ pGpa <- function(Y, PrinAxes = FALSE, Proj = FALSE, max.iter = 5){
 # used in semilandmarks functions, within the larger gpagen framework
 getSurfPCs <- function(y, surf){
   V <- La.svd(center(y), nu=0)$vt
-  p <- nrow(y); k <- ncol(y)
+  k <- ncol(y)
+  kk <- round(0.05 * length(surf))
+  kk <- max(c(k, kk))
+  p <- nrow(y)
   pc.match <- 1:p; pc.match[-surf] = NA
   nearpts <- lapply(1:p, function(j) {
     nn <- pc.match[j]
     if(is.na(nn)) 0 else
-      c(nearest(y,nn, k=k+1),nn)})
+      c(nearest(y, nn, k = kk+1), nn)})
   tmp.pts <- lapply(1:p, function(j) {
     k <- nearpts[[j]]
     if(sum(k) > 0) x <- center(y[k,]) else x <- NA
