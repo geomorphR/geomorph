@@ -1,3 +1,12 @@
+# INCIPIENT CHANGES IN GEOMORPH VERSION 3.1.3.0900
+
+### NEW FEATURES
+
+### OTHER CHANGES
+* Adjustment to getSurfPCs to allow for more robust surface sliding
+
+### BUG FIXES
+
 # CHANGES IN GEOMORPH VERSION 3.1.2 (Patch Release)
 
 ### NEW FEATURES
