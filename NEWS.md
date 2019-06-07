@@ -6,6 +6,7 @@
 * Adjustment to getSurfPCs to allow for more robust surface sliding
 
 ### BUG FIXES
+* Fixed issue with 3D TPS grids in plotRefToTarget
 
 # CHANGES IN GEOMORPH VERSION 3.1.2 (Patch Release)
 
