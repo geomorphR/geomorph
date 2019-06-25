@@ -4,6 +4,7 @@
 
 ### OTHER CHANGES
 * Adjustment to getSurfPCs to allow for more robust surface sliding
+* Added a one-tail/two-tailed option to compare.pls
 
 ### BUG FIXES
 * Fixed issue with 3D TPS grids in plotRefToTarget
