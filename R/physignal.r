@@ -138,7 +138,7 @@ physignal <- function(A, phy, iter=999, seed=NULL, print.progress = FALSE){
   p.val <- pval(K.rand)
   
   # Kmult by paca
-  PaCA <- paca(x, phy)
+  PaCA <- ordinate(x, A = C)
   P <- PaCA$x
   p <- NCOL(P)
   

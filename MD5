@@ -13,14 +13,6 @@ d8e8360c03c03fe45d2100e9c05d4a89 *data/plethodon.rda
 b47e3532554b8de71681ec0400a364df *DESCRIPTION
 f4f2080e745b8d689f17caf549449ab5 *geomorph.Rproj
 f926ce8a00d113b94bd7a08b69b5bfc3 *inst/CITATION
-d3e5db710ad3bfca0e5be89edc91a2a9 *inst/doc/figs/example_spec2.png
-e108112cb2dec057facffbf5571b92bf *inst/doc/figs/example_template.png
-f0eeb0d08e88fe8475db103df58344db *inst/doc/figs/fixed.3D.png
-2db8bd28eaf7a1004c858a11c2b42465 *inst/doc/geomorph.assistance.Rmd
-c526bb26fc5258976719a060c1ba1839 *inst/doc/geomorph.digitize3D.html
-b1325c9f7326883ec5db76281e9261f4 *inst/doc/geomorph.digitize3D.Rmd
-589462ac35b72a9108e0095b6d5f4385 *inst/doc/geomorph.functions.html
-3a6628ea849b9eeeb45a3eb417dcd160 *inst/doc/geomorph.functions.Rmd
 71303f6d562524cf09f2e0cd4be5a46e *man/advanced.procD.lm.Rd
 5e099c6268d251bf5c98595d9566385a *man/arrayspecs.Rd
 aedd854ebbb437a660df88e33b7ed33c *man/bilat.symmetry.Rd
@@ -44,7 +36,7 @@ e5ea7eb05043e14bf36bb1c553de0576 *man/findMeanSpec.Rd
 f9221a7b4261484793b945d7be4bbec6 *man/geomorph-package.Rd
 529d968d52f701dda526c62cd174a6c3 *man/geomorph.data.frame.Rd
 0763a0796feeacf89702a12ede433cb3 *man/globalIntegration.Rd
-367cac305e8866d69fb9f50b784afa53 *man/gm.prcomp.Rd
+38fdacd376e56bb0d36df33944a5433d *man/gm.prcomp.Rd
 f4321fc7e893a0b607e4b15a735fe233 *man/gpagen.Rd
 6e3973381aaf10ec056aa50add392948 *man/gridPar.Rd
 a598044482a6c3e39517b798b654c57e *man/hummingbirds.Rd
@@ -158,7 +150,7 @@ d4da6eba1dc1a56c0b1ad94c0839c825 *R/geomorph.data.frame.r
 1a9f704ca24fc36845f02fc65a5e923a *R/geomorph.support.code.r
 0ceb71cd87d83a6018b93b9c8634c6b8 *R/geomorph.utils.r
 da04ce8ab14c8a0a7bf2751654bbab6e *R/globalIntegration.r
-5a5a189c689511b9225784544b8e7820 *R/gm.prcomp.R
+eec4f87e0efdbd26ee7d772f9020b011 *R/gm.prcomp.R
 bf0750e2582fc2c3b5454ad48b7f3cbb *R/gpagen.r
 8c06e49837953d941a01c82b0111935a *R/gridPar.r
 a0316d5ff3326e7cebb6aee734b4254a *R/integration.test.r
@@ -167,7 +159,7 @@ a0316d5ff3326e7cebb6aee734b4254a *R/integration.test.r
 15bc32ce2d7448e0a8f7e8b543d47095 *R/morphol.disparity.r
 59ec619cc2005ae0d5b26fa1369971b8 *R/phylo.integration.r
 df8568fcede2ca442c9fb6be6da0401c *R/phylo.modularity.r
-6625e7fc6444487db545a5b004e6c384 *R/physignal.r
+27353a019f30561fac98edabd0d08d45 *R/physignal.r
 bec62a0f9ec0c3e55b162338e4d977f9 *R/picknplot.shape.r
 2302f21d0af2a0e44038ff696b306e9e *R/plotAllometry.r
 c1cead3306cb3d7b1bd3ed5d99fc89af *R/plotAllSpecimens.r

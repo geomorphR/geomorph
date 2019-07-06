@@ -78,7 +78,7 @@ deprecated.
  
  ###  Traditional PCA 
  PCA <- gm.prcomp(Y.gpa$coords)
- summary(pleth.raw)
+ summary(PCA)
  plot(PCA, main = "PCA")
  
  ### Phylomorphospace - PCA with phylogeny (result is same as above, 
@@ -115,21 +115,6 @@ deprecated.
  text(0, 0.95*par()$usr[4], labels = "PC2 - 18.80\%", pos = 4, font = 2)
  legend("topleft", pch=22, pt.bg = unique(gps), legend = levels(gps))
  
- ### Phylomorphospace plot
- plot(pleth.phylo, pch=21, bg=1:nrow(pleth.phylo$x), phylo = TRUE,
-      phylo.par = list(edge.color="grey", node.cex=0)); title(main="phylomorphospace")
- text(pleth.phylo$x, labels = labels(pleth.phylo$x)[[1]],
-      pos = 2, font = 4) 
- text(pleth.phylo$anc.x, labels = 1:nrow(pleth.phylo$anc.x),
-      adj = c(-0.1, -0.1), font = 2) 
- 
- ### Visualize shape variation using picknplot.shape Because picknplot requires 
- ### user decisions, the following example
- ### is not run (but can be with removal of #).
- ### For detailed options, see the picknplot help file
- # picknplot.shape(plot(PaCA.ols))
- 
-
 }
 \seealso{
 \code{\link{plot.gm.prcomp}}
