@@ -1,11 +1,36 @@
-#' Principal components analysis of shape data
+#' Principal and phylogenetically-aligned components analysis of shape data
 #'
-#' Function performs PCA on Procrustes shape coordinates  
+#' Function performs principal components analysis (PCA) or 
+#' phylogenetically-aligned components (PaCA) on Procrustes shape coordinates.
 #'
-#' The function performs a principal components analysis of shape variation.
-#' It also allows a phylomorphospace approach, where the user can provide a phylogeny
-#' and obtain a graph with estimated ancestral shape values and the tree projected
-#' into PCA space.
+#' The function performs a series of ordinations, taking into account, phylogeny, if desired.
+#' There are two main types of ordinations: principal components analysis (PCA) and phylogenetically-
+#' aligned components analysis (PaCA).  Both of these have two variants: centering and projection
+#' via ordinary least-squares (OLS) or via generalized least-squares (GLS).  The name,
+#' "gm.prcomp", references that this function performs much like \code{\link{prcomp}}, in terms
+#' of arguments and output, but this function is quite a bit more diverse.  This function has
+#' the capability of performing analyses genereally referred to as:
+#' 
+#' \itemize{
+#' \item{\bold{PCA}}{  Traditional PCA based on OLS-centering and projection of data.}
+#' \item{\bold{  Phylomorphospace}}{  Traditional PCA with estimated ancestral states and phylogenetic branches
+#' projected into ordination plots.}
+#' \item{\bold{phyloPCA}}{  PCA based on GLS-centering and projection of data.  Also possible to 
+#' project ancestral states into plotz.}
+#' \item{\bold{PaCA}}{  Alignment of components to maximum phylogenetic signal rather than
+#' maximum variation.  This analysis can use either OLS- or GLS-centering and projection.  Phylogenetic
+#' signal is strongest in the first few components.  See Collyer and Adams (in review) for more details.}
+#' }
+#' 
+#' The examples provided will illustrate each of these methods, but the following arguments are essential for directing
+#' the function:
+#' 
+#' \itemize{
+#' \item{\bold{phy}}{  Whether a phylogeny and estimated ancestral states are considered in plots.}
+#' \item{\bold{align.to.phy}}{  Whether components are aligned to phylogenetic signal (rather than principal axes).}
+#' \item{\bold{GLS}}{  Whether to use PGLS residuals.  Note that doing so creates an oblique projection rather than 
+#' an orthogonal projection of data, but the origin of the plot will be the tree root rather than the center of gravity.}
+#' }
 #' 
 #' PLOTTING: Contrary to previous geomorph implementations, gm.prcomp does not produce plots. 
 #' For plotting options of gm.prcomp class objects combine \code{\link{plot.gm.prcomp}} and 
@@ -13,9 +38,14 @@
 #' of gm.prcomp will give an error. Choose a specific PCA method to be plotted, by pointing to one of the 
 #' components of the list returned by gm.prcomp.
 #' 
+#' NOTE: The \code{\link{plot.gm.prcomp}} function performs the same plotting that was previously 
+#' posible with \code{\link{plotTangentSpace}} and \code{\link{plotGMPhyloMorphoSpace}}, which have now been 
+#' deprecated.
 #'
 #' @param A A 3D array (p x k x n) containing Procrustes shape variables for a set of aligned specimens
 #' @param phy An optional phylogenetic tree of class phylo 
+#' @param align.to.phy An optional argument for whether \bold{PaCA} (if TRUE) should be performed
+#' @param GLS An optional argument for whether GLS should be used for centering and projecting data.
 #' @param ... Other arguments passed to \code{\link{ordinate}} and \code{\link{scale}}.  The most common
 #' arguments are scale., tol, and rank.
 #' @return An object of class "gm.prcomp" contains a list of results for each of the PCA approaches implemented.
@@ -30,24 +60,46 @@
 #' @keywords visualization
 #' @seealso \code{\link{plot.gm.prcomp}}
 #' @seealso \code{\link{picknplot.shape}}
-#' @author Antigoni Kaliontzopoulou, Michael Collyer & Dean Adams
+#' @seealso \code{\link{ordinate}}{ A more bare-bones ordination function on which gm.prcomp depends.}
+#' @author Antigoni Kaliontzopoulou, Michael Collyer, & Dean Adams
 #' @examples
 #'  data(plethspecies) 
 #'  Y.gpa <- gpagen(plethspecies$land)    #GPA-alignment
 #'  
-#'  ### PCA 
-#'  pleth.raw <- gm.prcomp(Y.gpa$coords)
+#'  ###  Traditional PCA 
+#'  PCA <- gm.prcomp(Y.gpa$coords)
 #'  summary(pleth.raw)
+#'  plot(PCA, main = "PCA")
 #'  
-#'  ### PCA with phylogeny (result is same as above, but with additional components)
-#'  pleth.phylo <- gm.prcomp(Y.gpa$coords, phy = plethspecies$phy)
-#'  summary(pleth.phylo)
+#'  ### Phylomorphospace - PCA with phylogeny (result is same as above, 
+#'  ### but with estimated ancestral states projected into plot)
+#'  PCA.w.phylo <- gm.prcomp(Y.gpa$coords, phy = plethspecies$phy)
+#'  summary(PCA.w.phylo)
+#'  plot(PCA.w.phylo, phylo = TRUE, main = "PCA.w.phylo")
 #'  
-#'  #### Plotting
-#'  plot(pleth.raw)
+#'  ### Phylogenetic PCA - PCA based on GLS-centering and projection
+#'  phylo.PCA <- gm.prcomp(Y.gpa$coords, phy = plethspecies$phy, GLS = TRUE)
+#'  summary(phylo.PCA)
+#'  plot(phylo.PCA, phylo = TRUE, main = "phylo PCA")
+#'  
+#'  ### PaCA - Alignment of data to physlogenetic signal rather than axis of 
+#'  ### greatest variation, like in PCA
+#'  
+#'  # OLS method (rotation of PCA)
+#'  PaCA.ols <- gm.prcomp(Y.gpa$coords, phy = plethspecies$phy, align.to.phy = TRUE)
+#'  summary(PaCA.ols)
+#'  plot(PaCA.ols, phylo = TRUE, main = "PaCA using OLS")
+#'  
+#'  # GLS method (rotation of Phylogenetic PCA)
+#'  PaCA.gls <- gm.prcomp(Y.gpa$coords, phy = plethspecies$phy, 
+#'  align.to.phy = TRUE, GLS = TRUE)
+#'  summary(PaCA.gls)
+#'  plot(PaCA.gls, phylo = TRUE, main = "PaCA using GLS")
+#'  
+#'  ### Advanced Plotting
 #'  gps <- as.factor(c(rep("gp1", 5), rep("gp2", 4))) # Two random groups
 #'  par(mar=c(2, 2, 2, 2))
-#'  plot(pleth.raw, pch=22, cex = 1.5, bg = gps) # Modify options as desired
+#'  plot(PaCA.ols, pch=22, cex = 1.5, bg = gps) # Modify options as desired
 #'  #  Add things as desired using standard R plotting
 #'  text(par()$usr[1], 0.1*par()$usr[3], labels = "PC1 - 45.64%", pos = 4, font = 2)
 #'  text(0, 0.95*par()$usr[4], labels = "PC2 - 18.80%", pos = 4, font = 2)
@@ -65,20 +117,21 @@
 #'  ### user decisions, the following example
 #'  ### is not run (but can be with removal of #).
 #'  ### For detailed options, see the picknplot help file
-#'  # picknplot.shape(plot(pleth.phylo))
+#'  # picknplot.shape(plot(PaCA.ols))
 #'  
 #' 
 
-gm.prcomp <- function (A, phy = NULL, ...) {
+gm.prcomp <- function (A, phy = NULL, align.to.phy = FALSE,
+                       GLS = FALSE, ...) {
   if (length(dim(A)) != 3) {
     stop("Data matrix not a 3D array (see 'arrayspecs').\n", call. = FALSE) }
   if(any(is.na(A))==T){
     stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').\n",
          call. = FALSE) }
   p <- dim(A)[1]; k <- dim(A)[2]; n <- dim(A)[3]
-  Y <- center(two.d.array(A))
-  
-  if(is.null(phy)) out <- ordinate(Y, ...)
+  ord.args <- list(...)
+  Y <- two.d.array(A)
+  ord.args$Y <- Y
 
   if(!is.null(phy)){
     if (!inherits(phy, "phylo"))
@@ -92,12 +145,27 @@ gm.prcomp <- function (A, phy = NULL, ...) {
     ancY <- anc.BM(phy, Y)
     C <- fast.phy.vcv(phy)
     if(!is.null(rownames(Y))) C <- C[rownames(Y), rownames(Y)]
-    out <- ordinate(Y, newdata = ancY, ...)
+    if(align.to.phy) ord.args$A <- C
+    if(GLS) ord.args$Cov <- C
+    ord.args$newdata <- ancY
+
+}
+
+  out <- do.call(ordinate, ord.args)
+  if(!is.null(phy)) 
     names(out)[[which(names(out) == "xn")]] <- "anc.x"
-  }
   
+  names(out)[[which(names(out) == "rot")]] <- "rotation"
   out$A <- A
-  if(!is.null(phy)) out$phy <- phy
+  out$shapes <- lapply(1:ncol(out$x),  
+                          function(x){shape.predictor(A, out$x[,x], 
+                                                      min = min(out$x[,x]),
+                                                      max = max(out$x[,x]))})
+  names(out$shapes) <- paste("shapes.comp", 1:length(out$d), sep = "")
+  if(!is.null(phy)) {
+    out$ancestors <- ancY
+    out$phy <- phy
+  }
   class(out) <- c("gm.prcomp", class(out))
   out
 }

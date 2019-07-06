@@ -2353,7 +2353,7 @@ anc.BM <- function(phy, Y){
   out <- t(sapply(1:phy$Nnode, function(j){
     phy.j <- multi2di.phylo(root.phylo(phy, node = j + n))
     preps <- pic.prep(phy.j, NROW(Y), NCOL(Y))
-    preps$x <- Y
+    preps$x <- as.matrix(Y)[phy$tip.label,]
     out <- do.call(ace.pics, preps)
     out[n + 1,]
   }))

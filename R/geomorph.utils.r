@@ -803,7 +803,7 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, phylo = FALSE,
   
   if(phylo) {
     phy <- x$phy
-    phy.pcdata <- rbind(x$x, x$anc.x)
+    phy.pcdata <- rbind(x$x[x$phy$tip.label,], x$anc.x)
     phy.pcdata <- as.matrix(phy.pcdata[, c(axis1, axis2)])
     plot.args$x <- pcdata[,1]
     plot.args$y <- pcdata[,2]

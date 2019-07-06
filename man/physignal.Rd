@@ -4,7 +4,7 @@
 \alias{physignal}
 \title{Assessing phylogenetic signal in Procrustes shape variables}
 \usage{
-physignal(A, phy, iter = 999, seed = NULL, print.progress = TRUE)
+physignal(A, phy, iter = 999, seed = NULL, print.progress = FALSE)
 }
 \arguments{
 \item{A}{A matrix (n x [p x k]) or 3D array (p x k x n) containing Procrustes shape variables for a set of specimens}
@@ -79,6 +79,6 @@ Adams, D.C. 2014. A generalized K statistic for estimating phylogenetic signal f
 other high-dimensional multivariate data. Systematic Biology.  63:685-697.
 }
 \author{
-Dean Adams
+Dean Adams and Michael Collyer
 }
 \keyword{analysis}

@@ -2,16 +2,21 @@
 % Please edit documentation in R/gm.prcomp.R
 \name{gm.prcomp}
 \alias{gm.prcomp}
-\title{Principal components analysis of shape data}
+\title{Principal and phylogenetically-aligned components analysis of shape data}
 \usage{
-gm.prcomp(A, phy = NULL, ...)
+gm.prcomp(A, phy = NULL, align.to.phy = FALSE, GLS = FALSE, ...)
 }
 \arguments{
 \item{A}{A 3D array (p x k x n) containing Procrustes shape variables for a set of aligned specimens}
 
 \item{phy}{An optional phylogenetic tree of class phylo}
 
-\item{...}{Other arguments passed to \code{\link{scale}}}
+\item{align.to.phy}{An optional argument for whether \bold{PaCA} (if TRUE) should be performed}
+
+\item{GLS}{An optional argument for whether GLS should be used for centering and projecting data.}
+
+\item{...}{Other arguments passed to \code{\link{ordinate}} and \code{\link{scale}}.  The most common
+arguments are scale., tol, and rank.}
 }
 \value{
 An object of class "gm.prcomp" contains a list of results for each of the PCA approaches implemented.
@@ -24,37 +29,87 @@ Each of these lists includes the following components:
 \item{ancestors}{The matrix of estimated ancestral shapes, if a phylogeny is used.}
 }
 \description{
-Function performs PCA on Procrustes shape coordinates
+Function performs principal components analysis (PCA) or 
+phylogenetically-aligned components (PaCA) on Procrustes shape coordinates.
 }
 \details{
-The function performs a principal components analysis of shape variation.
-It also allows a phylomorphospace approach, where the user can provide a phylogeny
-and obtain a graph with estimated ancestral shape values and the tree projected
-into PCA space.
+The function performs a series of ordinations, taking into account, phylogeny, if desired.
+There are two main types of ordinations: principal components analysis (PCA) and phylogenetically-
+aligned components analysis (PaCA).  Both of these have two variants: centering and projection
+via ordinary least-squares (OLS) or via generalized least-squares (GLS).  The name,
+"gm.prcomp", references that this function performs much like \code{\link{prcomp}}, in terms
+of arguments and output, but this function is quite a bit more diverse.  This function has
+the capability of performing analyses genereally referred to as:
+
+\itemize{
+\item{\bold{PCA}}{  Traditional PCA based on OLS-centering and projection of data.}
+\item{\bold{  Phylomorphospace}}{  Traditional PCA with estimated ancestral states and phylogenetic branches
+projected into ordination plots.}
+\item{\bold{phyloPCA}}{  PCA based on GLS-centering and projection of data.  Also possible to 
+project ancestral states into plotz.}
+\item{\bold{PaCA}}{  Alignment of components to maximum phylogenetic signal rather than
+maximum variation.  This analysis can use either OLS- or GLS-centering and projection.  Phylogenetic
+signal is strongest in the first few components.  See Collyer and Adams (in review) for more details.}
+}
+
+The examples provided will illustrate each of these methods, but the following arguments are essential for directing
+the function:
+
+\itemize{
+\item{\bold{phy}}{  Whether a phylogeny and estimated ancestral states are considered in plots.}
+\item{\bold{align.to.phy}}{  Whether components are aligned to phylogenetic signal (rather than principal axes).}
+\item{\bold{GLS}}{  Whether to use PGLS residuals.  Note that doing so creates an oblique projection rather than 
+an orthogonal projection of data, but the origin of the plot will be the tree root rather than the center of gravity.}
+}
 
 PLOTTING: Contrary to previous geomorph implementations, gm.prcomp does not produce plots. 
 For plotting options of gm.prcomp class objects combine \code{\link{plot.gm.prcomp}} and 
 \code{\link{picknplot.shape}} following the examples below. Note that trying to plot the full result
 of gm.prcomp will give an error. Choose a specific PCA method to be plotted, by pointing to one of the 
 components of the list returned by gm.prcomp.
+
+NOTE: The \code{\link{plot.gm.prcomp}} function performs the same plotting that was previously 
+posible with \code{\link{plotTangentSpace}} and \code{\link{plotGMPhyloMorphoSpace}}, which have now been 
+deprecated.
 }
 \examples{
  data(plethspecies) 
  Y.gpa <- gpagen(plethspecies$land)    #GPA-alignment
  
- ### PCA 
- pleth.raw <- gm.prcomp(Y.gpa$coords)
+ ###  Traditional PCA 
+ PCA <- gm.prcomp(Y.gpa$coords)
  summary(pleth.raw)
+ plot(PCA, main = "PCA")
  
- ### PCA with phylogeny (result is same as above, but with additional components)
- pleth.phylo <- gm.prcomp(Y.gpa$coords, phy = plethspecies$phy)
- summary(pleth.phylo)
+ ### Phylomorphospace - PCA with phylogeny (result is same as above, 
+ ### but with estimated ancestral states projected into plot)
+ PCA.w.phylo <- gm.prcomp(Y.gpa$coords, phy = plethspecies$phy)
+ summary(PCA.w.phylo)
+ plot(PCA.w.phylo, phylo = TRUE, main = "PCA.w.phylo")
  
- #### Plotting
- plot(pleth.raw)
+ ### Phylogenetic PCA - PCA based on GLS-centering and projection
+ phylo.PCA <- gm.prcomp(Y.gpa$coords, phy = plethspecies$phy, GLS = TRUE)
+ summary(phylo.PCA)
+ plot(phylo.PCA, phylo = TRUE, main = "phylo PCA")
+ 
+ ### PaCA - Alignment of data to physlogenetic signal rather than axis of 
+ ### greatest variation, like in PCA
+ 
+ # OLS method (rotation of PCA)
+ PaCA.ols <- gm.prcomp(Y.gpa$coords, phy = plethspecies$phy, align.to.phy = TRUE)
+ summary(PaCA.ols)
+ plot(PaCA.ols, phylo = TRUE, main = "PaCA using OLS")
+ 
+ # GLS method (rotation of Phylogenetic PCA)
+ PaCA.gls <- gm.prcomp(Y.gpa$coords, phy = plethspecies$phy, 
+ align.to.phy = TRUE, GLS = TRUE)
+ summary(PaCA.gls)
+ plot(PaCA.gls, phylo = TRUE, main = "PaCA using GLS")
+ 
+ ### Advanced Plotting
  gps <- as.factor(c(rep("gp1", 5), rep("gp2", 4))) # Two random groups
  par(mar=c(2, 2, 2, 2))
- plot(pleth.raw, pch=22, cex = 1.5, bg = gps) # Modify options as desired
+ plot(PaCA.ols, pch=22, cex = 1.5, bg = gps) # Modify options as desired
  #  Add things as desired using standard R plotting
  text(par()$usr[1], 0.1*par()$usr[3], labels = "PC1 - 45.64\%", pos = 4, font = 2)
  text(0, 0.95*par()$usr[4], labels = "PC2 - 18.80\%", pos = 4, font = 2)
@@ -72,7 +127,7 @@ components of the list returned by gm.prcomp.
  ### user decisions, the following example
  ### is not run (but can be with removal of #).
  ### For detailed options, see the picknplot help file
- # picknplot.shape(plot(pleth.phylo))
+ # picknplot.shape(plot(PaCA.ols))
  
 
 }
@@ -80,8 +135,10 @@ components of the list returned by gm.prcomp.
 \code{\link{plot.gm.prcomp}}
 
 \code{\link{picknplot.shape}}
+
+\code{\link{ordinate}}{ A more bare-bones ordination function on which gm.prcomp depends.}
 }
 \author{
-Antigoni Kaliontzopoulou, Michael Collyer & Dean Adams
+Antigoni Kaliontzopoulou, Michael Collyer, & Dean Adams
 }
 \keyword{visualization}
