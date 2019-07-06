@@ -16,7 +16,8 @@
 #'
 #' @param A A 3D array (p x k x n) containing Procrustes shape variables for a set of aligned specimens
 #' @param phy An optional phylogenetic tree of class phylo 
-#' @param ... Other arguments passed to \code{\link{scale}}
+#' @param ... Other arguments passed to \code{\link{ordinate}} and \code{\link{scale}}.  The most common
+#' arguments are scale., tol, and rank.
 #' @return An object of class "gm.prcomp" contains a list of results for each of the PCA approaches implemented.
 #' Each of these lists includes the following components:
 #' \item{x}{Principal component scores for all specimens.}
@@ -70,81 +71,33 @@
 
 gm.prcomp <- function (A, phy = NULL, ...) {
   if (length(dim(A)) != 3) {
-    stop("Data matrix not a 3D array (see 'arrayspecs').") }
+    stop("Data matrix not a 3D array (see 'arrayspecs').\n", call. = FALSE) }
   if(any(is.na(A))==T){
-    stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').") }
-
+    stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').\n",
+         call. = FALSE) }
   p <- dim(A)[1]; k <- dim(A)[2]; n <- dim(A)[3]
-  dots <- list(...)
-  scale. <- dots$scale.
-  if(is.null(scale.)) scale. <- FALSE
-  center <- dots$center
-  if(is.null(center)) center <- TRUE
-  Y <- scale(two.d.array(A), center = center, scale = scale.)
-  vcv.y <- crossprod(Y) / (n-1)
-  svd.y <- svd(vcv.y)
+  Y <- center(two.d.array(A))
+  
+  if(is.null(phy)) out <- ordinate(Y, ...)
 
   if(!is.null(phy)){
     if (!inherits(phy, "phylo"))
-      stop("Tree must be of class 'phylo.'")
+      stop("Tree must be of class 'phylo.'\n", call. = FALSE)
     N <- length(phy$tip.label); Nnode <- phy$Nnode
     if(N != n)
-      stop("Number of taxa in data matrix and tree are not equal.")
-    if(is.null(rownames(Y))) {
+      stop("Number of taxa in data matrix and tree are not equal.\n", call. = FALSE)
+    if(is.null(rownames(Y))) 
       warning("Shape dataset does not include species names. Assuming the order of data matches phy$tip.label")
-    } else {
-      A <- A[,, phy$tip.label]
-      Y <- Y[phy$tip.label, ]
-    }
-    anc.raw <- anc.BM(phy, two.d.array(A))
-    ancY <- anc.BM(phy, Y)
-    all.dt <- rbind(Y, ancY)
-    vcv.a <- crossprod(all.dt) / (nrow(all.dt)-1)
-    svd.a <- svd(vcv.a)
-  }
-  
-  ### Output
-  rawPCA <- phylomorphospace <- NULL
-  
-  # Raw data PCA
-  nPC <- max(which(zapsmall(svd.y$d) > 0))
-  rawPCA$x <- Y%*%svd.y$v[,1:nPC]
-  colnames(rawPCA$x) <- paste("PC", 1:nPC, sep = "")
-  rawPCA$d <- svd.y$d[1:nPC]
-  rawPCA$rotation <- svd.y$v
-  rawPCA$shapes <- lapply(1:ncol(rawPCA$x),  
-                         function(x){shape.predictor(A, rawPCA$x[,x], 
-                                                     min = min(rawPCA$x[,x]),
-                                                     max = max(rawPCA$x[,x]))})
-  names(rawPCA$shapes) <- paste("shapes.PC", 1:nPC, sep = "")
-  class(rawPCA) <- c("gm.prcomp", "rawPCA")
-  
-  if(!is.null(phy)){
-    # Phylomorphospace
-    phylomorphospace$x <- (all.dt%*%svd.y$v[, 1:nPC])[1:N,]
-    phylomorphospace$anc.x <- (all.dt%*%svd.y$v[, 1:nPC])[(N+1):(N+Nnode),]
-    colnames(phylomorphospace$x) <- colnames(phylomorphospace$anc.x) <- paste("PC", 1:nPC, sep = "")
-    phylomorphospace$d <- svd.y$d[1:nPC]
-    phylomorphospace$rotation <- svd.y$v
-    phylomorphospace$shapes <- lapply(1:ncol(phylomorphospace$x), 
-                                      function(x){shape.predictor(A, phylomorphospace$x[,x],
-                                                                  min = min(phylomorphospace$x[,x]),
-                                                                  max = max(phylomorphospace$x[,x]))})
-    names(phylomorphospace$shapes) <- paste("shapes.PC", 1:nPC, sep = "")
-    phylomorphospace$ancestors <- anc.raw
-    class(phylomorphospace) <- c("gm.prcomp", "phylomorphospace")
-    phylomorphospace$phy <- phy
-    }
 
-  if(is.null(phy)) {
-    out <- rawPCA
-  } else {
-    out <- phylomorphospace
+    ancY <- anc.BM(phy, Y)
+    C <- fast.phy.vcv(phy)
+    if(!is.null(rownames(Y))) C <- C[rownames(Y), rownames(Y)]
+    out <- ordinate(Y, newdata = ancY, ...)
+    names(out)[[which(names(out) == "xn")]] <- "anc.x"
   }
   
   out$A <- A
-
-  class(out) = c("gm.prcomp")
-  
+  if(!is.null(phy)) out$phy <- phy
+  class(out) <- c("gm.prcomp", class(out))
   out
 }
