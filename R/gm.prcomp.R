@@ -16,7 +16,7 @@
 #' \item{\bold{  Phylomorphospace}}{  Traditional PCA with estimated ancestral states and phylogenetic branches
 #' projected into ordination plots.}
 #' \item{\bold{phyloPCA}}{  PCA based on GLS-centering and projection of data.  Also possible to 
-#' project ancestral states into plotz.}
+#' project ancestral states into plots.}
 #' \item{\bold{PaCA}}{  Alignment of components to maximum phylogenetic signal rather than
 #' maximum variation.  This analysis can use either OLS- or GLS-centering and projection.  Phylogenetic
 #' signal is strongest in the first few components.  See Collyer and Adams (in review) for more details.}
@@ -34,9 +34,7 @@
 #' 
 #' PLOTTING: Contrary to previous geomorph implementations, gm.prcomp does not produce plots. 
 #' For plotting options of gm.prcomp class objects combine \code{\link{plot.gm.prcomp}} and 
-#' \code{\link{picknplot.shape}} following the examples below. Note that trying to plot the full result
-#' of gm.prcomp will give an error. Choose a specific PCA method to be plotted, by pointing to one of the 
-#' components of the list returned by gm.prcomp.
+#' \code{\link{picknplot.shape}} following the examples below. 
 #' 
 #' NOTE: The \code{\link{plot.gm.prcomp}} function performs the same plotting that was previously 
 #' posible with \code{\link{plotTangentSpace}} and \code{\link{plotGMPhyloMorphoSpace}}, which have now been 
