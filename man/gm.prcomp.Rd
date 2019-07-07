@@ -109,7 +109,7 @@ deprecated.
  ### Advanced Plotting
  gps <- as.factor(c(rep("gp1", 5), rep("gp2", 4))) # Two random groups
  par(mar=c(2, 2, 2, 2))
- plot(PaCA.ols, pch=22, cex = 1.5, bg = gps) # Modify options as desired
+ plot(PaCA.ols, pch=22, cex = 1.5, bg = gps, phylo = TRUE) # Modify options as desired
  #  Add things as desired using standard R plotting
  text(par()$usr[1], 0.1*par()$usr[3], labels = "PC1 - 45.64\%", pos = 4, font = 2)
  text(0, 0.95*par()$usr[4], labels = "PC2 - 18.80\%", pos = 4, font = 2)

@@ -56,6 +56,7 @@
 #' PS.shape <- physignal(A=Y.gpa$coords,phy=plethspecies$phy,iter=999)
 #' summary(PS.shape)
 #' plot(PS.shape)
+#' plot(PS.shape$PaCA, phylo = TRUE)
 #' 
 #' #Test for phylogenetic signal in size
 #' PS.size <- physignal(A=Y.gpa$Csize,phy=plethspecies$phy,iter=999)
@@ -138,7 +139,10 @@ physignal <- function(A, phy, iter=999, seed=NULL, print.progress = FALSE){
   p.val <- pval(K.rand)
   
   # Kmult by paca
-  PaCA <- ordinate(x, A = C)
+  PaCA <- ordinate(x, A = C, newdata = anc.BM(phy, x))
+  class(PaCA) <- c("gm.prcomp", class(PaCA))
+  PaCA$phy <- phy
+  names(PaCA)[[which(names(PaCA) == "xn")]] <- "anc.x"
   P <- PaCA$x
   p <- NCOL(P)
   

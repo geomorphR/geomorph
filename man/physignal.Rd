@@ -65,6 +65,7 @@ Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment
 PS.shape <- physignal(A=Y.gpa$coords,phy=plethspecies$phy,iter=999)
 summary(PS.shape)
 plot(PS.shape)
+plot(PS.shape$PaCA, phylo = TRUE)
 
 #Test for phylogenetic signal in size
 PS.size <- physignal(A=Y.gpa$Csize,phy=plethspecies$phy,iter=999)

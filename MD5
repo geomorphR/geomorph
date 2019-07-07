@@ -36,7 +36,7 @@ e5ea7eb05043e14bf36bb1c553de0576 *man/findMeanSpec.Rd
 f9221a7b4261484793b945d7be4bbec6 *man/geomorph-package.Rd
 529d968d52f701dda526c62cd174a6c3 *man/geomorph.data.frame.Rd
 0763a0796feeacf89702a12ede433cb3 *man/globalIntegration.Rd
-38fdacd376e56bb0d36df33944a5433d *man/gm.prcomp.Rd
+f6b2995237cf89961937dd9195aef8b3 *man/gm.prcomp.Rd
 f4321fc7e893a0b607e4b15a735fe233 *man/gpagen.Rd
 6e3973381aaf10ec056aa50add392948 *man/gridPar.Rd
 a598044482a6c3e39517b798b654c57e *man/hummingbirds.Rd
@@ -50,7 +50,7 @@ b9f1f660738b5fefcddc25a81aa3b90d *man/morphol.disparity.Rd
 1568730ef6ac1237622ae188e1928c1b *man/nested.update.Rd
 bb4619900cf99dd809f69611dd7099fb *man/phylo.integration.Rd
 460dcf7805445621b117edb837ffd61b *man/phylo.modularity.Rd
-01f3469c3187f88e2a819f92f562774b *man/physignal.Rd
+d8d6bd0c215a9f86d41c66e9faca46fd *man/physignal.Rd
 c1bb02dc2f631930a6172f1396034814 *man/picknplot.shape.Rd
 af93ecd1b6eb7fb84c529ee5d5ca59b4 *man/plethodon.Rd
 67af5edfcfef3d23440b41c805d143c6 *man/plethShapeFood.Rd
@@ -124,7 +124,6 @@ da1241dd835f95675cc7126b2a7ec61a *man/two.d.array.Rd
 4678254db827c8ff8caf6c5beb8157be *man/warpRefOutline.Rd
 d9119f721918f22c267db843023a86fe *man/writeland.tps.Rd
 0df5eeb3a58209101f79b3cd74726ff5 *NAMESPACE
-80d7921c7db2d9542097f261a9eb3d15 *NEWS.html
 3a680c40d686beb979eae5cf8ebc56fc *NEWS.md
 92239d51a080ccd3fc3a9f7ef67d1b8c *R/arrayspecs.r
 fd5e4f7c9f42142153ff2f5d85089de0 *R/bilat.symmetry.r
@@ -148,9 +147,9 @@ aac6a4f8a759473e8c37048e5c8e3d91 *R/findMeanSpec.r
 edd9262112c0002e3be81df22872f89f *R/fixed.angle.r
 d4da6eba1dc1a56c0b1ad94c0839c825 *R/geomorph.data.frame.r
 1a9f704ca24fc36845f02fc65a5e923a *R/geomorph.support.code.r
-0ceb71cd87d83a6018b93b9c8634c6b8 *R/geomorph.utils.r
+df3a72e7c5520eb9f290d3287c4cb229 *R/geomorph.utils.r
 da04ce8ab14c8a0a7bf2751654bbab6e *R/globalIntegration.r
-eec4f87e0efdbd26ee7d772f9020b011 *R/gm.prcomp.R
+3c50c53dd7e99f7603d84b16a96a12d5 *R/gm.prcomp.R
 bf0750e2582fc2c3b5454ad48b7f3cbb *R/gpagen.r
 8c06e49837953d941a01c82b0111935a *R/gridPar.r
 a0316d5ff3326e7cebb6aee734b4254a *R/integration.test.r
@@ -159,7 +158,7 @@ a0316d5ff3326e7cebb6aee734b4254a *R/integration.test.r
 15bc32ce2d7448e0a8f7e8b543d47095 *R/morphol.disparity.r
 59ec619cc2005ae0d5b26fa1369971b8 *R/phylo.integration.r
 df8568fcede2ca442c9fb6be6da0401c *R/phylo.modularity.r
-27353a019f30561fac98edabd0d08d45 *R/physignal.r
+ab3120655acc941b9ba78662661d15ba *R/physignal.r
 bec62a0f9ec0c3e55b162338e4d977f9 *R/picknplot.shape.r
 2302f21d0af2a0e44038ff696b306e9e *R/plotAllometry.r
 c1cead3306cb3d7b1bd3ed5d99fc89af *R/plotAllSpecimens.r

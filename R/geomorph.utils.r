@@ -791,8 +791,14 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, phylo = FALSE,
   if(NCOL(x$x) == 1) stop("Only one PC.  No plotting capability with this function.\n", 
                           call. = FALSE)
   v <- x$d/sum(x$d)
-  xlabel <- paste("PC ", axis1, ": ", round(v[axis1] * 100, 2), "%", sep = "")
-  ylabel <- paste("PC ", axis2, ": ", round(v[axis2] * 100, 2), "%", sep = "")
+  if(x$alignment == "principal")  {
+    xlabel <- paste("PC ", axis1, ": ", round(v[axis1] * 100, 2), "%", sep = "")
+    ylabel <- paste("PC ", axis2, ": ", round(v[axis2] * 100, 2), "%", sep = "")
+  } else {
+    xlabel <- paste("PaC ", axis1, ": ", round(v[axis1] * 100, 2), "%", sep = "")
+    ylabel <- paste("PaC ", axis2, ": ", round(v[axis2] * 100, 2), "%", sep = "")
+  }
+  
   plot.args <- list(x = x$x[, axis1], y = x$x[, axis2], xlab = xlabel, ylab = ylabel, ...)
   pcdata <- as.matrix(x$x[, c(axis1, axis2)])
   if(!is.null(plot.args$axes)) axes <- plot.args$axes else axes <- TRUE
