@@ -36,7 +36,7 @@ e5ea7eb05043e14bf36bb1c553de0576 *man/findMeanSpec.Rd
 f9221a7b4261484793b945d7be4bbec6 *man/geomorph-package.Rd
 529d968d52f701dda526c62cd174a6c3 *man/geomorph.data.frame.Rd
 0763a0796feeacf89702a12ede433cb3 *man/globalIntegration.Rd
-0dd6deed53b34d9fbc0400534de7d496 *man/gm.prcomp.Rd
+08a04ae27d9bcfb40b6adfce51ec209f *man/gm.prcomp.Rd
 f4321fc7e893a0b607e4b15a735fe233 *man/gpagen.Rd
 6e3973381aaf10ec056aa50add392948 *man/gridPar.Rd
 a598044482a6c3e39517b798b654c57e *man/hummingbirds.Rd
@@ -146,10 +146,10 @@ c38531b2e37e698a0ae0ea5a7062bcd8 *R/estimate.missing.r
 aac6a4f8a759473e8c37048e5c8e3d91 *R/findMeanSpec.r
 edd9262112c0002e3be81df22872f89f *R/fixed.angle.r
 d4da6eba1dc1a56c0b1ad94c0839c825 *R/geomorph.data.frame.r
-1a9f704ca24fc36845f02fc65a5e923a *R/geomorph.support.code.r
+0e54b0e9526cdd3bea39fecaa785e287 *R/geomorph.support.code.r
 df3a72e7c5520eb9f290d3287c4cb229 *R/geomorph.utils.r
 da04ce8ab14c8a0a7bf2751654bbab6e *R/globalIntegration.r
-1eb0191b72c484b328109615272d785b *R/gm.prcomp.R
+c94594317bca91e05f8d0c96d99f9648 *R/gm.prcomp.R
 bf0750e2582fc2c3b5454ad48b7f3cbb *R/gpagen.r
 8c06e49837953d941a01c82b0111935a *R/gridPar.r
 a0316d5ff3326e7cebb6aee734b4254a *R/integration.test.r
