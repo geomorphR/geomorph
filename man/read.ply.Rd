@@ -34,8 +34,8 @@ Function reads three-dimensional surface data in the form of a single ply file
 # Using the example scallop PLY
 data(scallopPLY) 
 myply <- scallopPLY$ply
-myply$material <- "gray" # using color word
-myply$material <- "#FCE6C9" # using RGB code
+myply$material$color <- "gray" # using color word
+myply$material$color <- "#FCE6C9" # using RGB code
 }
 \seealso{
 \code{\link[rgl]{rgl-package}} (used in 3D plotting)

@@ -93,7 +93,7 @@ a0aee5065293b005ee4025f539d34efa *man/procD.pgls.Rd
 2e915d39d1b79932fb1633dbdcc28ce8 *man/pupfish.Rd
 24203f2fe7e9af73e10becb83f54f937 *man/ratland.Rd
 cb46da06afb9b58e54ad31f7a7a02f4c *man/read.morphologika.Rd
-b44aeb03963c35970dbdd2dc2923d215 *man/read.ply.Rd
+ed6459cf4ad53f9c918f6aa526d81b26 *man/read.ply.Rd
 64f811957932c1d67cc8324ee2f706e5 *man/readland.nts.Rd
 0dd6d2b6184a56612b523beab049ce9b *man/readland.shapes.Rd
 ea009143d058a4fc3dddda1c20480b83 *man/readland.tps.Rd
@@ -124,7 +124,7 @@ da1241dd835f95675cc7126b2a7ec61a *man/two.d.array.Rd
 4678254db827c8ff8caf6c5beb8157be *man/warpRefOutline.Rd
 d9119f721918f22c267db843023a86fe *man/writeland.tps.Rd
 0df5eeb3a58209101f79b3cd74726ff5 *NAMESPACE
-3a680c40d686beb979eae5cf8ebc56fc *NEWS.md
+4c7646ef4e225824ef18e57627af8fcc *NEWS.md
 92239d51a080ccd3fc3a9f7ef67d1b8c *R/arrayspecs.r
 fd5e4f7c9f42142153ff2f5d85089de0 *R/bilat.symmetry.r
 a032dd6d0bb6e9d565ea12e840249697 *R/build.template.r
@@ -138,7 +138,7 @@ ddcc6629196b8e66ef9a2e92c093f041 *R/define.modules.r
 40fc3f0daa4f943ce38979e67f2565ac *R/define.sliders.r
 b557de0a864900966143895a54c14350 *R/deprecated.defunct.r
 a38ff2f2af270bf26299b1569cc734fc *R/digit.curves.r
-9ba820d500028f22f97a64a9796abc8f *R/digit.fixed.r
+f14e7f81ecc74bda3fded01d703c7d23 *R/digit.fixed.r
 58ac3c6102b455136e748471fb62df29 *R/digitize2d.r
 73ec077b72b6ad3c9a990c7181cc5fa0 *R/digitsurface.r
 068db4d412d39586d25d20bf3f4118fe *R/editTemplate.r
@@ -170,7 +170,7 @@ ffeb4fb45afe9b0e8fe9c22bd5747931 *R/plotTangentSpace.r
 bd04dc925e554858793cb7882fffe66d *R/procD.lm.r
 5037db11c59a8f6e9932467ae2b8e657 *R/procD.pgls.r
 df3f4cc6406dc0c737ee2ff08c2a0e3d *R/read.morphologika.r
-78cce3e5bd8c5616cdc6e505485fad4e *R/read.ply.r
+dc4c769a5bb24cb2ba04ddaa92c82b2d *R/read.ply.r
 e1d1c6e3339c3f1199f60c91baf09146 *R/readland.nts.r
 46dd4fc7debdff37f55e52b6ec3e0741 *R/readland.shapes.r
 5f89f13c674317f621777f9aa32d1596 *R/readland.tps.r
