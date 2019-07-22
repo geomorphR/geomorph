@@ -24,8 +24,8 @@
 #' # Using the example scallop PLY
 #' data(scallopPLY) 
 #' myply <- scallopPLY$ply
-#' myply$material <- "gray" # using color word
-#' myply$material <- "#FCE6C9" # using RGB code
+#' myply$material$color <- "gray" # using color word
+#' myply$material$color <- "#FCE6C9" # using RGB code
 read.ply <- function (file, ShowSpecimen = TRUE, addNormals = TRUE) 
 {
   plyfile <- scan(file = file, what = "char", sep = "\n", strip.white = TRUE, 

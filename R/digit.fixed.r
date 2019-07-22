@@ -67,7 +67,8 @@ digit.fixed <- function(spec, fixed, index=FALSE, ptsize = 1, center = TRUE)    
     }
     if (center == FALSE){specimen <- as.matrix(t(spec$vb)[,-4])}
     mesh <- spec 
-    if (is.null(mesh$material)) { mesh$material <- "gray" }
+    if (is.null(mesh$material)) mesh$material$color <- "gray" 
+    if (is.null(mesh$material$color)) mesh$material$color <- "gray" 
   } else if (inherits(spec, "matrix") == FALSE) {
     stop ("File is not a shape3d/mesh3d object or xyz matrix")
   } else if (inherits(spec, "matrix") == TRUE && dim(spec)[2]==3) {

@@ -220,9 +220,8 @@ Effect.size.matrix <- function(M, center=TRUE){
 # generates projection matrix from covariance matrix
 # used in lm.rrpp
 
-Cov.proj <- function(Cov, id){
-  if(is.null(id)) Cov <- Cov else
-    Cov <- Cov[id, id]
+Cov.proj <- function(Cov, id = NULL){
+  Cov <- if(is.null(id)) Cov else Cov[id, id]
   sym <- isSymmetric(Cov)
   eigC <- eigen(Cov, symmetric = sym)
   lambda <- zapsmall(abs(Re(eigC$values)))
