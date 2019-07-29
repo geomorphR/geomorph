@@ -38,7 +38,8 @@ plotspec <- function (spec, digitspec, fixed=NULL, ptsize = 1, centered = FALSE,
     }
     if(centered == FALSE){specimen <- as.matrix(t(spec$vb)[,-4])}
     mesh <- spec 
-    if (is.null(mesh$material)) { mesh$material <- "gray" }
+    if (is.null(mesh$material)) mesh$material$color <- "gray" 
+    if (is.null(mesh$material$color)) mesh$material$color <- "gray" 
   } 
   else if (inherits(spec, "matrix") == FALSE) {
     stop ("File is not a shape3d/mesh3d object or xyz matrix")
