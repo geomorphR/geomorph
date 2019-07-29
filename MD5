@@ -124,10 +124,10 @@ da1241dd835f95675cc7126b2a7ec61a *man/two.d.array.Rd
 4678254db827c8ff8caf6c5beb8157be *man/warpRefOutline.Rd
 d9119f721918f22c267db843023a86fe *man/writeland.tps.Rd
 0df5eeb3a58209101f79b3cd74726ff5 *NAMESPACE
-4c7646ef4e225824ef18e57627af8fcc *NEWS.md
+73f3ba35b2940733f9bbd4c2e3728881 *NEWS.md
 92239d51a080ccd3fc3a9f7ef67d1b8c *R/arrayspecs.r
 fd5e4f7c9f42142153ff2f5d85089de0 *R/bilat.symmetry.r
-a032dd6d0bb6e9d565ea12e840249697 *R/build.template.r
+d7d67e9218f84609046423cb222f5c44 *R/build.template.r
 816a970cede328c3aec9f60c652e9b3f *R/combine.subsets.r
 bbeac77f9ca6094ea8283e64ecc2ef2a *R/compare.evol.rates.r
 d07ba05e9c4ba71ee07b20df5b7e0de9 *R/compare.multi.evol.rates.r
@@ -140,7 +140,7 @@ b557de0a864900966143895a54c14350 *R/deprecated.defunct.r
 a38ff2f2af270bf26299b1569cc734fc *R/digit.curves.r
 f14e7f81ecc74bda3fded01d703c7d23 *R/digit.fixed.r
 58ac3c6102b455136e748471fb62df29 *R/digitize2d.r
-73ec077b72b6ad3c9a990c7181cc5fa0 *R/digitsurface.r
+3b25e37fdc153dfac76dce5be3002db0 *R/digitsurface.r
 068db4d412d39586d25d20bf3f4118fe *R/editTemplate.r
 c38531b2e37e698a0ae0ea5a7062bcd8 *R/estimate.missing.r
 aac6a4f8a759473e8c37048e5c8e3d91 *R/findMeanSpec.r
@@ -181,7 +181,7 @@ ef0a7ddc250a612a072bd2f4248586f2 *R/shapeHulls.r
 2598f7548a04508e2be8ecc8171b90ae *R/shared.support.code.R
 d9170bf4815f09297472b5986b2b5854 *R/two.b.pls.r
 2e693d8b4f3c21d742737b97d1773119 *R/two.d.array.r
-5dc9880353f6f20bfa409b77137759e8 *R/warpRefMesh.r
+4dfeb23e4bf64f6167669a5fc2088bb3 *R/warpRefMesh.r
 59d493f9cc61f036c40f49bf8b7bb3e0 *R/warpRefOutline.r
 ad572d6203f667d37641cee3adbc72b7 *R/writeland.tps.r
 ba685ee02f8f9e6c5b54f5b0295f350a *README.md

@@ -56,8 +56,9 @@ warpRefMesh <- function(mesh, mesh.coord, ref, color=NULL, centered=FALSE){
   cat("\nWarping mesh\n")
   warp <- tps2d3d(mesh.vb, coord, ref)
   mesh$vb[1:3,] <- t(warp)
-     if(is.null(color)==FALSE){ mesh$material <- color }
-     if(is.null(color)==TRUE && is.null(mesh$material)==TRUE) { mesh$material <- "gray" }
+  if(is.null(mesh$material)) mesh$material <- list()
+     if(!is.null(color)){ mesh$material$color <- color }
+     if(is.null(color) && is.null(mesh$material$color)) { mesh$material$color <- "gray" }
   if(!is.null(mesh$normals)){ mesh <- addNormals(mesh)}
   open3d(); shade3d(mesh,  meshColor="legacy"); title3d(main="Warped Ref Mesh")
   return(mesh)
