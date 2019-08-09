@@ -109,7 +109,7 @@
 gm.prcomp <- function (A, phy = NULL, align.to.phy = FALSE,
                        GLS = FALSE, ...) {
   
-  if(is.array(dim(A))) {
+  if(is.array(A)) {
     
     dims <- dim(A)
     if(length(dims) == 3) { 
