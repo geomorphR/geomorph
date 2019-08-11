@@ -121,9 +121,12 @@ fixed.angle<-function(A, art.pt=NULL, angle.pts.1, angle.pts.2,
   if(degrees)  angle = angle*pi/180
   dev.angle <- (angl - mean(angl)) + angle
   
+  check <- mean(A[angle.pts.1,1,1])
+  if(check < 0){dev.angle <- -1 * dev.angle}
+  
   for (i in 1:n){   
     r <- matrix(c(cos(dev.angle[i]),-sin(dev.angle[i]),
-                 sin(dev.angle[i]),cos(dev.angle[i])),2, 2, byrow = TRUE)
+                 sin(dev.angle[i]),cos(dev.angle[i])),2, 2)
     y <- A.list[[i]]$y
     A[,,i] <- y
     A[rot.pts,,i] = y[rot.pts,] %*% r
