@@ -145,8 +145,10 @@ gm.prcomp <- function (A, phy = NULL, align.to.phy = FALSE,
     N <- length(phy$tip.label); Nnode <- phy$Nnode
     if(N != n)
       stop("Number of taxa in data matrix and tree are not equal.\n", call. = FALSE)
-    if(is.null(rownames(Y))) 
+    if(is.null(rownames(Y))) {
       warning("Shape dataset does not include species names. Assuming the order of data matches phy$tip.label")
+      rownames(Y) <- phy$tip.label
+    }
 
     ancY <- anc.BM(phy, Y)
     C <- fast.phy.vcv(phy)

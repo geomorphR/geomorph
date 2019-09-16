@@ -46,7 +46,7 @@ a598044482a6c3e39517b798b654c57e *man/hummingbirds.Rd
 d6656b8b967b787cf69d371f1cda36c4 *man/modularity.test.Rd
 b9f1f660738b5fefcddc25a81aa3b90d *man/morphol.disparity.Rd
 00e77dd77ac4f29ace5334a4df4aa23e *man/mosquito.Rd
-869c60d686d6e631ab23e77de8986031 *man/mshape.Rd
+e80eedb5f74cd9957d11429a15ee2bce *man/mshape.Rd
 1568730ef6ac1237622ae188e1928c1b *man/nested.update.Rd
 bb4619900cf99dd809f69611dd7099fb *man/phylo.integration.Rd
 460dcf7805445621b117edb837ffd61b *man/phylo.modularity.Rd
@@ -124,7 +124,7 @@ da1241dd835f95675cc7126b2a7ec61a *man/two.d.array.Rd
 4678254db827c8ff8caf6c5beb8157be *man/warpRefOutline.Rd
 d9119f721918f22c267db843023a86fe *man/writeland.tps.Rd
 0df5eeb3a58209101f79b3cd74726ff5 *NAMESPACE
-73f3ba35b2940733f9bbd4c2e3728881 *NEWS.md
+50f239209c4929a8e7492688b8e89473 *NEWS.md
 92239d51a080ccd3fc3a9f7ef67d1b8c *R/arrayspecs.r
 fd5e4f7c9f42142153ff2f5d85089de0 *R/bilat.symmetry.r
 d7d67e9218f84609046423cb222f5c44 *R/build.template.r
@@ -146,10 +146,10 @@ c38531b2e37e698a0ae0ea5a7062bcd8 *R/estimate.missing.r
 aac6a4f8a759473e8c37048e5c8e3d91 *R/findMeanSpec.r
 089a02a38c0381ac0381f0ae8f5b07f7 *R/fixed.angle.r
 d4da6eba1dc1a56c0b1ad94c0839c825 *R/geomorph.data.frame.r
-0e54b0e9526cdd3bea39fecaa785e287 *R/geomorph.support.code.r
+28a30fc205a7b1c72247edf07d7716ac *R/geomorph.support.code.r
 df3a72e7c5520eb9f290d3287c4cb229 *R/geomorph.utils.r
 da04ce8ab14c8a0a7bf2751654bbab6e *R/globalIntegration.r
-4ea32503894d7a96a0578c82a21c62e8 *R/gm.prcomp.R
+6d55a4e085e1f0db1180d30cb0e037f3 *R/gm.prcomp.R
 bf0750e2582fc2c3b5454ad48b7f3cbb *R/gpagen.r
 8c06e49837953d941a01c82b0111935a *R/gridPar.r
 a0316d5ff3326e7cebb6aee734b4254a *R/integration.test.r
@@ -158,7 +158,7 @@ a0316d5ff3326e7cebb6aee734b4254a *R/integration.test.r
 15bc32ce2d7448e0a8f7e8b543d47095 *R/morphol.disparity.r
 59ec619cc2005ae0d5b26fa1369971b8 *R/phylo.integration.r
 df8568fcede2ca442c9fb6be6da0401c *R/phylo.modularity.r
-ab3120655acc941b9ba78662661d15ba *R/physignal.r
+320b6190db212047a1b24e2693e431b9 *R/physignal.r
 bec62a0f9ec0c3e55b162338e4d977f9 *R/picknplot.shape.r
 2302f21d0af2a0e44038ff696b306e9e *R/plotAllometry.r
 c1cead3306cb3d7b1bd3ed5d99fc89af *R/plotAllSpecimens.r

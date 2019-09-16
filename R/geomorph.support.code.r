@@ -148,7 +148,7 @@ NULL
 #'  One can then use the generic function \code{\link{plot}} to produce a numbered plot of landmark 
 #'  positions and potentially add links, in order to review landmark positions
 #'
-#' @param A Either a list (length n, p x k), A 3D array (p x k x n), or a matrix (pk X n) containing GPA-aligned coordinates for a set of specimens
+#' @param A Either a list (length n, p x k), A 3D array (p x k x n), or a matrix (n x pk) containing GPA-aligned coordinates for a set of specimens
 #' @keywords utilities
 #' @export
 #' @author Julien Claude
@@ -159,9 +159,19 @@ NULL
 #'
 #' mshape(Y.gpa$coords)   #mean (consensus) configuration
 mshape<-function(A){
-  if(is.array(A)) res <- apply(A,c(1,2),mean)
+  if(is.array(A)) {
+    dims <- dim(A)
+    if(length(dims) == 3) res <- apply(A,c(1,2),mean) else
+      if(length(dims) == 2){
+        if(dims[[2]] == 2 || dims[[2]] == 3) res <- A else
+        {
+          cat("\nWarning: It appears that data are in a matrix with specimens as rows.")
+          cat("\nMeans are found for each column of the matrix.\n\n")
+          res <- colMeans(A)
+        }
+      }
+  }
   if(is.list(A)) res <- Reduce("+", A)/length(A)
-  if(is.matrix(A)) res <- colMeans(A)
   if(!is.array(A) && !is.list(A) && !is.matrix(A)) stop("There are not multiple configurations from which to obtain a mean.")
   class(res) <- c("mshape", "matrix")
   return(res)
@@ -2323,7 +2333,7 @@ pic.prep <- function(phy, nx, px){
 
 ace.pics <- function(ntip, nnode, edge1, edge2, edge_len, phe, contr,
                  var_contr, tip.label, i.seq, x) {
-  phe[1:ntip,] <- if (is.null(names(x))) x else x[tip.label,]
+  phe[1:ntip,] <- if (is.null(rownames(x))) x else x[tip.label,]
   N <- ntip + nnode
   for(ii in 1:nnode) {
     anc <- edge1[i.seq[ii]]
@@ -2348,16 +2358,20 @@ ace.pics <- function(ntip, nnode, edge1, edge2, edge_len, phe, contr,
 # multivariate as opposed to fastAnc
 
 anc.BM <- function(phy, Y){
+  if(!is.matrix(Y)) Y <- as.matrix(Y)
+  Y <- as.matrix(Y[phy$tip.label,])
   phy <- reorder.phy(phy)
   n <- length(phy$tip.label)
   out <- t(sapply(1:phy$Nnode, function(j){
     phy.j <- multi2di.phylo(root.phylo(phy, node = j + n))
     preps <- pic.prep(phy.j, NROW(Y), NCOL(Y))
-    preps$x <- as.matrix(Y)[phy$tip.label,]
+    preps$x <- Y
     preps$tip.label <- phy$tip.label
     out <- do.call(ace.pics, preps)
     out[n + 1,]
   }))
+  
+  if(length(out) == (n-1)) out <- t(out)
   dimnames(out) <- list(1:phy$Nnode + length(phy$tip.label), colnames(Y))
   out
 }

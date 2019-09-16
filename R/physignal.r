@@ -102,7 +102,6 @@ physignal <- function(A, phy, iter=999, seed=NULL, print.progress = FALSE){
   #  x<-x[phy$tip.label,]
   
   if(is.null(dim(x))) x <- matrix(x, dimnames = list(names(x))) 
-  x <- as.matrix(x)
   phy.parts <- phylo.mat(x, phy)
   invC <- phy.parts$invC
   D.mat <- phy.parts$D.mat
@@ -139,6 +138,7 @@ physignal <- function(A, phy, iter=999, seed=NULL, print.progress = FALSE){
   p.val <- pval(K.rand)
   
   # Kmult by paca
+  x <- as.matrix(x)
   PaCA <- ordinate(x, A = C, newdata = anc.BM(phy, x))
   class(PaCA) <- c("gm.prcomp", class(PaCA))
   PaCA$phy <- phy

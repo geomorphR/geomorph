@@ -7,6 +7,7 @@
 * Added a one-tail/two-tailed option to compare.pls
 
 ### BUG FIXES
+* Fixed `mshape` inability to distinguish between one p x k specimen and a n x pk matrix.
 * Fixed issue with 3D TPS grids in plotRefToTarget
 * Fixed issue with digit.fixed, digitsurface, plotspec, warpRefMesh, build.template, for null ply $material, due to rgl updates
 * Updated example in read.ply to not give bad advice for ply $material
