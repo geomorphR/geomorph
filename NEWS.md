@@ -7,6 +7,7 @@
 ### OTHER CHANGES
 
 ### BUG FIXES 
+* Fixed `mshape` inability to distinguish between one p x k specimen and a n x pk matrix.
 * Fixed bug with `combine.subsets` for gpagen objects
 * Tweaked `procD.lm` to work better with missing data frames
 * Fixed p-value miscalculation in `bilat.symmetry`

@@ -7,7 +7,7 @@
 mshape(A)
 }
 \arguments{
-\item{A}{Either a list (length n, p x k), A 3D array (p x k x n), or a matrix (pk X n) containing GPA-aligned coordinates for a set of specimens}
+\item{A}{Either a list (length n, p x k), A 3D array (p x k x n), or a matrix (n x pk) containing GPA-aligned coordinates for a set of specimens}
 }
 \description{
 Estimate the mean shape for a set of aligned specimens
