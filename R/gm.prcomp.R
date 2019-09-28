@@ -151,8 +151,9 @@ gm.prcomp <- function (A, phy = NULL, align.to.phy = FALSE,
     }
 
     ancY <- anc.BM(phy, Y)
-    C <- fast.phy.vcv(phy)
-    if(!is.null(rownames(Y))) C <- C[rownames(Y), rownames(Y)]
+    if(!is.null(rownames(Y))) rownames(Y) <- phy$tip.label
+    phy.mat <- phylo.mat(Y, phy)
+    C <- phy.mat$C
     if(align.to.phy) ord.args$A <- C
     if(GLS) ord.args$Cov <- C
     ord.args$newdata <- ancY
@@ -178,6 +179,12 @@ gm.prcomp <- function (A, phy = NULL, align.to.phy = FALSE,
     out$ancestors <- ancY
     out$phy <- phy
   }
+  if(GLS) {
+    Pcov <- phy.mat$D.mat
+    Pcov <- Pcov[rownames(C), rownames(C)]
+    out$Pcov <- Pcov
+  } else out$Pcov <- NULL
+  
   class(out) <- c("gm.prcomp", class(out))
   out
 }

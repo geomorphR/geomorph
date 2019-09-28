@@ -147,9 +147,9 @@ aac6a4f8a759473e8c37048e5c8e3d91 *R/findMeanSpec.r
 089a02a38c0381ac0381f0ae8f5b07f7 *R/fixed.angle.r
 d4da6eba1dc1a56c0b1ad94c0839c825 *R/geomorph.data.frame.r
 28a30fc205a7b1c72247edf07d7716ac *R/geomorph.support.code.r
-df3a72e7c5520eb9f290d3287c4cb229 *R/geomorph.utils.r
+8093387f544774b1fb1aba57ad26321e *R/geomorph.utils.r
 da04ce8ab14c8a0a7bf2751654bbab6e *R/globalIntegration.r
-6d55a4e085e1f0db1180d30cb0e037f3 *R/gm.prcomp.R
+8427078138a563f7f5dcebcb7c8f847b *R/gm.prcomp.R
 bf0750e2582fc2c3b5454ad48b7f3cbb *R/gpagen.r
 8c06e49837953d941a01c82b0111935a *R/gridPar.r
 a0316d5ff3326e7cebb6aee734b4254a *R/integration.test.r
@@ -159,7 +159,7 @@ a0316d5ff3326e7cebb6aee734b4254a *R/integration.test.r
 59ec619cc2005ae0d5b26fa1369971b8 *R/phylo.integration.r
 df8568fcede2ca442c9fb6be6da0401c *R/phylo.modularity.r
 320b6190db212047a1b24e2693e431b9 *R/physignal.r
-bec62a0f9ec0c3e55b162338e4d977f9 *R/picknplot.shape.r
+f3b0cd39ba1b6b1c47f3dffefd7a9ac4 *R/picknplot.shape.r
 2302f21d0af2a0e44038ff696b306e9e *R/plotAllometry.r
 c1cead3306cb3d7b1bd3ed5d99fc89af *R/plotAllSpecimens.r
 9f51066884f71bfc06335604055beead *R/plotGMPhyloMorphoSpace.r

@@ -790,6 +790,7 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, phylo = FALSE,
   options(warn = -1)
   if(NCOL(x$x) == 1) stop("Only one PC.  No plotting capability with this function.\n", 
                           call. = FALSE)
+  Pcov <- x$Pcov
   v <- x$d/sum(x$d)
   if(x$alignment == "principal")  {
     xlabel <- paste("PC ", axis1, ": ", round(v[axis1] * 100, 2), "%", sep = "")
@@ -841,12 +842,12 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, phylo = FALSE,
   out$GM$A <- x$A
   
   out$plot.args <- plot.args
+  out$Pcov <- Pcov
   if(phylo) {
     out$phylo <- list()
     out$phylo$phy <- phy
     out$phylo$phylo.par <- phylo.par
     out$phylo$phy.pcdata <- phy.pcdata
-    
   }
   class(out) <- "plot.gm.prcomp"
   invisible(out)
