@@ -25,6 +25,7 @@
 #' }
 #' 
 #' @param ... saved analyses of class pls
+#' @param two.tailed A logical value to indicate whether a two-tailed test (typical and default) should be performed.
 #' @keywords analysis
 #' @export
 #' @author Michael Collyer
@@ -73,8 +74,9 @@
 #' 
 #'  compare.pls(MF = integ.tests$Marsh.F, MM = integ.tests$Marsh.M)
 #' 
- compare.pls <- function(...){
+ compare.pls <- function(..., two.tailed = TRUE){
    dots <- list(...)
+   tails <- if(two.tailed) 2 else 1
    if(length(dots) == 1) n <- length(dots[[1]]) else n <- length(dots)
    if(n == 1) stop("At least two objects of class pls are needed")
    if(length(dots) == 1) {
@@ -90,15 +92,14 @@
    k <- length(list.check)
    if(is.null(list.names)) list.names <- as.list(substitute(list(...)))[-1L]
    k.combn <- combn(k,2)
-   list.drs <- sapply(1:k, function(j) dots[[j]]$r.pls - mean(dots[[j]]$random.r[-1]))
-   list.sds <- sapply(1:k, function(j) sdn(dots[[j]]$random.r[-1]))
+   list.sds <- sapply(1:k, function(j) sdn(scale(dots[[j]]$random.r[-1])))
    list.zs <- sapply(1:k, function(j) effect.size(dots[[j]]$random.r, center=TRUE))
    z12 <- sapply(1:ncol(k.combn), function(j){
      a <- k.combn[1,j]; b <- k.combn[2,j]
-     r1 <- list.drs[a]; r2 <- list.drs[b]; sd1 <- list.sds[a]; sd2 <- list.sds[b]
-     abs(r1-r2)/sqrt(sd1^2+sd2^2)
+     r1 <- list.zs[a]; r2 <- list.zs[b]; sd1 <- list.sds[a]; sd2 <- list.sds[b]
+     (r1-r2)/sqrt(sd1^2+sd2^2)
    })
-   z12.p <- sapply(1:length(z12), function(j) 1-pnorm(z12[[j]]))
+   z12.p <- sapply(1:length(z12), function(j) pnorm(abs(z12[[j]]), lower.tail = FALSE) * tails)
    d <- rep(0,k); names(d) <- list.names
    D <-dist(d)
    z12.pw <- p12.pw <- D

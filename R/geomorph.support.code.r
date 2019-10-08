@@ -164,11 +164,11 @@ mshape<-function(A){
     if(length(dims) == 3) res <- apply(A,c(1,2),mean) else
       if(length(dims) == 2){
         if(dims[[2]] == 2 || dims[[2]] == 3) res <- A else
-          {
-            cat("\nWarning: It appears that data are in a matrix with specimens as rows.")
-            cat("\nMeans are found for each column of the matrix.\n\n")
-            res <- colMeans(A)
-          }
+        {
+          cat("\nWarning: It appears that data are in a matrix with specimens as rows.")
+          cat("\nMeans are found for each column of the matrix.\n\n")
+          res <- colMeans(A)
+        }
       }
   }
   if(is.list(A)) res <- Reduce("+", A)/length(A)
@@ -176,6 +176,10 @@ mshape<-function(A){
   class(res) <- c("mshape", "matrix")
   return(res)
 }
+
+#####----------------------------------------------------------------------------------------------------
+
+# SUPPORT FUNCTIONS
 
 # scanTPS
 # Scans data and other info from TPS files
@@ -431,12 +435,14 @@ pGpa <- function(Y, PrinAxes = FALSE, Proj = FALSE, max.iter = 5){
 getSurfPCs <- function(y, surf){
   V <- La.svd(center(y), nu=0)$vt
   k <- ncol(y)
+  kk <- round(0.05 * length(surf))
+  kk <- max(c(k, kk))
   p <- nrow(y)
   pc.match <- 1:p; pc.match[-surf] = NA
   nearpts <- lapply(1:p, function(j) {
     nn <- pc.match[j]
     if(is.na(nn)) 0 else
-      c(nearest(y,nn, k=k+1),nn)})
+      c(nearest(y, nn, k = kk+1), nn)})
   tmp.pts <- lapply(1:p, function(j) {
     k <- nearpts[[j]]
     if(sum(k) > 0) x <- center(y[k,]) else x <- NA
@@ -447,7 +453,7 @@ getSurfPCs <- function(y, surf){
       pc <- La.svd(x, nu=0)$vt
       s=sign(diag(crossprod(V,pc)))
       pc*s
-    } else 0
+      } else 0
   })
   p1x <- sapply(1:p, function(j) {x <- pc.dir[[j]]; if(is.matrix(x)) x[1,1] else 0})
   p1y <- sapply(1:p, function(j) {x <- pc.dir[[j]]; if(is.matrix(x)) x[1,2] else 0})
@@ -458,10 +464,9 @@ getSurfPCs <- function(y, surf){
     p2z <- sapply(1:p, function(j) {x <- pc.dir[[j]]; if(is.matrix(x)) x[2,3] else 0})
   } else
   {p1z <- NULL; p2z <- NULL}
-  
+
   list(p1x=p1x,p1y=p1y, p2x=p2x, p2y=p2y, p1z=p1z, p2z=p2z)
 }
-
 
 # semilandmarks.slide.tangents.BE
 # slides landmarks along tangents of curves using bending energy
@@ -2328,7 +2333,7 @@ pic.prep <- function(phy, nx, px){
 
 ace.pics <- function(ntip, nnode, edge1, edge2, edge_len, phe, contr,
                  var_contr, tip.label, i.seq, x) {
-  phe[1:ntip,] <- if (is.null(names(x))) x else x[tip.label,]
+  phe[1:ntip,] <- if (is.null(rownames(x))) x else x[tip.label,]
   N <- ntip + nnode
   for(ii in 1:nnode) {
     anc <- edge1[i.seq[ii]]
@@ -2353,15 +2358,20 @@ ace.pics <- function(ntip, nnode, edge1, edge2, edge_len, phe, contr,
 # multivariate as opposed to fastAnc
 
 anc.BM <- function(phy, Y){
+  if(!is.matrix(Y)) Y <- as.matrix(Y)
+  Y <- as.matrix(Y[phy$tip.label,])
   phy <- reorder.phy(phy)
   n <- length(phy$tip.label)
   out <- t(sapply(1:phy$Nnode, function(j){
     phy.j <- multi2di.phylo(root.phylo(phy, node = j + n))
     preps <- pic.prep(phy.j, NROW(Y), NCOL(Y))
     preps$x <- Y
+    preps$tip.label <- phy$tip.label
     out <- do.call(ace.pics, preps)
     out[n + 1,]
   }))
+  
+  if(length(out) == (n-1)) out <- t(out)
   dimnames(out) <- list(1:phy$Nnode + length(phy$tip.label), colnames(Y))
   out
 }

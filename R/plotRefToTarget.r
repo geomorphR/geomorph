@@ -250,7 +250,7 @@ plotRefToTarget<-function(M1, M2, mesh= NULL, outline=NULL,
       }
     }
     # Regular TPS plotting for 3D objects
-    if(method=="TPS" && class(M2) == "matrix"){
+    if(method=="TPS" && any(class(M2) == "matrix")){
       old.par <- par(no.readonly = TRUE)
       layout(matrix(c(1,2),1,2))
       par(mar=c(1,1,1,1))
