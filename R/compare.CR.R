@@ -11,7 +11,7 @@
 #' standard error from the sampling distributions of the CR analyses. The method follows that of Adams and Collyer (2019) used 
 #' to compare patterns of integration via PLS across datasets
 #'  
-#' To use this function, simply perform \code{\link{modularity.test}}, or \code{\link{phylo.modulatiry}} on as many samples or 
+#' To use this function, simply perform \code{\link{modularity.test}}, or \code{\link{phylo.modularity}} on as many samples or 
 #' alternative modular hypotheses as desired.  Any number of objects of class CR can be input. For the case of the latter, one may wish to
 #' include the null hypothesis of no modularity (i.e., that all variables belong to a single module). For this, the CR.null = TRUE option
 #' should be specified. Finally, one may perform the comparison as either a one-tailed or a two-tailed (default) test.
@@ -44,7 +44,8 @@
 #' 
 #' # coords.gp <- coords.subset(Y.gpa$coords, group)
 #' 
-#' # modularity.tests <- lapply(1:nlevels(group), function(j) modularity.test(coords.gp[[j]],land.gps, iter = 499))
+#' # modularity.tests <- lapply(1:nlevels(group), function(j) modularity.test(coords.gp[[j]],
+#' #  land.gps, iter = 499))
 #' ## the lapply function performs the modularity test on each 3D array in the lists provided
 #' 
 #' # modularity.tests[[1]]
@@ -57,8 +58,10 @@
 #' 
 #' # Example 2: Compare alternative modular hypotheses
 #' 
-#' # land.gps3 <- rep('a',56); land.gps3[39:48]<-'b'; land.gps3[c(6:9,28:38)] <- 'c'  #3 module hypothesis (tail now a module)
-#' # land.gps4 <- rep('a',56); land.gps4[39:48]<-'b'; land.gps4[c(6:9,28:38)] <- 'c'; land.gps4[c(10,49:56)] <- 'd'  #4 module hypothesis (eye now a module)
+#' # land.gps3 <- rep('a',56); land.gps3[39:48]<-'b'; land.gps3[c(6:9,28:38)] <- 'c' 
+#'    #3 module hypothesis (tail now a module)
+#' # land.gps4 <- rep('a',56); land.gps4[39:48]<-'b'; land.gps4[c(6:9,28:38)] <- 'c'; 
+#'  # land.gps4[c(10,49:56)] <- 'd'  #4 module hypothesis (eye now a module)
 #' 
 #' # m3.test <- modularity.test(coords.gp$Marsh.F,land.gps3, iter = 499)
 #' # m4.test <- modularity.test(coords.gp$Marsh.F,land.gps4, iter = 499)
@@ -90,7 +93,7 @@ compare.CR <- function(...,CR.null = TRUE, two.tailed = TRUE){
    if(is.null(list.names)) list.names <- as.list(substitute(list(...)))[-1L]
    k.combn <- combn(k,2)
    list.sds <- sapply(1:k, function(j) sdn(scale(dots[[j]]$random.CR[-1])))
-   list.zs <- sapply(1:k, function(j) RRPP:::effect.size(dots[[j]]$random.CR, center=TRUE))  #NOTE: pull out RRPP::: once in geomorph
+   list.zs <- sapply(1:k, function(j) effect.size(dots[[j]]$random.CR, center=TRUE))  #NOTE: pull out RRPP::: once in geomorph
    if (CR.null == TRUE){
       k <- k + 1
       k.combn <- combn(k,2)
