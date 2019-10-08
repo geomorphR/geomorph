@@ -21,7 +21,6 @@ Suggests: knitr,
     rmarkdown,
     testthat
 VignetteBuilder: knitr
-RoxygenNote: 6.1.1
 NeedsCompilation: no
 Packaged: 2019-10-07 20:17:59 UTC; dcadams
 Author: Dean Adams [aut, cre],
