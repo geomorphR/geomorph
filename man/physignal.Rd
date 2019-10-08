@@ -4,7 +4,7 @@
 \alias{physignal}
 \title{Assessing phylogenetic signal in Procrustes shape variables}
 \usage{
-physignal(A, phy, iter = 999, seed = NULL, print.progress = TRUE)
+physignal(A, phy, iter = 999, seed = NULL, print.progress = FALSE)
 }
 \arguments{
 \item{A}{A matrix (n x [p x k]) or 3D array (p x k x n) containing Procrustes shape variables for a set of specimens}
@@ -65,6 +65,7 @@ Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment
 PS.shape <- physignal(A=Y.gpa$coords,phy=plethspecies$phy,iter=999)
 summary(PS.shape)
 plot(PS.shape)
+plot(PS.shape$PaCA, phylo = TRUE)
 
 #Test for phylogenetic signal in size
 PS.size <- physignal(A=Y.gpa$Csize,phy=plethspecies$phy,iter=999)
@@ -79,6 +80,6 @@ Adams, D.C. 2014. A generalized K statistic for estimating phylogenetic signal f
 other high-dimensional multivariate data. Systematic Biology.  63:685-697.
 }
 \author{
-Dean Adams
+Dean Adams and Michael Collyer
 }
 \keyword{analysis}

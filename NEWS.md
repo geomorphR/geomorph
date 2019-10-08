@@ -1,3 +1,18 @@
+# CHANGES IN GEOMORPH VERSION 3.1.3 (Patch Release)
+
+### NEW FEATURES
+* New function added: `compare.CR 
+
+### OTHER CHANGES
+* Adjustment to getSurfPCs to allow for more robust surface sliding
+* Added a one-tail/two-tailed option to compare.pls
+
+### BUG FIXES
+* Fixed `mshape` inability to distinguish between one p x k specimen and a n x pk matrix.
+* Fixed issue with 3D TPS grids in plotRefToTarget
+* Fixed issue with digit.fixed, digitsurface, plotspec, warpRefMesh, build.template, for null ply $material, due to rgl updates
+* Updated example in read.ply to not give bad advice for ply $material
+
 # CHANGES IN GEOMORPH VERSION 3.1.2 (Patch Release)
 
 ### NEW FEATURES
@@ -7,7 +22,6 @@
 ### OTHER CHANGES
 
 ### BUG FIXES 
-* Fixed `mshape` inability to distinguish between one p x k specimen and a n x pk matrix.
 * Fixed bug with `combine.subsets` for gpagen objects
 * Tweaked `procD.lm` to work better with missing data frames
 * Fixed p-value miscalculation in `bilat.symmetry`

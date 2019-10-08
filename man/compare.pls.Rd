@@ -4,10 +4,12 @@
 \alias{compare.pls}
 \title{Comparisons of Effect Sizes from Partial Least Squares}
 \usage{
-compare.pls(...)
+compare.pls(..., two.tailed = TRUE)
 }
 \arguments{
 \item{...}{saved analyses of class pls}
+
+\item{two.tailed}{A logical value to indicate whether a two-tailed test (typical and default) should be performed.}
 }
 \value{
 An object of class compare.pls, returns a list of the following
