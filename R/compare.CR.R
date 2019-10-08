@@ -45,7 +45,7 @@
 #' # coords.gp <- coords.subset(Y.gpa$coords, group)
 #' 
 #' # modularity.tests <- lapply(1:nlevels(group), function(j) modularity.test(coords.gp[[j]],
-#' #  land.gps, iter = 499))
+#' #  land.gps, iter = 499, print.progress = FALSE))
 #' ## the lapply function performs the modularity test on each 3D array in the lists provided
 #' 
 #' # modularity.tests[[1]]
@@ -63,8 +63,8 @@
 #' # land.gps4 <- rep('a',56); land.gps4[39:48]<-'b'; land.gps4[c(6:9,28:38)] <- 'c'; 
 #'  # land.gps4[c(10,49:56)] <- 'd'  #4 module hypothesis (eye now a module)
 #' 
-#' # m3.test <- modularity.test(coords.gp$Marsh.F,land.gps3, iter = 499)
-#' # m4.test <- modularity.test(coords.gp$Marsh.F,land.gps4, iter = 499)
+#' # m3.test <- modularity.test(coords.gp$Marsh.F,land.gps3, iter = 499, print.progress = FALSE)
+#' # m4.test <- modularity.test(coords.gp$Marsh.F,land.gps4, iter = 499, print.progress = FALSE)
 #' 
 #' # model.Z <- compare.CR(modularity.tests[[1]],m3.test,m4.test, CR.null = TRUE)
 #' # model.Z 
