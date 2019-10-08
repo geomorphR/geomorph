@@ -1,6 +1,7 @@
-# INCIPIENT CHANGES IN GEOMORPH VERSION 3.1.3.0900
+# CHANGES IN GEOMORPH VERSION 3.1.3 (Patch Release)
 
 ### NEW FEATURES
+* New function added: `compare.CR 
 
 ### OTHER CHANGES
 * Adjustment to getSurfPCs to allow for more robust surface sliding
