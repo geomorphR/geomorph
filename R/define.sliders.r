@@ -79,13 +79,13 @@
 #' ## Examples of AUTO mode 
 #'  ## 1 curve of sliding semilandmark
 #'  # Define sliders for scallopdata
-#'  sliders = define.sliders(c(5:16,1))
+#'  # sliders = define.sliders(c(5:16,1))
 #' 
 #'  ## 2 curves of sliding semilandmarks
 #'  # Define sliders for 10 landmarks, where LMs 1, 5, and 10 fixed
 #'  # 2, 3, and 4 are along a curve between 1 and 5
 #'  # and 6, 7, 8, and 9 are along a curve between 5 and 10.
-#'  sliders = rbind(define.sliders(1:5), define.sliders(5:10)) 
+#'  # sliders = rbind(define.sliders(1:5), define.sliders(5:10)) 
 #' @references Bookstein, F. J. 1997 Landmark Methods for Forms without Landmarks: Morphometrics of 
 #' Group Differences in Outline Shape. Medical Image Analysis 1(3):225-243.
 
