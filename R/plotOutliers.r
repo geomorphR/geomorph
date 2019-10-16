@@ -63,13 +63,27 @@ plotOutliers <- function(A, groups = NULL, inspect.outliers = FALSE){
     if(any(D >= UL)) { 
       points(D[which(D >= UL)], pch=19, col="red")
       text(D[which(D >= UL)], labels=names(D)[which(D >= UL)], col= "red", adj=0.8, pos=4, cex=0.5)
-      if(inspect.outliers==TRUE){
+      if(inspect.outliers == TRUE){
         out.config <- names(D)[which(D >= UL)]
-        for(oc in out.config){
-          plotRefToTarget(mshape(A), matrix(A.d[oc,], ncol=dim(A)[2], byrow=T), method="vector", label=TRUE)
-          title(main = paste("group: ", j, ", specimen: ", oc, sep=""))
+        if(dim(A)[2] == 2){
+          for(oc in out.config){
+            plotRefToTarget(mshape(A), matrix(A.d[oc,], ncol=dim(A)[2], byrow=T), method="vector", label=TRUE)
+            title(main = paste("group: ", j, ", specimen: ", oc, sep=""))
           }
+        }
+        if(dim(A)[2] == 3){
+          for(oc in out.config){
+            open3d()
+            plotRefToTarget(mshape(A), matrix(A.d[oc,], ncol=dim(A)[2], byrow=T), method="vector", label=TRUE)
+            bgplot3d({
+              plot.new()
+              title(main = paste("specimen: ", oc, sep=""), line = 3)
+              mtext(side = 3, paste("group: ", j, sep = ""), line = 1.5)
+            })
+          }
+        }
       }
+
     } else { text(D, labels=names(D), adj=c(0.5, 0.1), pos=4, cex=0.5)}
     ordered<-match(D,d)        
     names(ordered) <- names(D)

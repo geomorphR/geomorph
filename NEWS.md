@@ -13,6 +13,8 @@
 * Fixed issue with 3D TPS grids in plotRefToTarget
 * Fixed issue with digit.fixed, digitsurface, plotspec, warpRefMesh, build.template, for null ply $material, due to rgl updates
 * Updated example in read.ply to not give bad advice for ply $material
+* Fixed issue with 3D plotting in plotOutliers with inspect.outliers = T
+
 
 # CHANGES IN GEOMORPH VERSION 3.1.2 (Patch Release)
 
