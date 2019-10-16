@@ -2,6 +2,7 @@
 
 ### NEW FEATURES
 * New function added: `compare.CR` 
+* New function added: `readmulti.tps` 
 
 ### OTHER CHANGES
 * Adjustment to getSurfPCs to allow for more robust surface sliding
