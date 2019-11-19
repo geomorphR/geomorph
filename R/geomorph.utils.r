@@ -739,8 +739,10 @@ plot.mshape <- function(x, links=NULL,...){
 #' @keywords utilities
 print.gm.prcomp <- function (x, ...) {
   sum.tab <- function(x) {
+    v <- x$d/sum(x$d)
+    
     var.PCs <- apply(x$x, 2, var)
-    y <- rbind(x[["d"]], var.PCs/sum(var.PCs), cumsum(var.PCs/sum(var.PCs)))
+    y <- rbind(x$d, v, cumsum(v))
     
     colnames(y) <- paste("PC", 1:ncol(y), sep="")
     rownames(y) <- c("Eigenvalues", "Proportion of variance", "Cumulative Proportion")
