@@ -740,18 +740,27 @@ plot.mshape <- function(x, links=NULL,...){
 print.gm.prcomp <- function (x, ...) {
   sum.tab <- function(x) {
     v <- x$d/sum(x$d)
-    
-    var.PCs <- apply(x$x, 2, var)
     y <- rbind(x$d, v, cumsum(v))
-    
     colnames(y) <- paste("PC", 1:ncol(y), sep="")
-    rownames(y) <- c("Eigenvalues", "Proportion of variance", "Cumulative Proportion")
+    rownames(y) <- c("Tips variance", "Proportion of variance", "Cumulative Proportion")
     y
   }
-    tab.list <- sum.tab(x)
+  
+  anc.sum.tab <- function(x) {
+    v <- x$anc.var/sum(x$anc.var)
+    y <- rbind(x$anc.var, v, cumsum(v))
+    colnames(y) <- paste("PC", 1:ncol(y), sep="")
+    rownames(y) <- c("Ancestral state variance", "Proportion of variance", "Cumulative Proportion")
+    y
+  }
+  
+    tip.list <- sum.tab(x)
+    anc.list <- if(!is.null(x$anc.var)) anc.sum.tab(x) else NULL
     cat("Importance of components:", "\n")
-    print(tab.list); cat("\n")
-    invisible(tab.list)
+    print(tip.list); cat("\n")
+    if(!is.null(anc.list)) print(anc.list); cat("\n")
+    out <- list(tips = tip.list, anc = anc.list)
+    invisible(out)
 }
 
 #' Print/Summary Function for geomorph
@@ -794,13 +803,35 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, phylo = FALSE,
                           call. = FALSE)
   Pcov <- x$Pcov
   v <- x$d/sum(x$d)
-  if(x$alignment == "principal")  {
-    xlabel <- paste("PC ", axis1, ": ", round(v[axis1] * 100, 2), "%", sep = "")
-    ylabel <- paste("PC ", axis2, ": ", round(v[axis2] * 100, 2), "%", sep = "")
+  av <- if(!is.null(x$anc.var)) x$anc.var/sum(x$anc.var) else NULL
+  
+  if(is.null(av)) {
+    
+    if(x$alignment == "principal")  {
+      xlabel <- paste("PC ", axis1, ": ", round(v[axis1] * 100, 2), "%", sep = "")
+      ylabel <- paste("PC ", axis2, ": ", round(v[axis2] * 100, 2), "%", sep = "")
+    } else {
+      xlabel <- paste("PaC ", axis1, ": ", round(v[axis1] * 100, 2), "%", sep = "")
+      ylabel <- paste("PaC ", axis2, ": ", round(v[axis2] * 100, 2), "%", sep = "")
+    }
+    
   } else {
-    xlabel <- paste("PaC ", axis1, ": ", round(v[axis1] * 100, 2), "%", sep = "")
-    ylabel <- paste("PaC ", axis2, ": ", round(v[axis2] * 100, 2), "%", sep = "")
+    
+    if(x$alignment == "principal")  {
+      xlabel <- paste("PC ", axis1, ": Ancestors: ", round(av[axis1] *100, 2),
+                      "%; Tips: ", round(v[axis1] * 100, 2), "%", sep = "")
+      ylabel <- paste("PC ", axis2, ": Ancestors: ", round(av[axis2] *100, 2),
+                      "%; Tips: ", round(v[axis2] * 100, 2), "%", sep = "")
+    } else {
+      xlabel <- paste("PaC ", axis1, ": Ancestors: ", round(av[axis1] *100, 2),
+                      "%; Tips: ", round(v[axis1] * 100, 2), "%", sep = "")
+      ylabel <- paste("PaC ", axis2, ": Ancestors: ", round(av[axis2] *100, 2),
+                      "%; Tips: ", round(v[axis2] * 100, 2), "%", sep = "")
+    }
+    
   }
+  
+
   
   plot.args <- list(x = x$x[, axis1], y = x$x[, axis2], xlab = xlabel, ylab = ylabel, ...)
   pcdata <- as.matrix(x$x[, c(axis1, axis2)])

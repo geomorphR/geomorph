@@ -55,6 +55,7 @@
 #' \item{rotation}{The matrix of variable loadings, i.e. the eigenvectors of the decomposed matrix.}
 #' \item{shapes}{A list with the shape coordinates of the extreme ends of all PC axes.}
 #' \item{ancestors}{The matrix of estimated ancestral shapes, if a phylogeny is used.}
+#' \item{anc.var}{The variances among ancestor scores, by component, if a phylogeny is used.}
 #' @export
 #' @keywords visualization
 #' @seealso \code{\link{plot.gm.prcomp}}
@@ -178,6 +179,7 @@ gm.prcomp <- function (A, phy = NULL, align.to.phy = FALSE,
   if(!is.null(phy)) {
     out$ancestors <- ancY
     out$phy <- phy
+    out$anc.var <- anc.var <- apply(out$anc.x, 2, var)
   }
   if(GLS) {
     Pcov <- phy.mat$D.mat

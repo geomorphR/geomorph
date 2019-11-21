@@ -28,6 +28,7 @@ Each of these lists includes the following components:
 \item{rotation}{The matrix of variable loadings, i.e. the eigenvectors of the decomposed matrix.}
 \item{shapes}{A list with the shape coordinates of the extreme ends of all PC axes.}
 \item{ancestors}{The matrix of estimated ancestral shapes, if a phylogeny is used.}
+\item{anc.var}{The variances among ancestor scores, by component, if a phylogeny is used.}
 }
 \description{
 Function performs principal components analysis (PCA) or 

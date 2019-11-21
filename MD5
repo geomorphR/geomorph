@@ -17,7 +17,7 @@ f926ce8a00d113b94bd7a08b69b5bfc3 *inst/CITATION
 5e099c6268d251bf5c98595d9566385a *man/arrayspecs.Rd
 aedd854ebbb437a660df88e33b7ed33c *man/bilat.symmetry.Rd
 69dc1b38a63364449b026a2ff02c5186 *man/buildtemplate.Rd
-27ec671933fb105323fe0a2b87e45c87 *man/combine.subsets.Rd
+f9f3d796a4d30b725b9685265fd37826 *man/combine.subsets.Rd
 43ec9e6c8610289a65f66820ee392fc3 *man/compare.CR.Rd
 f3f57a72cb0380cf605c9bbe3d3e4458 *man/compare.evol.rates.Rd
 25078bd5c76bb7ab2a16e6898fbacc92 *man/compare.multi.evol.rates.Rd
@@ -37,7 +37,7 @@ e5ea7eb05043e14bf36bb1c553de0576 *man/findMeanSpec.Rd
 f9221a7b4261484793b945d7be4bbec6 *man/geomorph-package.Rd
 529d968d52f701dda526c62cd174a6c3 *man/geomorph.data.frame.Rd
 0763a0796feeacf89702a12ede433cb3 *man/globalIntegration.Rd
-08a04ae27d9bcfb40b6adfce51ec209f *man/gm.prcomp.Rd
+ae452165d45eb4d9fc5053d3c235fbeb *man/gm.prcomp.Rd
 f4321fc7e893a0b607e4b15a735fe233 *man/gpagen.Rd
 6e3973381aaf10ec056aa50add392948 *man/gridPar.Rd
 a598044482a6c3e39517b798b654c57e *man/hummingbirds.Rd
@@ -150,9 +150,9 @@ aac6a4f8a759473e8c37048e5c8e3d91 *R/findMeanSpec.r
 089a02a38c0381ac0381f0ae8f5b07f7 *R/fixed.angle.r
 d4da6eba1dc1a56c0b1ad94c0839c825 *R/geomorph.data.frame.r
 28a30fc205a7b1c72247edf07d7716ac *R/geomorph.support.code.r
-b9251a2c4aa0cbe7430ee1e74e79f064 *R/geomorph.utils.r
+b40648ef6c06ea56cfab9eea96232714 *R/geomorph.utils.r
 da04ce8ab14c8a0a7bf2751654bbab6e *R/globalIntegration.r
-8427078138a563f7f5dcebcb7c8f847b *R/gm.prcomp.R
+06566550741087ab3daff6a82fbfab91 *R/gm.prcomp.R
 bf0750e2582fc2c3b5454ad48b7f3cbb *R/gpagen.r
 8c06e49837953d941a01c82b0111935a *R/gridPar.r
 a0316d5ff3326e7cebb6aee734b4254a *R/integration.test.r
