@@ -17,7 +17,7 @@ Function returns a (p x k x n) array, where p is the number of landmark points, 
   in the folder read.
 }
 \description{
-Read multiple *.tps files from a directory to obtain landmark coordinates and combine them into a single array
+Read multiple tps files from a directory to obtain landmark coordinates and combine them into a single array
 }
 \details{
 This is a wrapper of \code{\link{readland.tps}} to allow reading landmark coordinates, in 2D or 3D, from several tps files in a specific folder, and compiling them into an array for proceeding with GM procedures.

@@ -1,6 +1,6 @@
 #' Read and combine multiple tps files
 #'
-#' Read multiple *.tps files from a directory to obtain landmark coordinates and combine them into a single array
+#' Read multiple tps files from a directory to obtain landmark coordinates and combine them into a single array
 #'
 #' This is a wrapper of \code{\link{readland.tps}} to allow reading landmark coordinates, in 2D or 3D, from several tps files in a specific folder, and compiling them into an array for proceeding with GM procedures.
 #' 
@@ -15,12 +15,12 @@
 #'   in the folder read. 
 
 readmulti.tps <- function(folder, ... ){
-  tps.list <- list.files(folder, pattern = ".tps")
+  tps.list <- list.files(folder, pattern = c("[.tps]"))
   
   if(length(tps.list)==0) stop("No tps files found in the indicated folder")
   
   dt.dims <- sapply(1:length(tps.list), function(x){
-    dim(readland.tps(paste(folder, tps.list[x], sep="")))
+    dim(readland.tps(paste(folder, tps.list[x], sep=""), warnmsg = F, ...))
   }, simplify = T)
   p1 <- dt.dims[1, 1]; k1 <- dt.dims[2, 1]; n1 <- dt.dims[3, 1]
   
