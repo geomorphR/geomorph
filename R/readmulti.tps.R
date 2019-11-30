@@ -13,6 +13,7 @@
 #' @return Function returns a (p x k x n) array, where p is the number of landmark points, k is the number 
 #'   of landmark dimensions (2 or 3), and n is the total number of specimens across all tps files included 
 #'   in the folder read. 
+#' @export
 
 readmulti.tps <- function(folder, ... ){
   tps.list <- list.files(folder, pattern = c("[.tps]"))
