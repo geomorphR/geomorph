@@ -1,3 +1,14 @@
+# CHANGES IN GEOMORPH VERSION 3.1.4.0900 (Patch Release)
+
+### NEW FEATURES
+* New function added: `readmulti.tps` 
+
+### OTHER CHANGES
+* Adjustment in 'class' statements to be compliant with new handling of objects in R 4.0
+
+### BUG FIXES
+* Fixed issue with 3D plotting in plotOutliers with inspect.outliers = T
+
 # CHANGES IN GEOMORPH VERSION 3.1.3 (Patch Release)
 
 ### NEW FEATURES
