@@ -1,3 +1,8 @@
+# CHANGES IN GEOMORPH 3.1.4 (Patch Release)
+
+### OTHER CHANGES
+* Adjustment in 'class' statements to be compliant with new handling of objects in R 4.0
+
 # CHANGES IN GEOMORPH VERSION 3.1.3 (Patch Release)
 
 ### NEW FEATURES
