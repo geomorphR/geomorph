@@ -85,7 +85,7 @@ compare.CR <- function(...,CR.null = TRUE, two.tailed = TRUE){
    if(is.null(list.names)) list.names <- paste("CR", 1:n, sep = ".")
    names(dots) <- list.names
         
-   is.CR <- function(x) class(x) == "CR"
+   is.CR <- function(x) inherits(x, "CR")
    sdn <- function(x) sqrt(sum((x-mean(x))^2)/length(x))
    list.check <- sapply(1:length(dots), function(j) any(is.CR(dots[[j]])))
    if(any(list.check == FALSE)) stop("Not all objects are class CR")

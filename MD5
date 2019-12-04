@@ -131,10 +131,10 @@ e003c97d3229219004330ba454f58f2e *NEWS.md
 fd5e4f7c9f42142153ff2f5d85089de0 *R/bilat.symmetry.r
 d7d67e9218f84609046423cb222f5c44 *R/build.template.r
 816a970cede328c3aec9f60c652e9b3f *R/combine.subsets.r
-28e5ea9e425f60c66417ebc1d40b3f69 *R/compare.CR.r
+8d6cf63045d30bfcd0f2ebab2eff40fe *R/compare.CR.r
 bbeac77f9ca6094ea8283e64ecc2ef2a *R/compare.evol.rates.r
 d07ba05e9c4ba71ee07b20df5b7e0de9 *R/compare.multi.evol.rates.r
-62e61ae6d8bcb8c980605bf90bd60627 *R/compare.pls.r
+04a76aee33149a00bcbdfa020217814c *R/compare.pls.r
 5e4b285ed0e6499f26af9d913d0c48e4 *R/coords.subset.r
 c77f2f19e63d93ec9a76ac9c2236f1bc *R/define.links.r
 ddcc6629196b8e66ef9a2e92c093f041 *R/define.modules.r
@@ -148,8 +148,8 @@ f14e7f81ecc74bda3fded01d703c7d23 *R/digit.fixed.r
 c38531b2e37e698a0ae0ea5a7062bcd8 *R/estimate.missing.r
 aac6a4f8a759473e8c37048e5c8e3d91 *R/findMeanSpec.r
 089a02a38c0381ac0381f0ae8f5b07f7 *R/fixed.angle.r
-d4da6eba1dc1a56c0b1ad94c0839c825 *R/geomorph.data.frame.r
-28a30fc205a7b1c72247edf07d7716ac *R/geomorph.support.code.r
+953c275fdc42e65db7394a594d35806a *R/geomorph.data.frame.r
+056514b686606ce534c838cca1907206 *R/geomorph.support.code.r
 b40648ef6c06ea56cfab9eea96232714 *R/geomorph.utils.r
 da04ce8ab14c8a0a7bf2751654bbab6e *R/globalIntegration.r
 06566550741087ab3daff6a82fbfab91 *R/gm.prcomp.R
@@ -182,7 +182,7 @@ de7ec2d05577623ffc56cf16246993f3 *R/readland.tps.r
 73ce1481733305a19848121fd2c90203 *R/rotate.coords.r
 4d9585ab961643a7147c1b9c5be2a35b *R/shape.predictor.r
 ef0a7ddc250a612a072bd2f4248586f2 *R/shapeHulls.r
-2598f7548a04508e2be8ecc8171b90ae *R/shared.support.code.r
+1aa5753f46d80b6774bfb19658bb6eb4 *R/shared.support.code.r
 d9170bf4815f09297472b5986b2b5854 *R/two.b.pls.r
 2e693d8b4f3c21d742737b97d1773119 *R/two.d.array.r
 476471e8d4917ae6dab00ec8204ded15 *R/warpRefMesh.r
