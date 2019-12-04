@@ -86,7 +86,7 @@
      names(dots) <- list.names
      } else list.names <- names(dots)
    if(length(dots) < 2) stop("At least two objects of class pls are needed")
-   is.pls <- function(x) class(x) == "pls"
+   is.pls <- function(x) inherits(x, "pls")
    sdn <- function(x) sqrt(sum((x-mean(x))^2)/length(x))
    list.check <- sapply(1:length(dots), function(j) any(is.pls(dots[[j]])))
    if(any(list.check == FALSE)) stop("Not all objects are class pls")

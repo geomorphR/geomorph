@@ -66,8 +66,8 @@ for(i in 1:N){
     if(length(dim(dots[[i]])) == 1) dots.ns[i] <- dim(dots[[i]])[[1]]
   }
   if(is.matrix(dots[[i]])) dots.ns[i] <- dim(dots[[i]])[[1]]
-  if(class(dots[[i]]) == "dist") dots.ns[i] <- attr(dots[[i]], "Size")
-  if(class(dots[[i]]) == "phylo") dots.ns[i] <- length(dots[[i]]$tip.label)
+  if(inherits(dots[[i]], "dist")) dots.ns[i] <- attr(dots[[i]], "Size")
+  if(inherits(dots[[i]], "phylo")) dots.ns[i] <- length(dots[[i]]$tip.label)
   if(is.data.frame(dots[[i]])) dots.ns[i] <- dim(dots[[i]])[[2]]
   if(is.vector(dots[[i]])) dots.ns[i] <- length(dots[[i]])
   if(is.factor(dots[[i]])) dots.ns[i] <- length(dots[[i]])
