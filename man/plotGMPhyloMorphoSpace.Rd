@@ -4,9 +4,18 @@
 \alias{plotGMPhyloMorphoSpace}
 \title{Plot phylogenetic tree and specimens in tangent space}
 \usage{
-plotGMPhyloMorphoSpace(phy, A, tip.labels = TRUE, node.labels = TRUE,
-  ancStates = TRUE, xaxis = 1, yaxis = 2, zaxis = NULL,
-  plot.param = list(), shadow = FALSE)
+plotGMPhyloMorphoSpace(
+  phy,
+  A,
+  tip.labels = TRUE,
+  node.labels = TRUE,
+  ancStates = TRUE,
+  xaxis = 1,
+  yaxis = 2,
+  zaxis = NULL,
+  plot.param = list(),
+  shadow = FALSE
+)
 }
 \arguments{
 \item{phy}{A phylogenetic tree of {class phylo}}

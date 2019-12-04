@@ -4,8 +4,13 @@
 \alias{shapeHulls}
 \title{Update Plots with Convex Hulls for Groups}
 \usage{
-shapeHulls(x, groups = NULL, group.cols = NULL, group.lwd = NULL,
-  group.lty = NULL)
+shapeHulls(
+  x,
+  groups = NULL,
+  group.cols = NULL,
+  group.lwd = NULL,
+  group.lty = NULL
+)
 }
 \arguments{
 \item{x}{A \code{\link{plot.procD.lm}} or \code{\link{plot.gm.prcomp}} plot object.}

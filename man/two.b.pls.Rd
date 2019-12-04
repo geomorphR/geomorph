@@ -66,7 +66,7 @@ averages the amount of integration (correlations) across multiple pairwise block
 arrays returns the same results as two.b.pls.  (Thus, \code{\link{integration.test}} is more flexible and thorough.)
 }
 
-\subsection{Using phylogenies and PGLS}{ 
+ \subsection{Using phylogenies and PGLS}{ 
 If one wishes to incorporate a phylogeny, \code{\link{phylo.integration}} is the function to use.  This function is exactly the same as \code{\link{integration.test}}
 but allows PGLS estimation of PLS vectors.  Because \code{\link{integration.test}} can be used on two blocks, \code{\link{phylo.integration}} likewise allows one to
 perform a phylogenetic two-block PLS analysis.
@@ -78,7 +78,7 @@ scores, major-axis regression is used and the extreme fitted values are used to 
 are exactly along the major axis of shape covariation.  This axis is also shown as a best-fit line in the plot.
 }
 
-\subsection{Notes for geomorph 3.0.4 and subsequent versions}{ 
+ \subsection{Notes for geomorph 3.0.4 and subsequent versions}{ 
  Compared to previous versions of geomorph, users might notice differences in effect sizes.  Previous versions used z-scores calculated with 
  expected values of statistics from null hypotheses (sensu Collyer et al. 2015); however Adams and Collyer (2016) showed that expected values 
  for some statistics can vary with sample size and variable number, and recommended finding the expected value, empirically, as the mean from the set 

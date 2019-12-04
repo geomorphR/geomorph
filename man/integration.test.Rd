@@ -4,8 +4,14 @@
 \alias{integration.test}
 \title{Quantify morphological integration between modules}
 \usage{
-integration.test(A, A2 = NULL, partition.gp = NULL, iter = 999,
-  seed = NULL, print.progress = TRUE)
+integration.test(
+  A,
+  A2 = NULL,
+  partition.gp = NULL,
+  iter = 999,
+  seed = NULL,
+  print.progress = TRUE
+)
 }
 \arguments{
 \item{A}{A 3D array (p x k x n) containing Procrustes shape variables for all specimens, or a matrix (n x variables)}
@@ -69,7 +75,7 @@ The function quantifies the degree of morphological integration between modular 
  a vector describing which variables correspond to which partitions (for the case of a 3D array, which landmarks belong to which 
  partitions is specified). Alternatively, when evaluating the integration between two structures or partitions, two datasets may be provided.
 
-The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{integration.test}}.
+ The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{integration.test}}.
  The generic function, \code{\link{plot}}, produces a two-block.pls plot.  This function calls \code{\link{plot.pls}}, which produces an ordination plot.  
  An additional argument allows one to include a vector to label points.  Starting with version 3.1.0, warpgrids are no longer available with \code{\link{plot.pls}}
  but after making a plot, the function returns values that can be used with \code{\link{picknplot.shape}} or a combination of 
@@ -83,7 +89,7 @@ between all pairwise comparisons of modules.  This can be done, test by test, an
 when more than two modules are input.
 }
 
-\subsection{Using phylogenies and PGLS}{ 
+ \subsection{Using phylogenies and PGLS}{ 
 If one wishes to incorporate a phylogeny, \code{\link{phylo.integration}} is the function to use.  This function is exactly the same as \code{integration.test}
 but allows PGLS estimation of PLS vectors.  Because \code{\link{integration.test}} can be used on two blocks, \code{\link{phylo.integration}} likewise allows one to
 perform a phylogenetic two-block PLS analysis.
