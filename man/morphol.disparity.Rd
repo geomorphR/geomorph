@@ -4,8 +4,16 @@
 \alias{morphol.disparity}
 \title{Morphological disparity for one or more groups of specimens}
 \usage{
-morphol.disparity(f1, groups = NULL, partial = FALSE, iter = 999,
-  seed = NULL, data = NULL, print.progress = TRUE, ...)
+morphol.disparity(
+  f1,
+  groups = NULL,
+  partial = FALSE,
+  iter = 999,
+  seed = NULL,
+  data = NULL,
+  print.progress = TRUE,
+  ...
+)
 }
 \arguments{
 \item{f1}{A formula describing the linear model used.  The left-hand portion of the formula should be
@@ -83,7 +91,7 @@ This is specially useful for analyses performed with  \code{\link{procD.pgls}}. 
 of coefficients, rather than OLS estimation, will be used in the analysis.  Thus, one can account for phylogeny when comparing
 morphological disparity among groups.  However, one should be aware that this approach only adjusts expected values because of phylogeny
 and does not assert a null hypothesis of equal variances based on phylogenetic relatedness.  (For example, species means can be adjusted
-because of phylogenetic relatedness, but the null hypothesis of equal variances is conditioned on the estimation of means.)
+because of phylogenetic relatedness, but the null hypothesis of equal variances is conditioned on the estimation of means.) 
 
 \subsection{Notes for geomorph 3.1.0 and subsequent versions}{ 
  The function \code{\link{pairwise}} in the \code{RRPP} package can also be used to evaluate morphological 

@@ -4,8 +4,15 @@
 \alias{compare.evol.rates}
 \title{Comparing net rates of shape evolution on phylogenies}
 \usage{
-compare.evol.rates(A, phy, gp, iter = 999, seed = NULL,
-  method = c("simulation", "permutation"), print.progress = TRUE)
+compare.evol.rates(
+  A,
+  phy,
+  gp,
+  iter = 999,
+  seed = NULL,
+  method = c("simulation", "permutation"),
+  print.progress = TRUE
+)
 }
 \arguments{
 \item{A}{A 3D array (p x k x n) containing GPA-aligned coordinates for all specimens, or a matrix (n x variables)}

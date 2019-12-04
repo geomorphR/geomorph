@@ -31,7 +31,7 @@ will be filled in. When all landmarks for module 1 are chosen, press 'esc', and 
 landmarks for module 2. Repeat until all modules are defined.
 }
 
-\subsection{Selection in 3D}{ 
+ \subsection{Selection in 3D}{ 
 Choosing which landmarks will be included in each module involves landmark selection using a mouse in 
 the rgl plot window. The user is prompted to select one or more landmarks. To do so, use the RIGHT mouse button 
 (or command + LEFT button for Mac users), draw a rectangle around landmarks to select.

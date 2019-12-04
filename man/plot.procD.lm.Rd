@@ -4,9 +4,14 @@
 \alias{plot.procD.lm}
 \title{Plot Function for geomorph}
 \usage{
-\method{plot}{procD.lm}(x, type = c("diagnostics", "regression", "PC"),
-  outliers = FALSE, predictor = NULL, reg.type = c("PredLine",
-  "RegScore"), ...)
+\method{plot}{procD.lm}(
+  x,
+  type = c("diagnostics", "regression", "PC"),
+  outliers = FALSE,
+  predictor = NULL,
+  reg.type = c("PredLine", "RegScore"),
+  ...
+)
 }
 \arguments{
 \item{x}{plot object (from \code{\link{procD.lm}})}

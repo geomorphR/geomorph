@@ -4,8 +4,17 @@
 \alias{plotTangentSpace}
 \title{Plot specimens in tangent space}
 \usage{
-plotTangentSpace(A, axis1 = 1, axis2 = 2, warpgrids = TRUE,
-  mesh = NULL, label = NULL, groups = NULL, legend = FALSE, ...)
+plotTangentSpace(
+  A,
+  axis1 = 1,
+  axis2 = 2,
+  warpgrids = TRUE,
+  mesh = NULL,
+  label = NULL,
+  groups = NULL,
+  legend = FALSE,
+  ...
+)
 }
 \arguments{
 \item{A}{A 3D array (p x k x n) containing Procrustes shape variables for a set of specimens}

@@ -32,9 +32,9 @@ performs two-sample z-tests, using the pooled standard error from the sampling d
 To use this function, simply perform \code{\link{two.b.pls}}, \code{\link{integration.test}}, or 
  \code{\link{phylo.integration}} on as many samples as desired.  Any number of objects of class pls can be input.
  
- Similar versions of this function will be designed for alternative test statistics, in the future.
+ Similar versions of this function will be designed for alternative test statistics, in the future. 
 
-\subsection{Notes for geomorph 3.0.4 and subsequent versions}{ 
+ \subsection{Notes for geomorph 3.0.4 and subsequent versions}{ 
  Compared to previous versions of geomorph, users might notice differences in effect sizes.  Previous versions used z-scores calculated with 
  expected values of statistics from null hypotheses (sensu Collyer et al. 2015); however Adams and Collyer (2016) showed that expected values 
  for some statistics can vary with sample size and variable number, and recommended finding the expected value, empirically, as the mean from the set 

@@ -1970,7 +1970,7 @@ GMfromShapes1 <- function(Shapes, nCurvePts, continuous.curve = NULL, scaled = T
 
 ### geomorph-specific logicals
 
-is.gpagen <- function(x) inerits(x, "gpagen")
+is.gpagen <- function(x) inherits(x, "gpagen")
 is.phylo <- function(x) inherits(x, "phylo")
 is.geomorph.data.frame <- function(x) inherits(x, "geomorph.data.frame")
 

@@ -34,7 +34,7 @@ digitize the fixed points (see digitizing below), however these may have been pr
 using \code{\link{digit.fixed}}.
 
 The function finds surface semilandmarks, chosen automatically from the mesh at roughly equal distances,
-using the nearest-neighbor algorithm outlined in Gunz et al. (2005) and Mitteroecker and Gunz (2009).
+using the nearest-neighbor algorithm outlined in Gunz et al. (2005) and Mitteroecker and Gunz (2009). 
 
 The set of fixed and surface slider landmarks are saved in the working directory as a txt file named "template". 
 This file will then be used to extract a set of similarly numbered surface semilandmarks on subsequent specimens 
@@ -45,14 +45,14 @@ to ensure a strong match between the scan and the template, it is recommended th
 #' For more details on the full procedure one needs to follow to digitize fixed 3D landmarks and surface
 sliding semilandmarks, see also the relevant vignette by running \code{vignette("geomorph.digitize3D")}.
 
-NOTE: Function centers the mesh before digitizing by default (center=TRUE). If one chooses not to center,
+ NOTE: Function centers the mesh before digitizing by default (center=TRUE). If one chooses not to center,
  specimen may be difficult to manipulate in rgl window.
 
 \subsection{Digitizing}{
 Digitizing of fixed landmarks is interactive. Once a point is selected, the user is asked if the system should keep or discard the 
 selection (y/n). If "y", the user is asked to continue to select the next landmark. If "n" the removes the last chosen
 landmark, and the user is asked to select it again. This can be repeated until the user is comfortable with the landmark
-chosen.
+chosen. 
 
 To digitize with a standard 3-button (PC):
 \enumerate{

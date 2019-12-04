@@ -4,8 +4,15 @@
 \alias{phylo.modularity}
 \title{Evaluate the degree of phylogenetic modular signal in Procrustes shape variables}
 \usage{
-phylo.modularity(A, partition.gp, phy, CI = FALSE, iter = 999,
-  seed = NULL, print.progress = TRUE)
+phylo.modularity(
+  A,
+  partition.gp,
+  phy,
+  CI = FALSE,
+  iter = 999,
+  seed = NULL,
+  print.progress = TRUE
+)
 }
 \arguments{
 \item{A}{A 3D array (p x k x n) containing Procrustes shape variables for all specimens, or a matrix (n x variables)}
@@ -48,7 +55,7 @@ defined by landmark coordinates, under a Brownian motion model of evolution. The
 is characterized by the covariance ratio covariance ratio (CR: see Adams 2016). The phylogenetic version of the approach 
 procedure utilizes the evolutionary covariance matrix among traits found under a Brownian
 motion model of evolution as the basis of the analysis. This is the same matrix used to evaluate patterns of phylogenetic 
-morphological integration as described in Adams and Felice (2014).
+morphological integration as described in Adams and Felice (2014). 
 
 Input may be either a 2D matrix of phenotypic values, or a 3D array of Procrustes shape variables. It 
 is assumed that the landmarks have previously been aligned using Generalized Procrustes Analysis (GPA) [e.g., 

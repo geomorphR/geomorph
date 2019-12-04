@@ -4,10 +4,19 @@
 \alias{procD.lm}
 \title{Procrustes ANOVA/regression for Procrustes shape variables}
 \usage{
-procD.lm(f1, iter = 999, seed = NULL, RRPP = TRUE, SS.type = c("I",
-  "II", "III"), effect.type = c("SS", "MS", "Rsq", "F", "cohen"),
-  int.first = FALSE, Cov = NULL, data = NULL,
-  print.progress = TRUE, ...)
+procD.lm(
+  f1,
+  iter = 999,
+  seed = NULL,
+  RRPP = TRUE,
+  SS.type = c("I", "II", "III"),
+  effect.type = c("SS", "MS", "Rsq", "F", "cohen"),
+  int.first = FALSE,
+  Cov = NULL,
+  data = NULL,
+  print.progress = TRUE,
+  ...
+)
 }
 \arguments{
 \item{f1}{A formula for the linear model (e.g., y~x1+x2)}
@@ -94,7 +103,7 @@ The function quantifies the relative amount of shape variation attributable to o
   by conflicts between the global and function environments.  In the absence of a specified data frame, procD.lm will attempt to 
   coerce input data into a data frame, but success is not guaranteed.
 
-The function performs statistical assessment of the terms in the model using Procrustes distances among 
+  The function performs statistical assessment of the terms in the model using Procrustes distances among 
   specimens, rather than explained covariance matrices among variables. With this approach, the sum-of-squared 
   Procrustes distances are used as a measure of SS (see Goodall 1991). The observed SS are evaluated through 
   permutation. In morphometrics this approach is known as a Procrustes ANOVA (Goodall 1991), which is equivalent
@@ -119,7 +128,7 @@ The function performs statistical assessment of the terms in the model using Pro
   model first, or interactions should precede subsequent main effects 
   (i.e., Y ~ a + b + c + a:b + ..., or Y ~ a + b + a:b + c + ..., respectively.)
 
-The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{procD.lm}}.
+  The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{procD.lm}}.
   The generic function, \code{\link{plot}} has several options for plotting, using \code{\link{plot.procD.lm}}.  Diagnostics plots, 
   principal component plots (rotated to first PC of covariance matrix of fitted values), and regression plots can be performed.  
   One must provide a linear predictor, and
@@ -139,7 +148,7 @@ The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\li
  These functions work on procD.lm objects that have already been created.
 }
 
-\subsection{Notes for geomorph 3.0.6 and subsequent versions}{ 
+ \subsection{Notes for geomorph 3.0.6 and subsequent versions}{ 
  Compared to previous versions, GLS computations in random permutations are now possible in procD.lm.  One should use
  RRPP = TRUE if a covariance matrix is provided as an argument.  The method of SS calculations follows
  Adams and Collyer 2018.  Additional output with a "gls." prefix is also available.

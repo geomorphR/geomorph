@@ -31,7 +31,8 @@ Function for digitizing fixed 3D landmarks and placing surface sliding semilandm
  semilandmarks as the template (created by \code{\link{buildtemplate}}) by downsampling the scanned mesh, after registering the template with 
  the current specimen via GPA. A nearest neighbor algorithm is used to match template surface semilandmarks to mesh points of the current specimen. 
  To use function digitsurface, the template must be constructed first, and 'template.txt' be in the working directory. Because template 
- matching is based on the correspondence of fixed landmark points in the template and the specimen, a minimum of four fixed landmarks must be used.
+ matching is based on the correspondence of fixed landmark points in the template and the specimen, a minimum of four fixed landmarks must be used. 
+
 
 #' For more details on the full procedure one needs to follow to digitize fixed 3D landmarks and surface
 sliding semilandmarks, see also the relevant vignette by running \code{vignette("geomorph.digitize3D")}.
@@ -43,7 +44,7 @@ sliding semilandmarks, see also the relevant vignette by running \code{vignette(
 Digitizing of fixed landmarks is interactive. Once a point is selected, the user is asked if the system should keep or discard the 
 selection (y/n). If "y", the user is asked to continue to select the next landmark. If "n" the removes the last chosen
 landmark, and the user is asked to select it again. This can be repeated until the user is comfortable with the landmark
-chosen.
+chosen. 
 
 To digitize with a standard 3-button (PC):
 \enumerate{

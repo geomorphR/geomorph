@@ -4,9 +4,20 @@
 \alias{bilat.symmetry}
 \title{Analysis of bilateral symmetry}
 \usage{
-bilat.symmetry(A, ind = NULL, side = NULL, replicate = NULL,
-  object.sym = FALSE, land.pairs = NULL, data = NULL, iter = 999,
-  seed = NULL, RRPP = TRUE, print.progress = TRUE, ...)
+bilat.symmetry(
+  A,
+  ind = NULL,
+  side = NULL,
+  replicate = NULL,
+  object.sym = FALSE,
+  land.pairs = NULL,
+  data = NULL,
+  iter = 999,
+  seed = NULL,
+  RRPP = TRUE,
+  print.progress = TRUE,
+  ...
+)
 }
 \arguments{
 \item{A}{One of either A 3D array (p x k x n) containing raw landmarks (requiring GPA to be performed) or a gpagen object (if GPA has been previously performed) or a
@@ -86,7 +97,7 @@ Analyses of symmetry for matched pairs of objects is implemented when {object.sy
  Reflecting a set of specimens may be accomplished by multiplying one coordinate dimension 
  by '-1' for these structures (either the x-, the y-, or the z-dimension). A vector containing information on individuals 
  and sides must also be supplied. Replicates of each specimen may also be included in the dataset, and when specified will be 
- used as measurement error (see Klingenberg and McIntyre 1998).
+ used as measurement error (see Klingenberg and McIntyre 1998). 
 
 Analyses of object symmetry is implemented when {object.sym=TRUE}. Here, a 3D array [p x k x n] contains the landmark 
  coordinates for all n specimens. To obtain information about asymmetry, the function generates a second set of objects 

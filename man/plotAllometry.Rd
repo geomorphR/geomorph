@@ -4,8 +4,13 @@
 \alias{plotAllometry}
 \title{Plotting to assist visualization of shape-size covariation (allometry)}
 \usage{
-plotAllometry(fit, size, logsz = TRUE, method = c("PredLine",
-  "RegScore", "size.shape", "CAC"), ...)
+plotAllometry(
+  fit,
+  size,
+  logsz = TRUE,
+  method = c("PredLine", "RegScore", "size.shape", "CAC"),
+  ...
+)
 }
 \arguments{
 \item{fit}{A procD.lm fit.}
@@ -34,7 +39,8 @@ if a common allometry or unique group allometries were more appropriate as a mod
 provided the same plotting as plotAllometry before it.  In geomorph 3.1.0, procD.allometry has been deprectaed in favor of using
 \code{\link{procD.lm}} and \code{\link{pairwise}} for analyses, which can include additional variables, 
 thus eliminating plot.procD.allometry.  This function coalesces a few plotting options found in other functions, 
-as a wrapper, for the purpose of retaining the plot.procD.allometry options in one place.
+as a wrapper, for the purpose of retaining the plot.procD.allometry options in one place.  
+
 
 There are fundamentally two different kinds of allometry plots: those based on linear models and those that do not have a linear
 model basis (more detail below).  The common allometric component (CAC) and size-shape PCA (Mitteroecker et al. 2004) are plotting 
@@ -77,6 +83,7 @@ one wishes to visualize whether shape, size, and some other variable covary in s
 between shape and another covariate, then performing plotAllometry with that fit and size).  For example, one can entertain the question,
 "Are species differences in shape merely a manifestation of shape allometry, when species differ in size?"  By fitting a model, shape ~ species,
  then using plotAllometry for the model fit (with either PredLine or RegScore), the plot will help reveal if allometry and species effects are confounded.
+
 
 The following are brief descriptions of the different plotting methods, with references.
 

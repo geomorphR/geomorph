@@ -30,9 +30,9 @@ Single specimen format:
   The fourth value is a "0" if the data matrix is complete and a "1" 
   if there are missing values. If missing values are present, the '1' is followed by the arbitrary 
   numeric code used to represent missing values (e.g., -999). These values will be replaced with "NA" 
-  in the output array. Subsequent analyses requires a full complement of data, see \code{\link{estimate.missing}}.
+  in the output array. Subsequent analyses requires a full complement of data, see \code{\link{estimate.missing}}. 
 
-Missing data may be present in the file by designating them using 'NA'. In
+  Missing data may be present in the file by designating them using 'NA'. In
   this case, the standard NTSYS header is used with no numeric designation for missing data (i.e. the fourth value is '0').
   The positions of missing landmarks may then be estimated using estimate.missing.
 }

@@ -4,8 +4,7 @@
 \alias{shape.predictor}
 \title{Shape prediction from numeric predictors}
 \usage{
-shape.predictor(A, x = NULL, Intercept = FALSE, method = c("LS",
-  "PLS"), ...)
+shape.predictor(A, x = NULL, Intercept = FALSE, method = c("LS", "PLS"), ...)
 }
 \arguments{
 \item{A}{A 3D array (p x k x n) containing Procrustes shape variables either from GPA or fitted values from a previous

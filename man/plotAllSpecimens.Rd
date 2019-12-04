@@ -4,8 +4,13 @@
 \alias{plotAllSpecimens}
 \title{Plot landmark coordinates for all specimens}
 \usage{
-plotAllSpecimens(A, mean = TRUE, links = NULL, label = FALSE,
-  plot.param = list())
+plotAllSpecimens(
+  A,
+  mean = TRUE,
+  links = NULL,
+  label = FALSE,
+  plot.param = list()
+)
 }
 \arguments{
 \item{A}{A 3D array (p x k x n) containing Procrustes shape variables for a set of specimens}

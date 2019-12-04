@@ -4,10 +4,19 @@
 \alias{procD.pgls}
 \title{Phylogenetic ANOVA/regression for Procrustes shape variables}
 \usage{
-procD.pgls(f1, phy, Cov = NULL, iter = 999, seed = NULL,
-  int.first = FALSE, SS.type = c("I", "II", "III"),
-  effect.type = c("F", "cohen"), data = NULL, print.progress = TRUE,
-  ...)
+procD.pgls(
+  f1,
+  phy,
+  Cov = NULL,
+  iter = 999,
+  seed = NULL,
+  int.first = FALSE,
+  SS.type = c("I", "II", "III"),
+  effect.type = c("F", "cohen"),
+  data = NULL,
+  print.progress = TRUE,
+  ...
+)
 }
 \arguments{
 \item{f1}{A formula for the linear model (e.g., y ~ x1 + x2)}
@@ -65,7 +74,7 @@ can also be input in place of a formula.  Arguments for \code{\link{lm}} can als
 The user must also specify a phylogeny describing the evolutionary relationships among species (of class phylo).
 Note that the specimen labels for both X and Y must match the labels on the tips of the phylogeny.
 
-The function \code{\link{two.d.array}} can be used to obtain a two-dimensional data matrix from a 3D array of landmark
+  The function \code{\link{two.d.array}} can be used to obtain a two-dimensional data matrix from a 3D array of landmark
   coordinates; however this step is no longer necessary, as procD.lm can receive 3D arrays as dependent variables.  It is also 
   recommended that \code{\link{geomorph.data.frame}} is used to create and input a data frame.  This will reduce problems caused
   by conflicts between the global and function environments.  In the absence of a specified data frame, procD.pgls will attempt to 
@@ -90,7 +99,7 @@ The function \code{\link{two.d.array}} can be used to obtain a two-dimensional d
    added to the model first, or interactions should precede subsequent main effects 
   (i.e., Y ~ a + b + c + a:b + ..., or Y ~ a + b + a:b + c + ..., respectively.)
 
-The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{procD.pgls}}.
+  The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{procD.pgls}}.
   The generic function, \code{\link{plot}}, produces diagnostic plots for Procrustes residuals of the linear fit.
   
  \subsection{Notes for geomorph 3.0.6 and subsequent versions}{ 
