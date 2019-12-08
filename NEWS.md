@@ -7,6 +7,7 @@
 * Adjustment in 'class' statements to be compliant with new handling of objects in R 4.0
 
 ### BUG FIXES
+* Adjusted calculations of pairwise effect size in compare.pls and compare.CR to mirror publication equations
 * Fixed issue with 3D plotting in plotOutliers with inspect.outliers = T
 
 # CHANGES IN GEOMORPH VERSION 3.1.3 (Patch Release)
