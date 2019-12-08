@@ -99,7 +99,7 @@ compare.CR <- function(...,CR.null = TRUE, two.tailed = TRUE){
    if (CR.null == TRUE){
       k <- k + 1
       k.combn <- combn(k,2)
-      list.drs <- c(0,list.sds) #new
+      list.drs <- c(0,list.drs) #new
       list.sds <- c(0,list.sds)
       list.zs <- c(0,list.zs)
    }
