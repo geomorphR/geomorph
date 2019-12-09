@@ -92,18 +92,20 @@ compare.CR <- function(...,CR.null = TRUE, two.tailed = TRUE){
    k <- length(list.check)
    if(is.null(list.names)) list.names <- as.list(substitute(list(...)))[-1L]
    k.combn <- combn(k,2)
-   list.sds <- sapply(1:k, function(j) sdn(scale(dots[[j]]$random.CR[-1])))
-   list.zs <- sapply(1:k, function(j) effect.size(dots[[j]]$random.CR, center=TRUE))  #NOTE: pull out RRPP::: once in geomorph
+   list.drs <- sapply(1:k, function(j) dots[[j]]$random.CR - mean(dots[[j]]$random.CR[-1])) 
+   list.sds <- sapply(1:k, function(j) sdn(dots[[j]]$random.CR[-1]))
+   list.zs <- sapply(1:k, function(j) effect.size(dots[[j]]$random.CR, center=TRUE))  
    if (CR.null == TRUE){
       k <- k + 1
       k.combn <- combn(k,2)
+      list.drs <- c(0,list.drs) 
       list.sds <- c(0,list.sds)
       list.zs <- c(0,list.zs)
    }
-   #Changed this: no 'abs', and forced min as r1, then other as r2
    z12 <- sapply(1:ncol(k.combn), function(j){
-   a <- k.combn[1,j]; b <- k.combn[2,j]
-     r1 <- list.zs[a]; r2 <- list.zs[b]; sd1 <- list.sds[a]; sd2 <- list.sds[b]
+     a <- k.combn[1,j]; b <- k.combn[2,j]
+     r1 <- list.drs[a]; r2 <- list.drs[b] 
+     sd1 <- list.sds[a]; sd2 <- list.sds[b]
      (r1-r2)/sqrt(sd1^2+sd2^2)
    })
    z12.p <- sapply(1:length(z12), function(j) pnorm(abs(z12[[j]]), lower.tail = FALSE)* tails)  
@@ -125,7 +127,7 @@ compare.CR <- function(...,CR.null = TRUE, two.tailed = TRUE){
    comment <- c("NOTE: more negative effects represent stronger modular signal!")
    out <- list(comment=comment, sample.z = list.zs,
                sample.r.sd = list.sds,
-               pairwise.z = pairwise.z,
+               pairwise.z = abs(pairwise.z),
                pairwise.P = pairwise.P)
    class(out) <- "compare.CR"
    out
