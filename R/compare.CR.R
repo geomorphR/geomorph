@@ -130,7 +130,7 @@ compare.CR <- function(...,CR.null = TRUE, two.tailed = TRUE){
    comment <- c("NOTE: more negative effects represent stronger modular signal!")
    out <- list(comment=comment, sample.z = list.zs,
                sample.r.sd = list.sds,
-               pairwise.z = pairwise.z,
+               pairwise.z = abs(pairwise.z),
                pairwise.P = pairwise.P)
    class(out) <- "compare.CR"
    out

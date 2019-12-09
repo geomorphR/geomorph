@@ -117,7 +117,7 @@
    
    out <- list(sample.z = list.zs,
                sample.r.sd = list.sds,
-               pairwise.z = pairwise.z,
+               pairwise.z = abs(pairwise.z),
                pairwise.P = pairwise.P)
    class(out) <- "compare.pls"
    out
