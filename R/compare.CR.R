@@ -92,22 +92,19 @@ compare.CR <- function(...,CR.null = TRUE, two.tailed = TRUE){
    k <- length(list.check)
    if(is.null(list.names)) list.names <- as.list(substitute(list(...)))[-1L]
    k.combn <- combn(k,2)
-   list.drs <- sapply(1:k, function(j) dots[[j]]$random.CR - mean(dots[[j]]$random.CR[-1])) #re-added: 12/8/2019
-   list.sds <- sapply(1:k, function(j) sdn(dots[[j]]$random.CR[-1]))  #re-added: 12/8/2019
-#   list.sds <- sapply(1:k, function(j) sdn(scale(dots[[j]]$random.CR[-1])))
-   list.zs <- sapply(1:k, function(j) RRPP:::effect.size(dots[[j]]$random.CR, center=TRUE))  #NOTE: pull out RRPP::: once in geomorph
+   list.drs <- sapply(1:k, function(j) dots[[j]]$random.CR - mean(dots[[j]]$random.CR[-1])) 
+   list.sds <- sapply(1:k, function(j) sdn(dots[[j]]$random.CR[-1]))
+   list.zs <- sapply(1:k, function(j) effect.size(dots[[j]]$random.CR, center=TRUE))  
    if (CR.null == TRUE){
       k <- k + 1
       k.combn <- combn(k,2)
-      list.drs <- c(0,list.drs) #new
+      list.drs <- c(0,list.drs) 
       list.sds <- c(0,list.sds)
       list.zs <- c(0,list.zs)
    }
-   #Changed this: no 'abs', and forced min as r1, then other as r2
    z12 <- sapply(1:ncol(k.combn), function(j){
      a <- k.combn[1,j]; b <- k.combn[2,j]
      r1 <- list.drs[a]; r2 <- list.drs[b] 
-     #r1 <- list.zs[a]; r2 <- list.zs[b]; 
      sd1 <- list.sds[a]; sd2 <- list.sds[b]
      (r1-r2)/sqrt(sd1^2+sd2^2)
    })

@@ -93,14 +93,12 @@
    k <- length(list.check)
    if(is.null(list.names)) list.names <- as.list(substitute(list(...)))[-1L]
    k.combn <- combn(k,2)
-   list.drs <- sapply(1:k, function(j) dots[[j]]$r.pls - mean(dots[[j]]$random.r[-1])) #re-added: 12/8/2019
-   list.sds <- sapply(1:k, function(j) sdn(dots[[j]]$random.r[-1]))  #re-added: 12/8/2019
-#   list.sds <- sapply(1:k, function(j) sdn(scale(dots[[j]]$random.r[-1])))
+   list.drs <- sapply(1:k, function(j) dots[[j]]$r.pls - mean(dots[[j]]$random.r[-1])) 
+   list.sds <- sapply(1:k, function(j) sdn(dots[[j]]$random.r[-1]))
    list.zs <- sapply(1:k, function(j) effect.size(dots[[j]]$random.r, center=TRUE))
    z12 <- sapply(1:ncol(k.combn), function(j){
      a <- k.combn[1,j]; b <- k.combn[2,j]
      r1 <- list.drs[a]; r2 <- list.drs[b] 
-     #r1 <- list.zs[a]; r2 <- list.zs[b];  #deleted 12/8/2019
      sd1 <- list.sds[a]; sd2 <- list.sds[b]
      (r1-r2)/sqrt(sd1^2+sd2^2)
    })

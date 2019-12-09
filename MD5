@@ -131,10 +131,10 @@ eb64baa7db0ed8a82610f30259070136 *NEWS.md
 fd5e4f7c9f42142153ff2f5d85089de0 *R/bilat.symmetry.r
 d7d67e9218f84609046423cb222f5c44 *R/build.template.r
 816a970cede328c3aec9f60c652e9b3f *R/combine.subsets.R
-bbbf296b2d008d558c2d6651e759aa36 *R/compare.CR.R
+9771f6cd8e254bc909a0a5c62bbb8497 *R/compare.CR.R
 bbeac77f9ca6094ea8283e64ecc2ef2a *R/compare.evol.rates.r
 d07ba05e9c4ba71ee07b20df5b7e0de9 *R/compare.multi.evol.rates.r
-e6eb76e0dc799fad3364da868379f074 *R/compare.pls.r
+22de004e8d06bd7e33c8cb738026470b *R/compare.pls.r
 5e4b285ed0e6499f26af9d913d0c48e4 *R/coords.subset.r
 c77f2f19e63d93ec9a76ac9c2236f1bc *R/define.links.r
 ddcc6629196b8e66ef9a2e92c093f041 *R/define.modules.r
