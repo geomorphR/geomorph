@@ -186,6 +186,7 @@ print.pls <- function (x, ...) {
   if(x$method=="PLS") {
     cat(paste("\nr-PLS:", round(x$r.pls, nchar(x$permutations)-1)))
     cat(paste("\n\nP-value:", round(x$P.value, nchar(x$permutations)-1)))
+    cat(paste("\n\nEffect Size:", round(x$Z, nchar(x$permutations))))
     cat(paste("\n\nBased on", x$permutations, "random permutations\n"))
   }
   invisible(x)
@@ -372,6 +373,7 @@ print.CR <- function (x, ...) {
   cat(deparse(x$call), fill=TRUE, "\n\n")
   cat(paste("\nCR:", round(x$CR, nchar(x$permutations))))
   cat(paste("\n\nP-value:", round(x$P.value, nchar(x$permutations))))
+  cat(paste("\n\nEffect Size:", round(x$Z, nchar(x$permutations))))
   cat(paste("\n\nBased on", x$permutations, "random permutations"))
   if(!is.null(x$CInterval)) cat(paste("\n\nConfidence Intervals", round(x$CInterval,nchar(x$permutations)))) 
   invisible(x)
@@ -474,6 +476,7 @@ print.physignal <- function(x, ...){
   cat(deparse(x$call), fill=TRUE, "\n\n")
   cat(paste("\nObserved Phylogenetic Signal (K):", round(x$phy.signal, nchar(x$permutations))))
   cat(paste("\n\nP-value:", round(x$pvalue, nchar(x$permutations))))
+  cat(paste("\n\nEffect Size:", round(x$Z, nchar(x$permutations))))
   cat(paste("\n\nBased on", x$permutations, "random permutations"))
   invisible(x)
 }
@@ -524,6 +527,7 @@ print.evolrate <- function (x, ...) {
   cat("\nCall:\n")
   cat(paste("\n\nObserved Rate Ratio:", round(x$sigma.d.ratio, nchar(x$permutations))))
   cat(paste("\n\nP-value:", round(x$P.value, nchar(x$permutations))))
+  cat(paste("\n\nEffect Size:", round(x$Z, nchar(x$permutations))))
   cat(paste("\n\nBased on", x$permutations, "random permutations"))
   cat(paste("\n\nThe rate for group",x$groups,"is",x$sigma.d.gp, ""))
   invisible(x)
@@ -739,17 +743,28 @@ plot.mshape <- function(x, links=NULL,...){
 #' @keywords utilities
 print.gm.prcomp <- function (x, ...) {
   sum.tab <- function(x) {
-    var.PCs <- apply(x$x, 2, var)
-    y <- rbind(x[["d"]], var.PCs/sum(var.PCs), cumsum(var.PCs/sum(var.PCs)))
-    
+    v <- x$d/sum(x$d)
+    y <- rbind(x$d, v, cumsum(v))
     colnames(y) <- paste("PC", 1:ncol(y), sep="")
-    rownames(y) <- c("Eigenvalues", "Proportion of variance", "Cumulative Proportion")
+    rownames(y) <- c("Tips variance", "Proportion of variance", "Cumulative Proportion")
     y
   }
-    tab.list <- sum.tab(x)
+  
+  anc.sum.tab <- function(x) {
+    v <- x$anc.var/sum(x$anc.var)
+    y <- rbind(x$anc.var, v, cumsum(v))
+    colnames(y) <- paste("PC", 1:ncol(y), sep="")
+    rownames(y) <- c("Ancestral state variance", "Proportion of variance", "Cumulative Proportion")
+    y
+  }
+  
+    tip.list <- sum.tab(x)
+    anc.list <- if(!is.null(x$anc.var)) anc.sum.tab(x) else NULL
     cat("Importance of components:", "\n")
-    print(tab.list); cat("\n")
-    invisible(tab.list)
+    print(tip.list); cat("\n")
+    if(!is.null(anc.list)) print(anc.list); cat("\n")
+    out <- list(tips = tip.list, anc = anc.list)
+    invisible(out)
 }
 
 #' Print/Summary Function for geomorph
@@ -790,9 +805,38 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, phylo = FALSE,
   options(warn = -1)
   if(NCOL(x$x) == 1) stop("Only one PC.  No plotting capability with this function.\n", 
                           call. = FALSE)
+  Pcov <- x$Pcov
   v <- x$d/sum(x$d)
-  xlabel <- paste("PC ", axis1, ": ", round(v[axis1] * 100, 2), "%", sep = "")
-  ylabel <- paste("PC ", axis2, ": ", round(v[axis2] * 100, 2), "%", sep = "")
+  av <- if(!is.null(x$anc.var)) x$anc.var/sum(x$anc.var) else NULL
+  
+  if(is.null(av)) {
+    
+    if(x$alignment == "principal")  {
+      xlabel <- paste("PC ", axis1, ": ", round(v[axis1] * 100, 2), "%", sep = "")
+      ylabel <- paste("PC ", axis2, ": ", round(v[axis2] * 100, 2), "%", sep = "")
+    } else {
+      xlabel <- paste("PaC ", axis1, ": ", round(v[axis1] * 100, 2), "%", sep = "")
+      ylabel <- paste("PaC ", axis2, ": ", round(v[axis2] * 100, 2), "%", sep = "")
+    }
+    
+  } else {
+    
+    if(x$alignment == "principal")  {
+      xlabel <- paste("PC ", axis1, ": Ancestors: ", round(av[axis1] *100, 2),
+                      "%; Tips: ", round(v[axis1] * 100, 2), "%", sep = "")
+      ylabel <- paste("PC ", axis2, ": Ancestors: ", round(av[axis2] *100, 2),
+                      "%; Tips: ", round(v[axis2] * 100, 2), "%", sep = "")
+    } else {
+      xlabel <- paste("PaC ", axis1, ": Ancestors: ", round(av[axis1] *100, 2),
+                      "%; Tips: ", round(v[axis1] * 100, 2), "%", sep = "")
+      ylabel <- paste("PaC ", axis2, ": Ancestors: ", round(av[axis2] *100, 2),
+                      "%; Tips: ", round(v[axis2] * 100, 2), "%", sep = "")
+    }
+    
+  }
+  
+
+  
   plot.args <- list(x = x$x[, axis1], y = x$x[, axis2], xlab = xlabel, ylab = ylabel, ...)
   pcdata <- as.matrix(x$x[, c(axis1, axis2)])
   if(!is.null(plot.args$axes)) axes <- plot.args$axes else axes <- TRUE
@@ -803,7 +847,7 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, phylo = FALSE,
   
   if(phylo) {
     phy <- x$phy
-    phy.pcdata <- rbind(x$x, x$anc.x)
+    phy.pcdata <- rbind(x$x[x$phy$tip.label,], x$anc.x)
     phy.pcdata <- as.matrix(phy.pcdata[, c(axis1, axis2)])
     plot.args$x <- pcdata[,1]
     plot.args$y <- pcdata[,2]
@@ -835,12 +879,12 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, phylo = FALSE,
   out$GM$A <- x$A
   
   out$plot.args <- plot.args
+  out$Pcov <- Pcov
   if(phylo) {
     out$phylo <- list()
     out$phylo$phy <- phy
     out$phylo$phylo.par <- phylo.par
     out$phylo$phy.pcdata <- phy.pcdata
-    
   }
   class(out) <- "plot.gm.prcomp"
   invisible(out)

@@ -36,6 +36,7 @@ Objects of class "pls" from integration.test return a list of the following:
  PLS correlations between partitions is used when there are more than two partitions.}
    \item{r.pls.mat}{The pairwise r.pls, if the number of partitions is greater than 2.}
    \item{P.value}{The empirically calculated P-value from the resampling procedure.}
+  \item{Effect.Size}{The multivariate effect size associated with sigma.d.ratio.}
    \item{left.pls.vectors}{The singular vectors of the left (x) block (for 2 modules only).}
    \item{right.pls.vectors}{The singular vectors of the right (y) block (for 2 modules only).}
    \item{random.r}{The correlation coefficients found in each random permutation of the 
@@ -67,7 +68,9 @@ The function quantifies the degree of morphological integration between modular 
   the test statistic. The observed test value is then compared to a distribution of values obtained by randomly permuting 
   the individuals (rows) in one partition relative to those in the other. A significant result is found when the 
   observed PLS correlation is large relative to this distribution, and implies that the structures are integrated with one
-  another (see Bookstein et al. 2003).  If only two partitions are specified, a plot of PLS scores along the first 
+  another (see Bookstein et al. 2003).  In addition, a multivariate effect size describing the strength of the effect is 
+  estimated from the empirically-generated sampling distribution (see details in Adams and Collyer 2019).
+  If only two partitions are specified, a plot of PLS scores along the first 
   set of PLS axes is optionally displayed, and thin-plate spline deformation grids along these axes are also shown if data were 
   input as a 3D array.  
   
@@ -133,6 +136,10 @@ by high-dimensional data. Heredity. 115:357-365.
 
 Adams, D.C. and M.L. Collyer. 2016.  On the comparison of the strength of morphological integration across morphometric 
 datasets. Evolution. 70:2623-2631.
+
+Adams, D.C. and M.L. Collyer. 2019. Comparing the strength of modular signal, and evaluating 
+alternative modular hypotheses, using covariance ratio effect sizes with morphometric data. 
+Evolution. 73:2352-2367.
 }
 \seealso{
 \code{\link{two.b.pls}}, \code{\link{modularity.test}}, 

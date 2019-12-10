@@ -21,6 +21,8 @@
 #' hypothesis of random associations of variables (neither modular nor integrated structure). This  
 #' result is consistent with the identification of significant modular structure in the data. For landmark data, the CR coefficient 
 #' found from the average CR across a 90 degree rotation of the data is used as the test statistic (see Adams 2016). 
+#' In addition, a multivariate effect size describing the strength of the effect is 
+#'   estimated from the empirically-generated sampling distribution (see details in Adams and Collyer 2019).
 #'
 #' @param A A 3D array (p x k x n) containing Procrustes shape variables for all specimens, or a matrix (n x variables)
 #' @param partition.gp A list of which landmarks (or variables) belong in which partition (e.g. A,A,A,B,B,B,C,C,C)
@@ -42,6 +44,7 @@
 #'    \item{CR.boot}{The bootstrapped CR values, if CI = TRUE
 #'    (For more than two partitions, this is the mean CR of pairwise CRs.)}
 #'    \item{P.value}{The empirically calculated P-value from the resampling procedure.}
+#'   \item{Effect.Size}{The multivariate effect size associated with sigma.d.ratio.}
 #'    \item{CR.mat}{For more than two partitions, the pairwise CRs among partitions.}
 #'    \item{random.CR}{The CR calculated in each of the random permutations of the resampling procedure.}
 #'    \item{permutations}{The number of random permutations used in the resampling procedure.}
@@ -52,6 +55,9 @@
 #' @references  Adams, D.C. and R. Felice. 2014. Assessing phylogenetic morphological 
 #' integration and trait covariation in morphometric data using evolutionary covariance 
 #' matrices. PLOS ONE. 9(4):e94335.
+#' @references Adams, D.C. and M.L. Collyer. 2019. Comparing the strength of modular signal, and evaluating 
+#' alternative modular hypotheses, using covariance ratio effect sizes with morphometric data. 
+#' Evolution. 73:2352-2367.
 #' @examples
 #' data(plethspecies)
 #' Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment
@@ -95,6 +101,7 @@ phylo.modularity<-function(A,partition.gp,phy, CI=FALSE, iter=999, seed=NULL, pr
       CR.rand <- .apply.phylo.CR(x,invC, gps, k, iter=iter, seed=seed) 
     p.val <- 1-pval(CR.rand)  #b/c smaller values more significant
     if (p.val==0){p.val<-1/(iter+1)}
+    Z <- effect.size(CR.rand, center=TRUE) 
     if(CI=="TRUE"){
 #      CR.boot<- boot.CR(x, gps, k,iter=iter, seed=seed)
       CR.boot<- boot.phylo.CR(x, invC, gps, k,iter=iter, seed=seed)
@@ -150,6 +157,7 @@ phylo.modularity<-function(A,partition.gp,phy, CI=FALSE, iter=999, seed=NULL, pr
 #    if(ngps > 2) CR.mat <- CR(x,gps)$CR.mat else CR.mat <- NULL
     if(ngps > 2) CR.mat <- CR.phylo(x,invC,gps)$CR.mat else CR.mat <- NULL
     p.val <- pval(1/CR.rand)  #b/c smaller values more significant
+    Z <- effect.size(CR.rand, center=TRUE) 
     if(CI=="TRUE"){
 #      CR.boot<- boot.CR(x, gps, k,iter=iter, seed=seed)
       CR.boot<- boot.phylo.CR(x, invC, gps, k,iter=iter, seed=seed)
@@ -161,7 +169,7 @@ phylo.modularity<-function(A,partition.gp,phy, CI=FALSE, iter=999, seed=NULL, pr
     }
   }
   
-  out <- list(CR=CR.obs, CInterval=CR.CI, CR.boot = CR.boot, P.value=p.val,
+  out <- list(CR=CR.obs, CInterval=CR.CI, CR.boot = CR.boot, P.value=p.val, Z = Z,
               CR.mat = CR.mat, random.CR = CR.rand,
               permutations=iter+1, call=match.call())
   class(out) <- "CR"

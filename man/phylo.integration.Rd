@@ -39,6 +39,7 @@ Objects of class "pls" from integration.test return a list of the following:
  PLS correlations between partitions is used when there are more than two partitions.}
    \item{r.pls.mat}{The pairwise r.pls, if the number of partitions is greater than 2.}
    \item{P.value}{The empirically calculated P-value from the resampling procedure.}
+  \item{Effect.Size}{The multivariate effect size associated with sigma.d.ratio.}
    \item{left.pls.vectors}{The singular vectors of the left (x) block (for 2 modules only).}
    \item{right.pls.vectors}{The singular vectors of the right (y) block (for 2 modules only).}
    \item{random.r}{The correlation coefficients found in each random permutation of the 
@@ -69,7 +70,9 @@ The function estimates the degree of  morphological covariation between two or s
 while accounting for phylogeny using partial least squares (Adams and Felice 2014), and under a Brownian
 motion model of evolution. If more than two partitions are defined, the average pairwise PLS correlation is 
 utilized as the test statistic. The observed value is statistically assessed using permutation, where data for 
-one partition are permuted relative to the other partitions. Note that this permutation is performed on phylogenetically-
+one partition are permuted relative to the other partitions. In addition, a multivariate effect size 
+describing the strength of the effect is estimated from the empirically-generated sampling distribution 
+(see details in Adams and Collyer 2019). Note that this permutation is performed on phylogenetically-
 transformed data, so that the probability of phylogenetic association of A vs. B is similar to that of B vs. A: 
 i.e., prob(A,B|phy)~prob(B,A|phy); thus, shuffling the correct exchangeable units under the null 
 hypothesis of no integration (Adams and Collyer 2018). 
@@ -132,6 +135,10 @@ datasets. Evolution. 70:2623-2631.
 
 Adams, D.C. and M.L. Collyer. 2018. Multivariate comparative methods: evaluations, comparisons, and
 recommendations. Systematic Biology. 67:14-31.
+
+Adams, D.C. and M.L. Collyer. 2019. Comparing the strength of modular signal, and evaluating 
+alternative modular hypotheses, using covariance ratio effect sizes with morphometric data. 
+Evolution. 73:2352-2367.
 }
 \seealso{
 \code{\link{integration.test}}, \code{\link{modularity.test}}, and 
