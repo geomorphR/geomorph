@@ -19,8 +19,8 @@ f926ce8a00d113b94bd7a08b69b5bfc3 *inst/CITATION
 6e94f720fd50cf0ff309624b1a4a30ee *man/buildtemplate.Rd
 27ec671933fb105323fe0a2b87e45c87 *man/combine.subsets.Rd
 de6ef5f8336b175ac1e9e61da651a1a2 *man/compare.CR.Rd
-bd06547a9c8d3c337a8c99dcd42f37c8 *man/compare.evol.rates.Rd
-ac77b74ccdf441e6588cbd7f6115ab13 *man/compare.multi.evol.rates.Rd
+e9cda01506cd0a57e4dd1d44cf1b8bb7 *man/compare.evol.rates.Rd
+4a1e045de391966a3300bfea63c999ce *man/compare.multi.evol.rates.Rd
 e6d3245c04df413835d41284b2aa227a *man/compare.pls.Rd
 7baab3cef0a9e9464d2ab25c23b22b94 *man/coords.subset.Rd
 0d498563880e759264bc10711c12bd9d *man/define.links.Rd
@@ -51,7 +51,7 @@ e80eedb5f74cd9957d11429a15ee2bce *man/mshape.Rd
 1568730ef6ac1237622ae188e1928c1b *man/nested.update.Rd
 6448e71cd5ed47e98581aecdef01ccec *man/phylo.integration.Rd
 5eb5cd0bcbac8de3b07016c143b5ef7a *man/phylo.modularity.Rd
-890cb60d688254a94d46eadef8b9dbc4 *man/physignal.Rd
+84b09f06ece9d7d6d11281203a8cb0e3 *man/physignal.Rd
 ab874d7d6eb39ac1ec84df92e6a2f242 *man/picknplot.shape.Rd
 af93ecd1b6eb7fb84c529ee5d5ca59b4 *man/plethodon.Rd
 67af5edfcfef3d23440b41c805d143c6 *man/plethShapeFood.Rd
@@ -132,8 +132,8 @@ fd5e4f7c9f42142153ff2f5d85089de0 *R/bilat.symmetry.r
 d7d67e9218f84609046423cb222f5c44 *R/build.template.r
 816a970cede328c3aec9f60c652e9b3f *R/combine.subsets.R
 9771f6cd8e254bc909a0a5c62bbb8497 *R/compare.CR.R
-550c8a43bece7e766aaab3b75f4d9c6d *R/compare.evol.rates.r
-d6182c87ad8b5ac92264e34c5fa915f1 *R/compare.multi.evol.rates.r
+cff9b470e442542bb66ab1446904fcba *R/compare.evol.rates.r
+158c6de8370887d5561219096b6c30d5 *R/compare.multi.evol.rates.r
 22de004e8d06bd7e33c8cb738026470b *R/compare.pls.r
 5e4b285ed0e6499f26af9d913d0c48e4 *R/coords.subset.r
 c77f2f19e63d93ec9a76ac9c2236f1bc *R/define.links.r
@@ -161,7 +161,7 @@ bf0750e2582fc2c3b5454ad48b7f3cbb *R/gpagen.r
 15bc32ce2d7448e0a8f7e8b543d47095 *R/morphol.disparity.r
 bf9cfa5a72c207f88471d4e053fad58a *R/phylo.integration.r
 14d81c58ead6cd19f0b99db7a4b834ee *R/phylo.modularity.r
-1787c162e56e48468cbab79df20637fd *R/physignal.r
+7ae1407ec4e63cbffd57c2196f8c0e6f *R/physignal.r
 d957e4bf0a300b280cb7ff4bd7680334 *R/picknplot.shape.r
 2302f21d0af2a0e44038ff696b306e9e *R/plotAllometry.r
 c1cead3306cb3d7b1bd3ed5d99fc89af *R/plotAllSpecimens.r

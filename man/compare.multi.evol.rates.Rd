@@ -62,6 +62,8 @@ for all traits, which contains a common rate for all trait dimensions (Denton an
 If three or more traits are used, pairwise p-values are 
 also returned. In addition, a multivariate effect size describing the strength of the effect is estimated from the 
 empirically-generated sampling distribution (see details in Adams and Collyer 2019).
+Values from these distributions are log-transformed prior to effect size estimation, 
+to assure normally distributed data. 
 
 The shape data may be input as either a 3D array (p x k x n) containing Procrustes shape variables 
 for a set of species, or as a matrix (n x [p x k]) whose rows correspond to each species. In 

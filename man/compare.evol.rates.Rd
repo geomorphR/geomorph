@@ -67,7 +67,8 @@ statistical properties of earlier methods, and under a wider array of data types
 permutation, where data values at the tips are permuted relative to the (see Adams and Collyer 2018). This procedure is shown to 
 retain all appropriate statistical properties, including rotation-invariance of significance levels (see results of Adams and Collyer 2018).
 In addition, a multivariate effect size describing the strength of the effect is estimated from the 
-empirically-generated sampling distribution (see details in Adams and Collyer 2019).
+empirically-generated sampling distribution (see details in Adams and Collyer 2019). Values from these 
+distributions are log-transformed prior to effect size estimation, to assure normally distributed data. 
 }
 }
 \examples{

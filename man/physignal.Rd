@@ -45,6 +45,8 @@ It is assumed that the landmarks have previously been aligned
   is found by permuting the shape data among the tips of the phylogeny. In addition, a multivariate 
   effect size describing the strength of the effect is 
   estimated from the empirically-generated sampling distribution (see details in Adams and Collyer 2019).
+  Values from these distributions are log-transformed prior to effect size estimation, 
+  to assure normally distributed data. 
 
 This function can also be used with univariate data (i.e. centroid size) if imported as matrix with rownames
 giving the taxa names. In this case, the estimate of phylogenetic signal is identical to that found using the 
