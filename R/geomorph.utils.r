@@ -186,6 +186,7 @@ print.pls <- function (x, ...) {
   if(x$method=="PLS") {
     cat(paste("\nr-PLS:", round(x$r.pls, nchar(x$permutations)-1)))
     cat(paste("\n\nP-value:", round(x$P.value, nchar(x$permutations)-1)))
+    cat(paste("\n\nEffect Size:", round(x$Z, nchar(x$permutations))))
     cat(paste("\n\nBased on", x$permutations, "random permutations\n"))
   }
   invisible(x)
@@ -372,6 +373,7 @@ print.CR <- function (x, ...) {
   cat(deparse(x$call), fill=TRUE, "\n\n")
   cat(paste("\nCR:", round(x$CR, nchar(x$permutations))))
   cat(paste("\n\nP-value:", round(x$P.value, nchar(x$permutations))))
+  cat(paste("\n\nEffect Size:", round(x$Z, nchar(x$permutations))))
   cat(paste("\n\nBased on", x$permutations, "random permutations"))
   if(!is.null(x$CInterval)) cat(paste("\n\nConfidence Intervals", round(x$CInterval,nchar(x$permutations)))) 
   invisible(x)
@@ -474,6 +476,7 @@ print.physignal <- function(x, ...){
   cat(deparse(x$call), fill=TRUE, "\n\n")
   cat(paste("\nObserved Phylogenetic Signal (K):", round(x$phy.signal, nchar(x$permutations))))
   cat(paste("\n\nP-value:", round(x$pvalue, nchar(x$permutations))))
+  cat(paste("\n\nEffect Size:", round(x$Z, nchar(x$permutations))))
   cat(paste("\n\nBased on", x$permutations, "random permutations"))
   invisible(x)
 }
@@ -524,6 +527,7 @@ print.evolrate <- function (x, ...) {
   cat("\nCall:\n")
   cat(paste("\n\nObserved Rate Ratio:", round(x$sigma.d.ratio, nchar(x$permutations))))
   cat(paste("\n\nP-value:", round(x$P.value, nchar(x$permutations))))
+  cat(paste("\n\nEffect Size:", round(x$Z, nchar(x$permutations))))
   cat(paste("\n\nBased on", x$permutations, "random permutations"))
   cat(paste("\n\nThe rate for group",x$groups,"is",x$sigma.d.gp, ""))
   invisible(x)

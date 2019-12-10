@@ -39,6 +39,7 @@ An object of class "evolrate" returns a list of the following:
   \item{rates.all}{The phylogenetic evolutionary rates for each trait.}
   \item{rate.ratio}{The ratio of maximum to minimum evolutionary rates.}
   \item{pvalue}{The significance level of the observed rate ratio.}
+  \item{Effect.Size}{The multivariate effect size associated with sigma.d.ratio.}
   \item{pvalue.gps}{Matrix of pairwise significance levels comparing each pair of rates.}
   \item{call}{The matched call.}
 }
@@ -59,7 +60,8 @@ Denton and Adams 2015). Significance testing is accomplished by phylogenetic sim
 which tips data are obtained under Brownian motion using a an evolutionary rate matrix 
 for all traits, which contains a common rate for all trait dimensions (Denton and Adams 2015).
 If three or more traits are used, pairwise p-values are 
-also returned. 
+also returned. In addition, a multivariate effect size describing the strength of the effect is estimated from the 
+empirically-generated sampling distribution (see details in Adams and Collyer 2019).
 
 The shape data may be input as either a 3D array (p x k x n) containing Procrustes shape variables 
 for a set of species, or as a matrix (n x [p x k]) whose rows correspond to each species. In 
@@ -101,6 +103,10 @@ Adams, D.C. 2014. Quantifying and comparing phylogenetic evolutionary rates for
 Denton, J.S.S., and D.C. Adams. 2015. A new phylogenetic test for comparing 
 multiple high-dimensional evolutionary rates suggests interplay of evolutionary rates and 
 modularity in lanternfishes (Myctophiformes; Myctophidae). Evolution. 69:2425-2440.
+
+Adams, D.C. and M.L. Collyer. 2019. Comparing the strength of modular signal, and evaluating 
+alternative modular hypotheses, using covariance ratio effect sizes with morphometric data. 
+Evolution. 73:2352-2367.
 }
 \author{
 Dean Adams

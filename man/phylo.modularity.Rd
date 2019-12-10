@@ -40,6 +40,7 @@ Objects of class "CR" from modularity.test return a list of the following:
    \item{CR.boot}{The bootstrapped CR values, if CI = TRUE
    (For more than two partitions, this is the mean CR of pairwise CRs.)}
    \item{P.value}{The empirically calculated P-value from the resampling procedure.}
+  \item{Effect.Size}{The multivariate effect size associated with sigma.d.ratio.}
    \item{CR.mat}{For more than two partitions, the pairwise CRs among partitions.}
    \item{random.CR}{The CR calculated in each of the random permutations of the resampling procedure.}
    \item{permutations}{The number of random permutations used in the resampling procedure.}
@@ -67,7 +68,9 @@ A significant modular signal is found when the observed CR coefficient is small 
 Such a result implies that there is significantly greater independence among modules than is expected under the null 
 hypothesis of random associations of variables (neither modular nor integrated structure). This  
 result is consistent with the identification of significant modular structure in the data. For landmark data, the CR coefficient 
-found from the average CR across a 90 degree rotation of the data is used as the test statistic (see Adams 2016).
+found from the average CR across a 90 degree rotation of the data is used as the test statistic (see Adams 2016). 
+In addition, a multivariate effect size describing the strength of the effect is 
+  estimated from the empirically-generated sampling distribution (see details in Adams and Collyer 2019).
 }
 \examples{
 data(plethspecies)
@@ -86,6 +89,10 @@ new test measure. Methods in Ecology and Evolution. 7:565-572.
 Adams, D.C. and R. Felice. 2014. Assessing phylogenetic morphological 
 integration and trait covariation in morphometric data using evolutionary covariance 
 matrices. PLOS ONE. 9(4):e94335.
+
+Adams, D.C. and M.L. Collyer. 2019. Comparing the strength of modular signal, and evaluating 
+alternative modular hypotheses, using covariance ratio effect sizes with morphometric data. 
+Evolution. 73:2352-2367.
 }
 \author{
 Dean Adams

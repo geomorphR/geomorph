@@ -10,8 +10,9 @@
 #'   in a dataset relative to what is expected under a Brownian motion model of evolution. For geometric
 #'   morphometric data, the approach is a mathematical generalization of the Kappa statistic (Blomberg et al. 
 #'   2003) appropriate for highly multivariate data (see Adams 2014).Significance testing 
-#'   is found by permuting the shape data among the tips of the phylogeny. Note that this 
-#'   method can be quite slow as ancestral states must be estimated for every iteration.
+#'   is found by permuting the shape data among the tips of the phylogeny. In addition, a multivariate 
+#'   effect size describing the strength of the effect is 
+#'   estimated from the empirically-generated sampling distribution (see details in Adams and Collyer 2019).
 #' 
 #' This function can also be used with univariate data (i.e. centroid size) if imported as matrix with rownames
 #' giving the taxa names. In this case, the estimate of phylogenetic signal is identical to that found using the 
@@ -41,6 +42,7 @@
 #' @return Function returns a list with the following components: 
 #'   \item{phy.signal}{The estimate of phylogenetic signal}
 #'   \item{pvalue}{The significance level of the observed signal}
+#'   \item{Effect.Size}{The multivariate effect size associated with sigma.d.ratio.}
 #'   \item{random.K}{Each random K-statistic from random permutations}
 #'   \item{permutations}{The number of random permutations used in the resampling procedure}
 #'   \item{call}{The matched call}
@@ -48,6 +50,9 @@
 #' data: behavioral traits are more labile. Evolution, 57:717-745.
 #' @references Adams, D.C. 2014. A generalized K statistic for estimating phylogenetic signal from shape and 
 #' other high-dimensional multivariate data. Systematic Biology.  63:685-697.
+#' @references Adams, D.C. and M.L. Collyer. 2019. Comparing the strength of modular signal, and evaluating 
+#' alternative modular hypotheses, using covariance ratio effect sizes with morphometric data. 
+#' Evolution. 73:2352-2367.
 #' @examples
 #' data(plethspecies) 
 #' Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment    
@@ -136,6 +141,7 @@ physignal <- function(A, phy, iter=999, seed=NULL, print.progress = FALSE){
   if(print.progress) close(pb)
 
   p.val <- pval(K.rand)
+  Z <- effect.size(log(K.rand), center=TRUE) 
   
   # Kmult by paca
   x <- as.matrix(x)
@@ -152,7 +158,7 @@ physignal <- function(A, phy, iter=999, seed=NULL, print.progress = FALSE){
   })
   
   
-  out <- list(phy.signal = K.rand[[1]], pvalue = p.val, random.K = K.rand,
+  out <- list(phy.signal = K.rand[[1]], pvalue = p.val, random.K = K.rand, Z = Z,
               permutations = iter+1, 
               K.by.p = K.by.p, PaCA = PaCA, call=match.call())
   

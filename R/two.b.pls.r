@@ -10,6 +10,11 @@
 #'   Generalized Procrustes Analysis (GPA) [e.g., with \code{\link{gpagen}}]. If other variables are used, they must be input as a 
 #'   2-Dimensional matrix (rows = specimens, columns = variables).  It is also assumed that the separate inputs
 #'   have specimens (observations) in the same order.  Additionally, if names for the objects are specified, these must be the same for both datasets.
+#'  The observed test value is then compared to a distribution of values obtained by randomly permuting 
+#'   the individuals (rows) in one partition relative to those in the other. A significant result is found when the 
+#'   observed PLS correlation is large relative to this distribution. In addition, a multivariate effect size describing the strength of the effect is 
+#'   estimated from the empirically-generated sampling distribution (see details in Adams and Collyer 2016; 
+#'   Adams and Collyer 2019).   
 #'   
 #'  The generic function, \code{\link{plot}}, produces a two-block.pls plot.  This function calls \code{\link{plot.pls}}, which produces an ordination plot.  
 #'  An additional argument allows one to include a vector to label points.  Starting with version 3.1.0, warpgrids are no longer available with \code{\link{plot.pls}}
@@ -35,15 +40,6 @@
 #' are exactly along the major axis of shape covariation.  This axis is also shown as a best-fit line in the plot.
 #' }
 #' 
-#'  \subsection{Notes for geomorph 3.0.4 and subsequent versions}{ 
-#'  Compared to previous versions of geomorph, users might notice differences in effect sizes.  Previous versions used z-scores calculated with 
-#'  expected values of statistics from null hypotheses (sensu Collyer et al. 2015); however Adams and Collyer (2016) showed that expected values 
-#'  for some statistics can vary with sample size and variable number, and recommended finding the expected value, empirically, as the mean from the set 
-#'  of random outcomes.  Geomorph 3.0.4 and subsequent versions now center z-scores on their empirically estimated expected values and where appropriate, 
-#'  log-transform values to assure statistics are normally distributed.  This can result in negative effect sizes, when statistics are smaller than 
-#'  expected compared to the average random outcome.  For ANOVA-based functions, the option to choose among different statistics to measure effect size 
-#'  is now a function argument.
-#' }
 #' 
 #' @param A1 A 3D array (p x k x n) containing Procrustes shape variables for the first block, or a matrix (n x variables)
 #' @param A2 A 3D array (p x k x n) containing Procrustes shape variables for the second block, or a matrix (n x variables)
@@ -62,6 +58,7 @@
 #'   singular vectors of left (x) and right (y) blocks of landmarks (or other variables).  This value can only be negative
 #'   if single variables are input, as it reduces to the Pearson correlation coefficient.}
 #'   \item{P.value}{The empirically calculated P-value from the resampling procedure.}
+#'   \item{Effect.Size}{The multivariate effect size associated with sigma.d.ratio.}
 #'   \item{left.pls.vectors}{The singular vectors of the left (x) block}
 #'   \item{right.pls.vectors}{The singular vectors of the right (y) block}
 #'   \item{random.r}{The correlation coefficients found in each random permutation of the 
@@ -80,10 +77,11 @@
 #' \code{\link{phylo.integration}}, and \code{\link{compare.pls}}
 #' @references  Rohlf, F.J., and M. Corti. 2000. The use of partial least-squares to study covariation in shape. 
 #' Systematic Biology 49: 740-753.
-#' @references Collyer, M.L., D.J. Sekora, and D.C. Adams. 2015. A method for analysis of phenotypic change for phenotypes described 
-#' by high-dimensional data. Heredity. 115:357-365.
 #' @references Adams, D.C. and M.L. Collyer. 2016.  On the comparison of the strength of morphological integration across morphometric 
 #' datasets. Evolution. 70:2623-2631.
+#' @references Adams, D.C. and M.L. Collyer. 2019. Comparing the strength of modular signal, and evaluating 
+#' alternative modular hypotheses, using covariance ratio effect sizes with morphometric data. 
+#' Evolution. 73:2352-2367.
 #' @examples
 #' data(plethShapeFood) 
 #' Y.gpa<-gpagen(plethShapeFood$land)    #GPA-alignment    
@@ -135,9 +133,10 @@ two.b.pls <- function (A1, A2,  iter = 999, seed = NULL, print.progress=TRUE){
   if(print.progress) pls.rand <- apply.pls(center(x), center(y), RV=FALSE, iter=iter, seed=seed) else
     pls.rand <- .apply.pls(center(x), center(y), RV=FALSE, iter=iter, seed=seed) 
   p.val <- pval(abs(pls.rand))
+  Z <- effect.size(abs(pls.rand), center=TRUE) 
   XScores <- pls.obs$XScores
   YScores <- pls.obs$YScores
-  out <- list(r.pls = pls.rand[1], P.value = p.val,
+  out <- list(r.pls = pls.rand[1], P.value = p.val, Z = Z,
               left.pls.vectors = pls.obs$left.vectors,
               right.pls.vectors = pls.obs$right.vectors,
               random.r = pls.rand, 

@@ -37,6 +37,7 @@ This is helpful for long-running analyses.}
 An object of class "evolrate" returns a list with the following components: 
   \item{sigma.d.ratio}{The ratio of maximum to minimum net evolutionary rates.}
   \item{P.value}{The significance level of the observed ratio.}
+  \item{Effect.Size}{The multivariate effect size associated with sigma.d.ratio.}
   \item{sigma.d.gp}{The phylogenetic net evolutionary rate for each group of species on the phylogeny.}
   \item{random.sigma}{The sigma values found in random permutations of the resampling procedure.}
   \item{permutations}{The number of random permutations used.}
@@ -65,6 +66,8 @@ Denton and Adams 2015). This procedure is more general than the original simulat
 statistical properties of earlier methods, and under a wider array of data types.  Second, significance may be accomplished via 
 permutation, where data values at the tips are permuted relative to the (see Adams and Collyer 2018). This procedure is shown to 
 retain all appropriate statistical properties, including rotation-invariance of significance levels (see results of Adams and Collyer 2018).
+In addition, a multivariate effect size describing the strength of the effect is estimated from the 
+empirically-generated sampling distribution (see details in Adams and Collyer 2019).
 }
 }
 \examples{
@@ -87,6 +90,10 @@ modularity in lanternfishes (Myctophiformes; Myctophidae). Evolution. 69:2425-24
 
 Adams, D.C. and M.L. Collyer. 2018. Multivariate comparative methods: evaluations, comparisons, and
 recommendations. Systematic Biology. 67:14-31.
+
+Adams, D.C. and M.L. Collyer. 2019. Comparing the strength of modular signal, and evaluating 
+alternative modular hypotheses, using covariance ratio effect sizes with morphometric data. 
+Evolution. 73:2352-2367.
 }
 \author{
 Dean Adams & Emma Sherratt

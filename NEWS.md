@@ -1,7 +1,9 @@
-# CHANGES IN GEOMORPH VERSION 3.1.4.0900 (Patch Release)
+# CHANGES IN GEOMORPH VERSION 3.2.0.0900 (Minor Release)
 
 ### NEW FEATURES
 * New function added: `readmulti.tps` 
+* Effect sizes provided in the output of `compare.evol.rates`, `compare.multi.evol.rates`,`integration.test`,
+`modularity.test`, `phylo.integration`, `phylo.modularity`, `physignal`, `two.b.pls`
 
 ### OTHER CHANGES
 * Adjustment in 'class' statements to be compliant with new handling of objects in R 4.0
