@@ -2173,6 +2173,7 @@ phy.sim.mat <- function(phy) {
 Sig.eigen <- function(Sig, tol = 1e-06){
   E <- eigen(Sig)
   ev <- E$values
+  if(any(Im(ev)==0)) ev<-Re(ev)
   if (!all(ev >= -tol * abs(ev[1L]))) {
     k <- which(ev >= -tol * abs(ev[1L]))
     E$values <- ev[k]
