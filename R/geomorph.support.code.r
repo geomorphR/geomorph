@@ -2172,8 +2172,9 @@ phy.sim.mat <- function(phy) {
 # But does not incorporate other traps and options, as in mvnorm.
 Sig.eigen <- function(Sig, tol = 1e-06){
   E <- eigen(Sig)
+  if(any(Im(E$values)==0)) E$values<-Re(E$values)
+  if(any(Im(E$vectors)==0)) E$vectors<-Re(E$vectors)
   ev <- E$values
-  if(any(Im(ev)==0)) ev<-Re(ev)
   if (!all(ev >= -tol * abs(ev[1L]))) {
     k <- which(ev >= -tol * abs(ev[1L]))
     E$values <- ev[k]
