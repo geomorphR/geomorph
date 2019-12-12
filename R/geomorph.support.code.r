@@ -1479,6 +1479,8 @@ phylo.mat<-function(x,phy){
   C<-C[rownames(x),rownames(x)]
   invC <-fast.solve(C)
   eigC <- eigen(C)
+  if(any(Im(eigC$values)==0)) eigC$values<-Re(eigC$values)
+  if(any(Im(eigC$vectors)==0)) eigC$vectors<-Re(eigC$vectors)
   lambda <- zapsmall(abs(Re(eigC$values)))
   if(any(lambda == 0)){
     warning("Singular phylogenetic covariance matrix. Proceed with caution")
@@ -2259,6 +2261,8 @@ makePD <- function (x) {
     Y <- X
     R <- Y - D
     e <- eigen(R, symmetric = TRUE)
+    if(any(Im(e$values)==0)) e$values<-Re(e$values)
+    if(any(Im(e$vectors)==0)) e$vectors<-Re(e$vectors)
     Q <- e$vectors
     d <- e$values
     p <- d > eig.tol * d[1]
@@ -2273,6 +2277,8 @@ makePD <- function (x) {
   }
   
   e <- eigen(X, symmetric = TRUE)
+  if(any(Im(e$values)==0)) e$values<-Re(e$values)
+  if(any(Im(e$vectors)==0)) e$vectors<-Re(e$vectors)
   d <- e$values
   Eps <- posd.tol * abs(d[1])
   if (d[n] < Eps) {
