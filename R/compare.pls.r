@@ -93,7 +93,7 @@
    k <- length(list.check)
    if(is.null(list.names)) list.names <- as.list(substitute(list(...)))[-1L]
    k.combn <- combn(k,2)
-   list.drs <- sapply(1:k, function(j) dots[[j]]$r.pls - mean(dots[[j]]$random.r[-1])) 
+   list.drs <- sapply(1:k, function(j) dots[[j]]$random.r[1] - mean(dots[[j]]$random.r[-1])) 
    list.sds <- sapply(1:k, function(j) sdn(dots[[j]]$random.r[-1]))
    list.zs <- sapply(1:k, function(j) effect.size(dots[[j]]$random.r, center=TRUE))
    z12 <- sapply(1:ncol(k.combn), function(j){
