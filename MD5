@@ -131,10 +131,10 @@ d9119f721918f22c267db843023a86fe *man/writeland.tps.Rd
 fd5e4f7c9f42142153ff2f5d85089de0 *R/bilat.symmetry.r
 d7d67e9218f84609046423cb222f5c44 *R/build.template.r
 816a970cede328c3aec9f60c652e9b3f *R/combine.subsets.R
-9771f6cd8e254bc909a0a5c62bbb8497 *R/compare.CR.R
+02b0da73ec6fea842323aee2f20b6a62 *R/compare.CR.R
 cff9b470e442542bb66ab1446904fcba *R/compare.evol.rates.r
 158c6de8370887d5561219096b6c30d5 *R/compare.multi.evol.rates.r
-22de004e8d06bd7e33c8cb738026470b *R/compare.pls.r
+716fd68d21e23f585fb03c4f75330b99 *R/compare.pls.r
 5e4b285ed0e6499f26af9d913d0c48e4 *R/coords.subset.r
 c77f2f19e63d93ec9a76ac9c2236f1bc *R/define.links.r
 ddcc6629196b8e66ef9a2e92c093f041 *R/define.modules.r
