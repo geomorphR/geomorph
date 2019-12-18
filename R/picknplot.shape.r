@@ -103,7 +103,7 @@ picknplot.shape <- function(x, ...){
   # plot.args currently not used but could be in the future
   # adding a phylogeny currently has no plotting options
   
-  plot.args <- prt.args[!(names(prt.args) %in% rtt.args.pos)]
+ 
   prt.args <- prt.args[prt.args.pos] 
    
   if(is.null(prt.args$method)) prt.args$method <- "TPS"
