@@ -223,7 +223,7 @@ bilat.symmetry<-function(A, ind=NULL, side=NULL, replicate=NULL, object.sym=FALS
   random.shape.F <- MS/MSE
   
   if(length(form.names) > 4) {
-    MS.mod <- PSh$ANOVA$RSS.model/PSh$ANOVA$df[4]
+    MS.mod <- PSh$ANOVA$RSS.model[3,]/PSh$ANOVA$df[4]
     random.shape.F[1,] <- MS[1,]/MS[3,]
     random.shape.F[2,] <- MS[2,]/MS[3,]
     random.shape.F[3,] <- MS[3,]/MS.mod
@@ -258,7 +258,7 @@ bilat.symmetry<-function(A, ind=NULL, side=NULL, replicate=NULL, object.sym=FALS
 
     if(length(form.names) > 4) {
       MS <- random.size.F <- PSz$ANOVA$MS
-      MS.mod <- PSz$ANOVA$RSS.model/PSz$ANOVA$df[4]
+      MS.mod <- PSz$ANOVA$RSS.model[3,]/PSz$ANOVA$df[4]
       random.size.F[1,] <- MS[1,]/MS[3,]
       random.size.F[2,] <- MS[2,]/MS[3,]
       random.size.F[3,] <- MS[3,]/MS.mod

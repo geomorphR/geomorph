@@ -305,6 +305,9 @@ procD.lm <- function(f1, iter = 999, seed=NULL, RRPP = TRUE,
     if(length(dims.Y) == 3) {
       GM <- TRUE
       Y <- two.d.array(Y) 
+      p <- dims.Y[[1]]
+      k <- dims.Y[[2]]
+      n <- dims.Y[[3]]
     } else {
       GM <- FALSE
       Y <- as.matrix(Y)
@@ -325,31 +328,38 @@ procD.lm <- function(f1, iter = 999, seed=NULL, RRPP = TRUE,
   
   out$ANOVA$effect.type <- match.arg(effect.type)
   out$GM <- NULL
-  if(GM) {
-    p <- dims.Y[[1]]
-    k <- dims.Y[[2]]
-    kk <- NROW(out$LM$coefficients)
-    out$GM$p <- p
-    out$GM$k <- k
-    out$GM$n <- out$LM$n
-    out$GM$fitted <- arrayspecs(out$LM$fitted, p, k)
-    out$GM$residuals <- arrayspecs(out$LM$residuals, p, k)
-    if(kk > 1) out$GM$coefficients <- arrayspecs(out$LM$coefficients, p, k) else {
-      out$GM$coefficients <- array(matrix(out$LM$coefficients, p, k, byrow = TRUE), c(p,k,1))
+  
+  if(!out$LM$gls) {
+    out$fitted <- out$LM$fitted
+    out$residuals <- out$LM$residuals
+    out$coefficients <- out$LM$coefficients
+    if(GM) {
+      out$GM$p <- p
+      out$GM$k <- k
+      out$GM$n <- n
+      kk <- NROW(out$LM$coefficients)
+      out$GM$fitted <- arrayspecs(out$LM$fitted, p, k)
+      out$GM$residuals <- arrayspecs(out$LM$residuals, p, k)
+      if(kk > 1) out$GM$coefficients <- arrayspecs(out$LM$coefficients, p, k) else {
+        out$GM$coefficients <- array(matrix(out$LM$coefficients, p, k, byrow = TRUE), c(p,k,1))
+      }
     }
   }
+  
   
   if(out$LM$gls) {
     out$gls.fitted <- out$LM$gls.fitted
     out$gls.residuals <- out$LM$gls.residuals
     out$gls.coefficients <- out$LM$gls.coefficients
     out$gls.mean <- out$LM$gls.mean
-    out$gls.centroid <- out$LM$gls.centroid
     if(GM) {
+      out$GM$p <- p
+      out$GM$k <- k
+      out$GM$n <- n
+      kk <- NROW(out$LM$gls.coefficients)
       out$GM$gls.fitted <- arrayspecs(out$LM$gls.fitted, p, k)
       out$GM$gls.residuals <- arrayspecs(out$LM$gls.residuals, p, k)
       out$GM$gls.mean <- matrix(out$LM$gls.mean, out$GM$p, out$GM$k, byrow = TRUE)
-      out$GM$gls.centroid <- matrix(out$LM$gls.centroid, out$GM$p, out$GM$k, byrow = TRUE)
       if(kk > 1) out$GM$gls.coefficients <- arrayspecs(out$LM$gls.coefficients, p, k) else {
         out$GM$coefficients <- array(matrix(out$LM$gls.coefficients, p, k, byrow = TRUE), c(p,k,1))
       }
@@ -361,13 +371,17 @@ procD.lm <- function(f1, iter = 999, seed=NULL, RRPP = TRUE,
   out2$aov.table <- anova.lm.rrpp(out)$table
   out2$call <- match.call()
   out$call <- out2$call
-  out2$coefficients <- out$LM$wCoefficients
+  if(out$LM$gls) out2$gls.coefficients <- out$LM$gls.coefficients else
+    out2$coefficients <- out$LM$coefficients
   out2$Y <- out$LM$Y
   out2$X <- out$LM$X
   out2$QR <- out$LM$QR
-  out2$fitted <- out$LM$wFitted
-  out2$residuals <- out$LM$wResiduals
-  out2$weights <- out$LM$weights
+  if(out$LM$gls) out2$gls.fitted <- out$LM$gls.fitted else
+    out2$fitted <- out$LM$fitted
+  if(out$LM$gls) out2$gls.residuals <- out$LM$gls.residuals else
+    out2$residuals <- out$LM$residuals
+
+  out2$weights <- if(!is.null(out$LM$weights)) out$LM$weights else NULL
   out2$Terms <- out$LM$Terms
   out2$term.labels <- out$LM$term.labels
   out2$data <- out$LM$data

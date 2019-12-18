@@ -162,7 +162,7 @@
 plotAllometry <- function(fit, size, logsz = TRUE, 
         method = c("PredLine", "RegScore", "size.shape", "CAC"), ...) {
   type <- match.arg(method)
-  f <- if(fit$LM$gls) fit$LM$gls.fitted else fit$LM$wFitted
+  f <- if(fit$LM$gls) fit$LM$gls.fitted else fit$LM$fitted
   y <- fit$LM$Y
   X <- fit$LM$X
   n <- NROW(X)
