@@ -805,38 +805,9 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, phylo = FALSE,
   options(warn = -1)
   if(NCOL(x$x) == 1) stop("Only one PC.  No plotting capability with this function.\n", 
                           call. = FALSE)
-  Pcov <- x$Pcov
   v <- x$d/sum(x$d)
-  av <- if(!is.null(x$anc.var)) x$anc.var/sum(x$anc.var) else NULL
-  
-  if(is.null(av)) {
-    
-    if(x$alignment == "principal")  {
-      xlabel <- paste("PC ", axis1, ": ", round(v[axis1] * 100, 2), "%", sep = "")
-      ylabel <- paste("PC ", axis2, ": ", round(v[axis2] * 100, 2), "%", sep = "")
-    } else {
-      xlabel <- paste("PaC ", axis1, ": ", round(v[axis1] * 100, 2), "%", sep = "")
-      ylabel <- paste("PaC ", axis2, ": ", round(v[axis2] * 100, 2), "%", sep = "")
-    }
-    
-  } else {
-    
-    if(x$alignment == "principal")  {
-      xlabel <- paste("PC ", axis1, ": Ancestors: ", round(av[axis1] *100, 2),
-                      "%; Tips: ", round(v[axis1] * 100, 2), "%", sep = "")
-      ylabel <- paste("PC ", axis2, ": Ancestors: ", round(av[axis2] *100, 2),
-                      "%; Tips: ", round(v[axis2] * 100, 2), "%", sep = "")
-    } else {
-      xlabel <- paste("PaC ", axis1, ": Ancestors: ", round(av[axis1] *100, 2),
-                      "%; Tips: ", round(v[axis1] * 100, 2), "%", sep = "")
-      ylabel <- paste("PaC ", axis2, ": Ancestors: ", round(av[axis2] *100, 2),
-                      "%; Tips: ", round(v[axis2] * 100, 2), "%", sep = "")
-    }
-    
-  }
-  
-
-  
+  xlabel <- paste("PC ", axis1, ": ", round(v[axis1] * 100, 2), "%", sep = "")
+  ylabel <- paste("PC ", axis2, ": ", round(v[axis2] * 100, 2), "%", sep = "")
   plot.args <- list(x = x$x[, axis1], y = x$x[, axis2], xlab = xlabel, ylab = ylabel, ...)
   pcdata <- as.matrix(x$x[, c(axis1, axis2)])
   if(!is.null(plot.args$axes)) axes <- plot.args$axes else axes <- TRUE
@@ -847,11 +818,11 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, phylo = FALSE,
   
   if(phylo) {
     phy <- x$phy
-    phy.pcdata <- rbind(x$x[x$phy$tip.label,], x$anc.x)
+    phy.pcdata <- rbind(x$x, x$anc.x)
     phy.pcdata <- as.matrix(phy.pcdata[, c(axis1, axis2)])
     plot.args$x <- pcdata[,1]
     plot.args$y <- pcdata[,2]
-
+    
   }
   
   do.call(plot, plot.args)
@@ -866,12 +837,12 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, phylo = FALSE,
     plot.xy(xy.coords(phy.pcdata[(length(phy$tip)+1):nrow(phy.pcdata),]), type="p",
             pch = phylo.par$node.pch, cex = phylo.par$node.cex, bg = phylo.par$node.bg)
   }
-
+  
   if(axes){
     abline(h = 0, lty=2, ...)
     abline(v = 0, lty=2, ...)
   }
-
+  
   options(warn = 0)
   out <- list(PC.points = pcdata,   
               call = match.call())
@@ -879,12 +850,12 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, phylo = FALSE,
   out$GM$A <- x$A
   
   out$plot.args <- plot.args
-  out$Pcov <- Pcov
   if(phylo) {
     out$phylo <- list()
     out$phylo$phy <- phy
     out$phylo$phylo.par <- phylo.par
     out$phylo$phy.pcdata <- phy.pcdata
+    
   }
   class(out) <- "plot.gm.prcomp"
   invisible(out)
