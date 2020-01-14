@@ -403,15 +403,17 @@ summary.CR <- function(object, ...) {
 plot.CR <- function(x, ...){
   CR.val <- x$random.CR
   CR.obs <- x$CR
+  options(scipen = 999)
   p <- x$P.value
   ndec <- nchar(x$permutations)
   CR.obs <- round(CR.obs, ndec)
+  p <- round(p,ndec)
   main.txt <- paste("Observed CR =",CR.obs,";", "P-value =", p)
   hist(CR.val,30,freq=TRUE,col="gray",xlab="CR Coefficient",xlim=c(0,max(c(2,CR.val))),
        main=main.txt, cex.main=0.8)
   arrows(CR.obs,50,CR.obs,5,length=0.1,lwd=2)
+  options(scipen = 0)
 }
-
 
 #' Print/Summary Function for geomorph
 #' 
@@ -453,13 +455,16 @@ summary.CR.phylo <- function(object, ...) {
 plot.CR.phylo <- function(x, ...){
   CR.val <- x$random.CR
   CR.obs <- x$CR
+  options(scipen = 999)
   p <- x$P.value
   ndec <- nchar(x$permutations)
+  p <- round(p,ndec)
   CR.obs <- round(CR.obs, ndec)
   main.txt <- paste("Observed CR =",CR.obs,";", "P-value =", p)
   hist(CR.val,30,freq=TRUE,col="gray",xlab="CR Coefficient",xlim=c(0,max(c(2,CR.val))),
        main=main.txt, cex.main=0.8)
   arrows(CR.obs,50,CR.obs,5,length=0.1,lwd=2)
+  options(scipen = 0)
 }
 
 ## physignal
