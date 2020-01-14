@@ -1,5 +1,5 @@
 0e7a71ccd90951263e16de41de1c07cf *cran-comments.md
-ec1e0594713ac6f4c5d458d7a7e37c2a *CRAN-RELEASE
+74b7f55b83427ed8b6ff29adbf419c74 *CRAN-RELEASE
 247b6e5658356e87edfd560687b239fc *data/hummingbirds.rda
 56558754725fea156eb0820f67a4f508 *data/larvalMorph.rda
 2abf7b7d088204662abf4c6acf673ff5 *data/mosquito.rda
@@ -149,7 +149,7 @@ aac6a4f8a759473e8c37048e5c8e3d91 *R/findMeanSpec.r
 089a02a38c0381ac0381f0ae8f5b07f7 *R/fixed.angle.r
 953c275fdc42e65db7394a594d35806a *R/geomorph.data.frame.r
 2b8eacd9493fefcec5587cdd38efcbbb *R/geomorph.support.code.r
-29132ab6fa67b1fa884fa652758130a6 *R/geomorph.utils.r
+315030c2b20d0ef8072e89c71c95ed50 *R/geomorph.utils.r
 9ec2eb9e43ec1bcb5806977bd7267c36 *R/globalIntegration.r
 85f132fe6dad77cc29c77ef6517a119e *R/gm.prcomp.R
 bf0750e2582fc2c3b5454ad48b7f3cbb *R/gpagen.r
