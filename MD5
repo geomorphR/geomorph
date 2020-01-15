@@ -11,7 +11,7 @@ d8e8360c03c03fe45d2100e9c05d4a89 *data/plethodon.rda
 9ba51ab9be03930a4acdcddde8169b33 *data/scallopPLY.rda
 6e5e71b242462e422b716800ffc3c464 *data/scallops.rda
 57e04bc6f740cece39c6a7662dacd5f2 *DESCRIPTION
-73f723a130c92f8b84a81465a15add7c *geomorph.Rproj
+f4f2080e745b8d689f17caf549449ab5 *geomorph.Rproj
 f926ce8a00d113b94bd7a08b69b5bfc3 *inst/CITATION
 71303f6d562524cf09f2e0cd4be5a46e *man/advanced.procD.lm.Rd
 5e099c6268d251bf5c98595d9566385a *man/arrayspecs.Rd
@@ -163,7 +163,7 @@ bf9cfa5a72c207f88471d4e053fad58a *R/phylo.integration.r
 14d81c58ead6cd19f0b99db7a4b834ee *R/phylo.modularity.r
 7ae1407ec4e63cbffd57c2196f8c0e6f *R/physignal.r
 e0a0fee651a53ffab3e45a599f370f80 *R/picknplot.shape.r
-272722bb42b23f80dce9ac53e8f2abcb *R/plotAllometry.r
+a12fdff46c57cf3e2128e105278abda2 *R/plotAllometry.r
 c1cead3306cb3d7b1bd3ed5d99fc89af *R/plotAllSpecimens.r
 9f51066884f71bfc06335604055beead *R/plotGMPhyloMorphoSpace.r
 f9c45455cc648016e288c4ba68c49e85 *R/plotOutliers.r

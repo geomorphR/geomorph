@@ -238,7 +238,8 @@ plotAllometry <- function(fit, size, logsz = TRUE,
           do.call(plot, plot.args)
           do.call(plot, plot2.args)
           par(mfcol = c(1,1))
-          out <- list(CAC = CAC, RSC = RSC, plot.args = list(CAC=plot.args, RSC = plot2.args))
+          out <- list(CAC = CAC, RSC = RSC, plot.args = plot.args,
+                      all.plot.args = list(CAC=plot.args, RSC = plot2.args))
         }
         
         if(method == "size.shape") {
