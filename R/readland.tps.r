@@ -139,9 +139,9 @@ readland.tps <- function (file, specID = c("None", "ID", "imageID"), negNA = FAL
   }
 
   lmo <- try(simplify2array(lmo), silent = TRUE)
-  na.tab <- apply(lmo, 3, function(x){rowSums(x<0)})
+  na.tab <- apply(lmo, 3, function(x) {rowSums(x < 0)})
   ind.nas <- which(colSums(na.tab)!=0)
-  lm.nas <- apply(as.matrix(na.tab[,ind.nas]), 2, function(x){which(x!=0)})
+  lm.nas <- list(apply(as.matrix(na.tab[,ind.nas]), 2, function(x){which(x!=0)}))
 
   if(length(ind.nas)!=0){
     if(negNA == TRUE){

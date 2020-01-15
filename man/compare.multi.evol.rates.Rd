@@ -4,15 +4,8 @@
 \alias{compare.multi.evol.rates}
 \title{Comparing net rates of shape evolution among traits on phylogenies}
 \usage{
-compare.multi.evol.rates(
-  A,
-  gp,
-  phy,
-  Subset = TRUE,
-  iter = 999,
-  seed = NULL,
-  print.progress = TRUE
-)
+compare.multi.evol.rates(A, gp, phy, Subset = TRUE, iter = 999,
+  seed = NULL, print.progress = TRUE)
 }
 \arguments{
 \item{A}{A matrix (n x [p x k]) or 3D array (p x k x n) containing Procrustes shape variables for a set of specimens}
@@ -63,7 +56,7 @@ If three or more traits are used, pairwise p-values are
 also returned. In addition, a multivariate effect size describing the strength of the effect is estimated from the 
 empirically-generated sampling distribution (see details in Adams and Collyer 2019).
 Values from these distributions are log-transformed prior to effect size estimation, 
-to assure normally distributed data. 
+to assure normally distributed data.
 
 The shape data may be input as either a 3D array (p x k x n) containing Procrustes shape variables 
 for a set of species, or as a matrix (n x [p x k]) whose rows correspond to each species. In 
@@ -72,7 +65,7 @@ third dimension of the array. Landmark  groups for each trait are then specified
 array designating which landmark belongs to which trait. Additionally, if the method is to be 
 used with other data (i.e., a set of length measurements), the input A should be a matrix 
 of n rows of species and p columns of variables. In this case, the grouping factor should 
-have each variable assigned to a trait group. 
+have each variable assigned to a trait group.
 
 Comparisons of net evolutionary rates between traits may be accomplished in one of two ways. First, 
 if the traits are are part of a single shape that was subjected to a single Procrustes 
@@ -82,7 +75,7 @@ different structures (shapes) that were superimposed separately, then the estima
 take the difference in the number of trait dimensions into account (see discussion in Denton and
 Adams 2015). This option is identified by selecting Subset = FALSE.
 
- The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with 
+The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with 
  \code{\link{compare.multi.evol.rates}}.
  The generic function, \code{\link{plot}}, produces a histogram of random rate-ratios associated with
  the resampling procedure.

@@ -9,6 +9,7 @@
 * Adjustment in 'class' statements to be compliant with new handling of objects in R 4.0
 
 ### BUG FIXES
+* Fixed small bug in readland.tps to accuretely replace negative values with NA when only one specimen has NAs
 * Adjusted calculations of pairwise effect size in compare.pls and compare.CR to mirror publication equations
 * Fixed issue with 3D plotting in plotOutliers with inspect.outliers = T
 
