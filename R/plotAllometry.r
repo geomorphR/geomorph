@@ -182,10 +182,10 @@ plotAllometry <- function(fit, size, logsz = TRUE,
   
   if(fit$LM$gls){
     if(!is.null(fit$LM$weights))
-      fit <- lm.rrpp(form, data = dat, weights = it$LM$weights, 
+      fit <- lm.rrpp(form, data = dat, weights = fit$LM$weights, 
                      iter = 0, print.progress = FALSE)
     if(!is.null(fit$LM$Cov))
-      fit <- lm.rrpp(form, data = dat, Cov = it$LM$Cov, 
+      fit <- lm.rrpp(form, data = dat, Cov = fit$LM$Cov, 
                      iter = 0, print.progress = FALSE)
   } else {
     fit <- lm.rrpp(form, data = dat, iter = 0, print.progress = FALSE)
