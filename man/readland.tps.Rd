@@ -4,8 +4,13 @@
 \alias{readland.tps}
 \title{Read landmark data from tps file}
 \usage{
-readland.tps(file, specID = c("None", "ID", "imageID"), negNA = FALSE,
-  readcurves = FALSE, warnmsg = TRUE)
+readland.tps(
+  file,
+  specID = c("None", "ID", "imageID"),
+  negNA = FALSE,
+  readcurves = FALSE,
+  warnmsg = TRUE
+)
 }
 \arguments{
 \item{file}{A *.tps file containing two- or three-dimensional landmark data}

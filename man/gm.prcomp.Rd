@@ -66,7 +66,7 @@ an orthogonal projection of data, but the origin of the plot will be the tree ro
 
 PLOTTING: Contrary to previous geomorph implementations, gm.prcomp does not produce plots. 
 For plotting options of gm.prcomp class objects combine \code{\link{plot.gm.prcomp}} and 
-\code{\link{picknplot.shape}} following the examples below.
+\code{\link{picknplot.shape}} following the examples below. 
 
 NOTE: The \code{\link{plot.gm.prcomp}} function performs the same plotting that was previously 
 posible with \code{\link{plotTangentSpace}} and \code{\link{plotGMPhyloMorphoSpace}}, which have now been 
