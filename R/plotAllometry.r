@@ -87,9 +87,12 @@
 #' @keywords utilities
 #' @export
 #' @author Michael Collyer
-#' @return An object of class plotAllometry returns CAC values, the residual shape component (RSC, associated with CAC approach),
-#' PredLine values, RegScore values, the size variable,
-#' PC points for the size-shape PCA, and PCA statistics.
+#' @return An object of class plotAllometry returns some combination of 
+#' CAC values, the residual shape component (RSC, associated with CAC approach),
+#' PredLine values, RegScore values, PC points for the size-shape PCA, and PCA statistics,
+#' depending on arguments used.  The size variable and GM statistics from the original model fit
+#' are also returned.
+#' .
 #' @references Adams, D. C., and A. Nistri. 2010. Ontogenetic convergence and evolution of foot morphology 
 #'   in European cave salamanders (Family: Plethodontidae). BMC Evol. Biol. 10:1-10.
 #' @references Adams, D.C., F.J. Rohlf, and D.E. Slice. 2013. A field comes of age: geometric morphometrics 
@@ -161,67 +164,102 @@
 #' 
 plotAllometry <- function(fit, size, logsz = TRUE, 
         method = c("PredLine", "RegScore", "size.shape", "CAC"), ...) {
-  type <- match.arg(method)
-  f <- if(fit$LM$gls) fit$LM$gls.fitted else fit$LM$fitted
-  y <- fit$LM$Y
-  X <- fit$LM$X
-  n <- NROW(X)
-  if(logsz) xc <- log(size) else xc <- size
-  if(length(xc) != n) stop("The number of size observations does not match the number of shape observations.\n", call. = FALSE)
-  b <- as.matrix(lm.fit(cbind(xc, X), y)$coefficients)[1,]
-  PL <- prcomp(f)$x[,1]
-  a <- crossprod(center(y), xc)/sum(xc^2)
-  a <- a/sqrt(sum(a^2))
-  r <- center(y)
-  CAC <- r%*%a  
-  p <- fit$LM$p
-  resid <- r%*%(diag(p) - matrix(crossprod(a),p,p))
-  RSC <- prcomp(resid)$x
-  Reg.proj <- r %*% b %*% sqrt(1/crossprod(b))
-  PCA <- prcomp(cbind(y, xc))
-  PC.points <-PCA$x
+  method <- match.arg(method)
+  n <- length(size)
+  if(n != fit$LM$n) 
+    stop("Different number of observations between model fit and size.\n", call. = FALSE)
+  if(!is.numeric(size))
+    stop("The argument, size, must be a numeric vector.\n", call. = FALSE)
+  if(!is.vector(size))
+    stop("The argument, size, must be a numeric vector.\n", call. = FALSE)
   
-  if(type == "CAC") {
-    
-    par(mfcol = c(1,2))
-    plot.args <- list(x = xc, y = CAC,
-    xlab = if(logsz) "log(Size)" else "Size",
-    ylab = "CAC", ...)
-    plot2.args <- list(x = CAC, y = RSC[, 1],
-         xlab = "CAC", ylab = "RSC1", ...)
-    do.call(plot, plot.args)
-    do.call(plot, plot2.args)
-    par(mfcol = c(1,1))
-    
-  } else if(type == "RegScore") {
-    
-    plot.args <- list(x = xc, y = Reg.proj,
-                      xlab = if(logsz) "log(Size)" else "Size",
-                      ylab = "Regression Score", ...)
-    do.call(plot, plot.args)
-    
-  } else if(type == "size.shape") {
-    
-    v <- round(PCA$sdev^2/sum(PCA$sdev^2) * 100, 2)
-    plot.args <- list(x = PC.points[,1], y = PC.points[,2],
-                      xlab = paste("PC 1: ", v[1], "%", sep = ""), 
-                      ylab = paste("PC 2: ", v[2], "%", sep = ""),
-                      ...)
-    do.call(plot, plot.args)
-    title("Size-Shape PC plot")
-    
-    } else {
-      
-      plot.args <- list(x = xc, y = PL,
-                        xlab = if(logsz) "log(Size)" else "Size",
-                        ylab = "PC 1 for fitted values", ...)
-      
-    do.call(plot, plot.args)
+  dat <- fit$LM$data
+  Y <- fit$LM$Y
+  form <- if(logsz) as.formula(Y ~ log(size)) else as.formula(Y ~ size)
+  dat$size <- size
+  GM <- fit$GM
+  xc <- if(logsz) log(size) else size
+  
+  if(fit$LM$gls){
+    if(!is.null(fit$LM$weights))
+      fit <- lm.rrpp(form, data = dat, weights = it$LM$weights, 
+                     iter = 0, print.progress = FALSE)
+    if(!is.null(fit$LM$Cov))
+      fit <- lm.rrpp(form, data = dat, Cov = it$LM$Cov, 
+                     iter = 0, print.progress = FALSE)
+  } else {
+    fit <- lm.rrpp(form, data = dat, iter = 0, print.progress = FALSE)
   }
   
-  out <- list(CAC = CAC, PredLine = PL, RegScore = Reg.proj, PC.points = PC.points,
-              size.var = xc, size.shape.PCA = PCA, logsz = logsz, plot.args = plot.args,
-              GM =fit$GM)
+  if(method == "PredLine") {
+    
+    if(logsz) out <- plot(fit, type = "regression", 
+                  reg.type = "PredLine", 
+                  predictor = log(size), ...) else
+                    out <- plot(fit, type = "regression", 
+                                reg.type = "PredLine", 
+                                predictor = size, ...)          
+    
+  } else if(method == "RegScore") {
+    
+    if(logsz) out <- plot(fit, type = "regression", 
+                          reg.type = "RegScore", 
+                          predictor = log(size), ...) else
+                            out <- plot(fit, type = "regression", 
+                                        reg.type = "RegScore", 
+                                        predictor = size, ...) 
+    
+  } else 
+      
+      {
+      
+        f <- if(fit$LM$gls) fit$LM$gls.fitted else fit$LM$fitted
+        b <- as.matrix(lm(f ~ xc)$coefficients)[2,]
+        y <- fit$LM$Y
+        a <- crossprod(center(y), xc)/sum(xc^2)
+        a <- a/sqrt(sum(a^2))
+        r <- center(y)
+        CAC <- r%*%a  
+        p <- fit$LM$p
+        resid <- r%*%(diag(p) - matrix(crossprod(a),p,p))
+        RSC <- prcomp(resid)$x
+        Reg.proj <- r %*% b %*% sqrt(1/crossprod(b))
+        PCA <- prcomp(cbind(y, xc))
+        PC.points <-PCA$x
+        
+        if(method == "CAC") {
+          
+          par(mfcol = c(1,2))
+          plot.args <- list(x = xc, y = CAC,
+                            xlab = if(logsz) "log(Size)" else "Size",
+                            ylab = "CAC", ...)
+          plot2.args <- list(x = CAC, y = RSC[, 1],
+                             xlab = "CAC", ylab = "RSC1", ...)
+          do.call(plot, plot.args)
+          do.call(plot, plot2.args)
+          par(mfcol = c(1,1))
+          out <- list(CAC = CAC, RSC = RSC, plot.args = list(CAC=plot.args, RSC = plot2.args))
+        }
+        
+        if(method == "size.shape") {
+          
+          v <- round(PCA$sdev^2/sum(PCA$sdev^2) * 100, 2)
+          plot.args <- list(x = PC.points[,1], y = PC.points[,2],
+                            xlab = paste("PC 1: ", v[1], "%", sep = ""), 
+                            ylab = paste("PC 2: ", v[2], "%", sep = ""),
+                            ...)
+          do.call(plot, plot.args)
+          title("Size-Shape PC plot")
+          
+          out <- list(size.shape.PCA = PCA,
+                      PC.points = PC.points, plot.args = plot.args)
+        }
+      }
+  
+  out$size.var <- xc
+  out$logsz <- logsz
+  out$GM <- GM
+  
   class(out) <- "plotAllometry"
   invisible(out)
   

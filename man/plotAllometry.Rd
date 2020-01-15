@@ -24,9 +24,12 @@ plotAllometry(
 \item{...}{Other arguments passed on to plot.default}
 }
 \value{
-An object of class plotAllometry returns CAC values, the residual shape component (RSC, associated with CAC approach),
-PredLine values, RegScore values, the size variable,
-PC points for the size-shape PCA, and PCA statistics.
+An object of class plotAllometry returns some combination of 
+CAC values, the residual shape component (RSC, associated with CAC approach),
+PredLine values, RegScore values, PC points for the size-shape PCA, and PCA statistics,
+depending on arguments used.  The size variable and GM statistics from the original model fit
+are also returned.
+.
 }
 \description{
 Function performs plotting for a procD.lm fit and a vector of size measures.

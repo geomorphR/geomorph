@@ -10,7 +10,7 @@ procD.lm(
   seed = NULL,
   RRPP = TRUE,
   SS.type = c("I", "II", "III"),
-  effect.type = c("SS", "MS", "Rsq", "F", "cohen"),
+  effect.type = c("F", "cohenf", "SS", "MS", "Rsq"),
   int.first = FALSE,
   Cov = NULL,
   data = NULL,

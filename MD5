@@ -66,7 +66,7 @@ dde6596fcd7d13f63473eef6b86368d7 *man/plot.gm.prcomp.Rd
 c243df60434118dddca6904f3d6de9b0 *man/plot.physignal.Rd
 e1b19a991aa5c05b644349eb00687e39 *man/plot.pls.Rd
 13c6015521a9d77ac02f5175a7a74e2b *man/plot.procD.lm.Rd
-f1ae21cff9e208e08954dffb1af99378 *man/plotAllometry.Rd
+45a60ea655392e8307bf3826961177d3 *man/plotAllometry.Rd
 a94c27850d6a56f55bddcb424b0204da *man/plotAllSpecimens.Rd
 bb7625d6a45f22b3af9d6944c554b065 *man/plotGMPhyloMorphoSpace.Rd
 4542a404d1dabb2f1f237f087e4c9ea1 *man/plotOutliers.Rd
@@ -89,7 +89,7 @@ ed693e07c72843a8da98c722b7e1ba98 *man/print.plotTangentSpace.Rd
 c9459503ec13f843f971edda31289dc6 *man/print.pls.Rd
 e186bde97e98a204b53457a14eb0a52d *man/print.procD.lm.Rd
 9b573f0adfa8a7289c49fd549a5a1e9c *man/procD.allometry.Rd
-2e821ff0f45f39cc8a559dc790133353 *man/procD.lm.Rd
+ec58b27841c3d0dccf39b907b4a628c2 *man/procD.lm.Rd
 957f08fb30818cd7b68eaa704d36118d *man/procD.pgls.Rd
 2e915d39d1b79932fb1633dbdcc28ce8 *man/pupfish.Rd
 24203f2fe7e9af73e10becb83f54f937 *man/ratland.Rd
@@ -150,7 +150,7 @@ aac6a4f8a759473e8c37048e5c8e3d91 *R/findMeanSpec.r
 089a02a38c0381ac0381f0ae8f5b07f7 *R/fixed.angle.r
 953c275fdc42e65db7394a594d35806a *R/geomorph.data.frame.r
 2b8eacd9493fefcec5587cdd38efcbbb *R/geomorph.support.code.r
-8d72187f364f937145d2677c76f550b6 *R/geomorph.utils.r
+389ba08aa606297ef4fce0010c33685e *R/geomorph.utils.r
 9ec2eb9e43ec1bcb5806977bd7267c36 *R/globalIntegration.r
 06566550741087ab3daff6a82fbfab91 *R/gm.prcomp.R
 bf0750e2582fc2c3b5454ad48b7f3cbb *R/gpagen.r
@@ -163,14 +163,14 @@ bf9cfa5a72c207f88471d4e053fad58a *R/phylo.integration.r
 14d81c58ead6cd19f0b99db7a4b834ee *R/phylo.modularity.r
 7ae1407ec4e63cbffd57c2196f8c0e6f *R/physignal.r
 e0a0fee651a53ffab3e45a599f370f80 *R/picknplot.shape.r
-9fedaa370fbc50cea216a4810ed80428 *R/plotAllometry.r
+272722bb42b23f80dce9ac53e8f2abcb *R/plotAllometry.r
 c1cead3306cb3d7b1bd3ed5d99fc89af *R/plotAllSpecimens.r
 9f51066884f71bfc06335604055beead *R/plotGMPhyloMorphoSpace.r
 f9c45455cc648016e288c4ba68c49e85 *R/plotOutliers.r
 5e0f4c3be2576a17a988042babc66fa4 *R/plotRefToTarget.r
 4cfe3b966bf949de94c01a51e4edf998 *R/plotspec.r
 ffeb4fb45afe9b0e8fe9c22bd5747931 *R/plotTangentSpace.r
-40d179fa637d4a8df3eb2f86246d89bf *R/procD.lm.r
+bb944e4a73cab4d9f15d2979920474cb *R/procD.lm.r
 5037db11c59a8f6e9932467ae2b8e657 *R/procD.pgls.r
 df3f4cc6406dc0c737ee2ff08c2a0e3d *R/read.morphologika.r
 dc4c769a5bb24cb2ba04ddaa92c82b2d *R/read.ply.r

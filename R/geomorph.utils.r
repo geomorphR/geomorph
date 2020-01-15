@@ -77,9 +77,6 @@ print.procD.lm<- function(x,...) {
 summary.procD.lm <- function(object,...){
   class(object) <- "lm.rrpp"
   effect.type <- object$ANOVA$effect.type
-  if(any(is.na(match(effect.type, 
-                     c("SS", "MS", "Rsq", "F", "cohen")))))
-    effect.type = "F"
   anova.lm.rrpp(object, effect.type=effect.type, ...)
 }
 
