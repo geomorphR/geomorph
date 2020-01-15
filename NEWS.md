@@ -1,3 +1,9 @@
+
+# CHANGES IN GEOMORPH VERSION 3.2.0.0900 
+
+### BUG FIXES
+* Fixed small bug in plotAllometry that returned spurious RegScore values.
+
 # CHANGES IN GEOMORPH VERSION 3.1.3 (Patch Release)
 
 ### NEW FEATURES
