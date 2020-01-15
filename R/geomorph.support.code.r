@@ -1479,6 +1479,8 @@ phylo.mat<-function(x,phy){
   C<-C[rownames(x),rownames(x)]
   invC <-fast.solve(C)
   eigC <- eigen(C)
+  if(any(Im(eigC$values)==0)) eigC$values<-Re(eigC$values)
+  if(any(Im(eigC$vectors)==0)) eigC$vectors<-Re(eigC$vectors)
   lambda <- zapsmall(abs(Re(eigC$values)))
   if(any(lambda == 0)){
     warning("Singular phylogenetic covariance matrix. Proceed with caution")
@@ -1970,7 +1972,7 @@ GMfromShapes1 <- function(Shapes, nCurvePts, continuous.curve = NULL, scaled = T
 
 ### geomorph-specific logicals
 
-is.gpagen <- function(x) inerits(x, "gpagen")
+is.gpagen <- function(x) inherits(x, "gpagen")
 is.phylo <- function(x) inherits(x, "phylo")
 is.geomorph.data.frame <- function(x) inherits(x, "geomorph.data.frame")
 
@@ -2172,6 +2174,8 @@ phy.sim.mat <- function(phy) {
 # But does not incorporate other traps and options, as in mvnorm.
 Sig.eigen <- function(Sig, tol = 1e-06){
   E <- eigen(Sig)
+  if(any(Im(E$values)==0)) E$values<-Re(E$values)
+  if(any(Im(E$vectors)==0)) E$vectors<-Re(E$vectors)
   ev <- E$values
   if (!all(ev >= -tol * abs(ev[1L]))) {
     k <- which(ev >= -tol * abs(ev[1L]))
@@ -2257,6 +2261,8 @@ makePD <- function (x) {
     Y <- X
     R <- Y - D
     e <- eigen(R, symmetric = TRUE)
+    if(any(Im(e$values)==0)) e$values<-Re(e$values)
+    if(any(Im(e$vectors)==0)) e$vectors<-Re(e$vectors)
     Q <- e$vectors
     d <- e$values
     p <- d > eig.tol * d[1]
@@ -2271,6 +2277,8 @@ makePD <- function (x) {
   }
   
   e <- eigen(X, symmetric = TRUE)
+  if(any(Im(e$values)==0)) e$values<-Re(e$values)
+  if(any(Im(e$vectors)==0)) e$vectors<-Re(e$vectors)
   d <- e$values
   Eps <- posd.tol * abs(d[1])
   if (d[n] < Eps) {

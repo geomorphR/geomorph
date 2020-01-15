@@ -15,7 +15,10 @@
 #' which tips data are obtained under Brownian motion using a an evolutionary rate matrix 
 #' for all traits, which contains a common rate for all trait dimensions (Denton and Adams 2015).
 #' If three or more traits are used, pairwise p-values are 
-#' also returned. 
+#' also returned. In addition, a multivariate effect size describing the strength of the effect is estimated from the 
+#' empirically-generated sampling distribution (see details in Adams and Collyer 2019).
+#' Values from these distributions are log-transformed prior to effect size estimation, 
+#' to assure normally distributed data. 
 #' 
 #' The shape data may be input as either a 3D array (p x k x n) containing Procrustes shape variables 
 #' for a set of species, or as a matrix (n x [p x k]) whose rows correspond to each species. In 
@@ -59,6 +62,7 @@
 #'   \item{rates.all}{The phylogenetic evolutionary rates for each trait.}
 #'   \item{rate.ratio}{The ratio of maximum to minimum evolutionary rates.}
 #'   \item{pvalue}{The significance level of the observed rate ratio.}
+#'   \item{Effect.Size}{The multivariate effect size associated with sigma.d.ratio.}
 #'   \item{pvalue.gps}{Matrix of pairwise significance levels comparing each pair of rates.}
 #'   \item{call}{The matched call.}
 #'   
@@ -67,6 +71,9 @@
 #' @references Denton, J.S.S., and D.C. Adams. 2015. A new phylogenetic test for comparing 
 #' multiple high-dimensional evolutionary rates suggests interplay of evolutionary rates and 
 #' modularity in lanternfishes (Myctophiformes; Myctophidae). Evolution. 69:2425-2440.
+#' @references Adams, D.C. and M.L. Collyer. 2019. Comparing the strength of modular signal, and evaluating 
+#' alternative modular hypotheses, using covariance ratio effect sizes with morphometric data. 
+#' Evolution. 73:2352-2367.
 #' @examples
 #' 
 #' data(plethspecies) 
@@ -131,6 +138,7 @@ compare.multi.evol.rates<-function(A,gp,phy,Subset=TRUE,iter=999,seed=NULL,print
                     max(sigma.rand[[j]])
                   }))
   p.val <- pval(random.sigma)
+  Z <- effect.size(log(random.sigma), center=TRUE) 
   ratio.vals<-matrix(NA,nrow=(iter+1),ncol=length(unlist(sigma.obs[4])))
   ratio.vals[1,]<-as.vector(sigma.obs$sigma.d.gp.ratio)
   for(i in 1:iter) ratio.vals[i+1,]<-as.vector(sigma.rand[[i]]) 
@@ -138,7 +146,7 @@ compare.multi.evol.rates<-function(A,gp,phy,Subset=TRUE,iter=999,seed=NULL,print
   p.val.mat<-D<-dist(matrix(0,nlevels(gp)))
   if(ngps==2) p.val.mat<-tmp.p.val.mat else
     for(i in 1:length(p.val.mat)) p.val.mat[[i]] <- tmp.p.val.mat[i]
-  out <- list(sigma.d.ratio = sigma.obs$sigma.d.ratio, P.value=p.val,
+  out <- list(sigma.d.ratio = sigma.obs$sigma.d.ratio, P.value=p.val, Z = Z,
               sigma.d.gp = sigma.obs$rate.gps,
               sigma.d.gp.ratio = sigma.obs$sigma.d.gp.ratio,
               pairwise.pvalue = p.val.mat, groups = levels(gp), 

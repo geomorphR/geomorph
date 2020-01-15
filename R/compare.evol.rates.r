@@ -22,6 +22,9 @@
 #' statistical properties of earlier methods, and under a wider array of data types.  Second, significance may be accomplished via 
 #' permutation, where data values at the tips are permuted relative to the (see Adams and Collyer 2018). This procedure is shown to 
 #' retain all appropriate statistical properties, including rotation-invariance of significance levels (see results of Adams and Collyer 2018).
+#' In addition, a multivariate effect size describing the strength of the effect is estimated from the 
+#' empirically-generated sampling distribution (see details in Adams and Collyer 2019). Values from these 
+#' distributions are log-transformed prior to effect size estimation, to assure normally distributed data. 
 #' }
 #'
 #' @param A A 3D array (p x k x n) containing GPA-aligned coordinates for all specimens, or a matrix (n x variables)
@@ -41,6 +44,7 @@
 #' @return An object of class "evolrate" returns a list with the following components: 
 #'   \item{sigma.d.ratio}{The ratio of maximum to minimum net evolutionary rates.}
 #'   \item{P.value}{The significance level of the observed ratio.}
+#'   \item{Effect.Size}{The multivariate effect size associated with sigma.d.ratio.}
 #'   \item{sigma.d.gp}{The phylogenetic net evolutionary rate for each group of species on the phylogeny.}
 #'   \item{random.sigma}{The sigma values found in random permutations of the resampling procedure.}
 #'   \item{permutations}{The number of random permutations used.}
@@ -52,6 +56,9 @@
 #' modularity in lanternfishes (Myctophiformes; Myctophidae). Evolution. 69:2425-2440.
 #' @references Adams, D.C. and M.L. Collyer. 2018. Multivariate comparative methods: evaluations, comparisons, and
 #' recommendations. Systematic Biology. 67:14-31.
+#' @references Adams, D.C. and M.L. Collyer. 2019. Comparing the strength of modular signal, and evaluating 
+#' alternative modular hypotheses, using covariance ratio effect sizes with morphometric data. 
+#' Evolution. 73:2352-2367.
 #' @examples
 #' data(plethspecies) 
 #' Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment    
@@ -131,6 +138,7 @@ compare.evol.rates<-function(A,phy,gp,iter=999,seed=NULL,method=c("simulation","
         random.sigma<- sapply(1:(iter+1), function(j) {max(sigma.rand[,j])})
       }
     p.val <- pval(random.sigma)
+    Z <- effect.size(log(random.sigma), center=TRUE) 
     if(nlevels(gp) > 2) {
       p.val.mat <- dist(sigma.obs$sigma.d.gp)
       p.val.mat[1:length(p.val.mat)] <- apply(sigma.rand, 1, pval)
@@ -150,6 +158,7 @@ compare.evol.rates<-function(A,phy,gp,iter=999,seed=NULL,method=c("simulation","
   }
   if(nlevels(gp)>1){
     out <- list(sigma.d.ratio = sigma.obs$sigma.d.ratio, P.value=p.val,
+                Z = Z,
                 sigma.d.all = sigma.obs$sigma.d.all,
                 sigma.d.gp = sigma.obs$sigma.d.gp,
                 sigma.d.gp.ratio = sigma.obs$sigma.d.gp.ratio,

@@ -1,5 +1,5 @@
 
-# CHANGES IN GEOMORPH VERSION 3.2.0.0900 
+# CHANGES IN GEOMORPH VERSION 3.2.0.0900
 
 ### BUG FIXES
 * Fixed small bug in plotAllometry that returned spurious RegScore values.
@@ -7,7 +7,7 @@
 # CHANGES IN GEOMORPH VERSION 3.1.3 (Patch Release)
 
 ### NEW FEATURES
-* New function added: `compare.CR` 
+* New function added: `compare.CR`
 
 ### OTHER CHANGES
 * Adjustment to getSurfPCs to allow for more robust surface sliding
@@ -27,7 +27,7 @@
 
 ### OTHER CHANGES
 
-### BUG FIXES 
+### BUG FIXES
 * Fixed bug with `combine.subsets` for gpagen objects
 * Tweaked `procD.lm` to work better with missing data frames
 * Fixed p-value miscalculation in `bilat.symmetry`
@@ -55,7 +55,7 @@
 # CHANGES IN GEOMORPH VERSION 3.1.0 (Minor Release)
 
 ### NEW FEATURES
-* Permutation computations now performed in `RRPP` 
+* Permutation computations now performed in `RRPP`
 * New functions added: `plotAllometry`, `gm.prcomp`, `picknplot.shape`, `shape.hulls`
 * Deprecated: `advanced.procD.lm`, `nested.update`, `procD.allometry` (features of these functions now found using `procD.lm`)
 * Generalized plotting options
@@ -78,9 +78,9 @@
 * Added a trap for large distance matrices to `gpagen`, to avoid errors
 * Fixed bug to allow for a single specimen with missing data in `readland.tps`
 * Fixed bug for HOS result mismatching criterion for `procD.allometry`
-  
+
 ------
-    
+
 # CHANGES IN GEOMORPH VERSION 3.0.7 (Patch Release)
 
 ### NEW FEATURES
@@ -120,9 +120,9 @@
 * Fixed issues with `estimate.missing` regression approach
 * Fixed issues with `phylo.integration` where Y-dataset contained a single variable
 * Fixed issue with `integration.test` when 3+ partitions with non-contiguous variables
-* Fixed effect size calculation error in `procD.lm` for single factor OLS models. 
+* Fixed effect size calculation error in `procD.lm` for single factor OLS models.
 * Fixed ellipses options in `procD.fit`
-    
+
 ------
 
 # CHANGES IN GEOMORPH VERSION 3.0.5  (Patch Release)
@@ -172,13 +172,13 @@
 ------
 
 # CHANGES IN GEOMORPH VERSION 3.0.3 (Patch Release)
-  
+
 ### NEW FEATURES
 * New functions: `compare.pls`, `coords.subset`, `shape.predictor`
 * `droplevels.geomorph.data.frame` added to support code
 
 ### OTHER CHANGES
-* Added a sensor to support code for `procD.lm` and its allies to 
+* Added a sensor to support code for `procD.lm` and its allies to
     choose the computationally fastest algorithms based on design matrix complexity
     and data dimnesionality
 * Updated `procD.fit` to remove unused levels from factors
@@ -205,7 +205,7 @@
 * Added legend option to `plotTangentSpace` when groups are specified
 * Removed 'verbose' from `plotTangentSpace`; function now returns PC scores automatically when assigned to object
 * Updated `plotTangentSpace` to return min and max shapes for all PC axes in $pc.shapes
-    
+
 ### BUG FIXES
 * Fixed label output issue with `bilat.symmetry` shape components
 * Fixed error plotting TPS grids when groups were included in `plot.procD.allometry`
@@ -214,7 +214,7 @@
 * Fixed error in reading names in `readland.tps` for some tps files
 
 ------
-    
+
 # CHANGES IN GEOMORPH VERSION 3.0.1 (Patch Release)
 
 
@@ -247,7 +247,7 @@
 # CHANGES IN GEOMORPH VERSION 3.0.0 (Major Release)
 
 ### NEW FEATURES
-* New functions: `modularity.test`, `integration.test`, `phylo.modularity`, 
+* New functions: `modularity.test`, `integration.test`, `phylo.modularity`,
         `phylo.integration`, `procD.allometry`, `nested.update`, `geomorph.data.frame`
 * Seed option added for most analytical functions
 * Major overhaul of underlying support code for analytics
@@ -258,7 +258,7 @@
 * Nested ANOVA via `nested.update` of `procD.lm` objects
 
 ### OTHER CHANGES
-* Deprecated: `compare.modular.partitions`, `morphol.integr`, `phylo.pls`, and `plotAllometry` 
+* Deprecated: `compare.modular.partitions`, `morphol.integr`, `phylo.pls`, and `plotAllometry`
 * Removed internal C-code for `gpagen`
 * Removed automatic plots for most analytical functions
 * Removed method="" parameter from `physignal`. Only Kmult used
@@ -312,7 +312,7 @@
 # CHANGES IN GEOMORPH VERSION 2.1.6 (Patch Release)
 
 ### NEW FEATURES
-* New globalIntegration` function for evaluating integration vs. self-similarity of shape variation 
+* New globalIntegration` function for evaluating integration vs. self-similarity of shape variation
 * Coordinates returned by digitize2d` are now unscaled, and SCALE= returns the scale
 
 ### OTHER CHANGES
@@ -337,7 +337,7 @@
 * `define.sliders` is new interactive function for defining sliding semilandmarks for 2D and 3D curves, plus an automatic mode when given a sequence of semilandmarks along a curve
 
 ### OTHER CHANGES
-* `pairwiseD.test` and `pairwise.slope.test` deprecated 
+* `pairwiseD.test` and `pairwise.slope.test` deprecated
 * 'read' functions now allow both tab and space delimited files
 * `define.sliders.2d` and `define.sliders.3d` deprecated (replaced by define.sliders)
 
@@ -356,7 +356,7 @@
 * `read.morphologika` now reads [groups] option and adds these data to the $labels matrix
 * `plotOutliers` now has option groups to plot outliers by levels(groups) using group means
 * `morphol.disparity` help file updated to correctly indicate that group shape residuals, rather than shape values, themselves, are randomized in the permutation procedure
-* Internal changes to support functions for compatibility with R 3.1.3 
+* Internal changes to support functions for compatibility with R 3.1.3
 * Generalized plot inputs in `gpagen`
 
 ### BUG FIXES
@@ -375,7 +375,7 @@
 * new `define.links` function for enhanced plotting of shapes
 
 ### OTHER CHANGES
-* Additional input options added to `pairwiseD.test` and `pairwise.slope.test` 
+* Additional input options added to `pairwiseD.test` and `pairwise.slope.test`
 * Ability to accommodate singular phylogenetic covariance matrices in: `physignal`, `compare.evol.rates`, `procD.pgls` and `phylo.pls`
 * Enhanced digitizing capability in: `build.template`, `define.modules`, `define.sliders.3d`, `digit.fixed`, `digitsurface`, and `editTemplate` )
 * `plotAllometry` input can be 2D matrix or 3D array
@@ -385,7 +385,7 @@
 
 ### BUG FIXES
 * Corrected error printing output of ANOVA table of `bilat.symmetry`
-* Removed redundant permutation loop in `phylo.pls` 
+* Removed redundant permutation loop in `phylo.pls`
 
 ------
 
@@ -471,7 +471,7 @@
 * Verbose output = T/F added to the following functions: `bilat.symmetry`, `phylo.pls`, `two.b.pls`, `morphol.integr`, `plotAllometry`, `plotTangentSpace`, `physignal`
 
 ### OTHER CHANGES
-* Added calculation of pairwise Pvalues, and the option to assess a single group in  function `compare.evol.rates` 
+* Added calculation of pairwise Pvalues, and the option to assess a single group in  function `compare.evol.rates`
 * Additional graphical output added to `morphol.integr`
 * Missing data handling altered (now NA is used)
 * byLand option in `arrayspecs` has been removed
@@ -480,7 +480,7 @@
 * Centering = T/F option added to following 3D digitizing functions: `build.Template`, `digit.fixed`, `digitsurface`, and `plotSpec`
 * `read.vrml` now defunct
 * Major re-organization of underlying R code structure and format
-* Optimized code to improve speed and performance in following functions: `arrayspecs`, `readland.tps`, `readland.nts`, `readmulti.nts`, `two.d.array`, `plotTangentSpace`, `trajectory.analysis`, `bilat.symmetry`, `gpagen` 
+* Optimized code to improve speed and performance in following functions: `arrayspecs`, `readland.tps`, `readland.nts`, `readmulti.nts`, `two.d.array`, `plotTangentSpace`, `trajectory.analysis`, `bilat.symmetry`, `gpagen`
 * Simplified plotting options in `bilat.symmetry`
 
 ### BUG FIXES
@@ -506,12 +506,12 @@
 
 ### NEW FEATURES
 * New function `compare.evol.rates` for comparing multivariate evolutionary rates on phylogenies
-* `define.sliders.2d` and `define.sliders.3d` replace `curves2d` and `digit.curves` 
-* Option allowing specimens to be colored by group added to `plotTangentSpace` and `PlotAllometry` 
+* `define.sliders.2d` and `define.sliders.3d` replace `curves2d` and `digit.curves`
+* Option allowing specimens to be colored by group added to `plotTangentSpace` and `PlotAllometry`
 
 ### OTHER CHANGES
 * Simplified options in `morphol.integr`
-* `curves2d` and `digit.curves` deprecated 
+* `curves2d` and `digit.curves` deprecated
 
 ### BUG FIXES
 * Corrected parameter estimates when groups specified for Regression Score option in `plotAllometry`
@@ -558,8 +558,8 @@
 
 ### BUG FIXES
 * Corrected `readland.tps` to allow for non-numeric ID and reading a single specimen per file
-* Corrected landmark plotting issue and added greater directory flexibility in `curves2D` 
-* Added greater directory flexibility and fixed header output in `digitize2D` 
+* Corrected landmark plotting issue and added greater directory flexibility in `curves2D`
+* Added greater directory flexibility and fixed header output in `digitize2D`
 * Added greater flexibility in reading distinct file formats in `read.morphologika`
 * Corrected angle calculations in `fixed.angle`
 * Corrected plotting of deformations grids in `plotTangentSpace`
@@ -589,7 +589,7 @@
 * `compare.modular.partitions` generalized to allow 2 or more partitions
 * `morphol.integr` generalized to allow 2 or more partitions
 * `trajectory.analysis` re-written to accept formulas, allowing greater flexibility for motion analysis
-* PLS scores added to output `morphol.integr` 
+* PLS scores added to output `morphol.integr`
 * Ancestral states added to output `physignal`
 * Centroid size and allometry scores added as output in `plotAllometry`
 * PC scores added to output of `plotTangentSpace`

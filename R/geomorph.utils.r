@@ -186,6 +186,7 @@ print.pls <- function (x, ...) {
   if(x$method=="PLS") {
     cat(paste("\nr-PLS:", round(x$r.pls, nchar(x$permutations)-1)))
     cat(paste("\n\nP-value:", round(x$P.value, nchar(x$permutations)-1)))
+    cat(paste("\n\nEffect Size:", round(x$Z, nchar(x$permutations))))
     cat(paste("\n\nBased on", x$permutations, "random permutations\n"))
   }
   invisible(x)
@@ -372,6 +373,7 @@ print.CR <- function (x, ...) {
   cat(deparse(x$call), fill=TRUE, "\n\n")
   cat(paste("\nCR:", round(x$CR, nchar(x$permutations))))
   cat(paste("\n\nP-value:", round(x$P.value, nchar(x$permutations))))
+  cat(paste("\n\nEffect Size:", round(x$Z, nchar(x$permutations))))
   cat(paste("\n\nBased on", x$permutations, "random permutations"))
   if(!is.null(x$CInterval)) cat(paste("\n\nConfidence Intervals", round(x$CInterval,nchar(x$permutations)))) 
   invisible(x)
@@ -401,15 +403,17 @@ summary.CR <- function(object, ...) {
 plot.CR <- function(x, ...){
   CR.val <- x$random.CR
   CR.obs <- x$CR
+  options(scipen = 999)
   p <- x$P.value
   ndec <- nchar(x$permutations)
   CR.obs <- round(CR.obs, ndec)
+  p <- round(p,ndec)
   main.txt <- paste("Observed CR =",CR.obs,";", "P-value =", p)
   hist(CR.val,30,freq=TRUE,col="gray",xlab="CR Coefficient",xlim=c(0,max(c(2,CR.val))),
        main=main.txt, cex.main=0.8)
   arrows(CR.obs,50,CR.obs,5,length=0.1,lwd=2)
+  options(scipen = 0)
 }
-
 
 #' Print/Summary Function for geomorph
 #' 
@@ -451,13 +455,16 @@ summary.CR.phylo <- function(object, ...) {
 plot.CR.phylo <- function(x, ...){
   CR.val <- x$random.CR
   CR.obs <- x$CR
+  options(scipen = 999)
   p <- x$P.value
   ndec <- nchar(x$permutations)
+  p <- round(p,ndec)
   CR.obs <- round(CR.obs, ndec)
   main.txt <- paste("Observed CR =",CR.obs,";", "P-value =", p)
   hist(CR.val,30,freq=TRUE,col="gray",xlab="CR Coefficient",xlim=c(0,max(c(2,CR.val))),
        main=main.txt, cex.main=0.8)
   arrows(CR.obs,50,CR.obs,5,length=0.1,lwd=2)
+  options(scipen = 0)
 }
 
 ## physignal
@@ -474,6 +481,7 @@ print.physignal <- function(x, ...){
   cat(deparse(x$call), fill=TRUE, "\n\n")
   cat(paste("\nObserved Phylogenetic Signal (K):", round(x$phy.signal, nchar(x$permutations))))
   cat(paste("\n\nP-value:", round(x$pvalue, nchar(x$permutations))))
+  cat(paste("\n\nEffect Size:", round(x$Z, nchar(x$permutations))))
   cat(paste("\n\nBased on", x$permutations, "random permutations"))
   invisible(x)
 }
@@ -524,6 +532,7 @@ print.evolrate <- function (x, ...) {
   cat("\nCall:\n")
   cat(paste("\n\nObserved Rate Ratio:", round(x$sigma.d.ratio, nchar(x$permutations))))
   cat(paste("\n\nP-value:", round(x$P.value, nchar(x$permutations))))
+  cat(paste("\n\nEffect Size:", round(x$Z, nchar(x$permutations))))
   cat(paste("\n\nBased on", x$permutations, "random permutations"))
   cat(paste("\n\nThe rate for group",x$groups,"is",x$sigma.d.gp, ""))
   invisible(x)
@@ -739,17 +748,28 @@ plot.mshape <- function(x, links=NULL,...){
 #' @keywords utilities
 print.gm.prcomp <- function (x, ...) {
   sum.tab <- function(x) {
-    var.PCs <- apply(x$x, 2, var)
-    y <- rbind(x[["d"]], var.PCs/sum(var.PCs), cumsum(var.PCs/sum(var.PCs)))
-    
+    v <- x$d/sum(x$d)
+    y <- rbind(x$d, v, cumsum(v))
     colnames(y) <- paste("PC", 1:ncol(y), sep="")
-    rownames(y) <- c("Eigenvalues", "Proportion of variance", "Cumulative Proportion")
+    rownames(y) <- c("Tips variance", "Proportion of variance", "Cumulative Proportion")
     y
   }
-    tab.list <- sum.tab(x)
+  
+  anc.sum.tab <- function(x) {
+    v <- x$anc.var/sum(x$anc.var)
+    y <- rbind(x$anc.var, v, cumsum(v))
+    colnames(y) <- paste("PC", 1:ncol(y), sep="")
+    rownames(y) <- c("Ancestral state variance", "Proportion of variance", "Cumulative Proportion")
+    y
+  }
+  
+    tip.list <- sum.tab(x)
+    anc.list <- if(!is.null(x$anc.var)) anc.sum.tab(x) else NULL
     cat("Importance of components:", "\n")
-    print(tab.list); cat("\n")
-    invisible(tab.list)
+    print(tip.list); cat("\n")
+    if(!is.null(anc.list)) print(anc.list); cat("\n")
+    out <- list(tips = tip.list, anc = anc.list)
+    invisible(out)
 }
 
 #' Print/Summary Function for geomorph
@@ -807,7 +827,7 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, phylo = FALSE,
     phy.pcdata <- as.matrix(phy.pcdata[, c(axis1, axis2)])
     plot.args$x <- pcdata[,1]
     plot.args$y <- pcdata[,2]
-
+    
   }
   
   do.call(plot, plot.args)
@@ -822,12 +842,12 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, phylo = FALSE,
     plot.xy(xy.coords(phy.pcdata[(length(phy$tip)+1):nrow(phy.pcdata),]), type="p",
             pch = phylo.par$node.pch, cex = phylo.par$node.cex, bg = phylo.par$node.bg)
   }
-
+  
   if(axes){
     abline(h = 0, lty=2, ...)
     abline(v = 0, lty=2, ...)
   }
-
+  
   options(warn = 0)
   out <- list(PC.points = pcdata,   
               call = match.call())

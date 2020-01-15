@@ -86,7 +86,7 @@ picknplot.shape <- function(x, ...){
       plot.xy(dt.xy, type="l", col = phylo.par$edge.color, 
               lwd = phylo.par$edge.width, lty = phylo.par$edge.lty)
     }
-    plot.xy(xy.coords(phy.pcdata[1:length(phy$tip),]), type="p",...)
+    plot.xy(xy.coords(phy.pcdata[1:length(phy$tip),]), type="p")
     plot.xy(xy.coords(phy.pcdata[(length(phy$tip)+1):nrow(phy.pcdata),]), type="p",
             pch = phylo.par$node.pch, cex = phylo.par$node.cex, bg = phylo.par$node.bg)
     
@@ -96,6 +96,16 @@ picknplot.shape <- function(x, ...){
   p = 1
   picked.pts <- picked.shapes <- list()
   prt.args <- list(...)
+  prt.args.nms <- c("mesh", "outline", "method", "mag", 
+                    "links", "label", "axes", "gridPar", "useRefPts")
+  prt.args.pos <- intersect(names(prt.args), prt.args.nms)
+  
+  # plot.args currently not used but could be in the future
+  # adding a phylogeny currently has no plotting options
+  
+ 
+  prt.args <- prt.args[prt.args.pos] 
+   
   if(is.null(prt.args$method)) prt.args$method <- "TPS"
   if(prt.args$method == "surface") {
     cat("method = 'surface' is not possible.",
@@ -156,6 +166,9 @@ picknplot.shape <- function(x, ...){
   
     if(type == "PC") {
       X <- as.matrix(cbind(x$plot.args$x, x$plot.args$y))
+      rownames(X) <- names(x$plot.args$x)
+      if(!is.null(x$Pcov)) X <- fast.solve(x$Pcov) %*% X
+      
       picked.shapes[[p]] <- shape.predictor(A1, X, 
                                        pred1 = picked.pts[[p]])$pred1 
     }
@@ -163,6 +176,9 @@ picknplot.shape <- function(x, ...){
       h <- picked.pts[[p]][2]
       abline(h = h, col = "red")
       X <- x$plot.args$y
+      rownames(X) <- names(x$plot.args$x)
+      if(!is.null(x$Pcov)) X <- fast.solve(x$Pcov) %*% X
+      
       picked.shapes[[p]] <- shape.predictor(A1, X, 
                                             pred1 = h)$pred1 
     }
@@ -171,12 +187,18 @@ picknplot.shape <- function(x, ...){
       v <- picked.pts[[p]][1]
       abline(v = v, col = "red")
       X <- x$plot.args$x
+      rownames(X) <- names(x$plot.args$x)
+      if(!is.null(x$Pcov)) X <- fast.solve(x$Pcov) %*% X
+      
       picked.shapes[[p]] <- shape.predictor(A1, X, 
                                             pred1 = v)$pred1 
     }
 
     if(type == "PLS") {
       X <- as.matrix(cbind(x$plot.args$x, x$plot.args$y))
+      rownames(X) <- names(x$plot.args$x)
+      if(!is.null(x$Pcov)) X <- fast.solve(x$Pcov) %*% X
+      
       picked.shapes[[p]] <- list(P1 = shape.predictor(A1, X, 
                                   pred1 = picked.pts[[p]])$pred1,
                                  P2 = shape.predictor(A2, X,  

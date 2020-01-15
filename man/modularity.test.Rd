@@ -4,8 +4,14 @@
 \alias{modularity.test}
 \title{Evaluate the degree of modular signal in shape data}
 \usage{
-modularity.test(A, partition.gp, iter = 999, CI = FALSE, seed = NULL,
-  print.progress = TRUE)
+modularity.test(
+  A,
+  partition.gp,
+  iter = 999,
+  CI = FALSE,
+  seed = NULL,
+  print.progress = TRUE
+)
 }
 \arguments{
 \item{A}{A 3D array (p x k x n) containing Procrustes shape variables for all specimens, or a matrix (n x variables)}
@@ -30,6 +36,7 @@ An object of class "CR" is a list containing the following
 \item{CInterval}{The bootstrapped 95 percent confidence intervals of the CR, if CI = TRUE.}
    \item{CR.boot}{The bootstrapped CR values, if CI = TRUE}
 \item{P.value}{The empirically calculated P-value from the resampling procedure.}
+  \item{Effect.Size}{The multivariate effect size associated with sigma.d.ratio.}
    \item{CR.mat}{For more than two partitions, the pairwise CRs among partitions.}
    \item{random.CR}{The CR calculated in each of the random permutations of the resampling procedure.}
    \item{permutations}{The number of random permutations used in the resampling procedure.}
@@ -52,7 +59,10 @@ restriction that the number of landmarks in each subset is identical to that obs
 A significant modular signal is found when the observed CR coefficient is small relative to this distribution (see Adams 2016). 
 Such a result implies that there is significantly greater independence among modules than is expected under the null 
 hypothesis of random associations of variables (neither modular nor integrated structure). This  
-result is consistent with the identification of significant modular structure in the data. A histogram of coefficients obtained via 
+result is consistent with the identification of significant modular structure in the data. 
+In addition, a multivariate effect size describing the strength of the effect is 
+  estimated from the empirically-generated sampling distribution (see details in Adams and Collyer 2019).
+A histogram of coefficients obtained via 
 resampling is presented, with the observed value designated by an arrow in the plot. For landmark data, the CR coefficient 
 found from the average CR across a 90 degree rotation of the data is used as the test statistic (see Adams 2016). For all
 data, the CR coefficient is returned, and (optionally)  its 95% confidence intervals (based on bootstrapping) may be requested. NOTE that 
@@ -61,9 +71,9 @@ for landmark data, estimation of the CI can take some time to compute.
 Landmark groups can be defined using \code{\link{define.modules}}, or made by hand (see example below).
 To use this method with other data (i.e., a set of length measurements), the input A should be a matrix 
 of n rows of specimens and variables arranged in columns. 
-In this case, the partition.gp input should have each variable assigned to a partition.
+In this case, the partition.gp input should have each variable assigned to a partition. 
 
-The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{modularity.test}}.
+ The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{modularity.test}}.
  The generic function, \code{\link{plot}}, produces a histogram of random CR values associated with the resampling procedure.
 }
 \examples{
@@ -80,6 +90,10 @@ plot(MT) # Histogram of CR sampling distribution
 \references{
 Adams, D.C. 2016.Evaluating modularity in morphometric data: Challenges with the RV coefficient and a 
 new test measure. Methods in Ecology and Evolution 7:565-572.
+
+Adams, D.C. and M.L. Collyer. 2019. Comparing the strength of modular signal, and evaluating 
+alternative modular hypotheses, using covariance ratio effect sizes with morphometric data. 
+Evolution. 73:2352-2367.
 }
 \seealso{
 \code{\link{two.b.pls}}, \code{\link{integration.test}}, \code{\link{phylo.modularity}}, and 

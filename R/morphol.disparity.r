@@ -159,7 +159,7 @@ morphol.disparity <- function(f1, groups = NULL, partial = FALSE, iter = 999, se
   
   if(inherits(f1, "lm.rrpp")) {
     if(f1$LM$gls) R <- as.matrix(f1$LM$gls.residuals) else
-      R <- as.matrix(f1$LM$wResiduals)
+      R <- as.matrix(f1$LM$residuals)
     df <- f1$LM$data
     form <- f1$LM$form
     Terms <- f1$LM$Terms
@@ -176,7 +176,7 @@ morphol.disparity <- function(f1, groups = NULL, partial = FALSE, iter = 999, se
       int.model = FALSE
     fit <- procD.lm(form, data = data, seed = seed, print.progress = print.progress, iter = 0, ...)
     if(fit$LM$gls) R <- as.matrix(fit$LM$gls.residuals) else
-      R <- as.matrix(fit$LM$wResiduals)
+      R <- as.matrix(fit$LM$residuals)
     df <- fit$LM$data
   }
   
@@ -237,8 +237,7 @@ morphol.disparity <- function(f1, groups = NULL, partial = FALSE, iter = 999, se
     newDf <- data.frame(d = d, groups = groups)
     fit <- lm.rrpp(d ~ groups + 0, iter = 0, data = newDf, print.progress = FALSE,
                    seed = seed, ...)
-    X <- fit$LM$X * sqrt(fit$LM$weights)
-    Q <- qr(X)
+    Q <- fit$LM$QR
     H <- tcrossprod(solve(qr.R(Q)), qr.Q(Q))
     ind <- perm.index(N, iter, seed)
     pv <- sapply(1:(iter + 1), function(j){

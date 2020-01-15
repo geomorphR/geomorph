@@ -40,6 +40,8 @@ globalIntegration<-function(A,ShowPlot=TRUE){
   Linv<-solve(L)
   L.be<-Linv[1:p,1:p]
   eig.L<-eigen(L.be, symmetric = TRUE)
+  if(any(Im(eig.L$values)==0)) eig.L$values<-Re(eig.L$values)
+  if(any(Im(eig.L$vectors)==0)) eig.L$vectors<-Re(eig.L$vectors)
   BE<-eig.L$values[1:(p-3)]; if(k==3){BE<-BE[1:(p-4)]}
   lambda <- zapsmall(eig.L$values)
   if(any(lambda == 0)){BE = lambda[lambda > 0]}

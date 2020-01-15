@@ -4,8 +4,14 @@
 \alias{integration.test}
 \title{Quantify morphological integration between modules}
 \usage{
-integration.test(A, A2 = NULL, partition.gp = NULL, iter = 999,
-  seed = NULL, print.progress = TRUE)
+integration.test(
+  A,
+  A2 = NULL,
+  partition.gp = NULL,
+  iter = 999,
+  seed = NULL,
+  print.progress = TRUE
+)
 }
 \arguments{
 \item{A}{A 3D array (p x k x n) containing Procrustes shape variables for all specimens, or a matrix (n x variables)}
@@ -30,6 +36,7 @@ Objects of class "pls" from integration.test return a list of the following:
  PLS correlations between partitions is used when there are more than two partitions.}
    \item{r.pls.mat}{The pairwise r.pls, if the number of partitions is greater than 2.}
    \item{P.value}{The empirically calculated P-value from the resampling procedure.}
+  \item{Effect.Size}{The multivariate effect size associated with sigma.d.ratio.}
    \item{left.pls.vectors}{The singular vectors of the left (x) block (for 2 modules only).}
    \item{right.pls.vectors}{The singular vectors of the right (y) block (for 2 modules only).}
    \item{random.r}{The correlation coefficients found in each random permutation of the 
@@ -61,7 +68,9 @@ The function quantifies the degree of morphological integration between modular 
   the test statistic. The observed test value is then compared to a distribution of values obtained by randomly permuting 
   the individuals (rows) in one partition relative to those in the other. A significant result is found when the 
   observed PLS correlation is large relative to this distribution, and implies that the structures are integrated with one
-  another (see Bookstein et al. 2003).  If only two partitions are specified, a plot of PLS scores along the first 
+  another (see Bookstein et al. 2003).  In addition, a multivariate effect size describing the strength of the effect is 
+  estimated from the empirically-generated sampling distribution (see details in Adams and Collyer 2019).
+  If only two partitions are specified, a plot of PLS scores along the first 
   set of PLS axes is optionally displayed, and thin-plate spline deformation grids along these axes are also shown if data were 
   input as a 3D array.  
   
@@ -69,7 +78,7 @@ The function quantifies the degree of morphological integration between modular 
  a vector describing which variables correspond to which partitions (for the case of a 3D array, which landmarks belong to which 
  partitions is specified). Alternatively, when evaluating the integration between two structures or partitions, two datasets may be provided.
 
-The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{integration.test}}.
+ The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{integration.test}}.
  The generic function, \code{\link{plot}}, produces a two-block.pls plot.  This function calls \code{\link{plot.pls}}, which produces an ordination plot.  
  An additional argument allows one to include a vector to label points.  Starting with version 3.1.0, warpgrids are no longer available with \code{\link{plot.pls}}
  but after making a plot, the function returns values that can be used with \code{\link{picknplot.shape}} or a combination of 
@@ -83,7 +92,7 @@ between all pairwise comparisons of modules.  This can be done, test by test, an
 when more than two modules are input.
 }
 
-\subsection{Using phylogenies and PGLS}{ 
+ \subsection{Using phylogenies and PGLS}{ 
 If one wishes to incorporate a phylogeny, \code{\link{phylo.integration}} is the function to use.  This function is exactly the same as \code{integration.test}
 but allows PGLS estimation of PLS vectors.  Because \code{\link{integration.test}} can be used on two blocks, \code{\link{phylo.integration}} likewise allows one to
 perform a phylogenetic two-block PLS analysis.
@@ -127,6 +136,10 @@ by high-dimensional data. Heredity. 115:357-365.
 
 Adams, D.C. and M.L. Collyer. 2016.  On the comparison of the strength of morphological integration across morphometric 
 datasets. Evolution. 70:2623-2631.
+
+Adams, D.C. and M.L. Collyer. 2019. Comparing the strength of modular signal, and evaluating 
+alternative modular hypotheses, using covariance ratio effect sizes with morphometric data. 
+Evolution. 73:2352-2367.
 }
 \seealso{
 \code{\link{two.b.pls}}, \code{\link{modularity.test}}, 

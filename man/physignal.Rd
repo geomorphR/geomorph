@@ -25,6 +25,7 @@ This is helpful for long-running analyses.}
 Function returns a list with the following components: 
   \item{phy.signal}{The estimate of phylogenetic signal}
   \item{pvalue}{The significance level of the observed signal}
+  \item{pvalue}{The significance level of the observed signal}
   \item{random.K}{Each random K-statistic from random permutations}
   \item{permutations}{The number of random permutations used in the resampling procedure}
   \item{call}{The matched call}
@@ -41,14 +42,17 @@ It is assumed that the landmarks have previously been aligned
   in a dataset relative to what is expected under a Brownian motion model of evolution. For geometric
   morphometric data, the approach is a mathematical generalization of the Kappa statistic (Blomberg et al. 
   2003) appropriate for highly multivariate data (see Adams 2014).Significance testing 
-  is found by permuting the shape data among the tips of the phylogeny. Note that this 
-  method can be quite slow as ancestral states must be estimated for every iteration.
+  is found by permuting the shape data among the tips of the phylogeny. In addition, a multivariate 
+  effect size describing the strength of the effect is 
+  estimated from the empirically-generated sampling distribution (see details in Adams and Collyer 2019).
+  Values from these distributions are log-transformed prior to effect size estimation, 
+  to assure normally distributed data. 
 
 This function can also be used with univariate data (i.e. centroid size) if imported as matrix with rownames
 giving the taxa names. In this case, the estimate of phylogenetic signal is identical to that found using the 
 standard kappa statistic (Blomberg et al. 2003).
 
-The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{physignal}}.
+ The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{physignal}}.
  The generic function, \code{\link{plot}}, produces a histogram of random K statistics, associated with the resampling procedure.
  
  \subsection{Notes for geomorph 3.0}{ 
@@ -77,6 +81,10 @@ data: behavioral traits are more labile. Evolution, 57:717-745.
 
 Adams, D.C. 2014. A generalized K statistic for estimating phylogenetic signal from shape and 
 other high-dimensional multivariate data. Systematic Biology.  63:685-697.
+
+Adams, D.C. and M.L. Collyer. 2019. Comparing the strength of modular signal, and evaluating 
+alternative modular hypotheses, using covariance ratio effect sizes with morphometric data. 
+Evolution. 73:2352-2367.
 }
 \author{
 Dean Adams
