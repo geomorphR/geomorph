@@ -4,19 +4,10 @@
 \alias{procD.lm}
 \title{Procrustes ANOVA/regression for Procrustes shape variables}
 \usage{
-procD.lm(
-  f1,
-  iter = 999,
-  seed = NULL,
-  RRPP = TRUE,
-  SS.type = c("I", "II", "III"),
-  effect.type = c("F", "cohenf", "SS", "MS", "Rsq"),
-  int.first = FALSE,
-  Cov = NULL,
-  data = NULL,
-  print.progress = TRUE,
-  ...
-)
+procD.lm(f1, iter = 999, seed = NULL, RRPP = TRUE, SS.type = c("I",
+  "II", "III"), effect.type = c("F", "cohenf", "SS", "MS", "Rsq"),
+  int.first = FALSE, Cov = NULL, data = NULL,
+  print.progress = TRUE, ...)
 }
 \arguments{
 \item{f1}{A formula for the linear model (e.g., y~x1+x2)}
@@ -59,7 +50,7 @@ An object of class "procD.lm" is a list containing the following
 \item{QR}{The QR decompositions of the model matrix.}
 \item{fitted}{The fitted values.}
 \item{residuals}{The residuals (observed responses - fitted responses).}
-\item{weights}{The weights used in weighted least-squares fitting.  If no weights are used,
+\item{weights}{The weights used in weighted least-squares fitting.  If no weights are used, 
 NULL is returned.}
 \item{Terms}{The results of the \code{\link{terms}} function applied to the model matrix}
 \item{term.labels}{The terms used in constructing the aov.table.}
@@ -80,103 +71,103 @@ NULL is returned.}
 \item{gls}{This prefix will be used if a covariance matrix is provided to indicate GLS computations.}
 }
 \description{
-Function performs Procrustes ANOVA with permutation procedures to assess statistical hypotheses describing
+Function performs Procrustes ANOVA with permutation procedures to assess statistical hypotheses describing 
   patterns of shape variation and covariation for a set of Procrustes shape variables
 }
 \details{
-The function quantifies the relative amount of shape variation attributable to one or more factors in a
-  linear model and estimates the probability of this variation ("significance") for a null model, via distributions generated
-  from resampling permutations. Data input is specified by a formula (e.g.,
-  y~X), where 'y' specifies the response variables (Procrustes shape variables), and 'X' contains one or more independent
-  variables (discrete or continuous). The response matrix 'y' can be either in the form of a two-dimensional data
+The function quantifies the relative amount of shape variation attributable to one or more factors in a 
+  linear model and estimates the probability of this variation ("significance") for a null model, via distributions generated 
+  from resampling permutations. Data input is specified by a formula (e.g., 
+  y~X), where 'y' specifies the response variables (Procrustes shape variables), and 'X' contains one or more independent 
+  variables (discrete or continuous). The response matrix 'y' can be either in the form of a two-dimensional data 
   matrix of dimension (n x [p x k]), or a 3D array (p x n x k).  It is assumed that  -if the data based
-  on landmark coordinates - the landmarks have previously been aligned using Generalized Procrustes Analysis (GPA)
-  [e.g., with \code{\link{gpagen}}].
-  The names specified for the independent (x) variables in the formula represent one or more
-  vectors containing continuous data or factors. It is assumed that the order of the specimens in the
+  on landmark coordinates - the landmarks have previously been aligned using Generalized Procrustes Analysis (GPA) 
+  [e.g., with \code{\link{gpagen}}]. 
+  The names specified for the independent (x) variables in the formula represent one or more 
+  vectors containing continuous data or factors. It is assumed that the order of the specimens in the 
   shape matrix matches the order of values in the independent variables.  Linear model fits (using the  \code{\link{lm}} function)
   can also be input in place of a formula.  Arguments for \code{\link{lm}} can also be passed on via this function.
-
+  
   The function \code{\link{two.d.array}} can be used to obtain a two-dimensional data matrix from a 3D array of landmark
-  coordinates; however this step is no longer necessary, as procD.lm can receive 3D arrays as dependent variables.  It is also
+  coordinates; however this step is no longer necessary, as procD.lm can receive 3D arrays as dependent variables.  It is also 
   recommended that \code{\link{geomorph.data.frame}} is used to create and input a data frame.  This will reduce problems caused
-  by conflicts between the global and function environments.  In the absence of a specified data frame, procD.lm will attempt to
+  by conflicts between the global and function environments.  In the absence of a specified data frame, procD.lm will attempt to 
   coerce input data into a data frame, but success is not guaranteed.
 
-The function performs statistical assessment of the terms in the model using Procrustes distances among
-  specimens, rather than explained covariance matrices among variables. With this approach, the sum-of-squared
-  Procrustes distances are used as a measure of SS (see Goodall 1991). The observed SS are evaluated through
+The function performs statistical assessment of the terms in the model using Procrustes distances among 
+  specimens, rather than explained covariance matrices among variables. With this approach, the sum-of-squared 
+  Procrustes distances are used as a measure of SS (see Goodall 1991). The observed SS are evaluated through 
   permutation. In morphometrics this approach is known as a Procrustes ANOVA (Goodall 1991), which is equivalent
-  to distance-based anova designs (Anderson 2001). Two possible resampling procedures are provided. First, if RRPP=FALSE,
-  the rows of the matrix of shape variables are randomized relative to the design matrix.
-  This is analogous to a 'full' randomization. Second, if RRPP=TRUE, a residual randomization permutation procedure is utilized
+  to distance-based anova designs (Anderson 2001). Two possible resampling procedures are provided. First, if RRPP=FALSE, 
+  the rows of the matrix of shape variables are randomized relative to the design matrix. 
+  This is analogous to a 'full' randomization. Second, if RRPP=TRUE, a residual randomization permutation procedure is utilized 
   (Collyer et al. 2015). Here, residual shape values from a reduced model are
-  obtained, and are randomized with respect to the linear model under consideration. These are then added to
+  obtained, and are randomized with respect to the linear model under consideration. These are then added to 
   predicted values from the remaining effects to obtain pseudo-values from which SS are calculated. NOTE: for
   single-factor designs, the two approaches are identical.  However, when evaluating factorial models it has been
   shown that RRPP attains higher statistical power and thus has greater ability to identify patterns in data should
-  they be present (see Anderson and terBraak 2003).
-
-  Effect-sizes (Z scores) are computed as standard deviates of either the SS,
-  F, or Cohen's f-squared sampling distributions generated, which might be more intuitive for P-values than F-values
+  they be present (see Anderson and terBraak 2003). 
+  
+  Effect-sizes (Z scores) are computed as standard deviates of either the SS, 
+  F, or Cohen's f-squared sampling distributions generated, which might be more intuitive for P-values than F-values 
   (see Collyer et al. 2015).  Values from these distributions are log-transformed prior to effect size estimation,
-  to assure normally distributed data.  The SS type will influence how Cohen's f-squared values are calculated.
+  to assure normally distributed data.  The SS type will influence how Cohen's f-squared values are calculated.  
   Cohen's f-squared values are based on partial eta-squared values that can be calculated sequentially or marginally, as with SS.
-
-  In the case that multiple factor or factor-covariate interactions are used in the model
-  formula, one can specify whether all main effects should be added to the
-  model first, or interactions should precede subsequent main effects
+  
+  In the case that multiple factor or factor-covariate interactions are used in the model 
+  formula, one can specify whether all main effects should be added to the 
+  model first, or interactions should precede subsequent main effects 
   (i.e., Y ~ a + b + c + a:b + ..., or Y ~ a + b + a:b + c + ..., respectively.)
 
 The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{procD.lm}}.
-  The generic function, \code{\link{plot}} has several options for plotting, using \code{\link{plot.procD.lm}}.  Diagnostics plots,
-  principal component plots (rotated to first PC of covariance matrix of fitted values), and regression plots can be performed.
+  The generic function, \code{\link{plot}} has several options for plotting, using \code{\link{plot.procD.lm}}.  Diagnostics plots, 
+  principal component plots (rotated to first PC of covariance matrix of fitted values), and regression plots can be performed.  
   One must provide a linear predictor, and
-  can choose among predicted values (PredLine) or regression scores (RegScore).
-  In these plotting options, the predictor does not need to be size, and fitted values and residuals from the procD.lm fit are used rather
-  than mean-centered values.
-
- \subsection{Notes for geomorph 3.1.0 and subsequent versions}{
+  can choose among predicted values (PredLine) or regression scores (RegScore). 
+  In these plotting options, the predictor does not need to be size, and fitted values and residuals from the procD.lm fit are used rather 
+  than mean-centered values. 
+  
+ \subsection{Notes for geomorph 3.1.0 and subsequent versions}{ 
  The procD.lm function is now a wrapper for the \code{\link{lm.rrpp}} function
  in the \code{RRPP} package.  Examples below illustrate how to utilize
  \code{RRPP} functions along with \code{geomorph} functions for procD.lm objects,
- increasing the breadth of possible downstream analyses.
-
- An important update in version 3.1.0 is that advanced.procD.lm and nested.update have been deprecated.
+ increasing the breadth of possible downstream analyses.  
+ 
+ An important update in version 3.1.0 is that advanced.procD.lm and nested.update have been deprecated.  
  The examples emphasize how pairwise comparisons can now be accomplished with \code{\link{pairwise}} and
  ANOVA updates for nested factors can be made with the \code{\link{anova.lm.rrpp}}, utilizing the error argument.
  These functions work on procD.lm objects that have already been created.
 }
 
-\subsection{Notes for geomorph 3.0.6 and subsequent versions}{
+\subsection{Notes for geomorph 3.0.6 and subsequent versions}{ 
  Compared to previous versions, GLS computations in random permutations are now possible in procD.lm.  One should use
  RRPP = TRUE if a covariance matrix is provided as an argument.  The method of SS calculations follows
  Adams and Collyer 2018.  Additional output with a "gls." prefix is also available.
 }
-
- \subsection{Notes for geomorph 3.0.4 and subsequent versions}{
- Compared to previous versions of geomorph, users might notice differences in effect sizes.  Previous versions used z-scores calculated with
- expected values of statistics from null hypotheses (sensu Collyer et al. 2015); however Adams and Collyer (2016) showed that expected values
- for some statistics can vary with sample size and variable number, and recommended finding the expected value, empirically, as the mean from the set
- of random outcomes.  Geomorph 3.0.4 and subsequent versions now center z-scores on their empirically estimated expected values and where appropriate,
- log-transform values to assure statistics are normally distributed.  This can result in negative effect sizes, when statistics are smaller than
- expected compared to the average random outcome.  For ANOVA-based functions, the option to choose among different statistics to measure effect size
+  
+ \subsection{Notes for geomorph 3.0.4 and subsequent versions}{ 
+ Compared to previous versions of geomorph, users might notice differences in effect sizes.  Previous versions used z-scores calculated with 
+ expected values of statistics from null hypotheses (sensu Collyer et al. 2015); however Adams and Collyer (2016) showed that expected values 
+ for some statistics can vary with sample size and variable number, and recommended finding the expected value, empirically, as the mean from the set 
+ of random outcomes.  Geomorph 3.0.4 and subsequent versions now center z-scores on their empirically estimated expected values and where appropriate, 
+ log-transform values to assure statistics are normally distributed.  This can result in negative effect sizes, when statistics are smaller than 
+ expected compared to the average random outcome.  For ANOVA-based functions, the option to choose among different statistics to measure effect size 
  is now a function argument.
 }
 }
 \examples{
 ### ANOVA example for Goodall's F test (multivariate shape vs. factors)
-data(plethodon)
-Y.gpa <- gpagen(plethodon$land)    #GPA-alignment
-gdf <- geomorph.data.frame(Y.gpa,
-site = plethodon$site,
+data(plethodon) 
+Y.gpa <- gpagen(plethodon$land)    #GPA-alignment  
+gdf <- geomorph.data.frame(Y.gpa, 
+site = plethodon$site, 
 species = plethodon$species) # geomorph data frame
 
-fit1 <- procD.lm(coords ~ species * site,
-data = gdf, iter = 999,
+fit1 <- procD.lm(coords ~ species * site, 
+data = gdf, iter = 999, 
 RRPP = FALSE, print.progress = FALSE) # randomize raw values
-fit2 <- procD.lm(coords ~ species * site,
-data = gdf, iter = 999,
+fit2 <- procD.lm(coords ~ species * site, 
+data = gdf, iter = 999, 
 RRPP = TRUE, print.progress = FALSE) # randomize residuals
 
 summary(fit1)
@@ -189,10 +180,10 @@ coef(fit2, test = TRUE)
 anova(fit2) # same as summary
 anova(fit2, effect.type = "Rsq")
 # if species and site were modeled as random effects ...
-anova(fit2, error = c("species:site", "species:site", "Residuals"))
-# not run, because it is a large object to print
+anova(fit2, error = c("species:site", "species:site", "Residuals"))  
+# not run, because it is a large object to print 
 # remove # to run
-# predict(fit2)
+# predict(fit2) 
 
 # TPS plots for fitted values of some specimens
 
@@ -200,7 +191,7 @@ M <- Y.gpa$consensus
 plotRefToTarget(M, fit2$GM$fitted[,,1], mag = 3)
 plotRefToTarget(M, fit2$GM$fitted[,,20], mag = 3)
 
-### THE FOLLOWING ILLUSTRATES SIMPLER SOLUTIONS FOR
+### THE FOLLOWING ILLUSTRATES SIMPLER SOLUTIONS FOR 
 ### THE NOW DEPRECATED advanced.procD.lm FUNCTION AND
 ### PERFORM ANALYSES ALSO FOUND VIA THE morphol.disparity FUNCTION
 ### USING THE pairwise FUNCTION
@@ -208,9 +199,9 @@ plotRefToTarget(M, fit2$GM$fitted[,,20], mag = 3)
 # Comparison of LS means, with log(Csize) as a covariate
 
 # Model fits
-fit.null <- procD.lm(coords ~ log(Csize) + species + site, data = gdf,
+fit.null <- procD.lm(coords ~ log(Csize) + species + site, data = gdf, 
 iter = 999, print.progress = FALSE)
-fit.full <- procD.lm(coords ~ log(Csize) + species * site, data = gdf,
+fit.full <- procD.lm(coords ~ log(Csize) + species * site, data = gdf, 
 iter = 999, print.progress = FALSE)
 
 # ANOVA, using anova.lm.rrpp function from the RRPP package (replaces advanced.procD.lm)
@@ -235,53 +226,53 @@ data(ratland)
 rat.gpa<-gpagen(ratland)         #GPA-alignment
 gdf <- geomorph.data.frame(rat.gpa) # geomorph data frame is easy without additional input
 
-fit <- procD.lm(coords ~ Csize, data = gdf, iter = 999,
-RRPP = TRUE, print.progress = FALSE)
+fit <- procD.lm(coords ~ Csize, data = gdf, iter = 999, 
+RRPP = TRUE, print.progress = FALSE) 
 summary(fit)
 
 ### Extracting objects and plotting options
 # diagnostic plots
-plot(fit, type = "diagnostics")
+plot(fit, type = "diagnostics") 
 # diagnostic plots, including plotOutliers
-plot(fit, type = "diagnostics", outliers = TRUE)
+plot(fit, type = "diagnostics", outliers = TRUE) 
 
 # PC plot rotated to major axis of fitted values
-plot(fit, type = "PC", pch = 19, col = "blue")
+plot(fit, type = "PC", pch = 19, col = "blue") 
 # Regression-type plots
 
 # Use fitted values from the model to make prediction lines
-plot(fit, type = "regression",
-predictor = gdf$Csize, reg.type = "RegScore",
+plot(fit, type = "regression", 
+predictor = gdf$Csize, reg.type = "RegScore", 
 pch = 19, col = "green")
 
 # Uses coefficients from the model to find the projected regression scores
-rat.plot <- plot(fit, type = "regression",
-predictor = gdf$Csize, reg.type = "RegScore",
-pch = 21, bg = "yellow")
+rat.plot <- plot(fit, type = "regression", 
+predictor = gdf$Csize, reg.type = "RegScore", 
+pch = 21, bg = "yellow") 
 
 # TPS grids for min and max scores in previous plot
-preds <- shape.predictor(fit$GM$fitted, x = rat.plot$RegScore,
-                        predmin = min(rat.plot$RegScore),
+preds <- shape.predictor(fit$GM$fitted, x = rat.plot$RegScore, 
+                        predmin = min(rat.plot$RegScore), 
                         predmax = max(rat.plot$RegScore))
 M <- rat.gpa$consensus
 plotRefToTarget(M, preds$predmin, mag=2)
 plotRefToTarget(M, preds$predmax, mag=2)
-
+                        
 attributes(fit)
 fit$fitted[1:3, ] # the fitted values (first three specimens)
 fit$GM$fitted[,, 1:3] # the fitted values as Procrustes coordinates (same specimens)
 
-### THE FOLLOWING ILLUSTRATES SIMPLER SOLUTIONS FOR
+### THE FOLLOWING ILLUSTRATES SIMPLER SOLUTIONS FOR 
 ### THE NOW DEPRECATED nested.update FUNCTION USING
 ### THE anova GENERIC FUNCTION
 
 data("larvalMorph")
 Y.gpa <- gpagen(larvalMorph$tailcoords, curves = larvalMorph$tail.sliders,
 ProcD = TRUE, print.progress = FALSE)
-gdf <- geomorph.data.frame(Y.gpa, treatment = larvalMorph$treatment,
+gdf <- geomorph.data.frame(Y.gpa, treatment = larvalMorph$treatment, 
 family = larvalMorph$family)
 
-fit <- procD.lm(coords ~ treatment/family, data = gdf,
+fit <- procD.lm(coords ~ treatment/family, data = gdf, 
 print.progress = FALSE, iter = 199)
 anova(fit) # treatment effect not adjusted
 anova(fit, error = c("treatment:family", "Residuals")) # treatment effect updated (adjusted)
@@ -290,26 +281,26 @@ anova(fit, error = c("treatment:family", "Residuals")) # treatment effect update
 
 }
 \references{
-Anderson MJ. 2001. A new method for non-parametric multivariate analysis of variance.
+Anderson MJ. 2001. A new method for non-parametric multivariate analysis of variance. 
    Austral Ecology 26: 32-46.
 
 Anderson MJ. and C.J.F. terBraak. 2003. Permutation tests for multi-factorial analysis of variance.
    Journal of Statistical Computation and Simulation 73: 85-113.
 
-Goodall, C.R. 1991. Procrustes methods in the statistical analysis of shape. Journal of the
+Goodall, C.R. 1991. Procrustes methods in the statistical analysis of shape. Journal of the 
    Royal Statistical Society B 53:285-339.
 
-Collyer, M.L., D.J. Sekora, and D.C. Adams. 2015. A method for analysis of phenotypic change for phenotypes described
+Collyer, M.L., D.J. Sekora, and D.C. Adams. 2015. A method for analysis of phenotypic change for phenotypes described 
 by high-dimensional data. Heredity. 115:357-365.
 
-Adams, D.C. and M.L. Collyer. 2016.  On the comparison of the strength of morphological integration across morphometric
+Adams, D.C. and M.L. Collyer. 2016.  On the comparison of the strength of morphological integration across morphometric 
 datasets. Evolution. 70:2623-2631.
 
 Adams, D.C. and M.L. Collyer. 2018. Multivariate comparative methods: evaluations, comparisons, and
 recommendations. Systematic Biology. 67:14-31.
 }
 \seealso{
-\code{\link{procD.pgls}} and
+\code{\link{procD.pgls}} and 
 \code{\link{lm.rrpp}} for more on linear model fits with RRPP. See \code{\link{RRPP-package}} for further
 details on functions that can use procD.lm objects.
 }

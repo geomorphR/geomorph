@@ -146,7 +146,7 @@ readland.tps <- function (file, specID = c("None", "ID", "imageID"), negNA = FAL
   if(length(ind.nas)!=0){
     if(negNA == TRUE){
       for(i in ind.nas){
-        lmo[lm.nas[[which(ind.nas==i)]],,i] <- NA
+        lmo[lm.nas[[1]][[which(ind.nas==i)]],,i] <- NA
       }
     } else {
       cat("\nNegative landmark coordinates have been identified and imported as such.") 
