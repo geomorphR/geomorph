@@ -4,11 +4,8 @@
 \alias{rotate.coords}
 \title{Rotate or flip landmark or coordinate configurations}
 \usage{
-rotate.coords(
-  A,
-  type = c("flipX", "flipY", "rotateC", "rotateCC"),
-  index = NULL
-)
+rotate.coords(A, type = c("flipX", "flipY", "rotateC", "rotateCC"),
+  index = NULL)
 }
 \arguments{
 \item{A}{One of either an array of landmark coordinates (p, 2, n dimensions for n specimens and p 2D points),
