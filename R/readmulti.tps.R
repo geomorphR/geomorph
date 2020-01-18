@@ -1,18 +1,18 @@
 #' Read and combine multiple tps files
 #'
-#' Read multiple tps files from a directory to obtain landmark coordinates and combine them into a single array
+#' Read multiple tps files to obtain landmark coordinates and combine them into a single array
 #'
-#' This is a wrapper of \code{\link{readland.tps}} to allow reading landmark coordinates, in 2D or 3D, from several tps files in a specific folder, and compiling them into an array for proceeding with GM procedures.
+#' This is a wrapper of \code{\link{readland.tps}} to allow reading landmark coordinates, in 2D or 3D, from several tps files , and compiling them into an array for proceeding with GM procedures.
 #' 
-#' The arguments specID and negNA of \code{\link{readland.tps}} can be directly set through this function. 
+#' The arguments specID and negNA of \code{\link{readland.tps}} can be directly set through this function.
+#' Note that if specID is set to either "None" or "ID", a check for duplicate specimen names is not possible and specimens will be numbered with 1:N, where N the total number of specimens.  
 #' 
 #'
-#' @param folder A folder containing all the *.tps files to be compiled
+#' @param filelist A vector containing the file paths to all the tps files to be compiled
 #' @param ... other arguments to be passed to \code{\link{readland.tps}}
 #' @author Antigoni Kaliontzopoulou
 #' @return Function returns a (p x k x n) array, where p is the number of landmark points, k is the number 
-#'   of landmark dimensions (2 or 3), and n is the total number of specimens across all tps files included 
-#'   in the folder read. 
+#'   of landmark dimensions (2 or 3), and n is the total number of specimens across all tps files included in the folder read. 
 #' @export
 
 readmulti.tps <- function(filelist, ... ){
