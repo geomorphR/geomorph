@@ -4,12 +4,12 @@
 \alias{readmulti.tps}
 \title{Read and combine multiple tps files}
 \usage{
-readmulti.tps(folder, ...)
+readmulti.tps(filelist, ...)
 }
 \arguments{
-\item{folder}{A folder containing all the *.tps files to be compiled}
-
 \item{...}{other arguments to be passed to \code{\link{readland.tps}}}
+
+\item{folder}{A folder containing all the *.tps files to be compiled}
 }
 \value{
 Function returns a (p x k x n) array, where p is the number of landmark points, k is the number 
