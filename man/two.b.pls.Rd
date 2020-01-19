@@ -72,7 +72,7 @@ averages the amount of integration (correlations) across multiple pairwise block
 arrays returns the same results as two.b.pls.  (Thus, \code{\link{integration.test}} is more flexible and thorough.)
 }
 
-\subsection{Using phylogenies and PGLS}{ 
+ \subsection{Using phylogenies and PGLS}{ 
 If one wishes to incorporate a phylogeny, \code{\link{phylo.integration}} is the function to use.  This function is exactly the same as \code{\link{integration.test}}
 but allows PGLS estimation of PLS vectors.  Because \code{\link{integration.test}} can be used on two blocks, \code{\link{phylo.integration}} likewise allows one to
 perform a phylogenetic two-block PLS analysis.
