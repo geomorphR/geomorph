@@ -67,6 +67,7 @@ readland.tps <- function (file, specID = c("None", "ID", "imageID"), negNA = FAL
       cat("\nspecimens will be numbered 1, 2, 3 ...\n")
       id <- 1:n
     }
+    
     pcv.check <- sapply(1:n, function(j) tpsf[[j]]$pcv)
     pcv.unique <- unique(pcv.check)
     if(length(pcv.unique) == 1 && pcv.unique == 0) {
@@ -86,19 +87,24 @@ readland.tps <- function (file, specID = c("None", "ID", "imageID"), negNA = FAL
     cat("\nWarning: improper landmark number or formatting appear for specimen(s):", k.error,"\n")
   
   pcheck <- sapply(1:n, function(j) tpsf[[j]]$p)
+  if(all(pcheck==0)) {
+    stop(paste("File", file, "does not contain landmark coordinates", sep = " "))
+  }
+  
   p.unique <- unique(pcheck)
   if(length(p.unique) > 1) {
-    p.error <- table(as.factor(pcheck))
     names(pcheck) <- id
-    cat("\nWarning: different numbers of landmarks among specimens\n")
-    cat("Frequencies by landmark number:\n")
-    print(p.error)
+    cat(paste("Number of landmarks per specimen in", file, sep = " "))
+    print(as.matrix(pcheck))
+    stop("\nDifferent numbers of landmarks among specimens")
   } else p.error <- NULL
+  
   scale.list <- unlist(lapply(1:n, function(j) tpsf[[j]]$scale))
   if(length(scale.list) != n && warnmsg) {
     cat("\nWarning: not all specimens have scale adjustment (perhaps because they are already scaled);")
     cat("\nno rescaling will be performed in these cases\n")
   }
+  
   if(!readcurves) {
     lmo <- lapply(1:n, function(j) {
       x <- tpsf[[j]]
@@ -111,7 +117,7 @@ readland.tps <- function (file, specID = c("None", "ID", "imageID"), negNA = FAL
         kk <- length(pts)
         if(kk > 0) lm[i,1:kk] <- pts
       }
-
+      
       if(length(x$scale) == 0) x$scale = 1
       lm*x$scale
     })
@@ -131,23 +137,18 @@ readland.tps <- function (file, specID = c("None", "ID", "imageID"), negNA = FAL
       lm*x$scale
     })
   }
-
+  
   lmo <- try(simplify2array(lmo), silent = TRUE)
-  na.tab <- apply(lmo, 3, function(x){rowSums(x<0)})
-  ind.nas <- which(colSums(na.tab)!=0)
-  lm.nas <- apply(as.matrix(na.tab[,ind.nas]), 2, function(x){which(x!=0)})
-
-  if(length(ind.nas)!=0){
+  
+  if(any(lmo < 0)){
     if(negNA == TRUE){
-      for(i in ind.nas){
-        lmo[lm.nas[[which(ind.nas==i)]],,i] <- NA
-      }
+      lmo[which(lmo < 0)] <- NA
     } else {
       cat("\nNegative landmark coordinates have been identified and imported as such.") 
       cat("\nIf you want to treat them as NAs please set negNA = TRUE")
     }
   }
-
+  
   if(!is.null(p.error) && warnmsg) {
     target <- as.numeric(names(sort(p.error, decreasing = TRUE))[1])
     p.error <- pcheck != target
