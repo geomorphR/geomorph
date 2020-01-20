@@ -68,6 +68,29 @@ PLOTTING: Contrary to previous geomorph implementations, gm.prcomp does not prod
 For plotting options of gm.prcomp class objects combine \code{\link{plot.gm.prcomp}} and 
 \code{\link{picknplot.shape}} following the examples below. 
 
+SUMMARY STATISTICS: For principal component plots, the traditional statistics to summarize the analysis include
+eigenvalues (variance by component), proportion of variance by component, and cumulative proportion of variance. 
+When data are aligned to a phylogenetic covariance matrix, the statistics are less straightforward.  A summary of
+of such an analysis (performed with \code{\link{summary.gm.prcomp}}) will produce these additional statistics:
+
+\itemize{
+\item{\bold{Singular Value}}{  Rather than eigenvalues, the singular values from singular value decomposition of the 
+cross-product of the scaled phylogenetic covariance matrix and the data.}
+\item{\bold{Proportion of Covariance}}{  Each component's singular value divided by the sum of singular values.  The cumulative
+proportion is also returned.  Note that these values do not explain the amount of covariance between phylogeny and data, but
+explain the distribution of the covariance.  Large proprotions can be misleading.}
+\item{\bold{RV by Component}}{  The partial RV statistic by component.  Cumulative values are also returned.  The sum of partial
+RVs is Escoffier's RV statistic, which measures the amount of covariation between phylogeny and data.  Caution should
+be used in interpreting these values, which can vary with the number of observations and number of variables.  However,
+the RV is more reliable than proportion of singular value for interpretation of the strength of linear association for 
+phylogentically-aligned components.}
+\item{\bold{Tips or Ancestors Dispersion}}{  The variances of points by component for tip data and estimated ancestral
+character states, after projection.  These values will differ from variances from PCA with GLS estimation, as the "Importance
+of Components" weights variances by phylogentic covariances.  Dispersion statistics correspond to the amount of scatter in
+plots of component scores.}
+}
+
+
 NOTE: The \code{\link{plot.gm.prcomp}} function performs the same plotting that was previously 
 posible with \code{\link{plotTangentSpace}} and \code{\link{plotGMPhyloMorphoSpace}}, which have now been 
 deprecated.
