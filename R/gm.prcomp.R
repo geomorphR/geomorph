@@ -162,6 +162,8 @@ gm.prcomp <- function (A, phy = NULL, align.to.phy = FALSE,
 }
 
   out <- do.call(ordinate, ord.args)
+  if(out$alignment == "A") out$alignment <- "phy"
+  
   if(!is.null(phy)) 
     names(out)[[which(names(out) == "xn")]] <- "anc.x"
   

@@ -744,29 +744,38 @@ plot.mshape <- function(x, links=NULL,...){
 #' @author Antigoni Kaliontzopoulou
 #' @keywords utilities
 print.gm.prcomp <- function (x, ...) {
-  sum.tab <- function(x) {
-    v <- x$d/sum(x$d)
-    y <- rbind(x$d, v, cumsum(v))
-    colnames(y) <- paste("PC", 1:ncol(y), sep="")
-    rownames(y) <- c("Tips variance", "Proportion of variance", "Cumulative Proportion")
-    y
+  class(x) <- "ordinate"
+  summary(x)
+  
+  if(!is.null(x$ancestors)) {
+    
+    cat("\n\n")
+    cat("Dispersion (variance) of points, after projection:\n")
+    if(x$GLS) {
+      cat("(Dispersion of tips will not match importance of components because variances of components\n")
+      cat("are weighted by phylogenetic covariances.  Dispersion of tips and ancestors correspond to \n")
+      cat("the variances of points as they appear in a plot of component scores.)\n\n")
+    }
+      
+    vars <- apply(x$x, 2, var)
+    p <- vars/sum(vars)
+    cp <- cumsum(vars)/sum(vars)
+    tab <- rbind(vars, p, cp)
+    rownames(tab) <- c("Tips Dispersion", "Proportion Tips Dispersion", "Cumulative Tips Dispersion")
+    
+    if(!is.null(x$anc.x)) {
+      vars <- apply(x$anc.x, 2, var)
+      p <- vars/sum(vars)
+      cp <- cumsum(vars)/sum(vars)
+      ancs <- rbind(vars, p, cp)
+      rownames(ancs) <- c("Ancestors Dispersion", "Proportion Ancestors Dispersion", "Cumulative Ancestors Dispersion")
+      tab <- rbind(tab, ancs)
+    }
+    print(tab)
+    cat("\n\n")
+    
   }
   
-  anc.sum.tab <- function(x) {
-    v <- x$anc.var/sum(x$anc.var)
-    y <- rbind(x$anc.var, v, cumsum(v))
-    colnames(y) <- paste("PC", 1:ncol(y), sep="")
-    rownames(y) <- c("Ancestral state variance", "Proportion of variance", "Cumulative Proportion")
-    y
-  }
-  
-    tip.list <- sum.tab(x)
-    anc.list <- if(!is.null(x$anc.var)) anc.sum.tab(x) else NULL
-    cat("Importance of components:", "\n")
-    print(tip.list); cat("\n")
-    if(!is.null(anc.list)) print(anc.list); cat("\n")
-    out <- list(tips = tip.list, anc = anc.list)
-    invisible(out)
 }
 
 #' Print/Summary Function for geomorph
@@ -804,61 +813,18 @@ summary.gm.prcomp <- function (object, ...) {
 plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, phylo = FALSE, 
                            phylo.par = list(edge.color = "black", edge.width = 1, edge.lty = 1,
                                             node.bg = "black", node.pch = 21, node.cex = 1), ...) {
-  options(warn = -1)
-  if(NCOL(x$x) == 1) stop("Only one PC.  No plotting capability with this function.\n", 
-                          call. = FALSE)
-  Pcov <- x$Pcov
-  v <- x$d/sum(x$d)
-  av <- if(!is.null(x$anc.var)) x$anc.var/sum(x$anc.var) else NULL
-  
-  if(is.null(av)) {
-    
-    if(x$alignment == "principal")  {
-      xlabel <- paste("PC ", axis1, ": ", round(v[axis1] * 100, 2), "%", sep = "")
-      ylabel <- paste("PC ", axis2, ": ", round(v[axis2] * 100, 2), "%", sep = "")
-    } else {
-      xlabel <- paste("PaC ", axis1, ": ", round(v[axis1] * 100, 2), "%", sep = "")
-      ylabel <- paste("PaC ", axis2, ": ", round(v[axis2] * 100, 2), "%", sep = "")
-    }
-    
-  } else {
-    
-    if(x$alignment == "principal")  {
-      xlabel <- paste("PC ", axis1, ": Ancestors: ", round(av[axis1] *100, 2),
-                      "%; Tips: ", round(v[axis1] * 100, 2), "%", sep = "")
-      ylabel <- paste("PC ", axis2, ": Ancestors: ", round(av[axis2] *100, 2),
-                      "%; Tips: ", round(v[axis2] * 100, 2), "%", sep = "")
-    } else {
-      xlabel <- paste("PaC ", axis1, ": Ancestors: ", round(av[axis1] *100, 2),
-                      "%; Tips: ", round(v[axis1] * 100, 2), "%", sep = "")
-      ylabel <- paste("PaC ", axis2, ": Ancestors: ", round(av[axis2] *100, 2),
-                      "%; Tips: ", round(v[axis2] * 100, 2), "%", sep = "")
-    }
-    
-  }
-  
 
-  
-  plot.args <- list(x = x$x[, axis1], y = x$x[, axis2], xlab = xlabel, ylab = ylabel, ...)
+  class(x) <- "ordinate"
   pcdata <- as.matrix(x$x[, c(axis1, axis2)])
+  Pcov <- x$Pcov
+  xx <- plot(x, axis1 = axis1, axis2 = axis2, ...)
+  plot.args <- xx$plot.args
   if(!is.null(plot.args$axes)) axes <- plot.args$axes else axes <- TRUE
-  if(!is.logical(axes)) axes <- as.logical(axes)
-  plot.args$xlim <- 1.05*range(plot.args$x)
-  plot.args$ylim <- 1.05*range(plot.args$y)
-  if(is.null(plot.args$asp)) plot.args$asp <- 1
   
   if(phylo) {
     phy <- x$phy
     phy.pcdata <- rbind(x$x[x$phy$tip.label,], x$anc.x)
     phy.pcdata <- as.matrix(phy.pcdata[, c(axis1, axis2)])
-    plot.args$x <- pcdata[,1]
-    plot.args$y <- pcdata[,2]
-
-  }
-  
-  do.call(plot, plot.args)
-  
-  if(phylo) {
     for (i in 1:nrow(phy$edge)) {
       dt.xy <- xy.coords(phy.pcdata[phy$edge[i,], ])
       plot.xy(dt.xy, type="l", col = phylo.par$edge.color, 
@@ -867,6 +833,7 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, phylo = FALSE,
     plot.xy(xy.coords(phy.pcdata[1:length(phy$tip),]), type="p",...)
     plot.xy(xy.coords(phy.pcdata[(length(phy$tip)+1):nrow(phy.pcdata),]), type="p",
             pch = phylo.par$node.pch, cex = phylo.par$node.cex, bg = phylo.par$node.bg)
+
   }
 
   if(axes){
@@ -874,7 +841,6 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, phylo = FALSE,
     abline(v = 0, lty=2, ...)
   }
 
-  options(warn = 0)
   out <- list(PC.points = pcdata,   
               call = match.call())
   out$GM <- list()
