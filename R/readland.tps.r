@@ -139,8 +139,9 @@ readland.tps <- function (file, specID = c("None", "ID", "imageID"), negNA = FAL
   }
   
   lmo <- try(simplify2array(lmo), silent = TRUE)
+  lmo <- two.d.array(lmo)
   
-  if(any(lmo < 0)){
+  if(any(na.omit(lmo) < 0)){
     if(negNA == TRUE){
       lmo[which(lmo < 0)] <- NA
     } else {
@@ -148,6 +149,7 @@ readland.tps <- function (file, specID = c("None", "ID", "imageID"), negNA = FAL
       cat("\nIf you want to treat them as NAs please set negNA = TRUE")
     }
   }
+  lmo <- arrayspecs(lmo, p.unique, ncol(lmo)/p.unique)
   
   if(!is.null(p.error) && warnmsg) {
     target <- as.numeric(names(sort(p.error, decreasing = TRUE))[1])
