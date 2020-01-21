@@ -207,7 +207,7 @@ scanTPS <- function(file) {
     idl <- grep("ID", temp)
     notlm <- grep("=", temp)
     templm <- strsplit(temp[-notlm], "\\s+")
-    lm <- lapply(templm, as.numeric)
+    lm <- suppressWarnings(lapply(templm, as.numeric))
     p <- length(lm)
     k <- sapply(lm, length)
     if(length(unique(k)) == 1) k <- unique(k)
