@@ -61,26 +61,47 @@
 #' data(larvalMorph) 
 #' head.gpa <- gpagen(larvalMorph$headcoords, curves = larvalMorph$head.sliders)
 #' tail.gpa <- gpagen(larvalMorph$tailcoords, curves = larvalMorph$tail.sliders)
+#' 
+#' # Combine original data without GPA (plot to see relative size of heads and tails)
+#' 
+#'  all.lm <- combine.subsets(head = larvalMorph$headcoords,
+#'  tail = larvalMorph$tailcoords, gpa = FALSE, CS.sets = NULL)
+#'  plotAllSpecimens((all.lm$coords))
+#'  
+#'  # Combine with GPA and relative centroid size
+#'  
 #' comb.lm <- combine.subsets(head = head.gpa, tail = tail.gpa, gpa = TRUE)
 #' summary(comb.lm)
-#' # Plot first specimen and color code landmarks 
-#' # (configurations are actual relative size)
+#' 
+#' #' # (configurations are actual relative size)
 #' comb.lm$coords[,,1]
+#' 
+#' # Plot all specimens and just first specimen and color code landmarks 
+#' par(mfrow = c(1,2))
+#' plotAllSpecimens(comb.lm$coords)
 #' plot(comb.lm$coords[,,1], pch = 21, bg = c(rep(1,26), rep(2,64)), asp = 1)
 #' 
-#' # choose to override scaling by relative size 
+#' # Override relative centroid size
+#' 
 #' comb.lm <- combine.subsets(head = head.gpa$coords, 
 #' tail = tail.gpa$coords, gpa = FALSE, CS.sets = NULL)
-#' summary(comb.lm)
+#' par(mfrow = c(1,2))
+#' plotAllSpecimens(comb.lm$coords)
 #' plot(comb.lm$coords[,,1], pch = 21, bg = c(rep(1,26), rep(2,64)), asp = 1)
+#' 
 #' # Note the head is as large as the tail, which is quite unnatural.
 #' 
-#' #' # choose to change scaling by normalizing centroid Size
+#' #' Normalizing centroid size
+#' 
 #' comb.lm <- combine.subsets(head = head.gpa$coords, 
 #' tail = tail.gpa$coords, gpa = TRUE, norm.CS = TRUE)
 #' summary(comb.lm)
+#' par(mfrow = c(1,2))
+#' plotAllSpecimens(comb.lm$coords)
 #' plot(comb.lm$coords[,,1], pch = 21, bg = c(rep(1,26), rep(2,64)), asp = 1)
-#' # Note that the head is too large, compared to a real specimen.  
+#' par(mfrow = c(1,1))
+#' 
+#' # Note that the head is way too large, compared to a real specimen.  
 #' # This option focuses on average distance of points to centroid, 
 #' # but ignores the number of landmarks.  
 #' # Consequently,the density of landmarks in the head and tail are irrelevant 
