@@ -34,13 +34,20 @@
 #' size is performed according to the data input  (One could weight configurations via this method.).  If the 
 #' CS.set input is a matrix, it is assumed that rows are specimens and columns correspond to the different landmark
 #' sets.  Lists or arrays should be in the same order as the landmark sets.
+#' @param norm.CS An option to normalize centroid size, according to the method of Dryden and Mardia (2016).  If TRUE,
+#' centroid sizes are divided by the square root of the numebr of landmarks.  This can have some advantage when one
+#' configuration is landmark-dense and another is landmark-sparse, but both correspond to structures of similar surface area
+#' or volume.  Using this option should be done with caution, as it renders landmark density inconsequential.  Choosing this
+#' option will probably produce relative centroid sizes that are more equal, irrespective of the number of landmarks.
+#' 
 #' @keywords utilities
 #' @export
 #' @references Davis, M.A., M.R. Douglas, M.L. Collyer, & M.E. Douglas, M. E. 2016.
 #'  Deconstructing a species-complex: geometric morphometric and molecular analyses define species in the 
 #'  Western Rattlesnake (Crotalus viridis). PloS one, 11(1), e0146166.
-#' @references  Adams, D. C. 1999. Methods for shape analysis of landmark data from articulated structures. 
+#' @references  Adams, D.C. 1999. Methods for shape analysis of landmark data from articulated structures. 
 #'  Evolutionary Ecology Research. 1:959-970. 
+#' @references  Dryden, I.L. and K.V Mardia. 2016. Statistical shape analysis, with applications in R: Second edition.
 #' @author Michael Collyer
 #' @return An object of class \code{combined.set} is a list containing the following
 #' \item{cords}{An [p x k x n] array of scaled, concatenated landmark coordinates.}
@@ -68,7 +75,7 @@
 #' plot(comb.lm$coords[,,1], pch = 21, bg = c(rep(1,26), rep(2,64)), asp = 1)
 
 
-combine.subsets <- function(..., gpa = TRUE, CS.sets = NULL){
+combine.subsets <- function(..., gpa = TRUE, CS.sets = NULL, norm.CS = FALSE){
   sets <- list(...)
   if(!is.null(CS.sets)) {
     if(!is.list(CS.sets)) {
@@ -156,6 +163,11 @@ combine.subsets <- function(..., gpa = TRUE, CS.sets = NULL){
 	for(i in 1:g) p[i] <- dim(all.coords[[i]][,,1])[1]
 	k <- dim(all.coords[[1]][,,1])[2]
 	CS.tot <- as.matrix(simplify2array(all.CS))
+	if(norm.CS) {
+	  p.mat <- matrix(p, NROW(CS.tot), NCOL(CS.tot), byrow = TRUE)
+	  CS.tot <- CS.tot/p.mat
+	}
+	
 	CS.part <- CS.tot/rowSums(CS.tot)
 	coords.part <- lapply(1:g, function(j){
 	  ac <- all.coords[[j]]

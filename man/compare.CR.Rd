@@ -27,7 +27,7 @@ Function performs an analysis to compare the effect sizes of two or more CR effe
 The function statistically compares the effect sizes of two or more CR analyses.  Typically, this
 function might be used to compare levels of modularity between two or more samples, each measuring the degree 
 of morphological modularity in each.  Alternatively, the approach can compare the degree of modular signal as 
-expressed by alternative modular hypotheses for the same dataset.
+expressed by alternative modular hypotheses for the same dataset. 
 
 The analysis calculates effect sizes as standard deviates, z, and performs two-sample z-tests, using the pooled 
 standard error from the sampling distributions of the CR analyses. The method follows that of Adams and Collyer (2019) used 

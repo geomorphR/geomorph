@@ -33,21 +33,21 @@ or a mesh3d object as obtained from \code{\link{read.ply}}.
 \details{
 Function for digitizing fixed three-dimensional landmarks. The user can later designate some 
 as curve sliding semilandmarks, using the function \code{\link{define.sliders}} or through
-a semilandmark definition matrix.
+a semilandmark definition matrix. 
 
 To digitize 3D surface sliding semilandmarks the function \code{\link{digitsurface}} should be used instead.
 
 For more details on the full procedure one needs to follow to digitize fixed 3D landmarks and surface
 sliding semilandmarks, see also the relevant vignette by running \code{vignette("geomorph.digitize3D")}.
 
-NOTE: The function centers the mesh before digitizing by default (center=TRUE). If one chooses not to center,
+ NOTE: The function centers the mesh before digitizing by default (center=TRUE). If one chooses not to center,
  specimen may be difficult to manipulate in rgl window.
 
 \subsection{Digitizing}{ 
 Digitizing is interactive. Once a point is selected, the user is asked if the system should keep or discard the 
 selection (y/n). If "y", the user is asked to continue to select the next landmark. If "n" the removes the last chosen
 landmark, and the user is asked to select it again. This can be repeated until the user is comfortable with the landmark
-chosen.
+chosen. 
 
 To digitize with a standard 3-button mouse (PC):
 \enumerate{
