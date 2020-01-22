@@ -4,7 +4,7 @@
 \alias{combine.subsets}
 \title{Combine separate landmark configurations}
 \usage{
-combine.subsets(..., gpa = TRUE, CS.sets = NULL, norm.CS)
+combine.subsets(..., gpa = TRUE, CS.sets = NULL, norm.CS = FALSE)
 }
 \arguments{
 \item{...}{Class gpagen objects, Procrustes shape variables from class gpagen objects, or original landmarks.
@@ -78,6 +78,18 @@ comb.lm <- combine.subsets(head = head.gpa$coords,
 tail = tail.gpa$coords, gpa = FALSE, CS.sets = NULL)
 summary(comb.lm)
 plot(comb.lm$coords[,,1], pch = 21, bg = c(rep(1,26), rep(2,64)), asp = 1)
+# Note the head is as large as the tail, which is quite unnatural.
+
+#' # choose to change scaling by normalizing centroid Size
+comb.lm <- combine.subsets(head = head.gpa$coords, 
+tail = tail.gpa$coords, gpa = TRUE, norm.CS = TRUE)
+summary(comb.lm)
+plot(comb.lm$coords[,,1], pch = 21, bg = c(rep(1,26), rep(2,64)), asp = 1)
+# Note that the head is too large, compared to a real specimen.  
+# This option focuses on average distance of points to centroid, 
+# but ignores the number of landmarks.  
+# Consequently,the density of landmarks in the head and tail are irrelevant 
+# and the head size is inflated because of the fewer landmarks in the configuration.
 }
 \references{
 Davis, M.A., M.R. Douglas, M.L. Collyer, & M.E. Douglas, M. E. 2016.
