@@ -98,8 +98,8 @@ plot(comb.lm$coords[,,1], pch = 21, bg = c(rep(1,26), rep(2,64)), asp = 1)
 
 #' Normalizing centroid size
 
-comb.lm <- combine.subsets(head = head.gpa$coords, 
-tail = tail.gpa$coords, gpa = TRUE, norm.CS = TRUE)
+comb.lm <- combine.subsets(head = head.gpa, 
+tail = tail.gpa, gpa = TRUE, norm.CS = TRUE)
 summary(comb.lm)
 par(mfrow = c(1,2))
 plotAllSpecimens(comb.lm$coords)

@@ -675,6 +675,7 @@ print.combined.set <- function(x,...){
   y[3, ] <- rcs
   y <- as.data.frame(y)
   rownames(y) <- c("Number of points in subset", "Mean centroid size", "Mean relative size")
+  if(x$norm.CS) rownames(y)[2] <- "Mean normalized centroid size"
   print(y)
 }
 

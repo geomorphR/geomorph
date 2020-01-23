@@ -130,7 +130,7 @@ bb2c0a2954922d5b3111be0143146769 *NEWS.md
 92239d51a080ccd3fc3a9f7ef67d1b8c *R/arrayspecs.r
 8f280cb059f6619206d0bbfe52059c16 *R/bilat.symmetry.r
 d7d67e9218f84609046423cb222f5c44 *R/build.template.r
-98bdba141999825f3a30e6c333dfc208 *R/combine.subsets.r
+cec87c4b006e66501058346fec5aa867 *R/combine.subsets.r
 a85f984f777798d31520e42d0c87e3f5 *R/compare.CR.R
 cff9b470e442542bb66ab1446904fcba *R/compare.evol.rates.r
 158c6de8370887d5561219096b6c30d5 *R/compare.multi.evol.rates.r
@@ -150,7 +150,7 @@ aac6a4f8a759473e8c37048e5c8e3d91 *R/findMeanSpec.r
 089a02a38c0381ac0381f0ae8f5b07f7 *R/fixed.angle.r
 953c275fdc42e65db7394a594d35806a *R/geomorph.data.frame.r
 c78db343ceee5fc4335b9cdd8cc26a3a *R/geomorph.support.code.r
-485cc3a8968db02fb80da6d85da4f983 *R/geomorph.utils.r
+aca3a042e96749c78fd342a150794f98 *R/geomorph.utils.r
 9ec2eb9e43ec1bcb5806977bd7267c36 *R/globalIntegration.r
 3977b030dd2c12bc73fd6fbe735f6c6a *R/gm.prcomp.R
 bf0750e2582fc2c3b5454ad48b7f3cbb *R/gpagen.r

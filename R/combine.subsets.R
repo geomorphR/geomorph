@@ -93,8 +93,8 @@
 #' 
 #' #' Normalizing centroid size
 #' 
-#' comb.lm <- combine.subsets(head = head.gpa$coords, 
-#' tail = tail.gpa$coords, gpa = TRUE, norm.CS = TRUE)
+#' comb.lm <- combine.subsets(head = head.gpa, 
+#' tail = tail.gpa, gpa = TRUE, norm.CS = TRUE)
 #' summary(comb.lm)
 #' par(mfrow = c(1,2))
 #' plotAllSpecimens(comb.lm$coords)
@@ -197,7 +197,7 @@ combine.subsets <- function(..., gpa = TRUE, CS.sets = NULL, norm.CS = FALSE){
 	k <- dim(all.coords[[1]][,,1])[2]
 	CS.tot <- as.matrix(simplify2array(all.CS))
 	if(norm.CS) {
-	  p.mat <- matrix(p, NROW(CS.tot), NCOL(CS.tot), byrow = TRUE)
+	  p.mat <- matrix(sqrt(p), NROW(CS.tot), NCOL(CS.tot), byrow = TRUE)
 	  CS.tot <- CS.tot/p.mat
 	}
 	
@@ -237,7 +237,7 @@ combine.subsets <- function(..., gpa = TRUE, CS.sets = NULL, norm.CS = FALSE){
 	     GPA = GPA, 
 	     gpa.coords.by.set = all.coords,
 	     adj.coords.by.set = coords.part,
-	     points.by.set = p)
+	     points.by.set = p, norm.CS = norm.CS)
 	class(out) <- "combined.set"
 	out
 }
