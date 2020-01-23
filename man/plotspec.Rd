@@ -4,7 +4,8 @@
 \alias{plotspec}
 \title{Plot 3D specimen, fixed landmarks and surface semilandmarks}
 \usage{
-plotspec(spec, digitspec, fixed = NULL, ptsize = 1, centered = FALSE, ...)
+plotspec(spec, digitspec, fixed = NULL, ptsize = 1, centered = FALSE,
+  ...)
 }
 \arguments{
 \item{spec}{An object of class shape3d/mesh3d, or matrix of 3D vertex coordinates.}
