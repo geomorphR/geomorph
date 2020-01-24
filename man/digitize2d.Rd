@@ -4,8 +4,14 @@
 \alias{digitize2d}
 \title{Digitize 2D landmarks on .jpg files}
 \usage{
-digitize2d(filelist, nlandmarks, scale = NULL, tpsfile,
-  MultScale = FALSE, verbose = TRUE)
+digitize2d(
+  filelist,
+  nlandmarks,
+  scale = NULL,
+  tpsfile,
+  MultScale = FALSE,
+  verbose = TRUE
+)
 }
 \arguments{
 \item{filelist}{A list of names of jpeg images to be digitized.}
@@ -37,10 +43,11 @@ for subsequent analysis (see the function \code{\link{define.sliders}}).
 \subsection{The Digitizing Session}{
 Digitizing landmarks from 2D photos requires that a scale bar is placed in the image in order to scale the coordinate data. The 'scale' option requires: a single number (e.g. 10) which means that the scale to be measured in all images is a 10mm scale bar; OR a vector the same length as the filelist containing a number for the scale of each image. If scale=NULL, then the digitized coordinates will not be scaled. This option is NOT recommended.
 
-Users may digitize all specimens in one session, or may return at a later time to complete digitizing. In the latter case, the user provides the same filelist and TPS file and the function will determine where the user left off.
+Users may digitize all specimens in one session, or may return at a later time to complete digitizing. In the latter case, the user provides the same filelist and TPS file and the function will determine where the user left off. 
 
 If specimens have missing landmarks, these can be incorporated during the digitizing process using the 'a' option as described below (a=absent).  
 }
+
 
 \subsection{Specimen Digitizing}{ 
 Digitizing landmarks involves landmark selection using a mouse in the plot window, 
@@ -55,7 +62,7 @@ Once a landmark is selected, the user is asked if the system should keep or disc
 selection (y/n/a). If "y", the user is asked to continue to select the next landmark. If "n", the user is 
 asked to select it again.
 
-To digitize a missing landmark, simply click on any location in the image. Then, when 
+ To digitize a missing landmark, simply click on any location in the image. Then, when 
  prompted to keep selection, choose 'a' (for absent).  Missing landmarks can only be included during the digitizing process when verbose=TRUE. 
  
 If verbose = FALSE the digitizing of landmarks is continuous and uninterrupted. Here the user will not be prompted to approve each landmark selection. 

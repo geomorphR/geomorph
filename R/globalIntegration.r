@@ -11,8 +11,8 @@
 #' regarding the degree of overall morphological integration (or lack thereof).
 #' 
 #' A slope of negative one corresponds to self-similarity, implying that patterns of shape variation are
-#' similar across spatial scales. Steeper slopes (i.e., those larger than -1.0) correspond to data that are globally
-#' integrated, while shallower slopes to data that are 'disintegrated (see Bookstein 2015). Isotropic data
+#' similar across spatial scales. Steeper slopes (i.e., those more extreme than -1.0) correspond to data that are globally
+#' integrated, while shallower slopes (between -1 and 0) correspond to data that are 'disintegrated (see Bookstein 2015). Isotropic data
 #' will have an expected slope of zero. 
 #'  
 #' @param A 3D array (p1 x k x n) containing Procrustes shape variables 
