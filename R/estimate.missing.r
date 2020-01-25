@@ -16,7 +16,15 @@
 #' regressed on all other landmarks for the set of complete specimens, and the missing landmark values are
 #' then predicted by this linear regression model. Because the number of variables can exceed the number of
 #' specimens, the regression is implemented on scores along the first set of PLS axes for the complete and 
-#' incomplete blocks of landmarks (see Gunz et al. 2009).
+#' incomplete blocks of landmarks (see Gunz et al. 2009). Note, however, that a minimum of 2m+2 specimens 
+#' are required to estimate m missing landmarks in any one specimen using the regression method.
+#' More generally, if the number of missing landmarks approaches the number of reference specimens used to 
+#' estimate them, estimation will become increasingly imprecise with the regression method. Additionally, 
+#' the location of missing landmarks (contiguous versus disparate in location) can also influence the precision 
+#' of estimation.  The user should be aware that the function will produce results but the results from the 
+#' regression method might be influenced by the number of specimens, the number of total landmarks, and the 
+#' number and location of missing landmarks in any one specimen.  It might be wise to compare multiple methods 
+#' for specific cases, if uncertain about the precision of estimation.
 #'  
 #'  One can also exploit bilateral symmetry to estimate the locations of missing landmarks. Several
 #'   possibilities exist for implementing this approach (see Gunz et al. 2009).  Example R code for one 
@@ -56,7 +64,7 @@ estimate.missing <- function(A, method=c("TPS","Reg")){
     a <- A
     A <- simplify2array(a$landmarks)
   }
-
+  
   if(any(is.na(A))==FALSE)  {stop("No missing data.")}
   method <- match.arg(method)
   if (length(dim(A))!=3){
@@ -109,9 +117,9 @@ estimate.missing <- function(A, method=c("TPS","Reg")){
       pls <- svd(S12)
       U <- pls$u; V <- pls$v
       XScores <- x%*%U; YScores <- y%*%V
-#      beta<-coef(lm(YScores[,1]~XScores[,1]))
-#      miss.xsc<-c(1,A.2d[spec.NA[i],-missing.coord]%*%U[,1])
-#      miss.ysc<-c(miss.xsc%*%beta,(rep(0,(ncol(y)-1))))
+      #      beta<-coef(lm(YScores[,1]~XScores[,1]))
+      #      miss.xsc<-c(1,A.2d[spec.NA[i],-missing.coord]%*%U[,1])
+      #      miss.ysc<-c(miss.xsc%*%beta,(rep(0,(ncol(y)-1))))
       beta <- coef(lm(YScores ~ XScores))
       miss.xsc <- c(1,A.2d[spec.NA[i],-missing.coord]%*%U)
       miss.ysc <- miss.xsc%*%beta
