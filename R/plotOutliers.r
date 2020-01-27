@@ -54,22 +54,36 @@ plotOutliers <- function(A, groups = NULL, inspect.outliers = FALSE){
     LL <- as.numeric(Q[2] - 1.5*(Q[5]-Q[2]))
     UL <- as.numeric(Q[5] + 1.5*(Q[5]-Q[2]))
     plot(D, type="p", ylab= "Procrustes Distance from Mean", pch=19, xlab="", xaxt='n', main = j)
-      abline(a=LL, b=0,lty=2,col= "blue")
-      abline(a=Med,b=0,col= "blue")
-      abline(a=UL,b=0,lty=2,col= "blue")
-      text(x= nrow(A.d), y=LL, labels= "lower quartile", col = "blue", cex=0.5, adj=c(0.5, 1))
-      text(x= nrow(A.d), y=Med, labels= "median",col = "blue", cex=0.5, adj=c(0.5, -0.5))
-      text(x= nrow(A.d), y=UL, labels= "upper quartile",col = "blue", cex=0.5, adj=c(0.5, -0.5))
+    abline(a=LL, b=0,lty=2,col= "blue")
+    abline(a=Med,b=0,col= "blue")
+    abline(a=UL,b=0,lty=2,col= "blue")
+    text(x= nrow(A.d), y=LL, labels= "lower quartile", col = "blue", cex=0.5, adj=c(0.5, 1))
+    text(x= nrow(A.d), y=Med, labels= "median",col = "blue", cex=0.5, adj=c(0.5, -0.5))
+    text(x= nrow(A.d), y=UL, labels= "upper quartile",col = "blue", cex=0.5, adj=c(0.5, -0.5))
     if(any(D >= UL)) { 
       points(D[which(D >= UL)], pch=19, col="red")
       text(D[which(D >= UL)], labels=names(D)[which(D >= UL)], col= "red", adj=0.8, pos=4, cex=0.5)
-      if(inspect.outliers==TRUE){
+      if(inspect.outliers == TRUE){
         out.config <- names(D)[which(D >= UL)]
-        for(oc in out.config){
-          plotRefToTarget(mshape(A), matrix(A.d[oc,], ncol=dim(A)[2], byrow=T), method="vector", label=TRUE)
-          title(main = paste("group: ", j, ", specimen: ", oc, sep=""))
+        if(dim(A)[2] == 2){
+          for(oc in out.config){
+            plotRefToTarget(mshape(A), matrix(A.d[oc,], ncol=dim(A)[2], byrow=T), method="vector", label=TRUE)
+            title(main = paste("group: ", j, ", specimen: ", oc, sep=""))
           }
+        }
+        if(dim(A)[2] == 3){
+          for(oc in out.config){
+            open3d()
+            plotRefToTarget(mshape(A), matrix(A.d[oc,], ncol=dim(A)[2], byrow=T), method="vector", label=TRUE)
+            bgplot3d({
+              plot.new()
+              title(main = paste("specimen: ", oc, sep=""), line = 3)
+              mtext(side = 3, paste("group: ", j, sep = ""), line = 1.5)
+            })
+          }
+        }
       }
+      
     } else { text(D, labels=names(D), adj=c(0.5, 0.1), pos=4, cex=0.5)}
     ordered<-match(D,d)        
     names(ordered) <- names(D)
@@ -78,5 +92,5 @@ plotOutliers <- function(A, groups = NULL, inspect.outliers = FALSE){
   names(res) <- levels(groups)
   if(length(levels(groups))==1){ res <- res$`All Specimens`}
   return(res)
-
+  
 }
