@@ -24,7 +24,7 @@ This function reads a *.txt file in the Morphologika format containing two- or t
  geometric morphometrics (see O'Higgins and Jones 1998,2006). If multiple morphologika files 
  are specified (containing the same number of landmarks for all specimens), function returns a single object for files.
 
-If the headers "[labels]", "[labelvalues]" and "[groups]" are present, then a data matrix containing all 
+ If the headers "[labels]", "[labelvalues]" and "[groups]" are present, then a data matrix containing all 
  individual specimen information is returned.
  If the header "[wireframe]" is present, then a matrix of the landmark addresses for the wireframe is
  returned (see \code{\link{plotRefToTarget}} option 'links'). 

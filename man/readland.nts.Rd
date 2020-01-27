@@ -18,7 +18,7 @@ Function returns a 3D array (p x k x n), where p is the number of landmark point
 Read single *.nts file containing landmark coordinates for a set of specimens
 }
 \details{
-Function reads a single *.nts file containing two- or three-dimensional landmark coordinates for multiple specimens.
+Function reads a single *.nts file containing two- or three-dimensional landmark coordinates for multiple specimens. 
 
 This is for NTS files of the "multiple specimen format" (details below), which is not the same as \code{\link{readmulti.nts}}.  
  

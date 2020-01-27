@@ -4,8 +4,12 @@
 \alias{readland.shapes}
 \title{Read landmark data from a shapes object (StereoMorph)}
 \usage{
-readland.shapes(Shapes, nCurvePts = NULL, continuous.curve = NULL,
-  scaled = TRUE)
+readland.shapes(
+  Shapes,
+  nCurvePts = NULL,
+  continuous.curve = NULL,
+  scaled = TRUE
+)
 }
 \arguments{
 \item{Shapes}{An object with class, "shapes"}
@@ -57,7 +61,7 @@ as the readShapes function of StereoMorph pertains to digitizing images.
 The enhanced feature of this function is that it can find a prescribed number of approximately equally spaced 
 semilandmarks along 2D curves (from the many points of Bezier curves in StereoMorph), facilitating rapid \code{\link{gpagen}}
 analysis and the flexibility to change the desired number of semilandmarks defining curves.  This is only true, however,
-if the curves option in digitizeImages (StreoMorph) is used.
+if the curves option in digitizeImages (StreoMorph) is used.  
 
 The user can specify the number of points along curves, whether curves are continuous (closed and without fixed points), 
 and whether landmarks should be scaled, if possible (if scaling was performed while digitizing).
