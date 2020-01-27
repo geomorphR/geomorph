@@ -1,14 +1,24 @@
-
-# CHANGES IN GEOMORPH VERSION 3.2.0.0900
+# CHANGES IN GEOMORPH VERSION 3.2.1
 
 ### NEW FEATURES
 * New function added: `readmulti.tps` 
+
+### BUG FIXES
+* Fixed small bug in readland.tps to accurately replace negative values with NA when only one specimen has NAs and allow for NAs in the original file
+
+# CHANGES IN GEOMORPH VERSION 3.2.0 (Minor Release)
+
+### NEW FEATURES
 * Effect sizes provided in the output of `compare.evol.rates`, `compare.multi.evol.rates`,`integration.test`,
 `modularity.test`, `phylo.integration`, `phylo.modularity`, `physignal`, `two.b.pls`
 
+### OTHER CHANGES
+* Adjustment in 'class' statements to be compliant with new handling of objects in R 4.0
+
 ### BUG FIXES
 * Fixed small bug in plotAllometry that returned spurious RegScore values.
-* Fixed small bug in readland.tps to accuretely replace negative values with NA when only one specimen has NAs and allow for NAs in the original file
+* Adjusted calculations of pairwise effect size in compare.pls and compare.CR to mirror publication equations
+* Fixed issue with 3D plotting in plotOutliers with inspect.outliers = T
 
 # CHANGES IN GEOMORPH VERSION 3.1.3 (Patch Release)
 
