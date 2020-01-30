@@ -1,5 +1,8 @@
 # CHANGES IN GEOMORPH VERSION 3.2.1.0900 (Minor Release)
 
+### BUG FIXES
+* Ammended specimen name extraction from .tiff files when using imageID in readland.tps
+
 # CHANGES IN GEOMORPH VERSION 3.2.1
 
 ### NEW FEATURES

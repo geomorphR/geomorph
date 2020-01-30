@@ -4,15 +4,8 @@
 \alias{phylo.integration}
 \title{Quantify phylogenetic morphological integration between two or more sets of variables under Brownian motion}
 \usage{
-phylo.integration(
-  A,
-  A2 = NULL,
-  phy,
-  partition.gp = NULL,
-  iter = 999,
-  seed = NULL,
-  print.progress = TRUE
-)
+phylo.integration(A, A2 = NULL, phy, partition.gp = NULL, iter = 999,
+  seed = NULL, print.progress = TRUE)
 }
 \arguments{
 \item{A}{A 2D array (n x [p1 x k1]) or 3D array (p1 x k1 x n) containing Procrustes shape variables for the first block}
@@ -64,7 +57,7 @@ Procrustes shape variables using partial least squares.
 The function quantifies the degree of phylogenetic morphological integration between two or more sets of Procrustes shape variables. 
 The approach is based on a Brownian motion model of evolution. It is 
   assumed that the landmarks have previously been aligned using 
-  Generalized Procrustes Analysis (GPA) [e.g., with \code{\link{gpagen}}].   
+  Generalized Procrustes Analysis (GPA) [e.g., with \code{\link{gpagen}}].
 
 The function estimates the degree of  morphological covariation between two or sets of variables 
 while accounting for phylogeny using partial least squares (Adams and Felice 2014), and under a Brownian
@@ -75,13 +68,13 @@ describing the strength of the effect is estimated from the empirically-generate
 (see details in Adams and Collyer 2019). Note that this permutation is performed on phylogenetically-
 transformed data, so that the probability of phylogenetic association of A vs. B is similar to that of B vs. A: 
 i.e., prob(A,B|phy)~prob(B,A|phy); thus, shuffling the correct exchangeable units under the null 
-hypothesis of no integration (Adams and Collyer 2018). 
+hypothesis of no integration (Adams and Collyer 2018).
 
- Input for the analysis can take one of two forms. First, one can input a single dataset (as a matrix or 3D array, along with 
+Input for the analysis can take one of two forms. First, one can input a single dataset (as a matrix or 3D array, along with 
  a vector describing which variables correspond to which partitions (for the case of a 3D array, which landmarks belong to which 
  partitions is specified). Alternatively, when evaluating the integration between two structures or partitions, two datasets may be provided.
 
- The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{phylo.integration}}.  
+The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{phylo.integration}}.  
  The generic function, \code{\link{plot}}, produces a two-block.pls plot.  This function calls \code{\link{plot.pls}}, which produces an ordination plot.  
  An additional argument allows one to include a vector to label points.  Starting with version 3.1.0, warpgrids are no longer available with \code{\link{plot.pls}}
  but after making a plot, the function returns values that can be used with \code{\link{picknplot.shape}} or a combination of 
