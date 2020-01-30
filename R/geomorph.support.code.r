@@ -215,9 +215,9 @@ scanTPS <- function(file) {
     id <- unlist(strsplit(temp[idl], "ID="))[2]
     image <- unlist(strsplit(temp[iml], "IMAGE="))[2]
     image <- sub(".jpg", "", image, ignore.case)
+    image <- sub(".tiff", "", image, ignore.case)
     image <- sub(".tif", "", image, ignore.case)
     image <- sub(".bmp", "", image, ignore.case)
-    image <- sub(".tiff", "", image, ignore.case)
     image <- sub(".jpeg", "", image, ignore.case)
     image <- sub(".jpe", "", image, ignore.case)
     plm <- as.numeric(unlist(strsplit(temp[lml], "="))[2])
