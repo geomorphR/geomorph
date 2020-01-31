@@ -175,7 +175,7 @@ picknplot.shape <- function(x, ...){
     if(type == "regression2") {
       h <- picked.pts[[p]][2]
       abline(h = h, col = "red")
-      X <- x$plot.args$y
+      X <- as.matrix(x$plot.args$y)
       rownames(X) <- names(x$plot.args$x)
       if(!is.null(x$Pcov)) X <- fast.solve(x$Pcov) %*% X
       
@@ -186,7 +186,7 @@ picknplot.shape <- function(x, ...){
     if(type == "regression1") {
       v <- picked.pts[[p]][1]
       abline(v = v, col = "red")
-      X <- x$plot.args$x
+      X <- as.matrix(x$plot.args$x)
       rownames(X) <- names(x$plot.args$x)
       if(!is.null(x$Pcov)) X <- fast.solve(x$Pcov) %*% X
       
