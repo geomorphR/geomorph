@@ -4,9 +4,16 @@
 \alias{gpagen}
 \title{Generalized Procrustes analysis of points, curves, and surfaces}
 \usage{
-gpagen(A, curves = NULL, surfaces = NULL, PrinAxes = TRUE,
-  max.iter = NULL, ProcD = FALSE, Proj = TRUE,
-  print.progress = TRUE)
+gpagen(
+  A,
+  curves = NULL,
+  surfaces = NULL,
+  PrinAxes = TRUE,
+  max.iter = NULL,
+  ProcD = FALSE,
+  Proj = TRUE,
+  print.progress = TRUE
+)
 }
 \arguments{
 \item{A}{Either an object of class geomorphShapes or a 3D array (p x k x n) containing landmark coordinates 
@@ -77,9 +84,9 @@ The function performs a Generalized Procrustes Analysis (GPA) on two-dimensional
  directions using the Procrustes distance criterion. The Procrustes-aligned specimens may be projected into tangent
  space using the "Proj=TRUE" option. 
  The function also outputs a matrix of pairwise Procrustes Distances, which correspond to Euclidean distances between specimens in tangent space if "Proj=TRUE", or to the geodesic distances in shape space if "Proj=FALSE".   
- NOTE: Large datasets may exceed the memory limitations of R.
+ NOTE: Large datasets may exceed the memory limitations of R. 
 
-Generalized Procrustes Analysis (GPA: Gower 1975, Rohlf and Slice 1990) is the primary means by which 
+ Generalized Procrustes Analysis (GPA: Gower 1975, Rohlf and Slice 1990) is the primary means by which 
   shape variables are obtained from landmark data (for a general overview of geometric morphometrics see 
   Bookstein 1991, Rohlf and Marcus 1993, Adams et al. 2004, Zelditch et al. 2012, Mitteroecker and 
   Gunz 2009, Adams et al. 2013). GPA translates all specimens to the origin, scales them to unit-centroid 
@@ -97,7 +104,7 @@ Generalized Procrustes Analysis (GPA: Gower 1975, Rohlf and Slice 1990) is the p
   The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{gpagen}}.
   The generic function, \code{\link{plot}}, calls \code{\link{plotAllSpecimens}}.
 
-\subsection{Notes for geomorph 3.0}{ 
+ \subsection{Notes for geomorph 3.0}{ 
 Compared to older versions of geomorph, users might notice subtle differences in Procrustes shape variables when using
 semilandmarks (curves or surfaces).  This difference is a result of using recursive updates of the 
 consensus configuration with the sliding algorithms (minimized bending energy or Procrustes distances).  

@@ -37,8 +37,13 @@
 #' @param norm.CS An option to normalize centroid size, according to the method of Dryden and Mardia (2016).  If TRUE,
 #' centroid sizes are divided by the square root of the numebr of landmarks.  This can have some advantage when one
 #' configuration is landmark-dense and another is landmark-sparse, but both correspond to structures of similar surface area
-#' or volume.  Using this option should be done with caution, as it renders landmark density inconsequential.  Choosing this
-#' option will probably produce relative centroid sizes that are more equal, irrespective of the number of landmarks.
+#' or volume.  Using this option should be done with caution, as it can make small configurations larger than large configurations,
+#' in a relative sense.  Choosing this option will probably produce relative centroid sizes that are more equal, 
+#' irrespective of the number of landmarks.
+#' @param weights An option to define (positive) weights used in calculation of relative centroid sizes (Collyer et al. in review).  Note that
+#' this option, if not NULL, will override norm.CS, as normalizing CS is one method of weighting centroid size. Using this option 
+#' should be done with caution, as it can make small configurations larger than large configurations,
+#' in a relative sense.  Note that no adjustments of weights are made - the user must define the weights exactly as intended.
 #' 
 #' @keywords utilities
 #' @export
@@ -48,6 +53,8 @@
 #' @references  Adams, D.C. 1999. Methods for shape analysis of landmark data from articulated structures. 
 #'  Evolutionary Ecology Research. 1:959-970. 
 #' @references  Dryden, I.L. and K.V Mardia. 2016. Statistical shape analysis, with applications in R: Second edition.
+#' @references  Collyer, M.L., M.A. Davis, and D.C. Adams. 2016. The R function, combinland, and normalization of centroid sizes, 
+#' can make neither heads nor tails of combined landmark configurations. Hystrix. (In review)
 #' @author Michael Collyer
 #' @return An object of class \code{combined.set} is a list containing the following
 #' \item{cords}{An [p x k x n] array of scaled, concatenated landmark coordinates.}
@@ -91,7 +98,7 @@
 #' 
 #' # Note the head is as large as the tail, which is quite unnatural.
 #' 
-#' #' Normalizing centroid size
+#' ## Normalizing centroid size
 #' 
 #' comb.lm <- combine.subsets(head = head.gpa, 
 #' tail = tail.gpa, gpa = TRUE, norm.CS = TRUE)
@@ -101,14 +108,28 @@
 #' plot(comb.lm$coords[,,1], pch = 21, bg = c(rep(1,26), rep(2,64)), asp = 1)
 #' par(mfrow = c(1,1))
 #' 
-#' # Note that the head is way too large, compared to a real specimen.  
+#' # Note that the head is too large, compared to a real specimen.  
 #' # This option focuses on average distance of points to centroid, 
 #' # but ignores the number of landmarks.  
 #' # Consequently,the density of landmarks in the head and tail are irrelevant 
 #' # and the head size is inflated because of the fewer landmarks in the configuration.
+#' 
+#' ## Weighting centroid size
+#' 
+#' comb.lm <- combine.subsets(head = head.gpa, 
+#' tail = tail.gpa, gpa = TRUE, norm.CS = FALSE, weights = c(0.3, 0.7))
+#' summary(comb.lm)
+#' par(mfrow = c(1,2))
+#' plotAllSpecimens(comb.lm$coords)
+#' plot(comb.lm$coords[,,1], pch = 21, bg = c(rep(1,26), rep(2,64)), asp = 1)
+#' par(mfrow = c(1,1))
+#' 
+#' # Note that the head is way too small, compared to a real specimen.  
+#' # This option allows one to dictate the relative sizes of subsets as portions of the combined set.
+#' # An option like this should be used with caution, but can help overcome issues caused by landmark density.
 
 
-combine.subsets <- function(..., gpa = TRUE, CS.sets = NULL, norm.CS = FALSE){
+combine.subsets <- function(..., gpa = TRUE, CS.sets = NULL, norm.CS = FALSE, weights = NULL){
   sets <- list(...)
   if(!is.null(CS.sets)) {
     if(!is.list(CS.sets)) {
@@ -148,6 +169,18 @@ combine.subsets <- function(..., gpa = TRUE, CS.sets = NULL, norm.CS = FALSE){
     sets <- sets[keep]
   }
   g <- length(sets)
+  
+  if(norm.CS && !is.null(weights)) norm.CS <- FALSE
+  if(!is.null(weights)) {
+    if(!is.vector(weights)) stop("weights must be a vector equal in length to the number of subsets.\n",
+                                 call. = FALSE)
+    if(length(weights) != g) stop("Length of weights does not match the number of subsets.\n",
+                                  call. = FALSE)
+    if(any(weights <= 0)) stop("weights must be positive and greater than 0.\n",
+                               call. = FALSE)
+    weighted <- TRUE
+  } else weighted <- FALSE
+  
   if(g < 2) stop(paste("At least two subsets are required. 
                  You have", g, "subset(s)."))
 	if(gpa) {
@@ -196,10 +229,8 @@ combine.subsets <- function(..., gpa = TRUE, CS.sets = NULL, norm.CS = FALSE){
 	for(i in 1:g) p[i] <- dim(all.coords[[i]][,,1])[1]
 	k <- dim(all.coords[[1]][,,1])[2]
 	CS.tot <- as.matrix(simplify2array(all.CS))
-	if(norm.CS) {
-	  p.mat <- matrix(sqrt(p), NROW(CS.tot), NCOL(CS.tot), byrow = TRUE)
-	  CS.tot <- CS.tot/p.mat
-	}
+	if(norm.CS) CS.tot <- CS.tot / matrix(sqrt(p), NROW(CS.tot), NCOL(CS.tot), byrow = TRUE)
+	if(weighted) CS.tot <- CS.tot * matrix(weights, NROW(CS.tot), NCOL(CS.tot), byrow = TRUE)
 	
 	CS.part <- CS.tot/rowSums(CS.tot)
 	coords.part <- lapply(1:g, function(j){
@@ -237,7 +268,8 @@ combine.subsets <- function(..., gpa = TRUE, CS.sets = NULL, norm.CS = FALSE){
 	     GPA = GPA, 
 	     gpa.coords.by.set = all.coords,
 	     adj.coords.by.set = coords.part,
-	     points.by.set = p, norm.CS = norm.CS)
+	     points.by.set = p, norm.CS = norm.CS,
+	     weighted = weighted)
 	class(out) <- "combined.set"
 	out
 }

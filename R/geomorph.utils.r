@@ -676,6 +676,7 @@ print.combined.set <- function(x,...){
   y <- as.data.frame(y)
   rownames(y) <- c("Number of points in subset", "Mean centroid size", "Mean relative size")
   if(x$norm.CS) rownames(y)[2] <- "Mean normalized centroid size"
+  if(x$weighted) rownames(y)[2] <- "Mean weighted centroid size"
   print(y)
 }
 
