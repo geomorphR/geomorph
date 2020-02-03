@@ -182,13 +182,13 @@ plotAllometry <- function(fit, size, logsz = TRUE,
   
   if(fit$LM$gls){
     if(!is.null(fit$LM$weights))
-      fit <- lm.rrpp(form, data = dat, weights = fit$LM$weights, 
+      fit2 <- lm.rrpp(form, data = dat, weights = fit$LM$weights, 
                      iter = 0, print.progress = FALSE)
     if(!is.null(fit$LM$Cov))
-      fit <- lm.rrpp(form, data = dat, Cov = fit$LM$Cov, 
+      fit2 <- lm.rrpp(form, data = dat, Cov = fit$LM$Cov, 
                      iter = 0, print.progress = FALSE)
   } else {
-    fit <- lm.rrpp(form, data = dat, iter = 0, print.progress = FALSE)
+    fit2 <- lm.rrpp(form, data = dat, iter = 0, print.progress = FALSE)
   }
   
   if(method == "PredLine") {
@@ -213,14 +213,14 @@ plotAllometry <- function(fit, size, logsz = TRUE,
       
       {
       
-        f <- if(fit$LM$gls) fit$LM$gls.fitted else fit$LM$fitted
+        f <- if(fit2$LM$gls) fit2$LM$gls.fitted else fit2$LM$fitted
         b <- as.matrix(lm(f ~ xc)$coefficients)[2,]
-        y <- fit$LM$Y
+        y <- fit2$LM$Y
         a <- crossprod(center(y), xc)/sum(xc^2)
         a <- a/sqrt(sum(a^2))
         r <- center(y)
         CAC <- r%*%a  
-        p <- fit$LM$p
+        p <- fit2$LM$p
         resid <- r%*%(diag(p) - matrix(crossprod(a),p,p))
         RSC <- prcomp(resid)$x
         Reg.proj <- r %*% b %*% sqrt(1/crossprod(b))
