@@ -135,22 +135,22 @@
 #' plot(PLS)
 #' 
 #' # Group Allometries
-#' fit2 <- procD.lm(coords ~ Csize * species * site, data=gdf, iter=0, print.progress = FALSE)
+#' fit <- procD.lm(coords ~ Csize * species * site, data=gdf, iter=0, print.progress = FALSE)
 #' 
 #' # CAC (should not change from last time; model change has no effect)
-#' plotAllometry(fit2, size = gdf$Csize, logsz = TRUE, method = "CAC", pch = 19)
+#' plotAllometry(fit, size = gdf$Csize, logsz = TRUE, method = "CAC", pch = 19)
 #' 
 #' # Predline
-#' plotAllometry(fit2, size = gdf$Csize, logsz = TRUE, method = "PredLine", 
+#' plotAllometry(fit, size = gdf$Csize, logsz = TRUE, method = "PredLine", 
 #' pch = 19, col = as.numeric(interaction(gdf$species, gdf$site)))
 #' 
 #' # RegScore
-#' plotAllometry(fit2, size = gdf$Csize, logsz = TRUE, method = "RegScore", 
+#' plotAllometry(fit, size = gdf$Csize, logsz = TRUE, method = "RegScore", 
 #' pch = 19, col = as.numeric(interaction(gdf$species, gdf$site)))
 #' 
 #' # Size-Shape PCA
 #' 
-#' pc.plot <- plotAllometry(fit2, size = gdf$Csize, logsz = TRUE, method = "size.shape", 
+#' pc.plot <- plotAllometry(fit, size = gdf$Csize, logsz = TRUE, method = "size.shape", 
 #' pch = 19, col = as.numeric(interaction(gdf$species, gdf$site)))
 #' summary(pc.plot$size.shape.PCA)
 #' 
@@ -180,17 +180,6 @@ plotAllometry <- function(fit, size, logsz = TRUE,
   GM <- fit$GM
   xc <- if(logsz) log(size) else size
   
-  if(fit$LM$gls){
-    if(!is.null(fit$LM$weights))
-      fit2 <- lm.rrpp(form, data = dat, weights = fit$LM$weights, 
-                     iter = 0, print.progress = FALSE)
-    if(!is.null(fit$LM$Cov))
-      fit2 <- lm.rrpp(form, data = dat, Cov = fit$LM$Cov, 
-                     iter = 0, print.progress = FALSE)
-  } else {
-    fit2 <- lm.rrpp(form, data = dat, iter = 0, print.progress = FALSE)
-  }
-  
   if(method == "PredLine") {
     
     if(logsz) out <- plot(fit, type = "regression", 
@@ -212,15 +201,25 @@ plotAllometry <- function(fit, size, logsz = TRUE,
   } else 
       
       {
+        if(fit$LM$gls){
+          if(!is.null(fit$LM$weights))
+            fit <- lm.rrpp(form, data = dat, weights = fit$LM$weights, 
+                            iter = 0, print.progress = FALSE)
+          if(!is.null(fit$LM$Cov))
+            fit <- lm.rrpp(form, data = dat, Cov = fit$LM$Cov, 
+                            iter = 0, print.progress = FALSE)
+        } else {
+          fit <- lm.rrpp(form, data = dat, iter = 0, print.progress = FALSE)
+        }
       
-        f <- if(fit2$LM$gls) fit2$LM$gls.fitted else fit2$LM$fitted
+        f <- if(fit$LM$gls) fit$LM$gls.fitted else fit$LM$fitted
         b <- as.matrix(lm(f ~ xc)$coefficients)[2,]
-        y <- fit2$LM$Y
+        y <- fit$LM$Y
         a <- crossprod(center(y), xc)/sum(xc^2)
         a <- a/sqrt(sum(a^2))
         r <- center(y)
         CAC <- r%*%a  
-        p <- fit2$LM$p
+        p <- fit$LM$p
         resid <- r%*%(diag(p) - matrix(crossprod(a),p,p))
         RSC <- prcomp(resid)$x
         Reg.proj <- r %*% b %*% sqrt(1/crossprod(b))
