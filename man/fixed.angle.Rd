@@ -4,8 +4,15 @@
 \alias{fixed.angle}
 \title{Rotate a subset of 2D landmarks to common articulation angle}
 \usage{
-fixed.angle(A, art.pt = NULL, angle.pts.1, angle.pts.2, rot.pts = NULL,
-  angle = 0, degrees = FALSE)
+fixed.angle(
+  A,
+  art.pt = NULL,
+  angle.pts.1,
+  angle.pts.2,
+  rot.pts = NULL,
+  angle = 0,
+  degrees = FALSE
+)
 }
 \arguments{
 \item{A}{A 3D array (p x k x n) containing landmark coordinates for a set of specimens}
@@ -39,7 +46,7 @@ This function standardizes the angle between two subsets of landmarks for a set 
  hinge-point articulation between the two subsets, and rotates all specimens such that the angle between landmark subsets 
  is equal across specimens (see Adams 1999).  As a default, the mean angle is used, though the user may specify an additional amount by which 
  this may be augmented. To quantify the angle, users may specify a single landmark in each subset as angle endpoints, or may specify a set of landmarks.
- If the latter, the centroid of those points is used.
+ If the latter, the centroid of those points is used. 
 
 Presently, the function is only implemented for two-dimensional landmark data.
 }

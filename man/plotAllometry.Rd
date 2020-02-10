@@ -4,8 +4,13 @@
 \alias{plotAllometry}
 \title{Plotting to assist visualization of shape-size covariation (allometry)}
 \usage{
-plotAllometry(fit, size, logsz = TRUE, method = c("PredLine",
-  "RegScore", "size.shape", "CAC"), ...)
+plotAllometry(
+  fit,
+  size,
+  logsz = TRUE,
+  method = c("PredLine", "RegScore", "size.shape", "CAC"),
+  ...
+)
 }
 \arguments{
 \item{fit}{A procD.lm fit.}
@@ -38,6 +43,7 @@ provided the same plotting as plotAllometry before it.  In geomorph 3.1.0, procD
 \code{\link{procD.lm}} and \code{\link{pairwise}} for analyses, which can include additional variables,
 thus eliminating plot.procD.allometry.  This function coalesces a few plotting options found in other functions,
 as a wrapper, for the purpose of retaining the plot.procD.allometry options in one place.
+
 
 There are fundamentally two different kinds of allometry plots: those based on linear models and those that do not have a linear
 model basis (more detail below).  The common allometric component (CAC) and size-shape PCA (Mitteroecker et al. 2004) are plotting
@@ -80,6 +86,7 @@ one wishes to visualize whether shape, size, and some other variable covary in s
 between shape and another covariate, then performing plotAllometry with that fit and size).  For example, one can entertain the question,
 "Are species differences in shape merely a manifestation of shape allometry, when species differ in size?"  By fitting a model, shape ~ species,
  then using plotAllometry for the model fit (with either PredLine or RegScore), the plot will help reveal if allometry and species effects are confounded.
+
 
 The following are brief descriptions of the different plotting methods, with references.
 
@@ -136,22 +143,22 @@ PLS <- two.b.pls(log(gdf$Csize), gdf$coords, print.progress = FALSE)
 plot(PLS)
 
 # Group Allometries
-fit2 <- procD.lm(coords ~ Csize * species * site, data=gdf, iter=0, print.progress = FALSE)
+fit <- procD.lm(coords ~ Csize * species * site, data=gdf, iter=0, print.progress = FALSE)
 
 # CAC (should not change from last time; model change has no effect)
-plotAllometry(fit2, size = gdf$Csize, logsz = TRUE, method = "CAC", pch = 19)
+plotAllometry(fit, size = gdf$Csize, logsz = TRUE, method = "CAC", pch = 19)
 
 # Predline
-plotAllometry(fit2, size = gdf$Csize, logsz = TRUE, method = "PredLine",
+plotAllometry(fit, size = gdf$Csize, logsz = TRUE, method = "PredLine",
 pch = 19, col = as.numeric(interaction(gdf$species, gdf$site)))
 
 # RegScore
-plotAllometry(fit2, size = gdf$Csize, logsz = TRUE, method = "RegScore",
+plotAllometry(fit, size = gdf$Csize, logsz = TRUE, method = "RegScore",
 pch = 19, col = as.numeric(interaction(gdf$species, gdf$site)))
 
 # Size-Shape PCA
 
-pc.plot <- plotAllometry(fit2, size = gdf$Csize, logsz = TRUE, method = "size.shape",
+pc.plot <- plotAllometry(fit, size = gdf$Csize, logsz = TRUE, method = "size.shape",
 pch = 19, col = as.numeric(interaction(gdf$species, gdf$site)))
 summary(pc.plot$size.shape.PCA)
 

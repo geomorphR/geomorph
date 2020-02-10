@@ -4,8 +4,14 @@
 \alias{modularity.test}
 \title{Evaluate the degree of modular signal in shape data}
 \usage{
-modularity.test(A, partition.gp, iter = 999, CI = FALSE, seed = NULL,
-  print.progress = TRUE)
+modularity.test(
+  A,
+  partition.gp,
+  iter = 999,
+  CI = FALSE,
+  seed = NULL,
+  print.progress = TRUE
+)
 }
 \arguments{
 \item{A}{A 3D array (p x k x n) containing Procrustes shape variables for all specimens, or a matrix (n x variables)}
@@ -65,9 +71,9 @@ for landmark data, estimation of the CI can take some time to compute.
 Landmark groups can be defined using \code{\link{define.modules}}, or made by hand (see example below).
 To use this method with other data (i.e., a set of length measurements), the input A should be a matrix 
 of n rows of specimens and variables arranged in columns. 
-In this case, the partition.gp input should have each variable assigned to a partition.
+In this case, the partition.gp input should have each variable assigned to a partition. 
 
-The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{modularity.test}}.
+ The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{modularity.test}}.
  The generic function, \code{\link{plot}}, produces a histogram of random CR values associated with the resampling procedure.
 }
 \examples{
