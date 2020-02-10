@@ -143,22 +143,22 @@ PLS <- two.b.pls(log(gdf$Csize), gdf$coords, print.progress = FALSE)
 plot(PLS)
 
 # Group Allometries
-fit2 <- procD.lm(coords ~ Csize * species * site, data=gdf, iter=0, print.progress = FALSE)
+fit <- procD.lm(coords ~ Csize * species * site, data=gdf, iter=0, print.progress = FALSE)
 
 # CAC (should not change from last time; model change has no effect)
-plotAllometry(fit2, size = gdf$Csize, logsz = TRUE, method = "CAC", pch = 19)
+plotAllometry(fit, size = gdf$Csize, logsz = TRUE, method = "CAC", pch = 19)
 
 # Predline
-plotAllometry(fit2, size = gdf$Csize, logsz = TRUE, method = "PredLine", 
+plotAllometry(fit, size = gdf$Csize, logsz = TRUE, method = "PredLine", 
 pch = 19, col = as.numeric(interaction(gdf$species, gdf$site)))
 
 # RegScore
-plotAllometry(fit2, size = gdf$Csize, logsz = TRUE, method = "RegScore", 
+plotAllometry(fit, size = gdf$Csize, logsz = TRUE, method = "RegScore", 
 pch = 19, col = as.numeric(interaction(gdf$species, gdf$site)))
 
 # Size-Shape PCA
 
-pc.plot <- plotAllometry(fit2, size = gdf$Csize, logsz = TRUE, method = "size.shape", 
+pc.plot <- plotAllometry(fit, size = gdf$Csize, logsz = TRUE, method = "size.shape", 
 pch = 19, col = as.numeric(interaction(gdf$species, gdf$site)))
 summary(pc.plot$size.shape.PCA)
 

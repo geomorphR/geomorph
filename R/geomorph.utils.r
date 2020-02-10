@@ -720,6 +720,7 @@ plot.mshape <- function(x, links=NULL,...){
     }
     plot.xy(x, type="p", cex=3, pch=21, bg="white")
     text(x, labels=1:length(x$x))
+    par(xpd=F)
   } else {
   if(ncol(x)==3){
     plot3d(x, type="n", aspect=FALSE, xlab="", ylab="", zlab="", axes=F,...)
