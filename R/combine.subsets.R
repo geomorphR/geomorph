@@ -8,7 +8,7 @@
 #' collected from the same organisms.  (In the examples below, configurations for heads and tails
 #' of larval salamanders were collected separately from images taken on the same individuals.)  An
 #' attempt is made to scale configurations by their relative centroid sizes, following the procedure in
-#' Davis et al. (2016); i.e., landmark coordinates are multiplied by CSi/(CSi + CSj + ...) before 
+#' Davis et al. (2016); i.e., landmark coordinates are multiplied by CSi/sqrt(CSi^2 + CSj^2 + ...) before 
 #' combining them, so that resulting combinations of landmarks are scaled to unit centroid size.  This is
 #' only possible if GPA is performed on landmarks (gpa = TRUE) or centroid sizes are provided as an 
 #' argument.  Objects of class \code{gpagen} can be used rather than original landmarks (recommended, 
@@ -34,13 +34,27 @@
 #' size is performed according to the data input  (One could weight configurations via this method.).  If the 
 #' CS.set input is a matrix, it is assumed that rows are specimens and columns correspond to the different landmark
 #' sets.  Lists or arrays should be in the same order as the landmark sets.
+#' @param norm.CS An option to normalize centroid size, according to the method of Dryden and Mardia (2016).  If TRUE,
+#' centroid sizes are divided by the square root of the numebr of landmarks.  This can have some advantage when one
+#' configuration is landmark-dense and another is landmark-sparse, but both correspond to structures of similar surface area
+#' or volume.  Using this option should be done with caution, as it can make small configurations larger than large configurations,
+#' in a relative sense.  Choosing this option will probably produce relative centroid sizes that are more equal, 
+#' irrespective of the number of landmarks.
+#' @param weights An option to define (positive) weights used in calculation of relative centroid sizes (Collyer et al. in review).  Note that
+#' this option, if not NULL, will override norm.CS, as normalizing CS is one method of weighting centroid size. Using this option 
+#' should be done with caution, as it can make small configurations larger than large configurations,
+#' in a relative sense.  Note that no adjustments of weights are made - the user must define the weights exactly as intended.
+#' 
 #' @keywords utilities
 #' @export
 #' @references Davis, M.A., M.R. Douglas, M.L. Collyer, & M.E. Douglas, M. E. 2016.
 #'  Deconstructing a species-complex: geometric morphometric and molecular analyses define species in the 
 #'  Western Rattlesnake (Crotalus viridis). PloS one, 11(1), e0146166.
-#' @references  Adams, D. C. 1999. Methods for shape analysis of landmark data from articulated structures. 
+#' @references  Adams, D.C. 1999. Methods for shape analysis of landmark data from articulated structures. 
 #'  Evolutionary Ecology Research. 1:959-970. 
+#' @references  Dryden, I.L. and K.V Mardia. 2016. Statistical shape analysis, with applications in R: Second edition.
+#' @references  Collyer, M.L., M.A. Davis, and D.C. Adams. 2016. The R function, combinland, and normalization of centroid sizes, 
+#' can make neither heads nor tails of combined landmark configurations. Submitted.
 #' @author Michael Collyer
 #' @return An object of class \code{combined.set} is a list containing the following
 #' \item{cords}{An [p x k x n] array of scaled, concatenated landmark coordinates.}
@@ -54,21 +68,68 @@
 #' data(larvalMorph) 
 #' head.gpa <- gpagen(larvalMorph$headcoords, curves = larvalMorph$head.sliders)
 #' tail.gpa <- gpagen(larvalMorph$tailcoords, curves = larvalMorph$tail.sliders)
+#' 
+#' # Combine original data without GPA (plot to see relative size of heads and tails)
+#' 
+#'  all.lm <- combine.subsets(head = larvalMorph$headcoords,
+#'  tail = larvalMorph$tailcoords, gpa = FALSE, CS.sets = NULL)
+#'  plotAllSpecimens((all.lm$coords))
+#'  
+#'  # Combine with GPA and relative centroid size
+#'  
 #' comb.lm <- combine.subsets(head = head.gpa, tail = tail.gpa, gpa = TRUE)
 #' summary(comb.lm)
-#' # Plot first specimen and color code landmarks 
-#' # (configurations are actual relative size)
+#' 
+#' #' # (configurations are actual relative size)
 #' comb.lm$coords[,,1]
+#' 
+#' # Plot all specimens and just first specimen and color code landmarks 
+#' par(mfrow = c(1,2))
+#' plotAllSpecimens(comb.lm$coords)
 #' plot(comb.lm$coords[,,1], pch = 21, bg = c(rep(1,26), rep(2,64)), asp = 1)
 #' 
-#' # choose to override scaling by relative size 
+#' # Override relative centroid size
+#' 
 #' comb.lm <- combine.subsets(head = head.gpa$coords, 
 #' tail = tail.gpa$coords, gpa = FALSE, CS.sets = NULL)
-#' summary(comb.lm)
+#' par(mfrow = c(1,2))
+#' plotAllSpecimens(comb.lm$coords)
 #' plot(comb.lm$coords[,,1], pch = 21, bg = c(rep(1,26), rep(2,64)), asp = 1)
+#' 
+#' # Note the head is as large as the tail, which is quite unnatural.
+#' 
+#' ## Normalizing centroid size
+#' 
+#' comb.lm <- combine.subsets(head = head.gpa, 
+#' tail = tail.gpa, gpa = TRUE, norm.CS = TRUE)
+#' summary(comb.lm)
+#' par(mfrow = c(1,2))
+#' plotAllSpecimens(comb.lm$coords)
+#' plot(comb.lm$coords[,,1], pch = 21, bg = c(rep(1,26), rep(2,64)), asp = 1)
+#' par(mfrow = c(1,1))
+#' 
+#' # Note that the head is too large, compared to a real specimen.  
+#' # This option focuses on average distance of points to centroid, 
+#' # but ignores the number of landmarks.  
+#' # Consequently,the density of landmarks in the head and tail are irrelevant 
+#' # and the head size is inflated because of the fewer landmarks in the configuration.
+#' 
+#' ## Weighting centroid size
+#' 
+#' comb.lm <- combine.subsets(head = head.gpa, 
+#' tail = tail.gpa, gpa = TRUE, norm.CS = FALSE, weights = c(0.3, 0.7))
+#' summary(comb.lm)
+#' par(mfrow = c(1,2))
+#' plotAllSpecimens(comb.lm$coords)
+#' plot(comb.lm$coords[,,1], pch = 21, bg = c(rep(1,26), rep(2,64)), asp = 1)
+#' par(mfrow = c(1,1))
+#' 
+#' # Note that the head is way too small, compared to a real specimen.  
+#' # This option allows one to dictate the relative sizes of subsets as portions of the combined set.
+#' # An option like this should be used with caution, but can help overcome issues caused by landmark density.
 
 
-combine.subsets <- function(..., gpa = TRUE, CS.sets = NULL){
+combine.subsets <- function(..., gpa = TRUE, CS.sets = NULL, norm.CS = FALSE, weights = NULL){
   sets <- list(...)
   if(!is.null(CS.sets)) {
     if(!is.list(CS.sets)) {
@@ -108,6 +169,18 @@ combine.subsets <- function(..., gpa = TRUE, CS.sets = NULL){
     sets <- sets[keep]
   }
   g <- length(sets)
+  
+  if(norm.CS && !is.null(weights)) norm.CS <- FALSE
+  if(!is.null(weights)) {
+    if(!is.vector(weights)) stop("weights must be a vector equal in length to the number of subsets.\n",
+                                 call. = FALSE)
+    if(length(weights) != g) stop("Length of weights does not match the number of subsets.\n",
+                                  call. = FALSE)
+    if(any(weights <= 0)) stop("weights must be positive and greater than 0.\n",
+                               call. = FALSE)
+    weighted <- TRUE
+  } else weighted <- FALSE
+  
   if(g < 2) stop(paste("At least two subsets are required. 
                  You have", g, "subset(s)."))
 	if(gpa) {
@@ -156,7 +229,10 @@ combine.subsets <- function(..., gpa = TRUE, CS.sets = NULL){
 	for(i in 1:g) p[i] <- dim(all.coords[[i]][,,1])[1]
 	k <- dim(all.coords[[1]][,,1])[2]
 	CS.tot <- as.matrix(simplify2array(all.CS))
-	CS.part <- CS.tot/rowSums(CS.tot)
+	if(norm.CS) CS.tot <- CS.tot / matrix(sqrt(p), NROW(CS.tot), NCOL(CS.tot), byrow = TRUE)
+	if(weighted) CS.tot <- CS.tot * matrix(weights, NROW(CS.tot), NCOL(CS.tot), byrow = TRUE)
+	
+	CS.part <- CS.tot/sqrt(rowSums(CS.tot^2))
 	coords.part <- lapply(1:g, function(j){
 	  ac <- all.coords[[j]]
 	  sc <- CS.part[,j]
@@ -192,7 +268,8 @@ combine.subsets <- function(..., gpa = TRUE, CS.sets = NULL){
 	     GPA = GPA, 
 	     gpa.coords.by.set = all.coords,
 	     adj.coords.by.set = coords.part,
-	     points.by.set = p)
+	     points.by.set = p, norm.CS = norm.CS,
+	     weighted = weighted)
 	class(out) <- "combined.set"
 	out
 }
