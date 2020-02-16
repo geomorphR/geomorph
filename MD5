@@ -17,7 +17,7 @@ f4f2080e745b8d689f17caf549449ab5 *geomorph.Rproj
 5e099c6268d251bf5c98595d9566385a *man/arrayspecs.Rd
 3992c116b88a8a79fadcad8745f4ee9e *man/bilat.symmetry.Rd
 6e94f720fd50cf0ff309624b1a4a30ee *man/buildtemplate.Rd
-93b11c9a40415c600e397dc35d9a5f5c *man/combine.subsets.Rd
+21fa3823bd09a4edc36a03ad3a9e1686 *man/combine.subsets.Rd
 55bb505e3ee47911be6904e57f457da0 *man/compare.CR.Rd
 e9cda01506cd0a57e4dd1d44cf1b8bb7 *man/compare.evol.rates.Rd
 4a1e045de391966a3300bfea63c999ce *man/compare.multi.evol.rates.Rd
@@ -66,7 +66,7 @@ dde6596fcd7d13f63473eef6b86368d7 *man/plot.gm.prcomp.Rd
 c243df60434118dddca6904f3d6de9b0 *man/plot.physignal.Rd
 e1b19a991aa5c05b644349eb00687e39 *man/plot.pls.Rd
 13c6015521a9d77ac02f5175a7a74e2b *man/plot.procD.lm.Rd
-45a60ea655392e8307bf3826961177d3 *man/plotAllometry.Rd
+800ecdda0e7f8d895a6ecd4aef00e890 *man/plotAllometry.Rd
 a94c27850d6a56f55bddcb424b0204da *man/plotAllSpecimens.Rd
 bb7625d6a45f22b3af9d6944c554b065 *man/plotGMPhyloMorphoSpace.Rd
 4542a404d1dabb2f1f237f087e4c9ea1 *man/plotOutliers.Rd
@@ -130,7 +130,7 @@ e769ab893d7bddbc9cb154092cb36372 *NEWS.md
 92239d51a080ccd3fc3a9f7ef67d1b8c *R/arrayspecs.r
 8f280cb059f6619206d0bbfe52059c16 *R/bilat.symmetry.r
 d7d67e9218f84609046423cb222f5c44 *R/build.template.r
-6a32c4b870b65f8f4f9c458a9663cc7d *R/combine.subsets.r
+86354b5013772717253761715b8b9a96 *R/combine.subsets.r
 a85f984f777798d31520e42d0c87e3f5 *R/compare.CR.R
 cff9b470e442542bb66ab1446904fcba *R/compare.evol.rates.r
 158c6de8370887d5561219096b6c30d5 *R/compare.multi.evol.rates.r

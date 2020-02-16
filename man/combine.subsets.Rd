@@ -64,7 +64,7 @@ This might be of interest, for example, if one has landmarks digitized on separa
 collected from the same organisms.  (In the examples below, configurations for heads and tails
 of larval salamanders were collected separately from images taken on the same individuals.)  An
 attempt is made to scale configurations by their relative centroid sizes, following the procedure in
-Davis et al. (2016); i.e., landmark coordinates are multiplied by CSi/(CSi + CSj + ...) before 
+Davis et al. (2016); i.e., landmark coordinates are multiplied by CSi/sqrt(CSi^2 + CSj^2 + ...) before 
 combining them, so that resulting combinations of landmarks are scaled to unit centroid size.  This is
 only possible if GPA is performed on landmarks (gpa = TRUE) or centroid sizes are provided as an 
 argument.  Objects of class \code{gpagen} can be used rather than original landmarks (recommended, 
@@ -149,7 +149,7 @@ Adams, D.C. 1999. Methods for shape analysis of landmark data from articulated s
 Dryden, I.L. and K.V Mardia. 2016. Statistical shape analysis, with applications in R: Second edition.
 
 Collyer, M.L., M.A. Davis, and D.C. Adams. 2016. The R function, combinland, and normalization of centroid sizes, 
-can make neither heads nor tails of combined landmark configurations. Hystrix. (In review)
+can make neither heads nor tails of combined landmark configurations. Submitted.
 }
 \author{
 Michael Collyer
