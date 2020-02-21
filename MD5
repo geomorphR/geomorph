@@ -17,7 +17,7 @@ b70e887db79507e51c7356c21b869761 *inst/CITATION
 5e099c6268d251bf5c98595d9566385a *man/arrayspecs.Rd
 3992c116b88a8a79fadcad8745f4ee9e *man/bilat.symmetry.Rd
 6e94f720fd50cf0ff309624b1a4a30ee *man/buildtemplate.Rd
-21fa3823bd09a4edc36a03ad3a9e1686 *man/combine.subsets.Rd
+f992db3793aee0dcaa0a3d95359bec54 *man/combine.subsets.Rd
 55bb505e3ee47911be6904e57f457da0 *man/compare.CR.Rd
 e9cda01506cd0a57e4dd1d44cf1b8bb7 *man/compare.evol.rates.Rd
 4a1e045de391966a3300bfea63c999ce *man/compare.multi.evol.rates.Rd
@@ -70,7 +70,7 @@ f0541bc95cf8eb8b9d1c6bbd7871ead7 *man/plotAllometry.Rd
 a94c27850d6a56f55bddcb424b0204da *man/plotAllSpecimens.Rd
 bb7625d6a45f22b3af9d6944c554b065 *man/plotGMPhyloMorphoSpace.Rd
 4542a404d1dabb2f1f237f087e4c9ea1 *man/plotOutliers.Rd
-5ae564a29e676ef3de871a2161fbc520 *man/plotRefToTarget.Rd
+7845e91b5e5d50b1477725984025678a *man/plotRefToTarget.Rd
 5eaddfebc11b14c6a1b21367086e66cf *man/plotspec.Rd
 c7608dc03b6240bcb0eb12a236a60b6c *man/plotTangentSpace.Rd
 bf735457c885585781fa8dd86e2671b8 *man/print.bilat.symmetry.Rd
@@ -126,11 +126,11 @@ e8bab5920a5800545fb6aed388d63112 *man/warpRefMesh.Rd
 4678254db827c8ff8caf6c5beb8157be *man/warpRefOutline.Rd
 d9119f721918f22c267db843023a86fe *man/writeland.tps.Rd
 0ba3a139afdd61e583652438cca47340 *NAMESPACE
-2c273b6db813221b017c9bc3405e101b *NEWS.md
+80cbf2aa9366bcc7c446d492ef0be9a0 *NEWS.md
 92239d51a080ccd3fc3a9f7ef67d1b8c *R/arrayspecs.r
 8f280cb059f6619206d0bbfe52059c16 *R/bilat.symmetry.r
 d7d67e9218f84609046423cb222f5c44 *R/build.template.r
-86354b5013772717253761715b8b9a96 *R/combine.subsets.r
+86354b5013772717253761715b8b9a96 *R/combine.subsets.R
 a85f984f777798d31520e42d0c87e3f5 *R/compare.CR.R
 cff9b470e442542bb66ab1446904fcba *R/compare.evol.rates.r
 158c6de8370887d5561219096b6c30d5 *R/compare.multi.evol.rates.r
@@ -167,7 +167,7 @@ c4dc7c20a321428ae43b920d2c1efb43 *R/plotAllometry.r
 c1cead3306cb3d7b1bd3ed5d99fc89af *R/plotAllSpecimens.r
 9f51066884f71bfc06335604055beead *R/plotGMPhyloMorphoSpace.r
 91a4b5d6ce7f725fd64105a7ce10e97e *R/plotOutliers.r
-5e0f4c3be2576a17a988042babc66fa4 *R/plotRefToTarget.r
+78d172a72ab828182697f411b7368e4d *R/plotRefToTarget.r
 4cfe3b966bf949de94c01a51e4edf998 *R/plotspec.r
 ffeb4fb45afe9b0e8fe9c22bd5747931 *R/plotTangentSpace.r
 bb944e4a73cab4d9f15d2979920474cb *R/procD.lm.r
@@ -189,6 +189,7 @@ ef0a7ddc250a612a072bd2f4248586f2 *R/shapeHulls.r
 59d493f9cc61f036c40f49bf8b7bb3e0 *R/warpRefOutline.r
 ad572d6203f667d37641cee3adbc72b7 *R/writeland.tps.r
 ba685ee02f8f9e6c5b54f5b0295f350a *README.md
+7db72b7e01004751c5cf9d9eb2c9122c *Stable.Rproj
 d3e5db710ad3bfca0e5be89edc91a2a9 *vignettes/figs/example_spec2.png
 e108112cb2dec057facffbf5571b92bf *vignettes/figs/example_template.png
 f0eeb0d08e88fe8475db103df58344db *vignettes/figs/fixed.3D.png

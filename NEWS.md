@@ -1,5 +1,8 @@
 # CHANGES IN GEOMORPH VERSION 3.2.1.0900 (Minor Release)
 
+### NEW FEATURES
+* Added the possibility of plotting an outline with method = "vector" in plotRefToTarget
+
 ### BUG FIXES
 * Fixed small bug in plot.mshape par definitions
 * Ammended specimen name extraction from .tiff files when using imageID in readland.tps
