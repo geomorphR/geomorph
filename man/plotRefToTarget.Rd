@@ -53,26 +53,27 @@ Function plots shape differences between a reference and target specimen
 \details{
 The function generates a plot of the shape differences of a target specimen relative to a reference 
  specimen. The option {mag} allows the user to indicates the degree of magnification to be used when 
- displaying the shape difference. The function will plot either two- or three-dimensional data. For
- two-dimensional data and thin-plate spline deformation plots, the user may also supply boundary curves 
- of the object, which will be deformed from 
- the reference to the target specimen using the thin-plate spline. Such curves are often useful in describing 
+ displaying the shape difference. The function will plot either two- or three-dimensional data. 
+ 
+ For two-dimensional data and thin-plate spline deformation plots, the user may also supply boundary 
+ curves of the object, which will be deformed from the reference to the target specimen using the 
+ thin-plate spline. Such curves are often useful in describing 
  the biological shape differences expressed in the landmark coordinates.  Note that to utilize this option, 
  a boundary curve from a representative specimen must first be warped to the reference specimen using
   \code{\link{warpRefOutline}}.
   
+ Additionally, if a matrix of links is provided, the landmarks will be connected by lines.  
+ The link matrix is an M x 2 matrix, where M is the desired number of links. Each row of the link matrix 
+ designates the two landmarks to be connected by that link.
+  
  Four distinct methods for plots are available:
  \enumerate{
  \item {TPS} a thin-plate spline deformation grid is generated. For 3D data, 
- this method will generate thin-plate spline deformations in the x-y and x-z planes. A boundary curve 
- will also be deformed if provided by the user.
+ this method will generate thin-plate spline deformations in the x-y and x-z planes. 
  \item {vector}: a plot showing the vector displacements between corresponding landmarks in the reference 
  and target specimen is shown. 
- \item {points} a plot is displayed with the landmarks in the target (black) 
- overlaying those of the reference (gray). Additionally, if a matrix of links is provided, the 
- landmarks of the mean shape will be connected by lines.  The link matrix is an M x 2 matrix, where 
- M is the desired number of links. Each row of the link matrix designates the two landmarks to be 
- connected by that link. 
+ \item {points} a plot is displayed with the landmarks in the target overlaying 
+ those of the reference.  
  \item {surface} a mesh3d surface is warped using thin-plate spline (for 3D data only). 
  Requires mesh3d object in option {mesh}, made using \code{\link{warpRefMesh}}. 
  }
