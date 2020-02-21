@@ -231,8 +231,8 @@ combine.subsets <- function(..., gpa = TRUE, CS.sets = NULL, norm.CS = FALSE, we
 	CS.tot <- as.matrix(simplify2array(all.CS))
 	if(norm.CS) CS.tot <- CS.tot / matrix(sqrt(p), NROW(CS.tot), NCOL(CS.tot), byrow = TRUE)
 	if(weighted) CS.tot <- CS.tot * matrix(weights, NROW(CS.tot), NCOL(CS.tot), byrow = TRUE)
-	
-	CS.part <- CS.tot/sqrt(rowSums(CS.tot^2))
+	p.mat <- matrix(p, NROW(CS.tot), NCOL(CS.tot), byrow = TRUE)
+	CS.part <- sqrt(CS.tot^2 /rowSums(CS.tot^2))
 	coords.part <- lapply(1:g, function(j){
 	  ac <- all.coords[[j]]
 	  sc <- CS.part[,j]
