@@ -180,15 +180,11 @@ gm.prcomp <- function (A, phy = NULL, align.to.phy = FALSE,
     C <- phy.mat$C
     if(align.to.phy) ord.args$A <- C
     if(GLS) ord.args$Cov <- C
-    ord.args$newdata <- ancY
 
 }
 
   out <- do.call(ordinate, ord.args)
   if(out$alignment == "A") out$alignment <- "phy"
-  
-  if(!is.null(phy)) 
-    names(out)[[which(names(out) == "xn")]] <- "anc.x"
   
   names(out)[[which(names(out) == "rot")]] <- "rotation"
   if(!is.null(k)) {
@@ -204,7 +200,11 @@ gm.prcomp <- function (A, phy = NULL, align.to.phy = FALSE,
   if(!is.null(phy)) {
     out$ancestors <- ancY
     out$phy <- phy
-    out$anc.var <- anc.var <- apply(out$anc.x, 2, var)
+    out$x <- as.matrix(out$x)
+    rownames(out$x) <- rownames(as.matrix(Y))
+    ancs <- as.matrix(anc.BM(phy, out$x))
+    out$anc.x <- ancs
+    out$anc.var <- apply(ancs, 2, var)
   }
   if(GLS) {
     Pcov <- phy.mat$D.mat
