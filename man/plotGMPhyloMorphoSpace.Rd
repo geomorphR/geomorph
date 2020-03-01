@@ -54,9 +54,9 @@ Default is a plot of PC axis 1 and 2. The phylogenetic tree for these specimens 
   If a tree with branch lengths scaled by time is used, with the option zaxis = "time", the function plots a 3D phylomorphospace, with internal nodes positioned along the Z-axis scaled 
   to time (a.k.a. Chronophylomorphospace, Sakamoto & Ruta 2012).
   
-\subsection{Notes for geomorph 3.1.0 and subsequent versions}{ 
- The function \code{\link{gm.prcomp}} can also be used to generate phylomorphospace plots,
- and will yield plots identical to those of the current function. 
+\subsection{Notes for geomorph 3.2.1.0900 and subsequent versions}{
+ This function is deprecated and will soon be removed. 
+ The function \code{\link{gm.prcomp}} can be used instead to generate phylomorphospace plots. 
  }
 }
 \examples{
