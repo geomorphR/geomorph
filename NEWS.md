@@ -7,6 +7,9 @@
 * Fixed small bug in plot.mshape par definitions
 * Ammended specimen name extraction from .tiff files when using imageID in readland.tps
 
+### OTHER CHANGES
+* Function plotGMPhyloMorphoSpace has been deprecated 
+
 # CHANGES IN GEOMORPH VERSION 3.2.1
 
 ### NEW FEATURES

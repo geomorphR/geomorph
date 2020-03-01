@@ -9,9 +9,9 @@
 #'   If a tree with branch lengths scaled by time is used, with the option zaxis = "time", the function plots a 3D phylomorphospace, with internal nodes positioned along the Z-axis scaled 
 #'   to time (a.k.a. Chronophylomorphospace, Sakamoto & Ruta 2012).
 #'   
-#' \subsection{Notes for geomorph 3.1.0 and subsequent versions}{ 
-#'  The function \code{\link{gm.prcomp}} can also be used to generate phylomorphospace plots,
-#'  and will yield plots identical to those of the current function. 
+#' \subsection{Notes for geomorph 3.2.1.0900 and subsequent versions}{
+#'  This function is deprecated and will soon be removed. 
+#'  The function \code{\link{gm.prcomp}} can be used instead to generate phylomorphospace plots. 
 #'  }
 #'
 #' @param phy A phylogenetic tree of {class phylo} 
@@ -46,7 +46,9 @@
 #'                  plot.param=list(t.bg="blue",txt.col="red",n.cex=1))
 #' #NOTE: 3D plot also available: plotGMPhyloMorphoSpace(plethspecies$phy,Y.gpa$coords, zaxis= "time",
 #' #                 plot.param=list(n.cex=2, n.bg="blue"), shadow=TRUE)
-plotGMPhyloMorphoSpace<-function(phy,A,tip.labels=TRUE,node.labels=TRUE,ancStates=TRUE, xaxis=1, yaxis=2, zaxis=NULL, plot.param = list(), shadow=FALSE){
+plotGMPhyloMorphoSpace <- function(phy,A,tip.labels=TRUE,node.labels=TRUE,ancStates=TRUE, xaxis=1, yaxis=2, zaxis=NULL, plot.param = list(), shadow=FALSE){
+  .Deprecated("gm.prcomp", package = "geomorph")
+  
   if(any(is.na(A))==T){
     stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').")  }
   if (length(dim(A))==3){ 
