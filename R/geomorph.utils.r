@@ -823,27 +823,21 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, phylo = FALSE,
   xx <- plot(x, axis1 = axis1, axis2 = axis2, ...)
   plot.args <- xx$plot.args
   if(!is.null(plot.args$axes)) axes <- plot.args$axes else axes <- TRUE
-  
-  if(phylo) {
-    phy <- x$phy
-    phy.pcdata <- rbind(x$x[x$phy$tip.label,], x$anc.x)
-    phy.pcdata <- as.matrix(phy.pcdata[, c(axis1, axis2)])
-    for (i in 1:nrow(phy$edge)) {
-      dt.xy <- xy.coords(phy.pcdata[phy$edge[i,], ])
-      plot.xy(dt.xy, type="l", col = phylo.par$edge.color, 
-              lwd = phylo.par$edge.width, lty = phylo.par$edge.lty)
-    }
-    plot.xy(xy.coords(phy.pcdata[1:length(phy$tip),]), type="p",...)
-    plot.xy(xy.coords(phy.pcdata[(length(phy$tip)+1):nrow(phy.pcdata),]), type="p",
-            pch = phylo.par$node.pch, cex = phylo.par$node.cex, bg = phylo.par$node.bg)
-
-  }
 
   if(axes){
     abline(h = 0, lty=2, ...)
     abline(v = 0, lty=2, ...)
   }
 
+if(phylo) {
+  phy <- x$phy
+  tp <- add.tree(xx, phy, edge.col = phylo.par$edge.color,
+           edge.lwd = phylo.par$edge.width,
+           edge.lty = phylo.par$edge.lty, 
+           anc.pts = TRUE, cex = 0.5 * phylo.par$edge.width, pch = 19, 
+           col = phylo.par$edge.color, return.ancs = TRUE)
+  }
+  
   out <- list(PC.points = pcdata,   
               call = match.call())
   out$GM <- list()
@@ -855,7 +849,7 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, phylo = FALSE,
     out$phylo <- list()
     out$phylo$phy <- phy
     out$phylo$phylo.par <- phylo.par
-    out$phylo$phy.pcdata <- phy.pcdata
+    out$phylo$phy.pcdata <- tp
   }
   class(out) <- "plot.gm.prcomp"
   invisible(out)
