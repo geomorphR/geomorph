@@ -211,6 +211,8 @@ gm.prcomp <- function (A, phy = NULL, align.to.phy = FALSE,
     out$Pcov <- Pcov
   } else out$Pcov <- NULL
   
+  out$x <- out$x[rownames(as.matrix(Y)), ]
+  
   class(out) <- c("gm.prcomp", class(out))
   out
 }
