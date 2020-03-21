@@ -201,7 +201,6 @@ gm.prcomp <- function (A, phy = NULL, align.to.phy = FALSE,
     out$ancestors <- ancY
     out$phy <- phy
     out$x <- as.matrix(out$x)
-    rownames(out$x) <- rownames(as.matrix(Y))
     ancs <- as.matrix(anc.BM(phy, out$x))
     out$anc.x <- ancs
     out$anc.var <- apply(ancs, 2, var)
