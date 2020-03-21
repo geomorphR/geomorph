@@ -67,6 +67,7 @@ dde6596fcd7d13f63473eef6b86368d7 *man/plot.gm.prcomp.Rd
 c243df60434118dddca6904f3d6de9b0 *man/plot.physignal.Rd
 e1b19a991aa5c05b644349eb00687e39 *man/plot.pls.Rd
 13c6015521a9d77ac02f5175a7a74e2b *man/plot.procD.lm.Rd
+9d12d4c93af86a3bb64faefb70cd5c04 *man/plot.time.gm.prcomp.Rd
 800ecdda0e7f8d895a6ecd4aef00e890 *man/plotAllometry.Rd
 a94c27850d6a56f55bddcb424b0204da *man/plotAllSpecimens.Rd
 cb2d7a5cb3aab21fdf3b2b592375260f *man/plotGMPhyloMorphoSpace.Rd
@@ -164,6 +165,7 @@ bf9cfa5a72c207f88471d4e053fad58a *R/phylo.integration.r
 14d81c58ead6cd19f0b99db7a4b834ee *R/phylo.modularity.r
 7ae1407ec4e63cbffd57c2196f8c0e6f *R/physignal.r
 b72262ffb22b02ae6b2592d4d0f4353a *R/picknplot.shape.r
+f4a9e52d80052b52c5eb84d2c66adc5c *R/plot.time.gm.prcomp.R
 381057a401eee5eb403f96611619a9e6 *R/plotAllometry.r
 c1cead3306cb3d7b1bd3ed5d99fc89af *R/plotAllSpecimens.r
 75035c010c75646ad9dd7843cfa8e331 *R/plotGMPhyloMorphoSpace.r
