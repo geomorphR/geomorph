@@ -18,7 +18,7 @@ f4f2080e745b8d689f17caf549449ab5 *geomorph.Rproj
 5e099c6268d251bf5c98595d9566385a *man/arrayspecs.Rd
 3992c116b88a8a79fadcad8745f4ee9e *man/bilat.symmetry.Rd
 6e94f720fd50cf0ff309624b1a4a30ee *man/buildtemplate.Rd
-21fa3823bd09a4edc36a03ad3a9e1686 *man/combine.subsets.Rd
+f992db3793aee0dcaa0a3d95359bec54 *man/combine.subsets.Rd
 55bb505e3ee47911be6904e57f457da0 *man/compare.CR.Rd
 e9cda01506cd0a57e4dd1d44cf1b8bb7 *man/compare.evol.rates.Rd
 4a1e045de391966a3300bfea63c999ce *man/compare.multi.evol.rates.Rd
@@ -67,7 +67,6 @@ dde6596fcd7d13f63473eef6b86368d7 *man/plot.gm.prcomp.Rd
 c243df60434118dddca6904f3d6de9b0 *man/plot.physignal.Rd
 e1b19a991aa5c05b644349eb00687e39 *man/plot.pls.Rd
 13c6015521a9d77ac02f5175a7a74e2b *man/plot.procD.lm.Rd
-9d12d4c93af86a3bb64faefb70cd5c04 *man/plot.time.gm.prcomp.Rd
 800ecdda0e7f8d895a6ecd4aef00e890 *man/plotAllometry.Rd
 a94c27850d6a56f55bddcb424b0204da *man/plotAllSpecimens.Rd
 cb2d7a5cb3aab21fdf3b2b592375260f *man/plotGMPhyloMorphoSpace.Rd
@@ -102,7 +101,7 @@ c2f07c449bdbe7890fbf943c91810a03 *man/readland.shapes.Rd
 e268bdaf2ef10f2027709e5f9ab2518b *man/readland.tps.Rd
 07b9189f2f54233764c1f17d7f100412 *man/readmulti.nts.Rd
 a19f005bd83e97a4f20bf357483726c5 *man/readmulti.tps.Rd
-4a9e3fd9859000bb3d361df7d624a7e8 *man/rotate.coords.Rd
+cc963a327d23f0e830749124ba9854d9 *man/rotate.coords.Rd
 8be198584c10582597e98c6cecbb26f7 *man/scallopPLY.Rd
 c4f3fe2e244677c2504bbe0283590d1c *man/scallops.Rd
 6c92d2bbe8614a9430027f1f67c071c6 *man/shape.predictor.Rd
@@ -132,7 +131,7 @@ d9119f721918f22c267db843023a86fe *man/writeland.tps.Rd
 92239d51a080ccd3fc3a9f7ef67d1b8c *R/arrayspecs.r
 8f280cb059f6619206d0bbfe52059c16 *R/bilat.symmetry.r
 d7d67e9218f84609046423cb222f5c44 *R/build.template.r
-6b2b5877b6245c90990d15a35588d4d5 *R/combine.subsets.r
+6b2b5877b6245c90990d15a35588d4d5 *R/combine.subsets.R
 a85f984f777798d31520e42d0c87e3f5 *R/compare.CR.R
 cff9b470e442542bb66ab1446904fcba *R/compare.evol.rates.r
 158c6de8370887d5561219096b6c30d5 *R/compare.multi.evol.rates.r
@@ -165,7 +164,6 @@ bf9cfa5a72c207f88471d4e053fad58a *R/phylo.integration.r
 14d81c58ead6cd19f0b99db7a4b834ee *R/phylo.modularity.r
 7ae1407ec4e63cbffd57c2196f8c0e6f *R/physignal.r
 b72262ffb22b02ae6b2592d4d0f4353a *R/picknplot.shape.r
-f4a9e52d80052b52c5eb84d2c66adc5c *R/plot.time.gm.prcomp.R
 381057a401eee5eb403f96611619a9e6 *R/plotAllometry.r
 c1cead3306cb3d7b1bd3ed5d99fc89af *R/plotAllSpecimens.r
 75035c010c75646ad9dd7843cfa8e331 *R/plotGMPhyloMorphoSpace.r
@@ -182,10 +180,10 @@ e1d1c6e3339c3f1199f60c91baf09146 *R/readland.nts.r
 0f9a0f88e4b72cf3ad95dc79d86624fe *R/readland.tps.r
 1dbca61c2285445a2005917a17d571ba *R/readmulti.nts.r
 d688cf3fbc6c3351526c422948e457ba *R/readmulti.tps.R
-73ce1481733305a19848121fd2c90203 *R/rotate.coords.r
+73ce1481733305a19848121fd2c90203 *R/rotate.coords.R
 4d9585ab961643a7147c1b9c5be2a35b *R/shape.predictor.r
 ef0a7ddc250a612a072bd2f4248586f2 *R/shapeHulls.r
-ea2a210c084bf6f7cd4b2f1f15a697df *R/shared.support.code.r
+ea2a210c084bf6f7cd4b2f1f15a697df *R/shared.support.code.R
 11a4c67b8a15ddf968b943e7190a1e2b *R/two.b.pls.r
 2e693d8b4f3c21d742737b97d1773119 *R/two.d.array.r
 476471e8d4917ae6dab00ec8204ded15 *R/warpRefMesh.r
