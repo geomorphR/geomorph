@@ -846,10 +846,18 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, phylo = FALSE, time.plot = F
     abline(v = 0, lty=2, ...)
   }
   
-  if(!phylo && time.plot) stop("\nx must include a phylogeny for plotting\n", 
-                               call. = FALSE)
-  
   if(phylo || time.plot) {
+    
+    if(is.null(x$phy))
+      stop("\nx must include a phylogeny for plotting\n", 
+           call. = FALSE)
+    
+    if(!phylo && time.plot) {
+      phylo = TRUE
+    }
+  }
+  
+  if(phylo) {
     phy <- x$phy
     tp <- add.tree(xx, phy, edge.col = phylo.par$edge.color,
                    edge.lwd = phylo.par$edge.width,
@@ -862,7 +870,7 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, phylo = FALSE, time.plot = F
     
   }
   
-  if(phylo && time.plot) {
+  if(time.plot) {
     
     zaxis <- getNodeDepth(phy)
     zaxis <- abs(zaxis - max(zaxis))
@@ -932,7 +940,7 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, phylo = FALSE, time.plot = F
   
   out$plot.args <- plot.args
   out$Pcov <- Pcov
-  if(phylo || time.plot) {
+  if(phylo) {
     out$phylo <- list()
     out$phylo$phy <- phy
     out$phylo$phylo.par <- phylo.par
