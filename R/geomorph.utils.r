@@ -860,8 +860,9 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, phylo = FALSE, time.plot = F
     if(is.null(x$phy)) stop("x must include a phylogeny for plotting")
     
     phy <- x$phy
-    phy.pcdata <- rbind(x$x[x$phy$tip.label,], x$anc.x)
+    phy.pcdata <- rbind(x$x[phy$tip.label,], x$anc.x)
     phy.pcdata <- as.matrix(phy.pcdata[, c(axis1, axis2)])
+    N.tips <- length(phy$tip.label)
     
     zaxis <- getNodeDepth(phy)
     zaxis <- abs(zaxis - max(zaxis))
@@ -901,24 +902,24 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, phylo = FALSE, time.plot = F
       lines3d(phy.pcdata[(phy$edge[i, ]), 1], phy.pcdata[(phy$edge[i, ]), 2], zaxis[(phy$edge[i, ])], 
               col = p.p$edge.color, lwd = p.p$edge.width)}
     
-    points3d(phy.pcdata[1:Ntip(phy), 1], phy.pcdata[1:Ntip(phy), 2], zaxis[1:Ntip(phy)],
+    points3d(phy.pcdata[1:N.tips, 1], phy.pcdata[1:N.tips, 2], zaxis[1:N.tips],
              col = p.p$tip.bg, size = p.p$tip.cex*4)
     
     if(p.p$anc.states){
-      points3d(phy.pcdata[(Ntip(phy) + 1):nrow(phy.pcdata), 1], 
-               phy.pcdata[(Ntip(phy) + 1):nrow(phy.pcdata), 2], 
-               zaxis[(Ntip(phy) + 1):nrow(phy.pcdata)], 
+      points3d(phy.pcdata[(N.tips + 1):nrow(phy.pcdata), 1], 
+               phy.pcdata[(N.tips + 1):nrow(phy.pcdata), 2], 
+               zaxis[(N.tips + 1):nrow(phy.pcdata)], 
                col = p.p$node.bg, size = p.p$node.cex*4)
     }
     
     if(p.p$tip.labels){
-      text3d(phy.pcdata[1:Ntip(phy), 1], phy.pcdata[1:Ntip(phy), 2], zaxis[1:Ntip(phy)], 
-             rownames(phy.pcdata)[1:Ntip(phy)],
+      text3d(phy.pcdata[1:N.tips, 1], phy.pcdata[1:N.tips, 2], zaxis[1:N.tips], 
+             rownames(phy.pcdata)[1:N.tips],
              col = p.p$txt.col, cex = p.p$txt.cex, adj = p.p$txt.adj) }
     
     if(p.p$node.labels){
-      text3d(phy.pcdata[(Ntip(phy) + 1):nrow(phy.pcdata), 1], phy.pcdata[(Ntip(phy) + 1):nrow(phy.pcdata), 2],
-             zaxis[(Ntip(phy) + 1):nrow(phy.pcdata)], rownames(phy.pcdata)[(Ntip(phy) + 1):nrow(phy.pcdata)],
+      text3d(phy.pcdata[(N.tips + 1):nrow(phy.pcdata), 1], phy.pcdata[(N.tips + 1):nrow(phy.pcdata), 2],
+             zaxis[(N.tips + 1):nrow(phy.pcdata)], rownames(phy.pcdata)[(N.tips + 1):nrow(phy.pcdata)],
              col = p.p$node.txt.col, cex = p.p$node.txt.cex, adj = p.p$node.txt.adj)}
     
   }

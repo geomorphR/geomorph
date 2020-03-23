@@ -140,8 +140,8 @@ have now been deprecated.
  
  ### 3D plot with a phylogeny and time on the z-axis
  plot(PCA.w.phylo, time.plot = T)
- plot(PCA.w.phylo, plot.param = list(tip.labels = T, tip.bg = "red", tip.cex = 3, 
- edge.colour = "blue", edge.width = 2, txt.cex = 2))
+ plot(PCA.w.phylo, time.plot = T, time.plot.param = list(tip.labels = T, tip.bg = "red", 
+ tip.cex = 3, edge.colour = "blue", edge.width = 2, txt.cex = 2))
  
 }
 \seealso{
