@@ -939,6 +939,9 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, phylo = FALSE, time.plot = F
     out$phylo$phy.pcdata <- tp
   }
   class(out) <- "plot.gm.prcomp"
+  
+  if(time.plot) { out <- NULL}
+  
   invisible(out)
   
 }
