@@ -798,24 +798,41 @@ summary.gm.prcomp <- function (object, ...) {
 #' @param axis1 A value indicating which PC axis should be displayed as the X-axis (default = PC1)
 #' @param axis2 A value indicating which PC axis should be displayed as the Y-axis (default = PC2)
 #' @param phylo A logical value indicating whether the phylogeny should be projected to PC space
+#' @param time.plot A logical value indicating if a 3D plot with the phylogeny and time as the 
+#' z-axis is desired
 #' @param phylo.par A list of plotting parameters for the phylogeny edges (edge.color, edge.width, edge.lty)
 #' and nodes (node.bg, node.pch, node.cex)
+#' @param time.plot.param A list that may include a series of logical values indicating if tips (tip.labels = T)
+#' and nodes (node.labels = T) should be labeled, and if points should be added at node locations 
+#' (anc.states = T), as well as plotting parameters for the tips (tip.bg, tip.cex), nodes (node.bg, node.cex),
+#' edges (edge.colour, edge.width), and labels of the tips (txt.cex, txt.col, txt.adj) and nodes 
+#' (node.txt.cex, node.txt.col, node.txt.adj)
 #' @param ... other arguments passed to plot
-#' @return An object of class "plot.gm.prcomp" is a list with components
+#' @return When time.plot = FALSE, an object of class "plot.gm.prcomp" is a list with components
 #'  that can be used in other plot functions, such as the type of plot, points, 
 #'  a group factor, and other information depending on the plot parameters used.
 #'  
-#'  NOTE: To visualize shape variation across PC axes, use \code{\link{picknplot.shape}}.
+#'  NOTE: To visualize shape variation across PC axes in 2d plots, use \code{\link{picknplot.shape}}.
+#'  
+#'  NOTES on time.plot: 
+#'  
 #' @export
-#' @author Antigoni Kaliontzopoulou
+#' @author Antigoni Kaliontzopoulou, Michael Collyer
 #' @keywords utilities
 #' @keywords visualization
-#' @seealso  \code{\link{plotRefToTarget}}
+#' @seealso  \code{\link{plotRefToTarget}} \code{\link{picknplot.shape}}
 
 
-plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, phylo = FALSE, 
+plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, phylo = FALSE, time.plot = FALSE,
                            phylo.par = list(edge.color = "black", edge.width = 1, edge.lty = 1,
-                                            node.bg = "black", node.pch = 21, node.cex = 1), ...) {
+                                            node.bg = "black", node.pch = 21, node.cex = 1), 
+                           time.plot.param = list(tip.labels = TRUE, node.labels = TRUE, anc.states = TRUE,
+                                                  tip.bg = "black", tip.cex = 1,
+                                                  node.bg = "grey", node.cex = 1,
+                                                  edge.color = "black", edge.width = 1,
+                                                  txt.cex = 1, txt.col = "black", txt.adj = c(-0.1,-0.1),
+                                                  node.txt.cex = 1, node.txt.col = "grey",
+                                                  node.txt.adj = c(-0.1, -0.1)), ...) {
 
   class(x) <- "ordinate"
   pcdata <- as.matrix(x$x[, c(axis1, axis2)])
@@ -828,15 +845,84 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, phylo = FALSE,
     abline(h = 0, lty=2, ...)
     abline(v = 0, lty=2, ...)
   }
-
-if(phylo) {
-  phy <- x$phy
-  tp <- add.tree(xx, phy, edge.col = phylo.par$edge.color,
-           edge.lwd = phylo.par$edge.width,
-           edge.lty = phylo.par$edge.lty, 
-           anc.pts = TRUE, cex = 0.5 * phylo.par$edge.width, pch = 19, 
-           col = phylo.par$edge.color, return.ancs = TRUE)
+  
+  if(phylo) {
+    if(is.null(x$phy)) stop("x must include a phylogeny for plotting")
+    phy <- x$phy
+    tp <- add.tree(xx, phy, edge.col = phylo.par$edge.color,
+                   edge.lwd = phylo.par$edge.width,
+                   edge.lty = phylo.par$edge.lty, 
+                   anc.pts = TRUE, cex = 0.5 * phylo.par$edge.width, pch = 19,
+                   col = phylo.par$edge.color, return.ancs = TRUE)
   }
+  
+  if(time.plot) {
+    if(is.null(x$phy)) stop("x must include a phylogeny for plotting")
+    
+    phy <- x$phy
+    phy.pcdata <- rbind(x$x[x$phy$tip.label,], x$anc.x)
+    phy.pcdata <- as.matrix(phy.pcdata[, c(axis1, axis2)])
+    
+    zaxis <- getNodeDepth(phy)
+    zaxis <- abs(zaxis - max(zaxis))
+    
+    limits = function(x,s){ 
+      r = range(x)
+      rc = scale(r, scale=F)
+      l = mean(r) + s*rc 
+    }
+    
+    p.p <- time.plot.param
+    if(is.null(p.p$tip.bg)) p.p$tip.bg <- "black"
+    if(is.null(p.p$tip.cex)) p.p$tip.cex <- 1
+    if(is.null(p.p$node.bg)) p.p$node.bg <- "grey"
+    if(is.null(p.p$node.cex)) p.p$node.cex <- 1
+    if(is.null(p.p$edge.color)) p.p$edge.color <- "black"
+    if(is.null(p.p$edge.width)) p.p$edge.width <- 1
+    if(is.null(p.p$txt.cex)) p.p$txt.cex <- 1
+    if(is.null(p.p$txt.col)) p.p$txt.col <- "black"
+    if(is.null(p.p$txt.adj)) p.p$txt.adj <- c(-0.1, -0.1)
+    if(is.null(p.p$node.txt.cex)) p.p$node.txt.cex <- 1
+    if(is.null(p.p$node.txt.col)) p.p$node.txt.col <- "grey"
+    if(is.null(p.p$node.txt.adj)) p.p$node.txt.adj <- c(-0.1, -0.1)
+    if(is.null(p.p$anc.states)) p.p$anc.states <- FALSE
+    if(is.null(p.p$tip.labels)) p.p$tip.labels <- FALSE
+    if(is.null(p.p$node.labels)) p.p$node.labels <- FALSE
+    
+    view3d(phi=90, fov=30)
+    plot3d(phy.pcdata[,1], phy.pcdata[,2], zaxis, type="n", 
+           xlim = limits(phy.pcdata[,1], 1.5),
+           ylim = limits(phy.pcdata[,2], 1.5),
+           zlim = c(max(zaxis), min(zaxis)),
+           asp = c(1,1,1),
+           xlab= paste("PC", axis1), ylab = paste("PC", axis2), zlab = "Time")
+    
+    for (i in 1:nrow(phy$edge)) {
+      lines3d(phy.pcdata[(phy$edge[i, ]), 1], phy.pcdata[(phy$edge[i, ]), 2], zaxis[(phy$edge[i, ])], 
+              col = p.p$edge.color, lwd = p.p$edge.width)}
+    
+    points3d(phy.pcdata[1:Ntip(phy), 1], phy.pcdata[1:Ntip(phy), 2], zaxis[1:Ntip(phy)],
+             col = p.p$tip.bg, size = p.p$tip.cex*4)
+    
+    if(p.p$anc.states){
+      points3d(phy.pcdata[(Ntip(phy) + 1):nrow(phy.pcdata), 1], 
+               phy.pcdata[(Ntip(phy) + 1):nrow(phy.pcdata), 2], 
+               zaxis[(Ntip(phy) + 1):nrow(phy.pcdata)], 
+               col = p.p$node.bg, size = p.p$node.cex*4)
+    }
+    
+    if(p.p$tip.labels){
+      text3d(phy.pcdata[1:Ntip(phy), 1], phy.pcdata[1:Ntip(phy), 2], zaxis[1:Ntip(phy)], 
+             rownames(phy.pcdata)[1:Ntip(phy)],
+             col = p.p$txt.col, cex = p.p$txt.cex, adj = p.p$txt.adj) }
+    
+    if(p.p$node.labels){
+      text3d(phy.pcdata[(Ntip(phy) + 1):nrow(phy.pcdata), 1], phy.pcdata[(Ntip(phy) + 1):nrow(phy.pcdata), 2],
+             zaxis[(Ntip(phy) + 1):nrow(phy.pcdata)], rownames(phy.pcdata)[(Ntip(phy) + 1):nrow(phy.pcdata)],
+             col = p.p$node.txt.col, cex = p.p$node.txt.cex, adj = p.p$node.txt.adj)}
+    
+  }
+  
   
   out <- list(PC.points = pcdata,   
               call = match.call())

@@ -9,8 +9,13 @@
   axis1 = 1,
   axis2 = 2,
   phylo = FALSE,
+  time.plot = FALSE,
   phylo.par = list(edge.color = "black", edge.width = 1, edge.lty = 1, node.bg =
     "black", node.pch = 21, node.cex = 1),
+  time.plot.param = list(tip.labels = TRUE, node.labels = TRUE, anc.states = TRUE,
+    tip.bg = "black", tip.cex = 1, node.bg = "grey", node.cex = 1, edge.color = "black",
+    edge.width = 1, txt.cex = 1, txt.col = "black", txt.adj = c(-0.1, -0.1), node.txt.cex
+    = 1, node.txt.col = "grey", node.txt.adj = c(-0.1, -0.1)),
   ...
 )
 }
@@ -23,26 +28,37 @@
 
 \item{phylo}{A logical value indicating whether the phylogeny should be projected to PC space}
 
+\item{time.plot}{A logical value indicating if a 3D plot with the phylogeny and time as the 
+z-axis is desired}
+
 \item{phylo.par}{A list of plotting parameters for the phylogeny edges (edge.color, edge.width, edge.lty)
 and nodes (node.bg, node.pch, node.cex)}
+
+\item{time.plot.param}{A list that may include a series of logical values indicating if tips (tip.labels = T)
+and nodes (node.labels = T) should be labeled, and if points should be added at node locations 
+(anc.states = T), as well as plotting parameters for the tips (tip.bg, tip.cex), nodes (node.bg, node.cex),
+edges (edge.colour, edge.width), and labels of the tips (txt.cex, txt.col, txt.adj) and nodes 
+(node.txt.cex, node.txt.col, node.txt.adj)}
 
 \item{...}{other arguments passed to plot}
 }
 \value{
-An object of class "plot.gm.prcomp" is a list with components
+When time.plot = FALSE, an object of class "plot.gm.prcomp" is a list with components
  that can be used in other plot functions, such as the type of plot, points, 
  a group factor, and other information depending on the plot parameters used.
  
- NOTE: To visualize shape variation across PC axes, use \code{\link{picknplot.shape}}.
+ NOTE: To visualize shape variation across PC axes in 2d plots, use \code{\link{picknplot.shape}}.
+ 
+ NOTES on time.plot:
 }
 \description{
 Plot Function for geomorph
 }
 \seealso{
-\code{\link{plotRefToTarget}}
+\code{\link{plotRefToTarget}} \code{\link{picknplot.shape}}
 }
 \author{
-Antigoni Kaliontzopoulou
+Antigoni Kaliontzopoulou, Michael Collyer
 }
 \keyword{utilities}
 \keyword{visualization}

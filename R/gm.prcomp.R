@@ -60,8 +60,8 @@
 #' 
 #' 
 #' NOTE: The \code{\link{plot.gm.prcomp}} function performs the same plotting that was previously 
-#' posible with \code{\link{plotTangentSpace}} and \code{\link{plotGMPhyloMorphoSpace}}, which have now been 
-#' deprecated.
+#' posible with \code{\link{plotTangentSpace}} and \code{\link{plotGMPhyloMorphoSpace}}, which
+#' have now been deprecated.
 #'
 #' @param A A 3D array (p x k x n) containing Procrustes shape variables for a set of aligned specimens.  
 #' Alternatively, this can be an n x p matrix of any data, but output will not conatin information about shapes.
@@ -127,6 +127,11 @@
 #'  text(par()$usr[1], 0.1*par()$usr[3], labels = "PC1 - 45.64%", pos = 4, font = 2)
 #'  text(0, 0.95*par()$usr[4], labels = "PC2 - 18.80%", pos = 4, font = 2)
 #'  legend("topleft", pch=22, pt.bg = unique(gps), legend = levels(gps))
+#'  
+#'  ### 3D plot with a phylogeny and time on the z-axis
+#'  plot(PCA.w.phylo, time.plot = T)
+#'  plot(PCA.w.phylo, plot.param = list(tip.labels = T, tip.bg = "red", tip.cex = 3, 
+#'  edge.colour = "blue", edge.width = 2, txt.cex = 2))
 #'  
 
 
