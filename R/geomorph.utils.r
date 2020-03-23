@@ -846,23 +846,23 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, phylo = FALSE, time.plot = F
     abline(v = 0, lty=2, ...)
   }
   
-  if(phylo) {
-    if(is.null(x$phy)) stop("x must include a phylogeny for plotting")
+  if(!phylo && time.plot) stop("\nx must include a phylogeny for plotting\n", 
+                               call. = FALSE)
+  
+  if(phylo || time.plot) {
     phy <- x$phy
     tp <- add.tree(xx, phy, edge.col = phylo.par$edge.color,
                    edge.lwd = phylo.par$edge.width,
                    edge.lty = phylo.par$edge.lty, 
                    anc.pts = TRUE, cex = 0.5 * phylo.par$edge.width, pch = 19,
                    col = phylo.par$edge.color, return.ancs = TRUE)
+    
+    phy.pcdata <- rbind(xx$points, tp)
+    N.tips <- length(phy$tip.label)
+    
   }
   
-  if(time.plot) {
-    if(is.null(x$phy)) stop("x must include a phylogeny for plotting")
-    
-    phy <- x$phy
-    phy.pcdata <- rbind(x$x[phy$tip.label,], x$anc.x)
-    phy.pcdata <- as.matrix(phy.pcdata[, c(axis1, axis2)])
-    N.tips <- length(phy$tip.label)
+  if(phylo && time.plot) {
     
     zaxis <- getNodeDepth(phy)
     zaxis <- abs(zaxis - max(zaxis))
@@ -932,15 +932,13 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, phylo = FALSE, time.plot = F
   
   out$plot.args <- plot.args
   out$Pcov <- Pcov
-  if(phylo) {
+  if(phylo || time.plot) {
     out$phylo <- list()
     out$phylo$phy <- phy
     out$phylo$phylo.par <- phylo.par
-    out$phylo$phy.pcdata <- tp
+    out$phylo$phy.pcdata <- phy.pcdata
   }
-  class(out) <- "plot.gm.prcomp"
-  
-  if(time.plot) { out <- NULL}
+  class(out) <- "plot.gm.prcomp" 
   
   invisible(out)
   
