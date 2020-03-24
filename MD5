@@ -18,7 +18,7 @@ f4f2080e745b8d689f17caf549449ab5 *geomorph.Rproj
 5e099c6268d251bf5c98595d9566385a *man/arrayspecs.Rd
 3992c116b88a8a79fadcad8745f4ee9e *man/bilat.symmetry.Rd
 6e94f720fd50cf0ff309624b1a4a30ee *man/buildtemplate.Rd
-f992db3793aee0dcaa0a3d95359bec54 *man/combine.subsets.Rd
+21fa3823bd09a4edc36a03ad3a9e1686 *man/combine.subsets.Rd
 55bb505e3ee47911be6904e57f457da0 *man/compare.CR.Rd
 e9cda01506cd0a57e4dd1d44cf1b8bb7 *man/compare.evol.rates.Rd
 4a1e045de391966a3300bfea63c999ce *man/compare.multi.evol.rates.Rd
@@ -61,7 +61,7 @@ d975879b9cfb692a95bd331d298d79d2 *man/plethspecies.Rd
 59b44888645cbbeeb4cf0d3406e4ee45 *man/plot.CR.phylo.Rd
 97892e1293dbb2c4a6e994a90c27dc83 *man/plot.CR.Rd
 85bbe6b70e860a14116746ef4ecac51f *man/plot.evolrate.Rd
-2641c465d62d437b01de98d51cf9d802 *man/plot.gm.prcomp.Rd
+b72164a2533a03d64ec5577785317e4e *man/plot.gm.prcomp.Rd
 0116d21c6ae9389dc425aaca082fd67c *man/plot.gpagen.Rd
 71208a14b679efbbaf55f8daba7a0ef3 *man/plot.mshape.Rd
 c243df60434118dddca6904f3d6de9b0 *man/plot.physignal.Rd
@@ -101,7 +101,7 @@ c2f07c449bdbe7890fbf943c91810a03 *man/readland.shapes.Rd
 e268bdaf2ef10f2027709e5f9ab2518b *man/readland.tps.Rd
 07b9189f2f54233764c1f17d7f100412 *man/readmulti.nts.Rd
 a19f005bd83e97a4f20bf357483726c5 *man/readmulti.tps.Rd
-cc963a327d23f0e830749124ba9854d9 *man/rotate.coords.Rd
+4a9e3fd9859000bb3d361df7d624a7e8 *man/rotate.coords.Rd
 8be198584c10582597e98c6cecbb26f7 *man/scallopPLY.Rd
 c4f3fe2e244677c2504bbe0283590d1c *man/scallops.Rd
 6c92d2bbe8614a9430027f1f67c071c6 *man/shape.predictor.Rd
@@ -151,7 +151,7 @@ aac6a4f8a759473e8c37048e5c8e3d91 *R/findMeanSpec.r
 089a02a38c0381ac0381f0ae8f5b07f7 *R/fixed.angle.r
 953c275fdc42e65db7394a594d35806a *R/geomorph.data.frame.r
 bf7e25f347f519939734826778080ac6 *R/geomorph.support.code.r
-3f9431c805beed8373ed7337547b4d55 *R/geomorph.utils.r
+c6c1f91adaada08564b590454edf9523 *R/geomorph.utils.r
 b0de2a67cff633e27e7a00860187240f *R/globalIntegration.r
 1220d9b8dc339ef92d11257538567682 *R/gm.prcomp.R
 bf0750e2582fc2c3b5454ad48b7f3cbb *R/gpagen.r

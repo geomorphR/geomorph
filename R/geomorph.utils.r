@@ -800,21 +800,19 @@ summary.gm.prcomp <- function (object, ...) {
 #' @param phylo A logical value indicating whether the phylogeny should be projected to PC space
 #' @param time.plot A logical value indicating if a 3D plot with the phylogeny and time as the 
 #' z-axis is desired
-#' @param phylo.par A list of plotting parameters for the phylogeny edges (edge.color, edge.width, edge.lty)
-#' and nodes (node.bg, node.pch, node.cex)
-#' @param time.plot.param A list that may include a series of logical values indicating if tips (tip.labels = T)
-#' and nodes (node.labels = T) should be labeled, and if points should be added at node locations 
-#' (anc.states = T), as well as plotting parameters for the tips (tip.bg, tip.cex), nodes (node.bg, node.cex),
-#' edges (edge.colour, edge.width), and labels of the tips (txt.cex, txt.col, txt.adj) and nodes 
-#' (node.txt.cex, node.txt.col, node.txt.adj)
-#' @param ... other arguments passed to plot
-#' @return When time.plot = FALSE, an object of class "plot.gm.prcomp" is a list with components
+#' @param phylo.par A list of plotting parameters for the inclusion of a phylogeny, including: logicals for 
+#' whether features should be included (tip.labels, nodel.labels, anc.states), toggled as TRUE/FALSE; 
+#' edge parameters (edge.color, edge.width, edge.lty); node parameters (node.bg, node.pch, node.cex);
+#' and label parameters (tip.txt.cex, tip.txt.col, tip.txt.adj, node.txt.cex, node.txt.col, node.txt.adj).
+#' @param ... other arguments passed to plot.  For plots with a phylogeny, these parameters pertain to 
+#' the tip values.
+#' @return An object of class "plot.gm.prcomp" is a list with components
 #'  that can be used in other plot functions, such as the type of plot, points, 
-#'  a group factor, and other information depending on the plot parameters used.
+#'  a group factor, and other information depending on the plot parameters used.  A time plot
+#'  is an addendum to the normal 2D plot, and does not add additional output.
 #'  
 #'  NOTE: To visualize shape variation across PC axes in 2d plots, use \code{\link{picknplot.shape}}.
 #'  
-#'  NOTES on time.plot: 
 #'  
 #' @export
 #' @author Antigoni Kaliontzopoulou, Michael Collyer
@@ -824,15 +822,14 @@ summary.gm.prcomp <- function (object, ...) {
 
 
 plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, phylo = FALSE, time.plot = FALSE,
-                           phylo.par = list(edge.color = "black", edge.width = 1, edge.lty = 1,
-                                            node.bg = "black", node.pch = 21, node.cex = 1), 
-                           time.plot.param = list(tip.labels = TRUE, node.labels = TRUE, anc.states = TRUE,
-                                                  tip.bg = "black", tip.cex = 1,
-                                                  node.bg = "grey", node.cex = 1,
-                                                  edge.color = "black", edge.width = 1,
-                                                  txt.cex = 1, txt.col = "black", txt.adj = c(-0.1,-0.1),
-                                                  node.txt.cex = 1, node.txt.col = "grey",
-                                                  node.txt.adj = c(-0.1, -0.1)), ...) {
+                           phylo.par = list(tip.labels = TRUE, node.labels = TRUE, anc.states = TRUE,
+                                            node.bg = "grey", node.cex = 1,
+                                            edge.color = "black", edge.width = 1,
+                                            tip.txt.cex = 1, tip.txt.col = "black", 
+                                            tip.txt.adj = c(-0.1,-0.1),
+                                            node.txt.cex = 1, node.txt.col = "grey",
+                                            node.txt.adj = c(-0.1, -0.1)), 
+                           ...) {
 
   class(x) <- "ordinate"
   pcdata <- as.matrix(x$x[, c(axis1, axis2)])
@@ -858,12 +855,40 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, phylo = FALSE, time.plot = F
   }
   
   if(phylo) {
+    
+    p.p <- list(tip.labels = TRUE, node.labels = TRUE, anc.states = TRUE,
+                            node.bg = "grey", node.cex = 1,
+                            edge.color = "black", edge.width = 1,
+                            tip.txt.cex = 1, tip.txt.col = "black", 
+                            tip.txt.adj = c(-0.1,-0.1),
+                            node.txt.cex = 1, node.txt.col = "grey",
+                            node.txt.adj = c(-0.1, -0.1))
+    
+    m.p <- match(names(phylo.par), names(p.p))
+    p.p[m.p] <- phylo.par
+    
     phy <- x$phy
     tp <- add.tree(xx, phy, edge.col = phylo.par$edge.color,
-                   edge.lwd = phylo.par$edge.width,
-                   edge.lty = phylo.par$edge.lty, 
-                   anc.pts = TRUE, cex = 0.5 * phylo.par$edge.width, pch = 19,
-                   col = phylo.par$edge.color, return.ancs = TRUE)
+                   edge.lwd = p.p$edge.width,
+                   edge.lty = p.p$edge.lty, 
+                   anc.pts = FALSE,
+                   cex = 0.5 * p.p$edge.width, 
+                   col = p.p$edge.color, return.ancs = TRUE)
+    
+    if(p.p$anc.states) {
+      points(tp, pch = 21, bg = p.p$node.bg, 
+             col = p.p$edge.color, lwd = p.p$edge.width)
+    }
+    
+    if(p.p$tip.labels) {
+      text(xx$points, rownames(xx$points), adj = p.p$tip.txt.adj,
+           cex = p.p$tip.txt.cex, col = p.p$tip.txt.col)
+    }
+    
+    if(p.p$node.labels) {
+      text(tp, rownames(tp), adj = p.p$node.txt.adj,
+           cex = p.p$node.txt.cex, col = p.p$node.txt.col)
+    }
     
     phy.pcdata <- rbind(xx$points, tp)
     N.tips <- length(phy$tip.label)
@@ -881,54 +906,50 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, phylo = FALSE, time.plot = F
       l = mean(r) + s*rc 
     }
     
-    p.p <- time.plot.param
-    if(is.null(p.p$tip.bg)) p.p$tip.bg <- "black"
-    if(is.null(p.p$tip.cex)) p.p$tip.cex <- 1
-    if(is.null(p.p$node.bg)) p.p$node.bg <- "grey"
-    if(is.null(p.p$node.cex)) p.p$node.cex <- 1
-    if(is.null(p.p$edge.color)) p.p$edge.color <- "black"
-    if(is.null(p.p$edge.width)) p.p$edge.width <- 1
-    if(is.null(p.p$txt.cex)) p.p$txt.cex <- 1
-    if(is.null(p.p$txt.col)) p.p$txt.col <- "black"
-    if(is.null(p.p$txt.adj)) p.p$txt.adj <- c(-0.1, -0.1)
-    if(is.null(p.p$node.txt.cex)) p.p$node.txt.cex <- 1
-    if(is.null(p.p$node.txt.col)) p.p$node.txt.col <- "grey"
-    if(is.null(p.p$node.txt.adj)) p.p$node.txt.adj <- c(-0.1, -0.1)
-    if(is.null(p.p$anc.states)) p.p$anc.states <- FALSE
-    if(is.null(p.p$tip.labels)) p.p$tip.labels <- FALSE
-    if(is.null(p.p$node.labels)) p.p$node.labels <- FALSE
+    t.p <- plot.args
+    t.p$pch <- 19
+    if(!is.null(p.p$bg)) t.p$col <- t.p$bg
+    if(is.null(t.p$col)) t.p$col <- "black"
+    if(is.null(t.p$cex)) t.p$cex <- 1
     
     view3d(phi=90, fov=30)
-    plot3d(phy.pcdata[,1], phy.pcdata[,2], zaxis, type="n", 
+    plot3d(xx$points[,1], xx$points[,2], zaxis, type="n", 
            xlim = limits(phy.pcdata[,1], 1.5),
            ylim = limits(phy.pcdata[,2], 1.5),
            zlim = c(max(zaxis), min(zaxis)),
+           size = 0.1,
            asp = c(1,1,1),
-           xlab= paste("PC", axis1), ylab = paste("PC", axis2), zlab = "Time")
+           xlab = xx$plot.args$xlab, 
+           ylab = xx$plot.args$ylab, zlab = "Time")
     
     for (i in 1:nrow(phy$edge)) {
       lines3d(phy.pcdata[(phy$edge[i, ]), 1], phy.pcdata[(phy$edge[i, ]), 2], zaxis[(phy$edge[i, ])], 
               col = p.p$edge.color, lwd = p.p$edge.width)}
     
-    points3d(phy.pcdata[1:N.tips, 1], phy.pcdata[1:N.tips, 2], zaxis[1:N.tips],
-             col = p.p$tip.bg, size = p.p$tip.cex*4)
+    points3d(xx$points[,1], xx$points[,2], zaxis[1:N.tips],
+             col = t.p$col, size = t.p$cex*4)
     
     if(p.p$anc.states){
-      points3d(phy.pcdata[(N.tips + 1):nrow(phy.pcdata), 1], 
-               phy.pcdata[(N.tips + 1):nrow(phy.pcdata), 2], 
+      points3d(tp[, 1], 
+               tp[, 2], 
                zaxis[(N.tips + 1):nrow(phy.pcdata)], 
                col = p.p$node.bg, size = p.p$node.cex*4)
     }
     
     if(p.p$tip.labels){
-      text3d(phy.pcdata[1:N.tips, 1], phy.pcdata[1:N.tips, 2], zaxis[1:N.tips], 
-             rownames(phy.pcdata)[1:N.tips],
-             col = p.p$txt.col, cex = p.p$txt.cex, adj = p.p$txt.adj) }
+      text3d(xx$points[,1], xx$points[,2], zaxis[1:N.tips], 
+             rownames(xx$points),
+             col = p.p$tip.txt.col, 
+             cex = p.p$tip.txt.cex, 
+             adj = p.p$tip.txt.adj) }
     
     if(p.p$node.labels){
-      text3d(phy.pcdata[(N.tips + 1):nrow(phy.pcdata), 1], phy.pcdata[(N.tips + 1):nrow(phy.pcdata), 2],
-             zaxis[(N.tips + 1):nrow(phy.pcdata)], rownames(phy.pcdata)[(N.tips + 1):nrow(phy.pcdata)],
-             col = p.p$node.txt.col, cex = p.p$node.txt.cex, adj = p.p$node.txt.adj)}
+      text3d(tp[, 1], tp[, 2],
+             zaxis[(N.tips + 1):nrow(phy.pcdata)], 
+             rownames(tp),
+             col = p.p$node.txt.col, 
+             cex = p.p$node.txt.cex, 
+             adj = p.p$node.txt.adj)}
     
   }
   
@@ -943,7 +964,7 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, phylo = FALSE, time.plot = F
   if(phylo) {
     out$phylo <- list()
     out$phylo$phy <- phy
-    out$phylo$phylo.par <- phylo.par
+    out$phylo$phylo.par <- p.p
     out$phylo$phy.pcdata <- phy.pcdata
   }
   class(out) <- "plot.gm.prcomp" 
