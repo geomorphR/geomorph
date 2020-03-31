@@ -908,7 +908,8 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, phylo = FALSE, time.plot = F
     
     t.p <- plot.args
     t.p$pch <- 19
-    if(!is.null(p.p$bg)) t.p$col <- t.p$bg
+    if(!is.null(p.p$bg)) t.p$col <- p.p$bg
+    if(!is.null(t.p$bg)) t.p$col <- t.p$bg
     if(is.null(t.p$col)) t.p$col <- "black"
     if(is.null(t.p$cex)) t.p$cex <- 1
     
