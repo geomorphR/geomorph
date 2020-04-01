@@ -1,6 +1,6 @@
 ---
 title: "Principal Components Analysis and visualization tools for exploring shape space"
-author: "Antigoni Kaliontzopoulou & Michael Collyer"
+author: "Antigoni Kaliontzopoulou"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -73,7 +73,7 @@ Again, options of the function `plotRefToTarget` are directly available and can 
 
 
 ## 2. Phylomorphospace
-Following the approach introduced by Sidlauskas 2008 (*Evolution* 62: 3135-3156), one may also want to project a phylogeny (if dealing with species-level observations), and estimated ancestral states into the ordination plot produced before. This can be easily done by providing a phylogenetic tree during the analysis (which is however **NOT** used in the analytical step in this case, other than for estimating ancestral states), and then indicating that the phylogeny should also be plotted during the plotting step. For the *Plethodon* example data, we may project the phylogeny into the previous ordination plot as such:
+One may also want to project a phylogeny (if dealing with species-level observations), and estimated ancestral states into the ordination plot produced before, to obtain what is commonly referred to as a "phylomorphospace" plot (Klingenberg & Ekau 1996, Biol. J. Linn. Soc. 59: 143 - 177; Rohlf 2002, Geometric morphometrics and phylogeny. Pp. 175-193 in N. MacLeod, and P. L. Forey, eds. Morphology, shape and phylogeny. Francis & Taylor, London; Sidlauskas 2008, Evolution 62: 3135 - 3156). This can be easily done by providing a phylogenetic tree during the analysis (which is however **NOT** used in the analytical step in this case, other than for estimating ancestral states), and then indicating that the phylogeny should also be plotted during the plotting step. For the *Plethodon* example data, we may project the phylogeny into the previous ordination plot as such:
 
 ```{r eval=TRUE}
 PCA.w.phylo <- gm.prcomp(Y.gpa$coords, phy = plethspecies$phy)
@@ -113,13 +113,14 @@ plot(PaCA, phylo = TRUE, main = "PaCA")
 ## 4. Three-dimensional PCA plot with a phylogeny and time on the z-axis
 Finally, substituting the corresponding option previously available through `plotGMPhyloMorphoSpace`, plot.gm.prcomp provides the possibility of producing a 3D plot of any two PCA axes, with the phylogenetic tree connecting the observations and time on the z-axis. Again, different plotting parameters can be controlled to manipulate plot aesthetics. Note, that in this case an rgl plotting device will open for the 3D plot, but the corresponding biplot with the phylogeny projected (option 2, above) will also be produced.
 
-```{r eval=TRUE}
+```{r eval=FALSE}
 plot(PCA.w.phylo, time.plot = T, pch = 22, bg = c(rep("red", 5), rep("green", 4)), cex = 2, 
      phylo.par = list(edge.color = "grey60", edge.width = 1.5, tip.txt.cex = 0.75,
                       node.labels = F, anc.states = F))
  
 ```
-```{r, echo = FALSE, out.width="80%"}
+```{r, echo = FALSE, out.width="40%"}
+knitr::include_graphics("figs/PCAplot2D.png")  
 knitr::include_graphics("figs/tree.plot.png")  
 ```
 
