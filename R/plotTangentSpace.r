@@ -69,6 +69,8 @@
 
 plotTangentSpace<-function (A, axis1 = 1, axis2 = 2, warpgrids = TRUE, mesh = NULL, label = NULL, 
                             groups=NULL, legend=FALSE, ...){
+  .Deprecated("gm.prcomp", package = "geomorph")
+  
   if (length(dim(A)) != 3) {
     stop("Data matrix not a 3D array (see 'arrayspecs').") }
   if(any(is.na(A))==T){
