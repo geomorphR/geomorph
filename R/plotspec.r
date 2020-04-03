@@ -57,7 +57,7 @@ plotspec <- function (spec, digitspec, fixed = NULL, fixed.pt.col = "red", fixed
   
   plot3d(specimen, size = mesh.ptsize, aspect = FALSE)
   if(!is.null(mesh)) shade3d(mesh, meshColor = "legacy", add = TRUE)
-  if(fixed) {
+  if(!is.null(fixed)) {
     points3d(digitspec[1:fixed, ], aspect = FALSE, size = fixed.pt.size, col = fixed.pt.col)
     if(nrow(digitspec) > fixed) points3d(digitspec[(fixed + 1):nrow(digitspec), ], 
                                          aspect = F, ...)
