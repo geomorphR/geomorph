@@ -129,8 +129,8 @@
 #'  legend("topleft", pch=22, pt.bg = unique(gps), legend = levels(gps))
 #'  
 #'  ### 3D plot with a phylogeny and time on the z-axis
-#'  plot(PCA.w.phylo, time.plot = T)
-#'  plot(PCA.w.phylo, time.plot = T, bg = "red", phylo.par = list(tip.labels = T, 
+#'  plot(PCA.w.phylo, time.plot = TRUE)
+#'  plot(PCA.w.phylo, time.plot = TRUE, bg = "red", phylo.par = list(tip.labels = TRUE, 
 #'  tip.txt.cex = 3, edge.color = "blue", edge.width = 2))
 #'  
 
