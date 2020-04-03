@@ -55,7 +55,9 @@ plotspec <- function (spec, digitspec, fixed = NULL, fixed.pt.col = "red", fixed
   if (is.null(dim(digitspec)) || dim(digitspec)[2] != 3) {
     stop("Digitized file is not xyz matrix in form: p x k")}
   
-  plot3d(specimen, size = mesh.ptsize, aspect = FALSE)
+  plot3d(specimen, type = "n", aspect = FALSE, ...)
+  points3d(specimen, size = mesh.ptsize)
+  
   if(!is.null(mesh)) shade3d(mesh, meshColor = "legacy", add = TRUE)
   if(!is.null(fixed)) {
     points3d(digitspec[1:fixed, ], aspect = FALSE, size = fixed.pt.size, col = fixed.pt.col)
