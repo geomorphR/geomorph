@@ -4,6 +4,7 @@
 * A vignette has been added (geomorphPCA) to aid the transition of users to the gm.prcomp family of functions for exploring and visualizing shape space
 * Updates to gm.prcomp to include PaCA
 * Added the possibility of a 3D PCA plot with a phylogeny and time on the z-axis to plot.gm.prcomp
+* Added the possibility of controlling plot3d definitions in plotspec
 
 ### OTHER CHANGES
 * Function plotTangentSpace has been deprecated 
