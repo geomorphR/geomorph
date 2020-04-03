@@ -13,7 +13,9 @@
 #' @param spec An object of class shape3d/mesh3d, or matrix of 3D vertex coordinates.
 #' @param digitspec Name of data matrix containing 3D fixed and/or surface sliding coordinates.
 #' @param fixed Numeric The number of fixed template landmarks (listed first in {digitspec})
-#' @param ptsize Numeric Size to plot the mesh points (vertices), e.g. 0.1 for dense meshes, 3 for sparse meshes                                       
+#' @param fixed.pt.col The colour for plotting fixed template landmarks (if any)
+#' @param fixed.pt.size The size for plotting fixed template landmarks (if any)
+#' @param mesh.ptsize Numeric Size to plot the mesh points (vertices), e.g. 0.1 for dense meshes, 3 for sparse meshes                                       
 #' @param centered Logical Whether the data matrix is in the surface mesh coordinate system ({centered=FALSE}) or
 #' if the data were collected after the mesh was centered ({centered=TRUE})- see details.
 #' @param ... additional parameters which will be passed to \code{\link{plot3d}}.
@@ -22,21 +24,22 @@
 #' @seealso \code{\link{warpRefMesh}}
 #' @seealso \code{\link{read.ply}}
 #' @examples
-#' # data(scallopPLY)
-#' # ply <- scallopPLY$ply
-#' # digitdat <- scallopPLY$coords
-#' # plotspec(spec=ply,digitspec=digitdat,fixed=16, centered =TRUE)
-#' @author Erik Otarola-Castillo & Emma Sherratt
+#' data(scallopPLY)
+#' ply <- scallopPLY$ply
+#' digitdat <- scallopPLY$coords
+#' plotspec(spec = ply, digitspec = digitdat, fixed = 16, centered = TRUE, fixed.pt.col = "red", 
+#' fixed.pt.size = 15, col = "blue", size = 5)
+#' @author Erik Otarola-Castillo, Emma Sherratt & Antigoni Kaliontzopoulou
 #' @seealso  \code{\link[rgl]{rgl-package}} (used in 3D plotting)
-plotspec <- function (spec, digitspec, fixed=NULL, ptsize = 1, centered = FALSE, ...) 
-{
+plotspec <- function (spec, digitspec, fixed = NULL, fixed.pt.col = "red", fixed.pt.size = 10, 
+                      mesh.ptsize = 1, centered = FALSE, ...) {
   mesh <- NULL
-  if (inherits(spec, "shape3d") == TRUE || inherits(spec, "mesh3d") == TRUE){
+  if (inherits(spec, "shape3d") || inherits(spec, "mesh3d")){
     if(centered == TRUE){
       specimen <- scale(as.matrix(t(spec$vb)[,-4]), scale = FALSE)
       spec$vb <- rbind(t(specimen), 1)
     }
-    if(centered == FALSE){specimen <- as.matrix(t(spec$vb)[,-4])}
+    if(centered == FALSE) specimen <- as.matrix(t(spec$vb)[,-4])
     mesh <- spec 
     if (is.null(mesh$material)) mesh$material$color <- "gray" 
     if (is.null(mesh$material$color)) mesh$material$color <- "gray" 
@@ -51,12 +54,13 @@ plotspec <- function (spec, digitspec, fixed=NULL, ptsize = 1, centered = FALSE,
   else { stop ("File is not matrix in form: vertices by xyz")} 
   if (is.null(dim(digitspec)) || dim(digitspec)[2] != 3) {
     stop("Digitized file is not xyz matrix in form: p x k")}
-  plot3d(specimen[, 1], specimen[, 2], specimen[, 3], size = ptsize, aspect = FALSE, ...)
-    if (!is.null(mesh)) { shade3d(mesh, meshColor="legacy", add=TRUE) }
-  if(!is.null(fixed)) {
-    points3d(digitspec[1:fixed, ], aspect = FALSE, size = 10, col = "red")
+  
+  plot3d(specimen, size = mesh.ptsize, aspect = FALSE)
+  if(!is.null(mesh)) shade3d(mesh, meshColor = "legacy", add = TRUE)
+  if(fixed) {
+    points3d(digitspec[1:fixed, ], aspect = FALSE, size = fixed.pt.size, col = fixed.pt.col)
     if(nrow(digitspec) > fixed) points3d(digitspec[(fixed + 1):nrow(digitspec), ], 
-                                         aspect = F, size = 10, col = "green")
+                                         aspect = F, ...)
   }
-  else points3d(digitspec, aspect = F, size = 10, col = "green")
+  else points3d(digitspec, aspect = F, ...)
 }

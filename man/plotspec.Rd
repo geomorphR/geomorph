@@ -4,7 +4,16 @@
 \alias{plotspec}
 \title{Plot 3D specimen, fixed landmarks and surface semilandmarks}
 \usage{
-plotspec(spec, digitspec, fixed = NULL, ptsize = 1, centered = FALSE, ...)
+plotspec(
+  spec,
+  digitspec,
+  fixed = NULL,
+  fixed.pt.col = "red",
+  fixed.pt.size = 10,
+  mesh.ptsize = 1,
+  centered = FALSE,
+  ...
+)
 }
 \arguments{
 \item{spec}{An object of class shape3d/mesh3d, or matrix of 3D vertex coordinates.}
@@ -13,7 +22,11 @@ plotspec(spec, digitspec, fixed = NULL, ptsize = 1, centered = FALSE, ...)
 
 \item{fixed}{Numeric The number of fixed template landmarks (listed first in {digitspec})}
 
-\item{ptsize}{Numeric Size to plot the mesh points (vertices), e.g. 0.1 for dense meshes, 3 for sparse meshes}
+\item{fixed.pt.col}{The colour for plotting fixed template landmarks (if any)}
+
+\item{fixed.pt.size}{The size for plotting fixed template landmarks (if any)}
+
+\item{mesh.ptsize}{Numeric Size to plot the mesh points (vertices), e.g. 0.1 for dense meshes, 3 for sparse meshes}
 
 \item{centered}{Logical Whether the data matrix is in the surface mesh coordinate system ({centered=FALSE}) or
 if the data were collected after the mesh was centered ({centered=TRUE})- see details.}
@@ -33,10 +46,11 @@ Therefore use this function with {centered=TRUE}. Data collected outside geomorp
 the coordinate matrix ({digitspec}).
 }
 \examples{
-# data(scallopPLY)
-# ply <- scallopPLY$ply
-# digitdat <- scallopPLY$coords
-# plotspec(spec=ply,digitspec=digitdat,fixed=16, centered =TRUE)
+data(scallopPLY)
+ply <- scallopPLY$ply
+digitdat <- scallopPLY$coords
+plotspec(spec = ply, digitspec = digitdat, fixed = 16, centered = TRUE, fixed.pt.col = "red", 
+fixed.pt.size = 15, col = "blue", size = 5)
 }
 \seealso{
 \code{\link{warpRefMesh}}
@@ -46,6 +60,6 @@ the coordinate matrix ({digitspec}).
 \code{\link[rgl]{rgl-package}} (used in 3D plotting)
 }
 \author{
-Erik Otarola-Castillo & Emma Sherratt
+Erik Otarola-Castillo, Emma Sherratt & Antigoni Kaliontzopoulou
 }
 \keyword{visualization}
