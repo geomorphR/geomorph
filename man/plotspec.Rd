@@ -31,7 +31,8 @@ plotspec(
 \item{centered}{Logical Whether the data matrix is in the surface mesh coordinate system ({centered=FALSE}) or
 if the data were collected after the mesh was centered ({centered=TRUE})- see details.}
 
-\item{...}{additional parameters which will be passed to \code{\link{plot3d}}.}
+\item{...}{additional parameters which will be passed to \code{\link{plot3d}} or 
+\code{\link{points3d}}.}
 }
 \description{
 A function to plot three-dimensional (3D) specimen along with its landmarks.
@@ -44,8 +45,15 @@ For visualization purposes, 3D coordinate data collected using \code{\link{digit
 Therefore use this function with {centered=TRUE}. Data collected outside geomorph should be read using
 {centered=FALSE}. The function assumes the fixed landmarks are listed at the beginning of
 the coordinate matrix ({digitspec}).
+
+This function is a wrapper for several functions in the \code{\link{rgl-package}} package.  
+Although there is some allowance for arguments to be passed to \code{\link{rgl-package}} functions,
+some override of \code{\link[rgl]{plot3d}} arguments is required.  Errors that result from trying
+to pass \code{\link[rgl]{plot3d}} or \code{\link[rgl]{points3d}} arguments should inspire the user
+to find solutions with \code{\link{rgl-package}} core functions.
 }
 \examples{
+
 data(scallopPLY)
 ply <- scallopPLY$ply
 digitdat <- scallopPLY$coords
@@ -57,9 +65,13 @@ fixed.pt.size = 15, col = "blue", size = 5)
 
 \code{\link{read.ply}}
 
-\code{\link[rgl]{rgl-package}} (used in 3D plotting)
+\code{\link{rgl-package}} (used in 3D plotting)
+
+\code{\link[rgl]{plot3d}}
+
+\code{\link[rgl]{points3d}}
 }
 \author{
-Erik Otarola-Castillo, Emma Sherratt & Antigoni Kaliontzopoulou
+Erik Otarola-Castillo, Emma Sherratt, Antigoni Kaliontzopoulou, & Michael Collyer
 }
 \keyword{visualization}

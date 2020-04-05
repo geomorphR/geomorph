@@ -865,6 +865,9 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, phylo = FALSE, time.plot = F
                             node.txt.adj = c(-0.1, -0.1))
     
     m.p <- match(names(phylo.par), names(p.p))
+    if(any(is.na(m.p)))
+      stop("Some of the arguments in phylo.pars are different than those that are possible (see Arguments).\n",
+           call. = FALSE)
     p.p[m.p] <- phylo.par
     
     phy <- x$phy
