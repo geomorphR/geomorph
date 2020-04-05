@@ -17,7 +17,7 @@ b70e887db79507e51c7356c21b869761 *inst/CITATION
 5e099c6268d251bf5c98595d9566385a *man/arrayspecs.Rd
 3992c116b88a8a79fadcad8745f4ee9e *man/bilat.symmetry.Rd
 6e94f720fd50cf0ff309624b1a4a30ee *man/buildtemplate.Rd
-f992db3793aee0dcaa0a3d95359bec54 *man/combine.subsets.Rd
+21fa3823bd09a4edc36a03ad3a9e1686 *man/combine.subsets.Rd
 55bb505e3ee47911be6904e57f457da0 *man/compare.CR.Rd
 e9cda01506cd0a57e4dd1d44cf1b8bb7 *man/compare.evol.rates.Rd
 4a1e045de391966a3300bfea63c999ce *man/compare.multi.evol.rates.Rd
@@ -71,7 +71,7 @@ a94c27850d6a56f55bddcb424b0204da *man/plotAllSpecimens.Rd
 cb2d7a5cb3aab21fdf3b2b592375260f *man/plotGMPhyloMorphoSpace.Rd
 4542a404d1dabb2f1f237f087e4c9ea1 *man/plotOutliers.Rd
 7845e91b5e5d50b1477725984025678a *man/plotRefToTarget.Rd
-d7b3633f2759501728303b6653a5659e *man/plotspec.Rd
+16bf60c86613e33dd7f7bfbe63b3f037 *man/plotspec.Rd
 c7608dc03b6240bcb0eb12a236a60b6c *man/plotTangentSpace.Rd
 bf735457c885585781fa8dd86e2671b8 *man/print.bilat.symmetry.Rd
 61b3a2b02fa0a9976973470034a6f9d6 *man/print.combined.set.Rd
@@ -168,7 +168,7 @@ c1cead3306cb3d7b1bd3ed5d99fc89af *R/plotAllSpecimens.r
 4a4ea858a4f979f63b70ba303634e3b9 *R/plotGMPhyloMorphoSpace.r
 91a4b5d6ce7f725fd64105a7ce10e97e *R/plotOutliers.r
 78d172a72ab828182697f411b7368e4d *R/plotRefToTarget.r
-ff121ce9cf44c2f2cc5c06e5ab45f719 *R/plotspec.r
+70c5fd8dc06df151d4c67625c31768af *R/plotspec.r
 ffeb4fb45afe9b0e8fe9c22bd5747931 *R/plotTangentSpace.r
 bb944e4a73cab4d9f15d2979920474cb *R/procD.lm.r
 5037db11c59a8f6e9932467ae2b8e657 *R/procD.pgls.r
