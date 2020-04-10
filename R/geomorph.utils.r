@@ -754,11 +754,6 @@ print.gm.prcomp <- function (x, ...) {
     
     cat("\n\n")
     cat("Dispersion (variance) of points, after projection:\n")
-    if(x$GLS) {
-      cat("(Dispersion of tips will not match importance of components because variances of components\n")
-      cat("are weighted by phylogenetic covariances.  Dispersion of tips and ancestors correspond to \n")
-      cat("the variances of points as they appear in a plot of component scores.)\n\n")
-    }
       
     vars <- apply(x$x, 2, var)
     p <- vars/sum(vars)
