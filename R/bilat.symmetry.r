@@ -294,7 +294,7 @@ bilat.symmetry<-function(A, ind=NULL, side=NULL, replicate=NULL, object.sym=FALS
 
   X.ind.side <- model.matrix(~(side:ind) + 0, data = as.data.frame(dat.shape[-1]))
   ind.mns <- coef(.lm.fit(X.ind.side, Y))
-  FA.component <- ind.mns[indsq,] - ind.mns[-indsq,]
+  FA.component <- ind.mns[-indsq,] - ind.mns[indsq,]
   mn.shape<-mshape(A)
   FA.component<-simplify2array(lapply(1:n.ind, function(j) 
   {t(matrix(FA.component[j,],k,p)) + mn.shape - mn.DA}))
