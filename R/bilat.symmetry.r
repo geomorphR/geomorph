@@ -290,7 +290,7 @@ bilat.symmetry<-function(A, ind=NULL, side=NULL, replicate=NULL, object.sym=FALS
   
   DA.est <- coef(.lm.fit(X.side, Y))
   DA.mns <- arrayspecs(rbind(apply(DA.est[-indsq,],2,mean),apply(DA.est[indsq,],2,mean)),p,k)
-  mn.DA <- matrix(apply((DA.est[-indsq,] - DA.est[indsq,]),2,mean),byrow=T,nrow=p,ncol=k)
+  mn.DA <- matrix(apply((DA.est[indsq,] - DA.est[-indsq,]),2,mean),byrow=T,nrow=p,ncol=k)
   
   X.ind.side <- model.matrix(~(side:ind) + 0, data = as.data.frame(dat.shape[-1]))
   ind.mns <- coef(.lm.fit(X.ind.side, Y))
