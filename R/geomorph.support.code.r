@@ -158,7 +158,8 @@ NULL
 #' Y.gpa<-gpagen(plethodon$land)    #GPA-alignment
 #'
 #' mshape(Y.gpa$coords)   #mean (consensus) configuration
-mshape<-function(A){
+mshape <- function(A){
+  if(any(is.na(A))) stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').")
   if(is.array(A)) {
     dims <- dim(A)
     if(length(dims) == 3) res <- apply(A,c(1,2),mean) else
