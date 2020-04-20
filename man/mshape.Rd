@@ -4,10 +4,13 @@
 \alias{mshape}
 \title{Estimate mean shape for a set of aligned specimens}
 \usage{
-mshape(A)
+mshape(A, na.method = 1)
 }
 \arguments{
 \item{A}{Either a list (length n, p x k), A 3D array (p x k x n), or a matrix (n x pk) containing GPA-aligned coordinates for a set of specimens}
+
+\item{na.method}{An index for how to treat missing values: 1 = stop analysis; 2 = return NA for coordinates
+with missing values for any specimen; 3 = attempt to calculate means for coordinates for all non-missing values.}
 }
 \description{
 Estimate the mean shape for a set of aligned specimens
@@ -23,13 +26,16 @@ that the landmarks have previously been aligned using Generalized Procrustes Ana
 \examples{
 data(plethodon)
 Y.gpa<-gpagen(plethodon$land)    #GPA-alignment
+A <- Y.gpa$coords
+A[[1]] <- NA # make a missing value, just for example
 
-mshape(Y.gpa$coords)   #mean (consensus) configuration
-}
-\references{
-Claude, J. 2008. Morphometrics with R. Springer, New York.
+mshape(Y.gpa$coords)   # mean (consensus) configuration
+# mshape(A, na.method = 1) # will return an error
+mshape(A, na.method = 2) # returns NA in spot of missing value
+mshape(A, na.method = 3) # finds mean values from all possible values
+
 }
 \author{
-Julien Claude
+Antigoni Kaliontzopoulou & Michael Collyer
 }
 \keyword{utilities}

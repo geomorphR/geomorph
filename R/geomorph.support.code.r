@@ -149,31 +149,107 @@ NULL
 #'  positions and potentially add links, in order to review landmark positions
 #'
 #' @param A Either a list (length n, p x k), A 3D array (p x k x n), or a matrix (n x pk) containing GPA-aligned coordinates for a set of specimens
+#' @param na.method An index for how to treat missing values: 1 = stop analysis; 2 = return NA for coordinates
+#' with missing values for any specimen; 3 = attempt to calculate means for coordinates for all non-missing values.
 #' @keywords utilities
 #' @export
-#' @author Julien Claude
-#' @references Claude, J. 2008. Morphometrics with R. Springer, New York.
+#' @author Antigoni Kaliontzopoulou & Michael Collyer
 #' @examples
 #' data(plethodon)
 #' Y.gpa<-gpagen(plethodon$land)    #GPA-alignment
+#' A <- Y.gpa$coords
+#' A[[1]] <- NA # make a missing value, just for example
 #'
-#' mshape(Y.gpa$coords)   #mean (consensus) configuration
-mshape <- function(A){
-  if(any(is.na(A))) stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').")
+#' mshape(Y.gpa$coords)   # mean (consensus) configuration
+#' # mshape(A, na.method = 1) # will return an error
+#' mshape(A, na.method = 2) # returns NA in spot of missing value
+#' mshape(A, na.method = 3) # finds mean values from all possible values
+#' 
+mshape <- function(A, na.method = 1){
+  
+  na.check <- na.method %in% 1:3
+  if(!na.check) na.method <- 1
+  
+  if(!inherits(A, c("list", "array", "matrix")))
+    stop("Data are neither a list nor array. mshape is not possible with data in the format used.\n",
+         call. = FALSE)
+  
   if(is.array(A)) {
     dims <- dim(A)
-    if(length(dims) == 3) res <- apply(A,c(1,2),mean) else
-      if(length(dims) == 2){
-        if(dims[[2]] == 2 || dims[[2]] == 3) res <- A else
-        {
-          cat("\nWarning: It appears that data are in a matrix with specimens as rows.")
-          cat("\nMeans are found for each column of the matrix.\n\n")
-          res <- colMeans(A)
-        }
+    if(length(dims) == 3) {
+      p <- dims[[1]]
+      k <- dims[[2]]
+      n <- dims[[3]]
+      L <- lapply(1:n, function(j) as.matrix(A[,,j]))
+    }
+    
+    if(length(dims) == 2) {
+      if(dims[[2]] == 2 || dims[[2]] == 3) {
+        L <- list(A) 
+        n <- 1
+        p <- dims[[1]]
+        k <- dims[[2]]
+        } else {
+          n <- dims[[1]]
+          p <- dims[[2]]
+          k <- 1
+        cat("\nWarning: It appears that data are in a matrix with specimens as rows.")
+        cat("\nMeans are found for each column of the matrix.\n\n")
+        L <- lapply(1:n, function(j) matrix(A[j,], 1, ))
       }
+    }
   }
-  if(is.list(A)) res <- Reduce("+", A)/length(A)
-  if(!is.array(A) && !is.list(A) && !is.matrix(A)) stop("There are not multiple configurations from which to obtain a mean.")
+    
+    if(is.list(A)) {
+      matrix.check <- sapply(A, is.matrix)
+      if(any(!matrix.check)) stop("At least one specimen is not a data matrix.\n", call. = FALSE)
+      dims <- dim(A[[1]])
+      A.dims <- sapply(A, dim)
+      A.unique <- apply(A.dims, 1, unique)
+      if(!identical(dims, A.unique))
+        stop("Not all specimens have the same number of landmarks or landmarks in the same dimensions.\n", 
+             call. = FALSE)
+      L <- A
+      if(length(dims) == 3) {
+        p <- dims[[1]]
+        k <- dims[[2]]
+        n <- dims[[3]]
+      } else {
+        n <- dims[[1]]
+        p <- dims[[2]]
+        k <- 1
+      }
+    }
+    
+    if(na.method == 1) {
+      if(any(is.na(unlist(L))))
+        stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').\n",
+             call. = FALSE)
+      res <- Reduce("+", L)/n
+    }
+    
+    if(na.method == 2) res <- Reduce("+", L)/n
+    
+    if(na.method == 3) {
+      mmean <- function(L) { 
+        kp <- k * p
+        U <- unlist(L)
+        u <- length(U)
+        starts <- seq.int(1, u, kp)
+        M <- matrix(NA, p, k)
+        for(i in 1:kp) {
+          pts <- starts -1 + i
+          M[i] <- mean(na.omit(U[pts]))
+        }
+        
+        if(k == 1) M <- matrix(M, 1, p) 
+        M
+      }
+      
+      res <- mmean(L)
+    }
+    
+  
   class(res) <- c("mshape", "matrix")
   return(res)
 }
