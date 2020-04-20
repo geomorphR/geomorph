@@ -704,7 +704,7 @@ summary.combined.set <- function(object, ...) print.combined.set(object, ...)
 #' @seealso  \code{\link{define.links}}
 
 plot.mshape <- function(x, links=NULL,...){
-  if(any(is.na(x))) stop("Consensus configuration contains missing values. Please choose a different na.method in 'mshape'.")
+  if(any(is.na(x))) stop("Consensus configuration contains missing values. Please choose a different na.action in 'mshape'.")
   
   x <- as.matrix(x)
   class(x) <- "matrix"
