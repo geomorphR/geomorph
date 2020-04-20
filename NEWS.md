@@ -10,7 +10,7 @@
 * Fixed bug in FA shape components output in `bilat.symmetry`
 
 ### OTHER CHANGES
-* NA catch added to mshape
+* Option for handling NAs added to mshape and plot.mshape
 * Function plotTangentSpace has been deprecated 
 
 # CHANGES IN GEOMORPH VERSION 3.2.1.0900 (Minor Release)
