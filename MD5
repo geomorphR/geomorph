@@ -18,7 +18,7 @@ f4f2080e745b8d689f17caf549449ab5 *geomorph.Rproj
 5e099c6268d251bf5c98595d9566385a *man/arrayspecs.Rd
 3992c116b88a8a79fadcad8745f4ee9e *man/bilat.symmetry.Rd
 6e94f720fd50cf0ff309624b1a4a30ee *man/buildtemplate.Rd
-f992db3793aee0dcaa0a3d95359bec54 *man/combine.subsets.Rd
+21fa3823bd09a4edc36a03ad3a9e1686 *man/combine.subsets.Rd
 55bb505e3ee47911be6904e57f457da0 *man/compare.CR.Rd
 e9cda01506cd0a57e4dd1d44cf1b8bb7 *man/compare.evol.rates.Rd
 4a1e045de391966a3300bfea63c999ce *man/compare.multi.evol.rates.Rd
@@ -101,7 +101,7 @@ c2f07c449bdbe7890fbf943c91810a03 *man/readland.shapes.Rd
 e268bdaf2ef10f2027709e5f9ab2518b *man/readland.tps.Rd
 07b9189f2f54233764c1f17d7f100412 *man/readmulti.nts.Rd
 a19f005bd83e97a4f20bf357483726c5 *man/readmulti.tps.Rd
-cc963a327d23f0e830749124ba9854d9 *man/rotate.coords.Rd
+4a9e3fd9859000bb3d361df7d624a7e8 *man/rotate.coords.Rd
 8be198584c10582597e98c6cecbb26f7 *man/scallopPLY.Rd
 c4f3fe2e244677c2504bbe0283590d1c *man/scallops.Rd
 6c92d2bbe8614a9430027f1f67c071c6 *man/shape.predictor.Rd
@@ -150,7 +150,7 @@ f14e7f81ecc74bda3fded01d703c7d23 *R/digit.fixed.r
 aac6a4f8a759473e8c37048e5c8e3d91 *R/findMeanSpec.r
 089a02a38c0381ac0381f0ae8f5b07f7 *R/fixed.angle.r
 953c275fdc42e65db7394a594d35806a *R/geomorph.data.frame.r
-372c311491a58a23e3d0c21f3f95e26d *R/geomorph.support.code.r
+05291ce0a19cd2cdb15eeb619ee5ed87 *R/geomorph.support.code.r
 9c498c41878893c5cf27a7663889afd6 *R/geomorph.utils.r
 b0de2a67cff633e27e7a00860187240f *R/globalIntegration.r
 d34dca48ac8d1b1b6768db7c321595d1 *R/gm.prcomp.R

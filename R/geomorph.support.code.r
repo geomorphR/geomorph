@@ -249,7 +249,7 @@ mshape <- function(A, na.action = 1){
         cat("Warning: Missing values detected.\n")
         cat("Means are calculated only for values that are found.\n")
         cat("You can estimate missing values (see 'estimate.missing')\n")
-        cat("or change the na.action (see Arguments) to return NA for coordinates that have missing values.\n\n.")
+        cat("or change the na.action (see Arguments) to return NA for coordinates that have missing values.\n\n")
       }
       
       mmean <- function(L) { 
