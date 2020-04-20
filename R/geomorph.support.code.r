@@ -141,39 +141,135 @@ NULL
 #'
 #' Estimate the mean shape for a set of aligned specimens
 #'
-#' The function estimates the average landmark coordinates for a set of aligned specimens. It is assumed
-#' that the landmarks have previously been aligned using Generalized Procrustes Analysis (GPA)
-#'  [e.g., with \code{\link{gpagen}}]. This function is described in Claude (2008).
+#' The function estimates the average landmark coordinates for a set of aligned specimens. 
+#' Three different methods are available for missing data (see Arguments and Examples).
 #'  
 #'  One can then use the generic function \code{\link{plot}} to produce a numbered plot of landmark 
 #'  positions and potentially add links, in order to review landmark positions
 #'
 #' @param A Either a list (length n, p x k), A 3D array (p x k x n), or a matrix (n x pk) containing GPA-aligned coordinates for a set of specimens
+#' @param na.action An index for how to treat missing values: 1 = stop analysis; 2 = return NA for coordinates
+#' with missing values for any specimen; 3 = attempt to calculate means for coordinates for all non-missing values.
 #' @keywords utilities
 #' @export
-#' @author Julien Claude
-#' @references Claude, J. 2008. Morphometrics with R. Springer, New York.
+#' @author Antigoni Kaliontzopoulou & Michael Collyer
 #' @examples
 #' data(plethodon)
 #' Y.gpa<-gpagen(plethodon$land)    #GPA-alignment
+#' A <- Y.gpa$coords
+#' A[[1]] <- NA # make a missing value, just for example
 #'
-#' mshape(Y.gpa$coords)   #mean (consensus) configuration
-mshape <- function(A){
-  if(any(is.na(A))) stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').")
+#' mshape(Y.gpa$coords)   # mean (consensus) configuration
+#' # mshape(A, na.action = 1) # will return an error
+#' mshape(A, na.action = 2) # returns NA in spot of missing value
+#' mshape(A, na.action = 3) # finds mean values from all possible values
+#' 
+mshape <- function(A, na.action = 1){
+  
+  na.check <- na.action %in% 1:3
+  if(!na.check) na.action <- 1
+  
+  if(!inherits(A, c("list", "array", "matrix")))
+    stop("Data are neither a list nor array. mshape is not possible with data in the format used.\n",
+         call. = FALSE)
+  
   if(is.array(A)) {
     dims <- dim(A)
-    if(length(dims) == 3) res <- apply(A,c(1,2),mean) else
-      if(length(dims) == 2){
-        if(dims[[2]] == 2 || dims[[2]] == 3) res <- A else
-        {
-          cat("\nWarning: It appears that data are in a matrix with specimens as rows.")
-          cat("\nMeans are found for each column of the matrix.\n\n")
-          res <- colMeans(A)
-        }
+    if(length(dims) == 3) {
+      p <- dims[[1]]
+      k <- dims[[2]]
+      n <- dims[[3]]
+      L <- lapply(1:n, function(j) as.matrix(A[,,j]))
+    }
+    
+    if(length(dims) == 2) {
+      if(dims[[2]] == 2 || dims[[2]] == 3) {
+        L <- list(A) 
+        n <- 1
+        p <- dims[[1]]
+        k <- dims[[2]]
+      } else {
+        n <- dims[[1]]
+        p <- dims[[2]]
+        k <- 1
+        cat("\nWarning: It appears that data are in a matrix with specimens as rows.")
+        cat("\nMeans are found for each column of the matrix.\n\n")
+        L <- lapply(1:n, function(j) matrix(A[j,], 1, ))
       }
+    }
   }
-  if(is.list(A)) res <- Reduce("+", A)/length(A)
-  if(!is.array(A) && !is.list(A) && !is.matrix(A)) stop("There are not multiple configurations from which to obtain a mean.")
+  
+  if(is.list(A)) {
+    matrix.check <- sapply(A, is.matrix)
+    if(any(!matrix.check)) stop("At least one specimen is not a data matrix.\n", call. = FALSE)
+    dims <- dim(A[[1]])
+    A.dims <- sapply(A, dim)
+    A.unique <- apply(A.dims, 1, unique)
+    if(!identical(dims, A.unique))
+      stop("Not all specimens have the same number of landmarks or landmarks in the same dimensions.\n", 
+           call. = FALSE)
+    L <- A
+    if(length(L) > 1) {
+      p <- dims[[1]]
+      k <- dims[[2]]
+      n <- length(L)
+    } else {
+      n <- dims[[1]]
+      p <- dims[[2]]
+      k <- 1
+    }
+  }
+  
+  if(na.action == 1) {
+    
+    if(any(is.na(unlist(L))))
+      stop("Data matrix contains missing values.\n 
+           Estimate these first (see 'estimate.missing') or chamge the na.action (see Arguments).\n",
+           call. = FALSE)
+    
+    res <- if(length(L) == 1) L else Reduce("+", L)/n
+  }
+  
+  if(na.action == 2) {
+    
+    if(any(is.na(unlist(L)))) {
+      cat("Warning: Missing values detected.\n")
+      cat("NA is returned for any coordinate where missing values were found.\n")
+      cat("You can estimate missing values (see 'estimate.missing')\n")
+      cat("or change the na.action (see Arguments) to find the mean of just the remaining values\n\n.")
+    }
+    res <- if(length(L) == 1) L else Reduce("+", L)/n
+  }
+  
+  
+  if(na.action == 3) {
+    
+    if(any(is.na(unlist(L)))) {
+      cat("Warning: Missing values detected.\n")
+      cat("Means are calculated only for values that are found.\n")
+      cat("You can estimate missing values (see 'estimate.missing')\n")
+      cat("or change the na.action (see Arguments) to return NA for coordinates that have missing values.\n\n")
+    }
+    
+    mmean <- function(L) { 
+      kp <- k * p
+      U <- unlist(L)
+      u <- length(U)
+      starts <- seq.int(1, u, kp)
+      M <- array(NA, p*k)
+      for(i in 1:kp) {
+        pts <- starts -1 + i
+        M[i] <- mean(na.omit(U[pts]))
+      }
+      
+      if(k == 1) M <- matrix(M, 1, p) else M <- matrix(M, p, k)
+      M
+    }
+    
+    res <- if(length(L) == 1) L else mmean(L)
+  }
+  
+  if(inherits(res, "list")) res <- res[[1]]
   class(res) <- c("mshape", "matrix")
   return(res)
 }

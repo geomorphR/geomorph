@@ -47,7 +47,7 @@ a598044482a6c3e39517b798b654c57e *man/hummingbirds.Rd
 e152bb8674916ebc4f54d1b061b2c144 *man/modularity.test.Rd
 515a12395ab16701c85898eaa6ab97a4 *man/morphol.disparity.Rd
 00e77dd77ac4f29ace5334a4df4aa23e *man/mosquito.Rd
-e80eedb5f74cd9957d11429a15ee2bce *man/mshape.Rd
+ffadebd6be893bbc403d22f884329a9a *man/mshape.Rd
 1568730ef6ac1237622ae188e1928c1b *man/nested.update.Rd
 6448e71cd5ed47e98581aecdef01ccec *man/phylo.integration.Rd
 5eb5cd0bcbac8de3b07016c143b5ef7a *man/phylo.modularity.Rd
@@ -149,8 +149,8 @@ f14e7f81ecc74bda3fded01d703c7d23 *R/digit.fixed.r
 aac6a4f8a759473e8c37048e5c8e3d91 *R/findMeanSpec.r
 089a02a38c0381ac0381f0ae8f5b07f7 *R/fixed.angle.r
 953c275fdc42e65db7394a594d35806a *R/geomorph.data.frame.r
-70bb9eb3b505a6bb265f0338b3378a02 *R/geomorph.support.code.r
-96933fef0f0462216d15b8a1c92204a1 *R/geomorph.utils.r
+e275db70cea76712d17bec5d91f8db27 *R/geomorph.support.code.r
+26644f77a89f1c2d4fbe7916684945b4 *R/geomorph.utils.r
 b0de2a67cff633e27e7a00860187240f *R/globalIntegration.r
 85f132fe6dad77cc29c77ef6517a119e *R/gm.prcomp.R
 bf0750e2582fc2c3b5454ad48b7f3cbb *R/gpagen.r
