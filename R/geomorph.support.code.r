@@ -250,7 +250,7 @@ mshape <- function(A, na.method = 1){
       res <- if(length(L) == 1) L else mmean(L)
     }
     
-  
+  if(inherits(res, "list")) res <- res[[1]]
   class(res) <- c("mshape", "matrix")
   return(res)
 }
