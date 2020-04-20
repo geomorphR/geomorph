@@ -149,7 +149,7 @@ NULL
 #'  positions and potentially add links, in order to review landmark positions
 #'
 #' @param A Either a list (length n, p x k), A 3D array (p x k x n), or a matrix (n x pk) containing GPA-aligned coordinates for a set of specimens
-#' @param na.method An index for how to treat missing values: 1 = stop analysis; 2 = return NA for coordinates
+#' @param na.action An index for how to treat missing values: 1 = stop analysis; 2 = return NA for coordinates
 #' with missing values for any specimen; 3 = attempt to calculate means for coordinates for all non-missing values.
 #' @keywords utilities
 #' @export
@@ -161,14 +161,14 @@ NULL
 #' A[[1]] <- NA # make a missing value, just for example
 #'
 #' mshape(Y.gpa$coords)   # mean (consensus) configuration
-#' # mshape(A, na.method = 1) # will return an error
-#' mshape(A, na.method = 2) # returns NA in spot of missing value
-#' mshape(A, na.method = 3) # finds mean values from all possible values
+#' # mshape(A, na.action = 1) # will return an error
+#' mshape(A, na.action = 2) # returns NA in spot of missing value
+#' mshape(A, na.action = 3) # finds mean values from all possible values
 #' 
-mshape <- function(A, na.method = 1){
+mshape <- function(A, na.action = 1){
   
-  na.check <- na.method %in% 1:3
-  if(!na.check) na.method <- 1
+  na.check <- na.action %in% 1:3
+  if(!na.check) na.action <- 1
   
   if(!inherits(A, c("list", "array", "matrix")))
     stop("Data are neither a list nor array. mshape is not possible with data in the format used.\n",
@@ -221,35 +221,35 @@ mshape <- function(A, na.method = 1){
       }
     }
     
-    if(na.method == 1) {
+    if(na.action == 1) {
       
       if(any(is.na(unlist(L))))
         stop("Data matrix contains missing values.\n 
-             Estimate these first (see 'estimate.missing') or chamge the na.method (see Arguments).\n",
+             Estimate these first (see 'estimate.missing') or chamge the na.action (see Arguments).\n",
              call. = FALSE)
       
       res <- if(length(L) == 1) L else Reduce("+", L)/n
     }
     
-    if(na.method == 2) {
+    if(na.action == 2) {
       
       if(any(is.na(unlist(L)))) {
         cat("Warning: Missing values detected.\n")
         cat("NA is returned for any coordinate where missing values were found.\n")
         cat("You can estimate missing values (see 'estimate.missing')\n")
-        cat("or change the na.method (see Arguments) to find the mean of just the remaining values\n\n.")
+        cat("or change the na.action (see Arguments) to find the mean of just the remaining values\n\n.")
       }
       res <- if(length(L) == 1) L else Reduce("+", L)/n
       }
   
     
-    if(na.method == 3) {
+    if(na.action == 3) {
       
       if(any(is.na(unlist(L)))) {
         cat("Warning: Missing values detected.\n")
         cat("Means are calculated only for values that are found.\n")
         cat("You can estimate missing values (see 'estimate.missing')\n")
-        cat("or change the na.method (see Arguments) to return NA for coordinates that have missing values.\n\n.")
+        cat("or change the na.action (see Arguments) to return NA for coordinates that have missing values.\n\n.")
       }
       
       mmean <- function(L) { 
