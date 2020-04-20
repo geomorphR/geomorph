@@ -143,7 +143,7 @@ NULL
 #'
 #' The function estimates the average landmark coordinates for a set of aligned specimens. It is assumed
 #' that the landmarks have previously been aligned using Generalized Procrustes Analysis (GPA)
-#'  [e.g., with \code{\link{gpagen}}]. This function is described in Claude (2008).
+#'  [e.g., with \code{\link{gpagen}}]. Three different methods are available for missing data (see Arguments and Examples).
 #'  
 #'  One can then use the generic function \code{\link{plot}} to produce a numbered plot of landmark 
 #'  positions and potentially add links, in order to review landmark positions
@@ -222,16 +222,36 @@ mshape <- function(A, na.method = 1){
     }
     
     if(na.method == 1) {
+      
       if(any(is.na(unlist(L))))
-        stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').\n",
+        stop("Data matrix contains missing values.\n 
+             Estimate these first (see 'estimate.missing') or chamge the na.method (see Arguments).\n",
              call. = FALSE)
       
       res <- if(length(L) == 1) L else Reduce("+", L)/n
     }
     
-    if(na.method == 2) res <- if(length(L) == 1) L else Reduce("+", L)/n
+    if(na.method == 2) {
+      
+      if(any(is.na(unlist(L)))) {
+        cat("Warning: Missing values detected.\n")
+        cat("NA is returned for any coordinate where missing values were found.\n")
+        cat("You can estimate missing values (see 'estimate.missing')\n")
+        cat("or change the na.method (see Arguments) to find the mean of just the remaining values\n\n.")
+      }
+      res <- if(length(L) == 1) L else Reduce("+", L)/n
+      }
+  
     
     if(na.method == 3) {
+      
+      if(any(is.na(unlist(L)))) {
+        cat("Warning: Missing values detected.\n")
+        cat("Means are calculated only for values that are found.\n")
+        cat("You can estimate missing values (see 'estimate.missing')\n")
+        cat("or change the na.method (see Arguments) to return NA for coordinates that have missing values.\n\n.")
+      }
+      
       mmean <- function(L) { 
         kp <- k * p
         U <- unlist(L)

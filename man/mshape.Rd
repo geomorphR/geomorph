@@ -18,7 +18,7 @@ Estimate the mean shape for a set of aligned specimens
 \details{
 The function estimates the average landmark coordinates for a set of aligned specimens. It is assumed
 that the landmarks have previously been aligned using Generalized Procrustes Analysis (GPA)
- [e.g., with \code{\link{gpagen}}]. This function is described in Claude (2008).
+ [e.g., with \code{\link{gpagen}}]. Three different methods are available for missing data (see Arguments and Examples).
  
  One can then use the generic function \code{\link{plot}} to produce a numbered plot of landmark 
  positions and potentially add links, in order to review landmark positions
