@@ -210,10 +210,10 @@ mshape <- function(A, na.method = 1){
         stop("Not all specimens have the same number of landmarks or landmarks in the same dimensions.\n", 
              call. = FALSE)
       L <- A
-      if(length(dims) == 3) {
+      if(length(L) > 1) {
         p <- dims[[1]]
         k <- dims[[2]]
-        n <- dims[[3]]
+        n <- length(L)
       } else {
         n <- dims[[1]]
         p <- dims[[2]]
@@ -225,10 +225,11 @@ mshape <- function(A, na.method = 1){
       if(any(is.na(unlist(L))))
         stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').\n",
              call. = FALSE)
-      res <- Reduce("+", L)/n
+      
+      res <- if(length(L) == 1) L else Reduce("+", L)/n
     }
     
-    if(na.method == 2) res <- Reduce("+", L)/n
+    if(na.method == 2) res <- if(length(L) == 1) L else Reduce("+", L)/n
     
     if(na.method == 3) {
       mmean <- function(L) { 
@@ -236,17 +237,17 @@ mshape <- function(A, na.method = 1){
         U <- unlist(L)
         u <- length(U)
         starts <- seq.int(1, u, kp)
-        M <- matrix(NA, p, k)
+        M <- array(NA, p*k)
         for(i in 1:kp) {
           pts <- starts -1 + i
           M[i] <- mean(na.omit(U[pts]))
         }
         
-        if(k == 1) M <- matrix(M, 1, p) 
+        if(k == 1) M <- matrix(M, 1, p) else M <- matrix(M, p, k)
         M
       }
       
-      res <- mmean(L)
+      res <- if(length(L) == 1) L else mmean(L)
     }
     
   
