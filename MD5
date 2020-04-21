@@ -11,7 +11,7 @@ d8e8360c03c03fe45d2100e9c05d4a89 *data/plethodon.rda
 9ba51ab9be03930a4acdcddde8169b33 *data/scallopPLY.rda
 6e5e71b242462e422b716800ffc3c464 *data/scallops.rda
 73f06088060a63ec35d0ed9614c9dd45 *DESCRIPTION
-73f723a130c92f8b84a81465a15add7c *geomorph.Rproj
+f4f2080e745b8d689f17caf549449ab5 *geomorph.Rproj
 b70e887db79507e51c7356c21b869761 *inst/CITATION
 71303f6d562524cf09f2e0cd4be5a46e *man/advanced.procD.lm.Rd
 5e099c6268d251bf5c98595d9566385a *man/arrayspecs.Rd
@@ -130,7 +130,7 @@ d9119f721918f22c267db843023a86fe *man/writeland.tps.Rd
 92239d51a080ccd3fc3a9f7ef67d1b8c *R/arrayspecs.r
 42a74f9e0e5511956907d91b150eba8c *R/bilat.symmetry.r
 d7d67e9218f84609046423cb222f5c44 *R/build.template.r
-5fb73a759c8c61b3fed10ad05248688e *R/combine.subsets.R
+5fb73a759c8c61b3fed10ad05248688e *R/combine.subsets.r
 a85f984f777798d31520e42d0c87e3f5 *R/compare.CR.R
 cff9b470e442542bb66ab1446904fcba *R/compare.evol.rates.r
 158c6de8370887d5561219096b6c30d5 *R/compare.multi.evol.rates.r
@@ -149,7 +149,7 @@ f14e7f81ecc74bda3fded01d703c7d23 *R/digit.fixed.r
 aac6a4f8a759473e8c37048e5c8e3d91 *R/findMeanSpec.r
 089a02a38c0381ac0381f0ae8f5b07f7 *R/fixed.angle.r
 953c275fdc42e65db7394a594d35806a *R/geomorph.data.frame.r
-e275db70cea76712d17bec5d91f8db27 *R/geomorph.support.code.r
+4c63c0b7f4b6d7dcb1915b52386baf2e *R/geomorph.support.code.r
 26644f77a89f1c2d4fbe7916684945b4 *R/geomorph.utils.r
 b0de2a67cff633e27e7a00860187240f *R/globalIntegration.r
 85f132fe6dad77cc29c77ef6517a119e *R/gm.prcomp.R

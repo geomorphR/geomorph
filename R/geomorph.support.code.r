@@ -459,8 +459,7 @@ pGpa <- function(Y, PrinAxes = FALSE, Proj = FALSE, max.iter = 5){
   Yc <- Map(function(y) center.scale(y), Y)
   CS <- sapply(Yc,"[[","CS")
   Ya <- lapply(Yc,"[[","coords")
-  M <- Reduce("+",Ya)/n
-  Ya <- apply.pPsup(M, Ya)
+  Ya <- apply.pPsup(Ya[[1]], Ya)
   M <- Reduce("+",Ya)/n
   Q <- ss <- n*(1-sum(M^2))
   M <- cs.scale(M)
@@ -499,8 +498,7 @@ pGpa <- function(Y, PrinAxes = FALSE, Proj = FALSE, max.iter = 5){
   Yc <- Map(function(y) center.scale(y), Y)
   CS <- sapply(Yc,"[[","CS")
   Ya <- lapply(Yc,"[[","coords")
-  M <- Reduce("+",Ya)/n
-  Ya <- apply.pPsup(M, Ya)
+  Ya <- apply.pPsup(Ya[[1]], Ya)
   M <- Reduce("+",Ya)/n
   Q <- ss <- n*(1-sum(M^2))
   M <- cs.scale(M)
