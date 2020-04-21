@@ -8,6 +8,7 @@
 
 ### BUG FIXES
 * Fixed bug in FA shape components output in `bilat.symmetry`
+* Fixed pGPA issue to use first specimen rather than mean in first iteration
 
 ### OTHER CHANGES
 * Option for handling NAs added to mshape and plot.mshape
