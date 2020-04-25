@@ -2226,45 +2226,6 @@ readland.tps2 <- function (file, specID = c("None", "ID", "imageID"))
 ### -----------------------------------------------------------------------------------------
 
 
-# sim.char.BM
-# An alternative to sim.char for BM
-# compared to sim.char, uses better memoization
-
-
-# sim.char has a similar function to this but it is called in every simulation
-# and defers to C for help.  This is done once only here. (Produces a projection matrix)
-phy.sim.mat <- function(phy) {
-  N <- length(phy$tip.label)
-  n <- nrow(phy$edge)
-  m <- matrix(0, N, n)
-  edg <- phy$edge.length
-  idx <- phy$edge[, 2]
-  anc <- phy$edge[, 1]
-  tips <- which(idx <= N)
-  non.tips <- which(idx > N)
-  for(i in 1:length(tips)) m[idx[tips[i]], tips[i]] <- sqrt(edg[tips[i]])
-  for(i in 1:length(non.tips)) {
-    x <- idx[non.tips[i]]
-    anc.i <- which(anc == x)
-    edg.i <- idx[anc.i]
-    if(any(edg.i > N)) {
-      edg.i <- as.list(edg.i)
-      while(any(edg.i > N)) {
-        edg.i <- lapply(1:length(edg.i), function(j){
-          edg.i.j <- edg.i[[j]]
-          if(edg.i.j > N) {
-            idx[which(anc == edg.i.j)]
-          } else edg.i.j <- edg.i.j
-        })
-        edg.i <- unlist(edg.i)
-      }
-    }
-    m[edg.i, which(idx == x)] <- sqrt(edg[which(idx == x)])
-  }
-  rownames(m) <- phy$tip.label
-  m
-}
-
 # A function to extract eigen values, as per mvrnorm
 # But does not incorporate other traps and options, as in mvnorm.
 Sig.eigen <- function(Sig, tol = 1e-06){
