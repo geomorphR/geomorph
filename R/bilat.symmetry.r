@@ -76,19 +76,21 @@
 #' @author Dean Adams and Michael Collyer
 #' @return An object of class "bilat.symmetry" returns a list of the following
 #' \item{shape.anova}{An analysis of variance table for the shape data.}
-#' \item{size.anova}{An analysis of variance table for the shape data (when object.sym=FALSE).}
+#' \item{size.anova}{An analysis of variance table for the shape data (when object.sym = FALSE).}
 #' \item{symm.shape}{The symmetric component of shape variation.}
 #' \item{asymm.shape}{The asymmetric component of shape variation.}
 #' \item{DA.component}{The directional asymmetry component, found as the mean shape for each side.}
-#' \item{FA.component}{The fluctuating asymmetry component for each specimen, found as the specimen-specific side deviation adjusted for the mean
-#'  directional asymmetry in the dataset.}
+#' \item{FA.component}{The fluctuating asymmetry component for each specimen, found as the specimen-specific side deviation 
+#' adjusted for the mean directional asymmetry in the dataset.}
 #' \item{data.type}{A value indicating whether the analysis was performed as Object or Matching symmetry.}
+#' \item{FA.mns}{COMPLEMENT}
+#' \item{DA.mns}{COMPLEMENT}
 #' \item{permutations}{The number of random permutations used.}
 #' \item{random.shape.F}{A matrix of random F-values from the Shape analysis.}
-#' \item{random.size.F}{A matrix of random F-values from the Centroid Size analysis.}
+#' \item{random.size.F}{A matrix of random F-values from the Centroid Size analysis (when object.sym = FALSE).}
 #' \item{perm.method}{A value indicating whether "Raw" values were shuffled or "RRPP" performed.}
 #' \item{procD.lm.shape}{A list of typical output from an object of class procD.lm, for shape}
-#' \item{procD.lm.size}{If applicable, a list of typical output from an object of class procD.lm, for size.}
+#' \item{procD.lm.size}{If applicable, a list of typical output from an object of class procD.lm, for size (when object.sym = FALSE).}
 #' \item{call}{The matched call.}
 #' 
 #' @references Klingenberg, C.P. and G.S. McIntyre. 1998. Quantitative genetics of geometric shape in the mouse mandible. Evolution. 55:2342-2352.
@@ -116,14 +118,16 @@
 #'
 #' #Example of object symmetry
 #'
+#' data(lizards)
+#' gdf <- geomorph.data.frame(shape = lizards$coords, ind = lizards$ind, replicate = lizards$rep)
+#' liz.sym <- bilat.symmetry(A = shape, ind = ind, rep = rep, object.sym = TRUE, 
+#' land.pairs = lizards$lm.pairs, data = gdf, RRPP = TRUE, iter = 499)
+#' summary(liz.sym)
+#' 
+#' # Example of object symmetry in 3D and including semilandmarks
+#' 
 #' data(scallops)
-#' gdf <- geomorph.data.frame(shape = scallops$coorddata, ind=scallops$ind)
-#' scallop.sym <- bilat.symmetry(A = shape, ind = ind, object.sym = TRUE, 
-#' land.pairs=scallops$land.pairs, data = gdf, RRPP = TRUE, iter = 499)
-#' summary(scallop.sym)
-#' 
-#' # Previous example, incorporating semilandmarks
-#' 
+#' gdf <- geomorph.data.frame(shape = scallops$coorddata, ind = scallops$ind)
 #' scallop.sym <- bilat.symmetry(A = shape, ind = ind, object.sym = TRUE, 
 #' curves= scallops$curvslide, surfaces = scallops$surfslide,
 #' land.pairs=scallops$land.pairs, data = gdf, RRPP = TRUE, iter = 499)
@@ -131,7 +135,7 @@
 #' # NOTE one can also: plot(scallop.sym, warpgrids = TRUE, mesh = NULL)
 #' # NOTE one can also: scallop.sym$data.type # recall the symmetry type
 
-bilat.symmetry<-function(A, ind=NULL, side=NULL, replicate=NULL, object.sym=FALSE, land.pairs=NULL,
+bilat.symmetry <- function(A, ind = NULL, side = NULL, replicate = NULL, object.sym = FALSE, land.pairs = NULL,
                          data = NULL, iter = 999, seed = NULL, RRPP = TRUE, print.progress = TRUE, ...){
 
   if(!is.null(data)){
@@ -185,8 +189,9 @@ bilat.symmetry<-function(A, ind=NULL, side=NULL, replicate=NULL, object.sym=FALS
       replicate <- factor(data[[which(!is.na(replicate.match))]])
   }
     
-  n<-dim(A)[3]; k<-dim(A)[2]; p<-dim(A)[1]; nind<-nlevels(ind); spec.names<-dimnames(A)[[3]]
+  n <- dim(A)[3]; k <- dim(A)[2]; p <- dim(A)[1]; nind <- nlevels(ind); spec.names <- dimnames(A)[[3]]
   if(!object.sym && is.null(side)) stop("Sides not specified.") 
+  
   if(object.sym){
     if(is.null(land.pairs)) {stop("Landmark pairs not specified.")} 
     npairs <- nrow(land.pairs); nl <- p-2*npairs
@@ -199,20 +204,20 @@ bilat.symmetry<-function(A, ind=NULL, side=NULL, replicate=NULL, object.sym=FALS
     if(print.progress) cat("\nObject Symmetry GPA\n")
     gpa.res <- gpagen(A, print.progress = print.progress)
     A <- gpa.res$coords
-  }
-  Y <- two.d.array(A)
-  if(!is.null(replicate)) {
+    Y <- two.d.array(A)
+    
+    if(!is.null(replicate)) {
     form.shape <- Y ~ ind + side + ind/side 
     form.names <- c("ind", "side", "ind:side", "ind:side:replicate", "Total")
     dat.shape <- geomorph.data.frame(Y = Y, ind = ind, side = side, replicate = replicate)
-  } else {
+    } else {
     form.shape <- Y ~ ind + side 
     form.names <- c("ind", "side", "ind:side", "Total")
     dat.shape <- geomorph.data.frame(Y = Y, ind = ind, side = side)
   }
   if(print.progress) cat("\nShape Analysis")
   PSh <- procD.lm(form.shape, data = dat.shape, RRPP = RRPP, 
-           seed = seed, iter= iter, print.progress = print.progress, 
+           seed = seed, iter = iter, print.progress = print.progress, 
            effect.type = "F")
   shape.anova <- anova(PSh, print.progress = FALSE, effect.type = "F")$table
   shape.anova$Z[is.nan(shape.anova$Z)] <- NA
@@ -235,7 +240,8 @@ bilat.symmetry<-function(A, ind=NULL, side=NULL, replicate=NULL, object.sym=FALS
     shape.anova[[ncol(shape.anova)]][1:3] <- newP
   }
   rownames(shape.anova) <- form.names
-  
+  }
+
   if(!object.sym){  
     if(!is.null(replicate)) {
       form.size <- size ~ ind + side + ind/side 
@@ -271,6 +277,7 @@ bilat.symmetry<-function(A, ind=NULL, side=NULL, replicate=NULL, object.sym=FALS
     rownames(PSz$aov.table) <- form.names
     size.anova <- PSz$aov.table
   }
+  
   # build shape components for output
   X.ind <- model.matrix(~ind + 0, data = as.data.frame(dat.shape[-1]))
   symm.component <- arrayspecs(coef(lm.fit(X.ind, Y)),p,k)
@@ -284,23 +291,22 @@ bilat.symmetry<-function(A, ind=NULL, side=NULL, replicate=NULL, object.sym=FALS
   indsq <- seq(n.side, (n.ind*n.side), n.side)
   asymm.component <- avg.side.symm[indsq,] - avg.side.symm[-indsq,]
   mn.shape <- mshape(A)
-  asymm.component<-simplify2array(lapply(1:n.ind, function(j) 
+  asymm.component <- simplify2array(lapply(1:n.ind, function(j) 
   {t(matrix(asymm.component[j,],k,p)) + mn.shape}))
   dimnames(asymm.component)[[3]] <- ind.names
   
   DA.est <- coef(.lm.fit(X.side, Y))
-  DA.mns <- arrayspecs(rbind(apply(DA.est[-indsq,],2,mean),apply(DA.est[indsq,],2,mean)),p,k)
-  mn.DA <- matrix(apply((DA.est[-indsq,] - DA.est[indsq,]),2,mean),byrow=T,nrow=p,ncol=k)
+  DA.mns <- arrayspecs(rbind(apply(DA.est[-indsq,], 2, mean), apply(DA.est[indsq,], 2, mean)), p, k)
+  mn.DA <- matrix(apply((DA.est[-indsq,] - DA.est[indsq,]), 2, mean), byrow=T, nrow=p, ncol=k)
 
   X.ind.side <- model.matrix(~(side:ind) + 0, data = as.data.frame(dat.shape[-1]))
   ind.mns <- coef(.lm.fit(X.ind.side, Y))
   FA.component <- ind.mns[-indsq,] - ind.mns[indsq,]
-  mn.shape<-mshape(A)
-  FA.component<-simplify2array(lapply(1:n.ind, function(j) 
+  FA.component <- simplify2array(lapply(1:n.ind, function(j) 
   {t(matrix(FA.component[j,],k,p)) + mn.shape - mn.DA}))
   dimnames(FA.component)[[3]] <- ind.names 
   
-  out<-list(shape.anova = shape.anova, symm.shape = symm.component,
+  out <- list(shape.anova = shape.anova, symm.shape = symm.component,
             asymm.shape = asymm.component, DA.component = DA.mns, FA.component = FA.component,
             data.type = ifelse(object.sym==TRUE,"Object", "Matching"),
             FA.mns = FA.component, DA.mns = DA.mns,

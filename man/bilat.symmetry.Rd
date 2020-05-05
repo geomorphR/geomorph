@@ -54,19 +54,21 @@ This is helpful for long-running analyses.}
 \value{
 An object of class "bilat.symmetry" returns a list of the following
 \item{shape.anova}{An analysis of variance table for the shape data.}
-\item{size.anova}{An analysis of variance table for the shape data (when object.sym=FALSE).}
+\item{size.anova}{An analysis of variance table for the shape data (when object.sym = FALSE).}
 \item{symm.shape}{The symmetric component of shape variation.}
 \item{asymm.shape}{The asymmetric component of shape variation.}
 \item{DA.component}{The directional asymmetry component, found as the mean shape for each side.}
-\item{FA.component}{The fluctuating asymmetry component for each specimen, found as the specimen-specific side deviation adjusted for the mean
- directional asymmetry in the dataset.}
+\item{FA.component}{The fluctuating asymmetry component for each specimen, found as the specimen-specific side deviation 
+adjusted for the mean directional asymmetry in the dataset.}
 \item{data.type}{A value indicating whether the analysis was performed as Object or Matching symmetry.}
+\item{FA.mns}{COMPLEMENT}
+\item{DA.mns}{COMPLEMENT}
 \item{permutations}{The number of random permutations used.}
 \item{random.shape.F}{A matrix of random F-values from the Shape analysis.}
-\item{random.size.F}{A matrix of random F-values from the Centroid Size analysis.}
+\item{random.size.F}{A matrix of random F-values from the Centroid Size analysis (when object.sym = FALSE).}
 \item{perm.method}{A value indicating whether "Raw" values were shuffled or "RRPP" performed.}
 \item{procD.lm.shape}{A list of typical output from an object of class procD.lm, for shape}
-\item{procD.lm.size}{If applicable, a list of typical output from an object of class procD.lm, for size.}
+\item{procD.lm.size}{If applicable, a list of typical output from an object of class procD.lm, for size (when object.sym = FALSE).}
 \item{call}{The matched call.}
 }
 \description{
@@ -144,14 +146,16 @@ summary(mosquito.sym) # same results
 
 #Example of object symmetry
 
+data(lizards)
+gdf <- geomorph.data.frame(shape = lizards$coords, ind = lizards$ind, replicate = lizards$rep)
+liz.sym <- bilat.symmetry(A = shape, ind = ind, rep = rep, object.sym = TRUE, 
+land.pairs = lizards$lm.pairs, data = gdf, RRPP = TRUE, iter = 499)
+summary(liz.sym)
+
+# Example of object symmetry in 3D and including semilandmarks
+
 data(scallops)
-gdf <- geomorph.data.frame(shape = scallops$coorddata, ind=scallops$ind)
-scallop.sym <- bilat.symmetry(A = shape, ind = ind, object.sym = TRUE, 
-land.pairs=scallops$land.pairs, data = gdf, RRPP = TRUE, iter = 499)
-summary(scallop.sym)
-
-# Previous example, incorporating semilandmarks
-
+gdf <- geomorph.data.frame(shape = scallops$coorddata, ind = scallops$ind)
 scallop.sym <- bilat.symmetry(A = shape, ind = ind, object.sym = TRUE, 
 curves= scallops$curvslide, surfaces = scallops$surfslide,
 land.pairs=scallops$land.pairs, data = gdf, RRPP = TRUE, iter = 499)
