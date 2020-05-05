@@ -5,6 +5,7 @@
 * Updates to gm.prcomp to include PaCA
 * Added the possibility of a 3D PCA plot with a phylogeny and time on the z-axis to plot.gm.prcomp
 * Added the possibility of controlling plot3d definitions in plotspec
+* New dataset of dorsal views of lizard heads added
 
 ### BUG FIXES
 * Fixed bug in FA shape components output in `bilat.symmetry`
