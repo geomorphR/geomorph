@@ -204,6 +204,7 @@ bilat.symmetry <- function(A, ind = NULL, side = NULL, replicate = NULL, object.
     if(print.progress) cat("\nObject Symmetry GPA\n")
     gpa.res <- gpagen(A, print.progress = print.progress)
     A <- gpa.res$coords
+  }
     Y <- two.d.array(A)
     
     if(!is.null(replicate)) {
@@ -240,7 +241,7 @@ bilat.symmetry <- function(A, ind = NULL, side = NULL, replicate = NULL, object.
     shape.anova[[ncol(shape.anova)]][1:3] <- newP
   }
   rownames(shape.anova) <- form.names
-  }
+
 
   if(!object.sym){  
     if(!is.null(replicate)) {
@@ -308,7 +309,7 @@ bilat.symmetry <- function(A, ind = NULL, side = NULL, replicate = NULL, object.
   
   out <- list(shape.anova = shape.anova, symm.shape = symm.component,
             asymm.shape = asymm.component, DA.component = DA.mns, FA.component = FA.component,
-            data.type = ifelse(object.sym==TRUE,"Object", "Matching"),
+            data.type = ifelse(object.sym == TRUE, "Object", "Matching"),
             FA.mns = FA.component, DA.mns = DA.mns,
             permutations = iter+1,
             random.shape.F = random.shape.F, 
