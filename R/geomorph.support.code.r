@@ -1056,24 +1056,6 @@ model.matrix.g <- function(f1, data = NULL) {
   model.matrix(f1, data=dat)
 }
 
-# gdf.to.df
-# attempts to coerce a geomorph data frame to a data frame
-# but only for relevant parts
-# used in advanced.procD.lm
-gdf.to.df <- function(L){
-  if(!is.list(L)) stop("Missing list to convert to data frame")
-  check1 <- sapply(L, class)
-  match1 <- match(check1, c("numeric", "matrix", "vector", "factor"))
-  Lnew <- L[!is.na(match1)]
-  check2 <- sapply(Lnew, NROW)
-  if(length(unique(check2)) == 1) Lnew <- Lnew else {
-    check3 <- as.vector(by(check2, check2, length))
-    check4 <- check2[which.max(check3)]
-    Lnew <- Lnew[check2 == check4]
-  }
-  as.data.frame(Lnew)
-}
-
 # perm.CR.index
 # creates a permutation index for resampling, shuffling landmarks
 # used in all functions utilizing CR (modularity)
@@ -1903,7 +1885,7 @@ GMfromShapes0 <- function(Shapes, scaled = TRUE){ # No curves
 # evenPts
 # basic function for spacing out curve points via linear interpolation
 # simple form of pointsAtEvenSpacing from StereoMorph 
-# used in: readland.shapes and difit.curves
+# used in: readland.shapes and digit.curves
 evenPts <- function(x, n){
   x <- as.matrix(na.omit(x))
   N <- NROW(x); p <- NCOL(x)

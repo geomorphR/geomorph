@@ -1,11 +1,14 @@
-# CHANGES IN GEOMORPH VERSION 3.2.1.XXXX
+# CHANGES IN GEOMORPH VERSION 3.3.0
 
 ### NEW FEATURES
-* A vignette has been added (geomorphPCA) to aid the transition of users to the gm.prcomp family of functions for exploring and visualizing shape space
-* Updates to gm.prcomp to include PaCA
-* Added the possibility of a 3D PCA plot with a phylogeny and time on the z-axis to plot.gm.prcomp
-* Added the possibility of controlling plot3d definitions in plotspec
-* New dataset of dorsal views of lizard heads added
+* A vignette has been added (geomorphPCA) to aid the transition of users to the gm.prcomp family of functions for exploring and visualizing shape space.
+* Updates to `gm.prcomp` to include PaCA.
+* Added the possibility of a 3D PCA plot with a phylogeny and time on the z-axis to `plot.gm.prcomp`.
+* Added the possibility of controlling plot3d definitions in `plotspec`.
+* New dataset of dorsal views of lizard heads added: `lizards`.
+* `mshape` now has options (`na.action` argument) for missing values.
+* New function, `readland.fcsv` for importing landmark data from SlicerMorph `.fcsv` files.
+* `combine.subsets` updated to include weighting options for relative centroid size.
 
 ### BUG FIXES
 * Fixed bug in FA shape components output in `bilat.symmetry`

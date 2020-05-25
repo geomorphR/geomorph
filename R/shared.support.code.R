@@ -224,18 +224,12 @@ Cov.proj <- function(Cov, id = NULL){
   Cov <- if(is.null(id)) Cov else Cov[id, id]
   sym <- isSymmetric(Cov)
   eigC <- eigen(Cov, symmetric = sym)
-  lambda <- zapsmall(abs(Re(eigC$values)))
-  if(any(lambda == 0)){
-    cat("\nWarning: singular covariance matrix. Proceed with caution\n")
-  }
-  
   eigC.vect = t(eigC$vectors)
   L <- eigC.vect *sqrt(abs(eigC$values))
   P <- fast.solve(crossprod(L, eigC.vect))
   dimnames(P) <- dimnames(Cov)
   P
 }
-
 
 
 # ape replacement functions below ----------------------------------------------------
