@@ -595,33 +595,6 @@ plot.evolrate <- function(x, ...){
   arrows(Rate.obs,50,Rate.obs,5,length=0.1,lwd=2)
 }
 
-
-# plotTangentSpace
-
-#' Print/Summary Function for geomorph
-#' 
-#' @param x print/summary object
-#' @param ... other arguments passed to print/summary
-#' @export
-#' @author Michael Collyer
-#' @keywords utilities
-print.plotTangentSpace <- function (x, ...) {
-  cat("\nPC Summary\n\n")
-  print(x$pc.summary)
-  invisible(x)
-}
-
-#' Print/Summary Function for geomorph
-#' 
-#' @param object print/summary object
-#' @param ... other arguments passed to print/summary
-#' @export
-#' @author Michael Collyer
-#' @keywords utilities
-summary.plotTangentSpace <- function (object, ...) {
-  print.plotTangentSpace(object, ...)
-}
-
 # compare.pls
 
 #' Print/Summary Function for geomorph
