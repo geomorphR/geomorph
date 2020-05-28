@@ -13,7 +13,6 @@ d8e8360c03c03fe45d2100e9c05d4a89 *data/plethodon.rda
 031eb71671e3726b958a48f7b559f55a *DESCRIPTION
 73f723a130c92f8b84a81465a15add7c *geomorph.Rproj
 1f29f9752fcc12981a6124e2e5c4e4c5 *inst/CITATION
-71303f6d562524cf09f2e0cd4be5a46e *man/advanced.procD.lm.Rd
 5e099c6268d251bf5c98595d9566385a *man/arrayspecs.Rd
 15a84d326215bfe2c075f390fa8f9c53 *man/bilat.symmetry.Rd
 6e94f720fd50cf0ff309624b1a4a30ee *man/buildtemplate.Rd
@@ -49,7 +48,6 @@ e152bb8674916ebc4f54d1b061b2c144 *man/modularity.test.Rd
 f43101bd2713be9a132723eec919e148 *man/morphol.disparity.Rd
 00e77dd77ac4f29ace5334a4df4aa23e *man/mosquito.Rd
 ffadebd6be893bbc403d22f884329a9a *man/mshape.Rd
-1568730ef6ac1237622ae188e1928c1b *man/nested.update.Rd
 6448e71cd5ed47e98581aecdef01ccec *man/phylo.integration.Rd
 5eb5cd0bcbac8de3b07016c143b5ef7a *man/phylo.modularity.Rd
 84b09f06ece9d7d6d11281203a8cb0e3 *man/physignal.Rd
@@ -88,7 +86,6 @@ b7e6c44a6550481ceb569b5bf0c94c89 *man/print.gm.prcomp.Rd
 c099404c82877d5f4efc349589e2d21d *man/print.physignal.Rd
 c9459503ec13f843f971edda31289dc6 *man/print.pls.Rd
 e186bde97e98a204b53457a14eb0a52d *man/print.procD.lm.Rd
-9b573f0adfa8a7289c49fd549a5a1e9c *man/procD.allometry.Rd
 ec58b27841c3d0dccf39b907b4a628c2 *man/procD.lm.Rd
 957f08fb30818cd7b68eaa704d36118d *man/procD.pgls.Rd
 2e915d39d1b79932fb1633dbdcc28ce8 *man/pupfish.Rd
@@ -125,7 +122,7 @@ da1241dd835f95675cc7126b2a7ec61a *man/two.d.array.Rd
 d2755155772526527e4224b17d0dd05d *man/warpRefMesh.Rd
 7bea8d6b17918fd4889e2056ebe0e3d0 *man/warpRefOutline.Rd
 d9119f721918f22c267db843023a86fe *man/writeland.tps.Rd
-3b54eb7fdecfbcb414336c9270a4de41 *NAMESPACE
+4f9ee50059d7fc79859a3d07a4edce09 *NAMESPACE
 f1ac0f7918d053112d846e5f33780057 *NEWS.md
 92239d51a080ccd3fc3a9f7ef67d1b8c *R/arrayspecs.r
 99f656aab0d1659a3e4770ff2f5aad35 *R/bilat.symmetry.r
@@ -139,7 +136,7 @@ cff9b470e442542bb66ab1446904fcba *R/compare.evol.rates.r
 c77f2f19e63d93ec9a76ac9c2236f1bc *R/define.links.r
 ddcc6629196b8e66ef9a2e92c093f041 *R/define.modules.r
 cade439dd46467d50e1379141705922a *R/define.sliders.r
-399ac1190b0e4ffffd8f39856e99b155 *R/deprecated.defunct.r
+5370dcb2ab614401863a26618f0600e2 *R/deprecated.defunct.r
 a38ff2f2af270bf26299b1569cc734fc *R/digit.curves.r
 f14e7f81ecc74bda3fded01d703c7d23 *R/digit.fixed.r
 58ac3c6102b455136e748471fb62df29 *R/digitize2d.r
