@@ -4,29 +4,9 @@
 \alias{plotTangentSpace}
 \title{Deprecated functions in geomorph}
 \usage{
-plotTangentSpace(
-  A,
-  axis1 = 1,
-  axis2 = 2,
-  warpgrids = TRUE,
-  mesh = NULL,
-  label = NULL,
-  groups = NULL,
-  legend = FALSE,
-  ...
-)
+plotTangentSpace()
 
-plotTangentSpace(
-  A,
-  axis1 = 1,
-  axis2 = 2,
-  warpgrids = TRUE,
-  mesh = NULL,
-  label = NULL,
-  groups = NULL,
-  legend = FALSE,
-  ...
-)
+plotTangentSpace()
 }
 \description{
 The following function has been deprecated in geomorph

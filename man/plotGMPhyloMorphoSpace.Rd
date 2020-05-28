@@ -5,31 +5,9 @@
 \alias{plotGMPhyloMorphoSpace}
 \title{Deprecated functions in geomorph}
 \usage{
-plotGMPhyloMorphoSpace(
-  phy,
-  A,
-  tip.labels = TRUE,
-  node.labels = TRUE,
-  ancStates = TRUE,
-  xaxis = 1,
-  yaxis = 2,
-  zaxis = NULL,
-  plot.param = list(),
-  shadow = FALSE
-)
+plotGMPhyloMorphoSpace()
 
-plotGMPhyloMorphoSpace(
-  phy,
-  A,
-  tip.labels = TRUE,
-  node.labels = TRUE,
-  ancStates = TRUE,
-  xaxis = 1,
-  yaxis = 2,
-  zaxis = NULL,
-  plot.param = list(),
-  shadow = FALSE
-)
+plotGMPhyloMorphoSpace()
 }
 \description{
 The following function has been deprecated in geomorph

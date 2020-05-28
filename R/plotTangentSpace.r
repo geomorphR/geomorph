@@ -9,8 +9,7 @@
 #'  be used to accomplish any task of plotTangentSpace, with greater flexibility.
 #'  }
 #' 
-plotTangentSpace<-function (A, axis1 = 1, axis2 = 2, warpgrids = TRUE, mesh = NULL, label = NULL, 
-                            groups=NULL, legend=FALSE, ...){
+plotTangentSpace<-function (){
   .Defunct("gm.prcomp", package = "geomorph", 
               msg = "plotTangentSpace has been removed from geomorph.
               A combination of gm.prcomp, summary.prcomp, and plot.gm.prcomp has much greater flexibility.

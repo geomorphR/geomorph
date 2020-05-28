@@ -9,7 +9,7 @@
 #'  be used to accomplish any task of plotGMPhyloMorphospace, with greater flexibility.
 #'  }
 
-plotGMPhyloMorphoSpace <- function(phy,A,tip.labels=TRUE,node.labels=TRUE,ancStates=TRUE, xaxis=1, yaxis=2, zaxis=NULL, plot.param = list(), shadow=FALSE){
+plotGMPhyloMorphoSpace <- function(){
   .Defunct("gm.prcomp", package = "geomorph", 
               msg = "plotTangentSpace has been removed from geomorph.
               A combination of gm.prcomp, summary.prcomp, and plot.gm.prcomp has much greater flexibility.
