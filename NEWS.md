@@ -15,6 +15,7 @@
 * Fixed pGPA issue to use first specimen rather than mean in first iteration
 
 ### OTHER CHANGES
+* Removed DA.mns and FA.mns from `bilat.symmetry` (use DA.component and FA.component)
 * Option for handling NAs added to mshape and plot.mshape
 * Function plotTangentSpace has been deprecated 
 
@@ -348,7 +349,7 @@
 * Enhanced input flexibility for `advanced.ProcD.lm`: for single-factor analyses and matrix/variable input
 * Enhanced `readland.nts` flexibility with specimen labels; now supports spaces in labels
 * Generalized `read.ply` to allow reading meshes with many properties
-* Generalised input for `physignal` and `compare.evol.rates`: univariate data accepted as named vector
+* Generalized input for `physignal` and `compare.evol.rates`: univariate data accepted as named vector
 * Enhanced input for `define.links`: read and append links to existing links matrix
 
 ### BUG FIXES
@@ -403,7 +404,7 @@
 ### NEW FEATURES
 
 ### OTHER CHANGES
-* `warpRefMesh` generalised - now takes a mesh3d object (i.e. made from `read.ply`) rather than calling `read.ply` directly
+* `warpRefMesh` generalized - now takes a mesh3d object (i.e. made from `read.ply`) rather than calling `read.ply` directly
 * `read.morphologika` now reads [groups] option and adds these data to the $labels matrix
 * `plotOutliers` now has option groups to plot outliers by levels(groups) using group means
 * `morphol.disparity` help file updated to correctly indicate that group shape residuals, rather than shape values, themselves, are randomized in the permutation procedure
@@ -605,7 +606,7 @@
 * Adjusted plotting routines in `morphol.integr` to be compatible with new CRAN guidelines
 * Adjusted plotting routines in `bilat.symmetry` to be compatible with new CRAN guidelines
 * Alternative ancestral state reconstruction and tests for bifurcating tree implemented in `physignal`
-* Alternative ancestral state reconstruction and tests for bifurcating tree implemeneted in `PlotGMPhyloMorphoSpace`
+* Alternative ancestral state reconstruction and tests for bifurcating tree implemented in `PlotGMPhyloMorphoSpace`
 
 ### BUG FIXES
 * Corrected `readland.tps` to allow for non-numeric ID and reading a single specimen per file

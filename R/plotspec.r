@@ -19,7 +19,7 @@
 #' @param spec An object of class shape3d/mesh3d, or matrix of 3D vertex coordinates.
 #' @param digitspec Name of data matrix containing 3D fixed and/or surface sliding coordinates.
 #' @param fixed Numeric The number of fixed template landmarks (listed first in {digitspec})
-#' @param fixed.pt.col The colour for plotting fixed template landmarks (if any)
+#' @param fixed.pt.col The color for plotting fixed template landmarks (if any)
 #' @param fixed.pt.size The size for plotting fixed template landmarks (if any)
 #' @param mesh.ptsize Numeric Size to plot the mesh points (vertices), e.g. 0.1 for dense meshes, 3 for sparse meshes                                       
 #' @param centered Logical Whether the data matrix is in the surface mesh coordinate system ({centered=FALSE}) or

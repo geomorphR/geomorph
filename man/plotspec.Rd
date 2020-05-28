@@ -22,7 +22,7 @@ plotspec(
 
 \item{fixed}{Numeric The number of fixed template landmarks (listed first in {digitspec})}
 
-\item{fixed.pt.col}{The colour for plotting fixed template landmarks (if any)}
+\item{fixed.pt.col}{The color for plotting fixed template landmarks (if any)}
 
 \item{fixed.pt.size}{The size for plotting fixed template landmarks (if any)}
 

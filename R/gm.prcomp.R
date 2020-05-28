@@ -67,7 +67,7 @@
 #' have now been deprecated.
 #'
 #' @param A A 3D array (p x k x n) containing Procrustes shape variables for a set of aligned specimens.  
-#' Alternatively, this can be an n x p matrix of any data, but output will not conatin information about shapes.
+#' Alternatively, this can be an n x p matrix of any data, but output will not contain information about shapes.
 #' @param phy An optional phylogenetic tree of class phylo 
 #' @param align.to.phy An optional argument for whether \bold{PaCA} (if TRUE) should be performed
 #' @param GLS Whether GLS-centering and covariance estimation should be used (rather than OLS).

@@ -28,7 +28,7 @@
 #' @param mesh.coord A p x k matrix of 3D coordinates digitized on the ply file.
 #' @param ref A p x k matrix of 3D coordinates made by \code{\link{mshape}}
 #' @param color Color to set the ply file $material. If the ply already has color, use NULL. 
-#' For ply files without color, color=NULL will be plotted as grey.
+#' For ply files without color, color=NULL will be plotted as gray.
 #' @param centered Logical If the data in mesh.coords were collected from a centered mesh (see details).
 #' @export
 #' @seealso \code{\link{findMeanSpec}}

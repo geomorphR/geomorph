@@ -14,7 +14,7 @@ warpRefMesh(mesh, mesh.coord, ref, color = NULL, centered = FALSE)
 \item{ref}{A p x k matrix of 3D coordinates made by \code{\link{mshape}}}
 
 \item{color}{Color to set the ply file $material. If the ply already has color, use NULL. 
-For ply files without color, color=NULL will be plotted as grey.}
+For ply files without color, color=NULL will be plotted as gray.}
 
 \item{centered}{Logical If the data in mesh.coords were collected from a centered mesh (see details).}
 }

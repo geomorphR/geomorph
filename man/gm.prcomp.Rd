@@ -15,7 +15,7 @@ gm.prcomp(
 }
 \arguments{
 \item{A}{A 3D array (p x k x n) containing Procrustes shape variables for a set of aligned specimens.
-Alternatively, this can be an n x p matrix of any data, but output will not conatin information about shapes.}
+Alternatively, this can be an n x p matrix of any data, but output will not contain information about shapes.}
 
 \item{phy}{An optional phylogenetic tree of class phylo}
 
