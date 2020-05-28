@@ -112,7 +112,7 @@
 * Generalized plotting options
 * Reduced dependencies on `geiger` and `Matrix`
 * Added mean-centering to `compare.evol.rates` for permutations
-* Updated `fixed.angle` to allow centroids from mutiple points to be used as angle points.
+* Updated `fixed.angle` to allow centroids from multiple points to be used as angle points.
 * Updated `coords.subset` to avoid issue with arrayspecs and naming subsetted data.
 * Changed the default for sliding to ProcD=FALSE in `gpagen`
 * Added Procrustes distance matrix to `gpagen` output
@@ -214,7 +214,7 @@
 * Updated `readland.nts` to accept specimen labels with spaces in name
 
 ### BUG FIXES
-* Fixed problem with incoporating lm arguments in `procD.fit`
+* Fixed problem with incorporating lm arguments in `procD.fit`
 * Fixed univariate PLS to allow negative correlations
 * Fixed permutation issues with `advanced.procD.lm`
 * Fixed links not plotting in `plotAllSpecimens` if no colour specified
@@ -231,7 +231,7 @@
 ### OTHER CHANGES
 * Added a sensor to support code for `procD.lm` and its allies to 
     choose the computationally fastest algorithms based on design matrix complexity
-    and data dimnesionality
+    and data dimensionality
 * Updated `procD.fit` to remove unused levels from factors
 * Updated all functions using `geomorph.data.frame` to drop unused factor levels
 * Updated `mshape` to be used on lists, arrays, or matrices
@@ -490,7 +490,7 @@
 * Ability to plot specimen labels added to `two.b.pls`, `morphol.integr`, and `phylo.pls`
 * Slight ANOVA table output adjustment in `bilat.symmetry`
 * Vector of labels can be added for plotting in `plotAllometry` and `plotTangentSpace`
-* Labels for ancestral states addd to `plotGMPhyloMorphoSpace`
+* Labels for ancestral states added to `plotGMPhyloMorphoSpace`
 
 ### BUG FIXES
 * Fixed scale issue in `digitize2d`
@@ -604,7 +604,7 @@
 ### OTHER CHANGES
 * Adjusted plotting routines in `morphol.integr` to be compatible with new CRAN guidelines
 * Adjusted plotting routines in `bilat.symmetry` to be compatible with new CRAN guidelines
-* Alternative ancestral state reconstruction and tests for bifurcating tree implemeneted in `physignal`
+* Alternative ancestral state reconstruction and tests for bifurcating tree implemented in `physignal`
 * Alternative ancestral state reconstruction and tests for bifurcating tree implemeneted in `PlotGMPhyloMorphoSpace`
 
 ### BUG FIXES
@@ -653,6 +653,6 @@
 ### BUG FIXES
 * `buildtemplate` positional error in plot between template and scan corrected
 * `digit.curves` error with passing objects to internal function corrected
-* `gpgen` occassional reflection issue corrected
+* `gpgen` occasional reflection issue corrected
 
 * Added a `NEWS.md` file to track changes to the package.

@@ -44,7 +44,7 @@ Users should ensure that their mesh and mesh.coord matrix are in the same scale 
 For landmark coordinates digitized with geomorph digitizing functions, centered = TRUE. This refers to the
 specimen being centered prior to landmark acquisition in the RGL window. For landmark data collected outside
 of geomorph, centered=FALSE will usually be the case. The returned mesh3d object is for use in geomorph
-functions where shape deformations are plotted (\code{\link{plotTangentSpace}}, 
+functions where shape deformations are plotted (\code{\link{picknplot.shape}}, 
 \code{\link{two.b.pls}}, \code{\link{bilat.symmetry}}, and \code{\link{plotRefToTarget}}).
 }
 \references{

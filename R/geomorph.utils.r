@@ -836,8 +836,8 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, phylo = FALSE, time.plot = F
   if(!is.null(plot.args$axes)) axes <- plot.args$axes else axes <- TRUE
 
   if(axes){
-    abline(h = 0, lty=2, ...)
-    abline(v = 0, lty=2, ...)
+    abline(h = 0, lty=2)
+    abline(v = 0, lty=2)
   }
   
   if(phylo || time.plot) {
@@ -904,6 +904,7 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, phylo = FALSE, time.plot = F
       r = range(x)
       rc = scale(r, scale=F)
       l = mean(r) + s*rc 
+      l
     }
     
     t.p <- plot.args

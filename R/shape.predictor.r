@@ -33,7 +33,7 @@
 #'data("plethodon")
 #'
 #'Y.gpa <- gpagen(plethodon$land)    #GPA-alignment    
-#'plotTangentSpace(Y.gpa$coords)
+#'plot(gm.prcomp(Y.gpa$coords))
 #'
 #'preds <- shape.predictor(Y.gpa$coords, x= NULL, Intercept = FALSE, 
 #'pred1 = -0.1, pred2 = 0.1) # PC 1 extremes, sort of
@@ -42,14 +42,14 @@
 #'plotRefToTarget(M, preds[[1]]) # same result
 #'plotRefToTarget(M, preds$pred2)
 #'
-#'PCA <- plotTangentSpace(Y.gpa$coords)
-#'PC <- PCA$pc.scores[,1]
+#'PCA <- gm.prcomp(Y.gpa$coords)
+#'PC <- PCA$x[,1]
 #'preds <- shape.predictor(Y.gpa$coords, x= PC, Intercept = FALSE, 
 #'pred1 = min(PC), pred2 = max(PC)) # PC 1 extremes, more technically
 #'plotRefToTarget(M, preds$pred1)
 #'plotRefToTarget(M, preds$pred2)
 #'
-#'PC <- PCA$pc.scores[,1:2]
+#'PC <- PCA$x[,1:2]
 #'# user-picked spots - can be anything, but it in this case, apparent groups
 #'preds <- shape.predictor(Y.gpa$coords, x= PC, Intercept = FALSE, 
 #'                         pred1 = c(0.045,-0.02), pred2 = c(-0.025,0.06), pred3 = c(-0.06,-0.04)) 

@@ -6,7 +6,7 @@
 #' of shape variables and size, and produce plots to visualize shape allometries.  This function was deprecated
 #' when procD.allometry was launched with geomorph 3.0.0, which performed homogeneity of slopes tests to determine
 #' if a common allometry or unique group allometries were more appropriate as a model.  The S3 generic, plot.procD.allometry
-#' provided the same plotting as plotAllometry before it.  In geomorph 3.1.0, procD.allometry has been deprectaed in favor of using
+#' provided the same plotting as plotAllometry before it.  In geomorph 3.1.0, procD.allometry has been deprecated in favor of using
 #' \code{\link{procD.lm}} and \code{\link{pairwise}} for analyses, which can include additional variables, 
 #' thus eliminating plot.procD.allometry.  This function coalesces a few plotting options found in other functions, 
 #' as a wrapper, for the purpose of retaining the plot.procD.allometry options in one place.  
@@ -15,12 +15,12 @@
 #' There are fundamentally two different kinds of allometry plots: those based on linear models and those that do not have a linear
 #' model basis (more detail below).  The common allometric component (CAC) and size-shape PCA (Mitteroecker et al. 2004) are plotting 
 #' strategies that do not have results
-#' that vary with linear model parameters.  By contrast, predicition lines (PredLine, Adams and Nistri 2010) and regression scores 
+#' that vary with linear model parameters.  By contrast, prediction lines (PredLine, Adams and Nistri 2010) and regression scores 
 #' (RegScore, Drake and Klingenberg 2008) are based on fitted values and regression coefficients, respectively, to visualize allometric patterns.  
 #' The plotAllometry function will extract necessary components from a \code{\link{procD.lm}} fit to calculate these various statistics 
-#' (although the variables used in the \code{\link{procD.lm}} fit are inconsequntial for CAC and size-shape PCA; only the shape variables are used).
+#' (although the variables used in the \code{\link{procD.lm}} fit are inconsequential for CAC and size-shape PCA; only the shape variables are used).
 #' 
-#' There are multipe ways to visualize allometry.  One way is to simply append a size variable to shape variables and perform a principal component analysis
+#' There are multiple ways to visualize allometry.  One way is to simply append a size variable to shape variables and perform a principal component analysis
 #' (PCA).  In the event that size and shape strongly covary, the first PC scores might reflect this (Mitteroecker et al. 2004).  Alternatively, the major
 #' axis of covariation between size and shape can be found by a singular value decomposition of their cross-products, a process known as two-block partial 
 #' least squares (PLS; Rohlf and Corti 2000).  This major axis of variation is often referred to as the common allometric component 
@@ -38,7 +38,7 @@
 #' unique allometries: shape ~ size * groups
 #' 
 #' However, other covariates can be added to these models.  One could define these models with \code{\link{procD.lm}}
-#' and use \code{\link{anova.lm.rrpp}} to explicity test which model
+#' and use \code{\link{anova.lm.rrpp}} to explicitly test which model
 #' is most appropriate.  The function, \code{\link{pairwise}} can also be used to test pairwise differences among least-squares means or slopes.
 #' To visualize different allometric patterns, wither prediction lines (PredLine; Adams and Nistri 2010) or regression scores 
 #' (RegScore; Drake and Klingenberg 2008) can be used.  The former plots first PCs of fitted values against size; the latter calculates a regression score
@@ -80,7 +80,7 @@
 #' \code{\link{shape.predictor}} and \code{\link{plotRefToTarget}} to visualize shape changes in the plot.
 #' 
 #' @param fit A procD.lm fit.
-#' @param size A vector of the same length as the numner of observations in the fit.
+#' @param size A vector of the same length as the number of observations in the fit.
 #' @param logsz A logical value to indicate whether to first find the logarithm of size.
 #' @param method The method of allometric visualization; choice among CAC, PredLine, RegScore, and size.shape (PCA)
 #' @param ... Other arguments passed on to plot.default

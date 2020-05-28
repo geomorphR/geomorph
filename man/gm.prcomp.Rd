@@ -4,7 +4,14 @@
 \alias{gm.prcomp}
 \title{Principal and phylogenetically-aligned components analysis of shape data}
 \usage{
-gm.prcomp(A, phy = NULL, align.to.phy = FALSE, GLS = FALSE, ...)
+gm.prcomp(
+  A,
+  phy = NULL,
+  align.to.phy = FALSE,
+  GLS = FALSE,
+  transform = FALSE,
+  ...
+)
 }
 \arguments{
 \item{A}{A 3D array (p x k x n) containing Procrustes shape variables for a set of aligned specimens.
@@ -14,7 +21,11 @@ Alternatively, this can be an n x p matrix of any data, but output will not cona
 
 \item{align.to.phy}{An optional argument for whether \bold{PaCA} (if TRUE) should be performed}
 
-\item{GLS}{An optional argument for whether GLS should be used for centering and projecting data.}
+\item{GLS}{Whether GLS-centering and covariance estimation should be used (rather than OLS).}
+
+\item{transform}{A logical value to indicate if transformed residuals should be projected.  This is only applicable if 
+GLS = TRUE.  If TRUE, an orthogonal projection of transformed data is made; if FALSE an oblique projection of untransformed 
+data is made.}
 
 \item{...}{Other arguments passed to \code{\link{ordinate}} and \code{\link{scale}}.  The most common
 arguments are scale., tol, and rank.}
@@ -22,8 +33,8 @@ arguments are scale., tol, and rank.}
 \value{
 An object of class "gm.prcomp" contains a list of results for each of the PCA approaches implemented.
 Each of these lists includes the following components:
-\item{x}{Principal component scores for all specimens.}
-\item{anc.x}{Principal component scores for the ancestors on the phylogeny.}
+\item{x}{Component scores for all specimens.}
+\item{anc.x}{Component scores for the ancestors on the phylogeny.}
 \item{d}{The singular values of the decomposed VCV matrix.}
 \item{rotation}{The matrix of variable loadings, i.e. the eigenvectors of the decomposed matrix.}
 \item{shapes}{A list with the shape coordinates of the extreme ends of all PC axes.}
@@ -41,27 +52,30 @@ aligned components analysis (PaCA).  Both of these have two variants: centering 
 via ordinary least-squares (OLS) or via generalized least-squares (GLS).  The name,
 "gm.prcomp", references that this function performs much like \code{\link{prcomp}}, in terms
 of arguments and output, but this function is quite a bit more diverse.  This function has
-the capability of performing analyses genereally referred to as:
+the capability of performing analyses generally referred to as:
 
 \itemize{
 \item{\bold{PCA}}{  Traditional PCA based on OLS-centering and projection of data.}
 \item{\bold{  Phylomorphospace}}{  Traditional PCA with estimated ancestral states and phylogenetic branches
 projected into ordination plots.}
 \item{\bold{phyloPCA}}{  PCA based on GLS-centering and projection of data.  Also possible to 
-project ancestral states into plots.}
-\item{\bold{PaCA}}{  Alignment of components to maximum phylogenetic signal rather than
-maximum variation.  This analysis can use either OLS- or GLS-centering and projection.  Phylogenetic
-signal is strongest in the first few components.  See Collyer and Adams (in review) for more details.}
+project ancestral states into plots. Note that if transformed GLS-residuals are used for projection, the ancestral states
+might not appear logical, as the projection is independent of phylogeny.  With OLS-centering, a phyloPCA as described by 
+Revell (2009) is produced.}
+\item{\bold{PaCA}}{  Phylogenetically-aligned component analysis.  Data are aligned to an axis of greatest phylogenetic
+signal rather than axis of greatest dispersion.  This analysis can use either OLS- or GLS-centering and projection.  
+Phylogenetic signal is strongest in the first few components of the OLS approach.  This analysis will make little sense with 
+GLS-centering and projection of transformed residuals, since phylogenetic signal is removed the transformed data.  
+See Collyer and Adams (2020) for more details. For greater flexibility for type of residuals and projection of trees, 
+use \code{\link{ordinate}}.  See Collyer and Adams (2020) for details.}
 }
-
-The examples provided will illustrate each of these methods, but the following arguments are essential for directing
-the function:
 
 \itemize{
 \item{\bold{phy}}{  Whether a phylogeny and estimated ancestral states are considered in plots.}
 \item{\bold{align.to.phy}}{  Whether components are aligned to phylogenetic signal (rather than principal axes).}
-\item{\bold{GLS}}{  Whether to use PGLS residuals.  Note that doing so creates an oblique projection rather than 
-an orthogonal projection of data, but the origin of the plot will be the tree root rather than the center of gravity.}
+\item{\bold{GLS}}{  Whether to use GLS-centering and estimation of covariance matrix.}
+\item{\bold{transform}} {Whether to transform GLS-residuals (making them independent of phylogeny and an orthogonal
+projection from the transformed data space, as opposed to an oblique projection from the untransformed data space).}
 }
 
 PLOTTING: Contrary to previous geomorph implementations, gm.prcomp does not produce plots. 
@@ -78,21 +92,21 @@ of such an analysis (performed with \code{\link{summary.gm.prcomp}}) will produc
 cross-product of the scaled phylogenetic covariance matrix and the data.}
 \item{\bold{Proportion of Covariance}}{  Each component's singular value divided by the sum of singular values.  The cumulative
 proportion is also returned.  Note that these values do not explain the amount of covariance between phylogeny and data, but
-explain the distribution of the covariance.  Large proprotions can be misleading.}
+explain the distribution of the covariance.  Large proportions can be misleading.}
 \item{\bold{RV by Component}}{  The partial RV statistic by component.  Cumulative values are also returned.  The sum of partial
 RVs is Escoffier's RV statistic, which measures the amount of covariation between phylogeny and data.  Caution should
 be used in interpreting these values, which can vary with the number of observations and number of variables.  However,
 the RV is more reliable than proportion of singular value for interpretation of the strength of linear association for 
-phylogentically-aligned components.}
+phylogenetically-aligned components.}
 \item{\bold{Tips or Ancestors Dispersion}}{  The variances of points by component for tip data and estimated ancestral
 character states, after projection.  These values will differ from variances from PCA with GLS estimation, as the "Importance
-of Components" weights variances by phylogentic covariances.  Dispersion statistics correspond to the amount of scatter in
+of Components" weights variances by phylogenetic covariances.  Dispersion statistics correspond to the amount of scatter in
 plots of component scores.}
 }
 
 
 NOTE: The \code{\link{plot.gm.prcomp}} function performs the same plotting that was previously 
-posible with \code{\link{plotTangentSpace}} and \code{\link{plotGMPhyloMorphoSpace}}, which
+possible with \code{plotTangentSpace} and \code{plotGMPhyloMorphoSpace}, which
 have now been deprecated.
 }
 \examples{
@@ -111,9 +125,17 @@ have now been deprecated.
  plot(PCA.w.phylo, phylo = TRUE, main = "PCA.w.phylo")
  
  ### Phylogenetic PCA - PCA based on GLS-centering and projection
+ # This is the same as the method described by Revell (2009)
  phylo.PCA <- gm.prcomp(Y.gpa$coords, phy = plethspecies$phy, GLS = TRUE)
  summary(phylo.PCA)
  plot(phylo.PCA, phylo = TRUE, main = "phylo PCA")
+ 
+ ### Phylogenetic PCA - PCA based on GLS-centering and transformed projection
+ # This produces a PCA independent of phylogeny
+ phylo.tPCA <- gm.prcomp(Y.gpa$coords, phy = plethspecies$phy, 
+ GLS = TRUE, transform = TRUE)
+ summary(phylo.tPCA)
+ plot(phylo.tPCA, phylo = TRUE, main = "phylo PCA")
  
  ### PaCA - Alignment of data to physlogenetic signal rather than axis of 
  ### greatest variation, like in PCA
@@ -129,6 +151,13 @@ have now been deprecated.
  summary(PaCA.gls)
  plot(PaCA.gls, phylo = TRUE, main = "PaCA using GLS")
  
+ # GLS method (rotation of Phylogenetic PCA with transformed data)
+ PaCA.gls <- gm.prcomp(Y.gpa$coords, phy = plethspecies$phy, 
+ align.to.phy = TRUE, GLS = TRUE, transform = TRUE)
+ summary(PaCA.gls)
+ plot(PaCA.gls, phylo = TRUE, main = "PaCA using GLS and transformed projection")
+ 
+ 
  ### Advanced Plotting
  gps <- as.factor(c(rep("gp1", 5), rep("gp2", 4))) # Two random groups
  par(mar=c(2, 2, 2, 2))
@@ -141,8 +170,15 @@ have now been deprecated.
  ### 3D plot with a phylogeny and time on the z-axis
  plot(PCA.w.phylo, time.plot = TRUE)
  plot(PCA.w.phylo, time.plot = TRUE, bg = "red", phylo.par = list(tip.labels = TRUE, 
- tip.txt.cex = 3, edge.color = "blue", edge.width = 2))
+ tip.txt.cex = 2, edge.color = "blue", edge.width = 2))
  
+}
+\references{
+Collyer, M.L and D.C. Adams, 2020. Phylogenetically-aligned component analysis. 
+Methods in Ecology and Evolution (in review).
+
+Revell, L. J. (2009). Size-correction and principal components for interspecific 
+comparative studies. Evolution, 63: 3258-3268.
 }
 \seealso{
 \code{\link{plot.gm.prcomp}}

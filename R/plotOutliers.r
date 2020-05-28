@@ -18,7 +18,6 @@
 #' @export
 #' @keywords utilities
 #' @seealso  \code{\link{gpagen}}
-#' @seealso  \code{\link{plotTangentSpace}}
 #' @seealso  \code{\link{plotAllSpecimens}}
 #' @author Emma Sherratt & Antigoni Kaliontzopoulou
 #' @return Function returns the landmark addresses of all specimens ordered as in the plot. If groups are used, function returns 

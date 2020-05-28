@@ -49,8 +49,6 @@ plotOutliers(Y$coords, groups = plethodon$species, inspect.outliers = TRUE)
 \seealso{
 \code{\link{gpagen}}
 
-\code{\link{plotTangentSpace}}
-
 \code{\link{plotAllSpecimens}}
 }
 \author{

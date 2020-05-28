@@ -32,7 +32,7 @@ Y.gpa <- gpagen(plethspecies$land, print.progress = F)
 ## 1. Traditional PCA and visualization of shape patterns
 One first option is to perform a "traditional" PCA, i.e. based on OLS-centering and projection of the data, very much like what is performed in the basic R function `prcomp`. Note that this also corresponds to the analytical part of the old (now deprecated) geomorph function `plotTangentSpace`.
 
-```{r eval=TRUE}
+```{r eval=TRUE, fig.width = 6, fig.height = 6}
 PCA <- gm.prcomp(Y.gpa$coords)
 summary(PCA)
 plot(PCA, main = "PCA")
@@ -40,7 +40,7 @@ plot(PCA, main = "PCA")
  
 Note that, by contrast to older functions, `gm.prcomp` provides a much higher flexibility of plotting options, by allowing to directly pass arguments to the `plot()` R-base function, e.g.: 
 
-```{r eval=TRUE}
+```{r eval=TRUE, fig.width = 6, fig.height = 6}
 plot(PCA, main = "PCA", pch = 22, bg = "green", cex = 1.5, cex.lab = 1.5, font.lab = 2)
 ```
 
@@ -48,7 +48,7 @@ One then has several solutions for exploring shape variation across PC space and
 
 a) By comparing the minimum and maximum values to the global consensus:
 
-```{r eval=TRUE}
+```{r eval=TRUE, fig.width = 6, fig.height = 3}
 msh <- mshape(Y.gpa$coords)
 plotRefToTarget(PCA$shapes$shapes.comp1$min, msh)
 plotRefToTarget(msh, PCA$shapes$shapes.comp1$max)
@@ -56,7 +56,7 @@ plotRefToTarget(msh, PCA$shapes$shapes.comp1$max)
 
 or b) by comparing the two extremes to each other:
 
-```{r eval=TRUE}
+```{r eval=TRUE, fig.width = 6, fig.height = 3}
 plotRefToTarget(PCA$shapes$shapes.comp1$min, PCA$shapes$shapes.comp1$max, method = "vector", mag = 2)
 ```
 
@@ -75,10 +75,10 @@ Again, options of the function `plotRefToTarget` are directly available and can 
 ## 2. Phylomorphospace
 One may also want to project a phylogeny (if dealing with species-level observations), and estimated ancestral states into the ordination plot produced before, to obtain what is commonly referred to as a "phylomorphospace" plot (Klingenberg & Ekau 1996, Biol. J. Linn. Soc. 59: 143 - 177; Rohlf 2002, Geometric morphometrics and phylogeny. Pp. 175-193 in N. MacLeod, and P. L. Forey, eds. Morphology, shape and phylogeny. Francis & Taylor, London; Sidlauskas 2008, Evolution 62: 3135 - 3156). This can be easily done by providing a phylogenetic tree during the analysis (which is however **NOT** used in the analytical step in this case, other than for estimating ancestral states), and then indicating that the phylogeny should also be plotted during the plotting step. For the *Plethodon* example data, we may project the phylogeny into the previous ordination plot as such:
 
-```{r eval=TRUE}
+```{r eval=TRUE, fig.width = 6, fig.height = 6}
 PCA.w.phylo <- gm.prcomp(Y.gpa$coords, phy = plethspecies$phy)
 summary(PCA.w.phylo)
-plot(PCA.w.phylo, phylo = T, main = "PCA.w.phylo")
+plot(PCA.w.phylo, phylo = TRUE, main = "PCA.w.phylo")
 ```
 
 Note that the summary statistics obtained for this analysis are **identical** to those from the previous one. This is because here the phylogeny is merely used for plotting, and is **NOT** considered during the analytical procedures. 
@@ -86,14 +86,27 @@ Note that the summary statistics obtained for this analysis are **identical** to
 Again, all plotting arguments can be directly manipulated by the user. Please see the help file of `plot.gm.prcomp` for details.
 
 ## 3. phyloPCA
-Here, the phylogeny **IS** considered during the analytical step of the ordination, as the principal components analysis is in this case caclulated based on GLS-centering and projection of the data. For details on the analytical part of this method, see Revell 2009, Evolution 63: 3258 - 3268; Polly et al 2013, Hystrix 24: 33 - 41; Collyer & Adams, submitted. 
+Here, the phylogeny **IS** considered during the analytical step of the ordination, as the principal components analysis is in this case calculated based on GLS-centering and projection of the data. For details on the analytical part of this method, see Revell 2009, Evolution 63: 3258 - 3268; Polly et al 2013, Hystrix 24: 33 - 41; Collyer & Adams, submitted. 
 
-For the *Plethodon* example data, this analysis would be implemented and plotted as follows:
+For the *Plethodon* example data, this analysis would be implemented and plotted as follows (fir with untransformed residual projection and second with transformed residual projection):
 
-```{r eval=TRUE}
+```{r eval=TRUE, fig.width = 6, fig.height = 6}
+
+# Phylo PCA without projecting untransformed residuals
 phylo.PCA <- gm.prcomp(Y.gpa$coords, phy = plethspecies$phy, GLS = TRUE)
 summary(phylo.PCA)
-plot(phylo.PCA, phylo = T, main = "phylo PCA")
+plot(phylo.PCA, phylo = TRUE, main = "phylo PCA")
+
+```
+
+```{r eval=TRUE, fig.width = 6, fig.height = 6}
+
+# Phylo PCA without projecting transformed residuals
+phylo.tPCA <- gm.prcomp(Y.gpa$coords, phy = plethspecies$phy, GLS = TRUE, transform = TRUE)
+summary(phylo.tPCA)
+plot(phylo.tPCA, phylo = TRUE, main = "phylo PCA with transformed projection")
+par(mfrow = c(1, 1))
+
 ```
 
 Again, one can use the geomorph functions `plotRefToTarget` or `picknplot.shape` to visualize variation on the produced ordination plot, as described for the case of the simple PCA above.
@@ -104,7 +117,7 @@ This recently introduced method (Collyer & Adams, submitted) provides an ordinat
 
 For the *Plethodon* example data, this analysis would be implemented and plotted as follows:
 
-```{r eval=TRUE}
+```{r eval=TRUE, fig.width = 6, fig.height = 6}
 PaCA <- gm.prcomp(Y.gpa$coords, phy = plethspecies$phy, align.to.phy = TRUE)
 summary(PaCA)
 plot(PaCA, phylo = TRUE, main = "PaCA")
@@ -114,7 +127,7 @@ plot(PaCA, phylo = TRUE, main = "PaCA")
 Finally, substituting the corresponding option previously available through `plotGMPhyloMorphoSpace`, plot.gm.prcomp provides the possibility of producing a 3D plot of any two PCA axes, with the phylogenetic tree connecting the observations and time on the z-axis. Again, different plotting parameters can be controlled to manipulate plot aesthetics. Note, that in this case an rgl plotting device will open for the 3D plot, but the corresponding biplot with the phylogeny projected (option 2, above) will also be produced.
 
 ```{r eval=FALSE}
-plot(PCA.w.phylo, time.plot = T, pch = 22, bg = c(rep("red", 5), rep("green", 4)), cex = 2, 
+plot(PCA.w.phylo, time.plot = TRUE, pch = 22, bg = c(rep("red", 5), rep("green", 4)), cex = 2, 
      phylo.par = list(edge.color = "grey60", edge.width = 1.5, tip.txt.cex = 0.75,
                       node.labels = F, anc.states = F))
  

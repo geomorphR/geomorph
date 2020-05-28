@@ -13,7 +13,7 @@
 #' Partial disparities (Foote 1993) can also be calculated, but only for model formulas containing only an intercept 
 #' (e.g., coords ~ 1).  Partial disparity has the same numerator as Procrustes variance (with respect to an overall mean)
 #' but the denominator is N - 1 for all N observations, rather than n, the group size.  (The sum of all group n equals N.)
-#' Partial disparities have the appeal that the sum of group partial disparities it the total disparitiy.
+#' Partial disparities have the appeal that the sum of group partial disparities it the total disparity.
 #' 
 #' Absolute differences in Procrustes variances are test statistics that can be used to test differences
 #' in morphological disparity among groups.  These differences are  statistically evaluated through permutation, 

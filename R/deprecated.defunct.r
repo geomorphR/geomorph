@@ -9,7 +9,7 @@
 #' 
 #' @export
 advanced.procD.lm <- function(){
-  .Deprecated("procD.lm")
+  .Defunct("procD.lm")
 }
 
 #' Deprecated functions in geomorph
@@ -22,7 +22,7 @@ advanced.procD.lm <- function(){
 #' 
 #' @export
 procD.allometry <- function(){
-  .Deprecated("procD.lm")
+  .Defunct("procD.lm")
 }
 
 #' Deprecated functions in geomorph
@@ -35,7 +35,7 @@ procD.allometry <- function(){
 #' 
 #' @export
 nested.update <- function(){
-  .Deprecated("anova.lm.rrpp")
+  .Defunct("anova.lm.rrpp")
 }
 
 #' Deprecated functions in geomorph
@@ -48,7 +48,7 @@ nested.update <- function(){
 #' 
 #' @export
 plotTangentSpace <- function(){
-  .Deprecated("gm.prcomp")
+  .Defunct("gm.prcomp")
 }
 
 #' Deprecated functions in geomorph
@@ -61,5 +61,5 @@ plotTangentSpace <- function(){
 #' 
 #' @export
 plotGMPhyloMorphoSpace <- function(){
-  .Deprecated("gm.prcomp")
+  .Defunct("gm.prcomp")
 }

@@ -43,7 +43,7 @@ Once a ply file is imported (usually using `read.ply`), one will first digitize 
 fixed.lms1 <- digit.fixed(spec = my.ply, fixed = 5)
 ```
 
-**PRACTICAL ADVICE:** Note that landmark selection on the 3dmesh is done by chosing the point of the scan closest to where you click with your mouse. This means that occasionally points may appear to "go through to the other side of the structure", especially if your initial point cloud is not very dense. To solve this issue, try rotating the structure to find a better view for digitizing, or zooming in such that you can click close to one of the scan points (these are visible as tiny grey points when you zoom in). 
+**PRACTICAL ADVICE:** Note that landmark selection on the 3dmesh is done by choosing the point of the scan closest to where you click with your mouse. This means that occasionally points may appear to "go through to the other side of the structure", especially if your initial point cloud is not very dense. To solve this issue, try rotating the structure to find a better view for digitizing, or zooming in such that you can click close to one of the scan points (these are visible as tiny grey points when you zoom in). 
 
 Once you have completed the digitizing of the specimen, your digitizing device should look something like this:
 

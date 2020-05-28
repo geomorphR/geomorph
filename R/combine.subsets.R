@@ -35,7 +35,7 @@
 #' CS.set input is a matrix, it is assumed that rows are specimens and columns correspond to the different landmark
 #' sets.  Lists or arrays should be in the same order as the landmark sets.
 #' @param norm.CS An option to normalize centroid size, according to the method of Dryden and Mardia (2016).  If TRUE,
-#' centroid sizes are divided by the square root of the numebr of landmarks.  This may have some appeal when one
+#' centroid sizes are divided by the square root of the number of landmarks.  This may have some appeal when one
 #' configuration is landmark-dense and another is landmark-sparse, but both correspond to structures of similar surface area
 #' or volume.  Using this option should be done with caution, as it can make small configurations larger than large configurations,
 #' in a relative sense.  Choosing this option will probably produce relative centroid sizes that are more equal, 
