@@ -14,7 +14,7 @@ d8e8360c03c03fe45d2100e9c05d4a89 *data/plethodon.rda
 73f723a130c92f8b84a81465a15add7c *geomorph.Rproj
 1f29f9752fcc12981a6124e2e5c4e4c5 *inst/CITATION
 5e099c6268d251bf5c98595d9566385a *man/arrayspecs.Rd
-15a84d326215bfe2c075f390fa8f9c53 *man/bilat.symmetry.Rd
+15d9cbc76f810ee9bccf85851a1f3b8f *man/bilat.symmetry.Rd
 6e94f720fd50cf0ff309624b1a4a30ee *man/buildtemplate.Rd
 8cab7042d16141cca44cf13bd6c396ec *man/combine.subsets.Rd
 55bb505e3ee47911be6904e57f457da0 *man/compare.CR.Rd
@@ -125,7 +125,7 @@ d9119f721918f22c267db843023a86fe *man/writeland.tps.Rd
 4f9ee50059d7fc79859a3d07a4edce09 *NAMESPACE
 f1ac0f7918d053112d846e5f33780057 *NEWS.md
 92239d51a080ccd3fc3a9f7ef67d1b8c *R/arrayspecs.r
-99f656aab0d1659a3e4770ff2f5aad35 *R/bilat.symmetry.r
+5a6016ae6375c47e622b64cef3bdf036 *R/bilat.symmetry.r
 d7d67e9218f84609046423cb222f5c44 *R/build.template.r
 5c10fc11bdcc1b0b674800458e7a94e7 *R/combine.subsets.R
 a85f984f777798d31520e42d0c87e3f5 *R/compare.CR.R
