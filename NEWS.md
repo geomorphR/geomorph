@@ -11,6 +11,7 @@
 * `combine.subsets` updated to include weighting options for relative centroid size.
 
 ### BUG FIXES
+* Fixed row order issue for BM simulation in `compare.evol.rates` and `compare.multi.evol.rates`
 * Fixed bug in FA shape components output in `bilat.symmetry`
 * Fixed pGPA issue to use first specimen rather than mean in first iteration
 

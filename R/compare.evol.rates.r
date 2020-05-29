@@ -88,6 +88,7 @@ compare.evol.rates<-function(A,phy,gp,iter=999,seed=NULL,method=c("permutation",
     stop("Factor contains no names. Use names() to assign specimen names to group factor.")}
   if (!inherits(phy, "phylo")){
     stop("tree must be of class 'phylo.'")}
+  x <- x[phy$tip.label,]
   ntaxa<-length(phy$tip.label)
   N<-nrow(x)  
   method <- match.arg(method)
