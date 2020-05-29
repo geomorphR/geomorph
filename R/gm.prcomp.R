@@ -205,7 +205,10 @@ gm.prcomp <- function (A, phy = NULL, align.to.phy = FALSE,
     }
 
     ancY <- anc.BM(phy, Y)
-    if(!is.null(rownames(Y))) rownames(Y) <- phy$tip.label
+    if(is.null(rownames(Y))) {
+      rownames(Y) <- phy$tip.label
+      cat("Warning: Data are not labeled so it is assumed they are in the same order as tree names.\n")
+    }
     phy.mat <- phylo.mat(Y, phy)
     C <- phy.mat$C
     if(align.to.phy) ord.args$A <- C
