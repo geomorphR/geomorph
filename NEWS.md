@@ -1,4 +1,4 @@
-# CHANGES IN GEOMORPH VERSION 3.3.0
+# CHANGES IN GEOMORPH VERSION 3.3.0 (Minor Release)
 
 ### NEW FEATURES
 * A vignette has been added (geomorphPCA) to aid the transition of users to the gm.prcomp family of functions for exploring and visualizing shape space.
@@ -15,6 +15,7 @@
 * Fixed pGPA issue to use first specimen rather than mean in first iteration
 
 ### OTHER CHANGES
+* `plotGMPhyloMorphospace` and `plotTangentSpace` now deprecated
 * Removed DA.mns and FA.mns from `bilat.symmetry` (use DA.component and FA.component)
 * Option for handling NAs added to mshape and plot.mshape
 * Function plotTangentSpace has been deprecated 
