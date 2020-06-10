@@ -1090,9 +1090,9 @@ boot.index <-function(n, iter, seed=NULL){
 # performs PLS analysis
 # Used in two.b.pls, integration.test, phylo.integration, apply.pls
 pls <- function(x,y, RV=FALSE, verbose = FALSE){
-  x <- as.matrix(x); y <- as.matrix(y)
+  x <- center(as.matrix(x)); y <- center(as.matrix(y))
   px <- dim(x)[2]; py <- dim(y)[2]; pmin <- min(px,py)
-  S12 <- crossprod(center(x),center(y))/(dim(x)[1] - 1)
+  S12 <- crossprod(x, y)/(dim(x)[1] - 1)
   if(length(S12) == 1) {
     r.pls <- cor(x,y)
     pls <- NULL
