@@ -1,5 +1,5 @@
 ## Resubmission
-This is a minor update, version 3.3.0, that fixes a few bugs in version 3.2.1, and adds a new function. 
+This is a patch update, version 3.3.1, that fixes a bug in version 3.3.0. 
 
 ## Test environments
 * local OS X install, R 3.6.0
