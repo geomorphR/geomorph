@@ -1,4 +1,4 @@
-# CHANGES IN GEOMORPH VERSION 3.3.0.9000 
+# CHANGES IN GEOMORPH VERSION 3.3.1 (Patch Release)
 
 ### BUG FIXES
 * Fixed non-centering issue in `geomorph:::pls`
