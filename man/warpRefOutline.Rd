@@ -34,7 +34,7 @@ specimen - do this by eye, or use \code{\link{findMeanSpec}} }
 \item{Use this average outline where it asks for a outline= in the analysis functions and visualization functions  }
 }
 The returned outline object is for use in geomorph
-functions where shape deformations are plotted (\code{\link{plotTangentSpace}}, 
+functions where shape deformations are plotted (\code{\link{picknplot.shape}}, 
 \code{\link{two.b.pls}}, \code{\link{bilat.symmetry}}, and \code{\link{plotRefToTarget}}).
 }
 \references{

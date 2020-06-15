@@ -10,7 +10,7 @@ compare.evol.rates(
   gp,
   iter = 999,
   seed = NULL,
-  method = c("simulation", "permutation"),
+  method = c("permutation", "simulation"),
   print.progress = TRUE
 )
 }

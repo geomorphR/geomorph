@@ -18,7 +18,6 @@
 #' @export
 #' @keywords utilities
 #' @seealso  \code{\link{gpagen}}
-#' @seealso  \code{\link{plotTangentSpace}}
 #' @seealso  \code{\link{plotAllSpecimens}}
 #' @author Emma Sherratt & Antigoni Kaliontzopoulou
 #' @return Function returns the landmark addresses of all specimens ordered as in the plot. If groups are used, function returns 
@@ -54,12 +53,12 @@ plotOutliers <- function(A, groups = NULL, inspect.outliers = FALSE){
     LL <- as.numeric(Q[2] - 1.5*(Q[5]-Q[2]))
     UL <- as.numeric(Q[5] + 1.5*(Q[5]-Q[2]))
     plot(D, type="p", ylab= "Procrustes Distance from Mean", pch=19, xlab="", xaxt='n', main = j)
-    abline(a=LL, b=0,lty=2,col= "blue")
-    abline(a=Med,b=0,col= "blue")
-    abline(a=UL,b=0,lty=2,col= "blue")
-    text(x= nrow(A.d), y=LL, labels= "lower quartile", col = "blue", cex=0.5, adj=c(0.5, 1))
-    text(x= nrow(A.d), y=Med, labels= "median",col = "blue", cex=0.5, adj=c(0.5, -0.5))
-    text(x= nrow(A.d), y=UL, labels= "upper quartile",col = "blue", cex=0.5, adj=c(0.5, -0.5))
+      abline(a=LL, b=0,lty=2,col= "blue")
+      abline(a=Med,b=0,col= "blue")
+      abline(a=UL,b=0,lty=2,col= "blue")
+      text(x= nrow(A.d), y=LL, labels= "lower quartile", col = "blue", cex=0.5, adj=c(0.5, 1))
+      text(x= nrow(A.d), y=Med, labels= "median",col = "blue", cex=0.5, adj=c(0.5, -0.5))
+      text(x= nrow(A.d), y=UL, labels= "upper quartile",col = "blue", cex=0.5, adj=c(0.5, -0.5))
     if(any(D >= UL)) { 
       points(D[which(D >= UL)], pch=19, col="red")
       text(D[which(D >= UL)], labels=names(D)[which(D >= UL)], col= "red", adj=0.8, pos=4, cex=0.5)
@@ -83,7 +82,7 @@ plotOutliers <- function(A, groups = NULL, inspect.outliers = FALSE){
           }
         }
       }
-      
+
     } else { text(D, labels=names(D), adj=c(0.5, 0.1), pos=4, cex=0.5)}
     ordered<-match(D,d)        
     names(ordered) <- names(D)
@@ -92,5 +91,5 @@ plotOutliers <- function(A, groups = NULL, inspect.outliers = FALSE){
   names(res) <- levels(groups)
   if(length(levels(groups))==1){ res <- res$`All Specimens`}
   return(res)
-  
+
 }

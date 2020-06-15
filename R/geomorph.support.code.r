@@ -137,6 +137,22 @@ NULL
 #' larval salamander morphology and swim speed. Biological Journal of the Linnean Society. 118:569-581.
 NULL
 
+#' Dorsal head shape data of lizards
+#'
+#' @name lizards
+#' @docType data
+#' @author Antigoni Kaliontzopoulou
+#' @keywords datasets
+#' @description Superimposed landmark data of the dorsal view of lizard heads
+#' @details
+#' Dataset includes superimposed landmarks (coords), centroid size (cs), an index of individuals (ind) and digitizing repetitions (rep), and a table of symmetrical matching
+#' landmarks (lm.pairs). The object is a \code{\link{geomorph.data.frame}}.
+#' The dataset corresponds to the data for population "b" from Lazic et al. 2015.
+#' @references Lazić, M., Carretero, M.A., Crnobrnja-Isailović, J. & Kaliontzopoulou, A. 2015. Effects of
+#' environmental disturbance on phenotypic variation: an integrated assessment of canalization, developmental 
+#' stability, modularity and allometry in lizard head shape. American Naturalist 185: 44-58.
+NULL
+
 #' Estimate mean shape for a set of aligned specimens
 #'
 #' Estimate the mean shape for a set of aligned specimens
@@ -188,87 +204,87 @@ mshape <- function(A, na.action = 1){
         n <- 1
         p <- dims[[1]]
         k <- dims[[2]]
-      } else {
-        n <- dims[[1]]
-        p <- dims[[2]]
-        k <- 1
+        } else {
+          n <- dims[[1]]
+          p <- dims[[2]]
+          k <- 1
         cat("\nWarning: It appears that data are in a matrix with specimens as rows.")
         cat("\nMeans are found for each column of the matrix.\n\n")
         L <- lapply(1:n, function(j) matrix(A[j,], 1, ))
       }
     }
   }
-  
-  if(is.list(A)) {
-    matrix.check <- sapply(A, is.matrix)
-    if(any(!matrix.check)) stop("At least one specimen is not a data matrix.\n", call. = FALSE)
-    dims <- dim(A[[1]])
-    A.dims <- sapply(A, dim)
-    A.unique <- apply(A.dims, 1, unique)
-    if(!identical(dims, A.unique))
-      stop("Not all specimens have the same number of landmarks or landmarks in the same dimensions.\n", 
-           call. = FALSE)
-    L <- A
-    if(length(L) > 1) {
-      p <- dims[[1]]
-      k <- dims[[2]]
-      n <- length(L)
-    } else {
-      n <- dims[[1]]
-      p <- dims[[2]]
-      k <- 1
-    }
-  }
-  
-  if(na.action == 1) {
     
-    if(any(is.na(unlist(L))))
-      stop("Data matrix contains missing values.\n 
-           Estimate these first (see 'estimate.missing') or chamge the na.action (see Arguments).\n",
-           call. = FALSE)
-    
-    res <- if(length(L) == 1) L else Reduce("+", L)/n
-  }
-  
-  if(na.action == 2) {
-    
-    if(any(is.na(unlist(L)))) {
-      cat("Warning: Missing values detected.\n")
-      cat("NA is returned for any coordinate where missing values were found.\n")
-      cat("You can estimate missing values (see 'estimate.missing')\n")
-      cat("or change the na.action (see Arguments) to find the mean of just the remaining values\n\n.")
-    }
-    res <- if(length(L) == 1) L else Reduce("+", L)/n
-  }
-  
-  
-  if(na.action == 3) {
-    
-    if(any(is.na(unlist(L)))) {
-      cat("Warning: Missing values detected.\n")
-      cat("Means are calculated only for values that are found.\n")
-      cat("You can estimate missing values (see 'estimate.missing')\n")
-      cat("or change the na.action (see Arguments) to return NA for coordinates that have missing values.\n\n")
+    if(is.list(A)) {
+      matrix.check <- sapply(A, is.matrix)
+      if(any(!matrix.check)) stop("At least one specimen is not a data matrix.\n", call. = FALSE)
+      dims <- dim(A[[1]])
+      A.dims <- sapply(A, dim)
+      A.unique <- apply(A.dims, 1, unique)
+      if(!identical(dims, A.unique))
+        stop("Not all specimens have the same number of landmarks or landmarks in the same dimensions.\n", 
+             call. = FALSE)
+      L <- A
+      if(length(L) > 1) {
+        p <- dims[[1]]
+        k <- dims[[2]]
+        n <- length(L)
+      } else {
+        n <- dims[[1]]
+        p <- dims[[2]]
+        k <- 1
+      }
     }
     
-    mmean <- function(L) { 
-      kp <- k * p
-      U <- unlist(L)
-      u <- length(U)
-      starts <- seq.int(1, u, kp)
-      M <- array(NA, p*k)
-      for(i in 1:kp) {
-        pts <- starts -1 + i
-        M[i] <- mean(na.omit(U[pts]))
+    if(na.action == 1) {
+      
+      if(any(is.na(unlist(L))))
+        stop("Data matrix contains missing values.\n 
+             Estimate these first (see 'estimate.missing') or chamge the na.action (see Arguments).\n",
+             call. = FALSE)
+      
+      res <- if(length(L) == 1) L else Reduce("+", L)/n
+    }
+    
+    if(na.action == 2) {
+      
+      if(any(is.na(unlist(L)))) {
+        cat("Warning: Missing values detected.\n")
+        cat("NA is returned for any coordinate where missing values were found.\n")
+        cat("You can estimate missing values (see 'estimate.missing')\n")
+        cat("or change the na.action (see Arguments) to find the mean of just the remaining values\n\n.")
+      }
+      res <- if(length(L) == 1) L else Reduce("+", L)/n
+      }
+  
+    
+    if(na.action == 3) {
+      
+      if(any(is.na(unlist(L)))) {
+        cat("Warning: Missing values detected.\n")
+        cat("Means are calculated only for values that are found.\n")
+        cat("You can estimate missing values (see 'estimate.missing')\n")
+        cat("or change the na.action (see Arguments) to return NA for coordinates that have missing values.\n\n")
       }
       
-      if(k == 1) M <- matrix(M, 1, p) else M <- matrix(M, p, k)
-      M
+      mmean <- function(L) { 
+        kp <- k * p
+        U <- unlist(L)
+        u <- length(U)
+        starts <- seq.int(1, u, kp)
+        M <- array(NA, p*k)
+        for(i in 1:kp) {
+          pts <- starts -1 + i
+          M[i] <- mean(na.omit(U[pts]))
+        }
+        
+        if(k == 1) M <- matrix(M, 1, p) else M <- matrix(M, p, k)
+        M
+      }
+      
+      res <- if(length(L) == 1) L else mmean(L)
     }
     
-    res <- if(length(L) == 1) L else mmean(L)
-  }
-  
   if(inherits(res, "list")) res <- res[[1]]
   class(res) <- c("mshape", "matrix")
   return(res)
@@ -1038,24 +1054,6 @@ model.matrix.g <- function(f1, data = NULL) {
     dat <- as.data.frame(data[matches])
   } else dat <- NULL
   model.matrix(f1, data=dat)
-}
-
-# gdf.to.df
-# attempts to coerce a geomorph data frame to a data frame
-# but only for relevant parts
-# used in advanced.procD.lm
-gdf.to.df <- function(L){
-  if(!is.list(L)) stop("Missing list to convert to data frame")
-  check1 <- sapply(L, class)
-  match1 <- match(check1, c("numeric", "matrix", "vector", "factor"))
-  Lnew <- L[!is.na(match1)]
-  check2 <- sapply(Lnew, NROW)
-  if(length(unique(check2)) == 1) Lnew <- Lnew else {
-    check3 <- as.vector(by(check2, check2, length))
-    check4 <- check2[which.max(check3)]
-    Lnew <- Lnew[check2 == check4]
-  }
-  as.data.frame(Lnew)
 }
 
 # perm.CR.index
@@ -1887,7 +1885,7 @@ GMfromShapes0 <- function(Shapes, scaled = TRUE){ # No curves
 # evenPts
 # basic function for spacing out curve points via linear interpolation
 # simple form of pointsAtEvenSpacing from StereoMorph 
-# used in: readland.shapes and difit.curves
+# used in: readland.shapes and digit.curves
 evenPts <- function(x, n){
   x <- as.matrix(na.omit(x))
   N <- NROW(x); p <- NCOL(x)
@@ -2226,45 +2224,6 @@ readland.tps2 <- function (file, specID = c("None", "ID", "imageID"))
 ### -----------------------------------------------------------------------------------------
 
 
-# sim.char.BM
-# An alternative to sim.char for BM
-# compared to sim.char, uses better memoization
-
-
-# sim.char has a similar function to this but it is called in every simulation
-# and defers to C for help.  This is done once only here. (Produces a projection matrix)
-phy.sim.mat <- function(phy) {
-  N <- length(phy$tip.label)
-  n <- nrow(phy$edge)
-  m <- matrix(0, N, n)
-  edg <- phy$edge.length
-  idx <- phy$edge[, 2]
-  anc <- phy$edge[, 1]
-  tips <- which(idx <= N)
-  non.tips <- which(idx > N)
-  for(i in 1:length(tips)) m[idx[tips[i]], tips[i]] <- sqrt(edg[tips[i]])
-  for(i in 1:length(non.tips)) {
-    x <- idx[non.tips[i]]
-    anc.i <- which(anc == x)
-    edg.i <- idx[anc.i]
-    if(any(edg.i > N)) {
-      edg.i <- as.list(edg.i)
-      while(any(edg.i > N)) {
-        edg.i <- lapply(1:length(edg.i), function(j){
-          edg.i.j <- edg.i[[j]]
-          if(edg.i.j > N) {
-            idx[which(anc == edg.i.j)]
-          } else edg.i.j <- edg.i.j
-        })
-        edg.i <- unlist(edg.i)
-      }
-    }
-    m[edg.i, which(idx == x)] <- sqrt(edg[which(idx == x)])
-  }
-  rownames(m) <- phy$tip.label
-  m
-}
-
 # A function to extract eigen values, as per mvrnorm
 # But does not incorporate other traps and options, as in mvnorm.
 Sig.eigen <- function(Sig, tol = 1e-06){
@@ -2385,139 +2344,4 @@ makePD <- function (x) {
     X <- D * X * rep(D, each = n)
   }
   X
-}
-
-# ape replacement functions below ----------------------------------------------------
-
-# fast.phy.vcv
-# same as vcv.phylo but without options, in order to not use ape
-
-fast.phy.vcv <- function (phy) tcrossprod(phy.sim.mat(phy))
-
-# reorder.phy
-# same as reorder function, but without options
-
-reorder.phy <- function(phy){
-  edge <- phy$edge
-  edge.length <- phy$edge.length
-  edge <- cbind(edge, edge.length)
-  n <- nrow(edge)
-  ind <-rank(edge[,1], ties.method = "last")
-  edge <- edge[order(ind, decreasing = TRUE), ]
-  edge.length <- edge[,3]
-  phy$edge <- edge[,-3]
-  phy$edge.length <- edge.length
-  attr(phy, "order") <- "postorder"
-  return(phy)
-}
-
-
-# anc.BM 
-# via PICs
-# same as ace, but multivariate
-pic.prep <- function(phy, nx, px){
-  phy <- reorder.phy(phy)
-  ntip <- length(phy$tip.label)
-  nnode <- phy$Nnode
-  edge <- phy$edge
-  edge1 <- edge[, 1]
-  edge2 <- edge[,2]
-  edge_len <- phy$edge.length
-  phe <- matrix(0, ntip + nnode, px)
-  contr <- matrix(0, nnode, px)
-  var_contr <- rep(0, nnode)
-  i.seq <- seq(1, ntip * 2 -2, 2)
-  list(ntip = ntip, nnode = nnode, edge1 = edge1,
-       edge2 = edge2, edge_len = edge_len, phe = phe,
-       contr = contr, var_contr = var_contr, 
-       tip.label = phy$tip.label,
-       i.seq = i.seq)
-}
-
-ace.pics <- function(ntip, nnode, edge1, edge2, edge_len, phe, contr,
-                 var_contr, tip.label, i.seq, x) {
-  phe[1:ntip,] <- if (is.null(rownames(x))) x else x[tip.label,]
-  N <- ntip + nnode
-  for(ii in 1:nnode) {
-    anc <- edge1[i.seq[ii]]
-    ij <- which(edge1 == anc)
-    i <- ij[1]
-    j <- ij[2]
-    d1 <- edge2[i]
-    d2 <- edge2[j]
-    sumbl <- edge_len[i] + edge_len[j]
-    ic <- anc - ntip 
-    ya <- (phe[d1,] - phe[d2,])/sqrt(sumbl)
-    contr[ic, ] <- ya
-    var_contr[ic] <- sumbl
-    phe[anc,] <- (phe[d1, ] * edge_len[j] + phe[d2, ] * edge_len[i])/sumbl
-    k <- which(edge2 == anc)
-    edge_len[k] <- edge_len[k] + edge_len[i] * edge_len[j] / sumbl
-  }
- phe
-}
-
-# anc.BM
-# multivariate as opposed to fastAnc
-
-anc.BM <- function(phy, Y){
-  if(!is.matrix(Y)) Y <- as.matrix(Y)
-  Y <- as.matrix(Y[phy$tip.label,])
-  phy <- reorder.phy(phy)
-  n <- length(phy$tip.label)
-  out <- t(sapply(1:phy$Nnode, function(j){
-    phy.j <- multi2di.phylo(root.phylo(phy, node = j + n))
-    preps <- pic.prep(phy.j, NROW(Y), NCOL(Y))
-    preps$x <- Y
-    preps$tip.label <- phy$tip.label
-    out <- do.call(ace.pics, preps)
-    out[n + 1,]
-  }))
-  
-  if(length(out) == (n-1)) out <- t(out)
-  dimnames(out) <- list(1:phy$Nnode + length(phy$tip.label), colnames(Y))
-  out
-}
-
-# getNode Depth
-# replaces node.depth.edgelength
-
-getNodeDepth <- function(phy){
-  phy <- reorder.phy(phy)
-  E <- phy$edge
-  anc <- E[,1]
-  des <- E[,2]
-  ntip <- length(phy$tip.label)
-  nnode <- phy$Nnode
-  N <- ntip + nnode
-  L <- phy$edge.length
-  base.tax <- ntip + 1
-  full.depth.seq <- (ntip + 1):N
-  full.node.depth <- 0
-  tips <- which(des <= ntip)
-  non.tips <- which(des > ntip)
-  
-  get.edge.ind <- function(tax){
-    root.t <- ntip +1
-    des.i <- which(des == tax)
-    edge <- numeric()
-    tax.i <- tax
-    while(tax.i != root.t) {
-      anc.i <- anc[which(des == tax.i)]
-      tax.i <- anc[des.i]
-      edge <- c(edge, des.i)
-      des.i <- which(des == anc.i)
-    }
-    edge
-  }
-  
-  tips.taxa <- lapply(as.list(tips), function(j) des[j])
-  tips.edges <- lapply(tips.taxa, get.edge.ind)
-  tips.depths <- sapply(1:ntip, function(j) sum(L[tips.edges[[j]]]))
-  
-  nodes <- as.list((ntip + 1):(N))
-  nodes.edges <- lapply(nodes, get.edge.ind)
-  nodes.depths <- sapply(1:nnode, function(j) sum(L[nodes.edges[[j]]]))
-  
-  c(tips.depths, nodes.depths)
 }

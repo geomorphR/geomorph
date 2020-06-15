@@ -110,6 +110,7 @@ compare.multi.evol.rates<-function(A,gp,phy,Subset=TRUE,iter=999,seed=NULL,print
   if(length(match(phy$tip.label,rownames(x)))!=N) 
     stop("Tree missing some taxa in the data matrix.")
   x<-as.matrix(x)
+  x <- x[phy$tip.label,]
   phy.parts<-phylo.mat(x,phy)
   invC<-phy.parts$invC; D.mat<-phy.parts$D.mat;C = phy.parts$C
   sigma.obs<-sigma.d.multi(x,invC,D.mat,gps,Subset)

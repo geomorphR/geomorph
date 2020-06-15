@@ -24,7 +24,7 @@ geomorph 3.0.7 function | status | geomorph 3.1.0 / RRPP alternative
 :-------- | :------- | :--------
 advanced.procD.lm | deprecated | procD.lm + pairwise (*RRPP*)
 procD.allometry | deprecated | procD.lm + anova (*RRPP*) + plotAllometry (new *geomorph* function)
-nested.update | deprectaed | anova (*RRPP*) (Can do much more than nested.update could)
+nested.update | deprecated | anova (*RRPP*) (Can do much more than nested.update could)
 trajectory.analysis | moved | Now in *RRPP* with improved functionality
 
 By eliminating or updating some of the older functions, the overall functionality of geomorph has increased (addition by subtraction).  To illustrate the improvements in detail, we focus on one data example below.
@@ -81,7 +81,7 @@ In geomorph 3.0.7, one could use advanced.procD.lm to perform ANOVA on one reduc
 anova(fit.size, fit.family, fit.treatment, print.progress = FALSE)
 ```
 
-One might ascertain that models that include paramaters for family and treatment are significant improvements over a model that only contains size.  **Like advanced.procD.lm, one can perform model comparisons, but now one can do that on any number of models with one model serving as the null model for comparisons.**  Note that the model fits can use types I, II, or III, sums of squares and cross-products (SSCP), ordinary or generalized least squares, and the ANOVA can be performed on a number of different test statistics (see anova.lm.rrpp help file for more details).
+One might ascertain that models that include parameters for family and treatment are significant improvements over a model that only contains size.  **Like advanced.procD.lm, one can perform model comparisons, but now one can do that on any number of models with one model serving as the null model for comparisons.**  Note that the model fits can use types I, II, or III, sums of squares and cross-products (SSCP), ordinary or generalized least squares, and the ANOVA can be performed on a number of different test statistics (see anova.lm.rrpp help file for more details).
 
 ## How to perform allometry analyses
 ### Alternatives to procD.allometry and advanced.procD.lm, with increased flexibility
@@ -108,7 +108,7 @@ plotAllometry(fit.size, size = gdf$Csize, logsz = TRUE, method = "RegScore")
 
 #### An important detail with these plots is that PredLine and RegScore are model-based projections of shape data.  As we will see below, changing the model changes the outcome of the plot.  
 
-We could also perform a two-block partial least squares (PLS) analysis to find the correaltion between shape and size, which is not based on a particular model.
+We could also perform a two-block partial least squares (PLS) analysis to find the correlation between shape and size, which is not based on a particular model.
 
 ```{r, include=TRUE, fig.height=4, fig.width=5}
 PLS <- two.b.pls(log(gdf$Csize), gdf$coords, print.progress = FALSE)
@@ -144,7 +144,7 @@ anova(fit.common, fit.unique, print.progress = FALSE)
 
 ```
 
-The ANOVA above was formerly carried out by advanced.procD.lm as a homogeneity of slopes (HOS) test in the function procD.allometry (although nested effects were not possible.)  Because this model comparison did not yield a significant result, we can conlude that a common allometry model is appropriate.  Thus, we might want to plot the results, color-coding the points by treatment
+The ANOVA above was formerly carried out by advanced.procD.lm as a homogeneity of slopes (HOS) test in the function procD.allometry (although nested effects were not possible.)  Because this model comparison did not yield a significant result, we can conclude that a common allometry model is appropriate.  Thus, we might want to plot the results, color-coding the points by treatment
 
 ```{r, include=TRUE,  fig.height=4, fig.width=5}
 plotAllometry(fit.common, size = gdf$Csize, logsz = TRUE, method = "PredLine",
@@ -164,7 +164,7 @@ In our example, we have both fixed and random effects.  Treatment is a fixed eff
 anova(fit.common)
 ```
 
-Notice that the F-value for the three effects - log(Csize), Treatment, and Treament:Family - is calculated as MS effect / MS Residuals.  This is the default.  However, in our mixed-model ANOVA, we would prefer to calculate the F-value for treatment as MS Treatment / MS Treatment:Family, to determine if the treatment effect is meaningful compared to shape variation among families we sampled randomly and assigned to treatments.  We can update our ANOVA by specifying what the denominator (error term) should be, as a sequence of error terms for the ANOVA; e.g.,
+Notice that the F-value for the three effects - log(Csize), Treatment, and Treatment:Family - is calculated as MS effect / MS Residuals.  This is the default.  However, in our mixed-model ANOVA, we would prefer to calculate the F-value for treatment as MS Treatment / MS Treatment:Family, to determine if the treatment effect is meaningful compared to shape variation among families we sampled randomly and assigned to treatments.  We can update our ANOVA by specifying what the denominator (error term) should be, as a sequence of error terms for the ANOVA; e.g.,
 
 ```{r, include=TRUE}
 anova(fit.common, error = c("Residuals", "treatment:family", "Residuals"))
@@ -186,7 +186,7 @@ where fit is an already fitted object, using procD.lm, groups is a factor to des
 
 pairwise(fit, fit.null, groups, covariate),
 
-where fit.null is a second procD.lm fit.  If one is not sure about the inherent null model, they can use the **reveal.model.designs** function of *RRPP* to discover the eaxt null model used; e.g.,
+where fit.null is a second procD.lm fit.  If one is not sure about the inherent null model, they can use the **reveal.model.designs** function of *RRPP* to discover the exact null model used; e.g.,
 
 ```{r, include=TRUE}
 reveal.model.designs(fit.common)

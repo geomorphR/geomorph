@@ -39,12 +39,12 @@
 #' @param print.progress A logical value to indicate whether a progress bar should be printed to the screen.  
 #' This is helpful for long-running analyses.
 #' @keywords analysis
-#' @author Dean Adams
+#' @author Dean Adams and Michael Collyer
 #' @export
 #' @return Function returns a list with the following components: 
 #'   \item{phy.signal}{The estimate of phylogenetic signal}
 #'   \item{pvalue}{The significance level of the observed signal}
-#'   \item{pvalue}{The significance level of the observed signal}
+#'   \item{Effect.Size}{The multivariate effect size associated with sigma.d.ratio.}
 #'   \item{random.K}{Each random K-statistic from random permutations}
 #'   \item{permutations}{The number of random permutations used in the resampling procedure}
 #'   \item{call}{The matched call}
@@ -63,67 +63,107 @@
 #' PS.shape <- physignal(A=Y.gpa$coords,phy=plethspecies$phy,iter=999)
 #' summary(PS.shape)
 #' plot(PS.shape)
+#' plot(PS.shape$PaCA, phylo = TRUE)
 #' 
 #' #Test for phylogenetic signal in size
 #' PS.size <- physignal(A=Y.gpa$Csize,phy=plethspecies$phy,iter=999)
 #' summary(PS.size)
 #' plot(PS.size)
-physignal<-function(A,phy,iter=999, seed=NULL, print.progress=TRUE){
-  if(any(is.na(A))==T){
-    stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').")  }
-  if (length(dim(A))==3){ 
-    if(is.null(dimnames(A)[[3]])){
-      stop("Data array does not include taxa names as dimnames for 3rd dimension.")  }
-    x<-two.d.array(A)}
-  if (length(dim(A))==2){ 
-    if(is.null(rownames(A))){
-      stop("Data matrix does not include taxa names as dimnames for rows.")  }
-    x<-A }
-  if (is.vector(A)== TRUE){ 
-    if(is.null(names(A))){
-      stop("Data vector does not include taxa names as names.")  }
-    x<-as.matrix(A) }
-  if (!inherits(phy, "phylo"))
-    stop("tree must be of class 'phylo.'")
-  N<-length(phy$tip.label)
-  if(N!=dim(x)[1]){
-    stop("Number of taxa in data matrix and tree are not not equal.")  }
-  if(length(match(rownames(x), phy$tip.label))!=N) 
-    stop("Data matrix missing some taxa present on the tree.")
-  if(length(match(phy$tip.label,rownames(x)))!=N) 
-    stop("Tree missing some taxa in the data matrix.")
-  if (any(is.na(match(sort(phy$tip.label), sort(rownames(x))))) == T) {
-    stop("Names do not match between tree and data matrix.") }
-#  x<-x[phy$tip.label,]
-  if(is.null(dim(x)) == TRUE){ x <- matrix(x, dimnames=list(names(x))) }
-  x<-as.matrix(x)
-  phy.parts<-phylo.mat(x,phy)
-  invC<-phy.parts$invC; D.mat<-phy.parts$D.mat;C = phy.parts$C
-  ones<-matrix(1,N,1) 
-  a.adj<-ones%*%crossprod(ones, invC)/sum(invC)
-  Kmult<-function(x,invC,D.mat, ones, a.adj){
-    x.c <- x-a.adj%*%x
-    MSEobs.d<-sum(x.c^2)  
-    x.a <- D.mat%*%x.c
-    MSE.d<-sum(x.a^2)  
-    K.denom<-(sum(diag(C))- N/sum(invC))/(N-1)
-    (MSEobs.d/MSE.d)/K.denom
+physignal <- function(A, phy, iter=999, seed=NULL, print.progress = FALSE){
+  if(any(is.na(A)))
+    stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').\n",
+         call. = FALSE)  
+  if (length(dim(A)) == 3){ 
+    if(is.null(dimnames(A)[[3]]))
+      stop("Data array does not include taxa names as dimnames for 3rd dimension.\n", call. = FALSE)  
+    x <- two.d.array(A)
   }
+  
+  if (length(dim(A))==2){ 
+    if(is.null(rownames(A))) stop("Data matrix does not include taxa names as dimnames for rows.\n", 
+        call. = FALSE)  
+    x <- A 
+  }
+  
+  if (is.vector(A)){ 
+    if(is.null(names(A))) stop("Data vector does not include taxa names as names.\n", call. = FALSE)  
+    x <- as.matrix(A) 
+  }
+  
+  if (!inherits(phy, "phylo"))
+    stop("tree must be of class 'phylo.'\n", call. = FALSE)
+  
+  N <- length(phy$tip.label)
+  if(N != dim(x)[1]) 
+    stop("Number of taxa in data matrix and tree are not not equal.\n", call. = FALSE)  
+  
+  if(length(match(rownames(x), phy$tip.label)) != N) 
+    stop("Data matrix missing some taxa present on the tree.\n", call. = FALSE)
+  
+  if(length(match(phy$tip.label,rownames(x))) != N) 
+    stop("Tree missing some taxa in the data matrix.\n", call. = FALSE)
+  
+  if (any(is.na(match(sort(phy$tip.label), sort(rownames(x)))))) 
+    stop("Names do not match between tree and data matrix.\n", call. = FALSE) 
+  
+  #  x<-x[phy$tip.label,]
+  
+  if(is.null(dim(x))) x <- matrix(x, dimnames = list(names(x))) 
+  phy.parts <- phylo.mat(x, phy)
+  invC <- phy.parts$invC
+  D.mat <- phy.parts$D.mat
+  C <- phy.parts$C
+  ones <- matrix(1,N,1) 
+  a.adj <- ones %*% crossprod(ones, invC)/sum(invC)
+ 
+  
+  Kmult <- function(x, invC, D.mat, ones, a.adj){
+    x.c <- x - a.adj%*%x
+    MSEobs.d <- sum(x.c^2)  
+    x.a <- D.mat%*%x.c
+    MSE.d <- sum(x.a^2)  
+    K.denom <- (sum(diag(C))- N/sum(invC))/(N-1)
+    (MSEobs.d/MSE.d) / K.denom
+  }
+  
   ind <- perm.index(nrow(x), iter, seed=seed)
-  x.rand <-Map(function(i) x[i,], ind)
-  if(print.progress){
+  x.rand <- Map(function(i) x[i,], ind)
+  
+  K.args <- list(x = x.rand[[1]], invC = invC, D.mat = D.mat, ones = ones, a.adj = a.adj)
+  
+  if(print.progress)
     pb <- txtProgressBar(min = 0, max = iter+1, initial = 0, style=3) 
-    K.rand <- sapply(1:(iter+1), function(j) {
-      setTxtProgressBar(pb,j)
-      Kmult(as.matrix(x.rand[[j]]), invC,D.mat, ones, a.adj)
-      })
-    close(pb)
-  } else K.rand <- sapply(1:(iter+1), 
-                          function(j) Kmult(as.matrix(x.rand[[j]]), invC,D.mat, ones, a.adj))
+  
+  K.rand <- sapply(1:(iter+1), function(j) {
+    if(print.progress) setTxtProgressBar(pb,j)
+    K.args$x <- x.rand[[j]]
+    do.call(Kmult, K.args)
+  })
+    
+  if(print.progress) close(pb)
+
   p.val <- pval(K.rand)
   Z <- effect.size(log(K.rand), center=TRUE) 
-  out <- list(phy.signal=K.rand[[1]], pvalue=p.val, Z = Z, random.K = K.rand,
-              permutations = iter+1, call=match.call())
+  
+  # Kmult by paca
+  x <- as.matrix(x)
+  PaCA <- ordinate(x, A = C, newdata = anc.BM(phy, x))
+  class(PaCA) <- c("gm.prcomp", class(PaCA))
+  PaCA$phy <- phy
+  names(PaCA)[[which(names(PaCA) == "xn")]] <- "anc.x"
+  P <- PaCA$x
+  p <- NCOL(P)
+  
+  K.by.p <- sapply(1:p, function(j) {
+    K.args$x <- as.matrix(P[, 1:j])
+    do.call(Kmult, K.args)
+  })
+  
+  
+  out <- list(phy.signal = K.rand[[1]], pvalue = p.val, random.K = K.rand, Z = Z,
+              permutations = iter+1, 
+              K.by.p = K.by.p, PaCA = PaCA, call=match.call())
+  
   class(out) <- "physignal"
   out
 }

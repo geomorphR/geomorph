@@ -12,27 +12,25 @@
 #' 
 #' This function is a wrapper for several functions in the \code{\link{rgl-package}} package.  
 #' Although there is some allowance for arguments to be passed to \code{\link{rgl-package}} functions,
-#' some override of \code{\link[rgl]{plot3d}} arguments is required.  Errors that result from trying
-#' to pass \code{\link[rgl]{plot3d}} or \code{\link[rgl]{points3d}} arguments should inspire the user
+#' some override of rgl-plot3d arguments is required.  Errors that result from trying
+#' to pass rgl-plot3d or rgl-points3d arguments should inspire the user
 #' to find solutions with \code{\link{rgl-package}} core functions.
 #'
 #' @param spec An object of class shape3d/mesh3d, or matrix of 3D vertex coordinates.
 #' @param digitspec Name of data matrix containing 3D fixed and/or surface sliding coordinates.
 #' @param fixed Numeric The number of fixed template landmarks (listed first in {digitspec})
-#' @param fixed.pt.col The colour for plotting fixed template landmarks (if any)
+#' @param fixed.pt.col The color for plotting fixed template landmarks (if any)
 #' @param fixed.pt.size The size for plotting fixed template landmarks (if any)
 #' @param mesh.ptsize Numeric Size to plot the mesh points (vertices), e.g. 0.1 for dense meshes, 3 for sparse meshes                                       
 #' @param centered Logical Whether the data matrix is in the surface mesh coordinate system ({centered=FALSE}) or
 #' if the data were collected after the mesh was centered ({centered=TRUE})- see details.
-#' @param ... additional parameters which will be passed to \code{\link{plot3d}} or 
-#' \code{\link{points3d}}.
+#' @param ... additional parameters which will be passed to rgl-plot3d or 
+#' rgl-points3d.
 #' @export
 #' @keywords visualization
 #' @seealso \code{\link{warpRefMesh}}
 #' @seealso \code{\link{read.ply}}
 #' @seealso \code{\link{rgl-package}} (used in 3D plotting)
-#' @seealso \code{\link[rgl]{plot3d}}
-#' @seealso \code{\link[rgl]{points3d}}
 #' @examples
 #' 
 #' data(scallopPLY)

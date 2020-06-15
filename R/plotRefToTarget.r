@@ -107,8 +107,8 @@ plotRefToTarget<-function(M1, M2, mesh= NULL, outline=NULL,
       }
       if(label){
         text(M2, label=paste(1:dim(M2)[1]), adj=gP$txt.adj,
-             pos=gP$txt.pos, cex=gP$txt.cex, col=gP$txt.col)
-      }
+                             pos=gP$txt.pos, cex=gP$txt.cex, col=gP$txt.col)
+        }
       if(!is.null(outline)){
         curve.warp <- xy.coords(tps2d(outline, M1, M2))
         plot.xy(curve.warp, type="p", pch=19, cex=gP$tar.out.cex, col=gP$tar.out.col) 
@@ -163,7 +163,7 @@ plotRefToTarget<-function(M1, M2, mesh= NULL, outline=NULL,
       if(label){
         text(M1, label=paste(1:dim(M1)[1]), adj=gP$txt.adj,
              pos=gP$txt.pos, cex=gP$txt.cex, col=gP$txt.col)
-      }
+        }
       if(!is.null(outline)){
         curve.warp <- tps2d(outline, M1, M2)
         plot.xy(xy.coords(outline), type="p", pch=19, cex=gP$out.cex, col=gP$out.col) 
@@ -294,11 +294,11 @@ plotRefToTarget<-function(M1, M2, mesh= NULL, outline=NULL,
     }
     if(method=="vector"){
       if(axes){
-        plot3d(M1,type="s",col=gP$pt.bg,size=gP$pt.size,aspect=FALSE,...)}
+      plot3d(M1,type="s",col=gP$pt.bg,size=gP$pt.size,aspect=FALSE,...)}
       if(!axes){
         plot3d(M1,type="s",col=gP$pt.bg,size=gP$pt.size,aspect=FALSE,xlab="",ylab="",zlab="",axes=F,...)}
       if(label){text3d(M1, texts = paste(1:dim(M1)[1]), adj=(gP$txt.adj+gP$pt.size),
-                       cex=gP$txt.cex,col=gP$txt.col)} #pos=(gP$txt.pos+gP$pt.size),
+                               cex=gP$txt.cex,col=gP$txt.col)} #pos=(gP$txt.pos+gP$pt.size),
       for (i in 1:nrow(M1)){
         segments3d(rbind(M1[i,],M2[i,]),lwd=2)
       }
@@ -314,14 +314,14 @@ plotRefToTarget<-function(M1, M2, mesh= NULL, outline=NULL,
     }
     if(method=="points"){
       if(axes){
-        plot3d(M1,type="s",col=gP$pt.bg,size=gP$pt.size,aspect=FALSE,...)
-        plot3d(M2,type="s",col=gP$tar.pt.bg,size=gP$tar.pt.size,add=TRUE)}
+      plot3d(M1,type="s",col=gP$pt.bg,size=gP$pt.size,aspect=FALSE,...)
+      plot3d(M2,type="s",col=gP$tar.pt.bg,size=gP$tar.pt.size,add=TRUE)}
       if(!axes){
         plot3d(M1,type="s",col=gP$pt.bg,size=gP$pt.size,aspect=FALSE,xlab="",ylab="",zlab="",axes=F,...)
         plot3d(M2,type="s",col=gP$tar.pt.bg,size=gP$tar.pt.size,add=TRUE)}
       
       if(label){text3d(M1, texts = paste(1:dim(M1)[1]), adj=(gP$txt.adj+gP$pt.size),
-                       cex=gP$txt.cex,col=gP$txt.col)} #pos=(gP$txt.pos+gP$pt.size),
+                               cex=gP$txt.cex,col=gP$txt.col)} #pos=(gP$txt.pos+gP$pt.size),
       if(!is.null(links)){
         linkcol <- rep(gP$link.col,nrow(links))[1:nrow(links)]
         linklwd <- rep(gP$link.lwd,nrow(links))[1:nrow(links)]

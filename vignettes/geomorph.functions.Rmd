@@ -62,7 +62,7 @@ Function name | Brief description
 `digitize2d` | Digitize 2D landmarks in jpg files
 `digitsurface` | Digitize 3D fixed landmarks and surface semilandmarks in a 3D surface object using an already created template
 `editTemplate` | Manually remove surface semilandmarks from a 3D template
-`findMeanSpec` | Idsentify specimen closest to the mean
+`findMeanSpec` | Identify specimen closest to the mean
 `geomorph.data.frame` | Combine data for analyses into a geomorph data frame
 `interlmkdist` | Calculate linear distances between landmarks
 `read.morphologika` | Read morphologika file

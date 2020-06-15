@@ -4,7 +4,7 @@
 \alias{physignal}
 \title{Assessing phylogenetic signal in Procrustes shape variables}
 \usage{
-physignal(A, phy, iter = 999, seed = NULL, print.progress = TRUE)
+physignal(A, phy, iter = 999, seed = NULL, print.progress = FALSE)
 }
 \arguments{
 \item{A}{A matrix (n x [p x k]) or 3D array (p x k x n) containing Procrustes shape variables for a set of specimens}
@@ -25,7 +25,7 @@ This is helpful for long-running analyses.}
 Function returns a list with the following components: 
   \item{phy.signal}{The estimate of phylogenetic signal}
   \item{pvalue}{The significance level of the observed signal}
-  \item{pvalue}{The significance level of the observed signal}
+  \item{Effect.Size}{The multivariate effect size associated with sigma.d.ratio.}
   \item{random.K}{Each random K-statistic from random permutations}
   \item{permutations}{The number of random permutations used in the resampling procedure}
   \item{call}{The matched call}
@@ -69,6 +69,7 @@ Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment
 PS.shape <- physignal(A=Y.gpa$coords,phy=plethspecies$phy,iter=999)
 summary(PS.shape)
 plot(PS.shape)
+plot(PS.shape$PaCA, phylo = TRUE)
 
 #Test for phylogenetic signal in size
 PS.size <- physignal(A=Y.gpa$Csize,phy=plethspecies$phy,iter=999)
@@ -87,6 +88,6 @@ alternative modular hypotheses, using covariance ratio effect sizes with morphom
 Evolution. 73:2352-2367.
 }
 \author{
-Dean Adams
+Dean Adams and Michael Collyer
 }
 \keyword{analysis}

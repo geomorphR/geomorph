@@ -1,8 +1,7 @@
 #' Update Plots with Convex Hulls for Groups
 #' 
 #' This function is used to update \code{\link{plot.procD.lm}} and \code{\link{plot.gm.prcomp}} ordination plot
-#' objects with convex hulls for different groups.  This function does not currently work with 
-#' \code{\link{plotTangentSpace}}.  If no groups are defined (groups is NULL) just a single
+#' objects with convex hulls for different groups.  If no groups are defined (groups is NULL) just a single
 #' convex hull will be returned.  Groups do not need to be a factor in the original \code{\link{procD.lm}} fit.
 #' 
 #' This function is a wrapper for the \code{\link{points}} function. It is intentionally limited, so

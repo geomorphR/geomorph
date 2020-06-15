@@ -22,7 +22,7 @@ plotspec(
 
 \item{fixed}{Numeric The number of fixed template landmarks (listed first in {digitspec})}
 
-\item{fixed.pt.col}{The colour for plotting fixed template landmarks (if any)}
+\item{fixed.pt.col}{The color for plotting fixed template landmarks (if any)}
 
 \item{fixed.pt.size}{The size for plotting fixed template landmarks (if any)}
 
@@ -31,8 +31,8 @@ plotspec(
 \item{centered}{Logical Whether the data matrix is in the surface mesh coordinate system ({centered=FALSE}) or
 if the data were collected after the mesh was centered ({centered=TRUE})- see details.}
 
-\item{...}{additional parameters which will be passed to \code{\link{plot3d}} or 
-\code{\link{points3d}}.}
+\item{...}{additional parameters which will be passed to rgl-plot3d or 
+rgl-points3d.}
 }
 \description{
 A function to plot three-dimensional (3D) specimen along with its landmarks.
@@ -48,8 +48,8 @@ the coordinate matrix ({digitspec}).
 
 This function is a wrapper for several functions in the \code{\link{rgl-package}} package.  
 Although there is some allowance for arguments to be passed to \code{\link{rgl-package}} functions,
-some override of \code{\link[rgl]{plot3d}} arguments is required.  Errors that result from trying
-to pass \code{\link[rgl]{plot3d}} or \code{\link[rgl]{points3d}} arguments should inspire the user
+some override of rgl-plot3d arguments is required.  Errors that result from trying
+to pass rgl-plot3d or rgl-points3d arguments should inspire the user
 to find solutions with \code{\link{rgl-package}} core functions.
 }
 \examples{
@@ -66,10 +66,6 @@ fixed.pt.size = 15, col = "blue", size = 5)
 \code{\link{read.ply}}
 
 \code{\link{rgl-package}} (used in 3D plotting)
-
-\code{\link[rgl]{plot3d}}
-
-\code{\link[rgl]{points3d}}
 }
 \author{
 Erik Otarola-Castillo, Emma Sherratt, Antigoni Kaliontzopoulou, & Michael Collyer

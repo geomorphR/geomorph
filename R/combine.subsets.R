@@ -35,12 +35,12 @@
 #' CS.set input is a matrix, it is assumed that rows are specimens and columns correspond to the different landmark
 #' sets.  Lists or arrays should be in the same order as the landmark sets.
 #' @param norm.CS An option to normalize centroid size, according to the method of Dryden and Mardia (2016).  If TRUE,
-#' centroid sizes are divided by the square root of the numebr of landmarks.  This can have some advantage when one
+#' centroid sizes are divided by the square root of the number of landmarks.  This may have some appeal when one
 #' configuration is landmark-dense and another is landmark-sparse, but both correspond to structures of similar surface area
 #' or volume.  Using this option should be done with caution, as it can make small configurations larger than large configurations,
 #' in a relative sense.  Choosing this option will probably produce relative centroid sizes that are more equal, 
 #' irrespective of the number of landmarks.
-#' @param weights An option to define (positive) weights used in calculation of relative centroid sizes (Collyer et al. in review).  Note that
+#' @param weights An option to define (positive) weights used in calculation of relative centroid sizes (Collyer et al. 2020).  Note that
 #' this option, if not NULL, will override norm.CS, as normalizing CS is one method of weighting centroid size. Using this option 
 #' should be done with caution, as it can make small configurations larger than large configurations,
 #' in a relative sense.  Note that no adjustments of weights are made - the user must define the weights exactly as intended.
@@ -53,8 +53,8 @@
 #' @references  Adams, D.C. 1999. Methods for shape analysis of landmark data from articulated structures. 
 #'  Evolutionary Ecology Research. 1:959-970. 
 #' @references  Dryden, I.L. and K.V Mardia. 2016. Statistical shape analysis, with applications in R: Second edition.
-#' @references  Collyer, M.L., M.A. Davis, and D.C. Adams. 2016. The R function, combinland, and normalization of centroid sizes, 
-#' can make neither heads nor tails of combined landmark configurations. Submitted.
+#' @references  Collyer, M.L., M.A. Davis, and D.C. Adams. 2020. Making heads or tails of combined landmark configurations in 
+#' geometric morphometric data. Accepted
 #' @author Michael Collyer
 #' @return An object of class \code{combined.set} is a list containing the following
 #' \item{cords}{An [p x k x n] array of scaled, concatenated landmark coordinates.}
@@ -111,8 +111,9 @@
 #' # Note that the head is too large, compared to a real specimen.  
 #' # This option focuses on average distance of points to centroid, 
 #' # but ignores the number of landmarks.  
-#' # Consequently,the density of landmarks in the head and tail are irrelevant 
-#' # and the head size is inflated because of the fewer landmarks in the configuration.
+#' # Consequently,the density of landmarks in the head and tail are 
+#' # irrelevant and the head size is inflated because of the fewer 
+#' # landmarks in the configuration.
 #' 
 #' ## Weighting centroid size
 #' 
@@ -125,8 +126,9 @@
 #' par(mfrow = c(1,1))
 #' 
 #' # Note that the head is way too small, compared to a real specimen.  
-#' # This option allows one to dictate the relative sizes of subsets as portions of the combined set.
-#' # An option like this should be used with caution, but can help overcome issues caused by landmark density.
+#' # This option allows one to dictate the relative sizes of subsets as portions 
+#' # of the combined set.  An option like this should be used with caution, 
+#' # but can help overcome issues caused by landmark density.
 
 
 combine.subsets <- function(..., gpa = TRUE, CS.sets = NULL, norm.CS = FALSE, weights = NULL){
@@ -231,8 +233,8 @@ combine.subsets <- function(..., gpa = TRUE, CS.sets = NULL, norm.CS = FALSE, we
 	CS.tot <- as.matrix(simplify2array(all.CS))
 	if(norm.CS) CS.tot <- CS.tot / matrix(sqrt(p), NROW(CS.tot), NCOL(CS.tot), byrow = TRUE)
 	if(weighted) CS.tot <- CS.tot * matrix(weights, NROW(CS.tot), NCOL(CS.tot), byrow = TRUE)
-	
-	CS.part <- sqrt(CS.tot^2 /rowSums(CS.tot^2))
+	p.mat <- matrix(p, NROW(CS.tot), NCOL(CS.tot), byrow = TRUE)
+	CS.part <- sqrt(CS.tot^2 /rowSums(CS.tot^2)) 
 	coords.part <- lapply(1:g, function(j){
 	  ac <- all.coords[[j]]
 	  sc <- CS.part[,j]

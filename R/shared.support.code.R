@@ -52,16 +52,16 @@ center.scale <- function(x) {
 # apply.pPsup
 # applies a partial Procrustes superimposition to matrices in a list
 # used in gpagen functions
-apply.pPsup<-function(M, Ya) {	# M = mean (reference); Ya all Y targets
+apply.pPsup <- function(M, Ya) {	# M = mean (reference); Ya all Y targets
   dims <- dim(Ya[[1]])
   k <- dims[2]; p <- dims[1]; n <- length(Ya)
   M <- cs.scale(M)
   lapply(1:n, function(j){
     y <- Ya[[j]]
-    MY <- crossprod(M,y)
-    sv <- La.svd(MY,k,k)
-    u <- sv$u; u[,k] <- u[,k]*determinant(MY)$sign
-    tcrossprod(y,u%*%sv$vt)
+    MY <- crossprod(M, y)
+    sv <- La.svd(MY, k, k)
+    u <- sv$u; u[,k] <- u[,k] * determinant(MY)$sign
+    tcrossprod(y, u %*% sv$vt)
   })
 }
 
@@ -224,14 +224,180 @@ Cov.proj <- function(Cov, id = NULL){
   Cov <- if(is.null(id)) Cov else Cov[id, id]
   sym <- isSymmetric(Cov)
   eigC <- eigen(Cov, symmetric = sym)
-  lambda <- zapsmall(abs(Re(eigC$values)))
-  if(any(lambda == 0)){
-    cat("\nWarning: singular covariance matrix. Proceed with caution\n")
-  }
-  
   eigC.vect = t(eigC$vectors)
   L <- eigC.vect *sqrt(abs(eigC$values))
   P <- fast.solve(crossprod(L, eigC.vect))
   dimnames(P) <- dimnames(Cov)
   P
 }
+
+
+# ape replacement functions below ----------------------------------------------------
+
+# sim.char has a similar function to this but it is called in every simulation
+# and defers to C for help.  This is done once only here. (Produces a projection matrix)
+phy.sim.mat <- function(phy) {
+  N <- length(phy$tip.label)
+  n <- nrow(phy$edge)
+  m <- matrix(0, N, n)
+  edg <- phy$edge.length
+  idx <- phy$edge[, 2]
+  anc <- phy$edge[, 1]
+  tips <- which(idx <= N)
+  non.tips <- which(idx > N)
+  for(i in 1:length(tips)) m[idx[tips[i]], tips[i]] <- sqrt(edg[tips[i]])
+  for(i in 1:length(non.tips)) {
+    x <- idx[non.tips[i]]
+    anc.i <- which(anc == x)
+    edg.i <- idx[anc.i]
+    if(any(edg.i > N)) {
+      edg.i <- as.list(edg.i)
+      while(any(edg.i > N)) {
+        edg.i <- lapply(1:length(edg.i), function(j){
+          edg.i.j <- edg.i[[j]]
+          if(edg.i.j > N) {
+            idx[which(anc == edg.i.j)]
+          } else edg.i.j <- edg.i.j
+        })
+        edg.i <- unlist(edg.i)
+      }
+    }
+    m[edg.i, which(idx == x)] <- sqrt(edg[which(idx == x)])
+  }
+  rownames(m) <- phy$tip.label
+  m
+}
+
+# fast.phy.vcv
+# same as vcv.phylo but without options, in order to not use ape
+
+fast.phy.vcv <- function (phy) tcrossprod(phy.sim.mat(phy))
+
+# reorder.phy
+# same as reorder function, but without options
+
+reorder.phy <- function(phy){
+  edge <- phy$edge
+  edge.length <- phy$edge.length
+  edge <- cbind(edge, edge.length)
+  n <- nrow(edge)
+  ind <-rank(edge[,1], ties.method = "last")
+  edge <- edge[order(ind, decreasing = TRUE), ]
+  edge.length <- edge[,3]
+  phy$edge <- edge[,-3]
+  phy$edge.length <- edge.length
+  attr(phy, "order") <- "postorder"
+  return(phy)
+}
+
+
+# anc.BM 
+# via PICs
+# same as ace, but multivariate
+pic.prep <- function(phy, nx, px){
+  phy <- reorder.phy(phy)
+  ntip <- length(phy$tip.label)
+  nnode <- phy$Nnode
+  edge <- phy$edge
+  edge1 <- edge[, 1]
+  edge2 <- edge[,2]
+  edge_len <- phy$edge.length
+  phe <- matrix(0, ntip + nnode, px)
+  contr <- matrix(0, nnode, px)
+  var_contr <- rep(0, nnode)
+  i.seq <- seq(1, ntip * 2 -2, 2)
+  list(ntip = ntip, nnode = nnode, edge1 = edge1,
+       edge2 = edge2, edge_len = edge_len, phe = phe,
+       contr = contr, var_contr = var_contr, 
+       tip.label = phy$tip.label,
+       i.seq = i.seq)
+}
+
+ace.pics <- function(ntip, nnode, edge1, edge2, edge_len, phe, contr,
+                     var_contr, tip.label, i.seq, x) {
+  phe[1:ntip,] <- if (is.null(rownames(x))) x else x[tip.label,]
+  N <- ntip + nnode
+  for(ii in 1:nnode) {
+    anc <- edge1[i.seq[ii]]
+    ij <- which(edge1 == anc)
+    i <- ij[1]
+    j <- ij[2]
+    d1 <- edge2[i]
+    d2 <- edge2[j]
+    sumbl <- edge_len[i] + edge_len[j]
+    ic <- anc - ntip 
+    ya <- (phe[d1,] - phe[d2,])/sqrt(sumbl)
+    contr[ic, ] <- ya
+    var_contr[ic] <- sumbl
+    phe[anc,] <- (phe[d1, ] * edge_len[j] + phe[d2, ] * edge_len[i])/sumbl
+    k <- which(edge2 == anc)
+    edge_len[k] <- edge_len[k] + edge_len[i] * edge_len[j] / sumbl
+  }
+  phe
+}
+
+# anc.BM
+# multivariate as opposed to fastAnc
+
+anc.BM <- function(phy, Y){
+  if(!is.matrix(Y)) Y <- as.matrix(Y)
+  Y <- as.matrix(Y[phy$tip.label,])
+  phy <- reorder.phy(phy)
+  n <- length(phy$tip.label)
+  out <- t(sapply(1:phy$Nnode, function(j){
+    phy.j <- multi2di.phylo(root.phylo(phy, node = j + n))
+    preps <- pic.prep(phy.j, NROW(Y), NCOL(Y))
+    preps$x <- Y
+    preps$tip.label <- phy$tip.label
+    out <- do.call(ace.pics, preps)
+    out[n + 1,]
+  }))
+  
+  if(length(out) == (n-1)) out <- t(out)
+  dimnames(out) <- list(1:phy$Nnode + length(phy$tip.label), colnames(Y))
+  out
+}
+
+# getNode Depth
+# replaces node.depth.edgelength
+
+getNodeDepth <- function(phy){
+  phy <- reorder.phy(phy)
+  E <- phy$edge
+  anc <- E[,1]
+  des <- E[,2]
+  ntip <- length(phy$tip.label)
+  nnode <- phy$Nnode
+  N <- ntip + nnode
+  L <- phy$edge.length
+  base.tax <- ntip + 1
+  full.depth.seq <- (ntip + 1):N
+  full.node.depth <- 0
+  tips <- which(des <= ntip)
+  non.tips <- which(des > ntip)
+  
+  get.edge.ind <- function(tax){
+    root.t <- ntip +1
+    des.i <- which(des == tax)
+    edge <- numeric()
+    tax.i <- tax
+    while(tax.i != root.t) {
+      anc.i <- anc[which(des == tax.i)]
+      tax.i <- anc[des.i]
+      edge <- c(edge, des.i)
+      des.i <- which(des == anc.i)
+    }
+    edge
+  }
+  
+  tips.taxa <- lapply(as.list(tips), function(j) des[j])
+  tips.edges <- lapply(tips.taxa, get.edge.ind)
+  tips.depths <- sapply(1:ntip, function(j) sum(L[tips.edges[[j]]]))
+  
+  nodes <- as.list((ntip + 1):(N))
+  nodes.edges <- lapply(nodes, get.edge.ind)
+  nodes.depths <- sapply(1:nnode, function(j) sum(L[nodes.edges[[j]]]))
+  
+  c(tips.depths, nodes.depths)
+}
+

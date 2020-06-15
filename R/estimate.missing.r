@@ -64,7 +64,7 @@ estimate.missing <- function(A, method=c("TPS","Reg")){
     a <- A
     A <- simplify2array(a$landmarks)
   }
-  
+
   if(any(is.na(A))==FALSE)  {stop("No missing data.")}
   method <- match.arg(method)
   if (length(dim(A))!=3){
@@ -117,9 +117,9 @@ estimate.missing <- function(A, method=c("TPS","Reg")){
       pls <- svd(S12)
       U <- pls$u; V <- pls$v
       XScores <- x%*%U; YScores <- y%*%V
-      #      beta<-coef(lm(YScores[,1]~XScores[,1]))
-      #      miss.xsc<-c(1,A.2d[spec.NA[i],-missing.coord]%*%U[,1])
-      #      miss.ysc<-c(miss.xsc%*%beta,(rep(0,(ncol(y)-1))))
+#      beta<-coef(lm(YScores[,1]~XScores[,1]))
+#      miss.xsc<-c(1,A.2d[spec.NA[i],-missing.coord]%*%U[,1])
+#      miss.ysc<-c(miss.xsc%*%beta,(rep(0,(ncol(y)-1))))
       beta <- coef(lm(YScores ~ XScores))
       miss.xsc <- c(1,A.2d[spec.NA[i],-missing.coord]%*%U)
       miss.ysc <- miss.xsc%*%beta

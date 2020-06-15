@@ -21,14 +21,14 @@
 #' For landmark coordinates digitized with geomorph digitizing functions, centered = TRUE. This refers to the
 #' specimen being centered prior to landmark acquisition in the RGL window. For landmark data collected outside
 #' of geomorph, centered=FALSE will usually be the case. The returned mesh3d object is for use in geomorph
-#' functions where shape deformations are plotted (\code{\link{plotTangentSpace}}, 
+#' functions where shape deformations are plotted (\code{\link{picknplot.shape}}, 
 #' \code{\link{two.b.pls}}, \code{\link{bilat.symmetry}}, and \code{\link{plotRefToTarget}}). 
 #' 
 #' @param mesh A mesh3d object (e.g. made by \code{\link{read.ply}})
 #' @param mesh.coord A p x k matrix of 3D coordinates digitized on the ply file.
 #' @param ref A p x k matrix of 3D coordinates made by \code{\link{mshape}}
 #' @param color Color to set the ply file $material. If the ply already has color, use NULL. 
-#' For ply files without color, color=NULL will be plotted as grey.
+#' For ply files without color, color=NULL will be plotted as gray.
 #' @param centered Logical If the data in mesh.coords were collected from a centered mesh (see details).
 #' @export
 #' @seealso \code{\link{findMeanSpec}}

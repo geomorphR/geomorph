@@ -28,8 +28,7 @@ to modify hull line type.}
 }
 \description{
 This function is used to update \code{\link{plot.procD.lm}} and \code{\link{plot.gm.prcomp}} ordination plot
-objects with convex hulls for different groups.  This function does not currently work with 
-\code{\link{plotTangentSpace}}.  If no groups are defined (groups is NULL) just a single
+objects with convex hulls for different groups.  If no groups are defined (groups is NULL) just a single
 convex hull will be returned.  Groups do not need to be a factor in the original \code{\link{procD.lm}} fit.
 }
 \details{

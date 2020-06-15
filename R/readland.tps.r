@@ -117,7 +117,7 @@ readland.tps <- function (file, specID = c("None", "ID", "imageID"), negNA = FAL
         kk <- length(pts)
         if(kk > 0) lm[i,1:kk] <- pts
       }
-      
+
       if(length(x$scale) == 0) x$scale = 1
       lm*x$scale
     })
@@ -137,7 +137,7 @@ readland.tps <- function (file, specID = c("None", "ID", "imageID"), negNA = FAL
       lm*x$scale
     })
   }
-  
+
   lmo <- try(simplify2array(lmo), silent = TRUE)
   lmo <- two.d.array(lmo)
   
@@ -150,7 +150,7 @@ readland.tps <- function (file, specID = c("None", "ID", "imageID"), negNA = FAL
     }
   }
   lmo <- arrayspecs(lmo, p.unique, ncol(lmo)/p.unique)
-  
+
   if(!is.null(p.error) && warnmsg) {
     target <- as.numeric(names(sort(p.error, decreasing = TRUE))[1])
     p.error <- pcheck != target

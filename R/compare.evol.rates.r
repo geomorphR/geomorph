@@ -68,7 +68,7 @@
 #' ER<-compare.evol.rates(A=Y.gpa$coords, phy=plethspecies$phy,method="simulation",gp=gp.end,iter=999)
 #' summary(ER)
 #' plot(ER)
-compare.evol.rates<-function(A,phy,gp,iter=999,seed=NULL,method=c("simulation","permutation"),print.progress=TRUE ){
+compare.evol.rates<-function(A,phy,gp,iter=999,seed=NULL,method=c("permutation","simulation"),print.progress=TRUE ){
   gp<-as.factor(gp)
   if (length(dim(A))==3){ 
     if(is.null(dimnames(A)[[3]])){
@@ -88,6 +88,7 @@ compare.evol.rates<-function(A,phy,gp,iter=999,seed=NULL,method=c("simulation","
     stop("Factor contains no names. Use names() to assign specimen names to group factor.")}
   if (!inherits(phy, "phylo")){
     stop("tree must be of class 'phylo.'")}
+  x <- x[phy$tip.label,]
   ntaxa<-length(phy$tip.label)
   N<-nrow(x)  
   method <- match.arg(method)
