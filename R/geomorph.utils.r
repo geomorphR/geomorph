@@ -723,7 +723,7 @@ plot.mshape <- function(x, links=NULL,...){
 #' @keywords utilities
 print.gm.prcomp <- function (x, ...) {
   class(x) <- "ordinate"
-  summary(x)
+  xx <- summary(x)
   
   if(!is.null(x$ancestors)) {
     
@@ -747,8 +747,10 @@ print.gm.prcomp <- function (x, ...) {
     print(tab)
     cat("\n\n")
     
-  }
+  } else tab <- NULL
   
+  out <- list(PC.summary = xx, Ancestor.summary = tab)
+  invisible(out)
 }
 
 #' Print/Summary Function for geomorph
