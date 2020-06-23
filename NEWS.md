@@ -1,3 +1,8 @@
+# CHANGES IN GEOMORPH VERSION 3.3.1.9000 
+
+### BUG FIXES
+* Made it possible to assign `summary.gm.prcomp` as an object
+
 # CHANGES IN GEOMORPH VERSION 3.3.1 (Patch Release)
 
 ### BUG FIXES
