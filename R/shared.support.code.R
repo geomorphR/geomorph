@@ -52,16 +52,16 @@ center.scale <- function(x) {
 # apply.pPsup
 # applies a partial Procrustes superimposition to matrices in a list
 # used in gpagen functions
-apply.pPsup<-function(M, Ya) {	# M = mean (reference); Ya all Y targets
+apply.pPsup <- function(M, Ya) {	# M = mean (reference); Ya all Y targets
   dims <- dim(Ya[[1]])
   k <- dims[2]; p <- dims[1]; n <- length(Ya)
   M <- cs.scale(M)
   lapply(1:n, function(j){
     y <- Ya[[j]]
-    MY <- crossprod(M,y)
-    sv <- La.svd(MY,k,k)
-    u <- sv$u; u[,k] <- u[,k]*determinant(MY)$sign
-    tcrossprod(y,u%*%sv$vt)
+    MY <- crossprod(M, y)
+    sv <- La.svd(MY, k, k)
+    u <- sv$u; u[,k] <- u[,k] * determinant(MY)$sign
+    tcrossprod(y, u %*% sv$vt)
   })
 }
 
@@ -69,6 +69,7 @@ apply.pPsup<-function(M, Ya) {	# M = mean (reference); Ya all Y targets
 # same as ginv, but without traps (faster)
 # used in any function requiring a generalized inverse
 fast.ginv <- function(X, tol = sqrt(.Machine$double.eps)){
+  X <- as.matrix(X)
   k <- ncol(X)
   Xsvd <- La.svd(X, k, k)
   Positive <- Xsvd$d > max(tol * Xsvd$d[1L], 0)
@@ -81,10 +82,11 @@ fast.ginv <- function(X, tol = sqrt(.Machine$double.eps)){
 # same as solve, but without traps (faster)
 # used in any function requiring a generalized inverse
 fast.solve <- function(x) { 
+  x <- as.matrix(x)
   if(det(x) > 1e-8) {
     res <- try(chol2inv(chol(x)), silent = TRUE)
     if(inherits(res, "try-error")) res <- fast.ginv(x)
-  } else  res <- fast.ginv(x)
+  } else res <- fast.ginv(x)
   return(res)
 }
 
@@ -171,10 +173,6 @@ pval = function(s){# s = sampling distribution
 # Effect sizes (standard deviates) form random outcomes
 # any analytical function
 effect.size <- function(x, center = TRUE) {
-  bc <- boxcox(lm(x ~ 1), plotit = FALSE)
-  lambda <- bc$x[which.max(bc$y)]
-  lambda <- round(lambda, 2)
-  x <- if(lambda == 0) log(x) else (x^lambda - 1)/lambda
   z = scale(x, center=center)
   n <- length(z)
   z[1]*sqrt((n-1)/(n))
@@ -402,3 +400,4 @@ getNodeDepth <- function(phy){
   
   c(tips.depths, nodes.depths)
 }
+

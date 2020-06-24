@@ -181,7 +181,7 @@ d688cf3fbc6c3351526c422948e457ba *R/readmulti.tps.R
 73ce1481733305a19848121fd2c90203 *R/rotate.coords.r
 1ec7076ed569badd94f834000e61ca5c *R/shape.predictor.r
 f191c54f3b3c75baea0b045758af5362 *R/shapeHulls.r
-59d1cc5493554d1479b0d9c7f7b3b1b0 *R/shared.support.code.r
+03f129fe0a1bab9270d8b65fe143bd41 *R/shared.support.code.r
 11a4c67b8a15ddf968b943e7190a1e2b *R/two.b.pls.r
 2e693d8b4f3c21d742737b97d1773119 *R/two.d.array.r
 e6805c9bb74e0ce39038a47b726d650e *R/warpRefMesh.r
