@@ -133,7 +133,7 @@ two.b.pls <- function (A1, A2,  iter = 999, seed = NULL, print.progress=TRUE){
   if(print.progress) pls.rand <- apply.pls(center(x), center(y), RV=FALSE, iter=iter, seed=seed) else
     pls.rand <- .apply.pls(center(x), center(y), RV=FALSE, iter=iter, seed=seed) 
   p.val <- pval(abs(pls.rand))
-  Z <- effect.size(abs(pls.rand), center=TRUE) 
+  Z <- effect.size(pls.rand, center=TRUE) 
   XScores <- pls.obs$XScores
   YScores <- pls.obs$YScores
   out <- list(r.pls = pls.rand[1], P.value = p.val, Z = Z,

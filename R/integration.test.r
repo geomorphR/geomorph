@@ -166,7 +166,7 @@ integration.test<-function(A, A2=NULL,partition.gp=NULL,iter=999, seed=NULL, pri
     if(print.progress) pls.rand <- apply.pls(center(x), center(y), iter=iter, seed=seed) else
       pls.rand <- .apply.pls(center(x), center(y), iter=iter, seed=seed)
     p.val <- pval(abs(pls.rand))
-    Z <- effect.size(abs(pls.rand), center=TRUE) 
+    Z <- effect.size(pls.rand, center=TRUE) 
     XScores <- pls.obs$XScores
     YScores <- pls.obs$YScores
   }
@@ -175,7 +175,7 @@ integration.test<-function(A, A2=NULL,partition.gp=NULL,iter=999, seed=NULL, pri
     if(print.progress) pls.rand <- apply.plsmulti(center(x), gps, iter=iter, seed=seed) else
       pls.rand <- .apply.plsmulti(center(x), gps, iter=iter, seed=seed)
     p.val <- pval(abs(pls.rand))
-    Z <- effect.size(abs(pls.rand), center=TRUE) 
+    Z <- effect.size(pls.rand, center=TRUE) 
   }  
   ####OUTPUT
   if(ngps > 2) r.pls.mat <- pls.obs$r.pls.mat else r.pls.mat <- NULL

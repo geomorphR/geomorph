@@ -153,11 +153,11 @@ b0de2a67cff633e27e7a00860187240f *R/globalIntegration.r
 21634789460f3b67a780df0d556d4a95 *R/gm.prcomp.R
 bf0750e2582fc2c3b5454ad48b7f3cbb *R/gpagen.r
 8c06e49837953d941a01c82b0111935a *R/gridPar.r
-008583e8de5b3ca6ecd64797d03ed576 *R/integration.test.r
+08669bbc40063d2c8ad684a57b9cdf3a *R/integration.test.r
 0cbfe6b5655e2751cdd03ca2a1550768 *R/interlmkdist.r
 2c61c43b3017b9b4d6b91ee097265a49 *R/modularity.test.r
 dcf12e817827f0521b16463f9240c481 *R/morphol.disparity.r
-bf9cfa5a72c207f88471d4e053fad58a *R/phylo.integration.r
+6ab92ffcade0c507620c08f2c93edb94 *R/phylo.integration.r
 14d81c58ead6cd19f0b99db7a4b834ee *R/phylo.modularity.r
 d150dd1e73e96f89c45853e6d4101680 *R/physignal.r
 b72262ffb22b02ae6b2592d4d0f4353a *R/picknplot.shape.r
@@ -182,7 +182,7 @@ d688cf3fbc6c3351526c422948e457ba *R/readmulti.tps.R
 1ec7076ed569badd94f834000e61ca5c *R/shape.predictor.r
 f191c54f3b3c75baea0b045758af5362 *R/shapeHulls.r
 8058f7fe819782e4584e4d666fee54c3 *R/shared.support.code.R
-11a4c67b8a15ddf968b943e7190a1e2b *R/two.b.pls.r
+24ce50bacc959e068d480f548bbf3caf *R/two.b.pls.r
 2e693d8b4f3c21d742737b97d1773119 *R/two.d.array.r
 e6805c9bb74e0ce39038a47b726d650e *R/warpRefMesh.r
 ce64f40b8badacea0852af718e718355 *R/warpRefOutline.r
