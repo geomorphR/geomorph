@@ -215,10 +215,17 @@ box.cox <- function(y, eps = 0.02) {
 # any analytical function
 
 effect.size <- function(x, center = TRUE) {
-  x <- box.cox(x)$transformed
-  n <- length(x)
-  if(center) x <- center(x)
-  x[1] / sqrt((sum(x^2)/n))
+  if(length(unique(x)) == 1) {
+    sdx <- 1
+    x <- 0
+  } else {
+    x <- box.cox(x)$transformed
+    n <- length(x)
+    if(center) x <- center(x)
+    sdx <- sqrt((sum(x^2)/n))
+  }
+
+  x[1] / sdx
 }
 
 # Pval.matrix
