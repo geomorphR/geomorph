@@ -225,7 +225,7 @@ effect.size <- function(x, center = TRUE) {
     sdx <- sqrt((sum(x^2)/n))
   }
 
-  x[1] / sdx
+  (x[1]- mean(x)) / sdx
 }
 
 # Pval.matrix
