@@ -205,7 +205,7 @@ box.cox <- function(y, eps = 0.02) {
   
   sp <- spline(lambda, loglik, n = 100)
   lambda.opt <- sp$x[which.max(sp$y)]
-  if(lambda.opt < eps) lambda.opt <- 0
+  if(abs(lambda.opt) < eps) lambda.opt <- 0
   res <- if(lambda.opt == 0) log(y) else (y^lambda.opt - 1)/lambda.opt
   list(opt.lambda = lambda.opt, transformed = res, lambda = sp$x, loglik = sp$y)
 }
