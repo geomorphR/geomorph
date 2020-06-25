@@ -143,7 +143,7 @@ physignal <- function(A, phy, iter=999, seed=NULL, print.progress = FALSE){
   if(print.progress) close(pb)
 
   p.val <- pval(K.rand)
-  Z <- effect.size(log(K.rand), center=TRUE) 
+  Z <- effect.size(K.rand, center=TRUE) 
   
   # Kmult by paca
   x <- as.matrix(x)

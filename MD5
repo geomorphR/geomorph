@@ -130,8 +130,8 @@ a6ef245a695ed5c523f8a018536c88d0 *R/bilat.symmetry.r
 d7d67e9218f84609046423cb222f5c44 *R/build.template.r
 5c10fc11bdcc1b0b674800458e7a94e7 *R/combine.subsets.r
 a85f984f777798d31520e42d0c87e3f5 *R/compare.CR.R
-75712d1c947c663f6c83ca93ac3e94f9 *R/compare.evol.rates.r
-00cccf6598681224c382ec757c97c456 *R/compare.multi.evol.rates.r
+972573f8464fc44f25a7ef7bcbbcf1a6 *R/compare.evol.rates.r
+7e711507b819431710a683de00ddeafb *R/compare.multi.evol.rates.r
 716fd68d21e23f585fb03c4f75330b99 *R/compare.pls.r
 5e4b285ed0e6499f26af9d913d0c48e4 *R/coords.subset.r
 c77f2f19e63d93ec9a76ac9c2236f1bc *R/define.links.r
@@ -159,7 +159,7 @@ bf0750e2582fc2c3b5454ad48b7f3cbb *R/gpagen.r
 dcf12e817827f0521b16463f9240c481 *R/morphol.disparity.r
 bf9cfa5a72c207f88471d4e053fad58a *R/phylo.integration.r
 14d81c58ead6cd19f0b99db7a4b834ee *R/phylo.modularity.r
-7ae1407ec4e63cbffd57c2196f8c0e6f *R/physignal.r
+d150dd1e73e96f89c45853e6d4101680 *R/physignal.r
 b72262ffb22b02ae6b2592d4d0f4353a *R/picknplot.shape.r
 27d460f920f7fbbcc189b7355bc45dd3 *R/plotAllometry.r
 c1cead3306cb3d7b1bd3ed5d99fc89af *R/plotAllSpecimens.r
@@ -181,7 +181,7 @@ d688cf3fbc6c3351526c422948e457ba *R/readmulti.tps.R
 73ce1481733305a19848121fd2c90203 *R/rotate.coords.r
 1ec7076ed569badd94f834000e61ca5c *R/shape.predictor.r
 f191c54f3b3c75baea0b045758af5362 *R/shapeHulls.r
-03f129fe0a1bab9270d8b65fe143bd41 *R/shared.support.code.r
+d02201ef7fe1d403c042d9c77b6619f5 *R/shared.support.code.R
 11a4c67b8a15ddf968b943e7190a1e2b *R/two.b.pls.r
 2e693d8b4f3c21d742737b97d1773119 *R/two.d.array.r
 e6805c9bb74e0ce39038a47b726d650e *R/warpRefMesh.r

@@ -139,7 +139,7 @@ compare.multi.evol.rates<-function(A,gp,phy,Subset=TRUE,iter=999,seed=NULL,print
                     max(sigma.rand[[j]])
                   }))
   p.val <- pval(random.sigma)
-  Z <- effect.size(log(random.sigma), center=TRUE) 
+  Z <- effect.size(random.sigma, center=TRUE) 
   ratio.vals<-matrix(NA,nrow=(iter+1),ncol=length(unlist(sigma.obs[4])))
   ratio.vals[1,]<-as.vector(sigma.obs$sigma.d.gp.ratio)
   for(i in 1:iter) ratio.vals[i+1,]<-as.vector(sigma.rand[[i]]) 

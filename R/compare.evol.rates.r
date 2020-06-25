@@ -139,7 +139,7 @@ compare.evol.rates<-function(A,phy,gp,iter=999,seed=NULL,method=c("permutation",
         random.sigma<- sapply(1:(iter+1), function(j) {max(sigma.rand[,j])})
       }
     p.val <- pval(random.sigma)
-    Z <- effect.size(log(random.sigma), center=TRUE) 
+    Z <- effect.size(random.sigma, center=TRUE) 
     if(nlevels(gp) > 2) {
       p.val.mat <- dist(sigma.obs$sigma.d.gp)
       p.val.mat[1:length(p.val.mat)] <- apply(sigma.rand, 1, pval)
