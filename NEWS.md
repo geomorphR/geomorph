@@ -2,6 +2,7 @@
 
 ### BUG FIXES
 * Made it possible to assign `summary.gm.prcomp` as an object
+* Fixed plotting issue in `warpRefMesh`
 
 # CHANGES IN GEOMORPH VERSION 3.3.1 (Patch Release)
 

@@ -43,7 +43,8 @@
 warpRefMesh <- function(mesh, mesh.coord, ref, color=NULL, centered=FALSE){
   if (inherits(mesh, "mesh3d") == FALSE){
     stop ("File is not a mesh3d object or xyz matrix") }
-  plotspec(mesh, mesh.coord, centered) ; title3d(main="Imported Mesh")
+  plotspec(mesh, mesh.coord, centered=centered) #changed from just 'centered' 6/25/2020
+  title3d(main="Imported Mesh")
   mesh.vb <- as.matrix(t(mesh$vb)[,-4])
     if (centered == TRUE){ mesh.vb <- scale(mesh.vb, scale = FALSE) }
   checkmat <- is.matrix(mesh.coord)
