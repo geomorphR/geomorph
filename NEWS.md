@@ -3,6 +3,7 @@
 ### BUG FIXES
 * Made it possible to assign `summary.gm.prcomp` as an object
 * Fixed small plotting issue in `warpRefMesh`
+* fixed single variable issue in `compare.evol.rates` related to R 4.0.2 changes
 
 # CHANGES IN GEOMORPH VERSION 3.3.1 (Patch Release)
 
