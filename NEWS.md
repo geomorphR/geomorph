@@ -1,6 +1,7 @@
 # CHANGES IN GEOMORPH VERSION 3.3.1.9000 
 
 ### BUG FIXES
+* Fixed plotting parameter arguments for phylo.par in `summary.gm.prcomp`.
 * Made it possible to assign `summary.gm.prcomp` as an object
 
 # CHANGES IN GEOMORPH VERSION 3.3.1 (Patch Release)
