@@ -60,7 +60,7 @@ d975879b9cfb692a95bd331d298d79d2 *man/plethspecies.Rd
 59b44888645cbbeeb4cf0d3406e4ee45 *man/plot.CR.phylo.Rd
 97892e1293dbb2c4a6e994a90c27dc83 *man/plot.CR.Rd
 85bbe6b70e860a14116746ef4ecac51f *man/plot.evolrate.Rd
-b72164a2533a03d64ec5577785317e4e *man/plot.gm.prcomp.Rd
+00510fb62d675528ad39923443f86013 *man/plot.gm.prcomp.Rd
 0116d21c6ae9389dc425aaca082fd67c *man/plot.gpagen.Rd
 71208a14b679efbbaf55f8daba7a0ef3 *man/plot.mshape.Rd
 c243df60434118dddca6904f3d6de9b0 *man/plot.physignal.Rd
@@ -124,7 +124,7 @@ d2755155772526527e4224b17d0dd05d *man/warpRefMesh.Rd
 7bea8d6b17918fd4889e2056ebe0e3d0 *man/warpRefOutline.Rd
 d9119f721918f22c267db843023a86fe *man/writeland.tps.Rd
 4f9ee50059d7fc79859a3d07a4edce09 *NAMESPACE
-b450ac9d48285073736fc8ee470e1256 *NEWS.md
+b1803f2d887d899c9db975873a6941ce *NEWS.md
 92239d51a080ccd3fc3a9f7ef67d1b8c *R/arrayspecs.r
 a6ef245a695ed5c523f8a018536c88d0 *R/bilat.symmetry.r
 d7d67e9218f84609046423cb222f5c44 *R/build.template.r
@@ -148,7 +148,7 @@ aac6a4f8a759473e8c37048e5c8e3d91 *R/findMeanSpec.r
 f2232ef1c2d04c76ce3a86dc1c07d6d4 *R/fixed.angle.r
 953c275fdc42e65db7394a594d35806a *R/geomorph.data.frame.r
 850fecef27ce8b54ac0d8d2189ef2461 *R/geomorph.support.code.r
-8bd226c8893f8eda63b2da612a337027 *R/geomorph.utils.r
+52887c5dacd5ebdcd233334a4e2ca2de *R/geomorph.utils.r
 b0de2a67cff633e27e7a00860187240f *R/globalIntegration.r
 21634789460f3b67a780df0d556d4a95 *R/gm.prcomp.R
 bf0750e2582fc2c3b5454ad48b7f3cbb *R/gpagen.r
@@ -196,4 +196,5 @@ b699b1ea6afe6b1915cb25aa6b2c42e9 *vignettes/figs/tree.plot.png
 2f5cbf4a6679bbb423363aa241bec859 *vignettes/geomorph.assistance.Rmd
 c03301b145c85bbcb07baca22444ebf5 *vignettes/geomorph.digitize3D.Rmd
 492444b0a440dbbf9e9ceab80713feca *vignettes/geomorph.functions.Rmd
+75b7372dea6c56453a26a74ae2979a50 *vignettes/geomorph.PCA.html
 c17b15c2b77924b846a86998d8d12481 *vignettes/geomorph.PCA.Rmd
