@@ -795,7 +795,7 @@ summary.gm.prcomp <- function (object, ...) {
 
 plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, phylo = FALSE, time.plot = FALSE,
                            phylo.par = list(tip.labels = TRUE, node.labels = TRUE, anc.states = TRUE,
-                                            node.bg = "grey", node.cex = 1,
+                                            node.pch = 21, node.bg = "grey", node.cex = 1, 
                                             edge.color = "black", edge.width = 1,
                                             tip.txt.cex = 1, tip.txt.col = "black", 
                                             tip.txt.adj = c(-0.1,-0.1),
@@ -829,10 +829,10 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, phylo = FALSE, time.plot = F
   if(phylo) {
     
     p.p <- list(tip.labels = TRUE, node.labels = TRUE, anc.states = TRUE,
-                            node.bg = "grey", node.cex = 1,
+                            node.bg = "grey", node.pch = 21, node.cex = 1,
                             edge.color = "black", edge.width = 1,
                             tip.txt.cex = 1, tip.txt.col = "black", 
-                            tip.txt.adj = c(-0.1,-0.1),
+                            tip.txt.adj = c(-0.1, -0.1),
                             node.txt.cex = 1, node.txt.col = "grey",
                             node.txt.adj = c(-0.1, -0.1))
     
@@ -843,17 +843,13 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, phylo = FALSE, time.plot = F
     p.p[m.p] <- phylo.par
     
     phy <- x$phy
-    tp <- add.tree(xx, phy, edge.col = phylo.par$edge.color,
+    tp <- add.tree(xx, phy, edge.col = p.p$edge.color,
                    edge.lwd = p.p$edge.width,
                    edge.lty = p.p$edge.lty, 
-                   anc.pts = FALSE,
-                   cex = 0.5 * p.p$edge.width, 
+                   anc.pts = p.p$anc.states,
+                   cex = p.p$node.cex,
+                   pch = p.p$node.pch,
                    col = p.p$edge.color, return.ancs = TRUE)
-    
-    if(p.p$anc.states) {
-      points(tp, pch = 21, bg = p.p$node.bg, 
-             col = p.p$edge.color, lwd = p.p$edge.width)
-    }
     
     if(p.p$tip.labels) {
       text(xx$points, rownames(xx$points), adj = p.p$tip.txt.adj,
