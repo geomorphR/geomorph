@@ -849,7 +849,9 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, phylo = FALSE, time.plot = F
                    anc.pts = p.p$anc.states,
                    cex = p.p$node.cex,
                    pch = p.p$node.pch,
-                   col = p.p$edge.color, return.ancs = TRUE)
+                   col = p.p$edge.color, 
+                   bg = p.p$node.bg,
+                   return.ancs = TRUE)
     
     if(p.p$tip.labels) {
       text(xx$points, rownames(xx$points), adj = p.p$tip.txt.adj,
