@@ -1299,11 +1299,12 @@ CR <-function(x,gps){
   })
   if(length(CR.gp) > 1) {CR.mat <- dist(matrix(0, ngps,)) 
     for(i in 1:length(CR.mat)) CR.mat[[i]] <- CR.gp[i]
-    CR.obs <- mean(CR.gp)
     CR.mat <- as.matrix(CR.mat) #added to specify which group is which (if out of numerical order)
     rownames(CR.mat) <- colnames(CR.mat) <- levels(factor(g, levels = unique(g)))
     CR.mat <- as.dist(CR.mat)
   }
+  if(length(CR.gp)==1){  CR.mat <- NULL }
+  CR.obs <- mean(CR.gp)
   list(CR = CR.obs, CR.mat=CR.mat)
 }
 
@@ -1582,7 +1583,6 @@ phylo.mat<-function(x,phy){
   }
   D.mat <- fast.solve(eigC$vectors%*% diag(sqrt(abs(eigC$values))) %*% t(eigC$vectors))
   rownames(D.mat) <- colnames(D.mat) <- colnames(C)
-  rownames(invC) <- colnames(invC) <- colnames(C)
   list(invC = invC, D.mat = D.mat,C = C)
 }
 
