@@ -1297,11 +1297,13 @@ CR <-function(x,gps){
     S12 <- crossprod(Xs[[a]], Xs[[b]])
     sqrt(sum(S12^2)/sqrt(sum(S11^2)*sum(S22^2)))
   })
-  if(length(CR.gp) > 1) CR.mat <- dist(matrix(0, ngps,)) else
-    CR.mat = 0 # may not be necessary
-  for(i in 1:length(CR.mat)) CR.mat[[i]] <- CR.gp[i]
-
-  CR.obs <- mean(CR.gp)
+  if(length(CR.gp) > 1) {CR.mat <- dist(matrix(0, ngps,)) 
+    for(i in 1:length(CR.mat)) CR.mat[[i]] <- CR.gp[i]
+    CR.obs <- mean(CR.gp)
+    CR.mat <- as.matrix(CR.mat) #added to specify which group is which (if out of numerical order)
+    rownames(CR.mat) <- colnames(CR.mat) <- levels(factor(g, levels = unique(g)))
+    CR.mat <- as.dist(CR.mat)
+  }
   list(CR = CR.obs, CR.mat=CR.mat)
 }
 
