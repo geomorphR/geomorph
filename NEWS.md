@@ -5,7 +5,8 @@
 * Made it possible to assign `summary.gm.prcomp` as an object
 * Fixed plotting issue in `warpRefMesh`
 * Fixed single variable issue in `compare.evol.rates` related to R 4.0.2 changes
-* Added factor labels to output object CR.mat in `modularity.test`
+* Added factor labels to output object CR.mat in `modularity.test` & `phylo.modularity`
+* Fixed order consistency for pairwise calculations in `phylo.modularity` 
 
 # CHANGES IN GEOMORPH VERSION 3.3.1 (Patch Release)
 

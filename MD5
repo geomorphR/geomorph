@@ -124,7 +124,7 @@ d2755155772526527e4224b17d0dd05d *man/warpRefMesh.Rd
 7bea8d6b17918fd4889e2056ebe0e3d0 *man/warpRefOutline.Rd
 d9119f721918f22c267db843023a86fe *man/writeland.tps.Rd
 4f9ee50059d7fc79859a3d07a4edce09 *NAMESPACE
-89a8c84a225a9ec11882a9a2be26360f *NEWS.md
+ee90b4e4507c7279a5710dc0330ecc22 *NEWS.md
 92239d51a080ccd3fc3a9f7ef67d1b8c *R/arrayspecs.r
 a6ef245a695ed5c523f8a018536c88d0 *R/bilat.symmetry.r
 d7d67e9218f84609046423cb222f5c44 *R/build.template.r
@@ -158,7 +158,7 @@ bf0750e2582fc2c3b5454ad48b7f3cbb *R/gpagen.r
 799364fd731d833ff73ab2b500eb31ce *R/modularity.test.r
 dcf12e817827f0521b16463f9240c481 *R/morphol.disparity.r
 6ab92ffcade0c507620c08f2c93edb94 *R/phylo.integration.r
-14d81c58ead6cd19f0b99db7a4b834ee *R/phylo.modularity.r
+67148f99365c5d3fee143fe909d175d5 *R/phylo.modularity.r
 d150dd1e73e96f89c45853e6d4101680 *R/physignal.r
 b72262ffb22b02ae6b2592d4d0f4353a *R/picknplot.shape.r
 27d460f920f7fbbcc189b7355bc45dd3 *R/plotAllometry.r
