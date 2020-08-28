@@ -1297,10 +1297,13 @@ CR <-function(x,gps){
     S12 <- crossprod(Xs[[a]], Xs[[b]])
     sqrt(sum(S12^2)/sqrt(sum(S11^2)*sum(S22^2)))
   })
-  if(length(CR.gp) > 1) CR.mat <- dist(matrix(0, ngps,)) else
-    CR.mat = 0 # may not be necessary
+  if(length(CR.gp) > 1) {CR.mat <- dist(matrix(0, ngps,)) 
   for(i in 1:length(CR.mat)) CR.mat[[i]] <- CR.gp[i]
-
+  CR.mat <- as.matrix(CR.mat) #added to specify which group is which (if out of numerical order)
+  rownames(CR.mat) <- colnames(CR.mat) <- levels(factor(g, levels = unique(g)))
+  CR.mat <- as.dist(CR.mat)
+  }
+  if(length(CR.gp)==1){  CR.mat <- NULL }
   CR.obs <- mean(CR.gp)
   list(CR = CR.obs, CR.mat=CR.mat)
 }
@@ -1410,150 +1413,6 @@ boot.CR <- function(x,gps, k,iter, seed = NULL){
         A <- lapply(1:dim(A)[[3]], function(ii) A[,,ii])
         B <- Map(function(r) t(mapply(function(a) matrix(t(a%*%r)), A)), rot.mat)
         CRs <- Map(function(x) quick.CR(x,gps), B)
-        Reduce("+", CRs)/length(CRs)
-      }))
-      jj <- jj-length(j)
-      if(jj > 100) kk <- 1:100 else kk <- 1:jj
-      j <- j[length(j)] +kk
-    }
-  }
-  unlist(CR.boot)
-}
-
-# CR.phylo
-# phylogenetic CR analysis
-# used in: phylo.modularity
-CR.phylo<-function(x,invC,gps){
-  g <- gps
-  ngps <- length(unique(g))
-  gps.combo <- combn(ngps, 2)
-  one<-matrix(1,nrow(x),1)
-  a<-colSums(invC %*% x)*sum(invC)^-1
-  R<- t(x-one%*%a)%*%invC%*%(x-one%*%a)*(nrow(x)-1)^-1
-  diag(R)<-0
-  gps.combo <- combn(ngps, 2)
-  CR.gp <- sapply(1:ncol(gps.combo), function(j){
-    R11<-R[which(g==gps.combo[1,j]),which(g==gps.combo[1,j])]
-    R22<-R[which(g==gps.combo[2,j]),which(g==gps.combo[2,j])]
-    R12<-R[which(g==gps.combo[1,j]),which(g==gps.combo[2,j])]
-    sqrt(sum(colSums(R12^2))/sqrt(sum(R11^2)*sum(R22^2)))
-  })
-  if(length(CR.gp) > 1) CR.mat <- dist(matrix(0, ngps,)) else
-    CR.mat = 0
-  for(i in 1:length(CR.mat)) CR.mat[[i]] <- CR.gp[i]
-
-  CR.obs <- mean(CR.gp)
-  list(CR = CR.obs, CR.mat=CR.mat)
-}
-
-# quick.CR.phylo
-# streamlined phylo CR
-# used in: apply.phylo.CR
-quick.CR.phylo <- function(x,invC,gps){
-  x <- as.matrix(x); invC <- as.matrix(invC)
-  g <- gps
-  ngps <- length(unique(g))
-  gps.combo <- combn(ngps, 2)
-  one<-matrix(1,nrow(x),1)
-  a<-colSums(invC %*% x)*sum(invC)^-1
-  R<- t(x-one%*%a)%*%invC%*%(x-one%*%a)*(nrow(x)-1)^-1
-  diag(R)<-0
-  gps.combo <- combn(ngps, 2)
-  CR.gp <- sapply(1:ncol(gps.combo), function(j){
-    R11<-R[which(g==gps.combo[1,j]),which(g==gps.combo[1,j])]
-    R22<-R[which(g==gps.combo[2,j]),which(g==gps.combo[2,j])]
-    R12<-R[which(g==gps.combo[1,j]),which(g==gps.combo[2,j])]
-    sqrt(sum(colSums(R12^2))/sqrt(sum(R11^2)*sum(R22^2)))
-  })
-
-  mean(CR.gp)
-}
-
-# apply.phylo.CR
-# permutation for phylo.CR
-# used in: phylo.modularity
-apply.phylo.CR <- function(x,invC,gps, k, iter, seed=NULL){
-  ind <- perm.CR.index(g=gps,k, iter, seed=seed)
-  pb <- txtProgressBar(min = 0, max = ceiling(iter/100), initial = 0, style=3)
-  jj <- iter+1
-  step <- 1
-  if(jj > 100) j <- 1:100 else j <- 1:jj
-  CR.rand <- NULL
-  while(jj > 0){
-    ind.j <- ind[j]
-    CR.rand<-c(CR.rand, sapply(1:length(j), function(i) quick.CR.phylo(x,invC=invC,gps=ind.j[[i]])))
-    jj <- jj-length(j)
-    if(jj > 100) kk <- 1:100 else kk <- 1:jj
-    j <- j[length(j)] +kk
-    setTxtProgressBar(pb,step)
-    step <- step+1
-  }
-  close(pb)
-  CR.rand
-}
-
-# .apply.phylo.CR
-# same as apply.phylo.CR, but without progress bar option
-# used in: phylo.modularity
-.apply.phylo.CR <- function(x,invC,gps, k, iter, seed=NULL){
-  ind <- perm.CR.index(g=gps,k, iter, seed=seed)
-  jj <- iter+1
-  if(jj > 100) j <- 1:100 else j <- 1:jj
-  CR.rand <- NULL
-  while(jj > 0){
-    ind.j <- ind[j]
-    CR.rand<-c(CR.rand, sapply(1:length(j), function(i) quick.CR.phylo(x,invC=invC,gps=ind.j[[i]])))
-    jj <- jj-length(j)
-    if(jj > 100) kk <- 1:100 else kk <- 1:jj
-    j <- j[length(j)] +kk
-  }
-  CR.rand
-}
-
-# boot.phylo.CR
-# bootstrap for phylo.CR
-# phylo.modularity
-boot.phylo.CR <- function(x, invC, gps, k,iter, seed = NULL){
-  x<-as.matrix(x)
-  boot <- boot.index(nrow(x), iter, seed=seed)
-  if(k==1){
-    jj <- iter+1
-    if(jj > 100) j <- 1:100 else j <- 1:jj
-    CR.boot <- NULL
-    while(jj > 0){
-      boot.j <- boot[j]
-      x.r<-lapply(1:length(j), function(i) x[boot.j[[i]],])
-      invC.r <- lapply(1:length(j), function(i) invC[boot.j[[i]],boot.j[[i]]])
-      CR.boot<-c(CR.boot, sapply(1:length(j), function(i) quick.CR.phylo(x=x.r[[i]],invC=invC.r[[i]],gps=gps)))
-      jj <- jj-length(j)
-      if(jj > 100) kk <- 1:100 else kk <- 1:jj
-      j <- j[length(j)] +kk
-    }
-  }
-
-  if(k>1){  #for GM data
-    angle <- seq(-44,44,2)
-    if(k==2){
-      rot.mat<-lapply(1:(length(angle)), function(i) matrix(c(cos(angle[i]*pi/180),
-                                                              sin(angle[i]*pi/180),-sin(angle[i]*pi/180),cos(angle[i]*pi/180)),ncol=2))
-    }
-    if(k==3){
-      rot.mat<-lapply(1:(length(angle)), function(i) matrix(c(cos(angle[i]*pi/180),
-                                                              sin(angle[i]*pi/180),0,-sin(angle[i]*pi/180),cos(angle[i]*pi/180), 0,0,0,1),ncol=3))
-    }
-    jj <- iter+1
-    if(jj > 100) j <- 1:100 else j <- 1:jj
-    CR.boot <- NULL
-    while(jj > 0){
-      boot.j <- boot[j]
-      x.r<-lapply(1:length(j), function(i) x[boot.j[[i]],])
-      Alist.r <-lapply(1:length(x.r), function(i) { y <- x.r[[i]]; arrayspecs(y, ncol(y)/k,k)})
-      invC.r <- lapply(1:length(j), function(i) invC[boot.j[[i]],boot.j[[i]]])
-      CR.boot <- c(CR.boot, lapply(1:length(Alist.r), function(i){
-        A <- Alist.r[[i]]
-        A <- lapply(1:dim(A)[[3]], function(ii) A[,,ii])
-        B <- Map(function(r) t(mapply(function(a) matrix(t(a%*%r)), A)), rot.mat)
-        CRs <- Map(function(x) quick.CR.phylo(x=x.r[[i]],invC=invC.r[[i]],gps=gps), B)
         Reduce("+", CRs)/length(CRs)
       }))
       jj <- jj-length(j)
