@@ -73,6 +73,9 @@ phylo.modularity<-function(A,partition.gp,phy, CI=FALSE, iter=999, seed=NULL, pr
   if (!inherits(phy, "phylo"))
     stop("phy must be of class 'phylo.'") 
   if (length(dim(A))==3){ 
+    p<-dim(A)[1]; k<-dim(A)[2];n<-dim(A)[3]
+    gps<-as.factor(partition.gp)
+    gps.obs <- as.factor(rep(gps,k,each = k, length=p*k))
     angle <- seq(0,89.95,0.05)
     if(k==2){
       rot.mat<-lapply(1:(length(angle)), function(i) matrix(c(cos(angle[i]*pi/180),
