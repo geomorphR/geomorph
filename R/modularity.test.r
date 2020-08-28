@@ -35,6 +35,7 @@
 #' @param A A 3D array (p x k x n) containing Procrustes shape variables for all specimens, or a matrix (n x variables)
 #' @param partition.gp A list of which landmarks (or variables) belong in which partition (e.g. A,A,A,B,B,B,C,C,C)
 #' @param CI A logical argument indicating whether bootstrapping should be used for estimating confidence intervals
+#' @param opt.rot A logical argument for whether the optimal rotation for CR should be used for landmarkd data (default = TRUE)
 #' @param iter Number of iterations for significance testing
 #' @param seed An optional argument for setting the seed for random permutations of the resampling procedure.  
 #' If left NULL (the default), the exact same P-values will be found for repeated runs of the analysis (with the same number of iterations).
@@ -73,7 +74,8 @@
 #' plot(MT) # Histogram of CR sampling distribution 
 #' # Result implies modularity present
 
-modularity.test<-function(A,partition.gp,iter=999, CI=FALSE,seed=NULL, print.progress = TRUE){
+modularity.test<-function(A,partition.gp,iter=999, CI=FALSE,seed=NULL, 
+                          opt.rot = TRUE, print.progress = TRUE){
   if(any(is.na(A))==T){
     stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').")  }
   if (length(dim(A))==3){ x<-two.d.array(A)
@@ -107,6 +109,7 @@ modularity.test<-function(A,partition.gp,iter=999, CI=FALSE,seed=NULL, print.pro
 
   }
   if (length(dim(A))==3){
+    if (opt.rot==TRUE){
     angle <- seq(0,89.95,0.05)
     if(k==2){
       rot.mat<-lapply(1:(length(angle)), function(i) matrix(c(cos(angle[i]*pi/180),
@@ -143,11 +146,12 @@ modularity.test<-function(A,partition.gp,iter=999, CI=FALSE,seed=NULL, print.pro
               optRot <- matrix(c(cos(optAngle*pi/180),
                sin(optAngle*pi/180),0,-sin(optAngle*pi/180),cos(optAngle*pi/180), 0,0,0,1),ncol=3)
     x <- t(mapply(function(a) matrix(t(a%*%optRot)), Alist))
+    } else x <- two.d.array(A) #new
     if(print.progress) {
       cat("\nPerforming permutations\n")
       CR.rand <- apply.CR(x, gps, k=k, iter=iter, seed=seed)
       } else CR.rand <- .apply.CR(x, gps, k=k, iter=iter, seed=seed)
-    CR.rand[1] <- CR.obs <- avgCR
+#    CR.rand[1] <- CR.obs <- avgCR
     if(ngps > 2) CR.mat <- CR(x,gps.obs)$CR.mat else CR.mat <- NULL
     p.val <- pval(1/CR.rand)  #b/c smaller values more significant
     Z <- effect.size(CR.rand, center=TRUE) 
@@ -161,7 +165,7 @@ modularity.test<-function(A,partition.gp,iter=999, CI=FALSE,seed=NULL, print.pro
     }
   }
   
-  out <- list(CR=CR.obs, CInterval=CR.CI, CR.boot = CR.boot, P.value=p.val, Z = Z,
+  out <- list(CR=CR.rand[1], CInterval=CR.CI, CR.boot = CR.boot, P.value=p.val, Z = Z,
               CR.mat = CR.mat, random.CR = CR.rand,
               permutations=iter+1, call=match.call())
   class(out) <- "CR"

@@ -72,9 +72,45 @@ phylo.modularity<-function(A,partition.gp,phy, CI=FALSE, iter=999, seed=NULL, pr
     stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').")  }
   if (!inherits(phy, "phylo"))
     stop("phy must be of class 'phylo.'") 
-  if (length(dim(A))==3){ x<-two.d.array(A)
-  p<-dim(A)[1]; k<-dim(A)[2];n<-dim(A)[3]
-  if(length(partition.gp)!=p){stop("Not all landmarks are assigned to a partition.")}
+  if (length(dim(A))==3){ 
+    angle <- seq(0,89.95,0.05)
+    if(k==2){
+      rot.mat<-lapply(1:(length(angle)), function(i) matrix(c(cos(angle[i]*pi/180),
+                                                              sin(angle[i]*pi/180),-sin(angle[i]*pi/180),cos(angle[i]*pi/180)),ncol=2))      
+    }
+    if(k==3){
+      rot.mat<-lapply(1:(length(angle)), function(i) matrix(c(cos(angle[i]*pi/180),
+                                                              sin(angle[i]*pi/180),0,-sin(angle[i]*pi/180),cos(angle[i]*pi/180), 0,0,0,1),ncol=3))      
+    }
+    Alist <-lapply(1:n,function(j) A[,,j]) # convert array to list
+    if(print.progress){
+      cat("\nFinding the optimal rotation for CR\n")
+      pb <- txtProgressBar(min = 0, max = length(rot.mat), initial = 0, style=3) 
+      rotatedCRs <- sapply(1:length(rot.mat), function(j) {
+        r <- rot.mat[[j]]
+        rotA <- t(mapply(function(a) matrix(t(a%*%r)), Alist))
+        setTxtProgressBar(pb,j)
+        quick.CR(rotA, gps=gps.obs)
+      })
+      close(pb)
+    } else {
+      rotatedCRs <-sapply(1:length(rot.mat), function(j) {
+        r <- rot.mat[[j]]
+        rotA <- t(mapply(function(a) matrix(t(a%*%r)), Alist))
+        quick.CR(rotA, gps=gps.obs)
+      })
+    }
+    avgCR <- mean(rotatedCRs)
+    angCheck <- abs(rotatedCRs-avgCR)
+    optAngle <- angle[angCheck==min(angCheck)]; optAngle<-optAngle[1]
+    # Optimal rotation 
+    if(k==2) optRot <- matrix(c(cos(optAngle*pi/180),
+                                sin(optAngle*pi/180),-sin(optAngle*pi/180),cos(optAngle*pi/180)),ncol=2) else
+                                  optRot <- matrix(c(cos(optAngle*pi/180),
+                                                     sin(optAngle*pi/180),0,-sin(optAngle*pi/180),cos(optAngle*pi/180), 0,0,0,1),ncol=3)
+    x <- t(mapply(function(a) matrix(t(a%*%optRot)), Alist)); rownames(x) <- dimnames(A)[[3]]
+    p<-dim(A)[1]; k<-dim(A)[2];n<-dim(A)[3]
+    if(length(partition.gp)!=p){stop("Not all landmarks are assigned to a partition.")}
   }
   if (length(dim(A))==2){ x<-A; k <-1; p<-ncol(A)
   if(length(partition.gp)!=ncol(x)){stop("Not all variables are assigned to a partition.")}
@@ -85,12 +121,12 @@ phylo.modularity<-function(A,partition.gp,phy, CI=FALSE, iter=999, seed=NULL, pr
   Ptrans<-D.mat%*%(I-one%*%crossprod(one,invC)/sum(invC))
   x <- Ptrans%*%x
   if (length(dim(A))==3){x <- arrayspecs(x,p=p,k=k)}
-  res <- modularity.test(x,partition.gp,CI=CI, iter=iter, seed=seed, 
+  res <- modularity.test(x,partition.gp,CI=CI, iter=iter, seed=seed, opt.rot = FALSE,
                          print.progress=print.progress)
   out <- list(CR=res$CR, CInterval=res$CInterval, CR.boot = res$CR.boot, 
               P.value=res$P.value, Z = res$Z,
               CR.mat = res$CR.mat, random.CR = res$random.CR,
               permutations=iter+1, call=match.call())
   class(out) <- "CR"
-  out 
+  out  
 }
