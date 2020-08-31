@@ -12,7 +12,7 @@ d8e8360c03c03fe45d2100e9c05d4a89 *data/plethodon.rda
 9ba51ab9be03930a4acdcddde8169b33 *data/scallopPLY.rda
 6e5e71b242462e422b716800ffc3c464 *data/scallops.rda
 000c1be54bb5e8354542c63b40cb7617 *DESCRIPTION
-73f723a130c92f8b84a81465a15add7c *geomorph.Rproj
+f4f2080e745b8d689f17caf549449ab5 *geomorph.Rproj
 7fe229f1e38be2503f79f13c2c9ce74b *inst/CITATION
 5e099c6268d251bf5c98595d9566385a *man/arrayspecs.Rd
 daa4f7e0e16a55cbf4fd2c0686c7167c *man/bilat.symmetry.Rd
@@ -126,9 +126,9 @@ d9119f721918f22c267db843023a86fe *man/writeland.tps.Rd
 4f9ee50059d7fc79859a3d07a4edce09 *NAMESPACE
 6afbb848f66afd96bf1de5f29ec25a61 *NEWS.md
 92239d51a080ccd3fc3a9f7ef67d1b8c *R/arrayspecs.r
-a6ef245a695ed5c523f8a018536c88d0 *R/bilat.symmetry.r
+e92a5b97b20697bb409aeb4984334d45 *R/bilat.symmetry.r
 d7d67e9218f84609046423cb222f5c44 *R/build.template.r
-5c10fc11bdcc1b0b674800458e7a94e7 *R/combine.subsets.R
+5c10fc11bdcc1b0b674800458e7a94e7 *R/combine.subsets.r
 a85f984f777798d31520e42d0c87e3f5 *R/compare.CR.R
 dfb24d173852ddc6aaa732dec159b6c2 *R/compare.evol.rates.r
 00cccf6598681224c382ec757c97c456 *R/compare.multi.evol.rates.r
@@ -178,10 +178,10 @@ a7cb4ce71beb89c39aaffa8e43e5c7f8 *R/readland.shapes.r
 0f9a0f88e4b72cf3ad95dc79d86624fe *R/readland.tps.r
 1dbca61c2285445a2005917a17d571ba *R/readmulti.nts.r
 d688cf3fbc6c3351526c422948e457ba *R/readmulti.tps.R
-73ce1481733305a19848121fd2c90203 *R/rotate.coords.R
+73ce1481733305a19848121fd2c90203 *R/rotate.coords.r
 1ec7076ed569badd94f834000e61ca5c *R/shape.predictor.r
 f191c54f3b3c75baea0b045758af5362 *R/shapeHulls.r
-03f129fe0a1bab9270d8b65fe143bd41 *R/shared.support.code.R
+03f129fe0a1bab9270d8b65fe143bd41 *R/shared.support.code.r
 11a4c67b8a15ddf968b943e7190a1e2b *R/two.b.pls.r
 2e693d8b4f3c21d742737b97d1773119 *R/two.d.array.r
 66bd726660ba94d18ed7682b4ae7f608 *R/warpRefMesh.r
@@ -196,4 +196,5 @@ b699b1ea6afe6b1915cb25aa6b2c42e9 *vignettes/figs/tree.plot.png
 2f5cbf4a6679bbb423363aa241bec859 *vignettes/geomorph.assistance.Rmd
 c03301b145c85bbcb07baca22444ebf5 *vignettes/geomorph.digitize3D.Rmd
 492444b0a440dbbf9e9ceab80713feca *vignettes/geomorph.functions.Rmd
+75b7372dea6c56453a26a74ae2979a50 *vignettes/geomorph.PCA.html
 c17b15c2b77924b846a86998d8d12481 *vignettes/geomorph.PCA.Rmd

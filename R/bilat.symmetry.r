@@ -253,10 +253,11 @@ bilat.symmetry <- function(A, ind = NULL, side = NULL, replicate = NULL, object.
   random.shape.F <- MS/MSE
   
   if(length(form.names) > 4) {
+    MS <- random.shape.F <- PSh$ANOVA$MS
     MS.mod <- PSh$ANOVA$RSS.model[3,]/PSh$ANOVA$df[4]
     random.shape.F[1,] <- MS[1,]/MS[3,]
     random.shape.F[2,] <- MS[2,]/MS[3,]
-    random.shape.F[3,] <- MS[3,]/MS.mod
+    random.shape.F[3,] <- PSh$ANOVA$Fs[3,]
     
     newZ <- apply(log(random.shape.F + 0.000001), 1, effect.size)
     newP <- apply(random.shape.F , 1, pval)
@@ -292,7 +293,7 @@ bilat.symmetry <- function(A, ind = NULL, side = NULL, replicate = NULL, object.
       MS.mod <- PSz$ANOVA$RSS.model[3,]/PSz$ANOVA$df[4]
       random.size.F[1,] <- MS[1,]/MS[3,]
       random.size.F[2,] <- MS[2,]/MS[3,]
-      random.size.F[3,] <- MS[3,]/MS.mod
+      random.size.F[3,] <- PSz$ANOVA$Fs[3,]
       newZ <- apply(log(random.size.F + 0.000001), 1, effect.size)
       newP <- apply(random.size.F , 1, pval)
       size.anova$F[1:3] <- random.size.F[1:3, 1]
