@@ -118,7 +118,7 @@ phylo.modularity<-function(A,partition.gp,phy, CI=FALSE, iter=999, seed=NULL, pr
   if (length(dim(A))==2){ x<-A; k <-1; p<-ncol(A)
   if(length(partition.gp)!=ncol(x)){stop("Not all variables are assigned to a partition.")}
   }
-  phy.parts<-geomorph:::phylo.mat(x,phy)
+  phy.parts<-phylo.mat(x,phy)
   invC<-phy.parts$invC; D.mat<-phy.parts$D.mat
   one<-matrix(1,nrow(x)); I = diag(1,nrow(x),) 
   Ptrans<-D.mat%*%(I-one%*%crossprod(one,invC)/sum(invC))
