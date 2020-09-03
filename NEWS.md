@@ -8,6 +8,7 @@
 * Added factor labels to output object CR.mat in `modularity.test` & `phylo.modularity`
 * Fixed bug in computations of `phylo.modularity`
 * Fixed order consistency for pairwise calculations in `phylo.modularity` 
+* Allows single landmarks as slider LM in gpagen
 
 # CHANGES IN GEOMORPH VERSION 3.3.1 (Patch Release)
 

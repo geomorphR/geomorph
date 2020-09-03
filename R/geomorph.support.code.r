@@ -385,9 +385,11 @@ rotate.mat <- function(M,Y){
 # finds tangents in a matrix based on sliders
 # used in all functions associated with pPga.wCurves
 tangents = function(s,x, scaled=FALSE){ # s = curves, x = landmarks
-  ts <- x[s[,3],] - x[s[,1],]
+  if(nrow(s) > 1) { ts <- x[s[, 3], ] - x[s[, 1], ]} else { ts <- x[s[3]] - x[s[1]]}
   if(scaled==TRUE) {
-    ts.scale = sqrt(rowSums(ts^2))
+    if(nrow(as.matrix(ts)) > 1) {
+      ts.scale = sqrt(rowSums(ts^2))
+    } else {ts.scale = sqrt(sum(ts^2))} 
     ts <- ts/ts.scale
   }
   y <- matrix(0, nrow(x), ncol(x))
