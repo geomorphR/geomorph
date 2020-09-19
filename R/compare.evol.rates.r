@@ -109,7 +109,7 @@ compare.evol.rates<-function(A,phy,gp,iter=999,seed=NULL,method=c("permutation",
   Ptrans <- D.mat%*%Xadj
   g<-factor(as.numeric(gp))
   ngps<-nlevels(g)
-  gps.combo <- combn(ngps, 2)
+  if(nlevels(gp) > 1){  gps.combo <- combn(ngps, 2) }
   if(method != "permutation") {
     rate.mat<-sigma.obs$R
     diag(rate.mat)<-sigma.obs$sigma.d.all
