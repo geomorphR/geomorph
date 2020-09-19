@@ -171,15 +171,22 @@ pval = function(s){# s = sampling distribution
 # Box-Cox transformation for normalizing distributions.  Similar to MASS::boxcox
 # without unneeded arguments, plus faster
 # Used in effect.size
-box.cox <- function(y, eps = 0.02) {
+box.cox.true <- function(y, eps = 0.001){
+  
   if(any(y <= 0)) y = y - min(y) + 0.0001
+  
+  y.obs <- y[1]
+  y <- y[-1]
+  
+  # Note the code below (to get yy) is short-cut for Jacobian adjustment 
   n <- length(y)
-  yy <- y/exp(mean(log(y)))
+  yy <- y / exp(mean(log(y)))
   logy <- log(yy)
-  lambda <- seq(-2.4, 2.4, 0.4)
+  
+  lambda <- seq(-5, 5, 0.001)
   m <- length(lambda)
   
-  loglik <- sapply(1:m, function(j){ # same as MASS::boxcox loglik f
+  loglik <- sapply(1:m, function(j){ # same as MASS::boxcox loglik 
     la <- lambda[j]
     yt <- if(abs(la) > eps) yt <- (yy^la - 1)/la else
       logy * (1 + (la * logy)/2 * (1 + (la * logy)/3 * (1 + (la * logy)/4)))
@@ -188,26 +195,80 @@ box.cox <- function(y, eps = 0.02) {
   })
   
   lambda.opt <- lambda[which.max(loglik)][[1]]
+  if(abs(lambda.opt) < eps) lambda.opt <- 0
+  y <- c(y.obs, y)
+  res <- if(lambda.opt == 0) log(y) else (y^lambda.opt - 1)/lambda.opt
   
-  if(abs(lambda.opt) == 2.4) {
-    lambda <- seq(-3.2, 3.2, 0.2)
-    m <- length(lambda)
+  list(opt.lambda = lambda.opt, transformed = res, lambda = lambda, loglik = loglik)
+  
+}
+
+box.cox.spline <- function(y, eps = 0.001) {
+  
+  if(any(y <= 0)) y = y - min(y) + 0.0001
+  
+  y.obs <- y[1]
+  y <- y[-1]
+  
+  n <- length(y)
+  yy <- y / exp(mean(log(y)))
+  logy <- log(yy)
+  m <- 20
+  lambda <- seq(-0.5, 1.5, length.out = m)
+  
+  loglik <- sapply(1:m, function(j){ # same as MASS::boxcox loglik 
+    la <- lambda[j]
+    yt <- if(abs(la) > eps) yt <- (yy^la - 1)/la else
+      logy * (1 + (la * logy)/2 * (1 + (la * logy)/3 * (1 + (la * logy)/4)))
     
-    loglik <- sapply(1:m, function(j){ # same as MASS::boxcox loglik f
-      la <- lambda[j]
-      yt <- if(abs(la) > eps) yt <- (yy^la - 1)/la else
-        logy * (1 + (la * logy)/2 * (1 + (la * logy)/3 * (1 + (la * logy)/4)))
-      
-      -n/2 * log(sum(center(yt)^2))
-    })
-    lambda.opt <- lambda[which.max(loglik)][[1]]
-  }
+    -n/2 * log(sum(center(yt)^2))
+  })
   
-  sp <- spline(lambda, loglik, n = 100)
+  sp <- spline(lambda, loglik, n = 300)
   lambda.opt <- sp$x[which.max(sp$y)]
   if(abs(lambda.opt) < eps) lambda.opt <- 0
+  y <- c(y.obs, y)
   res <- if(lambda.opt == 0) log(y) else (y^lambda.opt - 1)/lambda.opt
+  
   list(opt.lambda = lambda.opt, transformed = res, lambda = sp$x, loglik = sp$y)
+  
+}
+
+box.cox.iter <- function(y, eps = 0.001) {
+  bc <- box.cox.spline(y, eps = eps)
+  if(bc$opt.lambda == -0.5 || bc$opt.lambda == 1.5) bc <- box.cox.true(y, eps = eps)
+  return(bc)
+}
+
+box.cox.fast <- function(y, eps = 0.001) {
+  if(any(y <= 0)) y = y - min(y) + 0.0001
+  y.obs <- y[1]
+  y <- y[-1]
+  
+  n <- length(y)
+  yy <- y / exp(mean(log(y)))
+  logy <- log(yy)
+  
+  logLik <- function(lambda) {
+    la <- lambda
+    yt <- if(abs(la) > eps) yt <- (yy^la - 1)/la else
+      logy * (1 + (la * logy)/2 * (1 + (la * logy)/3 * (1 + (la * logy)/4)))
+    
+    -n/2 * log(sum(center(yt)^2))
+  }
+  
+  result <- optimise(logLik, lower = -5, upper = 5, maximum = TRUE)
+  lambda.opt <- result$maximum
+  if(abs(lambda.opt) < eps) lambda.opt <- 0
+  y <- c(y.obs, y)
+  res <- if(lambda.opt == 0) log(y) else (y^lambda.opt - 1)/lambda.opt
+  list(opt.lambda = lambda.opt, transformed = res, lambda = NULL, loglik = NULL)
+}
+
+box.cox <- function(y, eps = 0.001, iterate = FALSE) {
+  result <- if(iterate) box.cox.iter(y, eps = eps) else
+    box.cox.fast(y, eps = eps)
+  return(result)
 }
 
 # effect.size
