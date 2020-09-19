@@ -1,5 +1,8 @@
 # CHANGES IN GEOMORPH VERSION 3.3.1.9000 
 
+### NEW FEATURES
+* Added Box-Cox transformation to `effect.size`.
+
 ### BUG FIXES
 * Fixed plotting parameter arguments for phylo.par in `summary.gm.prcomp`.
 * Made it possible to assign `summary.gm.prcomp` as an object
