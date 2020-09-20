@@ -39,39 +39,55 @@
 #'   contains names for each specimen, which are obtained from the names in the *.nts file (if included). 
 #' @references  Rohlf, F. J. 2012 NTSYSpc: Numerical taxonomy and multivariate analysis system. Version 
 #'   2.2. Exeter Software, New York.
-readland.nts<-function(file){    	
-  ntsfile<-scan(file=file,what="char",quote="",sep="\n",strip.white=TRUE,comment.char="\"",quiet=TRUE)
+
+
+readland.nts <- function(file){    	
+  ntsfile <- scan(file=file, what="char", quote="", sep="\n", strip.white=TRUE, comment.char="\"", quiet=TRUE)
   comment <- grep("\'", ntsfile)
   if (length(comment) != 0){
-    ntsfile<-scan(file=file,what="char",quote="",sep="\n",strip.white=TRUE,comment.char="\'",quiet=TRUE)
+    ntsfile <- scan(file=file, what="char", quote="", sep="\n", strip.white=TRUE, comment.char="\'", quiet=TRUE)
   }
-  header<-unlist(strsplit(ntsfile[1],"\\s+"))
+  
+  header <- unlist(strsplit(ntsfile[1], "\\s+"))
   if(header[1]!=1){
     stop("NTS file not a rectangular matrix. First value in parameter line must be '1'.") }
-  header<-casefold(header,upper=TRUE)
-  dimval<-unlist(grep("DIM=",header))
+  header <- casefold(header, upper=TRUE)
+  
+  dimval <- unlist(grep("DIM=", header))
   if(length(dimval)==0){
     stop("Header does not contain 'DIM=' designator.") }  
-  labval<-unlist(grep("L",header))
-  r.lab<-ifelse(is.element("2",labval)==TRUE,T,F)
-  c.lab<-ifelse(is.element("3",labval)==TRUE,T,F)
-  header<-sub("L","",header)
-  header<-as.numeric(sub("DIM=","",header))
-  missdata<-ifelse(header[4]!=0,T,F)
-  if(missdata==TRUE){missval<-ifelse(dimval==6,header[5],header[6]) } 
-  n<-header[2];k<-header[dimval];p<-header[3]/k;   
-  tmp<-unlist(strsplit(ntsfile[-1],"\\s+"))
+  
+  labval <- unlist(grep("L", header))
+  r.lab <- ifelse(is.element("2", labval)==TRUE, T, F)
+  c.lab <- ifelse(is.element("3", labval)==TRUE, T, F)
+  
+  header <- sub("L", "", header)
+  header <- as.numeric(sub("DIM=","", header))
+
+  missdata <- ifelse(header[4]!=0, T, F)
+  if(missdata==TRUE) {
+    missval <- ifelse(dimval==6, header[5], header[6]) 
+  }
+  
+  n <- header[2]; k <- header[dimval]; p <- header[3]/k
+  
+  tmp <- unlist(strsplit(ntsfile[-1],"\\s+"))
   if(r.lab) {
-    speclab<-tmp[1:n]
+    speclab <- tmp[1:n]
     tmp <- tmp[-(1:n)]
     } else speclab <- NULL
+  
   if(c.lab) tmp <- tmp[-(1:(p*k))]
-  if(missdata==TRUE){tmp[grep(missval,as.integer(tmp))] <- NA}
+  
+  if(missdata==TRUE) {tmp[grep(missval, as.integer(tmp))] <- NA}
   options(warn=-1)
-  landdata<-matrix(as.numeric(tmp),ncol=k,byrow=TRUE)
+  landdata <- matrix(as.numeric(tmp), ncol=k, byrow=TRUE)
+  
   if(sum(which(is.na(landdata)==TRUE))>0){cat("NOTE.  Missing data identified.")}
+  
   coords <- aperm(array(t(landdata), c(k,p,n)), c(2,1,3))
-  if(length(speclab)==1){dimnames(coords)[[3]]<-list(speclab) 
-  } else { dimnames(coords)[[3]]<-speclab }
-  return(coords=coords)
+  if(length(speclab)==1) {
+    dimnames(coords)[[3]] <- list(speclab) 
+  } else { dimnames(coords)[[3]] <- speclab }
+  return(coords)
 }
