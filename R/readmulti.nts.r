@@ -20,7 +20,7 @@
 #'   2.2. Exeter Software, New York.
 
 
-readmulti.nts.NEW <- function(filelist){
+readmulti.nts <- function(filelist){
   nts.list <- filelist
   
   file.ext <- substr(nts.list, nchar(nts.list)-3, nchar(nts.list))
