@@ -1,5 +1,8 @@
 # CHANGES IN GEOMORPH VERSION 3.3.1.9000 
 
+### NEW FEATURES
+* Added Box-Cox transformation to `effect.size`
+
 ### BUG FIXES
 * Fixed plotting parameter arguments for phylo.par in `summary.gm.prcomp`.
 * Made it possible to assign `summary.gm.prcomp` as an object
@@ -9,6 +12,10 @@
 * Fixed bug in computations of `phylo.modularity`
 * Fixed order consistency for pairwise calculations in `phylo.modularity` 
 * Allows single landmarks as slider LM in gpagen
+
+### OTHER CHANGES
+* Updated `readmulti.nts` function turning it into a wrapper of `readland.nts` thus allowing also multiple dta files to be read in and compiled
+
 
 # CHANGES IN GEOMORPH VERSION 3.3.1 (Patch Release)
 
