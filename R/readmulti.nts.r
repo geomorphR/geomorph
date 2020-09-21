@@ -18,7 +18,7 @@
 #'   numbers.
 #' @references  Rohlf, F. J. 2012 NTSYSpc: Numerical taxonomy and multivariate analysis system. Version 
 #'   2.2. Exeter Software, New York.
-#'  @export 
+#' @export
 
 
 readmulti.nts <- function(filelist){
