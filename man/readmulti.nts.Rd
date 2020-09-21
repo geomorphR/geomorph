@@ -2,48 +2,34 @@
 % Please edit documentation in R/readmulti.nts.r
 \name{readmulti.nts}
 \alias{readmulti.nts}
-\title{Read landmark data from multiple nts files}
+\title{Read and combine multiple nts files}
 \usage{
 readmulti.nts(filelist)
 }
 \arguments{
-\item{filelist}{a character vector of file names for the *.nts files to be read in}
+\item{filelist}{A vector containing the file paths to all the tps files to be compiled}
 }
 \value{
 Function returns a 3D array (p x k x n), where p is the number of landmark points, k is 
   the number of landmark dimensions (2 or 3), and n is the number of specimens. The third dimension 
-  of this array contains names for each specimen, which are obtained from the file names.
+  of this array contains names for each specimen, which are retrieved from the nts specimen labels, 
+  if those are available. Specimens in nts files without labels are named as filename_# where # are consecutive
+  numbers.
 }
 \description{
-Read multiple *.nts files, each containing landmark coordinates for a single specimen
+Read multiple nts (or .dta) files to obtain landmark coordinates and combine them into a single array
 }
 \details{
-Function reads a character vector of filenames for a set of *.nts files that each contain two- or 
-three-dimensional landmark coordinates for a single specimen (e.g., exported from \code{\link{digit.fixed}} and \code{\link{digitsurface}}).
+This is a wrapper of \code{\link{readland.nts}} to allow reading landmark coordinates, in 2D or 3D, 
+from several nts (or .dta) files, and compiling them into an array for proceeding with GM procedures.
 
-This is for NTS files of the "single specimen format" (details below), which is not the same as \code{\link{readland.nts}}. 
-  
-NTS files are text files in one of the standard formats for geometric morphometrics (see Rohlf 2012). 
-Single specimen format: 
-  The parameter line contains 5 or 6 elements, and must begin with a "1" to designate a rectangular matrix. 
-  The second and third values designate how many landmarks (p) and the dimensions (k) of the data matrix.
-  The fourth value is a "0" if the data matrix is complete and a "1" 
-  if there are missing values. If missing values are present, the '1' is followed by the arbitrary 
-  numeric code used to represent missing values (e.g., -999). These values will be replaced with "NA" 
-  in the output array. Subsequent analyses requires a full complement of data, see \code{\link{estimate.missing}}. 
-
-  Missing data may be present in the file by designating them using 'NA'. In
-  this case, the standard NTSYS header is used with no numeric designation for missing data (i.e. the fourth value is '0').
-  The positions of missing landmarks may then be estimated using estimate.missing.
+See \code{\link{readland.nts}} for adequately formatting NTS files and requirements that need to be met 
+for that (and therefore this) function to work correctly.
 }
 \references{
 Rohlf, F. J. 2012 NTSYSpc: Numerical taxonomy and multivariate analysis system. Version 
   2.2. Exeter Software, New York.
 }
-\seealso{
-\code{\link{readland.nts}}
-}
 \author{
-Dean Adams & Emma Sherratt
+Antigoni Kaliontzopoulou
 }
-\keyword{IO}

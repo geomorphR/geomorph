@@ -97,7 +97,7 @@ b39d46bb839407d0748d39c6838fcc33 *man/readland.fcsv.Rd
 a07dc6e9c0d507c35d286c1d70ee850c *man/readland.nts.Rd
 e947bb4a931b872aaebf88e6ad0c360d *man/readland.shapes.Rd
 e268bdaf2ef10f2027709e5f9ab2518b *man/readland.tps.Rd
-07b9189f2f54233764c1f17d7f100412 *man/readmulti.nts.Rd
+4b5d3150f34bb6b9dcf5f0da5b345011 *man/readmulti.nts.Rd
 a19f005bd83e97a4f20bf357483726c5 *man/readmulti.tps.Rd
 cc963a327d23f0e830749124ba9854d9 *man/rotate.coords.Rd
 8be198584c10582597e98c6cecbb26f7 *man/scallopPLY.Rd
@@ -176,7 +176,7 @@ dc4c769a5bb24cb2ba04ddaa92c82b2d *R/read.ply.r
 da9fdf762fb6d9898c8293ad8d249832 *R/readland.nts.r
 a7cb4ce71beb89c39aaffa8e43e5c7f8 *R/readland.shapes.r
 0f9a0f88e4b72cf3ad95dc79d86624fe *R/readland.tps.r
-1dbca61c2285445a2005917a17d571ba *R/readmulti.nts.r
+5b7b3f4d86d1b5fcdb1a8462c3ac5e86 *R/readmulti.nts.r
 d688cf3fbc6c3351526c422948e457ba *R/readmulti.tps.R
 73ce1481733305a19848121fd2c90203 *R/rotate.coords.R
 1ec7076ed569badd94f834000e61ca5c *R/shape.predictor.r
