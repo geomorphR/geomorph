@@ -12,6 +12,9 @@
 * Fixed bug in computations of `phylo.modularity`
 * Fixed order consistency for pairwise calculations in `phylo.modularity` 
 
+### OTHER CHANGES
+* Updated `readmulti.nts` function turning it into a wrapper of `readland.nts` thus allowing also multiple dta files to be read in and compiled
+
 # CHANGES IN GEOMORPH VERSION 3.3.1 (Patch Release)
 
 ### BUG FIXES
