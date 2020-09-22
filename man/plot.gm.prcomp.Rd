@@ -8,6 +8,7 @@
   x,
   axis1 = 1,
   axis2 = 2,
+  flip = NULL,
   phylo = FALSE,
   time.plot = FALSE,
   phylo.par = list(tip.labels = TRUE, node.labels = TRUE, anc.states = TRUE, node.pch =
@@ -23,6 +24,10 @@
 \item{axis1}{A value indicating which PC axis should be displayed as the X-axis (default = PC1)}
 
 \item{axis2}{A value indicating which PC axis should be displayed as the Y-axis (default = PC2)}
+
+\item{flip}{An argument that if not NULL can be used to flip components in the plot.
+The values need to match axis1 or axis2.  For example, if axis1 = 3 and axis2 = 4, flip = 1 will not
+change either axis; flip = 3 will flip only the horizontal axis; flip = c(3, 4) will flip both axes.}
 
 \item{phylo}{A logical value indicating whether the phylogeny should be projected to PC space}
 

@@ -769,6 +769,9 @@ summary.gm.prcomp <- function (object, ...) {
 #' @param x An object of class \code{\link{gm.prcomp}}
 #' @param axis1 A value indicating which PC axis should be displayed as the X-axis (default = PC1)
 #' @param axis2 A value indicating which PC axis should be displayed as the Y-axis (default = PC2)
+#' @param flip An argument that if not NULL can be used to flip components in the plot.  
+#' The values need to match axis1 or axis2.  For example, if axis1 = 3 and axis2 = 4, flip = 1 will not
+#' change either axis; flip = 3 will flip only the horizontal axis; flip = c(3, 4) will flip both axes.
 #' @param phylo A logical value indicating whether the phylogeny should be projected to PC space
 #' @param time.plot A logical value indicating if a 3D plot with the phylogeny and time as the 
 #' z-axis is desired
@@ -793,7 +796,7 @@ summary.gm.prcomp <- function (object, ...) {
 #' @seealso  \code{\link{plotRefToTarget}} \code{\link{picknplot.shape}}
 
 
-plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, phylo = FALSE, time.plot = FALSE,
+plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, flip = NULL, phylo = FALSE, time.plot = FALSE,
                            phylo.par = list(tip.labels = TRUE, node.labels = TRUE, anc.states = TRUE,
                                             node.pch = 21, node.bg = "grey", node.cex = 1, 
                                             edge.color = "black", edge.width = 1,
@@ -802,14 +805,14 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, phylo = FALSE, time.plot = F
                                             node.txt.cex = 1, node.txt.col = "grey",
                                             node.txt.adj = c(-0.1, -0.1)), 
                            ...) {
-
+  
   class(x) <- "ordinate"
   pcdata <- as.matrix(x$x[, c(axis1, axis2)])
   Pcov <- x$Pcov
-  xx <- plot(x, axis1 = axis1, axis2 = axis2, ...)
+  xx <- plot(x, axis1 = axis1, axis2 = axis2, flip = flip, ...)
   plot.args <- xx$plot.args
   if(!is.null(plot.args$axes)) axes <- plot.args$axes else axes <- TRUE
-
+  
   if(axes){
     abline(h = 0, lty=2)
     abline(v = 0, lty=2)
@@ -829,12 +832,12 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, phylo = FALSE, time.plot = F
   if(phylo) {
     
     p.p <- list(tip.labels = TRUE, node.labels = TRUE, anc.states = TRUE,
-                            node.bg = "grey", node.pch = 21, node.cex = 1,
-                            edge.color = "black", edge.width = 1,
-                            tip.txt.cex = 1, tip.txt.col = "black", 
-                            tip.txt.adj = c(-0.1, -0.1),
-                            node.txt.cex = 1, node.txt.col = "grey",
-                            node.txt.adj = c(-0.1, -0.1))
+                node.bg = "grey", node.pch = 21, node.cex = 1,
+                edge.color = "black", edge.width = 1,
+                tip.txt.cex = 1, tip.txt.col = "black", 
+                tip.txt.adj = c(-0.1, -0.1),
+                node.txt.cex = 1, node.txt.col = "grey",
+                node.txt.adj = c(-0.1, -0.1))
     
     m.p <- match(names(phylo.par), names(p.p))
     if(any(is.na(m.p)))

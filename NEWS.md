@@ -2,6 +2,7 @@
 
 ### NEW FEATURES
 * Added Box-Cox transformation to `effect.size`.
+* Added option to flip axes in `plot.ordinate`.
 
 ### BUG FIXES
 * Fixed plotting parameter arguments for phylo.par in `summary.gm.prcomp`.
