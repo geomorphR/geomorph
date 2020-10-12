@@ -115,12 +115,12 @@ compare.evol.rates<-function(A,phy,gp,iter=999,seed=NULL,method=c("permutation",
     diag(rate.mat)<-sigma.obs$sigma.d.all
     rate.mat<-makePD(rate.mat)
     x.sim<-simplify2array(sim.char.BM(phy=phy,par=rate.mat,nsim=iter, seed=seed)) 
-    x.r <- simplify2array(lapply(1:iter, function(j) Ptrans%*%x.sim[,,j]))
+    x.r <- lapply(1:iter, function(j) Ptrans%*%x.sim[,,j])
   }
   if(method == "permutation"){
     ind<-perm.index(N,iter, seed=seed)
     xp <- Ptrans%*%x
-    x.r <-simplify2array(lapply(1:iter, function(i) xp[ind[[i]],]))
+    x.r <- lapply(1:iter, function(i) xp[ind[[i]],])
   }
     
   if(nlevels(gp) > 1){
@@ -128,11 +128,12 @@ compare.evol.rates<-function(A,phy,gp,iter=999,seed=NULL,method=c("permutation",
       pb <- txtProgressBar(min = 0, max = iter, initial = 0, style=3) 
       sigma.rand <- sapply(1:iter, function(j) {
         setTxtProgressBar(pb,j)
-        fast.sigma.d(as.matrix(x.r[,,j]),Ptrans,g, ngps, gps.combo, N,p )
+        fast.sigma.d(as.matrix(x.r[[j]]),Ptrans,g, ngps, gps.combo, N,p ) 
       })
       close(pb)
     } else sigma.rand <- sapply(1:(iter), 
-                                function(j) fast.sigma.d(as.matrix(x.r[,,j]),Ptrans,g, ngps, gps.combo,N,p))
+                                function(j) 
+                                fast.sigma.d(as.matrix(x.r[[j]]),Ptrans,g, ngps, gps.combo, N,p ) )
     if(nlevels(gp) == 2) 
       sigma.rand <- random.sigma <- c(sigma.obs$sigma.d.gp.ratio, sigma.rand) else {
         sigma.rand <- cbind(as.vector(sigma.obs$sigma.d.gp.ratio), sigma.rand)
