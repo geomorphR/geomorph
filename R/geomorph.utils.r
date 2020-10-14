@@ -866,7 +866,7 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, flip = NULL, phylo = FALSE, 
            cex = p.p$node.txt.cex, col = p.p$node.txt.col)
     }
     
-    phy.pcdata <- rbind(xx$points, tp)
+    phy.pcdata <- rbind(xx$points[phy$tip.label,], tp)
     N.tips <- length(phy$tip.label)
     
   }

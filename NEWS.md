@@ -5,8 +5,9 @@
 * Added an argument to flip axes in `plot.gm.prcomp`
 
 ### BUG FIXES
+* Fixed error in `plot.gm.prcomp` 3D tree plotting with time.plot = TRUE
 * Fixed error in `compare.evol.rates` for univariate data and permutations
-* Fixed plotting parameter arguments for phylo.par in `summary.gm.prcomp`.
+* Fixed plotting parameter arguments for phylo.par in `plot.gm.prcomp`.
 * Made it possible to assign `summary.gm.prcomp` as an object
 * Fixed plotting issue in `warpRefMesh`
 * Fixed single variable issue in `compare.evol.rates` related to R 4.0.2 changes
