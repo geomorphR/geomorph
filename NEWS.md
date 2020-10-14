@@ -5,6 +5,7 @@
 * Added option to flip axes in `plot.ordinate`.
 
 ### BUG FIXES
+* Fixed error in `plot.gm.prcomp` 3D tree plotting with time.plot = TRUE
 * Fixed plotting parameter arguments for phylo.par in `summary.gm.prcomp`.
 * Made it possible to assign `summary.gm.prcomp` as an object
 * Fixed small plotting issue in `warpRefMesh`
