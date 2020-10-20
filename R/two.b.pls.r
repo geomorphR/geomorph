@@ -100,26 +100,38 @@
 #' 
 
 two.b.pls <- function (A1, A2,  iter = 999, seed = NULL, print.progress=TRUE){
-    if (any(is.na(A1)) == T) 
+    if (any(is.na(A1))) 
       stop("\nData matrix 1 contains missing values. Estimate these first (see 'estimate.missing').",
            call. = FALSE)
-    if (any(is.na(A2)) == T) 
+    if (any(is.na(A2))) 
       stop("\nData matrix 2 contains missing values. Estimate these first (see 'estimate.missing').",
            call. = FALSE)
-  if (is.null(dim(A1))) A1 <- as.matrix(A1); if (is.null(dim(A2))) A2 <- as.matrix(A2)
-  if (length(dim(A1)) == 3) x <- two.d.array(A1) else x <- as.matrix(A1)
-  if (length(dim(A2)) == 3) y <- two.d.array(A2) else y <- as.matrix(A2)
-  if (nrow(x) != nrow(y)) stop("\nData matrices have different numbers of specimens.",
-                               call. = FALSE)
+  
+  x <- try(two.d.array(A1), silent = TRUE)
+  if(inherits(x, "try-error")) x <- try(as.matrix(A1), silent = TRUE)
+  if(inherits(x, "try-error"))
+    stop("\nA is not a suitable data array for analysis. ", call. = FALSE)
+  
+  y <- try(two.d.array(A2), silent = TRUE)
+  if(inherits(x, "try-error")) x <- try(as.matrix(A2), silent = TRUE)
+  if(inherits(x, "try-error"))
+    stop("\nA is not a suitable data array for analysis. ", call. = FALSE)
+  
   n <- nrow(x)
+  namesX <- rownames(x)
+  namesY <- rownames(y)
+  if(is.null(namesX) || is.null(namesY))
+    cat("Data in either A1 or A2 do not have names.  It is assumed data in both A1 and A2 are ordered the same.\n")
   
-  if (is.null(rownames(x))) rownames(x) <- 1:n
-  if (is.null(rownames(y))) rownames(y) <- 1:n
+  if (is.null(namesX)) namesX <- 1:NROW(x)
+  if (is.null(namesY)) namesY <- 1:NROW(y)
   
-  if(length(na.omit(match(rownames(x), rownames(y)))) != n) 
+  if (length(namesX) != length(namesY)) stop("\nData matrices have different numbers of specimens.",
+                               call. = FALSE)
+  if(length(unique(c(namesX, namesY))) != n) 
     stop("\nMismatched specimen names for A1 and A2.\n", call. = FALSE)
   
-  y <- y[rownames(x), ]
+  y <- y[namesX, ]
 
   pls.obs <- pls(x, y, RV=FALSE, verbose=TRUE)
   
@@ -143,22 +155,13 @@ two.b.pls <- function (A1, A2,  iter = 999, seed = NULL, print.progress=TRUE){
     pb <- txtProgressBar(min = 0, max = perms+1, initial = 0, style=3)
   }
   
-  x <- center(x)
-  y <- center(x)
+  xc <- center(x)
+  yc <- center(y)
   pls.rand <- sapply(1:perms, function(j) {
     step <- j
     if(print.progress) setTxtProgressBar(pb,step)
     s <- ind[[j]]
-    quick.pls(x[s,], y)
-  })
-  
-  x <- center(x)
-  y <- center(x)
-  pls.rand <- sapply(1:perms, function(j) {
-    step <- j
-    if(print.progress) setTxtProgressBar(pb,step)
-    s <- ind[[j]]
-    quick.pls(x[s,], y)
+    quick.pls(xc[s,], yc)
   })
 
   p.val <- pval(abs(pls.rand))

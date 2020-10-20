@@ -132,7 +132,7 @@ integration.test <-function(A, A2 = NULL,
     stop("\nA is not a suitable data array for analysis. ", call. = FALSE)
   
   namesX <- rownames(x)
-  if (is.null(namesX)) namesX <- 1: length(namesX) 
+  if (is.null(namesX)) namesX <- 1:NROW(x)
   
   if(!is.null(A2)) {
     if(any(is.na(A2)))
@@ -145,7 +145,10 @@ integration.test <-function(A, A2 = NULL,
       stop("\nA2 is not a suitable data array for analysis. ", call. = FALSE)
     
     namesY <- rownames(y)
-    if (is.null(namesY)) namesX <- 1: length(namesY)
+    if (is.null(namesY)) {
+      namesY <- 1:NROW(y)
+      cat("\nNo names for A2.  Data are assumed to be ordered as in A.\n")
+    }
   }
   
   if(!is.null(partition.gp) && is.null(A2)){
@@ -250,10 +253,10 @@ integration.test <-function(A, A2 = NULL,
     Zs <- apply(pls.rand, 1, effect.size)
     p.val <- pval(colMeans(abs(pls.rand)))
     Z <- effect.size(colMeans(pls.rand), center=TRUE)
-    r.pls.mat <- matrix(0, 0, length(nms))
+    r.pls.mat <- matrix(0, length(nms), length(nms))
     dimnames(r.pls.mat) <- list(nms, nms)
     r.pls.mat <- as.dist(r.pls.mat)
-    r.pls.mat[1:length(nms)] <- pls.rand[, 1]
+    r.pls.mat[1:nrow(pls.rand)] <- pls.rand[, 1]
   }  
   
   step <- perms + 1

@@ -286,10 +286,11 @@ phylo.integration <-function(A, A2 = NULL, phy,
     Zs <- apply(pls.rand, 1, effect.size)
     p.val <- pval(colMeans(abs(pls.rand)))
     Z <- effect.size(colMeans(pls.rand), center=TRUE)
-    r.pls.mat <- matrix(0, 0, length(nms))
+    
+    r.pls.mat <- matrix(0, length(nms), length(nms))
     dimnames(r.pls.mat) <- list(nms, nms)
     r.pls.mat <- as.dist(r.pls.mat)
-    r.pls.mat[1:length(nms)] <- pls.rand[, 1]
+    r.pls.mat[1:nrow(pls.rand)] <- pls.rand[, 1]
   }  
     
   step <- perms + 1
