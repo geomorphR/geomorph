@@ -157,7 +157,6 @@ integration.test <-function(A, A2 = NULL,
       dims <- dim(A)
       p <- dims[1]
       k <- dims[2]
-      n <- dims[3]
       
       if(length(partition.gp) != p) 
         stop("\nNot all landmarks are assigned to a partition.", call. = FALSE)
@@ -171,7 +170,6 @@ integration.test <-function(A, A2 = NULL,
         stop("\nNot all variables are assigned to a partition.", call. = FALSE)
       
       gps <- as.factor(partition.gp) 
-      n <- dim(x)[1] 
       
     }
     
@@ -188,6 +186,8 @@ integration.test <-function(A, A2 = NULL,
     ngps <- 2
     y <- as.matrix(y[namesX,])  
   }
+  
+  n <- NROW(x)
   
   if(!is.null(seed) && seed == "random") seed = sample(1:iter, 1)
   ind <- perm.index(n, iter, seed = seed)
