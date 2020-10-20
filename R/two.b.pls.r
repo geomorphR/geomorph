@@ -113,8 +113,8 @@ two.b.pls <- function (A1, A2,  iter = 999, seed = NULL, print.progress=TRUE){
     stop("\nA is not a suitable data array for analysis. ", call. = FALSE)
   
   y <- try(two.d.array(A2), silent = TRUE)
-  if(inherits(x, "try-error")) x <- try(as.matrix(A2), silent = TRUE)
-  if(inherits(x, "try-error"))
+  if(inherits(y, "try-error")) y <- try(as.matrix(A2), silent = TRUE)
+  if(inherits(y, "try-error"))
     stop("\nA is not a suitable data array for analysis. ", call. = FALSE)
   
   n <- nrow(x)
