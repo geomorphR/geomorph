@@ -182,8 +182,8 @@ print.pls <- function (x, ...) {
   }
   if(x$method=="PLS") {
     cat(paste("\nr-PLS:", round(x$r.pls, nchar(x$permutations)-1)))
-    cat(paste("\n\nP-value:", round(x$P.value, nchar(x$permutations)-1)))
     cat(paste("\n\nEffect Size (Z):", round(x$Z, nchar(x$permutations))))
+    cat(paste("\n\nP-value:", round(x$P.value, nchar(x$permutations)-1)))
     cat(paste("\n\nBased on", x$permutations, "random permutations\n"))
     if(!is.null(x$pairwise.Z)) {
       Z <- x$pairwise.Z
@@ -196,6 +196,8 @@ print.pls <- function (x, ...) {
       dp[1:length(P)] <- P
       
       cat("\nPairwise statistics\n")
+      cat("\nr-PLS:\n")
+      print(x$r.pls.mat)
       cat("\nEffect Sizes (Z):\n")
       print(dz)
       cat("\nP-values::\n")

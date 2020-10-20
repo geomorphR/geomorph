@@ -266,7 +266,6 @@ phylo.integration <-function(A, A2 = NULL, phy,
     y <- center(Ptrans %*% x)
     g <- factor(as.numeric(gps))
     gps.combo <- combn(ngps, 2)
-    pls.obs <- plsmulti.phylo(y, gps, Ptrans)
     pls.rand <- sapply(1:perms, function(j) {
       step <- j
       if(print.progress) setTxtProgressBar(pb,step)
@@ -287,6 +286,10 @@ phylo.integration <-function(A, A2 = NULL, phy,
     Zs <- apply(pls.rand, 1, effect.size)
     p.val <- pval(colMeans(abs(pls.rand)))
     Z <- effect.size(colMeans(pls.rand), center=TRUE)
+    r.pls.mat <- matrix(0, 0, length(nms))
+    dimnames(r.pls.mat) <- list(nms, nms)
+    r.pls.mat <- as.dist(r.pls.mat)
+    r.pls.mat[1:length(nms)] <- pls.rand[, 1]
   }  
     
   step <- perms + 1
@@ -297,10 +300,9 @@ phylo.integration <-function(A, A2 = NULL, phy,
   }
   
   ####OUTPUT
-  if(ngps > 2) r.pls.mat <- pls.obs$r.pls.mat else r.pls.mat <- NULL
   
   if(ngps == 2){
-    out <- list(r.pls = pls.obs$r.pls, r.pls.mat = r.pls.mat, P.value = p.val, Z = Z,
+    out <- list(r.pls = pls.rand[1], r.pls.mat = r.pls.mat, P.value = p.val, Z = Z,
                 left.pls.vectors = pls.obs$left.vectors,
                 right.pls.vectors = pls.obs$right.vectors,
                 random.r = pls.rand, 
@@ -313,14 +315,13 @@ phylo.integration <-function(A, A2 = NULL, phy,
                 method = "PLS")
   }
   if(ngps>2){
-    out <- list(r.pls = pls.obs$r.pls, r.pls.mat = r.pls.mat, 
+    out <- list(r.pls = mean(r.pls.mat), r.pls.mat = r.pls.mat, 
                 P.value = p.val, Z = Z,
                 pairwise.P.values = p.vals, pairwise.Z = Zs,
                 random.r = pls.rand, 
                 permutations = iter+1, call=match.call(),
                 method = "PLS")
   }
-  
   
   class(out) <- "pls"
   out  
