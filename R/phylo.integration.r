@@ -194,6 +194,8 @@ phylo.integration <-function(A, A2 = NULL, phy,
         stop("\nNot all landmarks are assigned to a partition.", call. = FALSE)
       
       gps <- as.factor(rep(partition.gp, k, each = k, length = p * k))  
+      A.new <- A[which(partition.gp == levels(partition.gp)[1]),,]
+      A2.new <- A[which(partition.gp != levels(partition.gp)[1]),,]
     }
   
     if (length(dim(A)) == 2){ 
@@ -202,6 +204,8 @@ phylo.integration <-function(A, A2 = NULL, phy,
         stop("\nNot all variables are assigned to a partition.", call. = FALSE)
       
       gps <- as.factor(partition.gp) 
+      A.new <- A[, which(partition.gp == levels(partition.gp)[1])]
+      A2.new <- A[, which(partition.gp != levels(partition.gp)[1])]
 
     }
     
@@ -310,7 +314,7 @@ phylo.integration <-function(A, A2 = NULL, phy,
                 XScores = pls.obs$XScores,
                 YScores = pls.obs$YScores,
                 svd = pls.obs$pls.svd,
-                A1 = A.new, A2 = A2.new,
+                A1 <- A.new, A2 <-A2.new,
                 A1.matrix = x, A2.matrix =y,
                 permutations = iter+1, call=match.call(),
                 method = "PLS")

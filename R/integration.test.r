@@ -149,6 +149,8 @@ integration.test <-function(A, A2 = NULL,
       namesY <- 1:NROW(y)
       cat("\nNo names for A2.  Data are assumed to be ordered as in A.\n")
     }
+    A1.new <- A1
+    A2.new <- A2
   }
   
   if(!is.null(partition.gp) && is.null(A2)){
@@ -162,6 +164,8 @@ integration.test <-function(A, A2 = NULL,
         stop("\nNot all landmarks are assigned to a partition.", call. = FALSE)
       
       gps <- as.factor(rep(partition.gp, k, each = k, length = p * k))  
+      A.new <- A[which(partition.gp == levels(partition.gp)[1]),,]
+      A2.new <- A[which(partition.gp != levels(partition.gp)[1]),,]
     }
     
     if (length(dim(A)) == 2){ 
@@ -170,6 +174,8 @@ integration.test <-function(A, A2 = NULL,
         stop("\nNot all variables are assigned to a partition.", call. = FALSE)
       
       gps <- as.factor(partition.gp) 
+      A.new <- A[, which(partition.gp == levels(partition.gp)[1])]
+      A2.new <- A[, which(partition.gp != levels(partition.gp)[1])]
       
     }
     
@@ -276,7 +282,7 @@ integration.test <-function(A, A2 = NULL,
                 XScores = pls.obs$XScores,
                 YScores = pls.obs$YScores,
                 svd = pls.obs$pls.svd,
-                A1 = A.new, A2 = A2.new,
+                A1 <- A.new, A2 <-A2.new,
                 A1.matrix = x, A2.matrix =y,
                 permutations = iter+1, call=match.call(),
                 method = "PLS")

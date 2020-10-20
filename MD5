@@ -153,11 +153,11 @@ b0de2a67cff633e27e7a00860187240f *R/globalIntegration.r
 21634789460f3b67a780df0d556d4a95 *R/gm.prcomp.R
 bf0750e2582fc2c3b5454ad48b7f3cbb *R/gpagen.r
 8c06e49837953d941a01c82b0111935a *R/gridPar.r
-c6391548251ab7d2e48fe430c7af15c6 *R/integration.test.r
+85718ae2e644635e8bce36154e2d1e05 *R/integration.test.r
 0cbfe6b5655e2751cdd03ca2a1550768 *R/interlmkdist.r
 7ecf3f0cde2b35c2df64d3843d112da1 *R/modularity.test.r
 dcf12e817827f0521b16463f9240c481 *R/morphol.disparity.r
-6a0a4ce07b1b484dcb84a5878b9df3d6 *R/phylo.integration.r
+971deb4bffa32e3499595bd2c688d519 *R/phylo.integration.r
 4a494c0650465e4df7cec4ba8b27c568 *R/phylo.modularity.r
 d150dd1e73e96f89c45853e6d4101680 *R/physignal.r
 b72262ffb22b02ae6b2592d4d0f4353a *R/picknplot.shape.r
