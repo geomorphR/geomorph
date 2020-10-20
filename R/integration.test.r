@@ -190,7 +190,7 @@ integration.test <-function(A, A2 = NULL,
   }
   
   if(!is.null(seed) && seed == "random") seed = sample(1:iter, 1)
-  ind <- perm.index(nrow(x), iter, seed = seed)
+  ind <- perm.index(n, iter, seed = seed)
   perms <- length(ind)
   
   if(print.progress){
@@ -238,7 +238,7 @@ integration.test <-function(A, A2 = NULL,
       if(print.progress) setTxtProgressBar(pb,step)
       s <- ind[[j]]
       sapply(1:ncol(gps.combo), function(jj) {
-        y1 <- y[s, g == gps.combo[1,jj]]
+        y1 <- as.matrix(y[s, g == gps.combo[1,jj]])
         y2 <- y[ , g == gps.combo[2,jj]]
         quick.pls(y1, y2)
       })
@@ -269,7 +269,7 @@ integration.test <-function(A, A2 = NULL,
   ####OUTPUT
   
   if(ngps == 2){
-    out <- list(r.pls <- pls.rand[1], r.pls.mat = r.pls.mat, P.value = p.val, Z = Z,
+    out <- list(r.pls <- pls.rand[1], r.pls.mat = NULL, P.value = p.val, Z = Z,
                 left.pls.vectors = pls.obs$left.vectors,
                 right.pls.vectors = pls.obs$right.vectors,
                 random.r = pls.rand, 

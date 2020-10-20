@@ -117,6 +117,8 @@ two.b.pls <- function (A1, A2,  iter = 999, seed = NULL, print.progress=TRUE){
   if(inherits(y, "try-error"))
     stop("\nA is not a suitable data array for analysis. ", call. = FALSE)
   
+  x <- as.matrix(x)
+  y <- as.matrix(y)
   n <- nrow(x)
   namesX <- rownames(x)
   namesY <- rownames(y)
@@ -147,7 +149,7 @@ two.b.pls <- function (A1, A2,  iter = 999, seed = NULL, print.progress=TRUE){
   }
   
   if(!is.null(seed) && seed == "random") seed = sample(1:iter, 1)
-  ind <- perm.index(nrow(x), iter, seed = seed)
+  ind <- perm.index(n, iter, seed = seed)
   perms <- length(ind)
   
   if(print.progress){
@@ -155,13 +157,14 @@ two.b.pls <- function (A1, A2,  iter = 999, seed = NULL, print.progress=TRUE){
     pb <- txtProgressBar(min = 0, max = perms+1, initial = 0, style=3)
   }
   
-  xc <- center(x)
-  yc <- center(y)
+  xc <- as.matrix(center(x))
+  yc <- as.matrix(center(y))
   pls.rand <- sapply(1:perms, function(j) {
     step <- j
     if(print.progress) setTxtProgressBar(pb,step)
     s <- ind[[j]]
-    quick.pls(xc[s,], yc)
+    xs <- as.matrix(xc[s,])
+    quick.pls(xs, yc)
   })
 
   p.val <- pval(abs(pls.rand))

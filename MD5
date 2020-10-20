@@ -17,7 +17,7 @@ f4f2080e745b8d689f17caf549449ab5 *geomorph.Rproj
 5e099c6268d251bf5c98595d9566385a *man/arrayspecs.Rd
 daa4f7e0e16a55cbf4fd2c0686c7167c *man/bilat.symmetry.Rd
 6e94f720fd50cf0ff309624b1a4a30ee *man/buildtemplate.Rd
-8cab7042d16141cca44cf13bd6c396ec *man/combine.subsets.Rd
+8fcd64358e3e6614cde37380eb1b255d *man/combine.subsets.Rd
 55bb505e3ee47911be6904e57f457da0 *man/compare.CR.Rd
 e91e0533e55339b8332c80d2e5a127b5 *man/compare.evol.rates.Rd
 4a1e045de391966a3300bfea63c999ce *man/compare.multi.evol.rates.Rd
@@ -99,7 +99,7 @@ e947bb4a931b872aaebf88e6ad0c360d *man/readland.shapes.Rd
 e268bdaf2ef10f2027709e5f9ab2518b *man/readland.tps.Rd
 4b5d3150f34bb6b9dcf5f0da5b345011 *man/readmulti.nts.Rd
 a19f005bd83e97a4f20bf357483726c5 *man/readmulti.tps.Rd
-cc963a327d23f0e830749124ba9854d9 *man/rotate.coords.Rd
+4a9e3fd9859000bb3d361df7d624a7e8 *man/rotate.coords.Rd
 8be198584c10582597e98c6cecbb26f7 *man/scallopPLY.Rd
 c4f3fe2e244677c2504bbe0283590d1c *man/scallops.Rd
 88d15c02dec96215b3ae5f9560d2d45a *man/shape.predictor.Rd
@@ -153,11 +153,11 @@ b0de2a67cff633e27e7a00860187240f *R/globalIntegration.r
 21634789460f3b67a780df0d556d4a95 *R/gm.prcomp.R
 bf0750e2582fc2c3b5454ad48b7f3cbb *R/gpagen.r
 8c06e49837953d941a01c82b0111935a *R/gridPar.r
-ee2949844672735a038fce17e6f89d49 *R/integration.test.r
+5402672369da2a412d4d025da4c20f95 *R/integration.test.r
 0cbfe6b5655e2751cdd03ca2a1550768 *R/interlmkdist.r
 7ecf3f0cde2b35c2df64d3843d112da1 *R/modularity.test.r
 dcf12e817827f0521b16463f9240c481 *R/morphol.disparity.r
-8dc684c36b01296a50a160d543c3c64d *R/phylo.integration.r
+3453c751fd84eece8240b6da614fb64e *R/phylo.integration.r
 4a494c0650465e4df7cec4ba8b27c568 *R/phylo.modularity.r
 d150dd1e73e96f89c45853e6d4101680 *R/physignal.r
 b72262ffb22b02ae6b2592d4d0f4353a *R/picknplot.shape.r
@@ -182,7 +182,7 @@ d688cf3fbc6c3351526c422948e457ba *R/readmulti.tps.R
 1ec7076ed569badd94f834000e61ca5c *R/shape.predictor.r
 f191c54f3b3c75baea0b045758af5362 *R/shapeHulls.r
 585b14fb8ed5044f20dad9161688c342 *R/shared.support.code.R
-9c450ffa79db3c21975e31662fa9c7ef *R/two.b.pls.r
+28ff764da3a8fe2d47895914efd71047 *R/two.b.pls.r
 2e693d8b4f3c21d742737b97d1773119 *R/two.d.array.r
 7385019797d3400eac9dbce0ea33b74f *R/warpRefMesh.r
 ce64f40b8badacea0852af718e718355 *R/warpRefOutline.r
