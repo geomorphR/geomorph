@@ -147,7 +147,8 @@ integration.test <-function(A, A2 = NULL,
     namesY <- rownames(y)
     if (is.null(namesY)) namesX <- 1: length(namesY)
   }
-  if(!is.null(partition.gp)){
+  
+  if(!is.null(partition.gp) && is.null(A2)){
     partition.gp <- as.factor(partition.gp)
     if (length(dim(A)) == 3){ 
       dims <- dim(A)

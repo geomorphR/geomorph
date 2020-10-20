@@ -183,7 +183,7 @@ phylo.integration <-function(A, A2 = NULL, phy,
   Ptrans <- D.mat %*% (I-one %*% crossprod(one, invC)/sum(invC))
   
   
-  if(!is.null(partition.gp)){
+  if(!is.null(partition.gp) && is.null(A2)){
     partition.gp <- as.factor(partition.gp)
     if (length(dim(A)) == 3){ 
       dims <- dim(A)
