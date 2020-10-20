@@ -150,7 +150,7 @@ phylo.integration <-function(A, A2 = NULL, phy,
       stop("\nData matrix 2 contains missing values. Estimate these first (see 'estimate.missing').",
            call. = FALSE) 
     
-    y <- try(two.d.array(A), silent = TRUE)
+    y <- try(two.d.array(A2), silent = TRUE)
     if(inherits(y, "try-error")) y <- try(as.matrix(A), silent = TRUE)
     if(inherits(y, "try-error"))
       stop("\nA2 is not a suitable data array for analysis. ", call. = FALSE)
@@ -220,6 +220,15 @@ phylo.integration <-function(A, A2 = NULL, phy,
     ngps <- 2
     y <- as.matrix(y[namesX,])  
   }
+  
+  if(!is.null(seed) && seed == "random") seed = sample(1:iter, 1)
+  ind <- perm.index(nrow(x), iter, seed = seed)
+  perms <- length(ind)
+  
+  if(print.progress){
+    cat(paste("\nRandom PLS calculations:", perms, "permutations.\n"))
+    pb <- txtProgressBar(min = 0, max = perms+1, initial = 0, style=3)
+  }
 
   if(ngps == 2){
     pls.obs <- pls.phylo(x, y, Ptrans, verbose=TRUE)
@@ -233,15 +242,6 @@ phylo.integration <-function(A, A2 = NULL, phy,
       pcay <- prcomp(y)
       d <- which(zapsmall(pcay$sdev) > 0)
       y <- pcay$x[,d]
-    }
-    
-    if(!is.null(seed) && seed == "random") seed = sample(1:iter, 1)
-    ind <- perm.index(nrow(x), iter, seed = seed)
-    perms <- length(ind)
-    
-    if(print.progress){
-      cat(paste("\nRandom PLS calculations:", perms, "permutations.\n"))
-      pb <- txtProgressBar(min = 0, max = perms+1, initial = 0, style=3)
     }
     
     x <- center(Ptrans %*% x)

@@ -126,10 +126,30 @@ integration.test <-function(A, A2 = NULL,
     stop("\nData matrix contains missing values. Estimate these first (see 'estimate.missing').",
          call. = FALSE)  
   
+  x <- try(two.d.array(A), silent = TRUE)
+  if(inherits(x, "try-error")) x <- try(as.matrix(A), silent = TRUE)
+  if(inherits(x, "try-error"))
+    stop("\nA is not a suitable data array for analysis. ", call. = FALSE)
+  
+  namesX <- rownames(x)
+  if (is.null(namesX)) namesX <- 1: length(namesX) 
+  
+  if(!is.null(A2)) {
+    if(any(is.na(A2)))
+      stop("\nData matrix 2 contains missing values. Estimate these first (see 'estimate.missing').",
+           call. = FALSE) 
+    
+    y <- try(two.d.array(A2), silent = TRUE)
+    if(inherits(y, "try-error")) y <- try(as.matrix(A), silent = TRUE)
+    if(inherits(y, "try-error"))
+      stop("\nA2 is not a suitable data array for analysis. ", call. = FALSE)
+    
+    namesY <- rownames(y)
+    if (is.null(namesY)) namesX <- 1: length(namesY)
+  }
   if(!is.null(partition.gp)){
     partition.gp <- as.factor(partition.gp)
     if (length(dim(A)) == 3){ 
-      x<-two.d.array(A)
       dims <- dim(A)
       p <- dims[1]
       k <- dims[2]
@@ -139,45 +159,30 @@ integration.test <-function(A, A2 = NULL,
         stop("\nNot all landmarks are assigned to a partition.", call. = FALSE)
       
       gps <- as.factor(rep(partition.gp, k, each = k, length = p * k))  
-      A.new <- A[which(partition.gp == levels(partition.gp)[1]),,]
-      A2.new <- A[which(partition.gp != levels(partition.gp)[1]),,]
     }
     
     if (length(dim(A)) == 2){ 
-      x <- A
-      A.new <- A
       
       if(length(partition.gp) != ncol(x))
         stop("\nNot all variables are assigned to a partition.", call. = FALSE)
       
       gps <- as.factor(partition.gp) 
-      n <- dim(x)[2] 
-      A.new <- x[, which(gps== levels(gps)[1])]
-      A2.new <- x[, which(gps == levels(gps)[2])]
+      n <- dim(x)[1] 
+      
     }
     
     ngps <- nlevels(gps)
     
     if(ngps == 2){
-      y <- x[, which(gps == levels(gps)[2])]
-      x <- x[, which(gps == levels(gps)[1])]
+      y <- x[,which(gps == levels(gps)[2])]
+      x <- x[,which(gps == levels(gps)[1])]
     }
   }
   
+  
   if(!is.null(A2)){
-    A.new <- A
-    A2.new <- A2
-    
-    if(any(is.na(A2)))
-      stop("\nData matrix 2 contains missing values. Estimate these first (see 'estimate.missing').", 
-           call. = FALSE)  
-    
-    if (length(dim(A)) == 2) x <- A 
-    if (length(dim(A)) == 3) x <- two.d.array(A)
-    if (length(dim(A2)) == 2) y <- A2
-    if (length(dim(A2)) == 3) y <- two.d.array(A2)
-    ngps = 2
-    n <- dim(x)[2]
+    ngps <- 2
+    y <- as.matrix(y[namesX,])  
   }
   
   if(!is.null(seed) && seed == "random") seed = sample(1:iter, 1)
