@@ -112,73 +112,118 @@
 #'  ### For detailed options, see the picknplot help file
 #'  # picknplot.shape(plot(IT))
 #'
-phylo.integration <-function(A, A2=NULL, phy, partition.gp=NULL,iter=999, seed=NULL, print.progress=TRUE){ 
-  if(any(is.na(A))==T){
-    stop("Data matrix 1 contains missing values. Estimate these first(see 'estimate.missing').")  } 
+phylo.integration <-function(A, A2 = NULL, phy, 
+                             partition.gp = NULL,iter = 999, 
+                             seed = NULL, print.progress = TRUE){ 
+  if(any(is.na(A)))
+    stop("Data matrix 1 contains missing values. Estimate these first(see 'estimate.missing').",
+         call. = FALSE)  
+  
   if (!inherits(phy, "phylo"))
     stop("phy must be of class 'phylo.'") 
-  if(!is.null(seed) && seed=="random") seed = sample(1:iter, 1)
+  
+  x <- try(two.d.array(A), silent = TRUE)
+  if(inherits(x, "try-error")) x <- try(as.matrix(A), silent = TRUE)
+  if(inherits(x, "try-error"))
+    stop("\nA is not a suitable data array for analysis. ", call. = FALSE)
+  
+  namesX <- rownames(x)
+  
+  if (is.null(namesX))
+    stop("\nNo specimen names in data matrix. Please assign specimen names.", call. = FALSE)  
+  
+  num.taxa <- length(phy$tip.label)
+  num.obs <- length(namesX)
+  
+  if(num.obs < num.taxa)
+    stop("\nTree contains some taxa not present in present in the data matrix", call. = FALSE)  
+  
+  if(num.obs > num.taxa)
+    stop("\nTree is missing some taxa present in the data matrix", call. = FALSE) 
+  
+  if(length(unique(c(namesX, phy$tip.label))) > num.taxa)
+    stop("\n The data names and taxa names do not match exactly.  Check for discrepancies.",
+         call. = FALSE)
+  
+  if(!is.null(A2)) {
+    if(any(is.na(A2)))
+      stop("\nData matrix 2 contains missing values. Estimate these first (see 'estimate.missing').",
+           call. = FALSE) 
+    
+    y <- try(two.d.array(A), silent = TRUE)
+    if(inherits(y, "try-error")) y <- try(as.matrix(A), silent = TRUE)
+    if(inherits(y, "try-error"))
+      stop("\nA2 is not a suitable data array for analysis. ", call. = FALSE)
+    
+    namesY <- rownames(y)
+    
+    if(is.null(namesY))
+      stop("\nNo specimen names in data matrix 2. Please assign specimen names",
+           call. = FALSE)  
+    
+    if(length(unique(c(namesX, namesY))) > num.taxa)
+      stop("\n The data names in the two matrices do not match.  Check for discrepancies.",
+           call. = FALSE)
+    
+    if(length(unique(c(namesY, phy$tip.label))) > num.taxa)
+      stop("\n The data names in the second matrix and taxa names do not match exactly.  
+           Check for discrepancies.",
+           call. = FALSE)
+    
+  }
+  
+  #PhyloPrep  
+  phy.parts<-phylo.mat(x, phy)
+  invC <- phy.parts$invC
+  D.mat<-phy.parts$D.mat
+  
+  #Analysis  
+  one <- matrix(1, nrow(x))
+  I <- diag(nrow(x)) 
+  Ptrans <- D.mat %*% (I-one %*% crossprod(one, invC)/sum(invC))
+  
+  
   if(!is.null(partition.gp)){
-    partition.gp<-as.factor(partition.gp)
-    if (length(dim(A))==3){ x<-two.d.array(A)
-    p<-dim(A)[1]; k<-dim(A)[2];n<-dim(A)[3]
-    if(length(partition.gp)!=p){stop("Not all landmarks are assigned to a partition.")}
-    gps<-as.factor(rep(partition.gp,k,each = k, length=p*k))  
-    A.new<-A[which(partition.gp==levels(partition.gp)[1]),,]
-    A2.new<-A[which(partition.gp!=levels(partition.gp)[1]),,]
+    partition.gp <- as.factor(partition.gp)
+    if (length(dim(A)) == 3){ 
+      dims <- dim(A)
+      p <- dims[1]
+      k <- dims[2]
+      n <- dims[3]
+      
+      if(length(partition.gp) != p) 
+        stop("\nNot all landmarks are assigned to a partition.", call. = FALSE)
+      
+      gps <- as.factor(rep(partition.gp, k, each = k, length = p * k))  
     }
-    if (length(dim(A))==2){ x<-A; A.new<-A
-    if(length(partition.gp)!=ncol(x)){stop("Not all variables are assigned to a partition.")}
-    gps<-as.factor(partition.gp) ;n<-dim(x)[2] 
-    A.new<-x[,which(gps==levels(gps)[1])]; A2.new<-x[,which(gps==levels(gps)[2])]
+  
+    if (length(dim(A)) == 2){ 
+      
+      if(length(partition.gp) != ncol(x))
+        stop("\nNot all variables are assigned to a partition.", call. = FALSE)
+      
+      gps <- as.factor(partition.gp) 
+      n <- dim(x)[1] 
+
     }
-    ngps<-nlevels(gps)
-    if(ngps==2){
-      y<-x[,which(gps==levels(gps)[2])]
-      x<-x[,which(gps==levels(gps)[1])]
+    
+    ngps <- nlevels(gps)
+    
+    if(ngps == 2){
+      y <- x[,which(gps == levels(gps)[2])]
+      x <- x[,which(gps == levels(gps)[1])]
     }
-    Nspec<-num.taxa.X<-num.taxa.Y<-nrow(x)
-    namesX<-namesY<-rownames(x)
   }
+  
+  
   if(!is.null(A2)){
-    A.new<-A; A2.new<-A2
-    if(any(is.na(A2))==T){
-      stop("Data matrix 2 contains missing values. Estimate these first (see 'estimate.missing').")  }
-    if (length(dim(A))==2){ x<-A }
-    if (length(dim(A))==3){ x<-two.d.array(A)}
-    if (length(dim(A2))==2){ y<-A2}
-    if (length(dim(A2))==3){ y<-two.d.array(A2)}
-    ngps=2; n<-dim(x)[2]
-    Nspec<-num.taxa.X<-nrow(x)
-    namesX<-rownames(x)
-    num.taxa.Y<-nrow(y)
-    namesY<-rownames(y)
-    y<-as.matrix(y[rownames(x),])  
+    ngps <- 2
+    y <- as.matrix(y[namesX,])  
   }
-  if (is.null(namesX)){
-    stop("No specimen names in data matrix. Please assign specimen names.")  } 
-  if (length(match(phy$tip.label, namesX)) != num.taxa.X && length(phy$tip.label) < num.taxa.X)
-    stop("Tree is missing some taxa present in the data matrix") 
-  if (length(match(phy$tip.label, namesX)) != num.taxa.X && num.taxa.X < length(phy$tip.label)) 
-    stop("Tree contains some taxa not present in present in the data matrix")  
-  if (is.null(namesY)){
-    stop("No specimen names in data matrix 2. Please assign specimen names")  } 
-  if (is.null(namesX) == FALSE && is.null(namesY) == FALSE) {
-    mtch.A <- namesX[is.na(match(namesX, namesY))]
-    if (length(mtch.A) > 0) {
-      stop("Specimen names in data sets are not the same.")   } 
-  }
-  mtch.B <- namesX[is.na(match(namesX, phy$tip.label))]
-  if (length(mtch.B) > 0) {
-    stop("Taxa labels on tree and taxa matrix are not the same.")} 
-#PhyloPrep  
-  phy.parts<-phylo.mat(x,phy)
-  invC<-phy.parts$invC; D.mat<-phy.parts$D.mat
-#Analysis  
-  one<-matrix(1,nrow(x)); I = diag(1,nrow(x),) 
-  Ptrans<-D.mat%*%(I-one%*%crossprod(one,invC)/sum(invC))
-  if(ngps==2){
-    pls.obs <- pls.phylo(x, y, Ptrans,verbose=TRUE)
+
+  if(ngps == 2){
+    pls.obs <- pls.phylo(x, y, Ptrans, verbose=TRUE)
+    
     if(NCOL(x) > NROW(x)){
       pcax <- prcomp(x)
       d <- which(zapsmall(pcax$sdev) > 0)
@@ -189,27 +234,72 @@ phylo.integration <-function(A, A2=NULL, phy, partition.gp=NULL,iter=999, seed=N
       d <- which(zapsmall(pcay$sdev) > 0)
       y <- pcay$x[,d]
     }
-    x <- Ptrans%*%x
-    y <- Ptrans%*%y
-    if(print.progress) pls.rand <- apply.pls(x, y,  iter=iter, seed=seed) else
-      pls.rand <- .apply.pls(x, y, iter=iter, seed=seed)
+    
+    if(!is.null(seed) && seed == "random") seed = sample(1:iter, 1)
+    ind <- perm.index(nrow(x), iter, seed = seed)
+    perms <- length(ind)
+    
+    if(print.progress){
+      cat(paste("\nRandom PLS calculations:", perms, "permutations.\n"))
+      pb <- txtProgressBar(min = 0, max = perms+1, initial = 0, style=3)
+    }
+    
+    x <- center(Ptrans %*% x)
+    y <- center(Ptrans %*% y)
+    pls.rand <- sapply(1:perms, function(j) {
+      step <- j
+      if(print.progress) setTxtProgressBar(pb,step)
+      s <- ind[[j]]
+      quick.pls(x[s,], y)
+    })
+    
+    names(pls.rand) <- c("obs", paste("iter", 1:iter, sep = "."))
+    p.vals <- NULL
+    Zs <- NULL
     p.val <- pval(abs(pls.rand))
     Z <- effect.size(pls.rand, center=TRUE) 
     XScores <- pls.obs$XScores
     YScores <- pls.obs$YScores
   }
-  if(ngps>2){
-    pls.obs <- plsmulti.phylo(x, gps, Ptrans)  
+  
+  if(ngps > 2){
+    y <- center(Ptrans %*% x)
+    g <- factor(as.numeric(gps))
+    gps.combo <- combn(ngps, 2)
+    pls.obs <- plsmulti.phylo(y, gps, Ptrans)
+    pls.rand <- sapply(1:perms, function(j) {
+      step <- j
+      if(print.progress) setTxtProgressBar(pb,step)
+      s <- ind[[j]]
+      sapply(1:ncol(gps.combo), function(jj) {
+        y1 <- y[s, g == gps.combo[1,jj]]
+        y2 <- y[ , g == gps.combo[2,jj]]
+        quick.pls(y1, y2)
+      })
+    })
     
-    x <- Ptrans%*%x
-    if(print.progress) pls.rand <- apply.plsmulti(x, gps, iter=iter, seed=seed) else
-      pls.rand <- .apply.plsmulti(x, gps,iter=iter, seed=seed)
-    p.val <- pval(abs(pls.rand))
-    Z <- effect.size(pls.rand, center=TRUE) 
-  } 
+    nms <- levels(gps)
+    rnms <- apply(gps.combo, 2, function(x) paste(nms[x[1]], nms[x[2]], sep = "-"))
+    cnms <- c("obs", paste("iter", 1:iter, sep = "."))
+    dimnames(pls.rand) <- list(rnms, cnms)
+    
+    p.vals <- apply(abs(pls.rand), 1, pval)
+    Zs <- apply(pls.rand, 1, effect.size)
+    p.val <- pval(colMeans(abs(pls.rand)))
+    Z <- effect.size(colMeans(pls.rand), center=TRUE)
+  }  
+    
+  step <- perms + 1
+  if(print.progress) {
+    setTxtProgressBar(pb,step)
+    cat("\n")
+    close(pb)
+  }
+  
   ####OUTPUT
   if(ngps > 2) r.pls.mat <- pls.obs$r.pls.mat else r.pls.mat <- NULL
-  if(ngps==2){
+  
+  if(ngps == 2){
     out <- list(r.pls = pls.obs$r.pls, r.pls.mat = r.pls.mat, P.value = p.val, Z = Z,
                 left.pls.vectors = pls.obs$left.vectors,
                 right.pls.vectors = pls.obs$right.vectors,
@@ -223,11 +313,14 @@ phylo.integration <-function(A, A2=NULL, phy, partition.gp=NULL,iter=999, seed=N
                 method = "PLS")
   }
   if(ngps>2){
-    out <- list(r.pls = pls.obs$r.pls, r.pls.mat = r.pls.mat, P.value = p.val, Z = Z,
+    out <- list(r.pls = pls.obs$r.pls, r.pls.mat = r.pls.mat, 
+                P.value = p.val, Z = Z,
+                pairwise.P.values = p.vals, pairwise.Z = Zs,
                 random.r = pls.rand, 
                 permutations = iter+1, call=match.call(),
                 method = "PLS")
   }
+  
   
   class(out) <- "pls"
   out  

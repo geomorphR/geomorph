@@ -117,41 +117,79 @@
 #' 
 #' IT$left.pls.vectors # extracting just the left (first block) singular vectors
 
-integration.test<-function(A, A2=NULL,partition.gp=NULL,iter=999, seed=NULL, print.progress=TRUE){
-  if(any(is.na(A))==T){
-    stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').")  }
+integration.test <-function(A, A2 = NULL,
+                            partition.gp = NULL,
+                            iter = 999, seed = NULL, 
+                            print.progress = TRUE) {
+  
+  if(any(is.na(A)))
+    stop("\nData matrix contains missing values. Estimate these first (see 'estimate.missing').",
+         call. = FALSE)  
+  
   if(!is.null(partition.gp)){
-    partition.gp<-as.factor(partition.gp)
-    if (length(dim(A))==3){ x<-two.d.array(A)
-    p<-dim(A)[1]; k<-dim(A)[2];n<-dim(A)[3]
-    if(length(partition.gp)!=p){stop("Not all landmarks are assigned to a partition.")}
-    gps<-as.factor(rep(partition.gp,k,each = k, length=p*k))  
-    A.new<-A[which(partition.gp==levels(partition.gp)[1]),,]
-    A2.new<-A[which(partition.gp!=levels(partition.gp)[1]),,]
+    partition.gp <- as.factor(partition.gp)
+    if (length(dim(A)) == 3){ 
+      x<-two.d.array(A)
+      dims <- dim(A)
+      p <- dims[1]
+      k <- dims[2]
+      n <- dims[3]
+      
+      if(length(partition.gp) != p) 
+        stop("\nNot all landmarks are assigned to a partition.", call. = FALSE)
+      
+      gps <- as.factor(rep(partition.gp, k, each = k, length = p * k))  
+      A.new <- A[which(partition.gp == levels(partition.gp)[1]),,]
+      A2.new <- A[which(partition.gp != levels(partition.gp)[1]),,]
     }
-    if (length(dim(A))==2){ x<-A; A.new<-A
-    if(length(partition.gp)!=ncol(x)){stop("Not all variables are assigned to a partition.")}
-    gps<-as.factor(partition.gp) ;n<-dim(x)[2] 
-    A.new<-x[,which(gps==levels(gps)[1])]; A2.new<-x[,which(gps==levels(gps)[2])]
+    
+    if (length(dim(A)) == 2){ 
+      x <- A
+      A.new <- A
+      
+      if(length(partition.gp) != ncol(x))
+        stop("\nNot all variables are assigned to a partition.", call. = FALSE)
+      
+      gps <- as.factor(partition.gp) 
+      n <- dim(x)[2] 
+      A.new <- x[, which(gps== levels(gps)[1])]
+      A2.new <- x[, which(gps == levels(gps)[2])]
     }
-    ngps<-nlevels(gps)
-    if(ngps==2){
-      y<-x[,which(gps==levels(gps)[2])]
-      x<-x[,which(gps==levels(gps)[1])]
+    
+    ngps <- nlevels(gps)
+    
+    if(ngps == 2){
+      y <- x[, which(gps == levels(gps)[2])]
+      x <- x[, which(gps == levels(gps)[1])]
     }
   }
-  if(!is.null(seed) && seed=="random") seed = sample(1:iter, 1)
+  
   if(!is.null(A2)){
-    A.new<-A; A2.new<-A2
-    if(any(is.na(A2))==T){
-      stop("Data matrix 2 contains missing values. Estimate these first (see 'estimate.missing').")  }
-    if (length(dim(A))==2){ x<-A }
-    if (length(dim(A))==3){ x<-two.d.array(A)}
-    if (length(dim(A2))==2){ y<-A2}
-    if (length(dim(A2))==3){ y<-two.d.array(A2)}
-    ngps=2; n<-dim(x)[2]
+    A.new <- A
+    A2.new <- A2
+    
+    if(any(is.na(A2)))
+      stop("\nData matrix 2 contains missing values. Estimate these first (see 'estimate.missing').", 
+           call. = FALSE)  
+    
+    if (length(dim(A)) == 2) x <- A 
+    if (length(dim(A)) == 3) x <- two.d.array(A)
+    if (length(dim(A2)) == 2) y <- A2
+    if (length(dim(A2)) == 3) y <- two.d.array(A2)
+    ngps = 2
+    n <- dim(x)[2]
   }
-  if(ngps==2){
+  
+  if(!is.null(seed) && seed == "random") seed = sample(1:iter, 1)
+  ind <- perm.index(nrow(x), iter, seed = seed)
+  perms <- length(ind)
+  
+  if(print.progress){
+    cat(paste("\nRandom PLS calculations:", perms, "permutations.\n"))
+    pb <- txtProgressBar(min = 0, max = perms+1, initial = 0, style=3)
+  }
+  
+  if(ngps == 2){
     pls.obs <- pls(x, y, verbose=TRUE)
     if(NCOL(x) > NROW(x)){
       pcax <- prcomp(x)
@@ -163,23 +201,63 @@ integration.test<-function(A, A2=NULL,partition.gp=NULL,iter=999, seed=NULL, pri
       d <- which(zapsmall(pcay$sdev) > 0)
       y <- pcay$x[,d]
     }
-    if(print.progress) pls.rand <- apply.pls(center(x), center(y), iter=iter, seed=seed) else
-      pls.rand <- .apply.pls(center(x), center(y), iter=iter, seed=seed)
+    
+    x <- center(x)
+    y <- center(x)
+    pls.rand <- sapply(1:perms, function(j) {
+      step <- j
+      if(print.progress) setTxtProgressBar(pb,step)
+      s <- ind[[j]]
+      quick.pls(x[s,], y)
+    })
+    
+    names(pls.rand) <- c("obs", paste("iter", 1:iter, sep = "."))
+    p.vals <- NULL
+    Zs <- NULL
     p.val <- pval(abs(pls.rand))
     Z <- effect.size(pls.rand, center=TRUE) 
     XScores <- pls.obs$XScores
     YScores <- pls.obs$YScores
   }
-  if(ngps>2){
-    pls.obs <- plsmulti(x, gps)  
-    if(print.progress) pls.rand <- apply.plsmulti(center(x), gps, iter=iter, seed=seed) else
-      pls.rand <- .apply.plsmulti(center(x), gps, iter=iter, seed=seed)
-    p.val <- pval(abs(pls.rand))
-    Z <- effect.size(pls.rand, center=TRUE) 
+  
+  if(ngps > 2){
+    y <- center(x)
+    g <- factor(as.numeric(gps))
+    gps.combo <- combn(ngps, 2)
+    pls.obs <- plsmulti(y, gps)
+    pls.rand <- sapply(1:perms, function(j) {
+      step <- j
+      if(print.progress) setTxtProgressBar(pb,step)
+      s <- ind[[j]]
+      sapply(1:ncol(gps.combo), function(jj) {
+        y1 <- y[s, g == gps.combo[1,jj]]
+        y2 <- y[ , g == gps.combo[2,jj]]
+        quick.pls(y1, y2)
+      })
+    })
+    
+    nms <- levels(gps)
+    rnms <- apply(gps.combo, 2, function(x) paste(nms[x[1]], nms[x[2]], sep = "-"))
+    cnms <- c("obs", paste("iter", 1:iter, sep = "."))
+    dimnames(pls.rand) <- list(rnms, cnms)
+    
+    p.vals <- apply(abs(pls.rand), 1, pval)
+    Zs <- apply(pls.rand, 1, effect.size)
+    p.val <- pval(colMeans(abs(pls.rand)))
+    Z <- effect.size(colMeans(pls.rand), center=TRUE)
   }  
+  
+  step <- perms + 1
+  if(print.progress) {
+    setTxtProgressBar(pb,step)
+    cat("\n")
+    close(pb)
+  }
+  
   ####OUTPUT
   if(ngps > 2) r.pls.mat <- pls.obs$r.pls.mat else r.pls.mat <- NULL
-  if(ngps==2){
+  
+  if(ngps == 2){
     out <- list(r.pls = pls.obs$r.pls, r.pls.mat = r.pls.mat, P.value = p.val, Z = Z,
                 left.pls.vectors = pls.obs$left.vectors,
                 right.pls.vectors = pls.obs$right.vectors,
@@ -193,7 +271,9 @@ integration.test<-function(A, A2=NULL,partition.gp=NULL,iter=999, seed=NULL, pri
                 method = "PLS")
   }
   if(ngps>2){
-    out <- list(r.pls = pls.obs$r.pls, r.pls.mat = r.pls.mat, P.value = p.val, Z = Z,
+    out <- list(r.pls = pls.obs$r.pls, r.pls.mat = r.pls.mat, 
+                P.value = p.val, Z = Z,
+                pairwise.P.values = p.vals, pairwise.Z = Zs,
                 random.r = pls.rand, 
                 permutations = iter+1, call=match.call(),
                 method = "PLS")

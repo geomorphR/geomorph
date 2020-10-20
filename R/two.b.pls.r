@@ -101,20 +101,23 @@
 
 two.b.pls <- function (A1, A2,  iter = 999, seed = NULL, print.progress=TRUE){
     if (any(is.na(A1)) == T) 
-      stop("Data matrix 1 contains missing values. Estimate these first (see 'estimate.missing').")
+      stop("\nData matrix 1 contains missing values. Estimate these first (see 'estimate.missing').",
+           call. = FALSE)
     if (any(is.na(A2)) == T) 
-      stop("Data matrix 2 contains missing values. Estimate these first (see 'estimate.missing').")
+      stop("\nData matrix 2 contains missing values. Estimate these first (see 'estimate.missing').",
+           call. = FALSE)
   if (is.null(dim(A1))) A1 <- as.matrix(A1); if (is.null(dim(A2))) A2 <- as.matrix(A2)
   if (length(dim(A1)) == 3) x <- two.d.array(A1) else x <- as.matrix(A1)
   if (length(dim(A2)) == 3) y <- two.d.array(A2) else y <- as.matrix(A2)
-  if (nrow(x) != nrow(y)) stop("Data matrices have different numbers of specimens.")
+  if (nrow(x) != nrow(y)) stop("\nData matrices have different numbers of specimens.",
+                               call. = FALSE)
   n <- nrow(x)
   
   if (is.null(rownames(x))) rownames(x) <- 1:n
   if (is.null(rownames(y))) rownames(y) <- 1:n
   
   if(length(na.omit(match(rownames(x), rownames(y)))) != n) 
-    stop("Mismatched specimen names for A1 and A2.\n", call. = FALSE)
+    stop("\nMismatched specimen names for A1 and A2.\n", call. = FALSE)
   
   y <- y[rownames(x), ]
 
@@ -130,8 +133,34 @@ two.b.pls <- function (A1, A2,  iter = 999, seed = NULL, print.progress=TRUE){
     d <- which(zapsmall(pcay$sdev) > 0)
     y <- pcay$x[,d]
   }
-  if(print.progress) pls.rand <- apply.pls(center(x), center(y), RV=FALSE, iter=iter, seed=seed) else
-    pls.rand <- .apply.pls(center(x), center(y), RV=FALSE, iter=iter, seed=seed) 
+  
+  if(!is.null(seed) && seed == "random") seed = sample(1:iter, 1)
+  ind <- perm.index(nrow(x), iter, seed = seed)
+  perms <- length(ind)
+  
+  if(print.progress){
+    cat(paste("\nRandom PLS calculations:", perms, "permutations.\n"))
+    pb <- txtProgressBar(min = 0, max = perms+1, initial = 0, style=3)
+  }
+  
+  x <- center(x)
+  y <- center(x)
+  pls.rand <- sapply(1:perms, function(j) {
+    step <- j
+    if(print.progress) setTxtProgressBar(pb,step)
+    s <- ind[[j]]
+    quick.pls(x[s,], y)
+  })
+  
+  x <- center(x)
+  y <- center(x)
+  pls.rand <- sapply(1:perms, function(j) {
+    step <- j
+    if(print.progress) setTxtProgressBar(pb,step)
+    s <- ind[[j]]
+    quick.pls(x[s,], y)
+  })
+
   p.val <- pval(abs(pls.rand))
   Z <- effect.size(pls.rand, center=TRUE) 
   XScores <- pls.obs$XScores

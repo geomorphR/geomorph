@@ -1126,8 +1126,8 @@ pls <- function(x,y, RV=FALSE, verbose = FALSE){
 }
 
 # quick.pls
-# a streamlines pls code
-# used in: apply.pls
+# streamlines pls code
+# used in all pls analyses
 quick.pls <- function(x,y) {# no RV; no verbose output
   # assume parameters already found and assume x and y are centered
   S12 <- crossprod(x,y)/(dim(x)[1] - 1)
@@ -1139,60 +1139,9 @@ quick.pls <- function(x,y) {# no RV; no verbose output
   res
 }
 
-# apply.pls
-# run permutations of pls analysis
-# used in: two.b.pls, integration.test
-apply.pls <- function(x,y, RV=FALSE, iter, seed = NULL){
-  x <- as.matrix(x); y <- as.matrix(y)
-  px <- ncol(x); py <- ncol(y)
-  pmin <- min(px,py)
-  ind <- perm.index(nrow(x), iter, seed=seed)
-  RV.rand <- r.rand <- NULL
-  pb <- txtProgressBar(min = 0, max = ceiling(iter/100), initial = 0, style=3)
-  jj <- iter+1
-  step <- 1
-  if(jj > 100) j <- 1:100 else j <- 1:jj
-  while(jj > 0){
-    ind.j <- ind[j]
-    y.rand <-lapply(1:length(j), function(i) as.matrix(y[ind.j[[i]],]))
-    if(RV == TRUE) RV.rand <- c(RV.rand,sapply(1:length(j), function(i) pls(x,y.rand[[i]], RV=TRUE, verbose = TRUE)$RV)) else
-      r.rand <- c(r.rand, sapply(1:length(j), function(i) quick.pls(x,y.rand[[i]])))
-    jj <- jj-length(j)
-    if(jj > 100) kk <- 1:100 else kk <- 1:jj
-    j <- j[length(j)] +kk
-    setTxtProgressBar(pb,step)
-    step <- step+1
-  }
-  close(pb)
-  if(RV == TRUE) RV.rand else r.rand
-}
-
-# .apply.pls
-# same as apply.pls, but without progress bar option
-# used in: two.b.pls, integration.test
-.apply.pls <- function(x,y, RV=FALSE, iter, seed = NULL){
-  x <- as.matrix(x); y <- as.matrix(y)
-  px <- ncol(x); py <- ncol(y)
-  pmin <- min(px,py)
-  ind <- perm.index(nrow(x), iter, seed=seed)
-  RV.rand <- r.rand <- NULL
-  jj <- iter+1
-  if(jj > 100) j <- 1:100 else j <- 1:jj
-  while(jj > 0){
-    ind.j <- ind[j]
-    y.rand <-lapply(1:length(j), function(i) as.matrix(y[ind.j[[i]],]))
-    if(RV == TRUE) RV.rand <- c(RV.rand,sapply(1:length(j), function(i) pls(x,y.rand[[i]], RV=TRUE, verbose = TRUE)$RV)) else
-      r.rand <- c(r.rand, sapply(1:length(j), function(i) quick.pls(x,y.rand[[i]])))
-    jj <- jj-length(j)
-    if(jj > 100) kk <- 1:100 else kk <- 1:jj
-    j <- j[length(j)] +kk
-  }
-  if(RV == TRUE) RV.rand else r.rand
-}
-
 # pls.multi
 # obtain average of pairwise PLS analyses for 3+modules
-# used in: apply.plsmulti, integration.test
+# used in all pls analyses
 plsmulti<-function(x,gps){
   g<-factor(as.numeric(gps))
   ngps<-nlevels(g)
@@ -1211,73 +1160,6 @@ plsmulti<-function(x,gps){
   for(i in 1:length(pls.mat)) pls.mat[[i]] <- pls.gp[i]
   pls.obs <- mean(pls.gp)
   list(r.pls = pls.obs, r.pls.mat=pls.mat)
-}
-
-# quick.plsmulti
-# a streamlined plsmulti
-# used in apply.plsmulti
-quick.plsmulti <- function(x,g,gps.combo){
-  # assumed x is already centered
-  pls.gp <- sapply(1:ncol(gps.combo), function(j){ # no loops
-    xx <- x[,g==gps.combo[1,j]]
-    yy <- x[,g==gps.combo[2,j]]
-    S12<-crossprod(xx,yy)/(dim(xx)[1] - 1)
-    pls<-La.svd(S12, 1, 1)
-    U<-pls$u; V<-as.vector(pls$vt)
-    cor(xx%*%U, yy%*%V)
-  })
-  mean(pls.gp)
-}
-
-# apply.plsmulti
-# permutation for multipls
-# used in: integration.test
-apply.plsmulti <- function(x,gps, iter, seed = NULL){
-  g<-factor(as.numeric(gps))
-  ngps<-nlevels(g)
-  gps.combo <- combn(ngps, 2)
-  ind <- perm.index(nrow(x), iter, seed=seed)
-  pb <- txtProgressBar(min = 0, max = ceiling(iter/100), initial = 0, style=3)
-  jj <- iter+1
-  step <- 1
-  if(jj > 100) j <- 1:100 else j <- 1:jj
-  r.rand <- NULL
-  while(jj > 0){
-    ind.j <- ind[j]
-    x.r<-lapply(1:length(j), function(i) x[ind.j[[i]], g==1])
-    r.rand<-c(r.rand, sapply(1:length(j), function(i) quick.plsmulti(cbind(x.r[[i]],
-                                                  x[,g!=1]), g, gps.combo)))
-    jj <- jj-length(j)
-    if(jj > 100) kk <- 1:100 else kk <- 1:jj
-    j <- j[length(j)] +kk
-    setTxtProgressBar(pb,step)
-    step <- step+1
-  }
-  close(pb)
-  r.rand
-}
-
-# .apply.plsmulti
-# same as apply.plsmulti, but without progress bar option
-# used in: integration.test
-.apply.plsmulti <- function(x,gps, iter, seed = NULL){
-  g<-factor(as.numeric(gps))
-  ngps<-nlevels(g)
-  gps.combo <- combn(ngps, 2)
-  ind <- perm.index(nrow(x), iter, seed=seed)
-  jj <- iter+1
-  if(jj > 100) j <- 1:100 else j <- 1:jj
-  r.rand <- NULL
-  while(jj > 0){
-    ind.j <- ind[j]
-    x.r<-lapply(1:length(j), function(i) x[ind.j[[i]], g==1])
-    r.rand<-c(r.rand, sapply(1:length(j), function(i) quick.plsmulti(cbind(x.r[[i]],
-                                 x[,g!=1]), g, gps.combo)))
-    jj <- jj-length(j)
-    if(jj > 100) kk <- 1:100 else kk <- 1:jj
-    j <- j[length(j)] +kk
-  }
-  r.rand
 }
 
 # CR
