@@ -175,35 +175,30 @@ summary.morphol.disparity <- function(object, ...) {
 print.pls <- function (x, ...) {
   cat("\nCall:\n")
   cat(deparse(x$call), fill=TRUE, "\n\n")
-  if(x$method=="RV") {
-    cat(paste("\nRV:", round(x$RV, nchar(x$permutations)-1)))
-    cat(paste("\n\nP-value:", round(x$P.value, nchar(x$permutations)-1)))
-    cat(paste("\n\nBased on", x$permutations, "random permutations\n"))
+  
+  cat("\nr-PLS:", round(x$r.pls, nchar(x$permutations)-1))
+  cat("\n\nEffect Size (Z):", round(x$Z, nchar(x$permutations)))
+  cat("\n\nP-value:", x$P.value)
+  cat("\n\nBased on", x$permutations, "random permutations\n")
+  if(!is.null(x$pairwise.Z)) {
+    Z <- x$pairwise.Z
+    P <- x$pairwise.P.values
+    nms <- unique(unlist(strsplit(names(Z), "-")))
+    m <- matrix(0, length(nms), length(nms))
+    dimnames(m) <- list(nms, nms)
+    dz <- dp <- as.dist(m)
+    dz[1:length(Z)] <- Z
+    dp[1:length(P)] <- P
+    
+    cat("\nPairwise statistics\n")
+    cat("\nr-PLS:\n")
+    print(x$r.pls.mat)
+    cat("\nEffect Sizes (Z):\n")
+    print(dz)
+    cat("\nP-values::\n")
+    print(dp)
   }
-  if(x$method=="PLS") {
-    cat(paste("\nr-PLS:", round(x$r.pls, nchar(x$permutations)-1)))
-    cat(paste("\n\nEffect Size (Z):", round(x$Z, nchar(x$permutations))))
-    cat(paste("\n\nP-value:", round(x$P.value, nchar(x$permutations)-1)))
-    cat(paste("\n\nBased on", x$permutations, "random permutations\n"))
-    if(!is.null(x$pairwise.Z)) {
-      Z <- x$pairwise.Z
-      P <- x$pairwise.P.values
-      nms <- unique(unlist(strsplit(names(Z), "-")))
-      m <- matrix(0, length(nms), length(nms))
-      dimnames(m) <- list(nms, nms)
-      dz <- dp <- as.dist(m)
-      dz[1:length(Z)] <- Z
-      dp[1:length(P)] <- P
-      
-      cat("\nPairwise statistics\n")
-      cat("\nr-PLS:\n")
-      print(x$r.pls.mat)
-      cat("\nEffect Sizes (Z):\n")
-      print(dz)
-      cat("\nP-values::\n")
-      print(dp)
-    }
-  }
+  
   invisible(x)
 }
 

@@ -170,6 +170,9 @@ phylo.integration <-function(A, A2 = NULL, phy,
            Check for discrepancies.",
            call. = FALSE)
     
+    A1.new <- A
+    A2.new <- A2
+    
   }
   
   #PhyloPrep  
@@ -194,7 +197,7 @@ phylo.integration <-function(A, A2 = NULL, phy,
         stop("\nNot all landmarks are assigned to a partition.", call. = FALSE)
       
       gps <- as.factor(rep(partition.gp, k, each = k, length = p * k))  
-      A.new <- A[which(partition.gp == levels(partition.gp)[1]),,]
+      A1.new <- A[which(partition.gp == levels(partition.gp)[1]),,]
       A2.new <- A[which(partition.gp != levels(partition.gp)[1]),,]
     }
   
@@ -204,7 +207,7 @@ phylo.integration <-function(A, A2 = NULL, phy,
         stop("\nNot all variables are assigned to a partition.", call. = FALSE)
       
       gps <- as.factor(partition.gp) 
-      A.new <- A[, which(partition.gp == levels(partition.gp)[1])]
+      A1.new <- A[, which(partition.gp == levels(partition.gp)[1])]
       A2.new <- A[, which(partition.gp != levels(partition.gp)[1])]
 
     }
@@ -212,15 +215,15 @@ phylo.integration <-function(A, A2 = NULL, phy,
     ngps <- nlevels(gps)
     
     if(ngps == 2){
-      y <- x[,which(gps == levels(gps)[2])]
-      x <- x[,which(gps == levels(gps)[1])]
+      y <- x[, which(gps == levels(gps)[2])]
+      x <- x[, which(gps == levels(gps)[1])]
     }
   }
   
   
   if(!is.null(A2)){
     ngps <- 2
-    y <- as.matrix(y[namesX,])  
+    y <- as.matrix(y[match(namesX, namesY),])  
   }
   
   n <- NROW(x)
@@ -307,14 +310,14 @@ phylo.integration <-function(A, A2 = NULL, phy,
   ####OUTPUT
   
   if(ngps == 2){
-    out <- list(r.pls = pls.rand[1], r.pls.mat = NULL, P.value = p.val, Z = Z,
+    out <- list(r.pls = pls.obs$r.pls, r.pls.mat = NULL, P.value = p.val, Z = Z,
                 left.pls.vectors = pls.obs$left.vectors,
                 right.pls.vectors = pls.obs$right.vectors,
                 random.r = pls.rand, 
                 XScores = pls.obs$XScores,
                 YScores = pls.obs$YScores,
                 svd = pls.obs$pls.svd,
-                A1 <- A.new, A2 <-A2.new,
+                A1 = A1.new, A2 = A2.new,
                 A1.matrix = x, A2.matrix =y,
                 permutations = iter+1, call=match.call(),
                 method = "PLS")

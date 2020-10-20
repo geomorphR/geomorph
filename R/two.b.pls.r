@@ -126,14 +126,14 @@ two.b.pls <- function (A1, A2,  iter = 999, seed = NULL, print.progress=TRUE){
     cat("Data in either A1 or A2 do not have names.  It is assumed data in both A1 and A2 are ordered the same.\n")
   
   if (is.null(namesX)) namesX <- 1:NROW(x)
-  if (is.null(namesY)) namesY <- 1:NROW(y)
+  if (is.null(namesY)) namesY <- namesX
   
   if (length(namesX) != length(namesY)) stop("\nData matrices have different numbers of specimens.",
                                call. = FALSE)
   if(length(unique(c(namesX, namesY))) != n) 
     stop("\nMismatched specimen names for A1 and A2.\n", call. = FALSE)
   
-  y <- y[namesX, ]
+  y <- y[match(namesX, namesY), ]
 
   pls.obs <- pls(x, y, RV=FALSE, verbose=TRUE)
   
