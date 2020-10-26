@@ -117,6 +117,8 @@ have now been deprecated.
  PCA <- gm.prcomp(Y.gpa$coords)
  summary(PCA)
  plot(PCA, main = "PCA")
+ plot(PCA, main = "PCA", flip = 1) # flip the first axis
+ plot(PCA, main = "PCA", axis1 = 3, axis2 = 4) # change PCs viewed
  
  ### Phylomorphospace - PCA with phylogeny (result is same as above, 
  ### but with estimated ancestral states projected into plot)
