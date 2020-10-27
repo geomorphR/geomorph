@@ -1328,7 +1328,7 @@ phylo.mat<-function(x,phy){
 
 # pls.phylo
 # phylogenetic pls
-# used in: phylo.integration, apply.pls.phylo
+# used in: phylo.integration
 pls.phylo <- function(x,y, Ptrans, verbose = FALSE){
   x <- as.matrix(x); y <- as.matrix(y)
   px <- ncol(x); py <- ncol(y); pmin <- min(px,py)
@@ -1347,61 +1347,6 @@ pls.phylo <- function(x,y, Ptrans, verbose = FALSE){
                 right.vectors=V, XScores=XScores,YScores=YScores)
   } else out <- r.pls
   out
-}
-
-# apply.pls.phylo
-# permutation for phylo.pls
-# used in: phylo.integration
-# CURRENTLY NOT IN USE - USING apply.pls BECAUSE OF TYPE I ERROR ISSUES
-apply.pls.phylo <- function(x,y,Ptrans, iter, seed = NULL){
-  n.x <- dim(x)[2]
-  ind <- perm.index(nrow(x), iter, seed=seed)
-  x <- Ptrans%*%x
-  pb <- txtProgressBar(min = 0, max = ceiling(iter/100), initial = 0, style=3)
-  jj <- iter+1
-  step <- 1
-  if(jj > 100) j <- 1:100 else j <- 1:jj
-  r.rand <- NULL
-  while(jj > 0){
-    ind.j <- ind[j]
-    y.rand <-lapply(1:length(j), function(i) y[ind.j[[i]],])
-    r.rand <- c(r.rand, sapply(1:length(j), function(i) {
-      yy <- Ptrans%*%y.rand[[i]]
-      quick.pls(x,yy)
-    }))
-    jj <- jj-length(j)
-    if(jj > 100) kk <- 1:100 else kk <- 1:jj
-    j <- j[length(j)] +kk
-    setTxtProgressBar(pb,step)
-    step <- step+1
-  }
-  close(pb)
-  r.rand
-}
-
-# .apply.pls.phylo
-# same as apply.phylo.pls, but without progress bar option
-# used in: phylo.integration
-# CURRENTLY NOT IN USE - USING .apply.pls BECAUSE OF TYPE I ERROR ISSUES
-.apply.pls.phylo <- function(x,y,Ptrans,iter, seed = NULL){
-  n.x <- dim(x)[2]
-  ind <- perm.index(nrow(x), iter, seed=seed)
-  x <- Ptrans%*%x
-  jj <- iter+1
-  if(jj > 100) j <- 1:100 else j <- 1:jj
-  r.rand <- NULL
-  while(jj > 0){
-    ind.j <- ind[j]
-    y.rand <-lapply(1:length(j), function(i) y[ind.j[[i]],])
-    r.rand <- c(r.rand, sapply(1:length(j), function(i) {
-      yy <- Ptrans%*%y.rand[[i]]
-      quick.pls(x,yy)
-    }))
-    jj <- jj-length(j)
-    if(jj > 100) kk <- 1:100 else kk <- 1:jj
-    j <- j[length(j)] +kk
-  }
-  r.rand
 }
 
 # plsmulti.phylo
@@ -1426,63 +1371,6 @@ plsmulti.phylo<-function(x,gps, Ptrans){
   for(i in 1:length(pls.mat)) pls.mat[[i]] <- pls.gp[i]
   pls.obs <- mean(pls.gp)
   list(r.pls = pls.obs, r.pls.mat=pls.mat)
-}
-
-# apply.plsmulti.phylo
-# permutations for plsmulti.phylo
-# used in: phylo.integration
-# CURRENTLY NOT IN USE - USING apply.plsmulti BECAUSE OF TYPE I ERROR ISSUES
-apply.plsmulti.phylo <- function(x, gps,Ptrans, iter=iter, seed=seed){
-  g<-factor(as.numeric(gps))
-  ngps<-nlevels(g)
-  gps.combo <- combn(ngps, 2)
-  xx <- Ptrans%*%x[,g==1]; yy <- Ptrans%*%x[,g!=1]
-  ind <- perm.index(nrow(x), iter, seed=seed)
-  pb <- txtProgressBar(min = 0, max = ceiling(iter/100), initial = 0, style=3)
-  jj <- iter+1
-  step <- 1
-  if(jj > 100) j <- 1:100 else j <- 1:jj
-  r.rand <- NULL
-  while(jj > 0){
-    ind.j <- ind[j]
-    x.r <-lapply(1:length(j), function(i) xx[ind.j[[i]],])
-    r.rand <- c(r.rand, sapply(1:length(j), function(i) {
-      quick.pls(x.r[[i]],yy)
-      }))
-    jj <- jj-length(j)
-    if(jj > 100) kk <- 1:100 else kk <- 1:jj
-    j <- j[length(j)] +kk
-    setTxtProgressBar(pb,step)
-    step <- step+1
-  }
-  close(pb)
-  r.rand
-}
-
-# .apply.plsmulti.phylo
-# same as apply.plsmulti.phylo, but without progress bar option
-# used in: phylo.integration
-# CURRENTLY NOT IN USE - USING .apply.plsmulti BECAUSE OF TYPE I ERROR ISSUES
-.apply.plsmulti.phylo <- function(x, gps,Ptrans, iter=iter, seed=seed){
-  g<-factor(as.numeric(gps))
-  ngps<-nlevels(g)
-  gps.combo <- combn(ngps, 2)
-  xx <- Ptrans%*%x[,g==1]; yy <- Ptrans%*%x[,g!=1]
-  ind <- perm.index(nrow(x), iter, seed=seed)
-  jj <- iter+1
-  if(jj > 100) j <- 1:100 else j <- 1:jj
-  r.rand <- NULL
-  while(jj > 0){
-    ind.j <- ind[j]
-    x.r <-lapply(1:length(j), function(i) xx[ind.j[[i]],])
-    r.rand <- c(r.rand, sapply(1:length(j), function(i) {
-      quick.pls(x.r[[i]],yy)
-    }))
-    jj <- jj-length(j)
-    if(jj > 100) kk <- 1:100 else kk <- 1:jj
-    j <- j[length(j)] +kk
-  }
-  r.rand
 }
 
 # sigma.d

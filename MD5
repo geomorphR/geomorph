@@ -51,7 +51,7 @@ f43101bd2713be9a132723eec919e148 *man/morphol.disparity.Rd
 ffadebd6be893bbc403d22f884329a9a *man/mshape.Rd
 6448e71cd5ed47e98581aecdef01ccec *man/phylo.integration.Rd
 5eb5cd0bcbac8de3b07016c143b5ef7a *man/phylo.modularity.Rd
-84b09f06ece9d7d6d11281203a8cb0e3 *man/physignal.Rd
+9e6a7b6c0163e6f7d0b58f68a35aaa32 *man/physignal.Rd
 ab874d7d6eb39ac1ec84df92e6a2f242 *man/picknplot.shape.Rd
 af93ecd1b6eb7fb84c529ee5d5ca59b4 *man/plethodon.Rd
 67af5edfcfef3d23440b41c805d143c6 *man/plethShapeFood.Rd
@@ -124,7 +124,7 @@ d2755155772526527e4224b17d0dd05d *man/warpRefMesh.Rd
 7bea8d6b17918fd4889e2056ebe0e3d0 *man/warpRefOutline.Rd
 d9119f721918f22c267db843023a86fe *man/writeland.tps.Rd
 4f9ee50059d7fc79859a3d07a4edce09 *NAMESPACE
-995060189324ac9d492ce4f60465dbe4 *NEWS.md
+227e77bbfb9a1189c54334c5abaef589 *NEWS.md
 92239d51a080ccd3fc3a9f7ef67d1b8c *R/arrayspecs.r
 e92a5b97b20697bb409aeb4984334d45 *R/bilat.symmetry.r
 d7d67e9218f84609046423cb222f5c44 *R/build.template.r
@@ -147,8 +147,8 @@ f14e7f81ecc74bda3fded01d703c7d23 *R/digit.fixed.r
 aac6a4f8a759473e8c37048e5c8e3d91 *R/findMeanSpec.r
 f2232ef1c2d04c76ce3a86dc1c07d6d4 *R/fixed.angle.r
 953c275fdc42e65db7394a594d35806a *R/geomorph.data.frame.r
-2204eabddb42d877e3efd104dee4c8c2 *R/geomorph.support.code.r
-3e0c0bf1e56c5e9b5b930197f03bd0b6 *R/geomorph.utils.r
+fc8922ec929a9fbc957c51153c46e2fd *R/geomorph.support.code.r
+b14caf37d50137f62b10d8877d558e7b *R/geomorph.utils.r
 b0de2a67cff633e27e7a00860187240f *R/globalIntegration.r
 4e51b4a7ceeb8072970149e656b01d85 *R/gm.prcomp.R
 bf0750e2582fc2c3b5454ad48b7f3cbb *R/gpagen.r
@@ -159,7 +159,7 @@ bf0750e2582fc2c3b5454ad48b7f3cbb *R/gpagen.r
 dcf12e817827f0521b16463f9240c481 *R/morphol.disparity.r
 a3f01575c1174e61fc24c469c2ccb8ee *R/phylo.integration.r
 4a494c0650465e4df7cec4ba8b27c568 *R/phylo.modularity.r
-d150dd1e73e96f89c45853e6d4101680 *R/physignal.r
+93eed3b580096b38d1035d3af2baaa03 *R/physignal.r
 b72262ffb22b02ae6b2592d4d0f4353a *R/picknplot.shape.r
 27d460f920f7fbbcc189b7355bc45dd3 *R/plotAllometry.r
 c1cead3306cb3d7b1bd3ed5d99fc89af *R/plotAllSpecimens.r

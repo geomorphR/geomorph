@@ -3,8 +3,10 @@
 ### NEW FEATURES
 * Added Box-Cox transformation to `effect.size`
 * Added an argument to flip axes in `plot.gm.prcomp`
+* Added pairwise r, Z, and P-values to `integration.test` and `phylo.integration`
 
 ### BUG FIXES
+* Fixed issue with permutations in multi-module configurations for `integration.test` and `phylo.integration`
 * Fixed error in `plot.gm.prcomp` 3D tree plotting with time.plot = TRUE
 * Fixed error in `compare.evol.rates` for univariate data and permutations
 * Fixed plotting parameter arguments for phylo.par in `plot.gm.prcomp`.

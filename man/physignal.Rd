@@ -23,11 +23,14 @@ This is helpful for long-running analyses.}
 }
 \value{
 Function returns a list with the following components: 
-  \item{phy.signal}{The estimate of phylogenetic signal}
-  \item{pvalue}{The significance level of the observed signal}
+  \item{phy.signal}{The estimate of phylogenetic signal.}
+  \item{pvalue}{The significance level of the observed signal.}
   \item{Effect.Size}{The multivariate effect size associated with sigma.d.ratio.}
-  \item{random.K}{Each random K-statistic from random permutations}
-  \item{permutations}{The number of random permutations used in the resampling procedure}
+  \item{random.K}{Each random K-statistic from random permutations.}
+  \item{permutations}{The number of random permutations used in the resampling procedure.}
+  \item{PACA}{A phylogenetically aligned component analysis, based on OLS residuals.}
+  \item{K.by.p}{The phylogenetic signal in 1, 1:2, 1:3, ..., 1:p dimensions, for the 
+  p components from PACA.}
   \item{call}{The matched call}
 }
 \description{
@@ -69,7 +72,8 @@ Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment
 PS.shape <- physignal(A=Y.gpa$coords,phy=plethspecies$phy,iter=999)
 summary(PS.shape)
 plot(PS.shape)
-plot(PS.shape$PaCA, phylo = TRUE)
+plot(PS.shape$PACA, phylo = TRUE)
+PS.shape$K.by.p # Phylogenetic signal profile
 
 #Test for phylogenetic signal in size
 PS.size <- physignal(A=Y.gpa$Csize,phy=plethspecies$phy,iter=999)
@@ -86,6 +90,9 @@ other high-dimensional multivariate data. Systematic Biology.  63:685-697.
 Adams, D.C. and M.L. Collyer. 2019. Comparing the strength of modular signal, and evaluating 
 alternative modular hypotheses, using covariance ratio effect sizes with morphometric data. 
 Evolution. 73:2352-2367.
+}
+\seealso{
+\code{\link{gm.prcomp}}
 }
 \author{
 Dean Adams and Michael Collyer

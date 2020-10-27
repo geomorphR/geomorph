@@ -520,8 +520,9 @@ plot.physignal <- function(x, ...){
   K.val <- x$random.K
   K.obs <- x$phy.signal
   p <- x$pvalue
-  ndec <- nchar(p)-2
+  ndec <- nchar(1 / x$permutations) - 2
   K.obs <- round(K.obs, ndec)
+  p <- round(p, ndec)
   main.txt <- paste("Observed K =",K.obs,";", "P-value =", p)
   hist(K.val,30,freq=TRUE,col="gray",xlab="Phylogenetic Signal, K",
        main=main.txt, cex.main=0.8)
