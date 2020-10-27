@@ -40,13 +40,17 @@
 #' This is helpful for long-running analyses.
 #' @keywords analysis
 #' @author Dean Adams and Michael Collyer
+#' @seealso \code{\link{gm.prcomp}}
 #' @export
 #' @return Function returns a list with the following components: 
-#'   \item{phy.signal}{The estimate of phylogenetic signal}
-#'   \item{pvalue}{The significance level of the observed signal}
+#'   \item{phy.signal}{The estimate of phylogenetic signal.}
+#'   \item{pvalue}{The significance level of the observed signal.}
 #'   \item{Effect.Size}{The multivariate effect size associated with sigma.d.ratio.}
-#'   \item{random.K}{Each random K-statistic from random permutations}
-#'   \item{permutations}{The number of random permutations used in the resampling procedure}
+#'   \item{random.K}{Each random K-statistic from random permutations.}
+#'   \item{permutations}{The number of random permutations used in the resampling procedure.}
+#'   \item{PACA}{A phylogenetically aligned component analysis, based on OLS residuals.}
+#'   \item{K.by.p}{The phylogenetic signal in 1, 1:2, 1:3, ..., 1:p dimensions, for the 
+#'   p components from PACA.}
 #'   \item{call}{The matched call}
 #' @references Blomberg SP, Garland T, Ives AR. 2003. Testing for phylogenetic signal in comparative 
 #' data: behavioral traits are more labile. Evolution, 57:717-745.
@@ -63,7 +67,8 @@
 #' PS.shape <- physignal(A=Y.gpa$coords,phy=plethspecies$phy,iter=999)
 #' summary(PS.shape)
 #' plot(PS.shape)
-#' plot(PS.shape$PaCA, phylo = TRUE)
+#' plot(PS.shape$PACA, phylo = TRUE)
+#' PS.shape$K.by.p # Phylogenetic signal profile
 #' 
 #' #Test for phylogenetic signal in size
 #' PS.size <- physignal(A=Y.gpa$Csize,phy=plethspecies$phy,iter=999)
@@ -143,7 +148,7 @@ physignal <- function(A, phy, iter=999, seed=NULL, print.progress = FALSE){
   if(print.progress) close(pb)
 
   p.val <- pval(K.rand)
-  Z <- effect.size(log(K.rand), center=TRUE) 
+  Z <- effect.size(K.rand, center=TRUE) 
   
   # Kmult by paca
   x <- as.matrix(x)
@@ -162,7 +167,7 @@ physignal <- function(A, phy, iter=999, seed=NULL, print.progress = FALSE){
   
   out <- list(phy.signal = K.rand[[1]], pvalue = p.val, random.K = K.rand, Z = Z,
               permutations = iter+1, 
-              K.by.p = K.by.p, PaCA = PaCA, call=match.call())
+              PACA = PaCA, K.by.p = K.by.p, call=match.call())
   
   class(out) <- "physignal"
   out

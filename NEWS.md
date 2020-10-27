@@ -1,18 +1,22 @@
 # CHANGES IN GEOMORPH VERSION 3.3.1.9000 
 
 ### NEW FEATURES
-* Added Box-Cox transformation to `effect.size`.
-* Added option to flip axes in `plot.ordinate`.
+* Added Box-Cox transformation to `effect.size`
+* Added an argument to flip axes in `plot.gm.prcomp`
+* Added pairwise r, Z, and P-values to `integration.test` and `phylo.integration`
 
 ### BUG FIXES
+* Fixed issue with permutations in multi-module configurations for `integration.test` and `phylo.integration`
 * Fixed error in `plot.gm.prcomp` 3D tree plotting with time.plot = TRUE
-* Fixed plotting parameter arguments for phylo.par in `summary.gm.prcomp`.
+* Fixed error in `compare.evol.rates` for univariate data and permutations
+* Fixed plotting parameter arguments for phylo.par in `plot.gm.prcomp`.
 * Made it possible to assign `summary.gm.prcomp` as an object
-* Fixed small plotting issue in `warpRefMesh`
-* fixed single variable issue in `compare.evol.rates` related to R 4.0.2 changes
+* Fixed plotting issue in `warpRefMesh`
+* Fixed single variable issue in `compare.evol.rates` related to R 4.0.2 changes
 * Added factor labels to output object CR.mat in `modularity.test` & `phylo.modularity`
 * Fixed bug in computations of `phylo.modularity`
 * Fixed order consistency for pairwise calculations in `phylo.modularity` 
+* Allows single landmarks as slider LM in gpagen
 
 ### OTHER CHANGES
 * Updated `readmulti.nts` function turning it into a wrapper of `readland.nts` thus allowing also multiple dta files to be read in and compiled

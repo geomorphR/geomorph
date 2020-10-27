@@ -175,17 +175,30 @@ summary.morphol.disparity <- function(object, ...) {
 print.pls <- function (x, ...) {
   cat("\nCall:\n")
   cat(deparse(x$call), fill=TRUE, "\n\n")
-  if(x$method=="RV") {
-    cat(paste("\nRV:", round(x$RV, nchar(x$permutations)-1)))
-    cat(paste("\n\nP-value:", round(x$P.value, nchar(x$permutations)-1)))
-    cat(paste("\n\nBased on", x$permutations, "random permutations\n"))
+  
+  cat("\nr-PLS:", round(x$r.pls, nchar(x$permutations)-1))
+  cat("\n\nEffect Size (Z):", round(x$Z, nchar(x$permutations)))
+  cat("\n\nP-value:", x$P.value)
+  cat("\n\nBased on", x$permutations, "random permutations\n")
+  if(!is.null(x$pairwise.Z)) {
+    Z <- x$pairwise.Z
+    P <- x$pairwise.P.values
+    nms <- unique(unlist(strsplit(names(Z), "-")))
+    m <- matrix(0, length(nms), length(nms))
+    dimnames(m) <- list(nms, nms)
+    dz <- dp <- as.dist(m)
+    dz[1:length(Z)] <- Z
+    dp[1:length(P)] <- P
+    
+    cat("\nPairwise statistics\n")
+    cat("\nr-PLS:\n")
+    print(x$r.pls.mat)
+    cat("\nEffect Sizes (Z):\n")
+    print(dz)
+    cat("\nP-values::\n")
+    print(dp)
   }
-  if(x$method=="PLS") {
-    cat(paste("\nr-PLS:", round(x$r.pls, nchar(x$permutations)-1)))
-    cat(paste("\n\nP-value:", round(x$P.value, nchar(x$permutations)-1)))
-    cat(paste("\n\nEffect Size:", round(x$Z, nchar(x$permutations))))
-    cat(paste("\n\nBased on", x$permutations, "random permutations\n"))
-  }
+  
   invisible(x)
 }
 
@@ -507,8 +520,9 @@ plot.physignal <- function(x, ...){
   K.val <- x$random.K
   K.obs <- x$phy.signal
   p <- x$pvalue
-  ndec <- nchar(p)-2
+  ndec <- nchar(1 / x$permutations) - 2
   K.obs <- round(K.obs, ndec)
+  p <- round(p, ndec)
   main.txt <- paste("Observed K =",K.obs,";", "P-value =", p)
   hist(K.val,30,freq=TRUE,col="gray",xlab="Phylogenetic Signal, K",
        main=main.txt, cex.main=0.8)
@@ -805,14 +819,14 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, flip = NULL, phylo = FALSE, 
                                             node.txt.cex = 1, node.txt.col = "grey",
                                             node.txt.adj = c(-0.1, -0.1)), 
                            ...) {
-  
+
   class(x) <- "ordinate"
   pcdata <- as.matrix(x$x[, c(axis1, axis2)])
   Pcov <- x$Pcov
   xx <- plot(x, axis1 = axis1, axis2 = axis2, flip = flip, ...)
   plot.args <- xx$plot.args
   if(!is.null(plot.args$axes)) axes <- plot.args$axes else axes <- TRUE
-  
+
   if(axes){
     abline(h = 0, lty=2)
     abline(v = 0, lty=2)
@@ -832,12 +846,12 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, flip = NULL, phylo = FALSE, 
   if(phylo) {
     
     p.p <- list(tip.labels = TRUE, node.labels = TRUE, anc.states = TRUE,
-                node.bg = "grey", node.pch = 21, node.cex = 1,
-                edge.color = "black", edge.width = 1,
-                tip.txt.cex = 1, tip.txt.col = "black", 
-                tip.txt.adj = c(-0.1, -0.1),
-                node.txt.cex = 1, node.txt.col = "grey",
-                node.txt.adj = c(-0.1, -0.1))
+                            node.bg = "grey", node.pch = 21, node.cex = 1,
+                            edge.color = "black", edge.width = 1,
+                            tip.txt.cex = 1, tip.txt.col = "black", 
+                            tip.txt.adj = c(-0.1, -0.1),
+                            node.txt.cex = 1, node.txt.col = "grey",
+                            node.txt.adj = c(-0.1, -0.1))
     
     m.p <- match(names(phylo.par), names(p.p))
     if(any(is.na(m.p)))
