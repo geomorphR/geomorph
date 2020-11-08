@@ -315,52 +315,52 @@ plot.bilat.symmetry <- function(x, warpgrids = TRUE, mesh= NULL, ...){
         mtext("Mean directional (left) and fluctuating (right) asymmetry",side = 1, outer = TRUE)
         par(mfrow=c(1,1))
       }
-      if (k==3){
+      if(k==3){
         if (is.null(mesh)){
           open3d() ; mfrow3d(1, 2) 
-          plotRefToTarget(x$DA.mns[,,1],x$DA.mns[,,2],method="points",main="Directional Asymmetry",box=FALSE, axes=FALSE)
+          plotRefToTarget(x$DA.component[,,1],x$DA.component[,,2],method="points",main="Directional Asymmetry",box=FALSE, axes=FALSE)
           next3d()
-          plotRefToTarget(x$FA.mns[,,1],x$FA.mns[,,2],method="points",main="Fluctuating Asymmetry",box=FALSE, axes=FALSE)
+          plotRefToTarget(x$FA.component[,,1],x$FA.component[,,2],method="points",main="Fluctuating Asymmetry",box=FALSE, axes=FALSE)
         } 
         if(!is.null(mesh)){
           open3d() ; mfrow3d(1, 2) 
           cat("\nWarping mesh\n")
-          plotRefToTarget(x$DA.mns[,,1],x$DA.mns[,,2],mesh,method="surface")
+          plotRefToTarget(x$DA.component[,,1],x$DA.component[,,2],mesh,method="surface")
           title3d(main="Directional Asymmetry")
           next3d()
           cat("\nWarping mesh\n")
-          plotRefToTarget(x$FA.mns[,,1],x$FA.mns[,,2],mesh,method="surface")
+          plotRefToTarget(x$FA.component[,,1],x$FA.component[,,2],mesh,method="surface")
           title3d(main="Fluctuating Asymmetry")
         }
       }
       layout(1) 
     }
-    if(x$data.typ == "Object"){
+    if(x$data.type == "Object"){
       if(warpgrids==TRUE){
         if(k==2){  
           par(mfrow=c(2,2),oma=c(1.5,0,1.5,0))
           plotAllSpecimens(x$symm.shape)
           plotAllSpecimens(x$asymm.shape)
-          plotRefToTarget(x$DA.mns[,,1],x$DA.mns[,,2],method="TPS",main="Directional Asymmetry")
-          plotRefToTarget(x$FA.mns[,,1],x$FA.mns[,,2],method="TPS",main="Fluctuating Asymmetry")
+          plotRefToTarget(x$DA.component[,,1],x$DA.component[,,2],method="TPS",main="Directional Asymmetry")
+          plotRefToTarget(x$FA.component[,,1],x$FA.component[,,2],method="TPS",main="Fluctuating Asymmetry")
           mtext("Symmetric Shape Component (left) and Asymmetric Shape Component (right)",outer = TRUE,side=3)
           mtext("Mean directional (left) and fluctuating (right) asymmetry",side = 1, outer = TRUE)
         }
-        if (k==3){
+        if(k==3){
           if(is.null(mesh)) {
             open3d() ; mfrow3d(1, 2) 
-            plotRefToTarget(x$DA.mns[,,1],x$DA.mns[,,2],method="points",main="Directional Asymmetry",box=FALSE, axes=FALSE)
+            plotRefToTarget(x$DA.component[,,1],x$DA.component[,,2],method="points",main="Directional Asymmetry",box=FALSE, axes=FALSE)
             next3d()
-            plotRefToTarget(x$FA.mns[,,1],x$FA.mns[,,2],method="points",main="Fluctuating Asymmetry",box=FALSE, axes=FALSE)
+            plotRefToTarget(x$FA.component[,,1],x$FA.component[,,2],method="points",main="Fluctuating Asymmetry",box=FALSE, axes=FALSE)
           } 
           if(!is.null(mesh)){
             open3d() ; mfrow3d(1, 2) 
             cat("\nWarping mesh\n")
-            plotRefToTarget(x$DA.mns[,,1],x$DA.mns[,,2],mesh,method="surface")
+            plotRefToTarget(x$DA.component[,,1],x$DA.component[,,2],mesh,method="surface")
             title3d(main="Directional Asymmetry")
             next3d()
             cat("\nWarping mesh\n")
-            plotRefToTarget(x$FA.mns[,,1],x$FA.mns[,,2],mesh,method="surface")
+            plotRefToTarget(x$FA.component[,,1],x$FA.component[,,2],mesh,method="surface")
             title3d(main="Fluctuating Asymmetry")
           }  
         }
