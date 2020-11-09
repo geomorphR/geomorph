@@ -24,15 +24,15 @@
 #' @param grid.col The color of grid lines (single value)
 #' @param grid.lwd Scale factor for the weight of grid lines (single numerical value)
 #' @param grid.lty The line type for grid lines (single numerical value, as in base R \code{\link{plot}})
-#' @param txt.adj The adjustment value of the landmark label (one or two values, as in base R \code{\link{text}}) 
-#' @param txt.pos The position of the landmark label (single numerical value, as in base R \code{\link{text}}) 
-#' @param txt.cex The size of the landmark label text (single numerical value, as in base R \code{\link{text}})
-#' @param txt.col The color of the landmark label text (single numerical value, as in base R \code{\link{text}})
+#' @param txt.adj The adjustment value of the landmark label (one or two values, as in base R \code{\link{text}} and \code{\link{text3d}}) 
+#' @param txt.pos The position of the landmark label, overrides txt.adj (single numerical value, as in base R \code{\link{text}} and \code{\link{text3d}}) 
+#' @param txt.cex The size of the landmark label text (single numerical value, as in base R \code{\link{text}} and \code{\link{text3d}})
+#' @param txt.col The color of the landmark label text (single numerical value, as in base R \code{\link{text}} and \code{\link{text3d}})
 #' @keywords utilities
 #' @keywords visualization
 #' @export
 #' @author Michael Collyer & Emma Sherratt
-#' @seealso  \code{\link{plotRefToTarget}}
+#' @seealso  \code{\link{plotRefToTarget}}, \code{\link{text}}, \code{\link{text3d}} 
 #' @examples
 #' data(plethodon) 
 #' Y.gpa<-gpagen(plethodon$land)    #GPA-alignment
@@ -78,8 +78,8 @@ gridPar <- function(pt.bg = "gray",
                     grid.col = "black",
                     grid.lwd = 1,
                     grid.lty = 1,
-                    txt.adj = 0.5,
-                    txt.pos = 1, 
+                    txt.adj = NULL,
+                    txt.pos = NULL, 
                     txt.cex = 0.8,
                     txt.col = "black"
 ){

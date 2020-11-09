@@ -39,7 +39,7 @@ f9221a7b4261484793b945d7be4bbec6 *man/geomorph-package.Rd
 c7fdffac3135bde168be933be6bf2243 *man/globalIntegration.Rd
 e8d613a26717ea046e29fb9bb5787cce *man/gm.prcomp.Rd
 364e032973c615348b16bf7752fcedc2 *man/gpagen.Rd
-30dc1787b3ebdb8dd7dc1f854bb3d1b1 *man/gridPar.Rd
+9a17d8a33c30495cf2dfcd715c687b09 *man/gridPar.Rd
 a598044482a6c3e39517b798b654c57e *man/hummingbirds.Rd
 6c5eefd347476b0ecfddb5ed14b83b3b *man/integration.test.Rd
 9ab40cb3c3d8ccec94850abe377bd773 *man/interlmkdist.Rd
@@ -124,11 +124,11 @@ d2755155772526527e4224b17d0dd05d *man/warpRefMesh.Rd
 7bea8d6b17918fd4889e2056ebe0e3d0 *man/warpRefOutline.Rd
 d9119f721918f22c267db843023a86fe *man/writeland.tps.Rd
 4f9ee50059d7fc79859a3d07a4edce09 *NAMESPACE
-ae3858f0b17281453765a3f08b0b944e *NEWS.md
+3e012f8f8fa088e08741ac4611d5fa38 *NEWS.md
 92239d51a080ccd3fc3a9f7ef67d1b8c *R/arrayspecs.r
 e92a5b97b20697bb409aeb4984334d45 *R/bilat.symmetry.r
 d7d67e9218f84609046423cb222f5c44 *R/build.template.r
-5c10fc11bdcc1b0b674800458e7a94e7 *R/combine.subsets.r
+5c10fc11bdcc1b0b674800458e7a94e7 *R/combine.subsets.R
 a85f984f777798d31520e42d0c87e3f5 *R/compare.CR.R
 9628990fa4fb665227e83735c6f74bcb *R/compare.evol.rates.r
 00cccf6598681224c382ec757c97c456 *R/compare.multi.evol.rates.r
@@ -152,7 +152,7 @@ e19c44ed825c999471d11306e40c6f8a *R/geomorph.support.code.r
 b0de2a67cff633e27e7a00860187240f *R/globalIntegration.r
 21634789460f3b67a780df0d556d4a95 *R/gm.prcomp.R
 bf0750e2582fc2c3b5454ad48b7f3cbb *R/gpagen.r
-8c06e49837953d941a01c82b0111935a *R/gridPar.r
+255d611cb8320d6e85fb06cb1df1127b *R/gridPar.r
 62e31b63ddae24bccbe4e848ec803438 *R/integration.test.r
 0cbfe6b5655e2751cdd03ca2a1550768 *R/interlmkdist.r
 b65b74380f8432061671bbfe6ece9b34 *R/modularity.test.r
@@ -165,7 +165,7 @@ b72262ffb22b02ae6b2592d4d0f4353a *R/picknplot.shape.r
 c1cead3306cb3d7b1bd3ed5d99fc89af *R/plotAllSpecimens.r
 21f8877501713111915f3af7c5b97bad *R/plotGMPhyloMorphoSpace.r
 92839ca604b3a348c111a3c03b264e6d *R/plotOutliers.r
-a7fb35af1667b2c983901837d2219d3b *R/plotRefToTarget.r
+5e34794af2cb63c3249af9601989b2aa *R/plotRefToTarget.r
 4aa33e0df7628eccda3d1178f8362a92 *R/plotspec.r
 b3031df0cea44ef0547195bdffdbd261 *R/plotTangentSpace.r
 bb944e4a73cab4d9f15d2979920474cb *R/procD.lm.r
@@ -178,10 +178,10 @@ a7cb4ce71beb89c39aaffa8e43e5c7f8 *R/readland.shapes.r
 0f9a0f88e4b72cf3ad95dc79d86624fe *R/readland.tps.r
 5b7b3f4d86d1b5fcdb1a8462c3ac5e86 *R/readmulti.nts.r
 d688cf3fbc6c3351526c422948e457ba *R/readmulti.tps.R
-73ce1481733305a19848121fd2c90203 *R/rotate.coords.r
+73ce1481733305a19848121fd2c90203 *R/rotate.coords.R
 1ec7076ed569badd94f834000e61ca5c *R/shape.predictor.r
 f191c54f3b3c75baea0b045758af5362 *R/shapeHulls.r
-82d34188c7481500496fd46cdb77d73c *R/shared.support.code.r
+82d34188c7481500496fd46cdb77d73c *R/shared.support.code.R
 d055b6c75bd090bc9575e1fe7825d110 *R/two.b.pls.r
 2e693d8b4f3c21d742737b97d1773119 *R/two.d.array.r
 66bd726660ba94d18ed7682b4ae7f608 *R/warpRefMesh.r
