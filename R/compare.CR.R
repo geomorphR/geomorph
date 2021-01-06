@@ -44,15 +44,15 @@
 #' 
 #' # coords.gp <- coords.subset(Y.gpa$coords, group)
 #' 
-#' modul.tests <- Map(function(x) modularity.test(x, land.gps,iter=499, print.progress = FALSE), 
-#'          coords.gp) 
+#' # modul.tests <- Map(function(x) modularity.test(x, land.gps,iter=499, print.progress = FALSE), 
+#' #         coords.gp) 
 #'          
 #' # the map function performs the integration test on each 3D array in the lists provided
 #' 
-#'  modul.tests$Marsh.F
-#'  modul.tests$Marsh.M
-#'  modul.tests$Sinkhole.F
-#'  modul.tests$Sinkhole.M
+#'  # modul.tests$Marsh.F
+#'  # modul.tests$Marsh.M
+#'  # modul.tests$Sinkhole.F
+#'  # modul.tests$Sinkhole.M
 #' 
 #' # group.Z <- compare.CR(modularity.tests, CR.null = FALSE)
 #' # group.Z  ## NOTE: need a summary function 
