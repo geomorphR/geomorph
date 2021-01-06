@@ -1,4 +1,6 @@
-# CHANGES IN GEOMORPH VERSION 3.3.1.9000 
+# CHANGES IN GEOMORPH VERSION 3.3.2.9000 
+
+# CHANGES IN GEOMORPH VERSION 3.3.2 (Minor Release)
 
 ### NEW FEATURES
 * Added Box-Cox transformation to `effect.size`
