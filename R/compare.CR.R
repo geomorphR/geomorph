@@ -44,14 +44,15 @@
 #' 
 #' # coords.gp <- coords.subset(Y.gpa$coords, group)
 #' 
-#' # modularity.tests <- lapply(1:nlevels(group), function(j) modularity.test(coords.gp[[j]],
-#' #  land.gps, iter = 499, print.progress = FALSE))
-#' ## the lapply function performs the modularity test on each 3D array in the lists provided
+#' modul.tests <- Map(function(x) modularity.test(x, land.gps,iter=499, print.progress = FALSE), 
+#'          coords.gp) 
+#'          
+#' # the map function performs the integration test on each 3D array in the lists provided
 #' 
-#' # modularity.tests[[1]]
-#' # modularity.tests[[2]]
-#' # modularity.tests[[3]]
-#' # modularity.tests[[4]]
+#'  modul.tests$Marsh.F
+#'  modul.tests$Marsh.M
+#'  modul.tests$Sinkhole.F
+#'  modul.tests$Sinkhole.M
 #' 
 #' # group.Z <- compare.CR(modularity.tests, CR.null = FALSE)
 #' # group.Z  ## NOTE: need a summary function 
@@ -66,7 +67,7 @@
 #' # m3.test <- modularity.test(coords.gp$Marsh.F,land.gps3, iter = 499, print.progress = FALSE)
 #' # m4.test <- modularity.test(coords.gp$Marsh.F,land.gps4, iter = 499, print.progress = FALSE)
 #' 
-#' # model.Z <- compare.CR(modularity.tests[[1]],m3.test,m4.test, CR.null = TRUE)
+#' # model.Z <- compare.CR(modularity.tests$Marsh.F,m3.test,m4.test, CR.null = TRUE)
 #' # model.Z 
 #' 
 compare.CR <- function(...,CR.null = TRUE, two.tailed = TRUE){
@@ -82,8 +83,8 @@ compare.CR <- function(...,CR.null = TRUE, two.tailed = TRUE){
    
    if(length(dots) < 2) stop("At least two objects of class CR are needed")
      
-   if(is.null(list.names)) list.names <- paste("CR", 1:n, sep = ".")
-   names(dots) <- list.names
+#   if(is.null(list.names)) list.names <- paste("CR", 1:n, sep = ".")
+#   names(dots) <- list.names
         
    is.CR <- function(x) inherits(x, "CR")
    sdn <- function(x) sqrt(sum((x-mean(x))^2)/length(x))

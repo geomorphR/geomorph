@@ -6,7 +6,8 @@
 * Added pairwise r, Z, and P-values to `integration.test` and `phylo.integration`
 
 ### BUG FIXES
-* fixed bug with `plot.bilat.symmetry` that missed changed object output in `bilat.symmetry`.
+* Fixed bug in `compare.CR` so object labels are retained
+* Fixed bug with `plot.bilat.symmetry` that missed changed object output in `bilat.symmetry`.
 * Fixed issue with permutations in multi-module configurations for `integration.test` and `phylo.integration`
 * Fixed error in `plot.gm.prcomp` 3D tree plotting with time.plot = TRUE
 * Fixed error in `compare.evol.rates` for univariate data and permutations
