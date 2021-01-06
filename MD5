@@ -18,7 +18,7 @@ d8e8360c03c03fe45d2100e9c05d4a89 *data/plethodon.rda
 daa4f7e0e16a55cbf4fd2c0686c7167c *man/bilat.symmetry.Rd
 6e94f720fd50cf0ff309624b1a4a30ee *man/buildtemplate.Rd
 8cab7042d16141cca44cf13bd6c396ec *man/combine.subsets.Rd
-0c7af12c946fd66273e8e9804d61470d *man/compare.CR.Rd
+bbfd3103eb4a9d4726b6bb9f30a634b6 *man/compare.CR.Rd
 e91e0533e55339b8332c80d2e5a127b5 *man/compare.evol.rates.Rd
 4a1e045de391966a3300bfea63c999ce *man/compare.multi.evol.rates.Rd
 e6d3245c04df413835d41284b2aa227a *man/compare.pls.Rd
@@ -129,7 +129,7 @@ d9119f721918f22c267db843023a86fe *man/writeland.tps.Rd
 e92a5b97b20697bb409aeb4984334d45 *R/bilat.symmetry.r
 d7d67e9218f84609046423cb222f5c44 *R/build.template.r
 5c10fc11bdcc1b0b674800458e7a94e7 *R/combine.subsets.R
-0b51c8151b398de1c3eaa64df7709050 *R/compare.CR.R
+33dd311bacb8a3ccd68aa5ba505206e6 *R/compare.CR.R
 01f69ed21007276e15d7a785276e84f6 *R/compare.evol.rates.r
 7e711507b819431710a683de00ddeafb *R/compare.multi.evol.rates.r
 716fd68d21e23f585fb03c4f75330b99 *R/compare.pls.r

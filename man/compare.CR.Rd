@@ -63,7 +63,7 @@ should be specified. Finally, one may perform the comparison as either a one-tai
  # modul.tests$Sinkhole.F
  # modul.tests$Sinkhole.M
 
-# group.Z <- compare.CR(modularity.tests, CR.null = FALSE)
+# group.Z <- compare.CR(modul.tests, CR.null = FALSE)
 # group.Z  ## NOTE: need a summary function 
 
 # Example 2: Compare alternative modular hypotheses
@@ -76,7 +76,7 @@ should be specified. Finally, one may perform the comparison as either a one-tai
 # m3.test <- modularity.test(coords.gp$Marsh.F,land.gps3, iter = 499, print.progress = FALSE)
 # m4.test <- modularity.test(coords.gp$Marsh.F,land.gps4, iter = 499, print.progress = FALSE)
 
-# model.Z <- compare.CR(modularity.tests$Marsh.F,m3.test,m4.test, CR.null = TRUE)
+# model.Z <- compare.CR(modul.tests$Marsh.F,m3.test,m4.test, CR.null = TRUE)
 # model.Z 
 
 }
