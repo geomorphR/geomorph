@@ -631,6 +631,38 @@ print.compare.pls <- function(x,...){
   invisible(x)
 }
 
+# compare.CR
+
+#' Print/Summary Function for geomorph
+#' 
+#' @param object print/summary object
+#' @param ... other arguments passed to print/summary
+#' @export
+#' @author Michael Collyer
+#' @keywords utilities
+summary.compare.CR<- function(object, ...) print.compare.CR(object,...)
+
+#' Print/Summary Function for geomorph
+#' 
+#' @param x print/summary object
+#' @param ... other arguments passed to print/summary
+#' @export
+#' @author Michael Collyer
+#' @keywords utilities
+print.compare.CR<- function(x,...){
+  cat("\n", x$comment, "\n\n")
+  z <- x$sample.z
+  z.pw <- x$pairwise.z
+  p <- x$pairwise.P
+  cat("\nEffect sizes\n\n")
+  print(z)
+  cat("\nEffect sizes for pairwise differences in CR effect size\n\n")
+  print(z.pw)
+  cat("\nP-values\n\n")
+  print(p)
+  invisible(x)
+}
+
 #' Print/Summary Function for geomorph
 #' 
 #' @param object print/summary object
