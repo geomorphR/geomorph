@@ -35,7 +35,7 @@
 #' @param A A 3D array (p x k x n) containing Procrustes shape variables for all specimens, or a matrix (n x variables)
 #' @param partition.gp A list of which landmarks (or variables) belong in which partition (e.g. A,A,A,B,B,B,C,C,C)
 #' @param CI A logical argument indicating whether bootstrapping should be used for estimating confidence intervals
-#' @param opt.rot A logical argument for whether the optimal rotation for CR should be used for landmarkd data (default = TRUE)
+#' @param opt.rot A logical argument for whether the optimal rotation for CR should be used for landmark data (default = TRUE)
 #' @param iter Number of iterations for significance testing
 #' @param seed An optional argument for setting the seed for random permutations of the resampling procedure.  
 #' If left NULL (the default), the exact same P-values will be found for repeated runs of the analysis (with the same number of iterations).

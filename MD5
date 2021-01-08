@@ -18,7 +18,7 @@ d8e8360c03c03fe45d2100e9c05d4a89 *data/plethodon.rda
 daa4f7e0e16a55cbf4fd2c0686c7167c *man/bilat.symmetry.Rd
 6e94f720fd50cf0ff309624b1a4a30ee *man/buildtemplate.Rd
 8cab7042d16141cca44cf13bd6c396ec *man/combine.subsets.Rd
-90122dc063cb03132232d50cb3d03ea8 *man/compare.CR.Rd
+22a55bd8cf3ec78d70fe3026e5cb362a *man/compare.CR.Rd
 e91e0533e55339b8332c80d2e5a127b5 *man/compare.evol.rates.Rd
 4a1e045de391966a3300bfea63c999ce *man/compare.multi.evol.rates.Rd
 e6d3245c04df413835d41284b2aa227a *man/compare.pls.Rd
@@ -45,7 +45,7 @@ a598044482a6c3e39517b798b654c57e *man/hummingbirds.Rd
 9ab40cb3c3d8ccec94850abe377bd773 *man/interlmkdist.Rd
 250260d69741416238284d376d952378 *man/larvalMorph.Rd
 08c9e0aeb1689b4a541b511a15c99770 *man/lizards.Rd
-0db32995b45d593da4f6bece3b7294c9 *man/modularity.test.Rd
+9999f20fbb326e2f228e9fca7358aa3a *man/modularity.test.Rd
 f43101bd2713be9a132723eec919e148 *man/morphol.disparity.Rd
 00e77dd77ac4f29ace5334a4df4aa23e *man/mosquito.Rd
 ffadebd6be893bbc403d22f884329a9a *man/mshape.Rd
@@ -131,7 +131,7 @@ d759e4ab426e6cd48ce402d75d2dca6b *NEWS.md
 e92a5b97b20697bb409aeb4984334d45 *R/bilat.symmetry.r
 d7d67e9218f84609046423cb222f5c44 *R/build.template.r
 5c10fc11bdcc1b0b674800458e7a94e7 *R/combine.subsets.R
-3e6d63dc29f1e8dab21b75a08ec383c8 *R/compare.CR.R
+b73c3957cccc366ca791f1c2d807002f *R/compare.CR.R
 01f69ed21007276e15d7a785276e84f6 *R/compare.evol.rates.r
 7e711507b819431710a683de00ddeafb *R/compare.multi.evol.rates.r
 716fd68d21e23f585fb03c4f75330b99 *R/compare.pls.r
@@ -157,7 +157,7 @@ bf0750e2582fc2c3b5454ad48b7f3cbb *R/gpagen.r
 8c06e49837953d941a01c82b0111935a *R/gridPar.r
 62e31b63ddae24bccbe4e848ec803438 *R/integration.test.r
 0cbfe6b5655e2751cdd03ca2a1550768 *R/interlmkdist.r
-7ecf3f0cde2b35c2df64d3843d112da1 *R/modularity.test.r
+d1229f1a62020eb4539502c822d07e6c *R/modularity.test.r
 dcf12e817827f0521b16463f9240c481 *R/morphol.disparity.r
 a3f01575c1174e61fc24c469c2ccb8ee *R/phylo.integration.r
 4a494c0650465e4df7cec4ba8b27c568 *R/phylo.modularity.r
