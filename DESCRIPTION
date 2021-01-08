@@ -23,7 +23,7 @@ Suggests: knitr,
     testthat
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2021-01-06
+Packaged: 2021-01-10
 Author: Dean Adams [aut, cre],
   Michael Collyer [aut],
   Antigoni Kaliontzopoulou [aut]

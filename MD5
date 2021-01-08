@@ -11,7 +11,7 @@ d8e8360c03c03fe45d2100e9c05d4a89 *data/plethodon.rda
 80c6fa53b642b23b378cf036d1b962f1 *data/ratland.rda
 9ba51ab9be03930a4acdcddde8169b33 *data/scallopPLY.rda
 6e5e71b242462e422b716800ffc3c464 *data/scallops.rda
-793bb98f768db3e93f6c5e3ca1d52144 *DESCRIPTION
+51325c1d89a160e9a70b9ae702b4335e *DESCRIPTION
 73f723a130c92f8b84a81465a15add7c *geomorph.Rproj
 7fe229f1e38be2503f79f13c2c9ce74b *inst/CITATION
 5e099c6268d251bf5c98595d9566385a *man/arrayspecs.Rd
@@ -39,7 +39,7 @@ f9221a7b4261484793b945d7be4bbec6 *man/geomorph-package.Rd
 c7fdffac3135bde168be933be6bf2243 *man/globalIntegration.Rd
 39107a37ded250b58cf1655024518bd3 *man/gm.prcomp.Rd
 364e032973c615348b16bf7752fcedc2 *man/gpagen.Rd
-30dc1787b3ebdb8dd7dc1f854bb3d1b1 *man/gridPar.Rd
+9a17d8a33c30495cf2dfcd715c687b09 *man/gridPar.Rd
 a598044482a6c3e39517b798b654c57e *man/hummingbirds.Rd
 6c5eefd347476b0ecfddb5ed14b83b3b *man/integration.test.Rd
 9ab40cb3c3d8ccec94850abe377bd773 *man/interlmkdist.Rd
@@ -126,7 +126,7 @@ d2755155772526527e4224b17d0dd05d *man/warpRefMesh.Rd
 7bea8d6b17918fd4889e2056ebe0e3d0 *man/warpRefOutline.Rd
 d9119f721918f22c267db843023a86fe *man/writeland.tps.Rd
 56bcf005592d5f74ce5e39c3bf1dc92b *NAMESPACE
-d759e4ab426e6cd48ce402d75d2dca6b *NEWS.md
+96e77be96aa2d597854f4626f533419b *NEWS.md
 92239d51a080ccd3fc3a9f7ef67d1b8c *R/arrayspecs.r
 e92a5b97b20697bb409aeb4984334d45 *R/bilat.symmetry.r
 d7d67e9218f84609046423cb222f5c44 *R/build.template.r
@@ -154,7 +154,7 @@ b2eb17952f18f35bcb5b9763763d5b88 *R/geomorph.utils.r
 b0de2a67cff633e27e7a00860187240f *R/globalIntegration.r
 4e51b4a7ceeb8072970149e656b01d85 *R/gm.prcomp.R
 bf0750e2582fc2c3b5454ad48b7f3cbb *R/gpagen.r
-8c06e49837953d941a01c82b0111935a *R/gridPar.r
+255d611cb8320d6e85fb06cb1df1127b *R/gridPar.r
 62e31b63ddae24bccbe4e848ec803438 *R/integration.test.r
 0cbfe6b5655e2751cdd03ca2a1550768 *R/interlmkdist.r
 d1229f1a62020eb4539502c822d07e6c *R/modularity.test.r
@@ -167,7 +167,7 @@ b72262ffb22b02ae6b2592d4d0f4353a *R/picknplot.shape.r
 c1cead3306cb3d7b1bd3ed5d99fc89af *R/plotAllSpecimens.r
 21f8877501713111915f3af7c5b97bad *R/plotGMPhyloMorphoSpace.r
 92839ca604b3a348c111a3c03b264e6d *R/plotOutliers.r
-a7fb35af1667b2c983901837d2219d3b *R/plotRefToTarget.r
+5e34794af2cb63c3249af9601989b2aa *R/plotRefToTarget.r
 4aa33e0df7628eccda3d1178f8362a92 *R/plotspec.r
 b3031df0cea44ef0547195bdffdbd261 *R/plotTangentSpace.r
 bb944e4a73cab4d9f15d2979920474cb *R/procD.lm.r

@@ -21,6 +21,8 @@
 * Fixed bug in computations of `phylo.modularity`
 * Fixed order consistency for pairwise calculations in `phylo.modularity` 
 * Allows single landmarks as slider LM in gpagen
+* Fixed labels in `plotRefToTarget`, allowing 3d TPS warp grids to show labels and for txt.pos to be passed to 3d plots		
+* Fixed bug in txt.adj argument for `gridPar`
 
 ### OTHER CHANGES
 * Updated `readmulti.nts` function turning it into a wrapper of `readland.nts` thus allowing also multiple dta files to be read in and compiled
