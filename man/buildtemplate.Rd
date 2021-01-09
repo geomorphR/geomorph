@@ -42,7 +42,7 @@ using the function \code{\link{digitsurface}}. Because template matching is base
 landmark points in the template and the target specimen, a minimum of four fixed landmarks must be used. However,  
 to ensure a strong match between the scan and the template, it is recommended that a higher number of fixed points is used.
 
-#' For more details on the full procedure one needs to follow to digitize fixed 3D landmarks and surface
+For more details on the full procedure one needs to follow to digitize fixed 3D landmarks and surface
 sliding semilandmarks, see also the relevant vignette by running \code{vignette("geomorph.digitize3D")}.
 
  NOTE: Function centers the mesh before digitizing by default (center=TRUE). If one chooses not to center,

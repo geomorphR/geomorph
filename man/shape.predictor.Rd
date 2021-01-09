@@ -63,17 +63,21 @@ plotRefToTarget(M, preds$pred1)
 plotRefToTarget(M, preds$pred2)
 
 PC <- PCA$x[,1:2]
-# user-picked spots - can be anything, but it in this case, apparent groups
+# user-picked spots can be anything, but it in this case, apparent groups
 preds <- shape.predictor(Y.gpa$coords, x= PC, Intercept = FALSE, 
-                        pred1 = c(0.045,-0.02), pred2 = c(-0.025,0.06), pred3 = c(-0.06,-0.04)) 
+                        pred1 = c(0.045,-0.02), 
+                        pred2 = c(-0.025,0.06), 
+                        pred3 = c(-0.06,-0.04)) 
 plotRefToTarget(M, preds$pred1)
 plotRefToTarget(M, preds$pred2)
 plotRefToTarget(M, preds$pred3)
 
 # allometry example - straight-up allometry
 
-preds <- shape.predictor(Y.gpa$coords, x= log(Y.gpa$Csize), Intercept = TRUE, 
-                        predmin = min(log(Y.gpa$Csize)), predmax = max(log(Y.gpa$Csize))) 
+preds <- shape.predictor(Y.gpa$coords, x= log(Y.gpa$Csize), 
+                        Intercept = TRUE, 
+                        predmin = min(log(Y.gpa$Csize)), 
+                        predmax = max(log(Y.gpa$Csize))) 
 
 plotRefToTarget(M, preds$predmin, mag=3)
 plotRefToTarget(M, preds$predmax, mag=3)
@@ -87,7 +91,8 @@ type = "regression",
 predictor = log(gdf$Csize),
 reg.type ="RegScore") # make sure to have a predictor 
 
-preds <- shape.predictor(plethAllometry$GM$fitted, x= allom.plot$RegScore, Intercept = FALSE, 
+preds <- shape.predictor(plethAllometry$GM$fitted, 
+                        x= allom.plot$RegScore, Intercept = FALSE, 
                         predmin = min(allom.plot$RegScore), 
                         predmax = max(allom.plot$RegScore)) 
 plotRefToTarget(M, preds$predmin, mag=3)
@@ -97,7 +102,8 @@ allom.plot <- plot(plethAllometry,
 type = "regression", 
 predictor = log(gdf$Csize),
 reg.type ="PredLine")
-preds <- shape.predictor(plethAllometry$GM$fitted, x= allom.plot$PredLine, Intercept = FALSE, 
+preds <- shape.predictor(plethAllometry$GM$fitted, 
+                        x= allom.plot$PredLine, Intercept = FALSE, 
                         predmin = min(allom.plot$PredLine), 
                         predmax = max(allom.plot$PredLine)) 
 plotRefToTarget(M, preds$predmin, mag=3)
@@ -105,7 +111,8 @@ plotRefToTarget(M, preds$predmax, mag=3)
 
 # using factors via PCA
 
-gdf <- geomorph.data.frame(Y.gpa, species = plethodon$species, site = plethodon$site)
+gdf <- geomorph.data.frame(Y.gpa, species = plethodon$species, 
+       site = plethodon$site)
 pleth <- procD.lm(coords ~ species*site, data=gdf)
 PCA <- prcomp(pleth$fitted)
 plot(PCA$x, asp=1, pch=19)
@@ -131,7 +138,8 @@ X # includes intercept; remove for better functioning
 X <- X[,-1]
 symJord <- c(0,1,0) # design for P. Jordani in sympatry
 alloJord <- c(0,0,0) # design for P. Jordani in allopatry
-preds <- shape.predictor(arrayspecs(pleth$fitted, 12,2), x = X, Intercept = TRUE, 
+preds <- shape.predictor(arrayspecs(pleth$fitted, 12,2), x = X, 
+                        Intercept = TRUE, 
                         symJord=symJord, alloJord=alloJord)
 plotRefToTarget(M, preds$symJord, mag=2)
 plotRefToTarget(M, preds$alloJord, mag=2)
@@ -146,9 +154,11 @@ PLS <-two.b.pls(A1 = plethShapeFood$food, A2 = Y.gpa$coords, iter=999)
 summary(PLS)
 plot(PLS)
 
-preds <- shape.predictor(Y.gpa$coords, plethShapeFood$food, Intercept = FALSE,
+preds <- shape.predictor(Y.gpa$coords, plethShapeFood$food, 
+                        Intercept = FALSE,
                         method = "PLS",
-                        pred1 = 2, pred2 = -4, pred3 = 2.5) # using PLS plot as a guide
+                        pred1 = 2, pred2 = -4, pred3 = 2.5) 
+                        # using PLS plot as a guide
 M <- mshape(Y.gpa$coords)
 plotRefToTarget(M, preds$pred1, mag=2)
 plotRefToTarget(M, preds$pred2, mag=2)

@@ -28,8 +28,8 @@ plotspec(
 
 \item{mesh.ptsize}{Numeric Size to plot the mesh points (vertices), e.g. 0.1 for dense meshes, 3 for sparse meshes}
 
-\item{centered}{Logical Whether the data matrix is in the surface mesh coordinate system ({centered=FALSE}) or
-if the data were collected after the mesh was centered ({centered=TRUE})- see details.}
+\item{centered}{Logical Whether the data matrix is in the surface mesh coordinate system ({centered = FALSE}) or
+if the data were collected after the mesh was centered ({centered = TRUE})- see details.}
 
 \item{...}{additional parameters which will be passed to rgl-plot3d or 
 rgl-points3d.}
@@ -57,7 +57,8 @@ to find solutions with \code{\link{rgl-package}} core functions.
 data(scallopPLY)
 ply <- scallopPLY$ply
 digitdat <- scallopPLY$coords
-plotspec(spec = ply, digitspec = digitdat, fixed = 16, centered = TRUE, fixed.pt.col = "red", 
+plotspec(spec = ply, digitspec = digitdat, fixed = 16, 
+centered = TRUE, fixed.pt.col = "red", 
 fixed.pt.size = 15, col = "blue", size = 5)
 }
 \seealso{

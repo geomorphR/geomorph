@@ -52,7 +52,8 @@ Presently, the function is only implemented for two-dimensional landmark data.
 }
 \examples{
 #Example using Plethodon
-#Articulation point is landmark 1, rotate mandibular landmarks (2-5) relative to cranium
+#Articulation point is landmark 1, rotate mandibular landmarks (2-5) 
+# relative to cranium
 
 data(plethspecies) 
 # Using specific points:

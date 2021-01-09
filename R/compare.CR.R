@@ -45,10 +45,11 @@
 #' 
 #' # coords.gp <- coords.subset(Y.gpa$coords, group)
 #' 
-#' # modul.tests <- Map(function(x) modularity.test(x, land.gps,iter=999, print.progress = FALSE), 
-#' #         coords.gp) 
+#' # modul.tests <- Map(function(x) modularity.test(x, land.gps,iter=999, 
+#' # print.progress = FALSE), coords.gp) 
 #'          
-#' # the map function performs the integration test on each 3D array in the lists provided
+#' # the map function performs the integration test on each 3D array 
+#' # in the lists provided
 #' 
 #' #  modul.tests$Marsh.F
 #' #  modul.tests$Marsh.M
@@ -61,16 +62,21 @@
 #' # Example 2: Compare alternative modular hypotheses
 #' 
 #' # 3 module hypothesis (tail now a module)
-#' # land.gps3 <- rep('a',56); land.gps3[39:48]<-'b'; land.gps3[c(6:9,28:38)] <- 'c' 
+#' # land.gps3 <- rep('a',56); land.gps3[39:48]<-'b'; 
+#' # land.gps3[c(6:9,28:38)] <- 'c' 
 #'    
 #' # 4 module hypothesis (eye now a module)
-#' # land.gps4 <- rep('a',56); land.gps4[39:48]<-'b'; land.gps4[c(6:9,28:38)] <- 'c'; 
+#' # land.gps4 <- rep('a',56); land.gps4[39:48]<-'b'; 
+#' # land.gps4[c(6:9,28:38)] <- 'c'; 
 #' #  land.gps4[c(10,49:56)] <- 'd'  
 #' 
-#' # m3.test <- modularity.test(coords.gp$Marsh.F,land.gps3, iter = 499, print.progress = FALSE)
-#' # m4.test <- modularity.test(coords.gp$Marsh.F,land.gps4, iter = 499, print.progress = FALSE)
+#' # m3.test <- modularity.test(coords.gp$Marsh.F,land.gps3, iter = 499, 
+#' # print.progress = FALSE)
+#' # m4.test <- modularity.test(coords.gp$Marsh.F,land.gps4, iter = 499, 
+#' # print.progress = FALSE)
 #' 
-#' # model.Z <- compare.CR(modul.tests$Marsh.F,m3.test,m4.test, CR.null = TRUE)
+#' # model.Z <- compare.CR(modul.tests$Marsh.F,m3.test,m4.test, 
+#' # CR.null = TRUE)
 #' # summary(model.Z)
 #' 
 compare.CR <- function(...,CR.null = TRUE, two.tailed = TRUE){

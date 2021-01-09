@@ -25,7 +25,8 @@
 #'   estimated from the empirically-generated sampling distribution (see details in Adams and Collyer 2019).
 #'
 #' @param A A 3D array (p x k x n) containing Procrustes shape variables for all specimens, or a matrix (n x variables)
-#' @param partition.gp A list of which landmarks (or variables) belong in which partition (e.g. A,A,A,B,B,B,C,C,C)
+#' @param partition.gp A list of which landmarks (or variables) belong in which partition: 
+#' e.g. A,A,A,B,B,B,C,C,C
 #' @param CI A logical argument indicating whether bootstrapping should be used for estimating confidence intervals
 #' @param phy A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape
 #' @param iter Number of iterations for significance testing
@@ -41,8 +42,8 @@
 #' @return Objects of class "CR" from modularity.test return a list of the following:
 #'    \item{CR}{Covariance ratio: The estimate of the observed modular signal.}
 #'    \item{CInterval}{The bootstrapped 95 percent confidence intervals of the CR, if CI = TRUE.}
-#'    \item{CR.boot}{The bootstrapped CR values, if CI = TRUE
-#'    (For more than two partitions, this is the mean CR of pairwise CRs.)}
+#'    \item{CR.boot}{The bootstrapped CR values, if CI = TRUE. 
+#'    For more than two partitions, this is the mean CR of pairwise CRs.}
 #'    \item{P.value}{The empirically calculated P-value from the resampling procedure.}
 #'   \item{Effect.Size}{The multivariate effect size associated with sigma.d.ratio.}
 #'    \item{CR.mat}{For more than two partitions, the pairwise CRs among partitions.}
@@ -63,7 +64,8 @@
 #' Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment
 #' land.gps<-c("A","A","A","A","A","B","B","B","B","B","B") 
 #' 
-#' MT <- phylo.modularity(Y.gpa$coords, partition.gp=land.gps, phy=plethspecies$phy, 
+#' MT <- phylo.modularity(Y.gpa$coords, partition.gp=land.gps, 
+#' phy=plethspecies$phy, 
 #' CI = FALSE, iter=499)
 #' summary(MT) # Test summary
 #' plot(MT) # Histogram of CR sampling distribution 

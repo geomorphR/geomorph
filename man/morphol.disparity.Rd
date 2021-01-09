@@ -143,7 +143,8 @@ Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment
 gp.end<-factor(c(0,0,1,0,0,1,1,0,0))  #endangered species vs. rest
 names(gp.end)<-plethspecies$phy$tip
 
-gdf <- geomorph.data.frame(Y.gpa, phy = plethspecies$phy, gp.end = gp.end)
+gdf <- geomorph.data.frame(Y.gpa, phy = plethspecies$phy, 
+gp.end = gp.end)
 
 pleth.ols <- procD.lm(coords ~ Csize + gp.end, 
 data = gdf, iter = 999) # ordinary least squares

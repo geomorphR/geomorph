@@ -33,7 +33,8 @@
 #'  The generic function, \code{\link{plot}}, produces a histogram of random CR values associated with the resampling procedure.
 #'  
 #' @param A A 3D array (p x k x n) containing Procrustes shape variables for all specimens, or a matrix (n x variables)
-#' @param partition.gp A list of which landmarks (or variables) belong in which partition (e.g. A,A,A,B,B,B,C,C,C)
+#' @param partition.gp A list of which landmarks (or variables) belong in which partition: 
+#' e.g. A,A,A,B,B,B,C,C,C
 #' @param CI A logical argument indicating whether bootstrapping should be used for estimating confidence intervals
 #' @param opt.rot A logical argument for whether the optimal rotation for CR should be used for landmark data (default = TRUE)
 #' @param iter Number of iterations for significance testing

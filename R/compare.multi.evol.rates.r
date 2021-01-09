@@ -1,4 +1,4 @@
-#' Comparing net rates of shape evolution among traits on phylogenies 
+#' Comparing net rates of evolution among traits on phylogenies 
 #'
 #' Function calculates net rates of shape evolution for two or more multi-dimensional traits on a 
 #' phylogeny from a set of Procrustes shape variables
@@ -37,8 +37,8 @@
 #' take the difference in the number of trait dimensions into account (see discussion in Denton and
 #' Adams 2015). This option is identified by selecting Subset = FALSE.
 #' 
-#'  The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with 
-#'  \code{\link{compare.multi.evol.rates}}.
+#'  The generic functions, \code{\link{print}}, \code{\link{summary}}, and 
+#'  \code{\link{plot}} work with  \code{\link{compare.multi.evol.rates}}.
 #'  The generic function, \code{\link{plot}}, produces a histogram of random rate-ratios associated with
 #'  the resampling procedure.
 #'
@@ -78,7 +78,8 @@
 #' 
 #' data(plethspecies) 
 #' Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment    
-#' land.gp<-c("A","A","A","A","A","B","B","B","B","B","B")  #mandible and cranium subsets
+#' land.gp<-c("A","A","A","A","A","B","B","B","B","B","B")  
+#'     #mandible and cranium subsets
 #'
 #' EMR<-compare.multi.evol.rates(A=Y.gpa$coords,gp=land.gp, 
 #'     Subset=TRUE, phy= plethspecies$phy,iter=999)

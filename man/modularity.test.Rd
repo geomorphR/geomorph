@@ -17,7 +17,8 @@ modularity.test(
 \arguments{
 \item{A}{A 3D array (p x k x n) containing Procrustes shape variables for all specimens, or a matrix (n x variables)}
 
-\item{partition.gp}{A list of which landmarks (or variables) belong in which partition (e.g. A,A,A,B,B,B,C,C,C)}
+\item{partition.gp}{A list of which landmarks (or variables) belong in which partition: 
+e.g. A,A,A,B,B,B,C,C,C}
 
 \item{iter}{Number of iterations for significance testing}
 

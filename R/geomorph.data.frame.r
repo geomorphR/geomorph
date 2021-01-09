@@ -18,12 +18,13 @@
 #' gdf <- geomorph.data.frame(Y.gpa)
 #' attributes(gdf)
 #' 
-#' gdf <- geomorph.data.frame(Y.gpa, species = plethodon$species, site = plethodon$site)
+#' gdf <- geomorph.data.frame(Y.gpa, species = plethodon$species, 
+#' site = plethodon$site)
 #' attributes(gdf)
 #' 
 #' # Using geomorph.data.frame to facilitate analysis
 #' anova(procD.lm(coords ~ Csize + species * site, data = gdf))
-geomorph.data.frame <- function(...) {
+geomorph.data.frame <- function(...){
 dots <- list(...)
 list.check0 <- sapply(1:length(dots), function(j) any(is.geomorph.data.frame(dots[[j]])))
 list.check00 <- sapply(1:length(dots), function(j) any(is.data.frame(dots[[j]])))

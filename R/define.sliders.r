@@ -73,7 +73,8 @@
 #' @examples  
 #' ## (not run) Use interactive function in rgl window
 #'  # data(scallops)
-#'  # define.sliders(scallops$coorddata[,,1], nsliders=11,surfsliders = scallops$surfslide) 
+#'  # define.sliders(scallops$coorddata[,,1], nsliders=11,
+#'  #   surfsliders = scallops$surfslide) 
 #'  # here the first specimen is used for plotting purposes only
 #'  
 #' ## Examples of AUTO mode 
@@ -89,7 +90,7 @@
 #' @references Bookstein, F. J. 1997 Landmark Methods for Forms without Landmarks: Morphometrics of 
 #' Group Differences in Outline Shape. Medical Image Analysis 1(3):225-243.
 
-define.sliders<-function(landmarks, nsliders, surfsliders=NULL, write.file = TRUE) {
+define.sliders<-function(landmarks, nsliders, surfsliders=NULL, write.file = TRUE){
   checkmat <- is.matrix(landmarks)
   if (checkmat==FALSE) { 
     if(length(dim(landmarks) == 3)){ spec <- as.matrix(landmarks[,,1]) }

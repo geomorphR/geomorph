@@ -850,7 +850,7 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, flip = NULL, phylo = FALSE, 
                                             tip.txt.adj = c(-0.1,-0.1),
                                             node.txt.cex = 1, node.txt.col = "grey",
                                             node.txt.adj = c(-0.1, -0.1)), 
-                           ...) {
+                           ...){
 
   class(x) <- "ordinate"
   pcdata <- as.matrix(x$x[, c(axis1, axis2)])

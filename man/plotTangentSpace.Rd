@@ -2,25 +2,14 @@
 % Please edit documentation in R/deprecated.defunct.r, R/plotTangentSpace.r
 \name{plotTangentSpace}
 \alias{plotTangentSpace}
-\title{Deprecated functions in geomorph}
+\title{Deprecated and defunct functions in geomorph}
 \usage{
 plotTangentSpace()
 
 plotTangentSpace()
 }
 \description{
-The following function has been deprecated in geomorph
+The following function is now defunct
 
-Function plots a set of Procrustes shape variables in tangent space along their principal component axes
-\subsection{Notes for geomorph 3.3.0 and subsequent versions}{
- This function is defunct and replaced with \code{\link{gm.prcomp}}.  The functions,
- \code{\link{summary.gm.prcomp}}, \code{\link{plot.gm.prcomp}}, and \code{\link{picknplot.shape}} 
- allow summaries, ammendable plots, and warpgrids, for points anywhere in a plot, respectively, can
- be used to accomplish any task of plotTangentSpace, with greater flexibility.
- }
-}
-\details{
-This function has been deprecated.  Use \code{\link{gm.prcomp}} instead, along with
-\code{\link{summary.gm.prcomp}} and \code{\link{plot.gm.prcomp}}.  Examples are provided in the
-vignette, geomorph.PCA.
+This function is now defunct
 }

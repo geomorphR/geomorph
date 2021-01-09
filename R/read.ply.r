@@ -20,7 +20,8 @@
 #' @return Function returns the following components:
 #'   \item{mesh3d}{list of class mesh3d- see rgl for details}
 #' @examples 
-#' # If the file has no mesh color, or color is undesirable, user can assign this as follows:
+#' # If the file has no mesh color, or color is undesirable, user can 
+#' # assign this as follows:
 #' # Using the example scallop PLY
 #' data(scallopPLY) 
 #' myply <- scallopPLY$ply

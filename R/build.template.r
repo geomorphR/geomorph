@@ -17,7 +17,7 @@
 #' landmark points in the template and the target specimen, a minimum of four fixed landmarks must be used. However,  
 #' to ensure a strong match between the scan and the template, it is recommended that a higher number of fixed points is used.
 #' 
-#' #' For more details on the full procedure one needs to follow to digitize fixed 3D landmarks and surface
+#' For more details on the full procedure one needs to follow to digitize fixed 3D landmarks and surface
 #' sliding semilandmarks, see also the relevant vignette by running \code{vignette("geomorph.digitize3D")}.
 #' 
 #'  NOTE: Function centers the mesh before digitizing by default (center=TRUE). If one chooses not to center,
@@ -74,7 +74,7 @@
 #' Anthropology, ed Slice DE (Springer-Verlag, New York), pp 73-98.
 #' @references Mitteroecker P & Gunz P (2009) Advances in Geometric Morphometrics. Evolutionary Biology 36(2):235-247.
 
-buildtemplate<-function(spec, fixed, surface.sliders, ptsize = 1, center = TRUE)    {
+buildtemplate<-function(spec, fixed, surface.sliders, ptsize = 1, center = TRUE){
   if(length(fixed)==1 && fixed<4){stop ("Number of fixed points is not sufficient.")}
   spec.name<-deparse(substitute(spec))
   mesh <- NULL

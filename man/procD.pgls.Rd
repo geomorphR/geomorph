@@ -124,16 +124,19 @@ Note that the specimen labels for both X and Y must match the labels on the tips
 data(plethspecies)
 Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment
 gdf <- geomorph.data.frame(Y.gpa, phy = plethspecies$phy)
-pleth.pgls <- procD.pgls(coords ~ Csize, phy = phy, data = gdf, iter = 999)
+pleth.pgls <- procD.pgls(coords ~ Csize, phy = phy, data = gdf, 
+iter = 999)
 anova(pleth.pgls)
 summary(pleth.pgls)  #similar output
 
 ### Working with procD.pgls objects
 predict(pleth.pgls)
-plot(pleth.pgls, type="regression", reg.type="RegScore", predictor = gdf$Csize)
+plot(pleth.pgls, type="regression", reg.type="RegScore", 
+predictor = gdf$Csize)
 attributes(pleth.pgls) # Note the PGLS object
 attributes(pleth.pgls$PGLS) # PGLS details embedded within PGLS object
-pleth.pgls$LM$Pcov # the projection matrix derived from the phylogenetic covariance matrix
+pleth.pgls$LM$Pcov # the projection matrix derived from the 
+# phylogenetic covariance matrix
 pleth.pgls$pgls.fitted # the PGLS fitted values 
 pleth.pgls$GM$pgls.fitted # The same fitted values, in a 3D array
 }

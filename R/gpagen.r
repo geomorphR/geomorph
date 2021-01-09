@@ -59,7 +59,7 @@
 #' @param max.iter The maximum number of GPA iterations to perform before superimposition is halted.  The final
 #' number of iterations could be larger than this, if curves or surface semilandmarks are involved.
 #' @param curves An optional matrix defining which landmarks should be treated as semilandmarks on boundary 
-#'   curves, and which landmarks specify the tangent directions for their sliding.  This matrix is generated automatically
+#'   curves, and which landmarks specify the tangent directions for their sliding.  This matrix is generated 
 #'   with \code{\link{readland.shapes}} following digitizing of curves in StereoMorph, or may be generated
 #'   using the function \code{\link{define.sliders}}.
 #' @param surfaces An optional vector defining which landmarks should be treated as semilandmarks on surfaces
@@ -142,7 +142,8 @@
 #' data(scallops)
 #' 
 #' # Using Procrustes Distance for sliding
-#' Y.gpa <- gpagen(A=scallops$coorddata, curves=scallops$curvslide, surfaces=scallops$surfslide)
+#' Y.gpa <- gpagen(A=scallops$coorddata, curves=scallops$curvslide, 
+#' surfaces=scallops$surfslide)
 #' # NOTE can summarize as: summary(Y.gpa)
 #' # NOTE can plot as: plot(Y.gpa) 
 gpagen = function(A, curves=NULL, surfaces=NULL, PrinAxes = TRUE, 

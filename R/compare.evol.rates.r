@@ -65,7 +65,8 @@
 #'  gp.end<-factor(c(0,0,1,0,0,1,1,0,0))  #endangered species vs. rest
 #'  names(gp.end)<-plethspecies$phy$tip
 #' 
-#' ER<-compare.evol.rates(A=Y.gpa$coords, phy=plethspecies$phy,method="simulation",gp=gp.end,iter=999)
+#' ER<-compare.evol.rates(A=Y.gpa$coords, phy=plethspecies$phy,
+#'   method="simulation",gp=gp.end,iter=999)
 #' summary(ER)
 #' plot(ER)
 compare.evol.rates<-function(A,phy,gp,iter=999,seed=NULL,method=c("permutation","simulation"),print.progress=TRUE ){

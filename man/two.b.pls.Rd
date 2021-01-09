@@ -68,8 +68,8 @@ The function quantifies the degree of association between two blocks of shape da
  \subsection{For more than two blocks}{ 
 If one wishes to consider 3+ arrays or matrices, there are multiple options.  First, one could perform multiple two.b.pls analyses and use
 \code{\link{compare.pls}} to ascertain which blocks are more "integrated".  Second, one could use \code{\link{integration.test}} and perform a test that
-averages the amount of integration (correlations) across multiple pairwise blocks.  Note that \code{\link{integration.test}} performed on two matrices or
-arrays returns the same results as two.b.pls.  (Thus, \code{\link{integration.test}} is more flexible and thorough.)
+averages the amount of integration (correlations) across multiple pairwise blocks.  Note that performing \code{\link{integration.test}} performed on two matrices or
+arrays returns the same results as \code{\link{two.b.pls}}.  Thus, \code{\link{integration.test}} is more flexible and thorough.
 }
 
  \subsection{Using phylogenies and PGLS}{ 
@@ -93,8 +93,8 @@ PLS <-two.b.pls(Y.gpa$coords,plethShapeFood$food,iter=999)
 summary(PLS)
 plot(PLS)
  
- ### Visualize shape variation using picknplot.shape Because picknplot requires 
- ### user decisions, the following example
+ ### Visualize shape variation using picknplot.shape Because picknplot  
+ ### requires user decisions, the following example
  ### is not run (but can be with removal of #).
  ### For detailed options, see the picknplot help file
  # picknplot.shape(plot(PLS))

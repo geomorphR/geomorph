@@ -83,7 +83,8 @@ The input 'landmarks' can be simply a vector of numbers corresponding to the "sl
  
 ## (not run) Use interactive function in rgl window
  # data(scallops)
- # define.sliders(scallops$coorddata[,,1], nsliders=11,surfsliders = scallops$surfslide) 
+ # define.sliders(scallops$coorddata[,,1], nsliders=11,
+ #   surfsliders = scallops$surfslide) 
  # here the first specimen is used for plotting purposes only
  
 ## Examples of AUTO mode 
