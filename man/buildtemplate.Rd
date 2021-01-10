@@ -24,9 +24,11 @@ and "surfslide.csv", a file containing the address of the landmarks defined as "
 The function also returns to the console an n x 3 matrix containing the x,y,z coordinates of the digitized landmarks.
 }
 \description{
-An interactive function to build a template for the digitization across specimens of three-dimensional (3D) 
-surface sliding semilandmarks. Input for the function is either a matrix of vertex coordinates
- defining a 3D surface object or a mesh3d object as obtained from \code{\link{read.ply}}.
+An interactive function to build a template for the digitization across 
+specimens of three-dimensional (3D) surface sliding semilandmarks. Input 
+for the function is either a matrix of vertex coordinates
+ defining a 3D surface object or a mesh3d object as obtained 
+ from \code{\link{read.ply}}.
 }
 \details{
 Function constructs a template of surface slider semilandmarks. If desired, the user can simultaneously 
@@ -42,8 +44,7 @@ using the function \code{\link{digitsurface}}. Because template matching is base
 landmark points in the template and the target specimen, a minimum of four fixed landmarks must be used. However,  
 to ensure a strong match between the scan and the template, it is recommended that a higher number of fixed points is used.
 
-For more details on the full procedure one needs to follow to digitize fixed 3D landmarks and surface
-sliding semilandmarks, see also the relevant vignette by running \code{vignette("geomorph.digitize3D")}.
+For more details see the vignette: \code{vignette("geomorph.digitize3D")}.
 
  NOTE: Function centers the mesh before digitizing by default (center=TRUE). If one chooses not to center,
  specimen may be difficult to manipulate in rgl window.

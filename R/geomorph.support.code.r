@@ -2,7 +2,7 @@
 #' @docType package
 #' @aliases geomorph
 #' @title Geometric morphometric analyses for 2D/3D data
-#' @author Dean C. Adams, Michael Collyer & Antigoni Kaliontzopoulou
+#' @author Dean C. Adams, Michael Collyer, Antigoni Kaliontzopoulou, and Erica Baken
 #' @description Functions in this package allow one to read, manipulate, and digitize landmark data; generate shape
 #'  variables via Procrustes analysis for points, curves and surface data, perform statistical analyses
 #'  of shape variation and covariation, and provide graphical depictions of shapes and patterns of

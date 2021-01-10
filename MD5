@@ -11,13 +11,12 @@ d8e8360c03c03fe45d2100e9c05d4a89 *data/plethodon.rda
 80c6fa53b642b23b378cf036d1b962f1 *data/ratland.rda
 9ba51ab9be03930a4acdcddde8169b33 *data/scallopPLY.rda
 6e5e71b242462e422b716800ffc3c464 *data/scallops.rda
-d3b686fdaebdb5dd03c819916a7d29a4 *debug.log
 51325c1d89a160e9a70b9ae702b4335e *DESCRIPTION
 73f723a130c92f8b84a81465a15add7c *geomorph.Rproj
-7fe229f1e38be2503f79f13c2c9ce74b *inst/CITATION
+ecaa8e0d94f6e6cb86b707e436d3ec09 *inst/CITATION
 593e42548fcbd08b6027b15bbca38808 *man/arrayspecs.Rd
-33a864cdcd30644af426b5c20f83e06d *man/bilat.symmetry.Rd
-f8b207c8d17a044930bd13fa478d91da *man/buildtemplate.Rd
+1e36ab0fd9c3b60b57c116a2e29ea77a *man/bilat.symmetry.Rd
+83e2e491a76ff7cd884a44cc10b23cb4 *man/buildtemplate.Rd
 7110787a446f19a0681fbe22dab930ab *man/combine.subsets.Rd
 13a5520cfb55559fbb747f1f002d0568 *man/compare.CR.Rd
 b8c267368ca13950f0eca6d45bc0347e *man/compare.evol.rates.Rd
@@ -35,7 +34,7 @@ eb400f5dae67140dcb7aa6ab088e8158 *man/digitsurface.Rd
 5d15397d160ea4e8be37ee4298cdae6d *man/estimate.missing.Rd
 e5ea7eb05043e14bf36bb1c553de0576 *man/findMeanSpec.Rd
 9913b579a9bd7aaf90e1c1e57261e7bc *man/fixed.angle.Rd
-f9221a7b4261484793b945d7be4bbec6 *man/geomorph-package.Rd
+2b261eb04173f51ca56cf603b47a63fe *man/geomorph-package.Rd
 4681bbf9711d9eafd48798c7537bf5b7 *man/geomorph.data.frame.Rd
 c7fdffac3135bde168be933be6bf2243 *man/globalIntegration.Rd
 918374c052b36b10c28a90b52f77e934 *man/gm.prcomp.Rd
@@ -129,8 +128,8 @@ d9119f721918f22c267db843023a86fe *man/writeland.tps.Rd
 56bcf005592d5f74ce5e39c3bf1dc92b *NAMESPACE
 96e77be96aa2d597854f4626f533419b *NEWS.md
 d80d05ef890863f1b3004473627ea5f1 *R/arrayspecs.r
-757d5de3a3c52432ddaf0aad632f6661 *R/bilat.symmetry.r
-e6bad3e2bf65a55aae4aa0502b6f6a30 *R/build.template.r
+9402315471f5e41cc24a05b6aeda0bbf *R/bilat.symmetry.r
+50a90ca7697df4e49c407edba726ae9c *R/build.template.r
 43293982c719f1436b8dc4cb5850fa0d *R/combine.subsets.R
 7613f76cfe121ca1d97fc44c9b438917 *R/compare.CR.R
 19ceb7645b0993bb293ffd6e99c8e286 *R/compare.evol.rates.r
@@ -150,7 +149,7 @@ ce5ad51ac06566d0e252f8dc26f55e9b *R/digit.fixed.r
 aac6a4f8a759473e8c37048e5c8e3d91 *R/findMeanSpec.r
 067124d4119de55a6089c6aefdd0eac5 *R/fixed.angle.r
 3d7958991ae174c24ba7c570f4e03b27 *R/geomorph.data.frame.r
-fc8922ec929a9fbc957c51153c46e2fd *R/geomorph.support.code.r
+f427f015964b35c65d235954b09fe572 *R/geomorph.support.code.r
 0ca34f681d97ba8f96654e33acdac269 *R/geomorph.utils.r
 b0de2a67cff633e27e7a00860187240f *R/globalIntegration.r
 28cc9a124571eb2632ba667464015b03 *R/gm.prcomp.R

@@ -101,8 +101,9 @@
 #' \item{symm.shape}{The symmetric component of shape variation.}
 #' \item{asymm.shape}{The asymmetric component of shape variation.}
 #' \item{DA.component}{The directional asymmetry component, found as the mean shape for each side.}
-#' \item{FA.component}{The fluctuating asymmetry component for each specimen, found as 
-#' the specimen-specific side deviation adjusted for the mean directional asymmetry in the dataset.}
+#' \item{FA.component}{The fluctuating asymmetry component for each specimen, 
+#' found as the specimen-specific side deviation adjusted for the mean 
+#' directional asymmetry in the dataset.}
 #' \item{data.type}{A value indicating whether the analysis was performed as Object or Matching 
 #' symmetry.}
 #' \item{permutations}{The number of random permutations used.}
@@ -125,7 +126,8 @@
 #' #Example of matching symmetry
 #'
 #' data(mosquito)
-#' gdf <- geomorph.data.frame(wingshape = mosquito$wingshape, ind=mosquito$ind, 
+#' gdf <- geomorph.data.frame(wingshape = mosquito$wingshape, 
+#' ind=mosquito$ind, 
 #' side=mosquito$side,
 #' replicate=mosquito$replicate)
 #' mosquito.sym <- bilat.symmetry(A = wingshape, ind = ind, side = side,
@@ -146,17 +148,21 @@
 #' #Example of object symmetry
 #'
 #' data(lizards)
-#' gdf <- geomorph.data.frame(shape = lizards$coords, ind = lizards$ind, 
+#' gdf <- geomorph.data.frame(shape = lizards$coords, 
+#' ind = lizards$ind, 
 #' replicate = lizards$rep)
-#' liz.sym <- bilat.symmetry(A = shape, ind = ind, rep = rep, object.sym = TRUE, 
+#' liz.sym <- bilat.symmetry(A = shape, ind = ind, rep = rep, 
+#' object.sym = TRUE, 
 #' land.pairs = lizards$lm.pairs, data = gdf, RRPP = TRUE, iter = 149)
 #' summary(liz.sym)
 #' 
 #' # Example of object symmetry in 3D and including semilandmarks
 #' 
 #' data(scallops)
-#' gdf <- geomorph.data.frame(shape = scallops$coorddata, ind = scallops$ind)
-#' scallop.sym <- bilat.symmetry(A = shape, ind = ind, object.sym = TRUE, 
+#' gdf <- geomorph.data.frame(shape = scallops$coorddata, 
+#' ind = scallops$ind)
+#' scallop.sym <- bilat.symmetry(A = shape, ind = ind, 
+#' object.sym = TRUE, 
 #' curves= scallops$curvslide, surfaces = scallops$surfslide,
 #' land.pairs=scallops$land.pairs, data = gdf, RRPP = TRUE, iter = 149)
 #' summary(scallop.sym)
