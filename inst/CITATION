@@ -6,7 +6,7 @@ citEntry(entry="Misc",
 			    as.person("M.L. Collyer"),
 			    as.person("A. Kaliontzopoulou")),
 			    as.person("E. Baken"))
-  	year = "2021",
+  	year = "2021"
   	  	url = " https://cran.r-project.org/package=geomorph",
 
         textVersion = paste("Adams, D. C., M. L. Collyer, A. Kaliontzopoulou, and E. Balken. 2021. Geomorph: Software for geometric morphometric analyses. R package version 3.3.2. https://cran.r-project.org/package=geomorph.",sep=""))
