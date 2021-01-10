@@ -148,7 +148,7 @@ NULL
 #' Dataset includes superimposed landmarks (coords), centroid size (cs), an index of individuals (ind) and digitizing repetitions (rep), and a table of symmetrical matching
 #' landmarks (lm.pairs). The object is a \code{\link{geomorph.data.frame}}.
 #' The dataset corresponds to the data for population "b" from Lazic et al. 2015.
-#' @references Lazić, M., Carretero, M.A., Crnobrnja-Isailović, J. & Kaliontzopoulou, A. 2015. Effects of
+#' @references Lazic, M., Carretero, M.A., Crnobrnja-Isailovic, J. & Kaliontzopoulou, A. 2015. Effects of
 #' environmental disturbance on phenotypic variation: an integrated assessment of canalization, developmental 
 #' stability, modularity and allometry in lizard head shape. American Naturalist 185: 44-58.
 NULL

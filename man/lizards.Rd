@@ -13,7 +13,7 @@ landmarks (lm.pairs). The object is a \code{\link{geomorph.data.frame}}.
 The dataset corresponds to the data for population "b" from Lazic et al. 2015.
 }
 \references{
-Lazić, M., Carretero, M.A., Crnobrnja-Isailović, J. & Kaliontzopoulou, A. 2015. Effects of
+Lazic, M., Carretero, M.A., Crnobrnja-Isailovic, J. & Kaliontzopoulou, A. 2015. Effects of
 environmental disturbance on phenotypic variation: an integrated assessment of canalization, developmental 
 stability, modularity and allometry in lizard head shape. American Naturalist 185: 44-58.
 }
