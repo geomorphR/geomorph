@@ -33,8 +33,8 @@
 #' Note that \code{phylo.integration} performed on two matrices or arrays returns the same results as a phylogenetic variation of
 #'  \code{\link{two.b.pls}}.  It might be of interest with 3+ modules to perform separate phylogenetic integration tests
 #' between all pairwise comparisons of modules.  This can be done, test by test, and the levels of integration can be compared with
-#' \code{\link{compare.pls}}.  Such results are different than using the average amount of integration, as performed by \code{phylo.integration}
-#' when more than two modules are input.
+#' \code{\link{compare.pls}}.  Such results are different than using the average amount of integration when more than two modules 
+#' are input, as found with \code{phylo.integration}.
 #' }
 #'  
 #'  \subsection{Notes for geomorph 3.0.4 and subsequent versions}{ 
@@ -50,7 +50,8 @@
 #' @param A A 2D array (n x [p1 x k1]) or 3D array (p1 x k1 x n) containing Procrustes shape variables for the first block
 #' @param A2 An optional 2D array (n x [p2 x k2]) or 3D array (p2 x k2 x n) containing Procrustes shape variables for the second block 
 #' @param phy A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape
-#' @param partition.gp A list of which landmarks (or variables) belong in which partition (e.g. A,A,A,B,B,B,C,C,C) (required when only 1 dataset provided)
+#' @param partition.gp A list of which landmarks (or variables) belong in which partition: 
+#' (e.g. A, A, A, B, B, B, C, C, C). This is required when only 1 dataset provided.
 #' @param iter Number of iterations for significance testing
 #' @param seed An optional argument for setting the seed for random permutations of the resampling procedure.  
 #' If left NULL (the default), the exact same P-values will be found for repeated runs of the analysis (with the same number of iterations).
@@ -102,12 +103,13 @@
 #' Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment
 #' land.gps<-c("A","A","A","A","A","B","B","B","B","B","B") 
 #' 
-#' IT<- phylo.integration(Y.gpa$coords,partition.gp=land.gps,phy=plethspecies$phy,iter=999)
+#' IT<- phylo.integration(Y.gpa$coords,partition.gp=land.gps,
+#'   phy=plethspecies$phy,iter=999)
 #' summary(IT) # Test summary
 #' plot(IT) # PLS plot
 #' 
-#'  ### Visualize shape variation using picknplot.shape Because picknplot requires 
-#'  ### user decisions, the following example
+#'  ### Visualize shape variation using picknplot.shape Because picknplot  
+#'  ### requires user decisions, the following example
 #'  ### is not run (but can be with removal of #).
 #'  ### For detailed options, see the picknplot help file
 #'  # picknplot.shape(plot(IT))

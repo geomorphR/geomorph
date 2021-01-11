@@ -76,10 +76,13 @@ for articulated structures.
 }
 \examples{
 data(larvalMorph) 
-head.gpa <- gpagen(larvalMorph$headcoords, curves = larvalMorph$head.sliders)
-tail.gpa <- gpagen(larvalMorph$tailcoords, curves = larvalMorph$tail.sliders)
+head.gpa <- gpagen(larvalMorph$headcoords, 
+  curves = larvalMorph$head.sliders)
+tail.gpa <- gpagen(larvalMorph$tailcoords, 
+  curves = larvalMorph$tail.sliders)
 
-# Combine original data without GPA (plot to see relative size of heads and tails)
+# Combine original data without GPA (plot to see relative size of  
+# heads and tails)
 
  all.lm <- combine.subsets(head = larvalMorph$headcoords,
  tail = larvalMorph$tailcoords, gpa = FALSE, CS.sets = NULL)
@@ -90,13 +93,14 @@ tail.gpa <- gpagen(larvalMorph$tailcoords, curves = larvalMorph$tail.sliders)
 comb.lm <- combine.subsets(head = head.gpa, tail = tail.gpa, gpa = TRUE)
 summary(comb.lm)
 
-#' # (configurations are actual relative size)
+# (configurations are actual relative size)
 comb.lm$coords[,,1]
 
 # Plot all specimens and just first specimen and color code landmarks 
 par(mfrow = c(1,2))
 plotAllSpecimens(comb.lm$coords)
-plot(comb.lm$coords[,,1], pch = 21, bg = c(rep(1,26), rep(2,64)), asp = 1)
+plot(comb.lm$coords[,,1], pch = 21, bg = c(rep(1,26), 
+rep(2,64)), asp = 1)
 
 # Override relative centroid size
 
@@ -104,7 +108,8 @@ comb.lm <- combine.subsets(head = head.gpa$coords,
 tail = tail.gpa$coords, gpa = FALSE, CS.sets = NULL)
 par(mfrow = c(1,2))
 plotAllSpecimens(comb.lm$coords)
-plot(comb.lm$coords[,,1], pch = 21, bg = c(rep(1,26), rep(2,64)), asp = 1)
+plot(comb.lm$coords[,,1], pch = 21, bg = c(rep(1,26), 
+rep(2,64)), asp = 1)
 
 # Note the head is as large as the tail, which is quite unnatural.
 
@@ -115,7 +120,8 @@ tail = tail.gpa, gpa = TRUE, norm.CS = TRUE)
 summary(comb.lm)
 par(mfrow = c(1,2))
 plotAllSpecimens(comb.lm$coords)
-plot(comb.lm$coords[,,1], pch = 21, bg = c(rep(1,26), rep(2,64)), asp = 1)
+plot(comb.lm$coords[,,1], pch = 21, bg = c(rep(1,26), 
+rep(2,64)), asp = 1)
 par(mfrow = c(1,1))
 
 # Note that the head is too large, compared to a real specimen.  
@@ -132,13 +138,15 @@ tail = tail.gpa, gpa = TRUE, norm.CS = FALSE, weights = c(0.3, 0.7))
 summary(comb.lm)
 par(mfrow = c(1,2))
 plotAllSpecimens(comb.lm$coords)
-plot(comb.lm$coords[,,1], pch = 21, bg = c(rep(1,26), rep(2,64)), asp = 1)
+plot(comb.lm$coords[,,1], pch = 21, bg = c(rep(1,26), 
+rep(2,64)), asp = 1)
 par(mfrow = c(1,1))
 
 # Note that the head is way too small, compared to a real specimen.  
-# This option allows one to dictate the relative sizes of subsets as portions 
-# of the combined set.  An option like this should be used with caution, 
-# but can help overcome issues caused by landmark density.
+# This option allows one to dictate the relative sizes of subsets
+#  as portions of the combined set.  An option like this should be 
+# used with caution, but can help overcome issues caused by landmark 
+# density.
 }
 \references{
 Davis, M.A., M.R. Douglas, M.L. Collyer, & M.E. Douglas, M. E. 2016.
@@ -151,7 +159,7 @@ Adams, D.C. 1999. Methods for shape analysis of landmark data from articulated s
 Dryden, I.L. and K.V Mardia. 2016. Statistical shape analysis, with applications in R: Second edition.
 
 Collyer, M.L., M.A. Davis, and D.C. Adams. 2020. Making heads or tails of combined landmark configurations in 
-geometric morphometric data. Accepted
+geometric morphometric data. Evolutionary Biology. 47:193-205.
 }
 \author{
 Michael Collyer

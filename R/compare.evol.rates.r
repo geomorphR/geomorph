@@ -65,10 +65,13 @@
 #'  gp.end<-factor(c(0,0,1,0,0,1,1,0,0))  #endangered species vs. rest
 #'  names(gp.end)<-plethspecies$phy$tip
 #' 
-#' ER<-compare.evol.rates(A=Y.gpa$coords, phy=plethspecies$phy,method="simulation",gp=gp.end,iter=999)
+#' ER<-compare.evol.rates(A=Y.gpa$coords, phy=plethspecies$phy,
+#'   method="simulation",gp=gp.end,iter=999)
 #' summary(ER)
 #' plot(ER)
-compare.evol.rates<-function(A,phy,gp,iter=999,seed=NULL,method=c("permutation","simulation"),print.progress=TRUE ){
+compare.evol.rates<-function(A, phy, gp, iter = 999, seed = NULL,  
+                             method = c("permutation", "simulation"), 
+                             print.progress = TRUE){
   gp<-as.factor(gp)
   if (length(dim(A))==3){ 
     if(is.null(dimnames(A)[[3]])){
@@ -109,18 +112,18 @@ compare.evol.rates<-function(A,phy,gp,iter=999,seed=NULL,method=c("permutation",
   Ptrans <- D.mat%*%Xadj
   g<-factor(as.numeric(gp))
   ngps<-nlevels(g)
-  if(nlevels(gp) > 1){ gps.combo <- combn(ngps, 2) }
+  if(nlevels(gp) > 1){  gps.combo <- combn(ngps, 2) }
   if(method != "permutation") {
     rate.mat<-sigma.obs$R
     diag(rate.mat)<-sigma.obs$sigma.d.all
     rate.mat<-makePD(rate.mat)
     x.sim<-simplify2array(sim.char.BM(phy=phy,par=rate.mat,nsim=iter, seed=seed)) 
-    x.r <- simplify2array(lapply(1:iter, function(j) Ptrans%*%x.sim[,,j]))
+    x.r <- lapply(1:iter, function(j) Ptrans%*%x.sim[,,j])
   }
   if(method == "permutation"){
     ind<-perm.index(N,iter, seed=seed)
     xp <- Ptrans%*%x
-    x.r <-simplify2array(lapply(1:iter, function(i) xp[ind[[i]],]))
+    x.r <- lapply(1:iter, function(i) xp[ind[[i]],])
   }
     
   if(nlevels(gp) > 1){
@@ -128,18 +131,19 @@ compare.evol.rates<-function(A,phy,gp,iter=999,seed=NULL,method=c("permutation",
       pb <- txtProgressBar(min = 0, max = iter, initial = 0, style=3) 
       sigma.rand <- sapply(1:iter, function(j) {
         setTxtProgressBar(pb,j)
-        fast.sigma.d(as.matrix(x.r[,,j]),Ptrans,g, ngps, gps.combo, N,p )
+        fast.sigma.d(as.matrix(x.r[[j]]),Ptrans,g, ngps, gps.combo, N,p ) 
       })
       close(pb)
     } else sigma.rand <- sapply(1:(iter), 
-                                function(j) fast.sigma.d(as.matrix(x.r[,,j]),Ptrans,g, ngps, gps.combo,N,p))
+                                function(j) 
+                                fast.sigma.d(as.matrix(x.r[[j]]),Ptrans,g, ngps, gps.combo, N,p ) )
     if(nlevels(gp) == 2) 
       sigma.rand <- random.sigma <- c(sigma.obs$sigma.d.gp.ratio, sigma.rand) else {
         sigma.rand <- cbind(as.vector(sigma.obs$sigma.d.gp.ratio), sigma.rand)
         random.sigma<- sapply(1:(iter+1), function(j) {max(sigma.rand[,j])})
       }
     p.val <- pval(random.sigma)
-    Z <- effect.size(log(random.sigma), center=TRUE) 
+    Z <- effect.size(random.sigma, center=TRUE) 
     if(nlevels(gp) > 2) {
       p.val.mat <- dist(sigma.obs$sigma.d.gp)
       p.val.mat[1:length(p.val.mat)] <- apply(sigma.rand, 1, pval)

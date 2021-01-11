@@ -18,7 +18,8 @@ integration.test(
 
 \item{A2}{An optional 3D array (p x k x n) containing Procrustes shape variables for all specimens, or a matrix (n x variables) for a second partition}
 
-\item{partition.gp}{A list of which landmarks (or variables) belong in which partition (e.g. A,A,A,B,B,B,C,C,C) (required when only 1 dataset provided)}
+\item{partition.gp}{A list of which landmarks (or variables) belong in which partition: 
+(e.g. A, A, A, B, B, B, C, C, C). Required when only 1 dataset provided.}
 
 \item{iter}{Number of iterations for significance testing}
 
@@ -118,13 +119,14 @@ summary(IT) # Test summary
 plot(IT) # PLS plot
 
  
- ### Visualize shape variation using picknplot.shape Because picknplot requires 
- ### user decisions, the following example
+ ### Visualize shape variation using picknplot.shape Because picknplot  
+ ### requires user decisions, the following example
  ### is not run (but can be with removal of #).
  ### For detailed options, see the picknplot help file
  # picknplot.shape(plot(IT))
 
-IT$left.pls.vectors # extracting just the left (first block) singular vectors
+IT$left.pls.vectors # extracting just the left (first block) 
+# singular vectors
 }
 \references{
 Bookstein, F. L., P. Gunz, P. Mitteroecker, H. Prossinger, K. Schaefer, and H. Seidler. 

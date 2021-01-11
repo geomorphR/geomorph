@@ -10,8 +10,8 @@
 #' 
 #' To digitize 3D surface sliding semilandmarks the function \code{\link{digitsurface}} should be used instead.
 #' 
-#' For more details on the full procedure one needs to follow to digitize fixed 3D landmarks and surface
-#' sliding semilandmarks, see also the relevant vignette by running \code{vignette("geomorph.digitize3D")}.
+#' For details on the full procedure for digitizing fixed 3D landmarks and surface
+#' sliding semilandmarks, see the relevant vignette by running \code{vignette("geomorph.digitize3D")}.
 #' 
 #'  NOTE: The function centers the mesh before digitizing by default (center=TRUE). If one chooses not to center,
 #'  specimen may be difficult to manipulate in rgl window.
@@ -57,7 +57,11 @@
 #' @keywords digitizing
 #' @author Erik Otarola-Castillo & Emma Sherratt
 #' @seealso  \code{\link[rgl]{rgl-package}} (used in 3D plotting)
-digit.fixed <- function(spec, fixed, index=FALSE, ptsize = 1, center = TRUE)    {
+digit.fixed <- function(spec, 
+                        fixed, 
+                        index=FALSE, 
+                        ptsize = 1, 
+                        center = TRUE){
   spec.name<-deparse(substitute(spec))
   mesh <- NULL
   if (inherits(spec, "shape3d") == TRUE || inherits(spec, "mesh3d") == TRUE){

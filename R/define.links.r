@@ -25,7 +25,7 @@
 #' @author Emma Sherratt
 #' @seealso  \code{\link[rgl]{rgl-package}} (used in 3D plotting)
 #' 
-define.links <- function(spec, ptsize=1, links = NULL){
+define.links <- function(spec, ptsize = 1, links = NULL){
   spec.name <- deparse(substitute(spec))
   checkmat <- is.matrix(spec)
   if (checkmat == FALSE) {

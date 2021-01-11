@@ -55,9 +55,9 @@ of arguments and output, but this function is quite a bit more diverse.  This fu
 the capability of performing analyses generally referred to as:
 
 \itemize{
-\item{\bold{PCA}}{  Traditional PCA based on OLS-centering and projection of data.}
-\item{\bold{  Phylomorphospace}}{  Traditional PCA with estimated ancestral states and phylogenetic branches
-projected into ordination plots.}
+\item{\bold{PCA}}{  Standard PCA based on OLS-centering and projection of data.}
+\item{\bold{  Phylomorphospace}}{  Standard PCA with estimated ancestral 
+states and phylogenetic branches projected into ordination plots.}
 \item{\bold{phyloPCA}}{  PCA based on GLS-centering and projection of data.  Also possible to 
 project ancestral states into plots. Note that if transformed GLS-residuals are used for projection, the ancestral states
 might not appear logical, as the projection is independent of phylogeny.  With OLS-centering, a phyloPCA as described by 
@@ -79,7 +79,7 @@ projection from the transformed data space, as opposed to an oblique projection 
 }
 
 PLOTTING: Contrary to previous geomorph implementations, gm.prcomp does not produce plots. 
-For plotting options of gm.prcomp class objects combine \code{\link{plot.gm.prcomp}} and 
+For plotting gm.prcomp class objects combine \code{\link{plot.gm.prcomp}} and 
 \code{\link{picknplot.shape}} following the examples below. 
 
 SUMMARY STATISTICS: For principal component plots, the traditional statistics to summarize the analysis include
@@ -117,6 +117,8 @@ have now been deprecated.
  PCA <- gm.prcomp(Y.gpa$coords)
  summary(PCA)
  plot(PCA, main = "PCA")
+ plot(PCA, main = "PCA", flip = 1) # flip the first axis
+ plot(PCA, main = "PCA", axis1 = 3, axis2 = 4) # change PCs viewed
  
  ### Phylomorphospace - PCA with phylogeny (result is same as above, 
  ### but with estimated ancestral states projected into plot)
@@ -130,7 +132,8 @@ have now been deprecated.
  summary(phylo.PCA)
  plot(phylo.PCA, phylo = TRUE, main = "phylo PCA")
  
- ### Phylogenetic PCA - PCA based on GLS-centering and transformed projection
+ ### Phylogenetic PCA - PCA based on GLS-centering and transformed 
+ # projection
  # This produces a PCA independent of phylogeny
  phylo.tPCA <- gm.prcomp(Y.gpa$coords, phy = plethspecies$phy, 
  GLS = TRUE, transform = TRUE)
@@ -141,7 +144,8 @@ have now been deprecated.
  ### greatest variation, like in PCA
  
  # OLS method (rotation of PCA)
- PaCA.ols <- gm.prcomp(Y.gpa$coords, phy = plethspecies$phy, align.to.phy = TRUE)
+ PaCA.ols <- gm.prcomp(Y.gpa$coords, phy = plethspecies$phy, 
+   align.to.phy = TRUE)
  summary(PaCA.ols)
  plot(PaCA.ols, phylo = TRUE, main = "PaCA using OLS")
  
@@ -155,21 +159,25 @@ have now been deprecated.
  PaCA.gls <- gm.prcomp(Y.gpa$coords, phy = plethspecies$phy, 
  align.to.phy = TRUE, GLS = TRUE, transform = TRUE)
  summary(PaCA.gls)
- plot(PaCA.gls, phylo = TRUE, main = "PaCA using GLS and transformed projection")
+ plot(PaCA.gls, phylo = TRUE, 
+   main = "PaCA using GLS and transformed projection")
  
  
  ### Advanced Plotting
  gps <- as.factor(c(rep("gp1", 5), rep("gp2", 4))) # Two random groups
  par(mar=c(2, 2, 2, 2))
- plot(PaCA.ols, pch=22, cex = 1.5, bg = gps, phylo = TRUE) # Modify options as desired
+ plot(PaCA.ols, pch=22, cex = 1.5, bg = gps, phylo = TRUE) 
+ # Modify options as desired
  #  Add things as desired using standard R plotting
- text(par()$usr[1], 0.1*par()$usr[3], labels = "PC1 - 45.64\%", pos = 4, font = 2)
+ text(par()$usr[1], 0.1*par()$usr[3], labels = "PC1 - 45.64\%", 
+   pos = 4, font = 2)
  text(0, 0.95*par()$usr[4], labels = "PC2 - 18.80\%", pos = 4, font = 2)
  legend("topleft", pch=22, pt.bg = unique(gps), legend = levels(gps))
  
  ### 3D plot with a phylogeny and time on the z-axis
  plot(PCA.w.phylo, time.plot = TRUE)
- plot(PCA.w.phylo, time.plot = TRUE, bg = "red", phylo.par = list(tip.labels = TRUE, 
+ plot(PCA.w.phylo, time.plot = TRUE, bg = "red", 
+    phylo.par = list(tip.labels = TRUE, 
  tip.txt.cex = 2, edge.color = "blue", edge.width = 2))
  
 }

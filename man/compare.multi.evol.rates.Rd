@@ -2,7 +2,7 @@
 % Please edit documentation in R/compare.multi.evol.rates.r
 \name{compare.multi.evol.rates}
 \alias{compare.multi.evol.rates}
-\title{Comparing net rates of shape evolution among traits on phylogenies}
+\title{Comparing net rates of evolution among traits on phylogenies}
 \usage{
 compare.multi.evol.rates(
   A,
@@ -82,8 +82,8 @@ different structures (shapes) that were superimposed separately, then the estima
 take the difference in the number of trait dimensions into account (see discussion in Denton and
 Adams 2015). This option is identified by selecting Subset = FALSE.
 
- The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with 
- \code{\link{compare.multi.evol.rates}}.
+ With  \code{\link{compare.multi.evol.rates}}, the generic functions \code{\link{print}}, \code{\link{summary}}, and 
+ \code{\link{plot}} all work.
  The generic function, \code{\link{plot}}, produces a histogram of random rate-ratios associated with
  the resampling procedure.
 }
@@ -91,7 +91,8 @@ Adams 2015). This option is identified by selecting Subset = FALSE.
 
 data(plethspecies) 
 Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment    
-land.gp<-c("A","A","A","A","A","B","B","B","B","B","B")  #mandible and cranium subsets
+land.gp<-c("A","A","A","A","A","B","B","B","B","B","B")  
+    #mandible and cranium subsets
 
 EMR<-compare.multi.evol.rates(A=Y.gpa$coords,gp=land.gp, 
     Subset=TRUE, phy= plethspecies$phy,iter=999)

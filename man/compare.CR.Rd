@@ -40,11 +40,12 @@ should be specified. Finally, one may perform the comparison as either a one-tai
 }
 \examples{
 
-### NOT RUN
+#NOT RUN
 # Example 1: Compare modular signal across datasets
-
+ 
 # data(pupfish) 
-# Y.gpa<-gpagen(pupfish$coords, print.progress = FALSE)    #GPA-alignment    
+# Y.gpa<-gpagen(pupfish$coords, print.progress = FALSE)    #GPA-alignment   
+ 
 ## landmarks on the body and operculum
 # land.gps<-rep('a',56); land.gps[39:48]<-'b'
 
@@ -53,30 +54,39 @@ should be specified. Finally, one may perform the comparison as either a one-tai
 
 # coords.gp <- coords.subset(Y.gpa$coords, group)
 
-# modularity.tests <- lapply(1:nlevels(group), function(j) modularity.test(coords.gp[[j]],
-#  land.gps, iter = 499, print.progress = FALSE))
-## the lapply function performs the modularity test on each 3D array in the lists provided
+# modul.tests <- Map(function(x) modularity.test(x, land.gps,iter=999, 
+# print.progress = FALSE), coords.gp) 
+         
+# the map function performs the integration test on each 3D array 
+# in the lists provided
 
-# modularity.tests[[1]]
-# modularity.tests[[2]]
-# modularity.tests[[3]]
-# modularity.tests[[4]]
+#  modul.tests$Marsh.F
+#  modul.tests$Marsh.M
+#  modul.tests$Sinkhole.F
+#  modul.tests$Sinkhole.M
 
-# group.Z <- compare.CR(modularity.tests, CR.null = FALSE)
-# group.Z  ## NOTE: need a summary function 
+# group.Z <- compare.CR(modul.tests, CR.null = FALSE)
+# summary(group.Z)
 
 # Example 2: Compare alternative modular hypotheses
 
-# land.gps3 <- rep('a',56); land.gps3[39:48]<-'b'; land.gps3[c(6:9,28:38)] <- 'c' 
-   #3 module hypothesis (tail now a module)
-# land.gps4 <- rep('a',56); land.gps4[39:48]<-'b'; land.gps4[c(6:9,28:38)] <- 'c'; 
- # land.gps4[c(10,49:56)] <- 'd'  #4 module hypothesis (eye now a module)
+# 3 module hypothesis (tail now a module)
+# land.gps3 <- rep('a',56); land.gps3[39:48]<-'b'; 
+# land.gps3[c(6:9,28:38)] <- 'c' 
+   
+# 4 module hypothesis (eye now a module)
+# land.gps4 <- rep('a',56); land.gps4[39:48]<-'b'; 
+# land.gps4[c(6:9,28:38)] <- 'c'; 
+#  land.gps4[c(10,49:56)] <- 'd'  
 
-# m3.test <- modularity.test(coords.gp$Marsh.F,land.gps3, iter = 499, print.progress = FALSE)
-# m4.test <- modularity.test(coords.gp$Marsh.F,land.gps4, iter = 499, print.progress = FALSE)
+# m3.test <- modularity.test(coords.gp$Marsh.F,land.gps3, iter = 499, 
+# print.progress = FALSE)
+# m4.test <- modularity.test(coords.gp$Marsh.F,land.gps4, iter = 499, 
+# print.progress = FALSE)
 
-# model.Z <- compare.CR(modularity.tests[[1]],m3.test,m4.test, CR.null = TRUE)
-# model.Z 
+# model.Z <- compare.CR(modul.tests$Marsh.F,m3.test,m4.test, 
+# CR.null = TRUE)
+# summary(model.Z)
 
 }
 \references{

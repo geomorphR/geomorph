@@ -13,7 +13,7 @@
 #' @param mean A logical value indicating whether the mean shape should be included in the plot
 #' @param links An optional matrix defining for links between landmarks (only if mean=TRUE)
 #' @param label A logical value indicating whether landmark numbers will be plotted (only if mean=TRUE)
-#' @param plot.param A list of plotting parameters for the points (pt.bg, pt.cex), mean (mean.bg, mean.cex), links (link.col, link.lwd, link.lty) and landmark labels (txt.cex, txt.adj, txt.pos, txt.col)
+#' @param plot.param A list of plot parameters for the points (pt.bg, pt.cex), mean (mean.bg, mean.cex), links (link.col, link.lwd, link.lty) and landmark labels (txt.cex, txt.adj, txt.pos, txt.col)
 #' @export
 #' @keywords visualization
 #' @author Dean Adams

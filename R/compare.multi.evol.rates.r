@@ -1,4 +1,4 @@
-#' Comparing net rates of shape evolution among traits on phylogenies 
+#' Comparing net rates of evolution among traits on phylogenies 
 #'
 #' Function calculates net rates of shape evolution for two or more multi-dimensional traits on a 
 #' phylogeny from a set of Procrustes shape variables
@@ -37,8 +37,8 @@
 #' take the difference in the number of trait dimensions into account (see discussion in Denton and
 #' Adams 2015). This option is identified by selecting Subset = FALSE.
 #' 
-#'  The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with 
-#'  \code{\link{compare.multi.evol.rates}}.
+#'  With  \code{\link{compare.multi.evol.rates}}, the generic functions \code{\link{print}}, \code{\link{summary}}, and 
+#'  \code{\link{plot}} all work.
 #'  The generic function, \code{\link{plot}}, produces a histogram of random rate-ratios associated with
 #'  the resampling procedure.
 #'
@@ -78,13 +78,18 @@
 #' 
 #' data(plethspecies) 
 #' Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment    
-#' land.gp<-c("A","A","A","A","A","B","B","B","B","B","B")  #mandible and cranium subsets
+#' land.gp<-c("A","A","A","A","A","B","B","B","B","B","B")  
+#'     #mandible and cranium subsets
 #'
 #' EMR<-compare.multi.evol.rates(A=Y.gpa$coords,gp=land.gp, 
 #'     Subset=TRUE, phy= plethspecies$phy,iter=999)
 #' summary(EMR)
 #' plot(EMR)
-compare.multi.evol.rates<-function(A,gp,phy,Subset=TRUE,iter=999,seed=NULL,print.progress=TRUE){
+compare.multi.evol.rates<-function(A, gp, phy, 
+                                   Subset = TRUE, 
+                                   iter = 999, 
+                                   seed = NULL,
+                                   print.progress = TRUE){
   if(any(is.na(A))==T){
     stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').")}
   gp<-as.factor(gp)
@@ -139,7 +144,7 @@ compare.multi.evol.rates<-function(A,gp,phy,Subset=TRUE,iter=999,seed=NULL,print
                     max(sigma.rand[[j]])
                   }))
   p.val <- pval(random.sigma)
-  Z <- effect.size(log(random.sigma), center=TRUE) 
+  Z <- effect.size(random.sigma, center=TRUE) 
   ratio.vals<-matrix(NA,nrow=(iter+1),ncol=length(unlist(sigma.obs[4])))
   ratio.vals[1,]<-as.vector(sigma.obs$sigma.d.gp.ratio)
   for(i in 1:iter) ratio.vals[i+1,]<-as.vector(sigma.rand[[i]]) 

@@ -1,5 +1,5 @@
 ## Resubmission
-This is a patch update, version 3.3.1, that fixes a bug in version 3.3.0. 
+This is a patch update, version 3.3.2, that fixes a bug in version 3.3.1. 
 
 ## Test environments
 * local OS X install, R 3.6.0
@@ -10,6 +10,4 @@ This is a patch update, version 3.3.1, that fixes a bug in version 3.3.0.
 There were no ERRORs or WARNINGs. 
 
 ## Downstream dependencies
-I have also run R CMD check on downstream dependencies of geomorph. All packages that I could install passed except:
-
-* Phylocurve: This is due to a deprecated function in geomorph. The maintainer of phylocurve has been made aware of the issue, I have provided the maintainer with code that resolves this, and have given the maintainer time to make their changes. Additionally, since geomorph 3.2.1 (Jan 27, 2020) the man page for the deprecated function stated: "Notes for geomorph 3.2.1.0900 and subsequent versions. This function is deprecated and will soon be removed. The function 'gm.prcomp' can be used instead to generate phylomorphospace plots."
+I have also run R CMD check on downstream dependencies of geomorph. All packages that I could install passed. 

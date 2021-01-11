@@ -197,7 +197,8 @@
 #' fit.full <- procD.lm(coords ~ log(Csize) + species * site, data = gdf, 
 #' iter = 999, print.progress = FALSE)
 #' 
-#' # ANOVA, using anova.lm.rrpp function from the RRPP package (replaces advanced.procD.lm)
+#' # ANOVA, using anova.lm.rrpp function from the RRPP package 
+#' # (replaces advanced.procD.lm)
 #' anova(fit.null, fit.full, print.progress = FALSE)
 #' 
 #' # Pairwise tests, using pairwise function from the RRPP package
@@ -205,11 +206,13 @@
 #' 
 #' PW <- pairwise(fit.full, groups = gp, covariate = NULL)
 #' 
-#' # Pairwise distances between means, summarized two ways (replaces advanced.procD.lm):
+#' # Pairwise distances between means, summarized two ways 
+#' # (replaces advanced.procD.lm):
 #' summary(PW, test.type = "dist", confidence = 0.95, stat.table = TRUE)
 #' summary(PW, test.type = "dist", confidence = 0.95, stat.table = FALSE)
 #' 
-#' # Pairwise comaprisons of group variances, two ways (same as morphol.disaprity):
+#' # Pairwise comaprisons of group variances, two ways 
+#' # (same as morphol.disaprity):
 #' summary(PW, test.type = "var", confidence = 0.95, stat.table = TRUE)
 #' summary(PW, test.type = "var", confidence = 0.95, stat.table = FALSE)
 #' morphol.disparity(fit.full, groups = gp, iter=999)
@@ -217,7 +220,8 @@
 #' ### Regression example
 #' data(ratland)
 #' rat.gpa<-gpagen(ratland)         #GPA-alignment
-#' gdf <- geomorph.data.frame(rat.gpa) # geomorph data frame is easy without additional input
+#' gdf <- geomorph.data.frame(rat.gpa) # geomorph data frame is easy 
+#' # without additional input
 #' 
 #' fit <- procD.lm(coords ~ Csize, data = gdf, iter = 999, 
 #' RRPP = TRUE, print.progress = FALSE) 
@@ -239,7 +243,8 @@
 #' predictor = gdf$Csize, reg.type = "RegScore", 
 #' pch = 19, col = "green")
 #' 
-#' # Uses coefficients from the model to find the projected regression scores
+#' # Uses coefficients from the model to find the projected regression 
+#' # scores
 #' rat.plot <- plot(fit, type = "regression", 
 #' predictor = gdf$Csize, reg.type = "RegScore", 
 #' pch = 21, bg = "yellow") 
@@ -254,14 +259,16 @@
 #'                         
 #' attributes(fit)
 #' fit$fitted[1:3, ] # the fitted values (first three specimens)
-#' fit$GM$fitted[,, 1:3] # the fitted values as Procrustes coordinates (same specimens)
+#' fit$GM$fitted[,, 1:3] # the fitted values as Procrustes 
+#' # coordinates (same specimens)
 #' 
 #' ### THE FOLLOWING ILLUSTRATES SIMPLER SOLUTIONS FOR 
-#' ### THE NOW DEPRECATED nested.update FUNCTION USING
+#' ### THE NOW DEFUNCT nested.update FUNCTION USING
 #' ### THE anova GENERIC FUNCTION
 #' 
 #' data("larvalMorph")
-#' Y.gpa <- gpagen(larvalMorph$tailcoords, curves = larvalMorph$tail.sliders,
+#' Y.gpa <- gpagen(larvalMorph$tailcoords, 
+#' curves = larvalMorph$tail.sliders,
 #' ProcD = TRUE, print.progress = FALSE)
 #' gdf <- geomorph.data.frame(Y.gpa, treatment = larvalMorph$treatment, 
 #' family = larvalMorph$family)
@@ -269,7 +276,8 @@
 #' fit <- procD.lm(coords ~ treatment/family, data = gdf, 
 #' print.progress = FALSE, iter = 199)
 #' anova(fit) # treatment effect not adjusted
-#' anova(fit, error = c("treatment:family", "Residuals")) # treatment effect updated (adjusted)
+#' anova(fit, error = c("treatment:family", "Residuals")) 
+#' # treatment effect updated (adjusted)
 #'
 #' 
 #' 

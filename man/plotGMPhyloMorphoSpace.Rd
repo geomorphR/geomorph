@@ -3,26 +3,14 @@
 %   R/plotGMPhyloMorphoSpace.r
 \name{plotGMPhyloMorphoSpace}
 \alias{plotGMPhyloMorphoSpace}
-\title{Deprecated functions in geomorph}
+\title{Deprecated and defunct functions in geomorph}
 \usage{
 plotGMPhyloMorphoSpace()
 
 plotGMPhyloMorphoSpace()
 }
 \description{
-The following function has been deprecated in geomorph
+The following function is now defunct
 
-Function plots a phylogenetic tree and a set of Procrustes shape variables in tangent space
-  
-\subsection{Notes for geomorph 3.3.0 and subsequent versions}{
- This function is defunct and replaced with \code{\link{gm.prcomp}}.  The functions,
- \code{\link{summary.gm.prcomp}}, \code{\link{plot.gm.prcomp}}, and \code{\link{picknplot.shape}} 
- allow summaries, ammendable plots, and warpgrids, for points anywhere in a plot, respectively, can
- be used to accomplish any task of plotGMPhyloMorphospace, with greater flexibility.
- }
-}
-\details{
-This function has been deprecated.  Use \code{\link{gm.prcomp}} instead, along with
-\code{\link{summary.gm.prcomp}} and \code{\link{plot.gm.prcomp}}.  Examples are provided in the
-vignette, geomorph.PCA.
+This function is now defunct
 }

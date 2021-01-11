@@ -21,7 +21,8 @@ phylo.integration(
 
 \item{phy}{A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape}
 
-\item{partition.gp}{A list of which landmarks (or variables) belong in which partition (e.g. A,A,A,B,B,B,C,C,C) (required when only 1 dataset provided)}
+\item{partition.gp}{A list of which landmarks (or variables) belong in which partition: 
+(e.g. A, A, A, B, B, B, C, C, C). This is required when only 1 dataset provided.}
 
 \item{iter}{Number of iterations for significance testing}
 
@@ -91,8 +92,8 @@ hypothesis of no integration (Adams and Collyer 2018).
 Note that \code{phylo.integration} performed on two matrices or arrays returns the same results as a phylogenetic variation of
  \code{\link{two.b.pls}}.  It might be of interest with 3+ modules to perform separate phylogenetic integration tests
 between all pairwise comparisons of modules.  This can be done, test by test, and the levels of integration can be compared with
-\code{\link{compare.pls}}.  Such results are different than using the average amount of integration, as performed by \code{phylo.integration}
-when more than two modules are input.
+\code{\link{compare.pls}}.  Such results are different than using the average amount of integration when more than two modules 
+are input, as found with \code{phylo.integration}.
 }
  
  \subsection{Notes for geomorph 3.0.4 and subsequent versions}{ 
@@ -111,12 +112,13 @@ data(plethspecies)
 Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment
 land.gps<-c("A","A","A","A","A","B","B","B","B","B","B") 
 
-IT<- phylo.integration(Y.gpa$coords,partition.gp=land.gps,phy=plethspecies$phy,iter=999)
+IT<- phylo.integration(Y.gpa$coords,partition.gp=land.gps,
+  phy=plethspecies$phy,iter=999)
 summary(IT) # Test summary
 plot(IT) # PLS plot
 
- ### Visualize shape variation using picknplot.shape Because picknplot requires 
- ### user decisions, the following example
+ ### Visualize shape variation using picknplot.shape Because picknplot  
+ ### requires user decisions, the following example
  ### is not run (but can be with removal of #).
  ### For detailed options, see the picknplot help file
  # picknplot.shape(plot(IT))

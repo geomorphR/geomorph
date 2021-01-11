@@ -9,7 +9,7 @@
 #' of variables (Adams and Collyer 2016).  This analysis calculates effect sizes as standard deviates, z, and 
 #' performs two-sample z-tests, using the pooled standard error from the sampling distributions of the PLS analyses.
 #'  
-#' To use this function, simply perform \code{\link{two.b.pls}}, \code{\link{integration.test}}, or 
+#' To use this function, perform \code{\link{two.b.pls}}, \code{\link{integration.test}}, or 
 #'  \code{\link{phylo.integration}} on as many samples as desired.  Any number of objects of class pls can be input.
 #'  
 #'  Similar versions of this function will be designed for alternative test statistics, in the future. 
@@ -39,7 +39,8 @@
 #' @references Adams, D.C. and M.L. Collyer. 2016.  On the comparison of the strength of morphological integration across morphometric 
 #' datasets. Evolution. 70:2623-2631.
 #' @examples
-#' # Example of comparative morphological integration between pupfish head and body shapes
+#' # Example of comparative morphological integration between pupfish head 
+#' # and body shapes
 #' 
 #'  data(pupfish) # GPA previously performed
 #'   
@@ -56,9 +57,10 @@
 #'  tail.coords.gp <- coords.subset(tail.coords, group)
 #'  head.coords.gp <- coords.subset(head.coords, group)
 #' 
-#'  integ.tests <- Map(function(x,y) integration.test(x, y, iter=499, print.progress = FALSE), 
-#'  head.coords.gp, tail.coords.gp)
-#'	# the map function performs the integration test on each 3D array in the lists provided
+#'  integ.tests <- Map(function(x,y) integration.test(x, y, iter=499, 
+#'  print.progress = FALSE), head.coords.gp, tail.coords.gp)
+#'	# the map function performs the integration test on each 3D array in 
+#'	# the lists provided
 #' 
 #'  integ.tests$Marsh.F
 #'  integ.tests$Marsh.M

@@ -26,7 +26,8 @@ Y.gpa <- gpagen(plethodon$land,PrinAxes=FALSE)
 gdf <- geomorph.data.frame(Y.gpa)
 attributes(gdf)
 
-gdf <- geomorph.data.frame(Y.gpa, species = plethodon$species, site = plethodon$site)
+gdf <- geomorph.data.frame(Y.gpa, species = plethodon$species, 
+site = plethodon$site)
 attributes(gdf)
 
 # Using geomorph.data.frame to facilitate analysis

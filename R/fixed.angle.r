@@ -29,7 +29,8 @@
 #' @references Adams, D. C. 1999. Methods for shape analysis of landmark data from articulated structures. Evolutionary Ecology Research. 1:959-970.
 #' @examples
 #' #Example using Plethodon
-#' #Articulation point is landmark 1, rotate mandibular landmarks (2-5) relative to cranium
+#' #Articulation point is landmark 1, rotate mandibular landmarks (2-5) 
+#' # relative to cranium
 #'
 #' data(plethspecies) 
 #' # Using specific points:

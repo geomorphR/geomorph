@@ -54,7 +54,7 @@
 #'  Evolutionary Ecology Research. 1:959-970. 
 #' @references  Dryden, I.L. and K.V Mardia. 2016. Statistical shape analysis, with applications in R: Second edition.
 #' @references  Collyer, M.L., M.A. Davis, and D.C. Adams. 2020. Making heads or tails of combined landmark configurations in 
-#' geometric morphometric data. Accepted
+#' geometric morphometric data. Evolutionary Biology. 47:193-205.
 #' @author Michael Collyer
 #' @return An object of class \code{combined.set} is a list containing the following
 #' \item{cords}{An [p x k x n] array of scaled, concatenated landmark coordinates.}
@@ -66,10 +66,13 @@
 #' \item{points.by.set}{A vector of the number of landmarks in each subset.}
 #' @examples
 #' data(larvalMorph) 
-#' head.gpa <- gpagen(larvalMorph$headcoords, curves = larvalMorph$head.sliders)
-#' tail.gpa <- gpagen(larvalMorph$tailcoords, curves = larvalMorph$tail.sliders)
+#' head.gpa <- gpagen(larvalMorph$headcoords, 
+#'   curves = larvalMorph$head.sliders)
+#' tail.gpa <- gpagen(larvalMorph$tailcoords, 
+#'   curves = larvalMorph$tail.sliders)
 #' 
-#' # Combine original data without GPA (plot to see relative size of heads and tails)
+#' # Combine original data without GPA (plot to see relative size of  
+#' # heads and tails)
 #' 
 #'  all.lm <- combine.subsets(head = larvalMorph$headcoords,
 #'  tail = larvalMorph$tailcoords, gpa = FALSE, CS.sets = NULL)
@@ -80,13 +83,14 @@
 #' comb.lm <- combine.subsets(head = head.gpa, tail = tail.gpa, gpa = TRUE)
 #' summary(comb.lm)
 #' 
-#' #' # (configurations are actual relative size)
+#' # (configurations are actual relative size)
 #' comb.lm$coords[,,1]
 #' 
 #' # Plot all specimens and just first specimen and color code landmarks 
 #' par(mfrow = c(1,2))
 #' plotAllSpecimens(comb.lm$coords)
-#' plot(comb.lm$coords[,,1], pch = 21, bg = c(rep(1,26), rep(2,64)), asp = 1)
+#' plot(comb.lm$coords[,,1], pch = 21, bg = c(rep(1,26), 
+#' rep(2,64)), asp = 1)
 #' 
 #' # Override relative centroid size
 #' 
@@ -94,7 +98,8 @@
 #' tail = tail.gpa$coords, gpa = FALSE, CS.sets = NULL)
 #' par(mfrow = c(1,2))
 #' plotAllSpecimens(comb.lm$coords)
-#' plot(comb.lm$coords[,,1], pch = 21, bg = c(rep(1,26), rep(2,64)), asp = 1)
+#' plot(comb.lm$coords[,,1], pch = 21, bg = c(rep(1,26), 
+#' rep(2,64)), asp = 1)
 #' 
 #' # Note the head is as large as the tail, which is quite unnatural.
 #' 
@@ -105,7 +110,8 @@
 #' summary(comb.lm)
 #' par(mfrow = c(1,2))
 #' plotAllSpecimens(comb.lm$coords)
-#' plot(comb.lm$coords[,,1], pch = 21, bg = c(rep(1,26), rep(2,64)), asp = 1)
+#' plot(comb.lm$coords[,,1], pch = 21, bg = c(rep(1,26), 
+#' rep(2,64)), asp = 1)
 #' par(mfrow = c(1,1))
 #' 
 #' # Note that the head is too large, compared to a real specimen.  
@@ -122,13 +128,15 @@
 #' summary(comb.lm)
 #' par(mfrow = c(1,2))
 #' plotAllSpecimens(comb.lm$coords)
-#' plot(comb.lm$coords[,,1], pch = 21, bg = c(rep(1,26), rep(2,64)), asp = 1)
+#' plot(comb.lm$coords[,,1], pch = 21, bg = c(rep(1,26), 
+#' rep(2,64)), asp = 1)
 #' par(mfrow = c(1,1))
 #' 
 #' # Note that the head is way too small, compared to a real specimen.  
-#' # This option allows one to dictate the relative sizes of subsets as portions 
-#' # of the combined set.  An option like this should be used with caution, 
-#' # but can help overcome issues caused by landmark density.
+#' # This option allows one to dictate the relative sizes of subsets
+#' #  as portions of the combined set.  An option like this should be 
+#' # used with caution, but can help overcome issues caused by landmark 
+#' # density.
 
 
 combine.subsets <- function(..., gpa = TRUE, CS.sets = NULL, norm.CS = FALSE, weights = NULL){

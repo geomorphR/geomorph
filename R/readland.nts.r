@@ -63,7 +63,7 @@ readland.nts <- function(file){
   
   header <- sub("L", "", header)
   header <- as.numeric(sub("DIM=","", header))
-  
+
   missdata <- ifelse(header[4]!=0, T, F)
   if(missdata==TRUE) {
     missval <- ifelse(dimval==6, header[5], header[6]) 
@@ -75,7 +75,7 @@ readland.nts <- function(file){
   if(r.lab) {
     speclab <- tmp[1:n]
     tmp <- tmp[-(1:n)]
-  } else speclab <- NULL
+    } else speclab <- NULL
   
   if(c.lab) tmp <- tmp[-(1:(p*k))]
   

@@ -19,7 +19,8 @@ plotAllometry(
 
 \item{logsz}{A logical value to indicate whether to first find the logarithm of size.}
 
-\item{method}{The method of allometric visualization; choice among CAC, PredLine, RegScore, and size.shape (PCA)}
+\item{method}{The method of allometric visualization, which includes 
+CAC, PredLine, RegScore, and size.shape (PCA)}
 
 \item{...}{Other arguments passed on to plot.default}
 }
@@ -109,7 +110,7 @@ The following are brief descriptions of the different plotting methods, with ref
   changing the allometry model.}
   }
   
-The function returns values that can be used with \code{\link{picknplot.shape}} or a combination of 
+The function returns values that can be used with \code{\link{picknplot.shape}} or  
 \code{\link{shape.predictor}} and \code{\link{plotRefToTarget}} to visualize shape changes in the plot.
 }
 \examples{
@@ -120,33 +121,41 @@ Y.gpa <- gpagen(plethodon$land, print.progress = FALSE)    #GPA-alignment
 
 gdf <- geomorph.data.frame(Y.gpa, site = plethodon$site, 
 species = plethodon$species) 
-fit <- procD.lm(coords ~ log(Csize), data=gdf, iter=0, print.progress = FALSE)
+fit <- procD.lm(coords ~ log(Csize), data=gdf, iter=0, 
+print.progress = FALSE)
 
 # Predline
-plotAllometry(fit, size = gdf$Csize, logsz = TRUE, method = "PredLine", pch = 19)
+plotAllometry(fit, size = gdf$Csize, logsz = TRUE, 
+method = "PredLine", pch = 19)
 
 # same as
 logSize <- log(gdf$Csize)
-plot(fit, type = "regression", reg.type = "PredLine", predictor = logSize, pch = 19)
+plot(fit, type = "regression", reg.type = "PredLine", 
+predictor = logSize, pch = 19)
 
 # RegScore
-plotAllometry(fit, size = gdf$Csize, logsz = TRUE, method = "RegScore", pch = 19)
+plotAllometry(fit, size = gdf$Csize, logsz = TRUE, 
+method = "RegScore", pch = 19)
 
 # same as
-plot(fit, type = "regression", reg.type = "RegScore", predictor = logSize, pch = 19)
+plot(fit, type = "regression", reg.type = "RegScore", 
+predictor = logSize, pch = 19)
 
 # CAC
-plotAllometry(fit, size = gdf$Csize, logsz = TRUE, method = "CAC", pch = 19)
+plotAllometry(fit, size = gdf$Csize, logsz = TRUE, 
+method = "CAC", pch = 19)
 
 # same (first plot) as
 PLS <- two.b.pls(log(gdf$Csize), gdf$coords, print.progress = FALSE)
 plot(PLS)
 
 # Group Allometries
-fit <- procD.lm(coords ~ Csize * species * site, data=gdf, iter=0, print.progress = FALSE)
+fit <- procD.lm(coords ~ Csize * species * site, data=gdf, iter=0, 
+print.progress = FALSE)
 
 # CAC (should not change from last time; model change has no effect)
-plotAllometry(fit, size = gdf$Csize, logsz = TRUE, method = "CAC", pch = 19)
+plotAllometry(fit, size = gdf$Csize, logsz = TRUE, method = "CAC", 
+pch = 19)
 
 # Predline
 plotAllometry(fit, size = gdf$Csize, logsz = TRUE, method = "PredLine", 
@@ -158,13 +167,15 @@ pch = 19, col = as.numeric(interaction(gdf$species, gdf$site)))
 
 # Size-Shape PCA
 
-pc.plot <- plotAllometry(fit, size = gdf$Csize, logsz = TRUE, method = "size.shape", 
+pc.plot <- plotAllometry(fit, size = gdf$Csize, logsz = TRUE, 
+method = "size.shape", 
 pch = 19, col = as.numeric(interaction(gdf$species, gdf$site)))
 summary(pc.plot$size.shape.PCA)
 
 # Are species' shape differences just a manifestation of shape allometry?
 
-fit3 <- procD.lm(coords ~ species, data=gdf, iter=0, print.progress = FALSE)
+fit3 <- procD.lm(coords ~ species, data = gdf, iter = 0, 
+print.progress = FALSE)
 plotAllometry(fit3, size = gdf$Csize, logsz = TRUE, method = "RegScore", 
 pch = 19, col = as.numeric(gdf$species))
 

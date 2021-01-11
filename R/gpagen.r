@@ -16,7 +16,7 @@
 #'  on surfaces, one must specify a vector listing which landmarks are to be treated as surface semilandmarks 
 #'  using the "surfaces=" option. The "ProcD=FALSE" option (the default) will slide the semilandmarks 
 #'  based on minimizing bending energy, while "ProcD=TRUE" will slide the semilandmarks along their tangent 
-#'  directions using the Procrustes distance criterion. The Procrustes-aligned specimens may be projected into tangent
+#'  directions using the Procrustes distance criterion. The Procrustes aligned specimens may be projected into tangent
 #'  space using the "Proj=TRUE" option. 
 #'  The function also outputs a matrix of pairwise Procrustes Distances, which correspond to Euclidean distances between specimens in tangent space if "Proj=TRUE", or to the geodesic distances in shape space if "Proj=FALSE".   
 #'  NOTE: Large datasets may exceed the memory limitations of R. 
@@ -51,7 +51,7 @@
 
 #' @param A Either an object of class geomorphShapes or a 3D array (p x k x n) containing landmark coordinates 
 #' for a set of specimens.  If A is a geomorphShapes object, the curves argument is not needed.
-#' @param Proj A logical value indicating whether or not the Procrustes-aligned specimens should be projected 
+#' @param Proj A logical value indicating whether or not the Procrustes aligned specimens should be projected 
 #'   into tangent space 
 #' @param ProcD A logical value indicating whether or not Procrustes distance should be used as the criterion
 #'   for optimizing the positions of semilandmarks (if not, bending energy is used)
@@ -59,7 +59,7 @@
 #' @param max.iter The maximum number of GPA iterations to perform before superimposition is halted.  The final
 #' number of iterations could be larger than this, if curves or surface semilandmarks are involved.
 #' @param curves An optional matrix defining which landmarks should be treated as semilandmarks on boundary 
-#'   curves, and which landmarks specify the tangent directions for their sliding.  This matrix is generated automatically
+#'   curves, and which landmarks specify the tangent directions for their sliding.  This matrix is generated 
 #'   with \code{\link{readland.shapes}} following digitizing of curves in StereoMorph, or may be generated
 #'   using the function \code{\link{define.sliders}}.
 #' @param surfaces An optional vector defining which landmarks should be treated as semilandmarks on surfaces
@@ -116,7 +116,7 @@
 #' @examples
 #' # Example 1: fixed points only
 #' data(plethodon) 
-#' Y.gpa <- gpagen(plethodon$land,PrinAxes=FALSE)
+#' Y.gpa <- gpagen(plethodon$land, PrinAxes = FALSE)
 #' summary(Y.gpa)
 #' plot(Y.gpa)
 #' 
@@ -127,13 +127,15 @@
 #' hummingbirds$curvepts
 #'
 #' # Using bending energy for sliding
-#' Y.gpa <- gpagen(hummingbirds$land,curves=hummingbirds$curvepts,ProcD=FALSE)   
+#' Y.gpa <- gpagen(hummingbirds$land, curves = hummingbirds$curvepts,
+#' ProcD = FALSE)   
 #' summary(Y.gpa)
 #' plot(Y.gpa)
 #' 
 #' 
 #' # Using Procrustes Distance for sliding
-#' Y.gpa <- gpagen(hummingbirds$land,curves=hummingbirds$curvepts,ProcD=TRUE)   
+#' Y.gpa <- gpagen(hummingbirds$land, curves = hummingbirds$curvepts,
+#' ProcD = TRUE)   
 #' summary(Y.gpa)
 #' plot(Y.gpa)
 #' 
@@ -142,7 +144,8 @@
 #' data(scallops)
 #' 
 #' # Using Procrustes Distance for sliding
-#' Y.gpa <- gpagen(A=scallops$coorddata, curves=scallops$curvslide, surfaces=scallops$surfslide)
+#' Y.gpa <- gpagen(A = scallops$coorddata, curves = scallops$curvslide, 
+#' surfaces = scallops$surfslide)
 #' # NOTE can summarize as: summary(Y.gpa)
 #' # NOTE can plot as: plot(Y.gpa) 
 gpagen = function(A, curves=NULL, surfaces=NULL, PrinAxes = TRUE, 

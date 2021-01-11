@@ -12,7 +12,7 @@ define.modules(spec, nmodules)
 \item{nmodules}{Number of modules to be defined}
 }
 \value{
-Function returns a vector of which landmarks belong in which module (e.g. 1,1,1,2,2,3,3,3,2) to be used
+Function returns a vector of which landmarks belong in which module (e.g. 1, 1, 1, 2, 2, 3, 3, 3, 2) to be used
 with \code{\link{modularity.test}} or \code{\link{integration.test}}.
 }
 \description{

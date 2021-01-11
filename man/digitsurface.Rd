@@ -34,8 +34,8 @@ Function for digitizing fixed 3D landmarks and placing surface sliding semilandm
  matching is based on the correspondence of fixed landmark points in the template and the specimen, a minimum of four fixed landmarks must be used. 
 
 
-#' For more details on the full procedure one needs to follow to digitize fixed 3D landmarks and surface
-sliding semilandmarks, see also the relevant vignette by running \code{vignette("geomorph.digitize3D")}.
+For details on the full procedure for digitizing fixed 3D landmarks and surface
+sliding semilandmarks, see the relevant vignette by running \code{vignette("geomorph.digitize3D")}.
  
  NOTE: Function centers the mesh before digitizing by default (center=TRUE). If one chooses not to center,
  specimen may be difficult to manipulate in rgl window.

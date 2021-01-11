@@ -1,4 +1,4 @@
-# CHANGES IN GEOMORPH VERSION 3.3.1.9000 
+# CHANGES IN GEOMORPH VERSION 3.3.2 (Minor Release)
 
 ### NEW FEATURES
 * Added Box-Cox transformation to `effect.size`
@@ -6,7 +6,8 @@
 * Added pairwise r, Z, and P-values to `integration.test` and `phylo.integration`
 
 ### BUG FIXES
-* fixed bug with `plot.bilat.symmetry` that missed changed object output in `bilat.symmetry`.
+* Fixed bug in `compare.CR` so object labels are retained
+* Fixed bug with `plot.bilat.symmetry` that missed changed object output in `bilat.symmetry`.
 * Fixed issue with permutations in multi-module configurations for `integration.test` and `phylo.integration`
 * Fixed error in `plot.gm.prcomp` 3D tree plotting with time.plot = TRUE
 * Fixed error in `compare.evol.rates` for univariate data and permutations
@@ -18,11 +19,12 @@
 * Fixed bug in computations of `phylo.modularity`
 * Fixed order consistency for pairwise calculations in `phylo.modularity` 
 * Allows single landmarks as slider LM in gpagen
-* Fixed labels in `plotRefToTarget`, allowing 3d TPS warp grids to show labels and for txt.pos to be passed to 3d plots
+* Fixed labels in `plotRefToTarget`, allowing 3d TPS warp grids to show labels and for txt.pos to be passed to 3d plots		
 * Fixed bug in txt.adj argument for `gridPar`
 
 ### OTHER CHANGES
 * Updated `readmulti.nts` function turning it into a wrapper of `readland.nts` thus allowing also multiple dta files to be read in and compiled
+
 
 # CHANGES IN GEOMORPH VERSION 3.3.1 (Patch Release)
 

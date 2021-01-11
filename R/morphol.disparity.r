@@ -66,7 +66,7 @@
 #' @return Objects of class "morphol.disparity" return a list with the following components 
 #' (if groups are specified): 
 #'   \item{Procrustes.var}{Observed Procrustes variances.}
-#'   \item{PV.dist}{Observed pairwise absolute differences (distances) 
+#'   \item{PV.dist}{Observed pairwise absolute differences (as distances) 
 #'   among group Procrustes variances.}
 #'   \item{PV.dist.Pval}{P-values associated with pairwise differences.}
 #'   \item{random.PV.dist}{Pairwise distance matrices produced in the resampling procedure.}
@@ -124,7 +124,8 @@
 #' gp.end<-factor(c(0,0,1,0,0,1,1,0,0))  #endangered species vs. rest
 #' names(gp.end)<-plethspecies$phy$tip
 #' 
-#' gdf <- geomorph.data.frame(Y.gpa, phy = plethspecies$phy, gp.end = gp.end)
+#' gdf <- geomorph.data.frame(Y.gpa, phy = plethspecies$phy, 
+#' gp.end = gp.end)
 #' 
 #' pleth.ols <- procD.lm(coords ~ Csize + gp.end, 
 #' data = gdf, iter = 999) # ordinary least squares
@@ -144,7 +145,7 @@
 #'  summary(PW, test.type = 'var')
 #' 
 morphol.disparity <- function(f1, groups = NULL, partial = FALSE, iter = 999, seed = NULL, 
-                              data = NULL, print.progress = TRUE, ...) {
+                              data = NULL, print.progress = TRUE, ...){
   
  
   if(inherits(f1, "lm")) {

@@ -55,7 +55,8 @@
 #' 
 #' @param A A 3D array (p x k x n) containing Procrustes shape variables for all specimens, or a matrix (n x variables)
 #' @param A2 An optional 3D array (p x k x n) containing Procrustes shape variables for all specimens, or a matrix (n x variables) for a second partition
-#' @param partition.gp A list of which landmarks (or variables) belong in which partition (e.g. A,A,A,B,B,B,C,C,C) (required when only 1 dataset provided)
+#' @param partition.gp A list of which landmarks (or variables) belong in which partition: 
+#' (e.g. A, A, A, B, B, B, C, C, C). Required when only 1 dataset provided.
 #' @param iter Number of iterations for significance testing
 #' @param seed An optional argument for setting the seed for random permutations of the resampling procedure.  
 #' If left NULL (the default), the exact same P-values will be found for repeated runs of the analysis (with the same number of iterations).
@@ -109,18 +110,19 @@
 #' plot(IT) # PLS plot
 #' 
 #'  
-#'  ### Visualize shape variation using picknplot.shape Because picknplot requires 
-#'  ### user decisions, the following example
+#'  ### Visualize shape variation using picknplot.shape Because picknplot  
+#'  ### requires user decisions, the following example
 #'  ### is not run (but can be with removal of #).
 #'  ### For detailed options, see the picknplot help file
 #'  # picknplot.shape(plot(IT))
 #' 
-#' IT$left.pls.vectors # extracting just the left (first block) singular vectors
+#' IT$left.pls.vectors # extracting just the left (first block) 
+#' # singular vectors
 
 integration.test <-function(A, A2 = NULL,
                             partition.gp = NULL,
                             iter = 999, seed = NULL, 
-                            print.progress = TRUE) {
+                            print.progress = TRUE){
   
   if(any(is.na(A)))
     stop("\nData matrix contains missing values. Estimate these first (see 'estimate.missing').",

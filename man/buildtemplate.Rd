@@ -4,18 +4,18 @@
 \alias{buildtemplate}
 \title{Build 3D surface template}
 \usage{
-buildtemplate(spec, fixed, surface.sliders, ptsize = 1, center = TRUE)
+buildtemplate(spec, fixed, center = TRUE, surface.sliders, ptsize = 1)
 }
 \arguments{
 \item{spec}{An object of class shape3d/mesh3d, or matrix of 3D vertex coordinates}
 
 \item{fixed}{Either a numeric value designating the number of fixed landmarks to be selected by \code{\link{digit.fixed}}, or a matrix of 3D coordinates collected previously}
 
+\item{center}{Should the object 'spec' be centered prior to digitizing?}
+
 \item{surface.sliders}{The number of desired surface sliders}
 
 \item{ptsize}{Size of mesh points (vertices), e.g. 0.1 for dense meshes, 3 for sparse meshes}
-
-\item{center}{Should the object 'spec' be centered prior to digitizing?}
 }
 \value{
 The function writes to the working directory three files: an NTS file with the name of the specimen and .nts suffix containing 
@@ -24,9 +24,11 @@ and "surfslide.csv", a file containing the address of the landmarks defined as "
 The function also returns to the console an n x 3 matrix containing the x,y,z coordinates of the digitized landmarks.
 }
 \description{
-An interactive function to build a template for the digitization across specimens of three-dimensional (3D) 
-surface sliding semilandmarks. Input for the function is either a matrix of vertex coordinates
- defining a 3D surface object or a mesh3d object as obtained from \code{\link{read.ply}}.
+An interactive function to build a template for the digitization across 
+specimens of three dimensional (3D) surface sliding semilandmarks. Input 
+for the function is either a matrix of vertex coordinates
+ defining a 3D surface object or a mesh3d object as obtained 
+ from \code{\link{read.ply}}.
 }
 \details{
 Function constructs a template of surface slider semilandmarks. If desired, the user can simultaneously 
@@ -42,8 +44,7 @@ using the function \code{\link{digitsurface}}. Because template matching is base
 landmark points in the template and the target specimen, a minimum of four fixed landmarks must be used. However,  
 to ensure a strong match between the scan and the template, it is recommended that a higher number of fixed points is used.
 
-#' For more details on the full procedure one needs to follow to digitize fixed 3D landmarks and surface
-sliding semilandmarks, see also the relevant vignette by running \code{vignette("geomorph.digitize3D")}.
+For more details see the vignette: \code{vignette("geomorph.digitize3D")}.
 
  NOTE: Function centers the mesh before digitizing by default (center=TRUE). If one chooses not to center,
  specimen may be difficult to manipulate in rgl window.

@@ -62,7 +62,7 @@
 #' @param landmarks A matrix containing 2D or 3D landmark coordinates of landmarks and semilandmarks, OR A vector containing a sequence of numbers corresponding to the landmarks in the order they appear along the curve (for AUTO mode)
 #' @param nsliders Number of landmarks to be semilandmarks that slide along curves
 #' @param surfsliders (3D only) If 'landmarks' contains "surface sliders",
-#' e.g. made by \code{\link{buildtemplate}}, these should be given as a vector or use surfsliders = T, and function looks for "surfslide.csv" in working directory.
+#'  these should be given as a vector or use surfsliders = T, and function looks for "surfslide.csv" in working directory.
 #' @param write.file A logical value indicating whether the matrix is written to file as .csv.
 #' @return Function returns a 'nsliders-x-3' matrix containing the landmark address of the curve sliders, indicating the landmarks between which the slider landmarks will "slide". If write.file = T the matrix is also written to working directory as "curveslide.csv". Matrix (or "curveslide.csv") is designed for use by \code{\link{gpagen}} during GPA.
 #' @export
@@ -73,7 +73,8 @@
 #' @examples  
 #' ## (not run) Use interactive function in rgl window
 #'  # data(scallops)
-#'  # define.sliders(scallops$coorddata[,,1], nsliders=11,surfsliders = scallops$surfslide) 
+#'  # define.sliders(scallops$coorddata[,,1], nsliders=11,
+#'  #   surfsliders = scallops$surfslide) 
 #'  # here the first specimen is used for plotting purposes only
 #'  
 #' ## Examples of AUTO mode 
@@ -89,7 +90,10 @@
 #' @references Bookstein, F. J. 1997 Landmark Methods for Forms without Landmarks: Morphometrics of 
 #' Group Differences in Outline Shape. Medical Image Analysis 1(3):225-243.
 
-define.sliders<-function(landmarks, nsliders, surfsliders=NULL, write.file = TRUE) {
+define.sliders <- function(landmarks, 
+                         nsliders, 
+                         surfsliders = NULL, 
+                         write.file = TRUE){
   checkmat <- is.matrix(landmarks)
   if (checkmat==FALSE) { 
     if(length(dim(landmarks) == 3)){ spec <- as.matrix(landmarks[,,1]) }

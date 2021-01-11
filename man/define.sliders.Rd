@@ -12,7 +12,7 @@ define.sliders(landmarks, nsliders, surfsliders = NULL, write.file = TRUE)
 \item{nsliders}{Number of landmarks to be semilandmarks that slide along curves}
 
 \item{surfsliders}{(3D only) If 'landmarks' contains "surface sliders",
-e.g. made by \code{\link{buildtemplate}}, these should be given as a vector or use surfsliders = T, and function looks for "surfslide.csv" in working directory.}
+these should be given as a vector or use surfsliders = T, and function looks for "surfslide.csv" in working directory.}
 
 \item{write.file}{A logical value indicating whether the matrix is written to file as .csv.}
 }
@@ -83,7 +83,8 @@ The input 'landmarks' can be simply a vector of numbers corresponding to the "sl
  
 ## (not run) Use interactive function in rgl window
  # data(scallops)
- # define.sliders(scallops$coorddata[,,1], nsliders=11,surfsliders = scallops$surfslide) 
+ # define.sliders(scallops$coorddata[,,1], nsliders=11,
+ #   surfsliders = scallops$surfslide) 
  # here the first specimen is used for plotting purposes only
  
 ## Examples of AUTO mode 

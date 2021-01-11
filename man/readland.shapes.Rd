@@ -67,13 +67,18 @@ The user can specify the number of points along curves, whether curves are conti
 and whether landmarks should be scaled, if possible (if scaling was performed while digitizing).
 }
 \examples{
-# A true example is not possible, as digitizing experiences are unqiue, but here is a general set-up
-# myShapes <- readShapes("myDigitizingFile") # data from readShapes from StereoMorph 
-# myGMdata <- readland.shapes(myShapes) # just reading in the fixed landmarks
+# A true example is not possible, as digitizing experiences are 
+# unique, but here is a general set-up
+# myShapes <- readShapes("myDigitizingFile") # data from readShapes 
+# from StereoMorph 
+# myGMdata <- readland.shapes(myShapes) # just reading in the fixed 
+# landmarks
 # myGMdata <- readland.shapes(myShapes, 
 #      nCurvePts = c(10, 15, 5), 
-#      continuous.curve = 2) # fixed landmarks plus curve points for three curves, one closed
-# myGPA <- gpagen(myGMdata, ProcD = FALSE) # GPA perfomed with minimized bending energy
+#      continuous.curve = 2) # fixed landmarks plus curve points 
+# for three curves, one closed
+# myGPA <- gpagen(myGMdata, ProcD = FALSE) # GPA perfomed with 
+# minimized bending energy
 }
 \seealso{
 readShapes (from StereoMorph)

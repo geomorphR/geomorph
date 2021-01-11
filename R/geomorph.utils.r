@@ -303,40 +303,8 @@ summary.bilat.symmetry <- function(object, ...) {
 #' @keywords utilities
 #' @keywords visualization
 plot.bilat.symmetry <- function(x, warpgrids = TRUE, mesh= NULL, ...){
-  k <- dim(x$symm.shape)[[2]]
-  if(x$data.type == "Matching"){
-    if(k==2){  
-      par(mfrow=c(2,2),oma=c(1.5,0,1.5,0))
-      plotAllSpecimens(x$symm.shape)
-      plotAllSpecimens(x$asymm.shape)
-      plotRefToTarget(x$DA.component[,,1],x$DA.component[,,2],method="TPS",main="Directional Asymmetry")
-      plotRefToTarget(x$FA.component[,,1],x$FA.component[,,2],method="TPS",main="Fluctuating Asymmetry")
-      mtext("Symmetric Shape Component (left) and Asymmetric Shape Component (right)",outer = TRUE,side=3)
-      mtext("Mean directional (left) and fluctuating (right) asymmetry",side = 1, outer = TRUE)
-      par(mfrow=c(1,1))
-    }
-    if(k==3){
-      if (is.null(mesh)){
-        open3d() ; mfrow3d(1, 2) 
-        plotRefToTarget(x$DA.component[,,1],x$DA.component[,,2],method="points",main="Directional Asymmetry",box=FALSE, axes=FALSE)
-        next3d()
-        plotRefToTarget(x$FA.component[,,1],x$FA.component[,,2],method="points",main="Fluctuating Asymmetry",box=FALSE, axes=FALSE)
-      } 
-      if(!is.null(mesh)){
-        open3d() ; mfrow3d(1, 2) 
-        cat("\nWarping mesh\n")
-        plotRefToTarget(x$DA.component[,,1],x$DA.component[,,2],mesh,method="surface")
-        title3d(main="Directional Asymmetry")
-        next3d()
-        cat("\nWarping mesh\n")
-        plotRefToTarget(x$FA.component[,,1],x$FA.component[,,2],mesh,method="surface")
-        title3d(main="Fluctuating Asymmetry")
-      }
-    }
-    layout(1) 
-  }
-  if(x$data.type == "Object"){
-    if(warpgrids==TRUE){
+    k <- dim(x$symm.shape)[[2]]
+    if(x$data.type == "Matching"){
       if(k==2){  
         par(mfrow=c(2,2),oma=c(1.5,0,1.5,0))
         plotAllSpecimens(x$symm.shape)
@@ -345,9 +313,10 @@ plot.bilat.symmetry <- function(x, warpgrids = TRUE, mesh= NULL, ...){
         plotRefToTarget(x$FA.component[,,1],x$FA.component[,,2],method="TPS",main="Fluctuating Asymmetry")
         mtext("Symmetric Shape Component (left) and Asymmetric Shape Component (right)",outer = TRUE,side=3)
         mtext("Mean directional (left) and fluctuating (right) asymmetry",side = 1, outer = TRUE)
+        par(mfrow=c(1,1))
       }
       if(k==3){
-        if(is.null(mesh)) {
+        if (is.null(mesh)){
           open3d() ; mfrow3d(1, 2) 
           plotRefToTarget(x$DA.component[,,1],x$DA.component[,,2],method="points",main="Directional Asymmetry",box=FALSE, axes=FALSE)
           next3d()
@@ -362,12 +331,43 @@ plot.bilat.symmetry <- function(x, warpgrids = TRUE, mesh= NULL, ...){
           cat("\nWarping mesh\n")
           plotRefToTarget(x$FA.component[,,1],x$FA.component[,,2],mesh,method="surface")
           title3d(main="Fluctuating Asymmetry")
-        }  
+        }
       }
       layout(1) 
-    } 
+    }
+    if(x$data.type == "Object"){
+      if(warpgrids==TRUE){
+        if(k==2){  
+          par(mfrow=c(2,2),oma=c(1.5,0,1.5,0))
+          plotAllSpecimens(x$symm.shape)
+          plotAllSpecimens(x$asymm.shape)
+          plotRefToTarget(x$DA.component[,,1],x$DA.component[,,2],method="TPS",main="Directional Asymmetry")
+          plotRefToTarget(x$FA.component[,,1],x$FA.component[,,2],method="TPS",main="Fluctuating Asymmetry")
+          mtext("Symmetric Shape Component (left) and Asymmetric Shape Component (right)",outer = TRUE,side=3)
+          mtext("Mean directional (left) and fluctuating (right) asymmetry",side = 1, outer = TRUE)
+        }
+        if(k==3){
+          if(is.null(mesh)) {
+            open3d() ; mfrow3d(1, 2) 
+            plotRefToTarget(x$DA.component[,,1],x$DA.component[,,2],method="points",main="Directional Asymmetry",box=FALSE, axes=FALSE)
+            next3d()
+            plotRefToTarget(x$FA.component[,,1],x$FA.component[,,2],method="points",main="Fluctuating Asymmetry",box=FALSE, axes=FALSE)
+          } 
+          if(!is.null(mesh)){
+            open3d() ; mfrow3d(1, 2) 
+            cat("\nWarping mesh\n")
+            plotRefToTarget(x$DA.component[,,1],x$DA.component[,,2],mesh,method="surface")
+            title3d(main="Directional Asymmetry")
+            next3d()
+            cat("\nWarping mesh\n")
+            plotRefToTarget(x$FA.component[,,1],x$FA.component[,,2],mesh,method="surface")
+            title3d(main="Fluctuating Asymmetry")
+          }  
+        }
+        layout(1) 
+      } 
+    }
   }
-}
 
 ## CR
 
@@ -631,6 +631,38 @@ print.compare.pls <- function(x,...){
   invisible(x)
 }
 
+# compare.CR
+
+#' Print/Summary Function for geomorph
+#' 
+#' @param object print/summary object
+#' @param ... other arguments passed to print/summary
+#' @export
+#' @author Michael Collyer
+#' @keywords utilities
+summary.compare.CR<- function(object, ...) print.compare.CR(object,...)
+
+#' Print/Summary Function for geomorph
+#' 
+#' @param x print/summary object
+#' @param ... other arguments passed to print/summary
+#' @export
+#' @author Michael Collyer
+#' @keywords utilities
+print.compare.CR<- function(x,...){
+  cat("\n", x$comment, "\n\n")
+  z <- x$sample.z
+  z.pw <- x$pairwise.z
+  p <- x$pairwise.P
+  cat("\nEffect sizes\n\n")
+  print(z)
+  cat("\nEffect sizes for pairwise differences in CR effect size\n\n")
+  print(z.pw)
+  cat("\nP-values\n\n")
+  print(p)
+  invisible(x)
+}
+
 #' Print/Summary Function for geomorph
 #' 
 #' @param object print/summary object
@@ -810,15 +842,23 @@ summary.gm.prcomp <- function (object, ...) {
 #' @seealso  \code{\link{plotRefToTarget}} \code{\link{picknplot.shape}}
 
 
-plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, flip = NULL, phylo = FALSE, time.plot = FALSE,
-                           phylo.par = list(tip.labels = TRUE, node.labels = TRUE, anc.states = TRUE,
-                                            node.pch = 21, node.bg = "grey", node.cex = 1, 
-                                            edge.color = "black", edge.width = 1,
-                                            tip.txt.cex = 1, tip.txt.col = "black", 
+plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, flip = NULL, phylo = FALSE, 
+                           time.plot = FALSE, 
+                           phylo.par = list(tip.labels = TRUE, 
+                                            node.labels = TRUE, 
+                                            anc.states = TRUE,
+                                            node.pch = 21, 
+                                            node.bg = "grey", 
+                                            node.cex = 1, 
+                                            edge.color = "black", 
+                                            edge.width = 1,
+                                            tip.txt.cex = 1, 
+                                            tip.txt.col = "black", 
                                             tip.txt.adj = c(-0.1,-0.1),
-                                            node.txt.cex = 1, node.txt.col = "grey",
+                                            node.txt.cex = 1, 
+                                            node.txt.col = "grey",
                                             node.txt.adj = c(-0.1, -0.1)), 
-                           ...) {
+                           ...){
 
   class(x) <- "ordinate"
   pcdata <- as.matrix(x$x[, c(axis1, axis2)])

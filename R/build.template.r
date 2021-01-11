@@ -1,8 +1,10 @@
 #' Build 3D surface template 
 #'
-#' An interactive function to build a template for the digitization across specimens of three-dimensional (3D) 
-#' surface sliding semilandmarks. Input for the function is either a matrix of vertex coordinates
-#'  defining a 3D surface object or a mesh3d object as obtained from \code{\link{read.ply}}.
+#' An interactive function to build a template for the digitization across 
+#' specimens of three dimensional (3D) surface sliding semilandmarks. Input 
+#' for the function is either a matrix of vertex coordinates
+#'  defining a 3D surface object or a mesh3d object as obtained 
+#'  from \code{\link{read.ply}}.
 #'
 #' Function constructs a template of surface slider semilandmarks. If desired, the user can simultaneously 
 #' digitize the fixed points (see digitizing below), however these may have been previously digitized separately 
@@ -17,8 +19,7 @@
 #' landmark points in the template and the target specimen, a minimum of four fixed landmarks must be used. However,  
 #' to ensure a strong match between the scan and the template, it is recommended that a higher number of fixed points is used.
 #' 
-#' #' For more details on the full procedure one needs to follow to digitize fixed 3D landmarks and surface
-#' sliding semilandmarks, see also the relevant vignette by running \code{vignette("geomorph.digitize3D")}.
+#' For more details see the vignette: \code{vignette("geomorph.digitize3D")}.
 #' 
 #'  NOTE: Function centers the mesh before digitizing by default (center=TRUE). If one chooses not to center,
 #'  specimen may be difficult to manipulate in rgl window.
@@ -74,7 +75,11 @@
 #' Anthropology, ed Slice DE (Springer-Verlag, New York), pp 73-98.
 #' @references Mitteroecker P & Gunz P (2009) Advances in Geometric Morphometrics. Evolutionary Biology 36(2):235-247.
 
-buildtemplate<-function(spec, fixed, surface.sliders, ptsize = 1, center = TRUE)    {
+buildtemplate <- function(spec, 
+                          fixed, 
+                          center = TRUE,
+                          surface.sliders, 
+                          ptsize = 1) {
   if(length(fixed)==1 && fixed<4){stop ("Number of fixed points is not sufficient.")}
   spec.name<-deparse(substitute(spec))
   mesh <- NULL

@@ -74,7 +74,7 @@
 #' PS.size <- physignal(A=Y.gpa$Csize,phy=plethspecies$phy,iter=999)
 #' summary(PS.size)
 #' plot(PS.size)
-physignal <- function(A, phy, iter=999, seed=NULL, print.progress = FALSE){
+physignal <- function(A, phy, iter = 999, seed = NULL, print.progress = FALSE){
   if(any(is.na(A)))
     stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').\n",
          call. = FALSE)  
