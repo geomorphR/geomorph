@@ -2,7 +2,7 @@ Package: geomorph
 Title: Geometric Morphometric Analyses of 2D/3D Landmark Data
 Version: 3.3.2
 Authors@R: c(
-    person("Dean", "Adams", , "dean.c.adams@gmail.com", c("aut", "cre")),
+    person("Dean", "Adams", , "dcadams@iastate.edu", c("aut", "cre")),
     person("Michael", "Collyer", , role = "aut"),
     person("Antigoni", "Kaliontzopoulou", , role = "aut"),
     person("Erica", "Baken", , role = "aut")
