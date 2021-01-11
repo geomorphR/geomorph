@@ -1,7 +1,7 @@
 #' Build 3D surface template 
 #'
 #' An interactive function to build a template for the digitization across 
-#' specimens of three-dimensional (3D) surface sliding semilandmarks. Input 
+#' specimens of three dimensional (3D) surface sliding semilandmarks. Input 
 #' for the function is either a matrix of vertex coordinates
 #'  defining a 3D surface object or a mesh3d object as obtained 
 #'  from \code{\link{read.ply}}.
@@ -75,8 +75,8 @@
 #' Anthropology, ed Slice DE (Springer-Verlag, New York), pp 73-98.
 #' @references Mitteroecker P & Gunz P (2009) Advances in Geometric Morphometrics. Evolutionary Biology 36(2):235-247.
 
-buildtemplate<-function(spec, fixed, 
-                        surface.sliders, ptsize = 1, center = TRUE){
+buildtemplate<-function(spec, fixed, center = TRUE,
+                        surface.sliders, ptsize = 1){
   if(length(fixed)==1 && fixed<4){stop ("Number of fixed points is not sufficient.")}
   spec.name<-deparse(substitute(spec))
   mesh <- NULL

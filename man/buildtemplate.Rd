@@ -4,18 +4,18 @@
 \alias{buildtemplate}
 \title{Build 3D surface template}
 \usage{
-buildtemplate(spec, fixed, surface.sliders, ptsize = 1, center = TRUE)
+buildtemplate(spec, fixed, center = TRUE, surface.sliders, ptsize = 1)
 }
 \arguments{
 \item{spec}{An object of class shape3d/mesh3d, or matrix of 3D vertex coordinates}
 
 \item{fixed}{Either a numeric value designating the number of fixed landmarks to be selected by \code{\link{digit.fixed}}, or a matrix of 3D coordinates collected previously}
 
+\item{center}{Should the object 'spec' be centered prior to digitizing?}
+
 \item{surface.sliders}{The number of desired surface sliders}
 
 \item{ptsize}{Size of mesh points (vertices), e.g. 0.1 for dense meshes, 3 for sparse meshes}
-
-\item{center}{Should the object 'spec' be centered prior to digitizing?}
 }
 \value{
 The function writes to the working directory three files: an NTS file with the name of the specimen and .nts suffix containing 
@@ -25,7 +25,7 @@ The function also returns to the console an n x 3 matrix containing the x,y,z co
 }
 \description{
 An interactive function to build a template for the digitization across 
-specimens of three-dimensional (3D) surface sliding semilandmarks. Input 
+specimens of three dimensional (3D) surface sliding semilandmarks. Input 
 for the function is either a matrix of vertex coordinates
  defining a 3D surface object or a mesh3d object as obtained 
  from \code{\link{read.ply}}.

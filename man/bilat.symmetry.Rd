@@ -68,7 +68,7 @@ An object of class "bilat.symmetry" returns a list of the following
 \item{asymm.shape}{The asymmetric component of shape variation.}
 \item{DA.component}{The directional asymmetry component, found as the mean shape for each side.}
 \item{FA.component}{The fluctuating asymmetry component for each specimen, 
-found as the specimen-specific side deviation adjusted for the mean 
+found as the specimen specific side deviation adjusted for the mean 
 directional asymmetry in the dataset.}
 \item{data.type}{A value indicating whether the analysis was performed as Object or Matching 
 symmetry.}

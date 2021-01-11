@@ -12,12 +12,12 @@ citEntry(entry="Misc",
         textVersion = paste("Adams, D. C., M. L. Collyer, A. Kaliontzopoulou, and E. Balken. 2021. Geomorph: Software for geometric morphometric analyses. R package version 3.3.2. https://cran.r-project.org/package=geomorph.",sep=""))
         
 citEntry(entry = "Misc",
-	title = "{RRPP}: Linear Model Evaluation with Randomized Residuals in a Permutation Procedure, R package version 0.6.0.",
+	title = "{RRPP}: Linear Model Evaluation with Randomized Residuals in a Permutation Procedure, R package version 0.6.2.",
     author = personList(as.person("M. L. Collyer"),
 			    as.person("D. C. Adams")),
-  	year = "2020",
+  	year = "2021",
   	url = "https://cran.r-project.org/package=RRPP",
-  	textVersion = paste("Collyer, M. L. and D. C. Adams. 2020. RRPP: Linear Model Evaluation with Randomized Residuals in a Permutation Procedure. ", "https://cran.r-project.org/web/packages/RRPP", sep = ""))
+  	textVersion = paste("Collyer, M. L. and D. C. Adams. 2021. RRPP: Linear Model Evaluation with Randomized Residuals in a Permutation Procedure. ", "https://cran.r-project.org/web/packages/RRPP", sep = ""))
   
 citEntry(entry = "Misc",
 	title = "{RRPP}: An R package for fitting linear models to high‐dimensional data using residual randomization. ",

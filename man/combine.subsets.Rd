@@ -81,8 +81,8 @@ head.gpa <- gpagen(larvalMorph$headcoords,
 tail.gpa <- gpagen(larvalMorph$tailcoords, 
   curves = larvalMorph$tail.sliders)
 
-# Combine original data without GPA (plot to see relative size of heads and 
-# tails)
+# Combine original data without GPA (plot to see relative size of  
+# heads and tails)
 
  all.lm <- combine.subsets(head = larvalMorph$headcoords,
  tail = larvalMorph$tailcoords, gpa = FALSE, CS.sets = NULL)
@@ -99,7 +99,8 @@ comb.lm$coords[,,1]
 # Plot all specimens and just first specimen and color code landmarks 
 par(mfrow = c(1,2))
 plotAllSpecimens(comb.lm$coords)
-plot(comb.lm$coords[,,1], pch = 21, bg = c(rep(1,26), rep(2,64)), asp = 1)
+plot(comb.lm$coords[,,1], pch = 21, bg = c(rep(1,26), 
+rep(2,64)), asp = 1)
 
 # Override relative centroid size
 
@@ -107,7 +108,8 @@ comb.lm <- combine.subsets(head = head.gpa$coords,
 tail = tail.gpa$coords, gpa = FALSE, CS.sets = NULL)
 par(mfrow = c(1,2))
 plotAllSpecimens(comb.lm$coords)
-plot(comb.lm$coords[,,1], pch = 21, bg = c(rep(1,26), rep(2,64)), asp = 1)
+plot(comb.lm$coords[,,1], pch = 21, bg = c(rep(1,26), 
+rep(2,64)), asp = 1)
 
 # Note the head is as large as the tail, which is quite unnatural.
 
@@ -118,7 +120,8 @@ tail = tail.gpa, gpa = TRUE, norm.CS = TRUE)
 summary(comb.lm)
 par(mfrow = c(1,2))
 plotAllSpecimens(comb.lm$coords)
-plot(comb.lm$coords[,,1], pch = 21, bg = c(rep(1,26), rep(2,64)), asp = 1)
+plot(comb.lm$coords[,,1], pch = 21, bg = c(rep(1,26), 
+rep(2,64)), asp = 1)
 par(mfrow = c(1,1))
 
 # Note that the head is too large, compared to a real specimen.  
@@ -135,7 +138,8 @@ tail = tail.gpa, gpa = TRUE, norm.CS = FALSE, weights = c(0.3, 0.7))
 summary(comb.lm)
 par(mfrow = c(1,2))
 plotAllSpecimens(comb.lm$coords)
-plot(comb.lm$coords[,,1], pch = 21, bg = c(rep(1,26), rep(2,64)), asp = 1)
+plot(comb.lm$coords[,,1], pch = 21, bg = c(rep(1,26), 
+rep(2,64)), asp = 1)
 par(mfrow = c(1,1))
 
 # Note that the head is way too small, compared to a real specimen.  
