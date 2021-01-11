@@ -22,7 +22,7 @@ phylo.integration(
 \item{phy}{A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape}
 
 \item{partition.gp}{A list of which landmarks (or variables) belong in which partition: 
-e.g. A,A,A,B,B,B,C,C,C. This is required when only 1 dataset provided.}
+(e.g. A, A, A, B, B, B, C, C, C). This is required when only 1 dataset provided.}
 
 \item{iter}{Number of iterations for significance testing}
 

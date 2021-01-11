@@ -68,7 +68,7 @@ NULL
 #' @keywords datasets
 NULL
 
-#' Average head shape and phylogenetic relationships for several Plethodon salamander species
+#' Head shape and phylogenetic relationships for several Plethodon salamander species
 #'
 #' @name plethspecies
 #' @docType data

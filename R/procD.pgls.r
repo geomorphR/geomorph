@@ -142,6 +142,8 @@ procD.pgls<-function(f1, phy, Cov = NULL, iter=999, seed=NULL, int.first = FALSE
                    data = data, print.progress = print.progress,
            ...)
   
+  pgls$call[[2]] <- f1
+  
   names(pgls) <- gsub("gls", "pgls", x = names(pgls))
   if(!is.null(pgls$GM)) names(pgls$GM) <- gsub("gls", "pgls", x = names(pgls$GM))
   

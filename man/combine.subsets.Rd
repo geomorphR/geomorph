@@ -159,7 +159,7 @@ Adams, D.C. 1999. Methods for shape analysis of landmark data from articulated s
 Dryden, I.L. and K.V Mardia. 2016. Statistical shape analysis, with applications in R: Second edition.
 
 Collyer, M.L., M.A. Davis, and D.C. Adams. 2020. Making heads or tails of combined landmark configurations in 
-geometric morphometric data. Accepted
+geometric morphometric data. Evolutionary Biology. 47:193-205.
 }
 \author{
 Michael Collyer

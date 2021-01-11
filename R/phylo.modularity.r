@@ -26,7 +26,7 @@
 #'
 #' @param A A 3D array (p x k x n) containing Procrustes shape variables for all specimens, or a matrix (n x variables)
 #' @param partition.gp A list of which landmarks (or variables) belong in which partition: 
-#' e.g. A,A,A,B,B,B,C,C,C
+#' (e.g. A, A, A, B, B, B, C, C, C)
 #' @param CI A logical argument indicating whether bootstrapping should be used for estimating confidence intervals
 #' @param phy A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape
 #' @param iter Number of iterations for significance testing
@@ -69,7 +69,8 @@
 #' CI = FALSE, iter=499)
 #' summary(MT) # Test summary
 #' plot(MT) # Histogram of CR sampling distribution 
-phylo.modularity<-function(A,partition.gp,phy, CI=FALSE, iter=999, seed=NULL, print.progress=TRUE){
+phylo.modularity<-function(A, partition.gp, phy, CI = FALSE, 
+                           iter = 999, seed = NULL, print.progress = TRUE){
   if(any(is.na(A))==T){
     stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').")  }
   if (!inherits(phy, "phylo"))

@@ -51,7 +51,7 @@
 #' @param A2 An optional 2D array (n x [p2 x k2]) or 3D array (p2 x k2 x n) containing Procrustes shape variables for the second block 
 #' @param phy A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape
 #' @param partition.gp A list of which landmarks (or variables) belong in which partition: 
-#' e.g. A,A,A,B,B,B,C,C,C. This is required when only 1 dataset provided.
+#' (e.g. A, A, A, B, B, B, C, C, C). This is required when only 1 dataset provided.
 #' @param iter Number of iterations for significance testing
 #' @param seed An optional argument for setting the seed for random permutations of the resampling procedure.  
 #' If left NULL (the default), the exact same P-values will be found for repeated runs of the analysis (with the same number of iterations).

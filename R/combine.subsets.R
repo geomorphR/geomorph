@@ -54,7 +54,7 @@
 #'  Evolutionary Ecology Research. 1:959-970. 
 #' @references  Dryden, I.L. and K.V Mardia. 2016. Statistical shape analysis, with applications in R: Second edition.
 #' @references  Collyer, M.L., M.A. Davis, and D.C. Adams. 2020. Making heads or tails of combined landmark configurations in 
-#' geometric morphometric data. Accepted
+#' geometric morphometric data. Evolutionary Biology. 47:193-205.
 #' @author Michael Collyer
 #' @return An object of class \code{combined.set} is a list containing the following
 #' \item{cords}{An [p x k x n] array of scaled, concatenated landmark coordinates.}

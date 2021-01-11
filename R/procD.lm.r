@@ -267,7 +267,8 @@
 #' ### THE anova GENERIC FUNCTION
 #' 
 #' data("larvalMorph")
-#' Y.gpa <- gpagen(larvalMorph$tailcoords, curves = larvalMorph$tail.sliders,
+#' Y.gpa <- gpagen(larvalMorph$tailcoords, 
+#' curves = larvalMorph$tail.sliders,
 #' ProcD = TRUE, print.progress = FALSE)
 #' gdf <- geomorph.data.frame(Y.gpa, treatment = larvalMorph$treatment, 
 #' family = larvalMorph$family)

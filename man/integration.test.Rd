@@ -19,7 +19,7 @@ integration.test(
 \item{A2}{An optional 3D array (p x k x n) containing Procrustes shape variables for all specimens, or a matrix (n x variables) for a second partition}
 
 \item{partition.gp}{A list of which landmarks (or variables) belong in which partition: 
-e.g. A,A,A,B,B,B,C,C,C. Required when only 1 dataset provided.}
+(e.g. A, A, A, B, B, B, C, C, C). Required when only 1 dataset provided.}
 
 \item{iter}{Number of iterations for significance testing}
 

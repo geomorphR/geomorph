@@ -19,8 +19,8 @@ plotAllometry(
 
 \item{logsz}{A logical value to indicate whether to first find the logarithm of size.}
 
-\item{method}{The method of allometric visualization; choice among CAC, 
-PredLine, RegScore, and size.shape (PCA)}
+\item{method}{The method of allometric visualization, which includes 
+CAC, PredLine, RegScore, and size.shape (PCA)}
 
 \item{...}{Other arguments passed on to plot.default}
 }
@@ -174,7 +174,8 @@ summary(pc.plot$size.shape.PCA)
 
 # Are species' shape differences just a manifestation of shape allometry?
 
-fit3 <- procD.lm(coords ~ species, data=gdf, iter=0, print.progress = FALSE)
+fit3 <- procD.lm(coords ~ species, data = gdf, iter = 0, 
+print.progress = FALSE)
 plotAllometry(fit3, size = gdf$Csize, logsz = TRUE, method = "RegScore", 
 pch = 19, col = as.numeric(gdf$species))
 

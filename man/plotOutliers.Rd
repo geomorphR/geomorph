@@ -44,7 +44,8 @@ plotOutliers(Y$coords, inspect.outliers = TRUE) # function also produces
 # plots of identified outlier specimens compared to the mean shape
 
 # example with groups
-plotOutliers(Y$coords, groups = plethodon$species, inspect.outliers = TRUE)
+plotOutliers(Y$coords, groups = plethodon$species, 
+inspect.outliers = TRUE)
  
 }
 \seealso{

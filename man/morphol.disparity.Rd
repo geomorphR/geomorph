@@ -51,7 +51,7 @@ such as weights or offset, plus SS.type).}
 Objects of class "morphol.disparity" return a list with the following components 
 (if groups are specified): 
   \item{Procrustes.var}{Observed Procrustes variances.}
-  \item{PV.dist}{Observed pairwise absolute differences (distances) 
+  \item{PV.dist}{Observed pairwise absolute differences (as distances) 
   among group Procrustes variances.}
   \item{PV.dist.Pval}{P-values associated with pairwise differences.}
   \item{random.PV.dist}{Pairwise distance matrices produced in the resampling procedure.}

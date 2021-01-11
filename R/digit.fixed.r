@@ -57,7 +57,11 @@
 #' @keywords digitizing
 #' @author Erik Otarola-Castillo & Emma Sherratt
 #' @seealso  \code{\link[rgl]{rgl-package}} (used in 3D plotting)
-digit.fixed <- function(spec, fixed, index=FALSE, ptsize = 1, center = TRUE){
+digit.fixed <- function(spec, 
+                        fixed, 
+                        index=FALSE, 
+                        ptsize = 1, 
+                        center = TRUE){
   spec.name<-deparse(substitute(spec))
   mesh <- NULL
   if (inherits(spec, "shape3d") == TRUE || inherits(spec, "mesh3d") == TRUE){

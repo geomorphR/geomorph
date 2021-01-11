@@ -3,9 +3,9 @@
 \docType{data}
 \name{plethspecies}
 \alias{plethspecies}
-\title{Average head shape and phylogenetic relationships for several Plethodon salamander species}
+\title{Head shape and phylogenetic relationships for several Plethodon salamander species}
 \description{
-Average head shape and phylogenetic relationships for several Plethodon salamander species
+Head shape and phylogenetic relationships for several Plethodon salamander species
 }
 \references{
 Phylogeny pruned from: Wiens et al. (2006). Evol.

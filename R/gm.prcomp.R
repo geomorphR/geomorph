@@ -12,9 +12,9 @@
 #' the capability of performing analyses generally referred to as:
 #' 
 #' \itemize{
-#' \item{\bold{PCA}}{  Traditional PCA based on OLS-centering and projection of data.}
-#' \item{\bold{  Phylomorphospace}}{  Traditional PCA with estimated ancestral states and phylogenetic branches
-#' projected into ordination plots.}
+#' \item{\bold{PCA}}{  Standard PCA based on OLS-centering and projection of data.}
+#' \item{\bold{  Phylomorphospace}}{  Standard PCA with estimated ancestral 
+#' states and phylogenetic branches projected into ordination plots.}
 #' \item{\bold{phyloPCA}}{  PCA based on GLS-centering and projection of data.  Also possible to 
 #' project ancestral states into plots. Note that if transformed GLS-residuals are used for projection, the ancestral states
 #' might not appear logical, as the projection is independent of phylogeny.  With OLS-centering, a phyloPCA as described by 

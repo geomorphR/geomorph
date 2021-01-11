@@ -37,8 +37,8 @@
 #' take the difference in the number of trait dimensions into account (see discussion in Denton and
 #' Adams 2015). This option is identified by selecting Subset = FALSE.
 #' 
-#'  The generic functions, \code{\link{print}}, \code{\link{summary}}, and 
-#'  \code{\link{plot}} work with  \code{\link{compare.multi.evol.rates}}.
+#'  With  \code{\link{compare.multi.evol.rates}}, the generic functions \code{\link{print}}, \code{\link{summary}}, and 
+#'  \code{\link{plot}} all work.
 #'  The generic function, \code{\link{plot}}, produces a histogram of random rate-ratios associated with
 #'  the resampling procedure.
 #'
@@ -85,7 +85,11 @@
 #'     Subset=TRUE, phy= plethspecies$phy,iter=999)
 #' summary(EMR)
 #' plot(EMR)
-compare.multi.evol.rates<-function(A,gp,phy,Subset=TRUE,iter=999,seed=NULL,print.progress=TRUE){
+compare.multi.evol.rates<-function(A, gp, phy, 
+                                   Subset = TRUE, 
+                                   iter = 999, 
+                                   seed = NULL,
+                                   print.progress = TRUE){
   if(any(is.na(A))==T){
     stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').")}
   gp<-as.factor(gp)

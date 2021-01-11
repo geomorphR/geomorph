@@ -79,7 +79,7 @@
 #' # CR.null = TRUE)
 #' # summary(model.Z)
 #' 
-compare.CR <- function(...,CR.null = TRUE, two.tailed = TRUE){
+compare.CR <- function(..., CR.null = TRUE, two.tailed = TRUE){
    dots <- list(...)
    tails <- if(two.tailed) 2 else 1
    if(length(dots) == 1) n <- length(dots[[1]]) else n <- length(dots)

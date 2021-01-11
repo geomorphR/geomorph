@@ -21,7 +21,7 @@ plotAllSpecimens(
 
 \item{label}{A logical value indicating whether landmark numbers will be plotted (only if mean=TRUE)}
 
-\item{plot.param}{A list of plotting parameters for the points (pt.bg, pt.cex), mean (mean.bg, mean.cex), links (link.col, link.lwd, link.lty) and landmark labels (txt.cex, txt.adj, txt.pos, txt.col)}
+\item{plot.param}{A list of plot parameters for the points (pt.bg, pt.cex), mean (mean.bg, mean.cex), links (link.col, link.lwd, link.lty) and landmark labels (txt.cex, txt.adj, txt.pos, txt.col)}
 }
 \description{
 Function plots landmark coordinates for a set of specimens

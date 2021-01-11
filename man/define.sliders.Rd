@@ -12,7 +12,7 @@ define.sliders(landmarks, nsliders, surfsliders = NULL, write.file = TRUE)
 \item{nsliders}{Number of landmarks to be semilandmarks that slide along curves}
 
 \item{surfsliders}{(3D only) If 'landmarks' contains "surface sliders",
-e.g. made by \code{\link{buildtemplate}}, these should be given as a vector or use surfsliders = T, and function looks for "surfslide.csv" in working directory.}
+these should be given as a vector or use surfsliders = T, and function looks for "surfslide.csv" in working directory.}
 
 \item{write.file}{A logical value indicating whether the matrix is written to file as .csv.}
 }

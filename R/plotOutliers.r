@@ -35,7 +35,8 @@
 #' # plots of identified outlier specimens compared to the mean shape
 #' 
 #' # example with groups
-#' plotOutliers(Y$coords, groups = plethodon$species, inspect.outliers = TRUE)
+#' plotOutliers(Y$coords, groups = plethodon$species, 
+#' inspect.outliers = TRUE)
 #'  
 plotOutliers <- function(A, groups = NULL, inspect.outliers = FALSE){
   if (length(dim(A))!=3){

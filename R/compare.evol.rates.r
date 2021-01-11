@@ -69,7 +69,9 @@
 #'   method="simulation",gp=gp.end,iter=999)
 #' summary(ER)
 #' plot(ER)
-compare.evol.rates<-function(A,phy,gp,iter=999,seed=NULL,method=c("permutation","simulation"),print.progress=TRUE ){
+compare.evol.rates<-function(A, phy, gp, iter = 999, seed = NULL,  
+                             method = c("permutation", "simulation"), 
+                             print.progress = TRUE){
   gp<-as.factor(gp)
   if (length(dim(A))==3){ 
     if(is.null(dimnames(A)[[3]])){
