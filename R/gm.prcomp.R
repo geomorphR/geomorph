@@ -200,6 +200,7 @@ gm.prcomp <- function (A, phy = NULL, align.to.phy = FALSE,
     ord.args$Y <- Y
   } else ord.args$Y <- Y <- A
   
+  if(is.null(ord.args$tol)) ord.args$tol <- sqrt(.Machine$double.eps)
 
   if(!is.null(phy)){
     if (!inherits(phy, "phylo"))
