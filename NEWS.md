@@ -1,3 +1,8 @@
+# CHANGES IN GEOMORPH VERSION 3.3.2.0900 
+
+### BUG FIXES
+* Fixed bug in `plotAllometry` where `crossprod` was used instead of `tcrossprod`
+
 # CHANGES IN GEOMORPH VERSION 3.3.2 (Minor Release)
 
 ### NEW FEATURES
