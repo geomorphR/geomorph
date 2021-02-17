@@ -231,7 +231,7 @@ plotAllometry <- function(fit, size, logsz = TRUE,
         r <- center(y)
         CAC <- r%*%a  
         p <- fit$LM$p
-        resid <- r%*%(diag(p) - matrix(crossprod(a),p,p))
+        resid <- r%*%(diag(p) - tcrossprod(a))
         RSC <- prcomp(resid)$x
         Reg.proj <- r %*% b %*% sqrt(1/crossprod(b))
         PCA <- prcomp(cbind(y, xc))
