@@ -153,7 +153,7 @@ phylo.integration <-function(A, A2 = NULL, phy,
            call. = FALSE) 
     
     y <- try(two.d.array(A2), silent = TRUE)
-    if(inherits(y, "try-error")) y <- try(as.matrix(A), silent = TRUE)
+    if(inherits(y, "try-error")) y <- try(as.matrix(A2), silent = TRUE)
     if(inherits(y, "try-error"))
       stop("\nA2 is not a suitable data array for analysis. ", call. = FALSE)
     
@@ -240,7 +240,7 @@ phylo.integration <-function(A, A2 = NULL, phy,
   }
 
   if(ngps == 2){
-    pls.obs <- pls.phylo(x, y, Ptrans, verbose=TRUE)
+    pls.obs <- pls.phylo(as.matrix(x), as.matrix(y), Ptrans, verbose=TRUE)
     
     if(NCOL(x) > NROW(x)){
       pcax <- prcomp(x)
@@ -253,13 +253,14 @@ phylo.integration <-function(A, A2 = NULL, phy,
       y <- pcay$x[,d]
     }
     
-    x <- center(Ptrans %*% x)
-    y <- center(Ptrans %*% y)
+    xc <- as.matrix(center(Ptrans %*% x))
+    yc <- as.matrix(center(Ptrans %*% y))
     pls.rand <- sapply(1:perms, function(j) {
       step <- j
       if(print.progress) setTxtProgressBar(pb,step)
       s <- ind[[j]]
-      quick.pls(x[s,], y)
+      xs <- as.matrix(xc[s,])
+      quick.pls(xs, yc)
     })
     
     names(pls.rand) <- c("obs", paste("iter", 1:iter, sep = "."))
