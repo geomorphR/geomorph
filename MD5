@@ -125,9 +125,9 @@ d2755155772526527e4224b17d0dd05d *man/warpRefMesh.Rd
 7bea8d6b17918fd4889e2056ebe0e3d0 *man/warpRefOutline.Rd
 d9119f721918f22c267db843023a86fe *man/writeland.tps.Rd
 56bcf005592d5f74ce5e39c3bf1dc92b *NAMESPACE
-3d4318dfd8c231d5f39c50d0ed90cd69 *NEWS.md
+91e54471275e6f2148a05cb057b9f0fb *NEWS.md
 d80d05ef890863f1b3004473627ea5f1 *R/arrayspecs.r
-2c88b0011554a293155473bcce65b194 *R/bilat.symmetry.r
+0db1f9320b92b30f6313fe63d2114e36 *R/bilat.symmetry.r
 4de44720708760426e94d2f2ffef904b *R/build.template.r
 00e0cc403fe77c0fce39fb6938b34593 *R/combine.subsets.R
 ef084dfbb76b2c920f3c45d0e0ef4633 *R/compare.CR.R

@@ -1,5 +1,8 @@
 # CHANGES IN GEOMORPH VERSION 3.3.2.0900 
 
+### NEW FEATURES
+* Updated `bilat.symmetry` to use arguments available with updates to `RRPP::lm.rrpp`, taking advantage of parallel processing, C++, and turbo-charged (coefficient-suppressed) calculations to maximize speed.
+
 ### BUG FIXES
 * Fixed bug in `plotAllometry` where `crossprod` was used instead of `tcrossprod`
 * Fixed typp causing error in `phylo.integration`
