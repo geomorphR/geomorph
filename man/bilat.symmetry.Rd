@@ -62,9 +62,12 @@ significance testing.}
 \item{turbo}{A logical value that if TRUE, suppresses coefficient estimation in every random permutation, 
 in order to speed up computation time.}
 
-\item{Parallel}{A logical value for whether to use parallel-processing in \code{\link{procD.lm}}, with 
-default = TRUE.
-sums of squares and cross-products computations.}
+\item{Parallel}{Either a logical value to indicate whether parallel processing 
+should be used or a numeric value to indicate the number of cores to use in 
+parallel processing via the \code{parallel} library. 
+If TRUE, this argument invokes forking of all processor cores, except one.  If
+FALSE, only one core is used. A numeric value directs the number of cores to use,
+but one core will always be spared.}
 
 \item{print.progress}{A logical value to indicate whether a progress bar should be printed to 
 the screen.  

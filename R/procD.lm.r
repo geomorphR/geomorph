@@ -85,6 +85,10 @@
 #' 
 #' @param f1 A formula for the linear model (e.g., y~x1+x2)
 #' @param iter Number of iterations for significance testing
+#' @param turbo A logical value that if TRUE, suppresses coefficient estimation 
+#' in every random permutation.  This will affect subsequent analyses that 
+#' require random coefficients (see \code{\link{coef.lm.rrpp}})
+#' but might be useful for large data sets for which only ANOVA is needed.
 #' @param seed An optional argument for setting the seed for random permutations of the resampling procedure.  
 #' If left NULL (the default), the exact same P-values will be found for repeated runs of the analysis (with the same number of iterations).
 #' If seed = "random", a random seed will be used, and P-values will vary.  One can also specify an integer for specific seed values,
@@ -101,7 +105,13 @@
 #' @param data A data frame for the function environment, see \code{\link{geomorph.data.frame}} 
 #' @param print.progress A logical value to indicate whether a progress bar should be printed to the screen.  
 #' This is helpful for long-running analyses.
-#' @param ... Arguments passed on to \code{\link{lm.rrpp}}, like weights and offset.
+#' @param Parallel Either a logical value to indicate whether parallel processing 
+#' should be used or a numeric value to indicate the number of cores to use in 
+#' parallel processing via the \code{parallel} library. 
+#' If TRUE, this argument invokes forking of all processor cores, except one.  If
+#' FALSE, only one core is used. A numeric value directs the number of cores to use,
+#' but one core will always be spared.
+#' @param ... Arguments not listed above that can passed on to \code{\link{lm.rrpp}}, like weights, offset.
 #' @keywords analysis
 #' @export
 #' @author Dean Adams and Michael Collyer
@@ -327,12 +337,13 @@ procD.lm <- function(f1, iter = 999, seed=NULL, RRPP = TRUE,
     GM <- FALSE
   }
   
-  out <- lm.rrpp(f, data = data, 
+  out <- lm.rrpp(f, data = data, turbo = turbo,
                  seed = seed, RRPP = RRPP,
                  SS.type = SS.type, 
                  int.first = int.first,  
                  Cov = Cov, iter = iter,
-                 print.progress = print.progress, ...)
+                 print.progress = print.progress, 
+                 Parallel = Parallel, ...)
   
   out$ANOVA$effect.type <- match.arg(effect.type)
   out$GM <- NULL

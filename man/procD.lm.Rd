@@ -47,7 +47,19 @@ coefficients and sums of squares and cross-products (see Adams and Collyer 2018)
 \item{print.progress}{A logical value to indicate whether a progress bar should be printed to the screen.
 This is helpful for long-running analyses.}
 
-\item{...}{Arguments passed on to \code{\link{lm.rrpp}}, like weights and offset.}
+\item{...}{Arguments not listed above that can passed on to \code{\link{lm.rrpp}}, like weights, offset.}
+
+\item{turbo}{A logical value that if TRUE, suppresses coefficient estimation 
+in every random permutation.  This will affect subsequent analyses that 
+require random coefficients (see \code{\link{coef.lm.rrpp}})
+but might be useful for large data sets for which only ANOVA is needed.}
+
+\item{Parallel}{Either a logical value to indicate whether parallel processing 
+should be used or a numeric value to indicate the number of cores to use in 
+parallel processing via the \code{parallel} library. 
+If TRUE, this argument invokes forking of all processor cores, except one.  If
+FALSE, only one core is used. A numeric value directs the number of cores to use,
+but one core will always be spared.}
 }
 \value{
 An object of class "procD.lm" is a list containing the following
