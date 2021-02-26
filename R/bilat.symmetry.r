@@ -88,11 +88,10 @@
 #' which might be of interest for advanced users.
 #' @param RRPP A logical value indicating whether residual randomization should be used for 
 #' significance testing.
-#' @param SS.type A choice between type I (sequential), type II 
-#' (hierarchical), or type III (marginal)
+#' @param SS.type A choice between type I (sequential), type II (hierarchical), or type III (marginal).
 #' @param turbo A logical value that if TRUE, suppresses coefficient estimation in every random permutation, 
 #' in order to speed up computation time.
-#' @param Parralel A logical value for whether to use parallel-processing in \code{\link{{procD.lm}}, with 
+#' @param Parallel A logical value for whether to use parallel-processing in \code{\link{procD.lm}}, with 
 #' default = TRUE.
 #' sums of squares and cross-products computations.
 #' @param print.progress A logical value to indicate whether a progress bar should be printed to 
