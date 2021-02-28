@@ -180,7 +180,7 @@
 
 bilat.symmetry <- function(A, ind = NULL, side = NULL, replicate = NULL, object.sym = FALSE, land.pairs = NULL,
                            data = NULL, iter = 999, seed = NULL, RRPP = TRUE, SS.type = c("I", "II", "III"),
-                           turbo = TRUE, Parallel = TRUE, print.progress = TRUE, ...){
+                           turbo = TRUE, Parallel = FALSE, print.progress = TRUE, ...){
   
   if(!is.null(data)){
     data <- droplevels(data)

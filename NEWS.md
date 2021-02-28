@@ -1,8 +1,9 @@
-# CHANGES IN GEOMORPH VERSION 3.3.2.0900 
+# CHANGES IN GEOMORPH VERSION 4.0.0
 
 ### NEW FEATURES
 * Updated `bilat.symmetry` to use arguments available with updates to `RRPP::lm.rrpp`, taking advantage of parallel processing, C++, and turbo-charged (coefficient-suppressed) calculations to maximize speed.
-* More options for parallel processing
+* More options for parallel processing.
+*`make_ggplot2` function for converting `geomorph` plots to `ggplot` objects, which can be amended.
 
 ### BUG FIXES
 * Fixed bug in `plotAllometry` where `crossprod` was used instead of `tcrossprod`

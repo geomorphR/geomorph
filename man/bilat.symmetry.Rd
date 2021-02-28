@@ -17,7 +17,7 @@ bilat.symmetry(
   RRPP = TRUE,
   SS.type = c("I", "II", "III"),
   turbo = TRUE,
-  Parallel = TRUE,
+  Parallel = FALSE,
   print.progress = TRUE,
   ...
 )

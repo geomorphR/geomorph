@@ -13,8 +13,10 @@ procD.lm(
   effect.type = c("F", "cohenf", "SS", "MS", "Rsq"),
   int.first = FALSE,
   Cov = NULL,
+  turbo = TRUE,
+  Parallel = FALSE,
   data = NULL,
-  print.progress = TRUE,
+  print.progress = FALSE,
   ...
 )
 }
@@ -42,13 +44,6 @@ assure normally distributed data.)}
 \item{Cov}{An optional covariance matrix that can be used for generalized least squares estimates of
 coefficients and sums of squares and cross-products (see Adams and Collyer 2018).}
 
-\item{data}{A data frame for the function environment, see \code{\link{geomorph.data.frame}}}
-
-\item{print.progress}{A logical value to indicate whether a progress bar should be printed to the screen.
-This is helpful for long-running analyses.}
-
-\item{...}{Arguments not listed above that can passed on to \code{\link{lm.rrpp}}, like weights, offset.}
-
 \item{turbo}{A logical value that if TRUE, suppresses coefficient estimation 
 in every random permutation.  This will affect subsequent analyses that 
 require random coefficients (see \code{\link{coef.lm.rrpp}})
@@ -60,6 +55,13 @@ parallel processing via the \code{parallel} library.
 If TRUE, this argument invokes forking of all processor cores, except one.  If
 FALSE, only one core is used. A numeric value directs the number of cores to use,
 but one core will always be spared.}
+
+\item{data}{A data frame for the function environment, see \code{\link{geomorph.data.frame}}}
+
+\item{print.progress}{A logical value to indicate whether a progress bar should be printed to the screen.
+This is helpful for long-running analyses.}
+
+\item{...}{Arguments not listed above that can passed on to \code{\link{lm.rrpp}}, like weights, offset.}
 }
 \value{
 An object of class "procD.lm" is a list containing the following

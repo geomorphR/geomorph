@@ -294,7 +294,9 @@
 procD.lm <- function(f1, iter = 999, seed=NULL, RRPP = TRUE, 
                      SS.type = c("I", "II", "III"),
                      effect.type = c("F", "cohenf", "SS", "MS", "Rsq"),
-                     int.first = FALSE,  Cov = NULL, data=NULL, print.progress = TRUE, ...){
+                     int.first = FALSE,  Cov = NULL, 
+                     turbo = TRUE, Parallel = FALSE,
+                     data=NULL, print.progress = FALSE, ...){
   
   if(is.null(data)) {
     vars <- rownames(attr(terms(f1), "factors"))

@@ -14,6 +14,7 @@
 #' @import utils
 #' @import graphics
 #' @import grDevices
+#' @import ggplot2
 #' @importFrom jpeg readJPEG
 #' @importFrom ape multi2di.phylo
 #' @importFrom ape root.phylo
