@@ -280,8 +280,8 @@ bilat.symmetry <- function(A, ind = NULL, side = NULL, replicate = NULL, object.
     random.shape.F[2,] <- MS[2,]/MS[3,]
     random.shape.F[3,] <- PSh$ANOVA$Fs[3,]
     
-    newZ <- apply(log(random.shape.F + 0.000001), 1, effect.size)
-    newP <- apply(random.shape.F , 1, pval)
+    newZ <- apply(random.shape.F, 1, effect.size)
+    newP <- apply(random.shape.F, 1, pval)
     shape.anova$F[1:3] <- random.shape.F[1:3, 1]
     shape.anova$Z[1:3] <- newZ
     shape.anova[[ncol(shape.anova)]][1:3] <- newP
@@ -317,7 +317,7 @@ bilat.symmetry <- function(A, ind = NULL, side = NULL, replicate = NULL, object.
       random.size.F[1,] <- MS[1,]/MS[3,]
       random.size.F[2,] <- MS[2,]/MS[3,]
       random.size.F[3,] <- PSz$ANOVA$Fs[3,]
-      newZ <- apply(log(random.size.F + 0.000001), 1, effect.size)
+      newZ <- apply(random.size.F, 1, effect.size)
       newP <- apply(random.size.F , 1, pval)
       size.anova$F[1:3] <- random.size.F[1:3, 1]
       size.anova$Z[1:3] <- newZ
