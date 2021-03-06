@@ -10,7 +10,7 @@ d8e8360c03c03fe45d2100e9c05d4a89 *data/plethodon.rda
 80c6fa53b642b23b378cf036d1b962f1 *data/ratland.rda
 9ba51ab9be03930a4acdcddde8169b33 *data/scallopPLY.rda
 6e5e71b242462e422b716800ffc3c464 *data/scallops.rda
-53d9ed084ed7d3ad49de8233240e5ba6 *DESCRIPTION
+aa9b1f203a1320f9f3b7dfb2976693c0 *DESCRIPTION
 f4f2080e745b8d689f17caf549449ab5 *geomorph.Rproj
 3c082108c9c0559fbfd7256cc84896f3 *inst/CITATION
 593e42548fcbd08b6027b15bbca38808 *man/arrayspecs.Rd
@@ -37,7 +37,7 @@ e5ea7eb05043e14bf36bb1c553de0576 *man/findMeanSpec.Rd
 4681bbf9711d9eafd48798c7537bf5b7 *man/geomorph.data.frame.Rd
 c7fdffac3135bde168be933be6bf2243 *man/globalIntegration.Rd
 a2b256ef99f445aac19858b7fe527913 *man/gm.prcomp.Rd
-cc0441bbaf88cd6fddc5e9ac7208d768 *man/gpagen.Rd
+244b9d47c6b5b84a22a898f4afb0293f *man/gpagen.Rd
 3a80fa88113f0962688993fd399bc689 *man/gridPar.Rd
 a598044482a6c3e39517b798b654c57e *man/hummingbirds.Rd
 6725d202cc91d2039fee6e02157f232a *man/integration.test.Rd
@@ -125,7 +125,7 @@ da1241dd835f95675cc7126b2a7ec61a *man/two.d.array.Rd
 d2755155772526527e4224b17d0dd05d *man/warpRefMesh.Rd
 7bea8d6b17918fd4889e2056ebe0e3d0 *man/warpRefOutline.Rd
 d9119f721918f22c267db843023a86fe *man/writeland.tps.Rd
-0ddd41d54e64269bd4022d597225c702 *NAMESPACE
+d7b4a9ea17710034fed4591b61525ff7 *NAMESPACE
 9b1277296a0b608164debbb5f07c2d86 *NEWS.md
 d80d05ef890863f1b3004473627ea5f1 *R/arrayspecs.r
 d0f39ef0e1bc5657bde36587498be388 *R/bilat.symmetry.r
@@ -149,11 +149,11 @@ a38ff2f2af270bf26299b1569cc734fc *R/digit.curves.r
 aac6a4f8a759473e8c37048e5c8e3d91 *R/findMeanSpec.r
 067124d4119de55a6089c6aefdd0eac5 *R/fixed.angle.r
 3d7958991ae174c24ba7c570f4e03b27 *R/geomorph.data.frame.r
-a1754dd8716c8deab5cb86b7eb3ba91f *R/geomorph.support.code.r
+acc6a0856a9aa75ad971d9d0cad0cf51 *R/geomorph.support.code.r
 0c72868af15d33264ca157ef14317f03 *R/geomorph.utils.r
 b0de2a67cff633e27e7a00860187240f *R/globalIntegration.r
 1a0b20144788e7d130adc7d310bb462f *R/gm.prcomp.R
-0ce16133ea42aa98c677bee5f2cb4574 *R/gpagen.r
+04eb908b4377623e0ad1e6a03488dbee *R/gpagen.r
 293464e2f2612431690a2c1326c7bdd6 *R/gridPar.r
 ba7d47018f365a71131a73993e001123 *R/integration.test.r
 0cbfe6b5655e2751cdd03ca2a1550768 *R/interlmkdist.r

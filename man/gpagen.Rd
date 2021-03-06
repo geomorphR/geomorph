@@ -12,7 +12,8 @@ gpagen(
   max.iter = NULL,
   ProcD = FALSE,
   Proj = TRUE,
-  print.progress = TRUE
+  print.progress = TRUE,
+  Parallel = FALSE
 )
 }
 \arguments{
@@ -38,6 +39,13 @@ for optimizing the positions of semilandmarks (if not, bending energy is used)}
 into tangent space}
 
 \item{print.progress}{A logical value to indicate whether a progress bar should be printed to the screen.}
+
+\item{Parallel}{For sliding semi-landmarks only, either a logical value to indicate whether 
+parallel processing should be used or a numeric value to indicate the number of cores to use in 
+parallel processing via the \code{parallel} library. 
+If TRUE, this argument invokes forking of all processor cores, except one.  If
+FALSE, only one core is used. A numeric value directs the number of cores to use,
+but one core will always be spared.}
 }
 \value{
 An object of class gpagen returns a list with the following components:

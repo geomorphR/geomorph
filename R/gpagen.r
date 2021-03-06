@@ -64,6 +64,12 @@
 #'   using the function \code{\link{define.sliders}}.
 #' @param surfaces An optional vector defining which landmarks should be treated as semilandmarks on surfaces
 #' @param print.progress A logical value to indicate whether a progress bar should be printed to the screen.  
+#' @param Parallel For sliding semi-landmarks only, either a logical value to indicate whether 
+#' parallel processing should be used or a numeric value to indicate the number of cores to use in 
+#' parallel processing via the \code{parallel} library. 
+#' If TRUE, this argument invokes forking of all processor cores, except one.  If
+#' FALSE, only one core is used. A numeric value directs the number of cores to use,
+#' but one core will always be spared.
 #' @keywords analysis
 #' @export
 #' @author Dean Adams and Michael Collyer
@@ -150,7 +156,7 @@
 #' # NOTE can plot as: plot(Y.gpa) 
 gpagen = function(A, curves=NULL, surfaces=NULL, PrinAxes = TRUE, 
                   max.iter = NULL, ProcD=FALSE, Proj = TRUE,
-                  print.progress = TRUE){
+                  print.progress = TRUE, Parallel = FALSE){
   
   if(inherits(A, "geomorphShapes")) {
     Y <- A$landmarks
@@ -200,6 +206,16 @@ gpagen = function(A, curves=NULL, surfaces=NULL, PrinAxes = TRUE,
     if(ncol(curves) != 3) stop("curves must be a matrix of three columns")
   } else curves <- NULL
   if(!is.null(surfaces)) surf <- as.vector(surfaces) else surf <- NULL
+  
+  if(print.progress) {
+    if(!is.null(surfaces) || !is.null(curves)) {
+      if(Parallel != FALSE) {
+        print.progress = FALSE
+        message("\nProgress bar is turned off for parallel processing.\n")
+      }
+    }
+  }
+  
   if(print.progress == TRUE){
     if(!is.null(curves) || !is.null(surf)) gpa <- pGpa.wSliders(Y, curves = curves, surf=surf,
                                                                 PrinAxes = PrinAxes, max.iter=max.it, 
@@ -208,7 +224,7 @@ gpagen = function(A, curves=NULL, surfaces=NULL, PrinAxes = TRUE,
   } else {
     if(!is.null(curves) || !is.null(surf)) gpa <- .pGpa.wSliders(Y, curves = curves, surf=surf,
                                                                  PrinAxes = PrinAxes, max.iter=max.it, 
-                                                                 ProcD=prD) else
+                                                                 ProcD=prD, Parallel = Parallel) else
                                                                    gpa <- .pGpa(Y, PrinAxes = PrinAxes, max.iter=max.it)
   }
   
