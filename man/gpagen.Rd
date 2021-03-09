@@ -11,6 +11,7 @@ gpagen(
   PrinAxes = TRUE,
   max.iter = NULL,
   ProcD = FALSE,
+  approxBE = TRUE,
   Proj = TRUE,
   print.progress = TRUE,
   Parallel = FALSE
@@ -30,10 +31,16 @@ using the function \code{\link{define.sliders}}.}
 \item{PrinAxes}{A logical value indicating whether or not to align the shape data by principal axes}
 
 \item{max.iter}{The maximum number of GPA iterations to perform before superimposition is halted.  The final
-number of iterations could be larger than this, if curves or surface semilandmarks are involved.}
+number of iterations will be larger than max.iter, if curves or surface semilandmarks are involved, as max.iter
+will pertain only to iterations with sliding of landmarks.}
 
 \item{ProcD}{A logical value indicating whether or not Procrustes distance should be used as the criterion
 for optimizing the positions of semilandmarks (if not, bending energy is used)}
+
+\item{approxBE}{A logical value for whether bending energy should be estimated via approximate 
+thin-plate spline (TPS) mapping.  Approximate TPS mapping is much faster and allows for more iterations, which 
+might return more reliable results than few iterations with full TPS.  If using full TPS, one should probably
+change max.iter to be few for large data sets.}
 
 \item{Proj}{A logical value indicating whether or not the Procrustes aligned specimens should be projected 
 into tangent space}

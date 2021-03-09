@@ -386,7 +386,7 @@ rotate.mat <- function(M,Y){
 # tangents
 # finds tangents in a matrix based on sliders
 # used in all functions associated with pPga.wCurves
-tangents = function(s,x, scaled=FALSE){ # s = curves, x = landmarks
+tangents = function(s, x, scaled=FALSE){ # s = curves, x = landmarks
   if(nrow(s) > 1) { ts <- x[s[, 3], ] - x[s[, 1], ]} else { ts <- x[s[3]] - x[s[1]]}
   if(scaled==TRUE) {
     if(nrow(as.matrix(ts)) > 1) {
@@ -402,9 +402,9 @@ tangents = function(s,x, scaled=FALSE){ # s = curves, x = landmarks
 # nearest
 # finds nearest points on surfaces for sliding semilandmakrs
 # used in all functions associated with pPga.wCurves
-nearest <- function(X, m, k = 4) {
+nearest <- function(X, m, k = 4, n) {
   a <- X[m,]
-  b <- sapply(1:nrow(X), function (j) sum((a-X[j,])^2))
+  b <- vapply(1:n, function (j) sum((a-X[j,])^2), 1)
   match(sort(b)[2:(k + 1)], b)
 }
 
@@ -412,13 +412,15 @@ nearest <- function(X, m, k = 4) {
 # calculates U matrix for sliding semilandmarks
 # currently not used but retained for posterity
 getU <- function(y,tn, surf){
-  p <- nrow(tn); k <- ncol(tn)
+  p <- nrow(y); k <- ncol(y)
   Ux <- Uy <- Uz <- matrix(0,p,p)
   if(!is.null(tn)) {
     if(k == 3){ diag(Ux) <- tn[,1]; diag(Uy) <- tn[,2]; diag(Uz) <- tn[,3]} else
     { diag(Ux) <- tn[,1]; diag(Uy) <- tn[,2]; Uz <- NULL}
-    U <- rbind(Ux,Uy,Uz)
+    
   }
+  U <- rbind(Ux,Uy,Uz)
+  
   if(!is.null(surf)){
     Up1 <- Up2 <- array(0,dim=c(k*p,p))
     PC <- getSurfPCs(y, surf)
@@ -471,7 +473,7 @@ bigLtemplate <-function(Mr, Mt=NULL){
 # pGPA
 # GPA with partial Procrustes superimposition
 # used in gpagen
-pGpa <- function(Y, PrinAxes = FALSE, Proj = FALSE, max.iter = 5){
+pGpa <- function(Y, PrinAxes = FALSE, Proj = FALSE, max.iter = 10){
   iter <- 0
   pb <- txtProgressBar(min = 0, max = max.iter, initial = 0, style=3)
   setTxtProgressBar(pb,iter)
@@ -512,7 +514,7 @@ pGpa <- function(Y, PrinAxes = FALSE, Proj = FALSE, max.iter = 5){
 # .pGPA
 # same as pGPA, but without progress bar option
 # used in gpagen
-.pGpa <- function(Y, PrinAxes = FALSE, Proj = FALSE, max.iter = 5){
+.pGpa <- function(Y, PrinAxes = FALSE, Proj = FALSE, max.iter = 10){
   iter <- 0
   n <- length(Y); p <- nrow(Y[[1]]); k <- ncol(Y[[1]])
   Yc <- Map(function(y) center.scale(y), Y)
@@ -550,14 +552,22 @@ pGpa <- function(Y, PrinAxes = FALSE, Proj = FALSE, max.iter = 5){
 getSurfPCs <- function(y, surf){
   V <- La.svd(center(y), nu=0)$vt
   k <- ncol(y)
-  kk <- round(0.05 * length(surf))
-  kk <- max(c(k, kk))
   p <- nrow(y)
-  pc.match <- 1:p; pc.match[-surf] = NA
+  pc.match <- 1:p
+  pc.match[-surf] <- NA
+  
+  d <- as.matrix(dist(y))
   nearpts <- lapply(1:p, function(j) {
     nn <- pc.match[j]
-    if(is.na(nn)) 0 else
-      c(nearest(y, nn, k = kk+1), nn)})
+    res <- 0
+    if(!is.na(nn)) {
+      dj <- d[,nn]
+      res <- match(sort(dj)[2:(k + 2)], dj)
+      res <- c(res, nn)
+    }
+    res
+  })
+  
   tmp.pts <- lapply(1:p, function(j) {
     k <- nearpts[[j]]
     if(sum(k) > 0) x <- center(y[k,]) else x <- NA
@@ -568,51 +578,91 @@ getSurfPCs <- function(y, surf){
       pc <- La.svd(x, nu=0)$vt
       s=sign(diag(crossprod(V,pc)))
       pc*s
-      } else 0
+    } else 0
   })
-  p1x <- sapply(1:p, function(j) {x <- pc.dir[[j]]; if(is.matrix(x)) x[1,1] else 0})
-  p1y <- sapply(1:p, function(j) {x <- pc.dir[[j]]; if(is.matrix(x)) x[1,2] else 0})
-  p2x <- sapply(1:p, function(j) {x <- pc.dir[[j]]; if(is.matrix(x)) x[2,1] else 0})
-  p2y <- sapply(1:p, function(j) {x <- pc.dir[[j]]; if(is.matrix(x)) x[2,2] else 0})
+  p1x <- vapply(1:p, function(j) {x <- pc.dir[[j]]; if(is.matrix(x)) x[1,1] else 0}, 1)
+  p1y <- vapply(1:p, function(j) {x <- pc.dir[[j]]; if(is.matrix(x)) x[1,2] else 0}, 1)
+  p2x <- vapply(1:p, function(j) {x <- pc.dir[[j]]; if(is.matrix(x)) x[2,1] else 0}, 1)
+  p2y <- vapply(1:p, function(j) {x <- pc.dir[[j]]; if(is.matrix(x)) x[2,2] else 0}, 1)
   if(k==3) {
-    p1z <- sapply(1:p, function(j) {x <- pc.dir[[j]]; if(is.matrix(x)) x[1,3] else 0})
-    p2z <- sapply(1:p, function(j) {x <- pc.dir[[j]]; if(is.matrix(x)) x[2,3] else 0})
+    p1z <- vapply(1:p, function(j) {x <- pc.dir[[j]]; if(is.matrix(x)) x[1,3] else 0}, 1)
+    p2z <- vapply(1:p, function(j) {x <- pc.dir[[j]]; if(is.matrix(x)) x[2,3] else 0}, 1)
   } else
   {p1z <- NULL; p2z <- NULL}
-
+  
   list(p1x=p1x,p1y=p1y, p2x=p2x, p2y=p2y, p1z=p1z, p2z=p2z)
 }
+
 
 # semilandmarks.slide.tangents.BE
 # slides landmarks along tangents of curves using bending energy
 # used in pGpa.wSliders
-semilandmarks.slide.tangents.BE <- function(y, tans, ref, L){
+
+semilandmarks.slide.tangents.BE <- function(y, tans, tp, ref, L, appBE = TRUE){ 
   yc <- y - ref
-  p <- nrow(yc); k <-ncol(yc)
-  if(k==3) {tx <- tans[,1]; ty <- tans[,2]; tz <- tans[,3 ]} else {tx <- tans[,1]; ty <- tans[,2]}
+  p <- nrow(yc)
+  k <-ncol(yc)
+  tx <- tans[,1]
+  ty <- tans[,2]
+  tz <- if(k == 3) tans[,3 ] else NULL
+  m <- length(tp)
+  
+  if(appBE){
+    tx <- tx[tp]
+    ty <- ty[tp]
+    if(k == 3) tz <- tz[tp]
+  }
 
   if(k==3) {
     int.part <- fast.solve(t(t(tx*L)*tx)+t(t(ty*L)*ty)+
-                            t(t(tz*L)*tz))%*%cbind(tx*L,ty*L,tz*L)
+                             t(t(tz*L)*tz))%*%cbind(tx*L,ty*L,tz*L)
     Ht <- rbind(tx*int.part, ty*int.part, tz*int.part)
   } else {
     int.part <- fast.solve(t(t(tx*L)*tx)+t(t(ty*L)*ty))%*%cbind(tx*L,ty*L)
     Ht <- rbind(tx*int.part, ty*int.part)
   }
-  y  - matrix(Ht%*%as.vector(yc), p,k)
+  
+  if(appBE) {
+    res <-  matrix(Ht %*% as.vector(yc[tp, ]), m, k)
+    temp <- matrix(0, p, k)
+    temp[tp,] <- res
+  } else {
+    temp <- matrix(Ht %*% as.vector(yc), p, k)
+  }
+  
+  y - temp
 }
+
 
 # semilandmarks.slide.surf.BE
 # slides landmarks in PC planes tangent to surfaces using bending energy
 # used in pGpa.wSliders
-semilandmarks.slide.surf.BE <- function(y, surf, ref, L){
+semilandmarks.slide.surf.BE <- function(y, surf, ref, L, appBE = TRUE){
   yc <- y - ref
   p <- nrow(yc); k <-ncol(yc)
   PC <- getSurfPCs(y, surf)
-  p1x <- PC$p1x; p1y <- PC$p1y; p1z <- PC$p1z; p2x <- PC$p2x; p2y <- PC$p2y; p2z <- PC$p2z
+  m <- length(surf)
+  p1x <- PC$p1x
+  p1y <- PC$p1y
+  p1z <- PC$p1z
+  p2x <- PC$p2x
+  p2y <- PC$p2y
+  p2z <- PC$p2z
+  
+  if(appBE) {
+    p1x <- p1x[surf]
+    p1y <- p1y[surf]
+    p2x <- p2x[surf]
+    p2y <- p2y[surf]
+    if(k == 3) {
+      p1z <- p1z[surf]
+      p2z <- p2z[surf]
+    }
+  }
+  
   if(k==3) {
     int.part <- fast.solve(t(t(p1x*L)*p1x)+t(t(p1y*L)*p1y)+
-                            t(t(p1z*L)*p1z))%*%cbind(p1x*L,p1y*L,p1z*L)
+                             t(t(p1z*L)*p1z))%*%cbind(p1x*L,p1y*L,p1z*L)
     Hp1 <- rbind(p1x*int.part, p1y*int.part, p1z*int.part)
   } else {
     int.part <- fast.solve(t(t(p1x*L)*p1x)+t(t(p1y*L)*p1y))%*%cbind(p1x*L,p1y*L)
@@ -620,49 +670,33 @@ semilandmarks.slide.surf.BE <- function(y, surf, ref, L){
   }
   if(k==3) {
     int.part <- fast.solve(t(t(p2x*L)*p2x)+t(t(p2y*L)*p2y)+
-                            t(t(p2z*L)*p2z))%*%cbind(p2x*L,p2y*L,p2z*L)
+                             t(t(p2z*L)*p2z))%*%cbind(p2x*L,p2y*L,p2z*L)
     Hp2 <- rbind(p2x*int.part, p2y*int.part, p2z*int.part)
   } else {
     int.part <- fast.solve(t(t(p2x*L)*p2x)+t(t(p2y*L)*p2y))%*%cbind(p2x*L,p2y*L)
     Hp2 <- rbind(p2x*int.part, p2y*int.part)
   }
-  y  - matrix( Hp1%*%as.vector(yc) + Hp2%*%as.vector(yc), p,k)
-}
+  
+  if(appBE) {
+    res <- matrix((Hp1 + Hp2) %*% as.vector(yc[surf,]), m,k)
+    temp <- matrix(0, p, k)
+    temp[surf,] <- res
+  } else {
+    temp <- matrix((Hp1 + Hp2) %*% as.vector(yc), m,k)
+  }
 
+  y - temp
+}
 # semilandmarks.slide.tangents.surf.BE
 # slides landmarks along tangents of curves and PC planes of surfaces using bending energy
 # used in pGpa.wSliders
-semilandmarks.slide.tangents.surf.BE <- function(y, tans, surf, ref, L){
-  yc <- y - ref
-  p <- nrow(yc); k <-ncol(yc)
-  if(k==3) {tx <- tans[,1]; ty <- tans[,2]; tz <- tans[,3 ]} else {tx <- tans[,1]; ty <- tans[,2]}
-  if(k==3) {
-    int.part <- fast.solve(t(t(tx*L)*tx)+t(t(ty*L)*ty)+
-                            t(t(tz*L)*tz))%*%cbind(tx*L,ty*L,tz*L)
-    Ht <- rbind(tx*int.part, ty*int.part, tz*int.part)
-  } else {
-    int.part <- fast.solve(t(t(tx*L)*tx)+t(t(ty*L)*ty))%*%cbind(tx*L,ty*L)
-    Ht <- rbind(tx*int.part, ty*int.part)
-  }
-  PC <- getSurfPCs(y, surf)
-  p1x <- PC$p1x; p1y <- PC$p1y; p1z <- PC$p1z; p2x <- PC$p2x; p2y <- PC$p2y; p2z <- PC$p2z
-  if(k==3) {
-    int.part <- fast.solve(t(t(p1x*L)*p1x)+t(t(p1y*L)*p1y)+
-                            t(t(p1z*L)*p1z))%*%cbind(p1x*L,p1y*L,p1z*L)
-    Hp1 <- rbind(p1x*int.part, p1y*int.part, p1z*int.part)
-  } else {
-    int.part <- fast.solve(t(t(p1x*L)*p1x)+t(t(p1y*L)*p1y))%*%cbind(p1x*L,p1y*L)
-    Hp1 <- rbind(p1x*int.part, p1y*int.part)
-  }
-  if(k==3) {
-    int.part <- fast.solve(t(t(p2x*L)*p2x)+t(t(p2y*L)*p2y)+
-                            t(t(p2z*L)*p2z))%*%cbind(p2x*L,p2y*L,p2z*L)
-    Hp2 <- rbind(p2x*int.part, p2y*int.part, p2z*int.part)
-  } else {
-    int.part <- fast.solve(t(t(p2x*L)*p2x)+t(t(p2y*L)*p2y))%*%cbind(p2x*L,p2y*L)
-    Hp2 <- rbind(p2x*int.part, p2y*int.part)
-  }
-  y  - matrix(Ht%*%as.vector(yc) + Hp1%*%as.vector(yc) + Hp2%*%as.vector(yc), p,k)
+
+semilandmarks.slide.tangents.surf.BE <- function(y, tans, tp, surf, ref, Lt, Ls, appBE = TRUE){ 
+  
+  yt <- semilandmarks.slide.tangents.BE(y, tans, tp, ref, Lt, appBE)
+  ys <- semilandmarks.slide.surf.BE(yt, surf, ref, Ls, appBE)
+  ys
+  
 }
 
 # semilandmarks.slide.tangents.procD
@@ -673,7 +707,7 @@ semilandmarks.slide.tangents.surf.BE <- function(y, tans, surf, ref, L){
 #                          LP             MP                RP
 # left part (LP), middle part(MP) and right part (RP) are accomplished faster in the code in this function.
 
-semilandmarks.slide.tangents.procD <- function(y,tans, ref){
+semilandmarks.slide.tangents.procD <- function(y, tans, ref){
   yc <- y - ref
   p <- nrow(yc); k <-ncol(yc)
   if(k==3) {ycx <- yc[,1]; ycy <- yc[,2]; ycz <- yc[,3 ]} else {ycx <- yc[,1]; ycy <- yc[,2]}
@@ -699,7 +733,7 @@ semilandmarks.slide.tangents.procD <- function(y,tans, ref){
 #                          LP             MP                RP
 # left part (LP), middle part(MP) and right part (RP) are accomplished faster in the code in this function.
 
-semilandmarks.slide.surf.procD <- function(y,surf, ref){
+semilandmarks.slide.surf.procD <- function(y, surf, ref){
   yc <- y - ref
   p <- nrow(yc); k <-ncol(yc)
   PC <- getSurfPCs(y, surf)
@@ -719,6 +753,7 @@ semilandmarks.slide.surf.procD <- function(y,surf, ref){
   }
 }
 
+
 # semilandmarks.slide.tangents.surf.procD
 # slides landmarks along tangents of curves and within tangent planes on surfaces using minimized ProcD
 # used in pGpa.wSliders
@@ -727,7 +762,7 @@ semilandmarks.slide.surf.procD <- function(y,surf, ref){
 #                          LP             MP                RP
 # left part (LP), middle part(MP) and right part (RP) are accomplished faster in the code in this function.
 
-semilandmarks.slide.tangents.surf.procD <- function(y,tans,surf, ref){
+semilandmarks.slide.tangents.surf.procD <- function(y, tans, surf, ref){
   yc <- y - ref
   p <- nrow(yc); k <-ncol(yc)
   if(k==3) {tx <- tans[,1]; ty <- tans[,2]; tz <- tans[,3 ]} else {tx <- tans[,1]; ty <- tans[,2]}
@@ -757,7 +792,7 @@ semilandmarks.slide.tangents.surf.procD <- function(y,tans,surf, ref){
 # BE.slide
 # performs sliding iterations using bending energy
 # used in pGpa.wSliders
-BE.slide <- function(curves, surf, Ya, ref, max.iter=5){
+BE.slide <- function(curves, surf, Ya, ref, appBE = TRUE, max.iter=10){
   n <- length(Ya); p <- nrow(Ya[[1]]); k <- ncol(Ya[[1]])
   iter <- 1 # from initial rotation of Ya
   pb <- txtProgressBar(min = 0, max = max.iter, initial = 0, style=3)
@@ -766,14 +801,31 @@ BE.slide <- function(curves, surf, Ya, ref, max.iter=5){
   setTxtProgressBar(pb,iter)
   while(Q > 0.0001){
     iter <- iter+1
-    if(!is.null(curves)) tans <- Map(function(y) tangents(curves, y, scaled=TRUE), slid0)
-    L <- Ltemplate(ref)
-    if(is.null(surf) & !is.null(curves))
-      slid <- Map(function(tn,y) semilandmarks.slide.tangents.BE(y, tn, ref, L), tans, slid0)
-    if(!is.null(surf) & is.null(curves))
-      slid <- Map(function(y) semilandmarks.slide.surf.BE(y, surf, ref, L), slid0)
-    if(!is.null(surf) & !is.null(curves))
-      slid <- Map(function(tn,y) semilandmarks.slide.tangents.surf.BE(y, tn, surf, ref, L), tans, slid0)
+    if(!is.null(curves)) {
+      tans <- Map(function(y) tangents(curves, y, scaled = TRUE), slid0)
+      tp <- which(rowSums(tans[[1]]^2) != 0)
+    }
+    
+    if(is.null(surf) & !is.null(curves)) {
+      L <- if(appBE) Ltemplate(ref[tp,]) else Ltemplate(ref)
+      slid <- Map(function(tn,y) 
+        semilandmarks.slide.tangents.BE(y, tn, tp, ref, L, appBE), tans, slid0)
+    }
+      
+    if(!is.null(surf) & is.null(curves)) {
+      L <- if(appBE) Ltemplate(ref[surf,]) else Ltemplate(ref)
+      slid <- Map(function(y) semilandmarks.slide.surf.BE(y, surf, ref, L, appBE), slid0)
+    }
+      
+    if(!is.null(surf) & !is.null(curves)) {
+      if(appBE) {
+        Lt <- Ltemplate(ref[tp,])
+        Ls <- Ltemplate(ref[surf,])
+      } else Lt <- Ls <- Ltemplate(ref) 
+      slid <- Map(function(tn,y) 
+        semilandmarks.slide.tangents.surf.BE(y, tn, tp, surf, ref, Lt, Ls, appBE), tans, slid0)
+    }
+      
     ss <- sum(Reduce("+",slid)^2)/n
     slid0 <- apply.pPsup(ref,slid)
     ref = cs.scale(Reduce("+", slid0)/n)
@@ -793,7 +845,7 @@ BE.slide <- function(curves, surf, Ya, ref, max.iter=5){
 # used in pGpa.wSliders
 
 BE.slidePP <- function(curves, surf, Ya, ref, max.iter=5, 
-                       ParCores = TRUE){ 
+                       appBE = TRUE, ParCores = TRUE){ 
   
   if(is.logical(ParCores)) no_cores <- detectCores() - 1 else
     no_cores <- min(detectCores() - 1, ParCores)
@@ -807,18 +859,37 @@ BE.slidePP <- function(curves, surf, Ya, ref, max.iter=5,
   if(Unix) {
     while(Q > 0.0001){
       iter <- iter+1
-      if(!is.null(curves)) tans <- Map(function(y) tangents(curves, y, scaled=TRUE), slid0)
-      L <- Ltemplate(ref)
+      if(!is.null(curves)) {
+        tans <- mcMap(function(y) tangents(curves, y, scaled=TRUE), 
+                                       slid0, mc.cores = no_cores)
+        tp <- which(rowSums(tans[[1]]^2) != 0)
+      }
       
-      if(is.null(surf) & !is.null(curves))
-        slid <- mcMap(function(tn,y) semilandmarks.slide.tangents.BE(y, tn, ref, L), 
+      
+      if(is.null(surf) & !is.null(curves)) {
+        L <- if(appBE) Ltemplate(ref[tp,]) else Ltemplate(ref)
+        slid <- mcMap(function(tn,y) semilandmarks.slide.tangents.BE(y, tn, tp, ref, L, appBE), 
                       tans, slid0, mc.cores = no_cores)
-      if(!is.null(surf) & is.null(curves))
-        slid <- mcMap(function(y) semilandmarks.slide.surf.BE(y, surf, ref, L), 
-                    slid0, mc.cores = no_cores)
-      if(!is.null(surf) & !is.null(curves))
-        slid <- mcMap(function(tn,y) semilandmarks.slide.tangents.surf.BE(y, tn, surf, ref, L), 
+      }
+        
+        
+      if(!is.null(surf) & is.null(curves)) {
+        L <- if(appBE) Ltemplate(ref[surf,]) else Ltemplate(ref)
+        slid <- mcMap(function(y) semilandmarks.slide.surf.BE(y, surf, ref, L, appBE), 
+                      slid0, mc.cores = no_cores)
+      }
+        
+        
+      if(!is.null(surf) & !is.null(curves)) {
+        if(appBE) {
+          Lt <- Ltemplate(ref[tp,])
+          Ls <- Ltemplate(ref[surf,])
+        } else Lt <- Ls <- Ltemplate(ref) 
+        slid <- mcMap(function(tn,y) 
+          semilandmarks.slide.tangents.surf.BE(y, tn, tp, surf, ref, Lt, Ls, appBE), 
                       tans, slid0, mc.cores = no_cores)
+      }
+        
       
       ss <- sum(Reduce("+",slid)^2)/n
       slid0 <- apply.pPsup(ref,slid)
@@ -832,36 +903,53 @@ BE.slidePP <- function(curves, surf, Ya, ref, max.iter=5,
     
     while(Q > 0.0001) {
       iter <- iter+1
-      tans <- if(!is.null(curves)) Map(function(y) tangents(curves, y, scaled=TRUE), slid0) else NULL
       
-      L <- Ltemplate(ref)
+      if(!is.null(curves)) {
+        tans <- Map(function(y) tangents(curves, y, scaled=TRUE), 
+                      slid0)
+        tp <- which(rowSums(tans[[1]]^2) != 0)
+      }
       
       cl <- makeCluster(no_cores)
       clusterExport(cl, c("L", "tans", "slid0", "ref"),
                     envir=environment())
       
-      if(is.null(surf) & !is.null(curves))
+      if(is.null(surf) & !is.null(curves)) {
+        L <- if(appBE) Ltemplate(ref[tp,]) else Ltemplate(ref)
         slid <- parLapply(cl = cl, 1:length(slid0), function(j) {
           semilandmarks.slide.tangents.BE(slid0[[j]],
-                                          tans[[j]], ref, L)
+                                          tans[[j]], tp, ref, L, appBE)
         })
-      if(!is.null(surf) & is.null(curves))
+      }
+        
+        
+      if(!is.null(surf) & is.null(curves)){
+        L <- if(appBE) Ltemplate(ref[surf,]) else Ltemplate(ref)
         slid <- parLapply(cl = cl, 1:length(slid0), function(j) {
           semilandmarks.slide.surf.BE(slid0[[j]],
-                                      surf, ref, L)
+                                      surf, ref, L, appBE)
         })
-      if(!is.null(surf) & !is.null(curves))
+      }
+        
+      if(!is.null(surf) & !is.null(curves)) {
+        if(appBE) {
+          Lt <- Ltemplate(ref[tp,])
+          Ls <- Ltemplate(ref[surf,])
+        }
         slid <- parLapply(cl = cl, 1:length(slid0), function(j) {
-          semilandmarks.slide.tangents.surf.BE(slid0[[j]], tans[[j]], surf,
-                                      ref, L)
+          semilandmarks.slide.tangents.surf.BE(slid0[[j]], tans[[j]], tp, surf,
+                                               ref, Lt, Ls, appBE)
         })
+      }
       ss <- sum(Reduce("+",slid)^2)/n
       slid0 <- apply.pPsup(ref,slid)
       ref = cs.scale(Reduce("+", slid0)/n)
       Q <- abs(ss0-ss)
       ss0 <- ss
       if(iter >= max.iter) break
+      stopCluster(cl)
     }
+
   }
   
   list(coords=slid0, consensus=ref, iter=iter+1, Q=Q)
@@ -870,21 +958,38 @@ BE.slidePP <- function(curves, surf, Ya, ref, max.iter=5,
 # .BE.slide
 # same as BE.slide, but without progress bar option
 # used in pGpa.wSliders
-.BE.slide <- function(curves, surf, Ya, ref, max.iter=5){
+.BE.slide <- function(curves, surf, Ya, ref, appBE = TRUE, max.iter=10){
   n <- length(Ya); p <- nrow(Ya[[1]]); k <- ncol(Ya[[1]])
   iter <- 1 # from initial rotation of Ya
   slid0 <- Ya
   Q <- ss0 <- sum(Reduce("+",Ya)^2)/n
   while(Q > 0.0001){
     iter <- iter+1
-    if(!is.null(curves)) tans <- Map(function(y) tangents(curves, y, scaled=TRUE), slid0)
-    L <- Ltemplate(ref)
-    if(is.null(surf) & !is.null(curves))
-      slid <- Map(function(tn,y) semilandmarks.slide.tangents.BE(y, tn, ref, L), tans, slid0)
-    if(!is.null(surf) & is.null(curves))
-      slid <- Map(function(y) semilandmarks.slide.surf.BE(y, surf, ref, L), slid0)
-    if(!is.null(surf) & !is.null(curves))
-      slid <- Map(function(tn,y) semilandmarks.slide.tangents.surf.BE(y, tn, surf, ref, L), tans, slid0)
+    if(!is.null(curves)) {
+      tans <- Map(function(y) tangents(curves, y, scaled=TRUE), slid0)
+      tp <- which(rowSums(tans[[1]]^2) != 0)
+    } 
+    
+    if(is.null(surf) & !is.null(curves)) {
+      L <- if(appBE) Ltemplate(ref[tp,]) else Ltemplate(ref)
+      slid <- Map(function(tn,y) 
+        semilandmarks.slide.tangents.BE(y, tn, tp, ref, L, appBE), tans, slid0)
+    }
+      
+    if(!is.null(surf) & is.null(curves)){
+      L <- if(appBE) Ltemplate(ref[surf,]) else Ltemplate(ref)
+      slid <- Map(function(y) semilandmarks.slide.surf.BE(y, surf, ref, L, appBE), slid0)
+    }
+      
+    if(!is.null(surf) & !is.null(curves)) {
+      if(appBE) {
+        Lt <- Ltemplate(ref[tp,])
+        Ls <- Ltemplate(ref[surf,])
+      }
+      slid <- Map(function(tn,y) 
+        semilandmarks.slide.tangents.surf.BE(y, tn, tp, surf, ref, Lt, Ls, appBE), tans, slid0)
+    }
+
     ss <- sum(Reduce("+",slid)^2)/n
     slid0 <- apply.pPsup(ref,slid)
     ref = cs.scale(Reduce("+", slid0)/n)
@@ -898,7 +1003,7 @@ BE.slidePP <- function(curves, surf, Ya, ref, max.iter=5,
 # procD.slide
 # performs sliding iterations using minimized ProcD
 # used in pGpa.wSliders
-procD.slide <- function(curves, surf, Ya, ref, max.iter=5){
+procD.slide <- function(curves, surf, Ya, ref, max.iter=10){
   n <- length(Ya); p <- nrow(Ya[[1]]); k <- ncol(Ya[[1]])
   iter <- 1 # from initial rotation of Ya
   pb <- txtProgressBar(min = 0, max = max.iter, initial = 0, style=3)
@@ -932,7 +1037,7 @@ procD.slide <- function(curves, surf, Ya, ref, max.iter=5){
 # same as procD.slide, but without progress bar option
 # Same as procD.slide but with parallel processing
 # used in pGpa.wSliders
-procD.slidePP <- function(curves, surf, Ya, ref, max.iter=5, 
+procD.slidePP <- function(curves, surf, Ya, ref, max.iter=10, 
                           ParCores = TRUE){
   
   if(is.logical(ParCores)) no_cores <- detectCores() - 1 else
@@ -947,7 +1052,8 @@ procD.slidePP <- function(curves, surf, Ya, ref, max.iter=5,
   if(Unix) {
     while(Q > 0.0001){
       iter <- iter+1
-      if(!is.null(curves)) tans <- Map(function(y) tangents(curves, y, scaled=TRUE), slid0)
+      if(!is.null(curves)) tans <- mcMap(function(y) tangents(curves, y, scaled=TRUE), 
+                                         slid0, mc.cores = no_cores)
       if(is.null(surf) & !is.null(curves))
         slid <- mcMap(function(tn,y) semilandmarks.slide.tangents.procD(y, tn, ref), 
                       tans, slid0, mc.cores = no_cores)
@@ -997,6 +1103,7 @@ procD.slidePP <- function(curves, surf, Ya, ref, max.iter=5,
       ref = cs.scale(Reduce("+", slid0)/n)
       Q <- abs(ss0-ss)
       ss0 <- ss
+      stopCluster(cl)
       if(iter >= max.iter) break
     }
   }
@@ -1009,7 +1116,7 @@ procD.slidePP <- function(curves, surf, Ya, ref, max.iter=5,
 # .procD.slide
 # same as procD.slide, but without progress bar option
 # used in pGpa.wSliders
-.procD.slide <- function(curves, surf, Ya, ref, max.iter=5){
+.procD.slide <- function(curves, surf, Ya, ref, max.iter=10){
   n <- length(Ya); p <- nrow(Ya[[1]]); k <- ncol(Ya[[1]])
   iter <- 1 # from initial rotation of Ya
   slid0 <- Ya
@@ -1037,14 +1144,15 @@ procD.slidePP <- function(curves, surf, Ya, ref, max.iter=5,
 # GPA with partial Procrustes superimposition, incorporating semilandmarks
 # used in gpagen
 pGpa.wSliders <- function(Y, curves, surf, ProcD = TRUE, PrinAxes = FALSE, Proj = FALSE, 
-                          max.iter = 5){
+                          appBE = TRUE, max.iter = 10){
   n <- length(Y); p <- nrow(Y[[1]]); k <- ncol(Y[[1]])
   Yc <- Map(function(y) center.scale(y), Y)
   CS <- sapply(Yc,"[[","CS")
   Ya <- lapply(Yc,"[[","coords")
   Ya <- apply.pPsup(Ya[[1]], Ya)
   M <- Reduce("+", Ya)/n
-  if(ProcD == FALSE) gpa.slide <- BE.slide(curves, surf, Ya, ref=M, max.iter=max.iter) else
+  if(ProcD == FALSE) gpa.slide <- BE.slide(curves, surf, Ya, ref=M, appBE = appBE,
+                                           max.iter=max.iter) else
     gpa.slide <- procD.slide(curves, surf, Ya, ref=M, max.iter=max.iter)
   Ya <- gpa.slide$coords
   M <- gpa.slide$consensus
@@ -1065,7 +1173,7 @@ pGpa.wSliders <- function(Y, curves, surf, ProcD = TRUE, PrinAxes = FALSE, Proj 
 # same as pGPA.wSliders, without option for progress bar
 # used in gpagen
 .pGpa.wSliders <- function(Y, curves, surf, ProcD = TRUE, PrinAxes = FALSE, Proj = FALSE, 
-                           max.iter = 5, Parallel = FALSE){
+                           appBE = TRUE, max.iter = 10, Parallel = FALSE){
   
   ParCores <- NULL
   if (is.numeric(Parallel)) {
@@ -1089,8 +1197,9 @@ pGpa.wSliders <- function(Y, curves, surf, ProcD = TRUE, PrinAxes = FALSE, Proj 
   
   if(ProcD == FALSE) {
     gpa.slide <- if(Parallel) BE.slidePP(curves, surf, Ya, ref=M, 
-                                         max.iter = max.iter, ParCores = ParCores) else 
-      .BE.slide(curves, surf, Ya, ref=M, max.iter = max.iter)
+                                         appBE = appBE, max.iter = max.iter, 
+                                         ParCores = ParCores) else 
+      .BE.slide(curves, surf, Ya, ref=M, appBE = appBE, max.iter = max.iter)
   } else {
     gpa.slide <- if(Parallel) procD.slidePP(curves, surf, Ya, ref=M, 
                                max.iter = max.iter, ParCores = ParCores) else 

@@ -51,18 +51,23 @@
 
 #' @param A Either an object of class geomorphShapes or a 3D array (p x k x n) containing landmark coordinates 
 #' for a set of specimens.  If A is a geomorphShapes object, the curves argument is not needed.
-#' @param Proj A logical value indicating whether or not the Procrustes aligned specimens should be projected 
-#'   into tangent space 
-#' @param ProcD A logical value indicating whether or not Procrustes distance should be used as the criterion
-#'   for optimizing the positions of semilandmarks (if not, bending energy is used)
 #' @param PrinAxes A logical value indicating whether or not to align the shape data by principal axes 
-#' @param max.iter The maximum number of GPA iterations to perform before superimposition is halted.  The final
-#' number of iterations could be larger than this, if curves or surface semilandmarks are involved.
 #' @param curves An optional matrix defining which landmarks should be treated as semilandmarks on boundary 
 #'   curves, and which landmarks specify the tangent directions for their sliding.  This matrix is generated 
 #'   with \code{\link{readland.shapes}} following digitizing of curves in StereoMorph, or may be generated
 #'   using the function \code{\link{define.sliders}}.
 #' @param surfaces An optional vector defining which landmarks should be treated as semilandmarks on surfaces
+#' @param ProcD A logical value indicating whether or not Procrustes distance should be used as the criterion
+#'   for optimizing the positions of semilandmarks (if not, bending energy is used)
+#' @param approxBE A logical value for whether bending energy should be estimated via approximate 
+#' thin-plate spline (TPS) mapping.  Approximate TPS mapping is much faster and allows for more iterations, which 
+#' might return more reliable results than few iterations with full TPS.  If using full TPS, one should probably
+#' change max.iter to be few for large data sets.
+#' @param max.iter The maximum number of GPA iterations to perform before superimposition is halted.  The final
+#' number of iterations will be larger than max.iter, if curves or surface semilandmarks are involved, as max.iter
+#' will pertain only to iterations with sliding of landmarks.
+#' @param Proj A logical value indicating whether or not the Procrustes aligned specimens should be projected 
+#'   into tangent space 
 #' @param print.progress A logical value to indicate whether a progress bar should be printed to the screen.  
 #' @param Parallel For sliding semi-landmarks only, either a logical value to indicate whether 
 #' parallel processing should be used or a numeric value to indicate the number of cores to use in 
@@ -155,7 +160,7 @@
 #' # NOTE can summarize as: summary(Y.gpa)
 #' # NOTE can plot as: plot(Y.gpa) 
 gpagen = function(A, curves=NULL, surfaces=NULL, PrinAxes = TRUE, 
-                  max.iter = NULL, ProcD=FALSE, Proj = TRUE,
+                  max.iter = NULL, ProcD=FALSE, approxBE = TRUE, Proj = TRUE,
                   print.progress = TRUE, Parallel = FALSE){
   
   if(inherits(A, "geomorphShapes")) {
@@ -193,14 +198,14 @@ gpagen = function(A, curves=NULL, surfaces=NULL, PrinAxes = TRUE,
   }
   
   if(!is.logical(ProcD)) prD <- TRUE else prD <- ProcD
-  if(is.null(max.iter)) max.it <- 5 else max.it <- as.numeric(max.iter)
+  if(is.null(max.iter)) max.it <- 10 else max.it <- as.numeric(max.iter)
   if(is.numeric(max.it) & max.it > 50) {
     warning("GPA might be halted ahead of maximum iterations, 
             as the number chosen is exceedingly large")
     max.it = 10
   }
-  if(is.na(max.it)) max.it <- 5
-  if(max.it < 0) max.it <- 5
+  if(is.na(max.it)) max.it <- 10
+  if(max.it < 0) max.it <- 10
   if(!is.null(curves)) {
     curves <- as.matrix(curves) 
     if(ncol(curves) != 3) stop("curves must be a matrix of three columns")
@@ -217,15 +222,21 @@ gpagen = function(A, curves=NULL, surfaces=NULL, PrinAxes = TRUE,
   }
   
   if(print.progress == TRUE){
-    if(!is.null(curves) || !is.null(surf)) gpa <- pGpa.wSliders(Y, curves = curves, surf=surf,
-                                                                PrinAxes = PrinAxes, max.iter=max.it, 
-                                                                ProcD=prD) else
-                                                                  gpa <- pGpa(Y, PrinAxes = PrinAxes, max.iter=max.it)
+    if(!is.null(curves) || !is.null(surf)) 
+      gpa <- pGpa.wSliders(Y, curves = curves, surf=surf,
+                           PrinAxes = PrinAxes, max.iter=max.it, 
+                           appBE = approxBE, ProcD=prD) else
+                             gpa <- pGpa(Y, PrinAxes = PrinAxes, 
+                                         max.iter=max.it)
+                                                                
   } else {
-    if(!is.null(curves) || !is.null(surf)) gpa <- .pGpa.wSliders(Y, curves = curves, surf=surf,
-                                                                 PrinAxes = PrinAxes, max.iter=max.it, 
-                                                                 ProcD=prD, Parallel = Parallel) else
-                                                                   gpa <- .pGpa(Y, PrinAxes = PrinAxes, max.iter=max.it)
+    if(!is.null(curves) || !is.null(surf)) 
+      gpa <- .pGpa.wSliders(Y, curves = curves, surf=surf,
+                            PrinAxes = PrinAxes, max.iter=max.it, 
+                            appBE= approxBE, ProcD=prD, 
+                            Parallel = Parallel) else
+                              gpa <- .pGpa(Y, PrinAxes = PrinAxes, 
+                                           max.iter=max.it)
   }
   
   coords <- gpa$coords
