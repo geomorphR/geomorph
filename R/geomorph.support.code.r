@@ -598,7 +598,7 @@ getSurfPCs <- function(y, surf){
 # slides landmarks along tangents of curves using bending energy
 # used in pGpa.wSliders
 
-semilandmarks.slide.tangents.BE <- function(y, tans, tp, ref, L, appBE = TRUE){ 
+semilandmarks.slide.tangents.BE <- function(y, tans, tp, ref, L, appBE){ 
   yc <- y - ref
   p <- nrow(yc)
   k <-ncol(yc)
@@ -640,7 +640,7 @@ semilandmarks.slide.tangents.BE <- function(y, tans, tp, ref, L, appBE = TRUE){
 # semilandmarks.slide.surf.BE
 # slides landmarks in PC planes tangent to surfaces using bending energy
 # used in pGpa.wSliders
-semilandmarks.slide.surf.BE <- function(y, surf, ref, L, appBE = TRUE){
+semilandmarks.slide.surf.BE <- function(y, surf, ref, L, appBE){
   yc <- y - ref
   p <- nrow(yc); k <-ncol(yc)
   PC <- getSurfPCs(y, surf)
@@ -688,11 +688,11 @@ semilandmarks.slide.surf.BE <- function(y, surf, ref, L, appBE = TRUE){
   }
   
   if(appBE) {
-    res <- matrix((Hp1 + Hp2) %*% as.vector(yc[surf,]), m,k)
+    res <- matrix((Hp1 + Hp2) %*% as.vector(yc[surf,]), m, k)
     temp <- matrix(0, p, k)
     temp[surf,] <- res
   } else {
-    temp <- matrix((Hp1 + Hp2) %*% as.vector(yc), m,k)
+    temp <- matrix((Hp1 + Hp2) %*% as.vector(yc), p,k)
   }
 
   y - temp
@@ -703,7 +703,7 @@ semilandmarks.slide.surf.BE <- function(y, surf, ref, L, appBE = TRUE){
 # slides landmarks along tangents of curves and PC planes of surfaces using bending energy
 # used in pGpa.wSliders
 
-semilandmarks.slide.tangents.surf.BE <- function(y, tans, tp, surf, ref, Lt, Ls, appBE = TRUE){ 
+semilandmarks.slide.tangents.surf.BE <- function(y, tans, tp, surf, ref, Lt, Ls, appBE){ 
   
   yt <- semilandmarks.slide.tangents.BE(y, tans, tp, ref, Lt, appBE)
   ys <- semilandmarks.slide.surf.BE(yt, surf, ref, Ls, appBE)

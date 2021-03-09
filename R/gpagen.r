@@ -202,7 +202,7 @@ gpagen = function(A, curves=NULL, surfaces=NULL, PrinAxes = TRUE,
   if(is.numeric(max.it) & max.it > 50) {
     warning("GPA might be halted ahead of maximum iterations, 
             as the number chosen is exceedingly large")
-    max.it = 10
+    max.it = 20
   }
   if(is.na(max.it)) max.it <- 10
   if(max.it < 0) max.it <- 10
