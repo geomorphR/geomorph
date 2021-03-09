@@ -236,7 +236,7 @@ gpagen = function(A, curves=NULL, surfaces=NULL, PrinAxes = TRUE,
   }
   
   if(approxBE) {
-    check <- nrow(curves) = length(surfaces)
+    check <- nrow(curves) + length(surfaces)
     if(check < 0.10 * p)
       message("\n You are using approximated TPS with a small portion of landmakrs as semilandmarks.  
               Plot your gpagen object to make sure results make sense.")
