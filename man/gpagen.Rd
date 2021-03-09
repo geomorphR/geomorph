@@ -119,6 +119,20 @@ The function performs a Generalized Procrustes Analysis (GPA) on two-dimensional
   The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{gpagen}}.
   The generic function, \code{\link{plot}}, calls \code{\link{plotAllSpecimens}}.
 
+ \subsection{Notes for geomorph 4.0}{ 
+ Starting with geomorph version 4.0, it is possible to use approximated thin-plate spline (TPS) mapping
+ to estimate bending energy (when bending energy is used for sliding semi-landmarks).  Approximated TPS
+ has some computational benefit for large data sets (more GPA iterations are possible in a shorter time), but
+ one should make sure first that results are reasonable.  Approximated TPS uses a subset of points (semilandmarks) 
+ to estimate bending energy locally, where points are free to slide.  Some subsets might be misrepresentative of
+ the global (full configuration) bending energy, and strange results are possible.  A comparison between TPS
+ and approximated TPS outcomes could be tried with a few specimens to verify consistency of results before using
+ approximated TPS on a large data set.
+ 
+ Choosing to use approximated TPS with only a few sliders is dangerous, as the subset of points might be too small
+ to be reliable.  Approximated TPS will work best for data sets with a sufficient number of surface landmarks.  If a
+ data set is nearly 100% semilandmarks, TPS and approximated TPS should converge, but no time savings is likely.
+}
  \subsection{Notes for geomorph 3.0}{ 
 Compared to older versions of geomorph, users might notice subtle differences in Procrustes shape variables when using
 semilandmarks (curves or surfaces).  This difference is a result of using recursive updates of the 
