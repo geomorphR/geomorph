@@ -11,7 +11,7 @@ gpagen(
   PrinAxes = TRUE,
   max.iter = NULL,
   ProcD = FALSE,
-  approxBE = TRUE,
+  approxBE = FALSE,
   Proj = TRUE,
   print.progress = TRUE,
   Parallel = FALSE

@@ -174,7 +174,7 @@
 #' # NOTE can summarize as: summary(Y.gpa)
 #' # NOTE can plot as: plot(Y.gpa) 
 gpagen = function(A, curves=NULL, surfaces=NULL, PrinAxes = TRUE, 
-                  max.iter = NULL, ProcD=FALSE, approxBE = TRUE, Proj = TRUE,
+                  max.iter = NULL, ProcD=FALSE, approxBE = FALSE, Proj = TRUE,
                   print.progress = TRUE, Parallel = FALSE){
   
   if(inherits(A, "geomorphShapes")) {
@@ -216,7 +216,7 @@ gpagen = function(A, curves=NULL, surfaces=NULL, PrinAxes = TRUE,
   if(is.numeric(max.it) & max.it > 50) {
     warning("GPA might be halted ahead of maximum iterations, 
             as the number chosen is exceedingly large")
-    max.it = 20
+    max.it = 50
   }
   if(is.na(max.it)) max.it <- 10
   if(max.it < 0) max.it <- 10
@@ -233,6 +233,13 @@ gpagen = function(A, curves=NULL, surfaces=NULL, PrinAxes = TRUE,
         message("\nProgress bar is turned off for parallel processing.\n")
       }
     }
+  }
+  
+  if(approxBE) {
+    check <- nrow(curves) = length(surfaces)
+    if(check < 0.10 * p)
+      message("\n You are using approximated TPS with a small portion of landmakrs as semilandmarks.  
+              Plot your gpagen object to make sure results make sense.")
   }
   
   if(print.progress == TRUE){
