@@ -614,11 +614,14 @@ semilandmarks.slide.tangents.BE <- function(y, tans, tp, ref, L, appBE = TRUE){
   }
 
   if(k==3) {
-    int.part <- fast.solve(t(t(tx*L)*tx)+t(t(ty*L)*ty)+
-                             t(t(tz*L)*tz))%*%cbind(tx*L,ty*L,tz*L)
+    
+    PL <- (tcrossprod(tx) + tcrossprod(ty) + 
+             tcrossprod(tz)) * L
+    int.part <- fast.solve(PL) %*% cbind(tx*L, ty*L, tz*L)
     Ht <- rbind(tx*int.part, ty*int.part, tz*int.part)
   } else {
-    int.part <- fast.solve(t(t(tx*L)*tx)+t(t(ty*L)*ty))%*%cbind(tx*L,ty*L)
+    PL <- (tcrossprod(tx) + tcrossprod(ty)) * L
+    int.part <- fast.solve(PL) %*% cbind(tx*L,ty*L)
     Ht <- rbind(tx*int.part, ty*int.part)
   }
   
@@ -661,19 +664,26 @@ semilandmarks.slide.surf.BE <- function(y, surf, ref, L, appBE = TRUE){
   }
   
   if(k==3) {
-    int.part <- fast.solve(t(t(p1x*L)*p1x)+t(t(p1y*L)*p1y)+
-                             t(t(p1z*L)*p1z))%*%cbind(p1x*L,p1y*L,p1z*L)
+    PL <- (tcrossprod(p1x) + tcrossprod(p1y) + 
+             tcrossprod(p1z)) * L
+    int.part <- fast.solve(PL) %*% cbind(p1x*L, p1y*L, p1z*L)
     Hp1 <- rbind(p1x*int.part, p1y*int.part, p1z*int.part)
+    
+    
   } else {
-    int.part <- fast.solve(t(t(p1x*L)*p1x)+t(t(p1y*L)*p1y))%*%cbind(p1x*L,p1y*L)
+    PL <- (tcrossprod(p1x) + tcrossprod(p1y)) * L
+    int.part <- fast.solve(PL) %*% cbind(p1x*L, p1y*L)
     Hp1 <- rbind(p1x*int.part, p1y*int.part)
+    
   }
   if(k==3) {
-    int.part <- fast.solve(t(t(p2x*L)*p2x)+t(t(p2y*L)*p2y)+
-                             t(t(p2z*L)*p2z))%*%cbind(p2x*L,p2y*L,p2z*L)
+    PL <- (tcrossprod(p2x) + tcrossprod(p2y) + 
+             tcrossprod(p2z)) * L
+    int.part <- fast.solve(PL) %*% cbind(p2x*L, p2y*L, p2z*L)
     Hp2 <- rbind(p2x*int.part, p2y*int.part, p2z*int.part)
   } else {
-    int.part <- fast.solve(t(t(p2x*L)*p2x)+t(t(p2y*L)*p2y))%*%cbind(p2x*L,p2y*L)
+    PL <- (tcrossprod(p2x) + tcrossprod(p2y)) * L
+    int.part <- faste.solve(PL) %*%cbind(p2x*L, p2y*L)
     Hp2 <- rbind(p2x*int.part, p2y*int.part)
   }
   
@@ -687,6 +697,8 @@ semilandmarks.slide.surf.BE <- function(y, surf, ref, L, appBE = TRUE){
 
   y - temp
 }
+
+
 # semilandmarks.slide.tangents.surf.BE
 # slides landmarks along tangents of curves and PC planes of surfaces using bending energy
 # used in pGpa.wSliders
