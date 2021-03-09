@@ -52,7 +52,8 @@ parallel processing should be used or a numeric value to indicate the number of 
 parallel processing via the \code{parallel} library. 
 If TRUE, this argument invokes forking of all processor cores, except one.  If
 FALSE, only one core is used. A numeric value directs the number of cores to use,
-but one core will always be spared.}
+but one core will always be spared.  Parallel processing is probably only valuable with
+large data sets.}
 }
 \value{
 An object of class gpagen returns a list with the following components:

@@ -88,7 +88,8 @@
 #' parallel processing via the \code{parallel} library. 
 #' If TRUE, this argument invokes forking of all processor cores, except one.  If
 #' FALSE, only one core is used. A numeric value directs the number of cores to use,
-#' but one core will always be spared.
+#' but one core will always be spared.  Parallel processing is probably only valuable with
+#' large data sets.
 #' @keywords analysis
 #' @export
 #' @author Dean Adams and Michael Collyer
