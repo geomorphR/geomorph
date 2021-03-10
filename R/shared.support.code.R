@@ -88,6 +88,19 @@ fast.solve <- function(x) {
   return(res)
 }
 
+# sparse.solve
+# same as fast.solve, but specifically for sparse symmetric matrices
+# used in any function requiring a generalized inverse of a known
+# sparse symmetric matrix
+sparse.solve <- function(X){
+  keep <- which(round(X, 12) != 0)
+  m <- sqrt(length(keep))
+  Y <- matrix(X[keep], m, m)
+  Xn <- array(0, dim(X))
+  Xn[keep] <- fast.solve(Y)
+  Xn
+}
+
 # pcoa
 # acquires principal coordinates from distance matrices
 # used in all linear model functions with data input
