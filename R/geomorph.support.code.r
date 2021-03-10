@@ -448,7 +448,7 @@ Ltemplate <-function(Mr, Mt=NULL){
   if(k==2) {P <-P^2*log(P); P[is.na(P)] <- 0}
   Q <- cbind(1,Mr)
   L<-rbind(cbind(P,Q), cbind(t(Q),matrix(0,k+1,k+1)))
-  Linv <- -fast.solve(L)[1:p,1:p]
+  Linv <- -fast.ginv(L)[1:p,1:p]
   Linv
 }
 
