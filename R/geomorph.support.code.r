@@ -952,7 +952,7 @@ BE.slide <- function(curves, surf, Ya, ref, appBE = TRUE,
   
   BEp <- c(if(!is.null(curves)) unique(as.vector(curves)), 
            if(!is.null(surf)) surf)
-  Up <- round(seq(1, p, length.out = p/2))
+  Up <- round(seq(1, p, length.out = p/4))
   BEp <- sort(unique(c(BEp, Up)))
   
   setTxtProgressBar(pb,iter)
@@ -1013,7 +1013,7 @@ BE.slidePP <- function(curves, surf, Ya, ref, max.iter=5,
   
   BEp <- c(if(!is.null(curves)) unique(as.vector(curves)), 
            if(!is.null(surf)) surf)
-  Up <- round(seq(1, p, length.out = p/2))
+  Up <- round(seq(1, p, length.out = p/4))
   BEp <- sort(unique(c(BEp, Up)))
   
   L <- if(appBE) Ltemplate(ref[BEp,]) else Ltemplate(ref)
@@ -1130,7 +1130,7 @@ BE.slidePP <- function(curves, surf, Ya, ref, max.iter=5,
   
   BEp <- c(if(!is.null(curves)) unique(as.vector(curves)), 
            if(!is.null(surf)) surf)
-  Up <- round(seq(1, p, length.out = p/2))
+  Up <- round(seq(1, p, length.out = p/4))
   BEp <- sort(unique(c(BEp, Up)))
   
   while(Q > tol){

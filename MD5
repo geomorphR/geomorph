@@ -13,7 +13,6 @@ d8e8360c03c03fe45d2100e9c05d4a89 *data/plethodon.rda
 aa9b1f203a1320f9f3b7dfb2976693c0 *DESCRIPTION
 f4f2080e745b8d689f17caf549449ab5 *geomorph.Rproj
 3c082108c9c0559fbfd7256cc84896f3 *inst/CITATION
-a045eff0f7999802e49192aef4b8b2e8 *longnose.ply
 593e42548fcbd08b6027b15bbca38808 *man/arrayspecs.Rd
 010e8a36ecaec734d38331a7178332d0 *man/bilat.symmetry.Rd
 1ff6222663ac98e0dd1b6aaae0dd9962 *man/buildtemplate.Rd
@@ -150,7 +149,7 @@ a38ff2f2af270bf26299b1569cc734fc *R/digit.curves.r
 aac6a4f8a759473e8c37048e5c8e3d91 *R/findMeanSpec.r
 067124d4119de55a6089c6aefdd0eac5 *R/fixed.angle.r
 3d7958991ae174c24ba7c570f4e03b27 *R/geomorph.data.frame.r
-6d2d76a6bdd20562273502a32701a9c5 *R/geomorph.support.code.r
+0d49eb2dfdf017af7452e3a223d55d14 *R/geomorph.support.code.r
 0c72868af15d33264ca157ef14317f03 *R/geomorph.utils.r
 b0de2a67cff633e27e7a00860187240f *R/globalIntegration.r
 1a0b20144788e7d130adc7d310bb462f *R/gm.prcomp.R
