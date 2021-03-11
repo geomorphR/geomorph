@@ -80,8 +80,17 @@
 #' @param max.iter The maximum number of GPA iterations to perform before superimposition is halted.  The final
 #' number of iterations will be larger than max.iter, if curves or surface semilandmarks are involved, as max.iter
 #' will pertain only to iterations with sliding of landmarks.
+#' @param tol A numeric value that can be adjusted for evaluation of the convergence criterion.  If the criterion
+#' is lower than the tolerance, iterations will be stopped.
 #' @param Proj A logical value indicating whether or not the Procrustes aligned specimens should be projected 
 #'   into tangent space 
+#' @param verbose A logical value for whether to include statistics that take a long time to 
+#' calculate with large data sets, including a Procrustes distance matrix among specimens, 
+#' a variance-covariance matrix among 
+#' Procrustes coordinates (shape variables), and variances of landmark points.  Formatting a data frame
+#' for coordinates and centroid size is also embedded within this option.
+#' This should argument be FALSE unless 
+#' explicitly needed.  For large data sets, it will slow down the analysis, extensively.  
 #' @param print.progress A logical value to indicate whether a progress bar should be printed to the screen.  
 #' @param Parallel For sliding semi-landmarks only, either a logical value to indicate whether 
 #' parallel processing should be used or a numeric value to indicate the number of cores to use in 
@@ -175,7 +184,9 @@
 #' # NOTE can summarize as: summary(Y.gpa)
 #' # NOTE can plot as: plot(Y.gpa) 
 gpagen = function(A, curves=NULL, surfaces=NULL, PrinAxes = TRUE, 
-                  max.iter = NULL, ProcD=FALSE, approxBE = FALSE, Proj = TRUE,
+                  max.iter = NULL, tol = 1e-4, 
+                  ProcD=FALSE, approxBE = FALSE, Proj = TRUE,
+                  verbose = FALSE,
                   print.progress = TRUE, Parallel = FALSE){
   
   if(inherits(A, "geomorphShapes")) {
@@ -227,59 +238,51 @@ gpagen = function(A, curves=NULL, surfaces=NULL, PrinAxes = TRUE,
   } else curves <- NULL
   if(!is.null(surfaces)) surf <- as.vector(surfaces) else surf <- NULL
   
-  if(print.progress) {
-    if(!is.null(surfaces) || !is.null(curves)) {
-      if(Parallel != FALSE) {
+  if(print.progress && Parallel != FALSE) {
         print.progress = FALSE
-        message("\nProgress bar is turned off for parallel processing.\n")
-      }
-    }
-  }
+        message("\nResults status turned off for parallel processing.\n")
+      } else cat("\nPerforming GPA\n")
   
   
   if(print.progress == TRUE){
     if(!is.null(curves) || !is.null(surf)) 
       gpa <- pGpa.wSliders(Y, curves = curves, surf=surf,
                            PrinAxes = PrinAxes, max.iter=max.it, 
-                           appBE = approxBE, ProcD=prD) else
+                           tol = tol, appBE = approxBE, ProcD=prD) else
                              gpa <- pGpa(Y, PrinAxes = PrinAxes, 
-                                         max.iter=max.it)
+                                         max.iter=max.it, tol = tol)
                                                                 
   } else {
     if(!is.null(curves) || !is.null(surf)) 
       gpa <- .pGpa.wSliders(Y, curves = curves, surf=surf,
                             PrinAxes = PrinAxes, max.iter=max.it, 
-                            appBE= approxBE, ProcD=prD, 
+                            tol = tol, appBE= approxBE, ProcD=prD, 
                             Parallel = Parallel) else
                               gpa <- .pGpa(Y, PrinAxes = PrinAxes, 
-                                           max.iter=max.it)
+                                           max.iter=max.it, tol = tol, 
+                                           Parallel = Parallel)
   }
   
   coords <- gpa$coords
   M <- gpa$consensus
   dimnames(M) <- list(p.names, k.names)
-    
+  if(is.null(colnames(M))) colnames(M) <- c("X", "Y", "Z")[1:k] 
+  
   if (Proj == TRUE) {
+    if(print.progress) cat("\nMaking projections... ")
     coords <- orp(coords)
     M <- Reduce("+",coords)/n
     dimnames(M) <- list(p.names, k.names)
+    if(print.progress) cat("Finished!\n")
   }
   Csize <- gpa$CS
   names(Csize) <- spec.names
   iter <- gpa$iter
-  pt.var <- Reduce("+",Map(function(y) y^2/n, coords))
+  coordsL <- coords
   coords <- simplify2array(coords)
   dimnames(coords) <- list(p.names, k.names, spec.names)
-  two.d.coords = two.d.array(coords)
-  rownames(two.d.coords) <- spec.names
-  pt.VCV <- var(two.d.coords)
-  rownames(pt.var) <- p.names
-  colnames(pt.var) <- c("Var.X", "Var.Y", "Var.Z")[1:k]
-
-  if(is.null(colnames(M))) colnames(M) <- c("X", "Y", "Z")[1:k] 
-
-  procD <- try(dist(two.d.coords), silent = TRUE)
-  if(inherits(procD, "try-error")) procD <- NULL
+  
+  
   if(!is.null(curves) || !is.null(surf)) {
     nsliders <- nrow(curves)
     nsurf <- length(surf)
@@ -290,14 +293,32 @@ gpagen = function(A, curves=NULL, surfaces=NULL, PrinAxes = TRUE,
     smeth <- NULL
   }
   if(is.null(nsliders)) nsliders <- 0; if(is.null(nsurf)) nsurf <- 0
+  
+  if(verbose) {
+    if(print.progress) cat("\nCompiling additional results ... ")
+    
+    two.d.coords <- two.d.array(coords)
+    rownames(two.d.coords) <- spec.names
+    dat <- data.frame(coords = two.d.coords, Csize = Csize)
+    pt.var <- Reduce("+", Map(function(y) y^2/n, coordsL))
+    rownames(pt.var) <- p.names
+    colnames(pt.var) <- c("Var.X", "Var.Y", "Var.Z")[1:k]
+    pt.VCV <- var(two.d.coords)
+    procD <- try(dist(two.d.coords), silent = TRUE)
+    if(inherits(procD, "try-error")) procD <- NULL
+    if(print.progress) cat("Finished!\n")
+  } else pt.var <- pt.VCV <- procD <- two.d.coords <- dat <- NULL
+  
 
   out <- list(coords=coords, Csize=Csize, 
               iter=iter, 
-              points.VCV = pt.VCV, points.var = pt.var, 
               consensus = M, procD = procD, 
-              p=p,k=k, nsliders=nsliders, nsurf = nsurf,
-              data = data.frame(coords = two.d.coords, Csize = Csize),
+              p = p,k = k, nsliders=nsliders, nsurf = nsurf,
+              points.VCV = pt.VCV, points.var = pt.var, 
+              data = dat,
               Q = gpa$Q, slide.method = smeth, call= match.call())
   class(out) <- "gpagen"
+  
+
   out
 }

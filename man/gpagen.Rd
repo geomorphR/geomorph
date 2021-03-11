@@ -10,9 +10,11 @@ gpagen(
   surfaces = NULL,
   PrinAxes = TRUE,
   max.iter = NULL,
+  tol = 1e-04,
   ProcD = FALSE,
   approxBE = FALSE,
   Proj = TRUE,
+  verbose = FALSE,
   print.progress = TRUE,
   Parallel = FALSE
 )
@@ -34,6 +36,9 @@ using the function \code{\link{define.sliders}}.}
 number of iterations will be larger than max.iter, if curves or surface semilandmarks are involved, as max.iter
 will pertain only to iterations with sliding of landmarks.}
 
+\item{tol}{A numeric value that can be adjusted for evaluation of the convergence criterion.  If the criterion
+is lower than the tolerance, iterations will be stopped.}
+
 \item{ProcD}{A logical value indicating whether or not Procrustes distance should be used as the criterion
 for optimizing the positions of semilandmarks (if not, bending energy is used)}
 
@@ -44,6 +49,14 @@ change max.iter to be few for large data sets.}
 
 \item{Proj}{A logical value indicating whether or not the Procrustes aligned specimens should be projected 
 into tangent space}
+
+\item{verbose}{A logical value for whether to include statistics that take a long time to 
+calculate with large data sets, including a Procrustes distance matrix among specimens, 
+a variance-covariance matrix among 
+Procrustes coordinates (shape variables), and variances of landmark points.  Formatting a data frame
+for coordinates and centroid size is also embedded within this option.
+This should argument be FALSE unless 
+explicitly needed.  For large data sets, it will slow down the analysis, extensively.}
 
 \item{print.progress}{A logical value to indicate whether a progress bar should be printed to the screen.}
 

@@ -65,6 +65,32 @@ apply.pPsup<-function(M, Ya) {	# M = mean (reference); Ya all Y targets
   })
 }
 
+apply.pPsupPP <- function(M, Ya, ParCores, Unix = TRUE) {	# M = mean (reference); Ya all Y targets
+  dims <- dim(Ya[[1]])
+  k <- dims[2]; p <- dims[1]; n <- length(Ya)
+  M <- cs.scale(M)
+  if(Unix) {
+    mclapply(1:n, function(j){
+      y <- Ya[[j]]
+      MY <- crossprod(M,y)
+      sv <- La.svd(MY,k,k)
+      u <- sv$u; u[,k] <- u[,k]*determinant(MY)$sign
+      tcrossprod(y,u%*%sv$vt)
+    }, mc.cores = ParCores)
+  } else {
+    parLapply(cl = cl,1:n, function(j) {
+      y <- Ya[[j]]
+      MY <- crossprod(M,y)
+      sv <- La.svd(MY,k,k)
+      u <- sv$u; u[,k] <- u[,k]*determinant(MY)$sign
+      tcrossprod(y,u%*%sv$vt)
+    })
+  }
+  
+  
+}
+
+
 # fast.ginv
 # same as ginv, but without traps (faster)
 # used in any function requiring a generalized inverse
