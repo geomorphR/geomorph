@@ -448,7 +448,7 @@ Ltemplate <-function(Mr, Mt=NULL){
   if(k==2) {P <-P^2*log(P); P[is.na(P)] <- 0}
   Q <- cbind(1,Mr)
   L<-rbind(cbind(P,Q), cbind(t(Q),matrix(0,k+1,k+1)))
-  Linv <- -fast.solve(L)[1:p,1:p]
+  Linv <- -fast.ginv(L)[1:p,1:p]
   Linv
 }
 
@@ -617,11 +617,11 @@ semilandmarks.slide.tangents.BE <- function(y, tans, ref, L, appBE, BEp){
     
     PL <- (tcrossprod(tx) + tcrossprod(ty) + 
              tcrossprod(tz)) * L
-    int.part <- fast.solve(PL) %*% cbind(tx*L, ty*L, tz*L)
+    int.part <- sparse.solve(PL) %*% cbind(tx*L, ty*L, tz*L)
     Ht <- rbind(tx*int.part, ty*int.part, tz*int.part)
   } else {
     PL <- (tcrossprod(tx) + tcrossprod(ty)) * L
-    int.part <- fast.solve(PL) %*% cbind(tx*L,ty*L)
+    int.part <- sparse.solve(PL) %*% cbind(tx*L,ty*L)
     Ht <- rbind(tx*int.part, ty*int.part)
   }
   
@@ -666,20 +666,19 @@ semilandmarks.slide.surf.BE <- function(y, surf, ref, L, appBE, BEp){
   if(k==3) {
     PL <- (tcrossprod(p1x) + tcrossprod(p1y) + 
              tcrossprod(p1z)) * L
-    int.part <- fast.solve(PL) %*% cbind(p1x*L, p1y*L, p1z*L)
+    int.part <- sparse.solve(PL) %*% cbind(p1x*L, p1y*L, p1z*L)
     Hp1 <- rbind(p1x*int.part, p1y*int.part, p1z*int.part)
-    
     
   } else {
     PL <- (tcrossprod(p1x) + tcrossprod(p1y)) * L
-    int.part <- fast.solve(PL) %*% cbind(p1x*L, p1y*L)
+    int.part <- sparse.solve(PL) %*% cbind(p1x*L, p1y*L)
     Hp1 <- rbind(p1x*int.part, p1y*int.part)
     
   }
   if(k==3) {
     PL <- (tcrossprod(p2x) + tcrossprod(p2y) + 
              tcrossprod(p2z)) * L
-    int.part <- fast.solve(PL) %*% cbind(p2x*L, p2y*L, p2z*L)
+    int.part <- sparse.solve(PL) %*% cbind(p2x*L, p2y*L, p2z*L)
     Hp2 <- rbind(p2x*int.part, p2y*int.part, p2z*int.part)
   } else {
     PL <- (tcrossprod(p2x) + tcrossprod(p2y)) * L
@@ -724,11 +723,11 @@ semilandmarks.slide.tangents.surf.BE <- function(y, tans, surf, ref, L, appBE, B
     
     PL <- (tcrossprod(tx) + tcrossprod(ty) + 
              tcrossprod(tz)) * L
-    int.part <- fast.solve(PL) %*% cbind(tx*L, ty*L, tz*L)
+    int.part <- sparse.solve(PL) %*% cbind(tx*L, ty*L, tz*L)
     Ht <- rbind(tx*int.part, ty*int.part, tz*int.part)
   } else {
     PL <- (tcrossprod(tx) + tcrossprod(ty)) * L
-    int.part <- fast.solve(PL) %*% cbind(tx*L, ty*L)
+    int.part <- sparse.solve(PL) %*% cbind(tx*L, ty*L)
     Ht <- rbind(tx*int.part, ty*int.part)
   }
   
@@ -756,24 +755,24 @@ semilandmarks.slide.tangents.surf.BE <- function(y, tans, surf, ref, L, appBE, B
   if(k==3) {
     PL <- (tcrossprod(p1x) + tcrossprod(p1y) + 
              tcrossprod(p1z)) * L
-    int.part <- fast.solve(PL) %*% cbind(p1x*L, p1y*L, p1z*L)
+    int.part <- sparse.solve(PL) %*% cbind(p1x*L, p1y*L, p1z*L)
     Hp1 <- rbind(p1x*int.part, p1y*int.part, p1z*int.part)
     
     
   } else {
     PL <- (tcrossprod(p1x) + tcrossprod(p1y)) * L
-    int.part <- fast.solve(PL) %*% cbind(p1x*L, p1y*L)
+    int.part <- sparse.solve(PL) %*% cbind(p1x*L, p1y*L)
     Hp1 <- rbind(p1x*int.part, p1y*int.part)
     
   }
   if(k==3) {
     PL <- (tcrossprod(p2x) + tcrossprod(p2y) + 
              tcrossprod(p2z)) * L
-    int.part <- fast.solve(PL) %*% cbind(p2x*L, p2y*L, p2z*L)
+    int.part <- sparse.solve(PL) %*% cbind(p2x*L, p2y*L, p2z*L)
     Hp2 <- rbind(p2x*int.part, p2y*int.part, p2z*int.part)
   } else {
     PL <- (tcrossprod(p2x) + tcrossprod(p2y)) * L
-    int.part <- faste.solve(PL) %*%cbind(p2x*L, p2y*L)
+    int.part <- sparse.solve(PL) %*%cbind(p2x*L, p2y*L)
     Hp2 <- rbind(p2x*int.part, p2y*int.part)
   }
   
