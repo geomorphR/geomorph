@@ -241,10 +241,11 @@ gpagen = function(A, curves=NULL, surfaces=NULL, PrinAxes = TRUE,
   if(print.progress && Parallel != FALSE) {
         print.progress = FALSE
         message("\nResults status turned off for parallel processing.\n")
-      } else cat("\nPerforming GPA\n")
+      } else 
   
   
   if(print.progress == TRUE){
+    cat("\nPerforming GPA\n")
     if(!is.null(curves) || !is.null(surf)) 
       gpa <- pGpa.wSliders(Y, curves = curves, surf=surf,
                            PrinAxes = PrinAxes, max.iter=max.it, 
