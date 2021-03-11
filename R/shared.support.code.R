@@ -118,12 +118,13 @@ fast.solve <- function(x) {
 # same as fast.solve, but specifically for sparse symmetric matrices
 # used in any function requiring a generalized inverse of a known
 # sparse symmetric matrix
+
 sparse.solve <- function(X){
-  keep <- which(round(X, 12) != 0)
-  m <- sqrt(length(keep))
-  Y <- matrix(X[keep], m, m)
-  Xn <- array(0, dim(X))
-  Xn[keep] <- fast.solve(Y)
+  keepx <- which(rowSums(X^2)!= 0)
+  keepy <- which(rowSums(X^2)!= 0)
+  Y <- X[keepx, keepy]
+  Xn <- X
+  Xn[keepx, keepy] <- fast.solve(Y)
   Xn
 }
 
