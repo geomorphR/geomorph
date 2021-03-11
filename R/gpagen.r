@@ -241,7 +241,7 @@ gpagen = function(A, curves=NULL, surfaces=NULL, PrinAxes = TRUE,
   if(print.progress && Parallel != FALSE) {
         print.progress = FALSE
         message("\nResults status turned off for parallel processing.\n")
-      } else 
+      }  
   
   
   if(print.progress == TRUE){
