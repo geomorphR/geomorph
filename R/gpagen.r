@@ -89,7 +89,7 @@
 #' a variance-covariance matrix among 
 #' Procrustes coordinates (shape variables), and variances of landmark points.  Formatting a data frame
 #' for coordinates and centroid size is also embedded within this option.
-#' This should argument be FALSE unless 
+#' This argument should be FALSE unless 
 #' explicitly needed.  For large data sets, it will slow down the analysis, extensively.  
 #' @param print.progress A logical value to indicate whether a progress bar should be printed to the screen.  
 #' @param Parallel For sliding semi-landmarks only, either a logical value to indicate whether 

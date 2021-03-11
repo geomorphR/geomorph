@@ -37,7 +37,7 @@ e5ea7eb05043e14bf36bb1c553de0576 *man/findMeanSpec.Rd
 4681bbf9711d9eafd48798c7537bf5b7 *man/geomorph.data.frame.Rd
 c7fdffac3135bde168be933be6bf2243 *man/globalIntegration.Rd
 a2b256ef99f445aac19858b7fe527913 *man/gm.prcomp.Rd
-9cd095613622440fb34c976a578129a7 *man/gpagen.Rd
+6f9b76a20b7692c78211a3604b11919b *man/gpagen.Rd
 3a80fa88113f0962688993fd399bc689 *man/gridPar.Rd
 a598044482a6c3e39517b798b654c57e *man/hummingbirds.Rd
 6725d202cc91d2039fee6e02157f232a *man/integration.test.Rd
@@ -153,7 +153,7 @@ aac6a4f8a759473e8c37048e5c8e3d91 *R/findMeanSpec.r
 0c72868af15d33264ca157ef14317f03 *R/geomorph.utils.r
 b0de2a67cff633e27e7a00860187240f *R/globalIntegration.r
 1a0b20144788e7d130adc7d310bb462f *R/gm.prcomp.R
-28a7df6dfcc5f9cc8be8ec14d327c220 *R/gpagen.r
+ad06b3296ce56055346e71292a5a7b15 *R/gpagen.r
 293464e2f2612431690a2c1326c7bdd6 *R/gridPar.r
 ba7d47018f365a71131a73993e001123 *R/integration.test.r
 0cbfe6b5655e2751cdd03ca2a1550768 *R/interlmkdist.r
