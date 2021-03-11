@@ -533,7 +533,7 @@ apply.pPsup.windows <- function(M, Ya, ParCores) {
   dims <- dim(Ya[[1]])
   k <- dims[2]; p <- dims[1]; n <- length(Ya)
   M <- cs.scale(M)
-  cl <- makeCluster(PArCores)
+  cl <- makeCluster(ParCores)
   res <- parLapply(cl = cl,1:n, function(j) {
     y <- Ya[[j]]
     MY <- crossprod(M,y)
@@ -562,7 +562,7 @@ apply.pPsup.windows <- function(M, Ya, ParCores) {
   apply.pPsup.j <- function(M, Ya, Parallel, ParCores, Unix = NULL) {
     if(!Parallel) apply.pPsup(M, YA) else {
       if(Unix) apply.pPsup.unix(M, Ya, ParCores) 
-      else apply.pPsup.windows(M, Ya, ParCores) 
+      else apply.pPsup(M, YA) # need to update windows (overhead)
     }
   }
   
