@@ -1101,7 +1101,7 @@ BE.slidePP <- function(curves, surf, Ya, ref, max.iter=5,
         })
         
       }
-      stopCluster(cl)
+      
       ss <- sum(Reduce("+",slid)^2)/n
       slid0 <- apply.pPsup(ref,slid)
       ref = cs.scale(Reduce("+", slid0)/n)
@@ -1110,6 +1110,7 @@ BE.slidePP <- function(curves, surf, Ya, ref, max.iter=5,
       if(iter >= max.iter) break
       
     }
+    stopCluster(cl)
   }
     
   list(coords=slid0, consensus=ref, iter=iter+1, Q=Q)
