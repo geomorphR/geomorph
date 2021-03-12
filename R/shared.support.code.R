@@ -88,6 +88,15 @@ fast.solve <- function(x) {
   return(res)
 }
 
+fast.solveSym <- function(x) { 
+    res <- try(solve(x), silent = TRUE)
+    if(inherits(res, "try-error")) {
+      X <- forceSymmetric(x)
+      res <- solve(X)
+    }
+    return(res)
+}
+
 # sparse.solve
 # same as fast.solve, but specifically for sparse symmetric matrices
 # used in any function requiring a generalized inverse of a known
@@ -98,7 +107,7 @@ sparse.solve <- function(X){
   keepy <- which(rowSums(X^2)!= 0)
   Y <- X[keepx, keepy]
   Xn <- X
-  Xn[keepx, keepy] <- fast.solve(Y)
+  Xn[keepx, keepy] <- fast.solveSym(Y)
   Xn
 }
 
