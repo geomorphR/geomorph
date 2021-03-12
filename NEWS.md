@@ -1,6 +1,7 @@
 # CHANGES IN GEOMORPH VERSION 4.0.0
 
 ### NEW FEATURES
+* Included calculation of individual asymmetry indices to `bilat.symmetry` output
 * Updated `bilat.symmetry` to use arguments available with updates to `RRPP::lm.rrpp`, taking advantage of parallel processing, C++, and turbo-charged (coefficient-suppressed) calculations to maximize speed.
 * More options for parallel processing.
 *`make_ggplot2` function for converting `geomorph` plots to `ggplot` objects, which can be amended.

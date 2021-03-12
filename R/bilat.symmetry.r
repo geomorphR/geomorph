@@ -40,6 +40,12 @@
 #' correspondence. The user must supply a list of landmark pairs. A vector containing information 
 #' on individuals must also be supplied. Replicates of each specimen may also be included in the 
 #' dataset, and when specified will be used as measurement error. 
+#' 
+#' The function also provides individual measures of signed and unsigned asymmetry, calculated as the
+#' Procrustes distance between the right and left element (for paired structures, as detailed in 
+#' Klingenberg and McIntyre 1998) or side of the structure (for object symmetry, following Lazić 
+#' et al 2005). The computational difference betwen the two approaches consists in that, for object
+#' symmetry, only paired landmarks are considered, excluding the landmarks of the midline.
 #'  
 #' \subsection{Notes for geomorph 3.0}{ 
 #' Compared to older versions of geomorph, some results can be expected to be slightly different. 
@@ -103,7 +109,7 @@
 #' @param ... Arguments to pass onto gpagen
 #' @keywords analysis
 #' @export
-#' @author Dean Adams and Michael Collyer
+#' @author Dean Adams, Michael Collyer and Antigoni Kaliontzopoulou
 #' @return An object of class "bilat.symmetry" returns a list of the following
 #' \item{shape.anova}{An analysis of variance table for the shape data.}
 #' \item{size.anova}{An analysis of variance table for the shape data (when object.sym = FALSE).}
@@ -113,6 +119,10 @@
 #' \item{FA.component}{The fluctuating asymmetry component for each specimen, 
 #' found as the specimen specific side deviation adjusted for the mean 
 #' directional asymmetry in the dataset.}
+#' \item{signed.AI}{Individual signed asymmetry index, as per Klingenberg and McIntyre, 1998;
+#' Lazić et al 2005.}
+#' #' \item{unsigned.AI}{Individual unsigned asymmetry index, as per Klingenberg and McIntyre, 1998;
+#' Lazić et al 2005.}
 #' \item{data.type}{A value indicating whether the analysis was performed as Object or Matching 
 #' symmetry.}
 #' \item{permutations}{The number of random permutations used.}
@@ -131,6 +141,10 @@
 #' bilateral symmetry of shapes. Biometrika. 87:285-300.
 #' @references Klingenberg, C.P., M. Barluenga, and A. Meyer. 2002. Shape analysis of symmetric 
 #' structures: quantifying variation among individuals and asymmetry. Evolution. 56:1909-1920.
+#' @references Lazić, M. M., M. A. Carretero, J. Crnobrnja-Isailović, and A. Kaliontzopoulou. 2015.
+#' Effects of environmental disturbance on phenotypic variation: an integrated assessment of 
+#' canalization, developmental stability, modularity, and allometry in lizard head shape. The American
+#' Naturalist 185:44–58.
 #' @examples
 #' #Example of matching symmetry
 #'
@@ -340,8 +354,9 @@ bilat.symmetry <- function(A, ind = NULL, side = NULL, replicate = NULL, object.
   indsq <- seq(n.side, (n.ind*n.side), n.side)
   asymm.component <- avg.side.symm[indsq,] - avg.side.symm[-indsq,]
   mn.shape <- mshape(A)
-  asymm.component <- simplify2array(lapply(1:n.ind, function(j) 
-  {t(matrix(asymm.component[j,],k,p)) + mn.shape}))
+  asymm.component <- simplify2array(lapply(1:n.ind, function(j) {
+    t(matrix(asymm.component[j,],k,p)) + mn.shape
+    }))
   dimnames(asymm.component)[[3]] <- ind.names
   
   DA.est <- coef(.lm.fit(X.side, Y))
@@ -355,8 +370,22 @@ bilat.symmetry <- function(A, ind = NULL, side = NULL, replicate = NULL, object.
   {t(matrix(FA.component[j,],k,p)) + mn.shape - mn.DA}))
   dimnames(FA.component)[[3]] <- ind.names 
   
+  # Calculate individual asymmetry indices
+  signed.asymm <- two.d.array(asymm.component)
+  signed.AI <- sqrt(apply(signed.asymm^2, 1, sum))
+  names(signed.AI) <- ind.names
+  
+  asymm.mean <- apply(signed.asymm, 2, mean)
+  unsigned.asymm <- matrix(NA, nrow=nrow(signed.asymm), ncol=ncol(signed.asymm))
+  for (i in 1:nrow(signed.asymm)){
+    unsigned.asymm[i,] <- ifelse(signed.asymm[i,]%*%asymm.mean > 0, signed.asymm[i,], signed.asymm[i,]*(-1))
+  } 
+  unsigned.AI <- sqrt(apply(unsigned.asymm^2, 1, sum))
+  names(unsigned.AI) <- ind.names
+
   out <- list(shape.anova = shape.anova, symm.shape = symm.component,
               asymm.shape = asymm.component, DA.component = DA.mns, FA.component = FA.component,
+              signed.AI = signed.AI, unsigned.AI = unsigned.AI,
               data.type = ifelse(object.sym == TRUE, "Object", "Matching"),
               permutations = iter+1,
               random.shape.F = random.shape.F, 
