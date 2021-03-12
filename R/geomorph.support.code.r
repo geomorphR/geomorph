@@ -1031,7 +1031,6 @@ BE.slidePP <- function(curves, surf, Ya, ref, max.iter=5,
   
   L <- if(appBE) Ltemplate(ref[BEp,]) else Ltemplate(ref)
   
-  
   if(Unix) {
     while(Q > tol){
       iter <- iter+1
