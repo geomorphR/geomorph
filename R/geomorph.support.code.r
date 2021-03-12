@@ -19,7 +19,6 @@
 #' @importFrom jpeg readJPEG
 #' @importFrom ape multi2di.phylo
 #' @importFrom ape root.phylo
-#' @importFrom Matrix forceSymmetric
 
 #'
 #' @section geomorph TOC:

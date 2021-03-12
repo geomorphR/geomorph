@@ -91,7 +91,7 @@ fast.solve <- function(x) {
 fast.solveSym <- function(x) { 
     res <- try(solve(x), silent = TRUE)
     if(inherits(res, "try-error")) {
-      X <- forceSymmetric(x)
+      X <- (x + t(x))/2
       res <- solve(X)
     }
     return(res)
