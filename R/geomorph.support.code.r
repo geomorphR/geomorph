@@ -442,15 +442,31 @@ getU <- function(y,tn, surf){
 # calculates inverse of bending energy matrix
 # used in any function that calculates bending energy
 # used in BE.slide
-Ltemplate <-function(Mr, Mt=NULL){
+Ltemplate <- function(Mr, Mt=NULL){
   p <-nrow(Mr); k <- ncol(Mr)
   if(!is.null(Mt)) P <- as.matrix(dist(Mr-Mt)) else P <- as.matrix(dist(Mr))
   if(k==2) {P <-P^2*log(P); P[is.na(P)] <- 0}
   Q <- cbind(1,Mr)
   L<-rbind(cbind(P,Q), cbind(t(Q),matrix(0,k+1,k+1)))
-  Linv <- -fast.ginv(L)[1:p,1:p]
+  Linv <- -fast.solveSym(L)[1:p,1:p]
   Linv
 }
+
+# Save for if needed
+LtemplateApprox <- function(ref){ # only for sliding functions
+  K <- as.matrix(dist(ref))
+  if(k==2) {K <- K^2*log(K); K[is.na(K)] <- 0}
+  P <- cbind(1, ref)
+  kk <- ncol(K)
+  La.svd(K, kk, kk)
+  Kinv <- fast.solveSym(K)
+  S <- -crossprod(P, Kinv) %*%P
+  UL <- Kinv + Kinv %*% P %*% Sinv %*% crossprod(P, Kinv)
+  UR <- -Kinv%*%P%*%Sinv
+  LL <- -Sinv%*%crossprod(P, Kinv)
+  (rbind(cbind(UL, UR), cbind(LL, S)))[1:p, 1:p]
+}
+
 
 # Ltemplate
 # calculates inverse of bending energy matrix and expand it to dimensions of landmarks
@@ -462,7 +478,7 @@ bigLtemplate <-function(Mr, Mt=NULL){
   if(k==2) {P <-P^2*log(P); P[is.na(P)] <- 0}
   Q <- rbind(cbind(1,Mr))
   L<-rbind(cbind(P,Q), cbind(t(Q),matrix(0,k+1,k+1)))
-  Linv <- -fast.solve(L)[1:p,1:p]
+  Linv <- -fast.solveSym(L)[1:p,1:p]
   if(k==2) Linv <- rbind(cbind(Linv,array(0,dim(Linv))),cbind(array(0,dim(Linv)),Linv))
   if(k==3) Linv <- rbind(cbind(Linv,array(0,dim(Linv)), array(0,dim(Linv))),
                          cbind(array(0,dim(Linv)),Linv,array(0,dim(Linv))),
@@ -668,7 +684,7 @@ semilandmarks.slide.tangents.BE <- function(y, tans, ref, L, appBE, BEp){
 
   PL <- if(k==3) (tcrossprod(tx) + tcrossprod(ty) + 
                     tcrossprod(tz)) * L else (tcrossprod(tx) + tcrossprod(ty)) * L
-  PLinv <- if(appBE) sparse.solve(PL) else fast.solve(PL)
+  PLinv <- if(appBE) sparse.solve(PL) else fast.solveSym(PL)
   int.part <- if(k == 3) PLinv %*% cbind(tx*L, ty*L, tz*L) else
     PLinv %*% cbind(tx*L, ty*L)
   Ht <- rbind(tx*int.part, ty*int.part, tz*int.part)
@@ -714,13 +730,13 @@ semilandmarks.slide.surf.BE <- function(y, surf, ref, L, appBE, BEp){
   if(k==3) {
     PL <- (tcrossprod(p1x) + tcrossprod(p1y) + 
              tcrossprod(p1z)) * L
-    PLinv <- if(appBE) sparse.solve(PL) else fast.solve(PL)
+    PLinv <- if(appBE) sparse.solve(PL) else fast.solveSym(PL)
     int.part <- PLinv %*% cbind(p1x*L, p1y*L, p1z*L)
     Hp1 <- rbind(p1x*int.part, p1y*int.part, p1z*int.part)
     
   } else {
     PL <- (tcrossprod(p1x) + tcrossprod(p1y)) * L
-    PLinv <- if(appBE) sparse.solve(PL) else fast.solve(PL)
+    PLinv <- if(appBE) sparse.solve(PL) else fast.solveSym(PL)
     int.part <- PLinv %*% cbind(p1x*L, p1y*L)
     Hp1 <- rbind(p1x*int.part, p1y*int.part)
     
@@ -728,12 +744,12 @@ semilandmarks.slide.surf.BE <- function(y, surf, ref, L, appBE, BEp){
   if(k==3) {
     PL <- (tcrossprod(p2x) + tcrossprod(p2y) + 
              tcrossprod(p2z)) * L
-    PLinv <- if(appBE) sparse.solve(PL) else fast.solve(PL)
+    PLinv <- if(appBE) sparse.solve(PL) else fast.solveSym(PL)
     int.part <- PLinv %*% cbind(p2x*L, p2y*L, p2z*L)
     Hp2 <- rbind(p2x*int.part, p2y*int.part, p2z*int.part)
   } else {
     PL <- (tcrossprod(p2x) + tcrossprod(p2y)) * L
-    PLinv <- if(appBE) sparse.solve(PL) else fast.solve(PL)
+    PLinv <- if(appBE) sparse.solve(PL) else fast.solveSym(PL)
     int.part <- PLinv %*%cbind(p2x*L, p2y*L)
     Hp2 <- rbind(p2x*int.part, p2y*int.part)
   }
@@ -807,14 +823,14 @@ semilandmarks.slide.tangents.surf.BE <- function(y, tans, surf, ref, L, appBE, B
   if(k==3) {
     PL <- (tcrossprod(p1x) + tcrossprod(p1y) + 
              tcrossprod(p1z)) * L
-    PLinv <- if(appBE) sparse.solve(PL) else fast.solve(PL)
+    PLinv <- if(appBE) sparse.solve(PL) else fast.solveSym(PL)
     int.part <- PLinv %*% cbind(p1x*L, p1y*L, p1z*L)
     Hp1 <- rbind(p1x*int.part, p1y*int.part, p1z*int.part)
     
     
   } else {
     PL <- (tcrossprod(p1x) + tcrossprod(p1y)) * L
-    PLinv <- if(appBE) sparse.solve(PL) else fast.solve(PL)
+    PLinv <- if(appBE) sparse.solve(PL) else fast.solveSym(PL)
     int.part <- PLinv %*% cbind(p1x*L, p1y*L)
     Hp1 <- rbind(p1x*int.part, p1y*int.part)
     
@@ -822,12 +838,12 @@ semilandmarks.slide.tangents.surf.BE <- function(y, tans, surf, ref, L, appBE, B
   if(k==3) {
     PL <- (tcrossprod(p2x) + tcrossprod(p2y) + 
              tcrossprod(p2z)) * L
-    PLinv <- if(appBE) sparse.solve(PL) else fast.solve(PL)
+    PLinv <- if(appBE) sparse.solve(PL) else fast.solveSym(PL)
     int.part <- PLinv %*% cbind(p2x*L, p2y*L, p2z*L)
     Hp2 <- rbind(p2x*int.part, p2y*int.part, p2z*int.part)
   } else {
     PL <- (tcrossprod(p2x) + tcrossprod(p2y)) * L
-    PLinv <- if(appBE) sparse.solve(PL) else fast.solve(PL)
+    PLinv <- if(appBE) sparse.solve(PL) else fast.solveSym(PL)
     int.part <- PLinv %*%cbind(p2x*L, p2y*L)
     Hp2 <- rbind(p2x*int.part, p2y*int.part)
   }
@@ -1014,7 +1030,6 @@ BE.slidePP <- function(curves, surf, Ya, ref, max.iter=5,
   BEp <- sort(unique(c(BEp, Up)))
   
   L <- if(appBE) Ltemplate(ref[BEp,]) else Ltemplate(ref)
-  
   
   if(Unix) {
     while(Q > tol){
@@ -1469,8 +1484,8 @@ tps2d <- function(M, matr, matt){
   Q <- cbind(1, matr)
   L <- rbind(cbind(P, Q), cbind(t(Q), matrix(0,3,3)))
   m2 <- rbind(matt, matrix(0, 3, 2))
-  coefx <- fast.solve(L)%*%m2[,1]
-  coefy <- fast.solve(L)%*%m2[,2]
+  coefx <- fast.solveSym(L)%*%m2[,1]
+  coefy <- fast.solveSym(L)%*%m2[,2]
   fx <- function(matr, M, coef){
     Xn <- numeric(q)
     for (i in 1:q){
@@ -1496,9 +1511,9 @@ tps2d3d <- function(M, matr, matt, PB=TRUE){		#DCA: altered from J. Claude 2008
   Q <- cbind(1, matr)
   L <-rbind(cbind(P, Q), cbind(t(Q), matrix(0,k+1,k+1)))
   m2 <- rbind(matt, matrix(0, k+1, k))
-  coefx <- fast.solve(L)%*%m2[,1]
-  coefy <- fast.solve(L)%*%m2[,2]
-  if(k==3){coefz <- fast.solve(L)%*%m2[,3]}
+  coefx <- fast.solveSym(L)%*%m2[,1]
+  coefy <- fast.solveSym(L)%*%m2[,2]
+  if(k==3){coefz <- fast.solveSym(L)%*%m2[,3]}
   fx <- function(matr, M, coef, step){
     Xn <- numeric(q)
     for (i in 1:q){
@@ -1789,7 +1804,7 @@ boot.CR <- function(x,gps, k,iter, seed = NULL){
 phylo.mat<-function(x,phy){
   C<-fast.phy.vcv(phy)
   C<-C[rownames(x),rownames(x)]
-  invC <-fast.solve(C)
+  invC <-fast.solveSym(C)
   eigC <- eigen(C)
   if(any(Im(eigC$values)==0)) eigC$values<-Re(eigC$values)
   if(any(Im(eigC$vectors)==0)) eigC$vectors<-Re(eigC$vectors)
@@ -1797,7 +1812,7 @@ phylo.mat<-function(x,phy){
   if(any(lambda == 0)){
     warning("Singular phylogenetic covariance matrix. Proceed with caution")
   }
-  D.mat <- fast.solve(eigC$vectors%*% diag(sqrt(abs(eigC$values))) %*% t(eigC$vectors))
+  D.mat <- fast.solveSym(eigC$vectors%*% diag(sqrt(abs(eigC$values))) %*% t(eigC$vectors))
   rownames(D.mat) <- colnames(D.mat) <- colnames(C)
   list(invC = invC, D.mat = D.mat,C = C)
 }
