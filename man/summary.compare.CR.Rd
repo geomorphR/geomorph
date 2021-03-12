@@ -4,7 +4,7 @@
 \alias{summary.compare.CR}
 \title{Print/Summary Function for geomorph}
 \usage{
-summary.compare.CR(object, ...)
+\method{summary}{compare.CR}(object, ...)
 }
 \arguments{
 \item{object}{print/summary object}

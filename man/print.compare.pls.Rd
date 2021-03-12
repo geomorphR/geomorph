@@ -4,7 +4,7 @@
 \alias{print.compare.pls}
 \title{Print/Summary Function for geomorph}
 \usage{
-print.compare.pls(x, ...)
+\method{print}{compare.pls}(x, ...)
 }
 \arguments{
 \item{x}{print/summary object}

@@ -4,7 +4,7 @@
 \alias{summary.CR}
 \title{Print/Summary Function for geomorph}
 \usage{
-summary.CR(object, ...)
+\method{summary}{CR}(object, ...)
 }
 \arguments{
 \item{object}{print/summary object (from \code{\link{phylo.modularity}})}

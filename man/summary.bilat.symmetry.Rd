@@ -4,7 +4,7 @@
 \alias{summary.bilat.symmetry}
 \title{Print/Summary Function for geomorph}
 \usage{
-summary.bilat.symmetry(object, ...)
+\method{summary}{bilat.symmetry}(object, ...)
 }
 \arguments{
 \item{object}{print/summary object (from \code{\link{bilat.symmetry}})}
