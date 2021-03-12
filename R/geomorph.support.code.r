@@ -19,7 +19,7 @@
 #' @importFrom jpeg readJPEG
 #' @importFrom ape multi2di.phylo
 #' @importFrom ape root.phylo
-
+#' @importFrom Matrix forceSymmetric
 #'
 #' @section geomorph TOC:
 #' geomorph-package
@@ -446,10 +446,15 @@ Ltemplate <- function(Mr, Mt=NULL){
   p <-nrow(Mr); k <- ncol(Mr)
   if(!is.null(Mt)) P <- as.matrix(dist(Mr-Mt)) else P <- as.matrix(dist(Mr))
   if(k==2) {P <-P^2*log(P); P[is.na(P)] <- 0}
-  Q <- cbind(1,Mr)
-  L<-rbind(cbind(P,Q), cbind(t(Q),matrix(0,k+1,k+1)))
-  Linv <- -fast.solveSym(L)[1:p,1:p]
-  Linv
+  Q <- cbind(1, Mr)
+  L <- matrix(0, p + k + 1, p + k + 1)
+  L[1:p, 1:p] <- P
+  L[1:p, (p + 1):(p + k + 1)] <- Q
+  L[(p + 1):(p + k + 1), 1:p] <- t(Q)
+  Linv <- try(-fast.solveSym(L), silent = TRUE)
+  if(inherits(Linv, "try-error"))
+    Linv <- -fast.ginv(L)
+  Linv[1:p, 1:p]
 }
 
 # Save for if needed
@@ -674,20 +679,27 @@ semilandmarks.slide.tangents.BE <- function(y, tans, ref, L, appBE, BEp){
   tx <- tans[,1]
   ty <- tans[,2]
   tz <- if(k == 3) tans[,3 ] else NULL
-  m <- length(BEp)
+  m <- if(appBE) length(BEp) else p
   
   if(appBE){
     tx <- tx[BEp]
     ty <- ty[BEp]
     if(k == 3) tz <- tz[BEp]
   }
-
+  
   PL <- if(k==3) (tcrossprod(tx) + tcrossprod(ty) + 
                     tcrossprod(tz)) * L else (tcrossprod(tx) + tcrossprod(ty)) * L
   PLinv <- if(appBE) sparse.solve(PL) else fast.solveSym(PL)
-  int.part <- if(k == 3) PLinv %*% cbind(tx*L, ty*L, tz*L) else
-    PLinv %*% cbind(tx*L, ty*L)
-  Ht <- rbind(tx*int.part, ty*int.part, tz*int.part)
+  Tright <- matrix(NA, m, m * k)
+  Tright[1:m, 1:m] <- tx*L
+  Tright[1:m, (m+1):(2*m)] <- ty*L
+  if(k == 3) Tright[1:m, (2*m+1):(3*m)] <- tz*L
+  
+  int.part <-  PLinv %*% Tright 
+  Ht <- matrix(NA, m * k, m * k)
+  Ht[1:m, 1:(m*k)] <- tx*int.part
+  Ht[(m+1):(2*m), 1:(m*k)] <- ty*int.part
+  if(k == 3) Ht[(2*m+1):(3*m), 1:(m*k)] <- tz*int.part
   
   if(appBE) {
     res <-  matrix(Ht %*% as.vector(yc[BEp, ]), m, k)
@@ -708,7 +720,7 @@ semilandmarks.slide.surf.BE <- function(y, surf, ref, L, appBE, BEp){
   yc <- y - ref
   p <- nrow(yc); k <-ncol(yc)
   PC <- getSurfPCs(y, surf)
-  m <- length(BEp)
+  m <- if(appBE) length(BEp) else p
   p1x <- PC$p1x
   p1y <- PC$p1y
   p1z <- PC$p1z
@@ -727,32 +739,33 @@ semilandmarks.slide.surf.BE <- function(y, surf, ref, L, appBE, BEp){
     }
   }
   
-  if(k==3) {
-    PL <- (tcrossprod(p1x) + tcrossprod(p1y) + 
-             tcrossprod(p1z)) * L
-    PLinv <- if(appBE) sparse.solve(PL) else fast.solveSym(PL)
-    int.part <- PLinv %*% cbind(p1x*L, p1y*L, p1z*L)
-    Hp1 <- rbind(p1x*int.part, p1y*int.part, p1z*int.part)
-    
-  } else {
-    PL <- (tcrossprod(p1x) + tcrossprod(p1y)) * L
-    PLinv <- if(appBE) sparse.solve(PL) else fast.solveSym(PL)
-    int.part <- PLinv %*% cbind(p1x*L, p1y*L)
-    Hp1 <- rbind(p1x*int.part, p1y*int.part)
-    
-  }
-  if(k==3) {
-    PL <- (tcrossprod(p2x) + tcrossprod(p2y) + 
-             tcrossprod(p2z)) * L
-    PLinv <- if(appBE) sparse.solve(PL) else fast.solveSym(PL)
-    int.part <- PLinv %*% cbind(p2x*L, p2y*L, p2z*L)
-    Hp2 <- rbind(p2x*int.part, p2y*int.part, p2z*int.part)
-  } else {
-    PL <- (tcrossprod(p2x) + tcrossprod(p2y)) * L
-    PLinv <- if(appBE) sparse.solve(PL) else fast.solveSym(PL)
-    int.part <- PLinv %*%cbind(p2x*L, p2y*L)
-    Hp2 <- rbind(p2x*int.part, p2y*int.part)
-  }
+  PL <- if(k == 3) as.matrix((tcrossprod(p1x) + tcrossprod(p1y) + 
+                                tcrossprod(p1z)) * L) else
+                                  as.matrix((tcrossprod(p1x) + tcrossprod(p1y)) * L)
+  PLinv <- if(appBE) sparse.solve(PL) else fast.solveSym(PL)
+  Tright <- matrix(NA, m, m * k)
+  Tright[1:m, 1:m] <- p1x*L
+  Tright[1:m, (m+1):(2*m)] <- p1y*L
+  if(k == 3) Tright[1:m, (2*m+1):(3*m)] <- p1z*L
+  int.part <- PLinv %*% Tright
+  Hp1 <- matrix(NA, m * k, m * k)
+  Hp1[1:m, 1:(m*k)] <- p1x*int.part
+  Hp1[(m+1):(2*m), 1:(m*k)] <- p1y*int.part
+  if(k == 3) Hp1[(2*m+1):(3*m), 1:(m*k)] <- p1z*int.part
+  
+  PL <- if(k == 3) as.matrix((tcrossprod(p2x) + tcrossprod(p2y) + 
+                                tcrossprod(p2z)) * L) else
+                                  as.matrix((tcrossprod(p2x) + tcrossprod(p2y)) * L)
+  PLinv <- if(appBE) sparse.solve(PL) else fast.solveSym(PL)
+  Tright <- matrix(NA, m, m * k)
+  Tright[1:m, 1:m] <- p2x*L
+  Tright[1:m, (m+1):(2*m)] <- p2y*L
+  if(k == 3) Tright[1:m, (2*m+1):(3*m)] <- p2z*L
+  int.part <- PLinv %*% Tright
+  Hp2 <- matrix(NA, m * k, m * k)
+  Hp2[1:m, 1:(m*k)] <- p2x*int.part
+  Hp2[(m+1):(2*m), 1:(m*k)] <- p2y*int.part
+  if(k == 3) Hp2[(2*m+1):(3*m), 1:(m*k)] <- p2z*int.part 
   
   if(appBE) {
     res <- matrix((Hp1 + Hp2) %*% as.vector(yc[BEp,]), m, k)
@@ -761,7 +774,7 @@ semilandmarks.slide.surf.BE <- function(y, surf, ref, L, appBE, BEp){
   } else {
     temp <- matrix((Hp1 + Hp2) %*% as.vector(yc), p,k)
   }
-
+  
   y - temp
 }
 
@@ -779,25 +792,29 @@ semilandmarks.slide.tangents.surf.BE <- function(y, tans, surf, ref, L, appBE, B
   tx <- tans[,1]
   ty <- tans[,2]
   tz <- if(k == 3) tans[,3 ] else NULL
-  m <- length(BEp)
+  m <- if(appBE) length(BEp) else p
   
+  
+  # Tangents
   if(appBE){
     tx <- tx[BEp]
     ty <- ty[BEp]
     if(k == 3) tz <- tz[BEp]
   }
   
-  if(k==3) {
-    
-    PL <- (tcrossprod(tx) + tcrossprod(ty) + 
-             tcrossprod(tz)) * L
-    int.part <- sparse.solve(PL) %*% cbind(tx*L, ty*L, tz*L)
-    Ht <- rbind(tx*int.part, ty*int.part, tz*int.part)
-  } else {
-    PL <- (tcrossprod(tx) + tcrossprod(ty)) * L
-    int.part <- sparse.solve(PL) %*% cbind(tx*L, ty*L)
-    Ht <- rbind(tx*int.part, ty*int.part)
-  }
+  PL <- if(k==3) as.matrix((tcrossprod(tx) + tcrossprod(ty) + 
+                              tcrossprod(tz)) * L) else as.matrix((tcrossprod(tx) + tcrossprod(ty)) * L)
+  PLinv <- if(appBE) sparse.solve(PL) else fast.solveSym(PL)
+  Tright <- matrix(NA, m, m * k)
+  Tright[1:m, 1:m] <- tx*L
+  Tright[1:m, (m+1):(2*m)] <- ty*L
+  if(k == 3) Tright[1:m, (2*m+1):(3*m)] <- tz*L
+  
+  int.part <-  PLinv %*% Tright 
+  Ht <- matrix(NA, m * k, m * k)
+  Ht[1:m, 1:(m*k)] <- tx*int.part
+  Ht[(m+1):(2*m), 1:(m*k)] <- ty*int.part
+  if(k == 3) Ht[(2*m+1):(3*m), 1:(m*k)] <- tz*int.part
   
   # surfaces
   PC <- getSurfPCs(y, surf)
@@ -820,33 +837,33 @@ semilandmarks.slide.tangents.surf.BE <- function(y, tans, surf, ref, L, appBE, B
     }
   }
   
-  if(k==3) {
-    PL <- (tcrossprod(p1x) + tcrossprod(p1y) + 
-             tcrossprod(p1z)) * L
-    PLinv <- if(appBE) sparse.solve(PL) else fast.solveSym(PL)
-    int.part <- PLinv %*% cbind(p1x*L, p1y*L, p1z*L)
-    Hp1 <- rbind(p1x*int.part, p1y*int.part, p1z*int.part)
-    
-    
-  } else {
-    PL <- (tcrossprod(p1x) + tcrossprod(p1y)) * L
-    PLinv <- if(appBE) sparse.solve(PL) else fast.solveSym(PL)
-    int.part <- PLinv %*% cbind(p1x*L, p1y*L)
-    Hp1 <- rbind(p1x*int.part, p1y*int.part)
-    
-  }
-  if(k==3) {
-    PL <- (tcrossprod(p2x) + tcrossprod(p2y) + 
-             tcrossprod(p2z)) * L
-    PLinv <- if(appBE) sparse.solve(PL) else fast.solveSym(PL)
-    int.part <- PLinv %*% cbind(p2x*L, p2y*L, p2z*L)
-    Hp2 <- rbind(p2x*int.part, p2y*int.part, p2z*int.part)
-  } else {
-    PL <- (tcrossprod(p2x) + tcrossprod(p2y)) * L
-    PLinv <- if(appBE) sparse.solve(PL) else fast.solveSym(PL)
-    int.part <- PLinv %*%cbind(p2x*L, p2y*L)
-    Hp2 <- rbind(p2x*int.part, p2y*int.part)
-  }
+  PL <- if(k == 3) as.matrix((tcrossprod(p1x) + tcrossprod(p1y) + 
+                                tcrossprod(p1z)) * L) else
+                                  as.matrix((tcrossprod(p1x) + tcrossprod(p1y)) * L)
+  PLinv <- if(appBE) sparse.solve(PL) else fast.solveSym(PL)
+  Tright <- matrix(NA, m, m * k)
+  Tright[1:m, 1:m] <- p1x*L
+  Tright[1:m, (m+1):(2*m)] <- p1y*L
+  if(k == 3) Tright[1:m, (2*m+1):(3*m)] <- p1z*L
+  int.part <- PLinv %*% Tright
+  Hp1 <- matrix(NA, m * k, m * k)
+  Hp1[1:m, 1:(m*k)] <- p1x*int.part
+  Hp1[(m+1):(2*m), 1:(m*k)] <- p1y*int.part
+  if(k == 3) Hp1[(2*m+1):(3*m), 1:(m*k)] <- p1z*int.part
+  
+  PL <- if(k == 3) as.matrix((tcrossprod(p2x) + tcrossprod(p2y) + 
+                                tcrossprod(p2z)) * L) else
+                                  as.matrix((tcrossprod(p2x) + tcrossprod(p2y)) * L)
+  PLinv <- if(appBE) sparse.solve(PL) else fast.solveSym(PL)
+  Tright <- matrix(NA, m, m * k)
+  Tright[1:m, 1:m] <- p2x*L
+  Tright[1:m, (m+1):(2*m)] <- p2y*L
+  if(k == 3) Tright[1:m, (2*m+1):(3*m)] <- p2z*L
+  int.part <- PLinv %*% Tright
+  Hp2 <- matrix(NA, m * k, m * k)
+  Hp2[1:m, 1:(m*k)] <- p2x*int.part
+  Hp2[(m+1):(2*m), 1:(m*k)] <- p2y*int.part
+  if(k == 3) Hp2[(2*m+1):(3*m), 1:(m*k)] <- p2z*int.part 
   
   if(appBE) {
     rest <- matrix(Ht %*% as.vector(yc[BEp,]), m, k)
@@ -859,7 +876,7 @@ semilandmarks.slide.tangents.surf.BE <- function(y, tans, surf, ref, L, appBE, B
   }
   
   y-temp
- 
+  
 }
 
 # semilandmarks.slide.tangents.procD
@@ -982,18 +999,18 @@ BE.slide <- function(curves, surf, Ya, ref, appBE = TRUE,
       slid <- Map(function(tn,y) 
         semilandmarks.slide.tangents.BE(y, tn, ref, L, appBE, BEp), tans, slid0)
     }
-      
+    
     if(!is.null(surf) & is.null(curves)) {
-   
+      
       slid <- Map(function(y) semilandmarks.slide.surf.BE(y, surf, ref, L, appBE, BEp), slid0)
     }
-      
+    
     if(!is.null(surf) & !is.null(curves)) {
-
+      
       slid <- Map(function(tn,y) 
         semilandmarks.slide.tangents.surf.BE(y, tn, surf, ref, L, appBE, BEp), tans, slid0)
     }
-      
+    
     ss <- sum(Reduce("+",slid)^2)/n
     slid0 <- apply.pPsup(ref,slid)
     ref = cs.scale(Reduce("+", slid0)/n)

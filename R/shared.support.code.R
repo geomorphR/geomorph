@@ -89,12 +89,14 @@ fast.solve <- function(x) {
 }
 
 fast.solveSym <- function(x) { 
-    res <- try(solve(x), silent = TRUE)
-    if(inherits(res, "try-error")) {
-      X <- (x + t(x))/2
-      res <- solve(X)
-    }
-    return(res)
+  res <- try(solve(x), silent = TRUE)
+  if(inherits(res, "try-error")) {
+    res <- try(as.matrix(solve(forceSymmetric(x))), silent = TRUE)
+  }
+  if(inherits(res, "try-error")) {
+    res <- fast.ginv(x)
+  }
+  return(res)
 }
 
 # sparse.solve
