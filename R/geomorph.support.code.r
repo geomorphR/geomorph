@@ -735,11 +735,8 @@ semilandmarks.slide.tangents.surf.BE <- function(y, tans = NULL,
   yc <- y - ref
   p <- nrow(yc)
   k <- ncol(yc)
-  tx <- tans[,1]
-  ty <- tans[,2]
-  tz <- if(k == 3) tans[,3 ] else NULL
-  
-  if(k == 3 && p > 1000) { # This can be tuned
+ 
+  if(k == 3 & p > 10000) { # This can be tuned
     if(appBE) message("\nBecause of data size, using sparse Matrices rather than appBE.\n")
     appBE <- FALSE
     goBig <- TRUE
@@ -748,13 +745,16 @@ semilandmarks.slide.tangents.surf.BE <- function(y, tans = NULL,
   m <- if(appBE) length(BEp) else p
   
   if(goBig) {
-    Lk <-bdiag(L, L, L)
+    Lk <- kronecker(diag(k), l)
     res <- semilandmarks.slide.Big.BE(y, ref, Lk, tans = tans, surf = surf)
   } else {
     
     # Tangents
     
     if(!is.null(tans)){
+      tx <- tans[,1]
+      ty <- tans[,2]
+      tz <- if(k == 3) tans[,3 ] else NULL
       
       if(appBE){
         tx <- tx[BEp]
@@ -833,9 +833,7 @@ semilandmarks.slide.tangents.surf.BE <- function(y, tans = NULL,
       
     } else Hp1 <- Hp2 <- NULL
     
-    
-    
-    
+
     if(appBE) {
       rest <- if(!is.null(Ht)) matrix(Ht %*% as.vector(yc[BEp,]), m, k) else
         matrix(0, m, k)
@@ -1056,7 +1054,6 @@ BE.slidePP <- function(curves = NULL, surf = NULL, Ya, ref, max.iter=5,
     
   } else {
     
-    cl <- makeCluster(no_cores)
     while(Q > tol) {
 
       iter <- iter+1
@@ -1066,6 +1063,7 @@ BE.slidePP <- function(curves = NULL, surf = NULL, Ya, ref, max.iter=5,
                     slid0)
       } else tans <- NULL
         
+        cl <- makeCluster(no_cores)
         clusterExport(cl, c("semilandmarks.slide.tangents.surf.BE"),
                       envir=environment())
         
