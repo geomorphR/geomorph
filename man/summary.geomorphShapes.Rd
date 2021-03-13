@@ -4,7 +4,7 @@
 \alias{summary.geomorphShapes}
 \title{Print/Summary Function for geomorph}
 \usage{
-\method{summary}{geomorphShapes}(object, ...)
+summary.geomorphShapes(object, ...)
 }
 \arguments{
 \item{object}{print/summary object}
