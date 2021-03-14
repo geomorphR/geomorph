@@ -708,37 +708,35 @@ getSurfPCs <- function(y, surf){
   pc.match <- 1:p
   pc.match[-surf] <- NA
   
+  dj[dj < quantile(dj, 0.1)]
+  
   d <- as.matrix(dist(y))
   nearpts <- lapply(1:p, function(j) {
     nn <- pc.match[j]
-    res <- 0
-    if(!is.na(nn)) {
-      dj <- d[,nn]
-      res <- match(sort(dj)[2:(k + 2)], dj)
-      res <- c(res, nn)
-    }
-    res
+    if(!is.na(nn)) order(d[,nn])[1:5]
   })
   
-  tmp.pts <- lapply(1:p, function(j) {
-    k <- nearpts[[j]]
-    if(sum(k) > 0) x <- center(y[k,]) else x <- NA
-    x})
-  pc.dir <- lapply(1:p, function(j) {
-    x <- tmp.pts[[j]]
-    if(is.matrix(x)) {
-      pc <- La.svd(x, nu=0)$vt
-      s=sign(diag(crossprod(V,pc)))
-      pc*s
-    } else 0
+  pc.dir <- lapply(1:p, function(.) matrix(0, k, k)) 
+  
+  take <- which(vapply(nearpts, is.null, numeric(1)) == 0)
+  
+  pc.take <- lapply(1:length(take), function(j) {
+    take.j <- nearpts[[take[j]]]
+    x <- center(y[take.j, ])
+    pc <- La.svd(x, nu=0)$vt
+    s=sign(diag(crossprod(V,pc)))
+    pc*s
   })
-  p1x <- vapply(1:p, function(j) {x <- pc.dir[[j]]; if(is.matrix(x)) x[1,1] else 0}, 1)
-  p1y <- vapply(1:p, function(j) {x <- pc.dir[[j]]; if(is.matrix(x)) x[1,2] else 0}, 1)
-  p2x <- vapply(1:p, function(j) {x <- pc.dir[[j]]; if(is.matrix(x)) x[2,1] else 0}, 1)
-  p2y <- vapply(1:p, function(j) {x <- pc.dir[[j]]; if(is.matrix(x)) x[2,2] else 0}, 1)
+  
+  pc.dir[take] <- pc.take
+
+  p1x <- vapply(pc.dir, function(x) x[1, 1], 1)
+  p1y <- vapply(pc.dir, function(x) x[1, 2], 1)
+  p2x <- vapply(pc.dir, function(x) x[2, 1], 1)
+  p2y <- vapply(pc.dir, function(x) x[2, 2], 1)
   if(k==3) {
-    p1z <- vapply(1:p, function(j) {x <- pc.dir[[j]]; if(is.matrix(x)) x[1,3] else 0}, 1)
-    p2z <- vapply(1:p, function(j) {x <- pc.dir[[j]]; if(is.matrix(x)) x[2,3] else 0}, 1)
+    p1z <- vapply(pc.dir, function(x) x[1, 3], 1)
+    p2z <- vapply(pc.dir, function(x) x[2, 3], 1)
   } else
   {p1z <- NULL; p2z <- NULL}
   
@@ -759,12 +757,14 @@ semilandmarks.slide.BE <- function(y, tans = NULL,
   m <- if(appBE) length(BEp) else p
   if(m == p) appBE <- FALSE
   if(!appBE) BEp <- 1:p
-  U <- getU_s(y, tans, surf, BEp, m, k)
-  Lk <- as(kronecker(diag(k), L), "sparseMatrix")
-  tULk <- as(crossprod(U, Lk), "sparseMatrix")
-  mid.part <- forceSymmetric(tULk %*% U)
   yvec <- as.vector(yc[BEp,])
-  res <- matrix(U %*% solve(mid.part, tULk %*%yvec), m, k)
+  U <- getU_s(y, tans, surf, BEp, m, k)
+  Lk <- kronecker(diag(k), L)
+  tULk <- crossprod(U, Lk) 
+  tULky <- tULk %*% yvec
+  mid.part <- forceSymmetric(tULk %*% U) 
+  
+  res <- matrix(U %*% solve(mid.part, tULky), m, k)
   if(appBE) {
     temp <- matrix(0, p, k)
     temp[BEp, ] <- res
