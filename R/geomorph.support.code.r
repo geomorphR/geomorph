@@ -610,40 +610,6 @@ pGpa <- function(Y, PrinAxes = FALSE, Proj = FALSE, max.iter = 10, tol){
   list(coords= Ya, CS=CS, iter=iter, consensus=M, Q=Q, nsliders=NULL)
 }
 
-# .pGPA
-# same as pGPA, but without progress bar option
-# used in gpagen
-
-# helpers:
-apply.pPsup.unix <- function(M, Ya, ParCores) {
-  dims <- dim(Ya[[1]])
-  k <- dims[2]; p <- dims[1]; n <- length(Ya)
-  M <- cs.scale(M)
-  mclapply(1:n, function(j){
-    y <- Ya[[j]]
-    MY <- crossprod(M,y)
-    sv <- La.svd(MY,k,k)
-    u <- sv$u; u[,k] <- u[,k]*determinant(MY)$sign
-    tcrossprod(y,u%*%sv$vt)
-  }, mc.cores = ParCores)
-}
-
-apply.pPsup.windows <- function(M, Ya, ParCores) {
-  dims <- dim(Ya[[1]])
-  k <- dims[2]; p <- dims[1]; n <- length(Ya)
-  M <- cs.scale(M)
-  cl <- makeCluster(ParCores)
-  res <- parLapply(cl = cl,1:n, function(j) {
-    y <- Ya[[j]]
-    MY <- crossprod(M,y)
-    sv <- La.svd(MY,k,k)
-    u <- sv$u; u[,k] <- u[,k]*determinant(MY)$sign
-    tcrossprod(y,u%*%sv$vt)
-  })
-  stopCluster(cl)
-  res
-}
-
 
 .pGpa <- function(Y, PrinAxes = FALSE, Proj = FALSE, 
                   Parallel = TRUE, max.iter = 10, tol){
@@ -656,35 +622,81 @@ apply.pPsup.windows <- function(M, Ya, ParCores) {
   if (Parallel && is.null(ParCores)) {
     ParCores <- detectCores() - 1
   }
-  Unix <- .Platform$OS.type == "unix"
   
-  apply.pPsup.j <- function(M, Ya, Parallel, ParCores, Unix = NULL) {
-    if(!Parallel) apply.pPsup(M, Ya) else {
-      if(Unix) apply.pPsup.unix(M, Ya, ParCores) 
-      else apply.pPsup(M, Ya) # need to update windows (overhead)
-    }
-  }
+  if (is.numeric(ParCores)) {
+    if(ParCores > detectCores() - 1) ParCores <- detectCores() - 1
+  } 
   
-  iter <- 0
   n <- length(Y); p <- nrow(Y[[1]]); k <- ncol(Y[[1]])
   Yc <- Map(function(y) center.scale(y), Y)
   CS <- sapply(Yc,"[[","CS")
   Ya <- lapply(Yc,"[[","coords")
-  Ya <- apply.pPsup.j (Ya[[1]], Ya, Parallel, ParCores, Unix)
-  M <- Reduce("+",Ya)/n
+  Ya <- apply.pPsup(Ya[[1]], Ya)
+  M <- Reduce("+", Ya)/n
   Q <- ss <- n*(1-sum(M^2))
   M <- cs.scale(M)
   iter <- 1
-  
-  while(Q > tol){
-    iter <- iter+1
-    Ya <- apply.pPsup.j(M, Ya, Parallel, ParCores, Unix)
-    M <- Reduce("+",Ya)/n
-    ss2 <- n*(1-sum(M^2))
-    Q <- abs(ss-ss2)
-    ss <- ss2
-    M <- cs.scale(M)
-    if(iter > max.iter) break
+
+  if(Parallel) {
+    Unix <- .Platform$OS.type == "unix" 
+    
+    if(Unix) {
+      
+      while(Q > tol){
+        iter <- iter+1
+        Y <- Ya
+        Ya <- mclapply(1:n, function(j) {
+        y <- Y[[j]]
+        MY <- crossprod(M, y)
+        sv <- La.svd(MY, k, k)
+        u <- sv$u; u[,k] <- u[,k]*  determinant(MY)$sign
+        tcrossprod(y, u %*% sv$vt)
+        }, mc.cores = ParCores)
+        
+        M <- Reduce("+",Ya)/n
+        ss2 <- n*(1-sum(M^2))
+        Q <- abs(ss-ss2)
+        ss <- ss2
+        M <- cs.scale(M)
+        if(iter > max.iter) break
+      }
+      
+    } else {
+      
+      cl <- makeCluster(ParCores)
+      
+      while(Q > tol){
+        iter <- iter+1
+        Y <- Ya
+        Ya <- parLapply(cl = cl, 1:n, function(j) {
+          y <- Y[[j]]
+          MY <- crossprod(M, y)
+          sv <- La.svd(MY, k, k)
+          u <- sv$u; u[,k] <- u[,k]*  determinant(MY)$sign
+          tcrossprod(y, u %*% sv$vt)
+        })
+        
+          M <- Reduce("+",Ya)/n
+          ss2 <- n*(1-sum(M^2))
+          Q <- abs(ss-ss2)
+          ss <- ss2
+          M <- cs.scale(M)
+          if(iter > max.iter) break
+      }
+      stopCluster(cl)
+      }
+    } else {
+    
+      while(Q > tol){
+        iter <- iter+1
+        Ya <- apply.pPsup(M, Ya)
+        M <- Reduce("+",Ya)/n
+        ss2 <- n*(1-sum(M^2))
+        Q <- abs(ss-ss2)
+        ss <- ss2
+        M <- cs.scale(M)
+        if(iter > max.iter) break
+      }
   }
   
   if (PrinAxes == TRUE) {
@@ -707,8 +719,6 @@ getSurfPCs <- function(y, surf){
   p <- nrow(y)
   pc.match <- 1:p
   pc.match[-surf] <- NA
-  
-  dj[dj < quantile(dj, 0.1)]
   
   d <- as.matrix(dist(y))
   nearpts <- lapply(1:p, function(j) {
