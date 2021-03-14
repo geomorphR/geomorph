@@ -4,7 +4,7 @@
 \alias{summary.combined.set}
 \title{Print/Summary Function for geomorph}
 \usage{
-\method{summary}{combined.set}(object, ...)
+summary.combined.set(object, ...)
 }
 \arguments{
 \item{object}{print/summary object}

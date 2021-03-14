@@ -4,7 +4,7 @@
 \alias{summary.gm.prcomp}
 \title{Print/Summary Function for geomorph}
 \usage{
-\method{summary}{gm.prcomp}(object, ...)
+summary.gm.prcomp(object, ...)
 }
 \arguments{
 \item{object}{print/summary object}
