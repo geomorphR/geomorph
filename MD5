@@ -149,11 +149,11 @@ a38ff2f2af270bf26299b1569cc734fc *R/digit.curves.r
 aac6a4f8a759473e8c37048e5c8e3d91 *R/findMeanSpec.r
 067124d4119de55a6089c6aefdd0eac5 *R/fixed.angle.r
 3d7958991ae174c24ba7c570f4e03b27 *R/geomorph.data.frame.r
-ee9fa9f4ca1176ea29e07a76ca0dfda9 *R/geomorph.support.code.r
+fa5bc037ec1e25a215910db823057d3d *R/geomorph.support.code.r
 0c72868af15d33264ca157ef14317f03 *R/geomorph.utils.r
 b0de2a67cff633e27e7a00860187240f *R/globalIntegration.r
 1a0b20144788e7d130adc7d310bb462f *R/gm.prcomp.R
-503bf6ebcd88f78e6f52963b9eae717f *R/gpagen.r
+07b530e2839deff1e8a17e94a82a086f *R/gpagen.r
 293464e2f2612431690a2c1326c7bdd6 *R/gridPar.r
 ba7d47018f365a71131a73993e001123 *R/integration.test.r
 0cbfe6b5655e2751cdd03ca2a1550768 *R/interlmkdist.r
@@ -184,7 +184,7 @@ d688cf3fbc6c3351526c422948e457ba *R/readmulti.tps.R
 73ce1481733305a19848121fd2c90203 *R/rotate.coords.r
 361a0ae11ee086750714efc43ef2c9d6 *R/shape.predictor.r
 f191c54f3b3c75baea0b045758af5362 *R/shapeHulls.r
-76655ad2329d297722c36169b0e1f7ea *R/shared.support.code.R
+bc1fc9b644e09e1d4a37beca1d2068e7 *R/shared.support.code.R
 5fdc5588d6b8510dfd950c3ddcb8571f *R/two.b.pls.r
 2e693d8b4f3c21d742737b97d1773119 *R/two.d.array.r
 7385019797d3400eac9dbce0ea33b74f *R/warpRefMesh.r
