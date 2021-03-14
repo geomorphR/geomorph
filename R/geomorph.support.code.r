@@ -1001,7 +1001,7 @@ BE.slide <- function(curves = NULL, surf = NULL, Ya, ref, appBE = TRUE,
 # used in pGpa.wSliders
 
 BE.slidePP <- function(curves = NULL, surf = NULL, Ya, ref, max.iter=10, 
-                       appBE = TRUE, ParCores = TRUE, tol){ 
+                       appBE = TRUE, sen, ParCores = TRUE, tol){ 
   
   if(is.logical(ParCores)) no_cores <- detectCores() - 1 else
     no_cores <- min(detectCores() - 1, ParCores)
@@ -1073,18 +1073,24 @@ BE.slidePP <- function(curves = NULL, surf = NULL, Ya, ref, max.iter=10,
 # same as BE.slide, but without progress bar option
 # used in pGpa.wSliders
 .BE.slide <- function(curves, surf, Ya, ref, appBE = TRUE, 
-                      max.iter=10, tol){
+                      sen, max.iter=10, tol){
   n <- length(Ya); p <- nrow(Ya[[1]]); k <- ncol(Ya[[1]])
   iter <- 1 # from initial rotation of Ya
   slid0 <- Ya
   Q <- ss0 <- sum(Reduce("+",Ya)^2)/n
   
-  BEp <- c(if(!is.null(curves)) unique(as.vector(curves)), 
-           if(!is.null(surf)) surf)
-  Up <- round(seq(1, p, length.out = p/2))
-  BEp <- sort(unique(c(BEp, Up)))
+  if(!is.numeric(sen)) sen <- 0.5
+  if(sen < 0.1) sen <- 0.1
+  if(sen >= 1) appBE <- FALSE
   
-  m <- length(BEp)
+  if(appBE) {
+    BEp <- c(if(!is.null(curves)) unique(as.vector(curves)), 
+             if(!is.null(surf)) surf)
+    Up <- round(seq(1, p, length.out = p * sen))
+    BEp <- sort(unique(c(BEp, Up)))
+  }
+  
+  m <- if(appBE) length(BEp) else p
   
   while(Q > tol){
     iter <- iter+1
