@@ -942,7 +942,7 @@ BE.slide <- function(curves = NULL, surf = NULL, Ya, ref, appBE = TRUE,
   
   if(!is.numeric(sen)) sen <- 0.5
   if(sen < 0.1) sen <- 0.1
-  if(sen > 1) appBE <- FALSE
+  if(sen >= 1) appBE <- FALSE
   
   if(appBE) {
     BEp <- c(if(!is.null(curves)) unique(as.vector(curves)), 
@@ -1014,7 +1014,7 @@ BE.slidePP <- function(curves = NULL, surf = NULL, Ya, ref, max.iter=10,
   
   if(!is.numeric(sen)) sen <- 0.5
   if(sen < 0.1) sen <- 0.1
-  if(sen > 1) appBE <- FALSE
+  if(sen >= 1) appBE <- FALSE
   
   if(appBE) {
     BEp <- c(if(!is.null(curves)) unique(as.vector(curves)), 
