@@ -10,13 +10,13 @@
 #'
 #' @import RRPP
 #' @import parallel
-#' @import Matrix 
 #' @import rgl
 #' @import stats
 #' @import utils
 #' @import graphics
 #' @import grDevices
 #' @import ggplot2
+#' @import Matrix 
 #' @importFrom jpeg readJPEG
 #' @importFrom ape multi2di.phylo
 #' @importFrom ape root.phylo
@@ -718,6 +718,7 @@ getSurfPCs <- function(y, surf){
   
   list(p1x=p1x,p1y=p1y, p2x=p2x, p2y=p2y, p1z=p1z, p2z=p2z)
 }
+
 
 # semilandmarks.slide.tangents.surf.BE
 # slides landmarks along tangents of curves and PC planes of surfaces using bending energy

@@ -11,7 +11,7 @@ d8e8360c03c03fe45d2100e9c05d4a89 *data/plethodon.rda
 9ba51ab9be03930a4acdcddde8169b33 *data/scallopPLY.rda
 6e5e71b242462e422b716800ffc3c464 *data/scallops.rda
 98296679a3fca32493c18a0574351668 *DESCRIPTION
-73f723a130c92f8b84a81465a15add7c *geomorph.Rproj
+f4f2080e745b8d689f17caf549449ab5 *geomorph.Rproj
 a58a6f5cef81830fe56e86e8341afa8e *inst/CITATION
 593e42548fcbd08b6027b15bbca38808 *man/arrayspecs.Rd
 f061eeaec843afaf15a2ebfb9d42e76d *man/bilat.symmetry.Rd
@@ -100,7 +100,7 @@ a07dc6e9c0d507c35d286c1d70ee850c *man/readland.nts.Rd
 e268bdaf2ef10f2027709e5f9ab2518b *man/readland.tps.Rd
 4b5d3150f34bb6b9dcf5f0da5b345011 *man/readmulti.nts.Rd
 a19f005bd83e97a4f20bf357483726c5 *man/readmulti.tps.Rd
-cc963a327d23f0e830749124ba9854d9 *man/rotate.coords.Rd
+4a9e3fd9859000bb3d361df7d624a7e8 *man/rotate.coords.Rd
 8be198584c10582597e98c6cecbb26f7 *man/scallopPLY.Rd
 c4f3fe2e244677c2504bbe0283590d1c *man/scallops.Rd
 59896dd8865ee5d8bdf8e6514d073747 *man/shape.predictor.Rd
@@ -149,7 +149,7 @@ a38ff2f2af270bf26299b1569cc734fc *R/digit.curves.r
 aac6a4f8a759473e8c37048e5c8e3d91 *R/findMeanSpec.r
 067124d4119de55a6089c6aefdd0eac5 *R/fixed.angle.r
 3d7958991ae174c24ba7c570f4e03b27 *R/geomorph.data.frame.r
-fa5bc037ec1e25a215910db823057d3d *R/geomorph.support.code.r
+50e764dce9f9ca736f5c4ddaf65973a3 *R/geomorph.support.code.r
 0c72868af15d33264ca157ef14317f03 *R/geomorph.utils.r
 b0de2a67cff633e27e7a00860187240f *R/globalIntegration.r
 1a0b20144788e7d130adc7d310bb462f *R/gm.prcomp.R
