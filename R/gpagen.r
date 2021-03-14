@@ -74,9 +74,13 @@
 #' @param ProcD A logical value indicating whether or not Procrustes distance should be used as the criterion
 #'   for optimizing the positions of semilandmarks (if not, bending energy is used)
 #' @param approxBE A logical value for whether bending energy should be estimated via approximate 
-#' thin-plate spline (TPS) mapping.  Approximate TPS mapping is much faster and allows for more iterations, which 
-#' might return more reliable results than few iterations with full TPS.  If using full TPS, one should probably
-#' change max.iter to be few for large data sets.
+#' thin-plate spline (TPS) mapping for sliding semilandmarks.  Approximate TPS mapping is much faster and allows 
+#' for more iterations, which might return more reliable results than few iterations with full TPS.  
+#' If using full TPS, one should probably change max.iter to be few for large data sets.
+#' @param sen A numeric value between 0.1 and 1 to adjust the sensitivity of true bending 
+#' energy to use in an approximated thin plate mapping of bending energy. This value is the proportion of landmarks
+#' (excluding semilandmarks) to seek for estimating bending energy.  Sliding semilandmarks are always included in
+#' the final set of landmarks used to make estimates, so the actual sensitivity is higher than the chosen value.
 #' @param max.iter The maximum number of GPA iterations to perform before superimposition is halted.  The final
 #' number of iterations will be larger than max.iter, if curves or surface semilandmarks are involved, as max.iter
 #' will pertain only to iterations with sliding of landmarks.
@@ -185,8 +189,9 @@
 #' # NOTE can plot as: plot(Y.gpa) 
 gpagen = function(A, curves=NULL, surfaces=NULL, PrinAxes = TRUE, 
                   max.iter = NULL, tol = 1e-4, 
-                  ProcD=FALSE, approxBE = FALSE, Proj = TRUE,
-                  verbose = FALSE,
+                  ProcD=FALSE, approxBE = FALSE, 
+                  sen = 0.5,
+                  Proj = TRUE, verbose = FALSE,
                   print.progress = TRUE, Parallel = FALSE){
   
   if(Parallel != FALSE) {
@@ -253,7 +258,7 @@ gpagen = function(A, curves=NULL, surfaces=NULL, PrinAxes = TRUE,
     if(!is.null(curves) || !is.null(surf)) 
       gpa <- pGpa.wSliders(Y, curves = curves, surf=surf,
                            PrinAxes = PrinAxes, max.iter=max.it, 
-                           tol = tol, appBE = approxBE, ProcD=prD) else
+                           tol = tol, appBE = approxBE, sen = sen, ProcD=prD) else
                              gpa <- pGpa(Y, PrinAxes = PrinAxes, 
                                          max.iter=max.it, tol = tol)
                                                                 
@@ -261,7 +266,7 @@ gpagen = function(A, curves=NULL, surfaces=NULL, PrinAxes = TRUE,
     if(!is.null(curves) || !is.null(surf)) 
       gpa <- .pGpa.wSliders(Y, curves = curves, surf=surf,
                             PrinAxes = PrinAxes, max.iter=max.it, 
-                            tol = tol, appBE= approxBE, ProcD=prD, 
+                            tol = tol, appBE= approxBE, sen = sen, ProcD=prD, 
                             Parallel = Parallel) else
                               gpa <- .pGpa(Y, PrinAxes = PrinAxes, 
                                            max.iter=max.it, tol = tol, 

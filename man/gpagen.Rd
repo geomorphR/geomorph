@@ -13,6 +13,7 @@ gpagen(
   tol = 1e-04,
   ProcD = FALSE,
   approxBE = FALSE,
+  sen = 0.5,
   Proj = TRUE,
   verbose = FALSE,
   print.progress = TRUE,
@@ -43,9 +44,14 @@ is lower than the tolerance, iterations will be stopped.}
 for optimizing the positions of semilandmarks (if not, bending energy is used)}
 
 \item{approxBE}{A logical value for whether bending energy should be estimated via approximate 
-thin-plate spline (TPS) mapping.  Approximate TPS mapping is much faster and allows for more iterations, which 
-might return more reliable results than few iterations with full TPS.  If using full TPS, one should probably
-change max.iter to be few for large data sets.}
+thin-plate spline (TPS) mapping for sliding semilandmarks.  Approximate TPS mapping is much faster and allows 
+for more iterations, which might return more reliable results than few iterations with full TPS.  
+If using full TPS, one should probably change max.iter to be few for large data sets.}
+
+\item{sen}{A numeric value between 0.1 and 1 to adjust the sensitivity of true bending 
+energy to use in an approximated thin plate mapping of bending energy. This value is the proportion of landmarks
+(excluding semilandmarks) to seek for estimating bending energy.  Sliding semilandmarks are always included in
+the final set of landmarks used to make estimates, so the actual sensitivity is higher than the chosen value.}
 
 \item{Proj}{A logical value indicating whether or not the Procrustes aligned specimens should be projected 
 into tangent space}
