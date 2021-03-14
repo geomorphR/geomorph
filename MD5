@@ -83,7 +83,7 @@ b60978bf8bce2f9436f86e0f5ef07414 *man/print.evolrate.Rd
 e6a827ab5b78ae89686518e20b8a2b63 *man/print.evolrate1.Rd
 050ad4ba7cc938ffabd5d246e8be8cd1 *man/print.geomorphShapes.Rd
 5f0172c513e7c337243264fb624d82af *man/print.gm.prcomp.Rd
-440c612095d92a490a6aabce664ff566 *man/print.gpagen.Rd
+5a1b43e6d504c8876fb2a8fff1f88a83 *man/print.gpagen.Rd
 038b2bcdb5915fab5aa1551fed457847 *man/print.morphol.disparity.Rd
 274319dda0788aa615ee6a0c045297d1 *man/print.physignal.Rd
 cfe59372cd4d7fa309127758464d14c1 *man/print.pls.Rd
@@ -115,7 +115,7 @@ bff29f64880687af47de707c9821461a *man/summary.CR.Rd
 8552dbc58f44ed5e77471187bfd0e50f *man/summary.evolrate1.Rd
 6b820e3ccba4280c10accc844a9ec47e *man/summary.geomorphShapes.Rd
 8787aa407cd5183073dae4193a844679 *man/summary.gm.prcomp.Rd
-c9f32cb3ab84a82d239cc8d822edface *man/summary.gpagen.Rd
+4650837bdbeb227d95c700d3cb00811a *man/summary.gpagen.Rd
 18cbc281637755e3176b25a038b68152 *man/summary.morphol.disparity.Rd
 3156956b14952eb4397ed1b776e2c3f8 *man/summary.physignal.Rd
 5aa8a0528797bc7464661ed61dc1ee12 *man/summary.pls.Rd
@@ -125,7 +125,7 @@ da1241dd835f95675cc7126b2a7ec61a *man/two.d.array.Rd
 d2755155772526527e4224b17d0dd05d *man/warpRefMesh.Rd
 7bea8d6b17918fd4889e2056ebe0e3d0 *man/warpRefOutline.Rd
 d9119f721918f22c267db843023a86fe *man/writeland.tps.Rd
-c19efc24bdd0edee18a0d093d6602cc7 *NAMESPACE
+da0a38323f05f3e27d5201a7fc3c98e5 *NAMESPACE
 aa00479b0954acde0f6f6f93c45e1119 *NEWS.md
 d80d05ef890863f1b3004473627ea5f1 *R/arrayspecs.r
 4b5fb3f7015ec7484a9afafb91e8edaf *R/bilat.symmetry.r
@@ -149,8 +149,8 @@ a38ff2f2af270bf26299b1569cc734fc *R/digit.curves.r
 aac6a4f8a759473e8c37048e5c8e3d91 *R/findMeanSpec.r
 067124d4119de55a6089c6aefdd0eac5 *R/fixed.angle.r
 3d7958991ae174c24ba7c570f4e03b27 *R/geomorph.data.frame.r
-50e764dce9f9ca736f5c4ddaf65973a3 *R/geomorph.support.code.r
-0c72868af15d33264ca157ef14317f03 *R/geomorph.utils.r
+d1115a96a903111f6554e137cff6e017 *R/geomorph.support.code.r
+4f771c0744d088113e329e6ac6a62d00 *R/geomorph.utils.r
 b0de2a67cff633e27e7a00860187240f *R/globalIntegration.r
 1a0b20144788e7d130adc7d310bb462f *R/gm.prcomp.R
 07b530e2839deff1e8a17e94a82a086f *R/gpagen.r

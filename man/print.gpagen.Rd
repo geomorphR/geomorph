@@ -4,7 +4,7 @@
 \alias{print.gpagen}
 \title{Print/Summary Function for geomorph}
 \usage{
-print.gpagen(x, ...)
+\method{print}{gpagen}(x, ...)
 }
 \arguments{
 \item{x}{print/summary object (from \code{\link{gpagen}})}

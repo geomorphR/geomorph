@@ -6,6 +6,7 @@
 #' 
 #' @param x print/summary object (from \code{\link{gpagen}})
 #' @param ... other arguments passed to print/summary
+#' @method print gpagen
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities
@@ -31,6 +32,7 @@ print.gpagen <- function (x, ...) {
 #' 
 #' @param object print/summary object (from \code{\link{gpagen}})
 #' @param ... other arguments passed to print/summary
+#' @method summary gpagen
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities
@@ -43,6 +45,7 @@ summary.gpagen <- function(object, ...) {
 #' 
 #' @param x plot object (from \code{\link{gpagen}})
 #' @param ... other arguments passed to plotAllSpecimens
+#' @method plot gpagen
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities
@@ -58,6 +61,7 @@ plot.gpagen <- function(x, ...){
 #' 
 #' @param x print/summary object (from \code{\link{procD.lm}})
 #' @param ... other arguments passed to print/summary
+#' @method print procD.lm
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities
@@ -71,6 +75,7 @@ print.procD.lm<- function(x,...) {
 #' 
 #' @param object print/summary object (from \code{\link{procD.lm}})
 #' @param ... other arguments passed to print/summary
+#' @method summary procD.lm
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities
@@ -102,6 +107,7 @@ summary.procD.lm <- function(object,...){
 #' @return An object of class "plot.procD.lm" is a list with components
 #'  that can be used in other plot functions, such as the type of plot, points, 
 #'  a group factor, and other information depending on the plot parameters used.
+#'@method plot procD.lm
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities
@@ -125,6 +131,7 @@ plot.procD.lm <- function(x, type = c("diagnostics", "regression",
 #' 
 #' @param x print/summary object (from \code{\link{morphol.disparity}})
 #' @param ... other arguments passed to print/summary
+#' @method print morphol.disparity
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities
@@ -155,6 +162,7 @@ print.morphol.disparity <- function (x, ...) {
 #' 
 #' @param object print/summary object (from \code{\link{morphol.disparity}})
 #' @param ... other arguments passed to print/summary
+#' @method summary morphol.disparity
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities
@@ -169,6 +177,7 @@ summary.morphol.disparity <- function(object, ...) {
 #' 
 #' @param x print/summary object (from \code{\link{phylo.integration}} or \code{\link{two.b.pls}})
 #' @param ... other arguments passed to print/summary
+#' @method print pls
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities
@@ -206,6 +215,7 @@ print.pls <- function (x, ...) {
 #' 
 #' @param object print/summary object (from \code{\link{phylo.integration}} or \code{\link{two.b.pls}})
 #' @param ... other arguments passed to print/summary
+#' @method summary pls
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities
@@ -223,6 +233,7 @@ summary.pls <- function(object, ...) {
 #' flexibility can be attained with using \code{\link{plotRefToTarget}} and \code{\link{shape.predictor}}.
 #' @return If shapes = TRUE, function returns a list containing the shape coordinates of the extreme ends of axis1 and axis2 
 #' if 3D arrays were originally provided for each
+#' @method plot pls
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities
@@ -259,6 +270,7 @@ plot.pls <- function(x, label = NULL, ...) {
 #' 
 #' @param x print/summary object (from \code{\link{bilat.symmetry}})
 #' @param ... other arguments passed to print/summary
+#' @method print bilat.symmetry
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities
@@ -284,6 +296,7 @@ print.bilat.symmetry <- function (x, ...) {
 #' 
 #' @param object print/summary object (from \code{\link{bilat.symmetry}})
 #' @param ... other arguments passed to print/summary
+#' @method summary bilat.symmetry
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities
@@ -298,6 +311,7 @@ summary.bilat.symmetry <- function(object, ...) {
 #' @param warpgrids Logical argument whether to include warpgrids
 #' @param mesh Option to include mesh in warpgrids plots
 #' @param ... other arguments passed to plot
+#' @method plot bilat.symmetry
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities

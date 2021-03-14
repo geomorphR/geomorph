@@ -535,7 +535,7 @@ bigLtemplate <-function(Mr, Mt=NULL){
   if(k==2) {P <-P^2*log(P); P[is.na(P)] <- 0}
   Q <- rbind(cbind(1,Mr))
   L<-rbind(cbind(P,Q), cbind(t(Q),matrix(0,k+1,k+1)))
-  Linv <- -fast.solveSym(L)[1:p,1:p]
+  Linv <- -fast.solve(L)[1:p,1:p]
   if(k==2) Linv <- rbind(cbind(Linv,array(0,dim(Linv))),cbind(array(0,dim(Linv)),Linv))
   if(k==3) Linv <- rbind(cbind(Linv,array(0,dim(Linv)), array(0,dim(Linv))),
                          cbind(array(0,dim(Linv)),Linv,array(0,dim(Linv))),
@@ -633,9 +633,9 @@ apply.pPsup.windows <- function(M, Ya, ParCores) {
   Unix <- .Platform$OS.type == "unix"
   
   apply.pPsup.j <- function(M, Ya, Parallel, ParCores, Unix = NULL) {
-    if(!Parallel) apply.pPsup(M, YA) else {
+    if(!Parallel) apply.pPsup(M, Ya) else {
       if(Unix) apply.pPsup.unix(M, Ya, ParCores) 
-      else apply.pPsup(M, YA) # need to update windows (overhead)
+      else apply.pPsup(M, Ya) # need to update windows (overhead)
     }
   }
   
@@ -749,6 +749,7 @@ semilandmarks.slide.tangents.surf.BE <- function(y, tans = NULL,
       
       PL <- if(k==3) as.matrix((tcrossprod(tx) + tcrossprod(ty) + 
                                   tcrossprod(tz)) * L) else 
+                                    as.matrix((tcrossprod(tx) + tcrossprod(ty)) *L)
     
       Tright <- matrix(NA, m, m * k)
       Tright[1:m, 1:m] <- tx*L
@@ -764,7 +765,7 @@ semilandmarks.slide.tangents.surf.BE <- function(y, tans = NULL,
       
       if(appBE) {
         res <- matrix(Ht %*% as.vector(yc[BEp,]), m, k)
-        temp <- matrix(0, pk, )
+        temp <- matrix(0, p, k)
         temp[BEp, ] <- res
         res <- NULL
         }
@@ -1070,7 +1071,7 @@ BE.slidePP <- function(curves = NULL, surf = NULL, Ya, ref, max.iter=10,
   while(Q > tol){
     iter <- iter+1
     
-    doTans <- !is.null(tans)
+    doTans <- !is.null(curves)
     if(doTans) {
       tans <- Map(function(y) tangents(curves, y, scaled=TRUE), slid0)
     } else tans <- NULL
@@ -1404,8 +1405,8 @@ tps2d <- function(M, matr, matt){
   Q <- cbind(1, matr)
   L <- rbind(cbind(P, Q), cbind(t(Q), matrix(0,3,3)))
   m2 <- rbind(matt, matrix(0, 3, 2))
-  coefx <- fast.solveSym(L)%*%m2[,1]
-  coefy <- fast.solveSym(L)%*%m2[,2]
+  coefx <- fast.solve(L)%*%m2[,1]
+  coefy <- fast.solve(L)%*%m2[,2]
   fx <- function(matr, M, coef){
     Xn <- numeric(q)
     for (i in 1:q){
@@ -1431,9 +1432,9 @@ tps2d3d <- function(M, matr, matt, PB=TRUE){		#DCA: altered from J. Claude 2008
   Q <- cbind(1, matr)
   L <-rbind(cbind(P, Q), cbind(t(Q), matrix(0,k+1,k+1)))
   m2 <- rbind(matt, matrix(0, k+1, k))
-  coefx <- fast.solveSym(L)%*%m2[,1]
-  coefy <- fast.solveSym(L)%*%m2[,2]
-  if(k==3){coefz <- fast.solveSym(L)%*%m2[,3]}
+  coefx <- fast.solve(L)%*%m2[,1]
+  coefy <- fast.solve(L)%*%m2[,2]
+  if(k==3){coefz <- fast.solve(L)%*%m2[,3]}
   fx <- function(matr, M, coef, step){
     Xn <- numeric(q)
     for (i in 1:q){
@@ -1724,7 +1725,7 @@ boot.CR <- function(x,gps, k,iter, seed = NULL){
 phylo.mat<-function(x,phy){
   C<-fast.phy.vcv(phy)
   C<-C[rownames(x),rownames(x)]
-  invC <-fast.solveSym(C)
+  invC <-fast.solve(C)
   eigC <- eigen(C)
   if(any(Im(eigC$values)==0)) eigC$values<-Re(eigC$values)
   if(any(Im(eigC$vectors)==0)) eigC$vectors<-Re(eigC$vectors)
@@ -1732,7 +1733,7 @@ phylo.mat<-function(x,phy){
   if(any(lambda == 0)){
     warning("Singular phylogenetic covariance matrix. Proceed with caution")
   }
-  D.mat <- fast.solveSym(eigC$vectors%*% diag(sqrt(abs(eigC$values))) %*% t(eigC$vectors))
+  D.mat <- fast.solve(eigC$vectors%*% diag(sqrt(abs(eigC$values))) %*% t(eigC$vectors))
   rownames(D.mat) <- colnames(D.mat) <- colnames(C)
   list(invC = invC, D.mat = D.mat,C = C)
 }
