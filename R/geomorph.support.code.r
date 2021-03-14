@@ -749,7 +749,7 @@ getSurfPCs <- function(y, surf){
 # used in pGpa.wSliders
 
 semilandmarks.slide.BE <- function(y, tans = NULL,
-                                   surf = NULL, ref, L, appBE, BEp){
+                                   surf = NULL, ref, Lk, appBE, BEp){
   yc <- y - ref
   p <- nrow(yc)
   k <- ncol(yc)
@@ -759,12 +759,12 @@ semilandmarks.slide.BE <- function(y, tans = NULL,
   if(!appBE) BEp <- 1:p
   yvec <- as.vector(yc[BEp,])
   U <- getU_s(y, tans, surf, BEp, m, k)
-  Lk <- kronecker(diag(k), L)
   tULk <- crossprod(U, Lk) 
-  tULky <- tULk %*% yvec
   mid.part <- forceSymmetric(tULk %*% U) 
-  
+  tULky <- tULk %*% yvec
+  tULk <- NULL # clear space
   res <- matrix(U %*% solve(mid.part, tULky), m, k)
+  mid.part <- NULL # clear space
   if(appBE) {
     temp <- matrix(0, p, k)
     temp[BEp, ] <- res
@@ -820,11 +820,11 @@ BE.slide <- function(curves = NULL, surf = NULL, Ya, ref, appBE = TRUE,
   if(doTans) {
     doSlide <- function(j)
       semilandmarks.slide.BE(slid0[[j]], tans[[j]],
-                       surf, ref, L, appBE, BEp)
+                       surf, ref, Lk, appBE, BEp)
   } else {
     doSlide <- function(j)
       semilandmarks.slide.BE(slid0[[j]], tans = NULL, 
-                       surf, ref, L, appBE, BEp)
+                       surf, ref, Lk, appBE, BEp)
     }
   
   
@@ -837,6 +837,7 @@ BE.slide <- function(curves = NULL, surf = NULL, Ya, ref, appBE = TRUE,
     } else tans <- NULL
     
     L <- if(appBE) LtemplateApprox(ref[BEp,]) else Ltemplate(ref)
+    Lk <- kronecker(diag(k), L)
     
     slid <- lapply(1:n, doSlide)
     
@@ -889,10 +890,10 @@ BE.slidePP <- function(curves = NULL, surf = NULL, Ya, ref, max.iter=10,
   
   if(doTans) doSlide <- function(j)
     semilandmarks.slide.BE(slid0[[j]], tans[[j]], 
-                     surf, ref, L, appBE, BEp) else
+                     surf, ref, Lk, appBE, BEp) else
       doSlide <- function(j)
         semilandmarks.slide.BE(slid0[[j]], tans = NULL, 
-                               surf, ref, L, appBE, BEp)
+                               surf, ref, Lk, appBE, BEp)
   
   while(Q > tol){
     iter <- iter+1
@@ -903,6 +904,7 @@ BE.slidePP <- function(curves = NULL, surf = NULL, Ya, ref, max.iter=10,
     } else tans <- NULL
     
     L <- if(appBE) LtemplateApprox(ref[BEp,]) else Ltemplate(ref)
+    Lk <- kronecker(diag(k), L)
     
     if(Unix) slid <- mclapply( 1:n, doSlide, mc.cores = no_cores) else {
         
@@ -956,11 +958,11 @@ BE.slidePP <- function(curves = NULL, surf = NULL, Ya, ref, max.iter=10,
   if(doTans) {
     doSlide <- function(j)
       semilandmarks.slide.BE(slid0[[j]], tans[[j]],
-                       surf, ref, L, appBE, BEp)
+                       surf, ref, Lk, appBE, BEp)
   } else {
     doSlide <- function(j)
       semilandmarks.slide.BE(slid0[[j]], tans = NULL, 
-                       surf, ref, L, appBE, BEp)
+                       surf, ref, Lk, appBE, BEp)
   }
   
   while(Q > tol){
@@ -972,6 +974,7 @@ BE.slidePP <- function(curves = NULL, surf = NULL, Ya, ref, max.iter=10,
     } else tans <- NULL
     
     L <- if(appBE) LtemplateApprox(ref[BEp,]) else Ltemplate(ref)
+    Lk <- kronecker(diag(k), L)
     
     slid <- lapply(1:n, doSlide)
     
