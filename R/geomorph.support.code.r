@@ -573,6 +573,8 @@ bigLtemplate <-function(Mr, Mt=NULL){
 # GPA with partial Procrustes superimposition
 # used in gpagen
 pGpa <- function(Y, PrinAxes = FALSE, Proj = FALSE, max.iter = 10, tol){
+  max.iter <- min(max.iter, 4)
+  
   iter <- 0
   pb <- txtProgressBar(min = 0, max = max.iter, initial = 0, style=3)
   setTxtProgressBar(pb,iter)
@@ -613,6 +615,8 @@ pGpa <- function(Y, PrinAxes = FALSE, Proj = FALSE, max.iter = 10, tol){
 
 .pGpa <- function(Y, PrinAxes = FALSE, Proj = FALSE, 
                   Parallel = TRUE, max.iter = 10, tol){
+  
+  max.iter <- min(max.iter, 4)
   
   ParCores <- NULL
   if (is.numeric(Parallel)) {
