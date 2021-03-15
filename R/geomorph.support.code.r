@@ -461,7 +461,7 @@ getU_s <- function(y, tans = NULL, surf = NULL,
   }
   
   keep <- which(colSums(U^2) != 0)
-  as(U[, keep], "sparseMatrix")
+  Matrix(U[, keep], sparse = TRUE)
   
 }
 
