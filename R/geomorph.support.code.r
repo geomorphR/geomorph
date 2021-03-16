@@ -11,10 +11,6 @@
 #' @import RRPP
 #' @import parallel
 #' @import rgl
-#' @import stats
-#' @import utils
-#' @import graphics
-#' @import grDevices
 #' @import ggplot2
 #' @import Matrix 
 #' @importFrom jpeg readJPEG
