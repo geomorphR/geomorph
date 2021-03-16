@@ -1001,7 +1001,6 @@ BE.slidePP <- function(curves = NULL, surf = NULL, Ya, ref, max.iter=10,
     if(iter >= max.iter) break
   }
   
-  if(iter < max.iter) setTxtProgressBar(pb,max.iter)
   list(coords=slid0, consensus=ref, iter=iter+1, Q=Q)
 }
 
@@ -1156,7 +1155,6 @@ procD.slidePP <- function(curves, surf, Ya, ref, max.iter=10,
       if(iter >= max.iter) break
     }
     
-    if(iter < max.iter) setTxtProgressBar(pb,max.iter)
     list(coords=slid0, consensus=ref, iter=iter+1, Q=Q)
 }
 
