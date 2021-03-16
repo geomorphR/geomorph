@@ -125,7 +125,7 @@ da1241dd835f95675cc7126b2a7ec61a *man/two.d.array.Rd
 d2755155772526527e4224b17d0dd05d *man/warpRefMesh.Rd
 7bea8d6b17918fd4889e2056ebe0e3d0 *man/warpRefOutline.Rd
 d9119f721918f22c267db843023a86fe *man/writeland.tps.Rd
-4fccbaf286084fc1bb348dcb9d7663c2 *NAMESPACE
+bef8214952ac15a0141b8c93eb580270 *NAMESPACE
 aa00479b0954acde0f6f6f93c45e1119 *NEWS.md
 d80d05ef890863f1b3004473627ea5f1 *R/arrayspecs.r
 4b5fb3f7015ec7484a9afafb91e8edaf *R/bilat.symmetry.r
@@ -149,7 +149,7 @@ a38ff2f2af270bf26299b1569cc734fc *R/digit.curves.r
 aac6a4f8a759473e8c37048e5c8e3d91 *R/findMeanSpec.r
 067124d4119de55a6089c6aefdd0eac5 *R/fixed.angle.r
 3d7958991ae174c24ba7c570f4e03b27 *R/geomorph.data.frame.r
-a454e7a8dd2e14457fb183b5c4b73edb *R/geomorph.support.code.r
+6f1a6576355692c5dfd829709acad61d *R/geomorph.support.code.r
 df67b9dd095248b5ccad938dab2ffab9 *R/geomorph.utils.r
 b0de2a67cff633e27e7a00860187240f *R/globalIntegration.r
 1a0b20144788e7d130adc7d310bb462f *R/gm.prcomp.R

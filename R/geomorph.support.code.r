@@ -8,6 +8,9 @@
 #'  of shape variation and covariation, and provide graphical depictions of shapes and patterns of
 #'  shape variation.
 #'
+#' @importFrom jpeg readJPEG
+#' @importFrom ape multi2di.phylo
+#' @importFrom ape root.phylo
 #' @import RRPP
 #' @import parallel
 #' @import rgl
@@ -16,9 +19,6 @@
 #' @import graphics
 #' @import grDevices
 #' @import ggplot2
-#' @importFrom jpeg readJPEG
-#' @importFrom ape multi2di.phylo
-#' @importFrom ape root.phylo
 #' @import Matrix
 #'
 #' @section geomorph TOC:
