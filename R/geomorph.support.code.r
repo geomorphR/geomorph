@@ -1125,11 +1125,6 @@ procD.slidePP <- function(curves, surf, Ya, ref, max.iter=10,
     slid0 <- Ya
     Q <- ss0 <- sum(Reduce("+",Ya)^2)/n
     
-    if(!is.numeric(sen)) sen <- 0.5
-    if(sen < 0.1) sen <- 0.1
-    if(sen >= 1) appBE <- FALSE
-    
-    
     doTans <- !is.null(curves)
     
     if(doTans) {
