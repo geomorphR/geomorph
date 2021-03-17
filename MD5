@@ -68,11 +68,11 @@ e1b19a991aa5c05b644349eb00687e39 *man/plot.pls.Rd
 13c6015521a9d77ac02f5175a7a74e2b *man/plot.procD.lm.Rd
 d27b1cfaf43fd29d0facc9dfa24b8215 *man/plotAllometry.Rd
 e7e2b2a3ae9fa7bdb0e3effabb53d537 *man/plotAllSpecimens.Rd
-f5a54dcacf8057053d41a4bf472bd52c *man/plotGMPhyloMorphoSpace.Rd
+9226111490be9931c85caca21fef61a4 *man/plotGMPhyloMorphoSpace.Rd
 03cdded7ec33cd5e1d76c01f79b1cd23 *man/plotOutliers.Rd
 806867e209f089838c39c054b22faf6b *man/plotRefToTarget.Rd
 e4e9f8aaee430f29944e59fc4f6fb561 *man/plotspec.Rd
-cb02e7c9ad4ee3b7bd825b620ea840a8 *man/plotTangentSpace.Rd
+68a7651c3ec50b4dfe9c7357d084bca4 *man/plotTangentSpace.Rd
 bf735457c885585781fa8dd86e2671b8 *man/print.bilat.symmetry.Rd
 61b3a2b02fa0a9976973470034a6f9d6 *man/print.combined.set.Rd
 364b89975a5ac219db379c2fab53f19e *man/print.compare.CR.Rd
@@ -125,7 +125,7 @@ da1241dd835f95675cc7126b2a7ec61a *man/two.d.array.Rd
 d2755155772526527e4224b17d0dd05d *man/warpRefMesh.Rd
 7bea8d6b17918fd4889e2056ebe0e3d0 *man/warpRefOutline.Rd
 d9119f721918f22c267db843023a86fe *man/writeland.tps.Rd
-d66f1d363cb9e9fc3216741c86e46613 *NAMESPACE
+3475ddb5ff9088e578268363f7c2995e *NAMESPACE
 aa00479b0954acde0f6f6f93c45e1119 *NEWS.md
 d80d05ef890863f1b3004473627ea5f1 *R/arrayspecs.r
 4b5fb3f7015ec7484a9afafb91e8edaf *R/bilat.symmetry.r
@@ -139,7 +139,7 @@ fb46adde8307e33cdb93109be6217284 *R/compare.pls.r
 05b48431b4af18c29a7e021696edcad8 *R/define.links.r
 ecee919cccfe945774c4cec0f3e9840c *R/define.modules.r
 02be70c0d5ce51ef1ff180e06fe47141 *R/define.sliders.r
-a9c7e0052dc14030d0881d5c7b8db809 *R/deprecated.defunct.r
+50aead8860abb45f0bbf97a685e3cc1d *R/deprecated.defunct.r
 a38ff2f2af270bf26299b1569cc734fc *R/digit.curves.r
 187af16a0566fc1b8d70670c829442fd *R/digit.fixed.r
 58ac3c6102b455136e748471fb62df29 *R/digitize2d.r
