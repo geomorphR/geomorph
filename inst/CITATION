@@ -9,12 +9,12 @@ citEntry(entry = "Misc",
   	year = "2021",
   	year = "2021",
   	journal = "Methods in Ecology and Evolution",
-  	volume = "XX",
-  	pages = "In Prep",
+  	volume = "000",
+  	pages = "000",
   	
-  	textVersion = "Baken, E. K., M. L. Collyer, A. Kaliontzopoulou, and D. C. Adams. 2021. gmShiny and geomorph v4.0: new graphical interface and enhanced analytics for a comprehensive morphometric experience. Methods in Ecology and Evolution. In Prep."
+  	textVersion = "Baken, E. K., M. L. Collyer, A. Kaliontzopoulou, and D. C. Adams. 2021. gmShiny and geomorph v4.0: new graphical interface and enhanced analytics for a comprehensive morphometric experience. Methods in Ecology and Evolution. Submitted.")
   	
-citEntry(entry="Misc",
+citEntry(entry= "Misc",
 	title = "Geomorph: Software for geometric morphometric analyses. R package version 4.0.",
         author = personList(as.person("D.C. Adams"),
 			    as.person("M.L. Collyer"),
