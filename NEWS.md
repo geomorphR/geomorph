@@ -2,7 +2,8 @@
 
 ### BUG FIXES
 * Fixed bug in `plotAllometry` where `crossprod` was used instead of `tcrossprod`
-* Fixed typp causing error in `phylo.integration`
+* Fixed typo causing error in `phylo.integration`
+* Fixed issue in `integration.test` for permutations
 
 # CHANGES IN GEOMORPH VERSION 3.3.2 (Minor Release)
 
