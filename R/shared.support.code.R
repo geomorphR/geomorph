@@ -463,8 +463,8 @@ anc.BM <- function(phy, Y){
     out <- do.call(ace.pics, preps)
     out[n + 1,]
   }))
-
-  if(NROW(out) == 1) out <- t(out)
+  
+  if(length(out) == (n-1)) out <- t(out)
   dimnames(out) <- list(1:phy$Nnode + length(phy$tip.label), colnames(Y))
   out
 }
