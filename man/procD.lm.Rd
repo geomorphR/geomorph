@@ -265,7 +265,7 @@ plot(fit, type = "diagnostics", outliers = TRUE)
 
 # PC plot rotated to major axis of fitted values
 plot(fit, type = "PC", pch = 19, col = "blue") 
-# Regression-type plots
+# Regression-type plots 
 
 # Use fitted values from the model to make prediction lines
 plot(fit, type = "regression", 
