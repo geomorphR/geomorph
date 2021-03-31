@@ -303,7 +303,7 @@ gdf <- geomorph.data.frame(Y.gpa, treatment = larvalMorph$treatment,
 family = larvalMorph$family)
 
 fit <- procD.lm(coords ~ treatment/family, data = gdf, 
-print.progress = FALSE, iter = 199)
+print.progress = FALSE, iter = 99)
 anova(fit) # treatment effect not adjusted
 anova(fit, error = c("treatment:family", "Residuals")) 
 # treatment effect updated (adjusted)
