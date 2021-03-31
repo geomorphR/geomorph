@@ -160,7 +160,7 @@ eded77338efe75279f8cc722fb07a2dd *R/integration.test.r
 a979e056d436e086554172ef1254d9ff *R/morphol.disparity.r
 dd9ce57e2e2f13f7bba6b3246004f578 *R/phylo.integration.r
 5756dc9cc5fa46650b06ae71b6f14bb0 *R/phylo.modularity.r
-9559a148f2309b2d7f786660ce5a385e *R/physignal.r
+1f163631bad0749c9269491b2ec97668 *R/physignal.r
 51499bded635b5c0c06b6bf8cfd1bad1 *R/picknplot.shape.r
 e61483ce68db0750515dc110212e77f2 *R/plotAllometry.r
 f9043772e114ec0f814ab4782383a5dc *R/plotAllSpecimens.r
@@ -180,7 +180,7 @@ d688cf3fbc6c3351526c422948e457ba *R/readmulti.tps.R
 73ce1481733305a19848121fd2c90203 *R/rotate.coords.R
 361a0ae11ee086750714efc43ef2c9d6 *R/shape.predictor.r
 f191c54f3b3c75baea0b045758af5362 *R/shapeHulls.r
-bc1fc9b644e09e1d4a37beca1d2068e7 *R/shared.support.code.R
+9259b7b263e2b4ed943d87950c537d57 *R/shared.support.code.R
 5fdc5588d6b8510dfd950c3ddcb8571f *R/two.b.pls.r
 2e693d8b4f3c21d742737b97d1773119 *R/two.d.array.r
 7385019797d3400eac9dbce0ea33b74f *R/warpRefMesh.r

@@ -464,7 +464,7 @@ anc.BM <- function(phy, Y){
     out[n + 1,]
   }))
   
-  if(length(out) == (n-1)) out <- t(out)
+  if(NROW(out) == 1) out <- t(out)
   dimnames(out) <- list(1:phy$Nnode + length(phy$tip.label), colnames(Y))
   out
 }

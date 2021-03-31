@@ -160,7 +160,7 @@ physignal <- function(A, phy, iter = 999, seed = NULL, print.progress = FALSE){
     names(PaCA)[[which(names(PaCA) == "xn")]] <- "anc.x"
     P <- PaCA$x
     
-    K.by.p <- sapply(1:p, function(j) {
+    K.by.p <- sapply(1:ncol(P), function(j) {
       K.args$x <- as.matrix(P[, 1:j])
       do.call(Kmult, K.args)
     })
