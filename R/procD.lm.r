@@ -159,6 +159,7 @@
 #' \code{\link{lm.rrpp}} for more on linear model fits with RRPP. See \code{\link{RRPP-package}} for further
 #' details on functions that can use procD.lm objects.
 #' @examples
+#' \dontrun{
 #' ### ANOVA example for Goodall's F test (multivariate shape vs. factors)
 #' data(plethodon) 
 #' Y.gpa <- gpagen(plethodon$land)    #GPA-alignment  
@@ -167,10 +168,10 @@
 #' species = plethodon$species) # geomorph data frame
 #'
 #' fit1 <- procD.lm(coords ~ species * site, 
-#' data = gdf, iter = 499, turbo = TRUE,
+#' data = gdf, iter = 999, turbo = TRUE,
 #' RRPP = FALSE, print.progress = FALSE) # randomize raw values
 #' fit2 <- procD.lm(coords ~ species * site, 
-#' data = gdf, iter = 499, turbo = TRUE,
+#' data = gdf, iter = 999, turbo = TRUE,
 #' RRPP = TRUE, print.progress = FALSE) # randomize residuals
 #' 
 #' summary(fit1)
@@ -203,9 +204,9 @@
 #' 
 #' # Model fits
 #' fit.null <- procD.lm(coords ~ log(Csize) + species + site, data = gdf, 
-#' iter = 499, print.progress = FALSE, turbo = TRUE)
+#' iter = 999, print.progress = FALSE, turbo = TRUE)
 #' fit.full <- procD.lm(coords ~ log(Csize) + species * site, data = gdf, 
-#' iter = 499, print.progress = FALSE, turbo = TRUE)
+#' iter = 999, print.progress = FALSE, turbo = TRUE)
 #' 
 #' # ANOVA, using anova.lm.rrpp function from the RRPP package 
 #' # (replaces advanced.procD.lm)
@@ -233,7 +234,7 @@
 #' gdf <- geomorph.data.frame(rat.gpa) # geomorph data frame is easy 
 #' # without additional input
 #' 
-#' fit <- procD.lm(coords ~ Csize, data = gdf, iter = 499, turbo = TRUE,
+#' fit <- procD.lm(coords ~ Csize, data = gdf, iter = 999, turbo = TRUE,
 #' RRPP = TRUE, print.progress = FALSE) 
 #' summary(fit)
 #' 
@@ -284,11 +285,12 @@
 #' family = larvalMorph$family)
 #' 
 #' fit <- procD.lm(coords ~ treatment/family, data = gdf, turbo = TRUE,
-#' print.progress = FALSE, iter = 99)
+#' print.progress = FALSE, iter = 999)
 #' anova(fit) # treatment effect not adjusted
 #' anova(fit, error = c("treatment:family", "Residuals")) 
 #' # treatment effect updated (adjusted)
-#'
+#' }
+#' 
 #' 
 #' 
 procD.lm <- function(f1, iter = 999, seed=NULL, RRPP = TRUE, 

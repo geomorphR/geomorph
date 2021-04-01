@@ -179,6 +179,7 @@ The function quantifies the relative amount of shape variation attributable to o
 }
 }
 \examples{
+\dontrun{
 ### ANOVA example for Goodall's F test (multivariate shape vs. factors)
 data(plethodon) 
 Y.gpa <- gpagen(plethodon$land)    #GPA-alignment  
@@ -187,10 +188,10 @@ site = plethodon$site,
 species = plethodon$species) # geomorph data frame
 
 fit1 <- procD.lm(coords ~ species * site, 
-data = gdf, iter = 999, 
+data = gdf, iter = 999, turbo = TRUE,
 RRPP = FALSE, print.progress = FALSE) # randomize raw values
 fit2 <- procD.lm(coords ~ species * site, 
-data = gdf, iter = 999, 
+data = gdf, iter = 999, turbo = TRUE,
 RRPP = TRUE, print.progress = FALSE) # randomize residuals
 
 summary(fit1)
@@ -223,9 +224,9 @@ plotRefToTarget(M, fit2$GM$fitted[,,20], mag = 3)
 
 # Model fits
 fit.null <- procD.lm(coords ~ log(Csize) + species + site, data = gdf, 
-iter = 999, print.progress = FALSE)
+iter = 999, print.progress = FALSE, turbo = TRUE)
 fit.full <- procD.lm(coords ~ log(Csize) + species * site, data = gdf, 
-iter = 999, print.progress = FALSE)
+iter = 999, print.progress = FALSE, turbo = TRUE)
 
 # ANOVA, using anova.lm.rrpp function from the RRPP package 
 # (replaces advanced.procD.lm)
@@ -245,7 +246,7 @@ summary(PW, test.type = "dist", confidence = 0.95, stat.table = FALSE)
 # (same as morphol.disaprity):
 summary(PW, test.type = "var", confidence = 0.95, stat.table = TRUE)
 summary(PW, test.type = "var", confidence = 0.95, stat.table = FALSE)
-morphol.disparity(fit.full, groups = gp, iter=999)
+morphol.disparity(fit.full, groups = gp, iter=299)
 
 ### Regression example
 data(ratland)
@@ -253,7 +254,7 @@ rat.gpa<-gpagen(ratland)         #GPA-alignment
 gdf <- geomorph.data.frame(rat.gpa) # geomorph data frame is easy 
 # without additional input
 
-fit <- procD.lm(coords ~ Csize, data = gdf, iter = 999, 
+fit <- procD.lm(coords ~ Csize, data = gdf, iter = 999, turbo = TRUE,
 RRPP = TRUE, print.progress = FALSE) 
 summary(fit)
 
@@ -302,11 +303,12 @@ ProcD = TRUE, print.progress = FALSE)
 gdf <- geomorph.data.frame(Y.gpa, treatment = larvalMorph$treatment, 
 family = larvalMorph$family)
 
-fit <- procD.lm(coords ~ treatment/family, data = gdf, 
-print.progress = FALSE, iter = 99)
+fit <- procD.lm(coords ~ treatment/family, data = gdf, turbo = TRUE,
+print.progress = FALSE, iter = 999)
 anova(fit) # treatment effect not adjusted
 anova(fit, error = c("treatment:family", "Residuals")) 
 # treatment effect updated (adjusted)
+}
 
 
 

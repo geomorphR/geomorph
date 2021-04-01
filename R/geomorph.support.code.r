@@ -9,8 +9,8 @@
 #'  shape variation.
 #'
 #' @importFrom jpeg readJPEG
-#' @importFrom ape multi2di.phy
-#' @importFrom ape root.phy
+#' @importFrom ape multi2di.phylo
+#' @importFrom ape root.phylo
 #' @import RRPP
 #' @import parallel
 #' @import rgl
