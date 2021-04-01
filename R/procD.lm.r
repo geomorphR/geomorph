@@ -167,10 +167,10 @@
 #' species = plethodon$species) # geomorph data frame
 #'
 #' fit1 <- procD.lm(coords ~ species * site, 
-#' data = gdf, iter = 999, turbo = TRUE,
+#' data = gdf, iter = 499, turbo = TRUE,
 #' RRPP = FALSE, print.progress = FALSE) # randomize raw values
 #' fit2 <- procD.lm(coords ~ species * site, 
-#' data = gdf, iter = 999, turbo = TRUE,
+#' data = gdf, iter = 499, turbo = TRUE,
 #' RRPP = TRUE, print.progress = FALSE) # randomize residuals
 #' 
 #' summary(fit1)
@@ -203,9 +203,9 @@
 #' 
 #' # Model fits
 #' fit.null <- procD.lm(coords ~ log(Csize) + species + site, data = gdf, 
-#' iter = 999, print.progress = FALSE, turbo = TRUE)
+#' iter = 499, print.progress = FALSE, turbo = TRUE)
 #' fit.full <- procD.lm(coords ~ log(Csize) + species * site, data = gdf, 
-#' iter = 999, print.progress = FALSE, turbo = TRUE)
+#' iter = 499, print.progress = FALSE, turbo = TRUE)
 #' 
 #' # ANOVA, using anova.lm.rrpp function from the RRPP package 
 #' # (replaces advanced.procD.lm)
@@ -225,7 +225,7 @@
 #' # (same as morphol.disaprity):
 #' summary(PW, test.type = "var", confidence = 0.95, stat.table = TRUE)
 #' summary(PW, test.type = "var", confidence = 0.95, stat.table = FALSE)
-#' morphol.disparity(fit.full, groups = gp, iter=499)
+#' morphol.disparity(fit.full, groups = gp, iter=299)
 #' 
 #' ### Regression example
 #' data(ratland)
@@ -233,7 +233,7 @@
 #' gdf <- geomorph.data.frame(rat.gpa) # geomorph data frame is easy 
 #' # without additional input
 #' 
-#' fit <- procD.lm(coords ~ Csize, data = gdf, iter = 999, turbo = TRUE,
+#' fit <- procD.lm(coords ~ Csize, data = gdf, iter = 499, turbo = TRUE,
 #' RRPP = TRUE, print.progress = FALSE) 
 #' summary(fit)
 #' 
