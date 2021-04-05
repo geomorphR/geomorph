@@ -85,6 +85,10 @@
 #' 
 #' @param f1 A formula for the linear model (e.g., y~x1+x2)
 #' @param iter Number of iterations for significance testing
+#' @param turbo A logical value that if TRUE, suppresses coefficient estimation 
+#' in every random permutation.  This will affect subsequent analyses that 
+#' require random coefficients (see \code{\link{coef.lm.rrpp}})
+#' but might be useful for large data sets for which only ANOVA is needed.
 #' @param seed An optional argument for setting the seed for random permutations of the resampling procedure.  
 #' If left NULL (the default), the exact same P-values will be found for repeated runs of the analysis (with the same number of iterations).
 #' If seed = "random", a random seed will be used, and P-values will vary.  One can also specify an integer for specific seed values,
@@ -101,7 +105,13 @@
 #' @param data A data frame for the function environment, see \code{\link{geomorph.data.frame}} 
 #' @param print.progress A logical value to indicate whether a progress bar should be printed to the screen.  
 #' This is helpful for long-running analyses.
-#' @param ... Arguments passed on to \code{\link{lm.rrpp}}, like weights and offset.
+#' @param Parallel Either a logical value to indicate whether parallel processing 
+#' should be used or a numeric value to indicate the number of cores to use in 
+#' parallel processing via the \code{parallel} library. 
+#' If TRUE, this argument invokes forking of all processor cores, except one.  If
+#' FALSE, only one core is used. A numeric value directs the number of cores to use,
+#' but one core will always be spared.
+#' @param ... Arguments not listed above that can passed on to \code{\link{lm.rrpp}}, like weights, offset.
 #' @keywords analysis
 #' @export
 #' @author Dean Adams and Michael Collyer
@@ -149,6 +159,7 @@
 #' \code{\link{lm.rrpp}} for more on linear model fits with RRPP. See \code{\link{RRPP-package}} for further
 #' details on functions that can use procD.lm objects.
 #' @examples
+#' \dontrun{
 #' ### ANOVA example for Goodall's F test (multivariate shape vs. factors)
 #' data(plethodon) 
 #' Y.gpa <- gpagen(plethodon$land)    #GPA-alignment  
@@ -157,10 +168,10 @@
 #' species = plethodon$species) # geomorph data frame
 #'
 #' fit1 <- procD.lm(coords ~ species * site, 
-#' data = gdf, iter = 999, 
+#' data = gdf, iter = 999, turbo = TRUE,
 #' RRPP = FALSE, print.progress = FALSE) # randomize raw values
 #' fit2 <- procD.lm(coords ~ species * site, 
-#' data = gdf, iter = 999, 
+#' data = gdf, iter = 999, turbo = TRUE,
 #' RRPP = TRUE, print.progress = FALSE) # randomize residuals
 #' 
 #' summary(fit1)
@@ -193,9 +204,9 @@
 #' 
 #' # Model fits
 #' fit.null <- procD.lm(coords ~ log(Csize) + species + site, data = gdf, 
-#' iter = 999, print.progress = FALSE)
+#' iter = 999, print.progress = FALSE, turbo = TRUE)
 #' fit.full <- procD.lm(coords ~ log(Csize) + species * site, data = gdf, 
-#' iter = 999, print.progress = FALSE)
+#' iter = 999, print.progress = FALSE, turbo = TRUE)
 #' 
 #' # ANOVA, using anova.lm.rrpp function from the RRPP package 
 #' # (replaces advanced.procD.lm)
@@ -215,7 +226,7 @@
 #' # (same as morphol.disaprity):
 #' summary(PW, test.type = "var", confidence = 0.95, stat.table = TRUE)
 #' summary(PW, test.type = "var", confidence = 0.95, stat.table = FALSE)
-#' morphol.disparity(fit.full, groups = gp, iter=999)
+#' morphol.disparity(fit.full, groups = gp, iter=299)
 #' 
 #' ### Regression example
 #' data(ratland)
@@ -223,7 +234,7 @@
 #' gdf <- geomorph.data.frame(rat.gpa) # geomorph data frame is easy 
 #' # without additional input
 #' 
-#' fit <- procD.lm(coords ~ Csize, data = gdf, iter = 999, 
+#' fit <- procD.lm(coords ~ Csize, data = gdf, iter = 999, turbo = TRUE,
 #' RRPP = TRUE, print.progress = FALSE) 
 #' summary(fit)
 #' 
@@ -236,7 +247,7 @@
 #' # PC plot rotated to major axis of fitted values
 #' plot(fit, type = "PC", pch = 19, col = "blue") 
 
-#' # Regression-type plots
+#' # Regression-type plots 
 #' 
 #' # Use fitted values from the model to make prediction lines
 #' plot(fit, type = "regression", 
@@ -273,18 +284,21 @@
 #' gdf <- geomorph.data.frame(Y.gpa, treatment = larvalMorph$treatment, 
 #' family = larvalMorph$family)
 #' 
-#' fit <- procD.lm(coords ~ treatment/family, data = gdf, 
-#' print.progress = FALSE, iter = 199)
+#' fit <- procD.lm(coords ~ treatment/family, data = gdf, turbo = TRUE,
+#' print.progress = FALSE, iter = 999)
 #' anova(fit) # treatment effect not adjusted
 #' anova(fit, error = c("treatment:family", "Residuals")) 
 #' # treatment effect updated (adjusted)
-#'
+#' }
+#' 
 #' 
 #' 
 procD.lm <- function(f1, iter = 999, seed=NULL, RRPP = TRUE, 
                      SS.type = c("I", "II", "III"),
                      effect.type = c("F", "cohenf", "SS", "MS", "Rsq"),
-                     int.first = FALSE,  Cov = NULL, data=NULL, print.progress = TRUE, ...){
+                     int.first = FALSE,  Cov = NULL, 
+                     turbo = TRUE, Parallel = FALSE,
+                     data=NULL, print.progress = FALSE, ...){
   
   if(is.null(data)) {
     vars <- rownames(attr(terms(f1), "factors"))
@@ -327,12 +341,13 @@ procD.lm <- function(f1, iter = 999, seed=NULL, RRPP = TRUE,
     GM <- FALSE
   }
   
-  out <- lm.rrpp(f, data = data, 
+  out <- lm.rrpp(f, data = data, turbo = turbo,
                  seed = seed, RRPP = RRPP,
                  SS.type = SS.type, 
                  int.first = int.first,  
                  Cov = Cov, iter = iter,
-                 print.progress = print.progress, ...)
+                 print.progress = print.progress, 
+                 Parallel = Parallel, ...)
   
   out$ANOVA$effect.type <- match.arg(effect.type)
   out$GM <- NULL

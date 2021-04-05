@@ -17,7 +17,7 @@ compare.multi.evol.rates(
 \arguments{
 \item{A}{A matrix (n x [p x k]) or 3D array (p x k x n) containing Procrustes shape variables for a set of specimens}
 
-\item{gp}{A factor array designating group membership}
+\item{gp}{A factor array designating group membership for landmarks}
 
 \item{phy}{A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape}
 

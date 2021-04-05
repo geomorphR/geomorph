@@ -19,7 +19,7 @@ compare.evol.rates(
 
 \item{phy}{A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape}
 
-\item{gp}{A factor array designating group membership}
+\item{gp}{A factor array designating group membership for individuals}
 
 \item{iter}{Number of iterations for significance testing}
 
