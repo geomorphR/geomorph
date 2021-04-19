@@ -1,5 +1,5 @@
 9c805ef30bd50ccc2210f409e701d301 *cran-comments.md
-346a668a4d16bb6b473d425a5aeaa133 *CRAN-RELEASE
+21351dccab1ef3b75826266f9d65fab2 *CRAN-RELEASE
 247b6e5658356e87edfd560687b239fc *data/hummingbirds.rda
 56558754725fea156eb0820f67a4f508 *data/larvalMorph.rda
 c3fc0e7a97f4cbd5b6cd8944d737b11a *data/lizards.rda
@@ -12,7 +12,7 @@ d8e8360c03c03fe45d2100e9c05d4a89 *data/plethodon.rda
 9ba51ab9be03930a4acdcddde8169b33 *data/scallopPLY.rda
 6e5e71b242462e422b716800ffc3c464 *data/scallops.rda
 f9b856c1d5d7d00ba1be9ff990968612 *DESCRIPTION
-c1b1a4bdfac8decf989501289600e592 *geomorph.Rproj
+73f723a130c92f8b84a81465a15add7c *geomorph.Rproj
 d6331dfda683e8f4da1742ff7fcedeec *inst/CITATION
 593e42548fcbd08b6027b15bbca38808 *man/arrayspecs.Rd
 f061eeaec843afaf15a2ebfb9d42e76d *man/bilat.symmetry.Rd
@@ -38,7 +38,7 @@ e5ea7eb05043e14bf36bb1c553de0576 *man/findMeanSpec.Rd
 4681bbf9711d9eafd48798c7537bf5b7 *man/geomorph.data.frame.Rd
 c7fdffac3135bde168be933be6bf2243 *man/globalIntegration.Rd
 fa3facc45b9d3824494f79924b49f72e *man/gm.prcomp.Rd
-cc0441bbaf88cd6fddc5e9ac7208d768 *man/gpagen.Rd
+7c0c6196198fd014e358818c1f8f0133 *man/gpagen.Rd
 3a80fa88113f0962688993fd399bc689 *man/gridPar.Rd
 a598044482a6c3e39517b798b654c57e *man/hummingbirds.Rd
 6725d202cc91d2039fee6e02157f232a *man/integration.test.Rd
@@ -124,8 +124,8 @@ da1241dd835f95675cc7126b2a7ec61a *man/two.d.array.Rd
 d2755155772526527e4224b17d0dd05d *man/warpRefMesh.Rd
 7bea8d6b17918fd4889e2056ebe0e3d0 *man/warpRefOutline.Rd
 d9119f721918f22c267db843023a86fe *man/writeland.tps.Rd
-2d722768c28e6aa8655921cffc3d3aa1 *NAMESPACE
-8f5ecf6d084a62923be1728a742033f6 *NEWS.md
+2eca61c5b8df2729ddcd0193051b7114 *NAMESPACE
+563d6a4c45fbd6b3e8cdddf81ed70bb4 *NEWS.md
 d80d05ef890863f1b3004473627ea5f1 *R/arrayspecs.r
 4b5fb3f7015ec7484a9afafb91e8edaf *R/bilat.symmetry.r
 4de44720708760426e94d2f2ffef904b *R/build.template.r
@@ -152,7 +152,7 @@ aac6a4f8a759473e8c37048e5c8e3d91 *R/findMeanSpec.r
 b3ae46016b46ed8d3264f8b175ffe8ca *R/geomorph.utils.r
 b0de2a67cff633e27e7a00860187240f *R/globalIntegration.r
 fa94a434ca094a407ec33009dca9843c *R/gm.prcomp.R
-0ce16133ea42aa98c677bee5f2cb4574 *R/gpagen.r
+483450471c53f1581a3c1c91ec0af707 *R/gpagen.r
 293464e2f2612431690a2c1326c7bdd6 *R/gridPar.r
 eded77338efe75279f8cc722fb07a2dd *R/integration.test.r
 0cbfe6b5655e2751cdd03ca2a1550768 *R/interlmkdist.r
