@@ -1,3 +1,21 @@
+# INCIPIENT CHANGES IN GEOMORPH VERSION 4.0.0.99
+
+### NEW FEATURES
+* Added a transform argument to `morphol.disparity` for PGLS models, consistent with `gm.prcomp` approaches.
+
+# CHANGES IN GEOMORPH VERSION 4.0.0
+
+### NEW FEATURES
+* Included calculation of individual asymmetry indices to `bilat.symmetry` output
+* Updated `bilat.symmetry` to use arguments available with updates to `RRPP::lm.rrpp`, taking advantage of parallel processing, C++, and turbo-charged (coefficient-suppressed) calculations to maximize speed.
+* More options for parallel processing.
+*`make_ggplot2` function for converting `geomorph` plots to `ggplot` objects, which can be amended.
+
+### BUG FIXES
+* Fixed bug in `plotAllometry` where `crossprod` was used instead of `tcrossprod`
+* Fixed typo causing error in `phylo.integration`
+* Fixed issue in `integration.test` for permutations
+
 # CHANGES IN GEOMORPH VERSION 3.3.2.0900 
 
 ### BUG FIXES

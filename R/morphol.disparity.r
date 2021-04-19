@@ -26,11 +26,14 @@
 #' (see examples).
 #' 
 #' This function can be used with an object of class "procD.lm" or "lm.rrpp", if such analyses have already been performed.  
-#' This is specially useful for analyses performed with  \code{\link{procD.pgls}}.  In this case, residuals obtained from PGLS estimation
+#' This is especially useful for analyses performed with  \code{\link{procD.pgls}}.  In this case, residuals obtained from PGLS estimation
 #' of coefficients, rather than OLS estimation, will be used in the analysis.  Thus, one can account for phylogeny when comparing
-#' morphological disparity among groups.  However, one should be aware that this approach only adjusts expected values because of phylogeny
-#' and does not assert a null hypothesis of equal variances based on phylogenetic relatedness.  (For example, species means can be adjusted
-#' because of phylogenetic relatedness, but the null hypothesis of equal variances is conditioned on the estimation of means.) 
+#' morphological disparity among groups.  However, one should be aware that PGLS finds the PGLS residuals and transforms them via the 
+#' phylogenetic covariance matrix in order to calculate variance.  Thus, disparity (dispersion in tangent space) and variance (dispersion
+#' in transformed space, after accounting for phylogeny) can be considered different things.  This function uses an argument, 
+#' \code{transform}, to allow users to use either GLS residuals in tangent space or transformed residuals in the transformed space to 
+#' calculate disparity.  The former characterizes the dispersion of actual shapes around GLS means; the latter estimates GLS variances, 
+#' by group.
 #'
 #' \subsection{Notes for geomorph 3.1.0 and subsequent versions}{ 
 #'  The function \code{\link{pairwise}} in the \code{RRPP} package can also be used to evaluate morphological 
@@ -50,6 +53,12 @@
 #' @param partial A logical value to indicate whether partial disparities should be calculated, sensu
 #' Foote (1993).  If TRUE, the model formula should have only an intercept (e.g., coords ~ 1); otherwise an error 
 #' will be returned.
+#' @param transform A logical value to indicate whether disparity should be measured in the transformed
+#' space rather than the tangent space.  This is only applicable if a PGLS model is used, in which case
+#' the transformation would be necessary for a variance that is independent of phylogeny.  If transform = FALSE,
+#' disparity tracks the dispersion one would observe in a phylo-PC plot.  If transform = TRUE, disparity tracks
+#' the dispersion in a PC plot of the transformed space (lacking phylogenetic signal).  
+#' See Collyer and Adams 2021, and examples below.
 #' @param iter Number of iterations for permutation test
 #' @param seed An optional argument for setting the seed for random permutations of the resampling procedure.  
 #' If left NULL (the default), the exact same P-values will be found for repeated runs of the analysis (with the same number of iterations).
@@ -78,6 +87,8 @@
 #'   for biologists: a primer. 2nd edition. Elsevier/Academic Press, Amsterdam.
 #' @references Foote, M. 1993. Contributions of individual taxa to overall morphological disparity. 
 #' Paleobiology, 19: 403-419.
+#' @references Collyer, M.L and D.C. Adams, 2021. Phylogenetically Aligned component analysis. 
+#' Methods in Ecology and Evolution, 12: 369-372.
 #' 
 #' @examples
 #' data(plethodon)
@@ -137,14 +148,44 @@
 #' 
 #' morphol.disparity(f1 = pleth.ols, groups = ~ gp.end, data = gdf, 
 #' iter = 999, print.progress = FALSE)
-#' morphol.disparity(f1 = pleth.pgls, groups = ~ gp.end, data = gdf, 
-#' iter = 999, print.progress = FALSE)
+#' morphol.disparity(f1 = pleth.pgls, groups = ~ gp.end, 
+#' transform = FALSE, data = gdf, 
+#' iter = 999, print.progress = FALSE) # disparity in tangent space
+#' morphol.disparity(f1 = pleth.pgls, groups = ~ gp.end,
+#' transform = TRUE, data = gdf, 
+#' iter = 999, print.progress = FALSE) # disparity in transformed space 
 #' 
-#'  ### Morphol.disparity using RRPP
+#' # Three plots that correspond to the three tests
+#' PCA <- gm.prcomp(Y.gpa$coords, phy = plethspecies$phy)
+#' pPCA <- gm.prcomp(Y.gpa$coords, phy = plethspecies$phy, 
+#' GLS = TRUE, transform = FALSE)
+#' tpPCA <- gm.prcomp(Y.gpa$coords, phy = plethspecies$phy, 
+#' GLS = TRUE, transform = TRUE)
+#' 
+#' par(mfrow = c(1,3))
+#' 
+#' # Phylomorphospace
+#' PC.plot <- plot(PCA, pch = 19, phylo = TRUE, main = "PCA-OLS")
+#' shapeHulls(PC.plot, groups = gp.end)
+#' 
+#' # Phylo-PCA
+#' pPC.plot <- plot(pPCA, pch = 19, phylo = TRUE, main = "pPCA - GLS, not transformed")
+#' shapeHulls(pPC.plot, groups = gp.end)
+#' 
+#' # Transformed phylo-PCA
+#' tpPC.plot <- plot(tpPCA, pch = 19, phylo = TRUE, main = "tpPCA - GLS, transformed")
+#' shapeHulls(tpPC.plot, groups = gp.end)
+#' 
+#' par(mfrow = c(1,1))
+#' 
+#'  ### Variance using RRPP (not necessarily the same as disparity)
 #'  PW <- pairwise(pleth.ols, groups = gp.end)
 #'  summary(PW, test.type = 'var')
+#'  PW2 <- pairwise(pleth.pgls, groups = gp.end)
+#'  summary(PW2, test.type = 'var')
 #' 
-morphol.disparity <- function(f1, groups = NULL, partial = FALSE, iter = 999, seed = NULL, 
+morphol.disparity <- function(f1, groups = NULL, partial = FALSE, transform = FALSE,
+                              iter = 999, seed = NULL, 
                               data = NULL, print.progress = TRUE, ...){
   
  
@@ -167,6 +208,7 @@ morphol.disparity <- function(f1, groups = NULL, partial = FALSE, iter = 999, se
     k <- length(attr(Terms, "term.labels"))
     if(k == 0) int.model <- TRUE else
       int.model = FALSE
+    Pcov <- if(f1$LM$gls) f1$LM$Pcov else NULL
   }
   
   if(inherits(f1, "formula")) {
@@ -239,6 +281,11 @@ morphol.disparity <- function(f1, groups = NULL, partial = FALSE, iter = 999, se
     fit <- lm.rrpp(d ~ groups + 0, iter = 0, data = newDf, print.progress = FALSE,
                    seed = seed, ...)
     Q <- fit$LM$QR
+    if(transform){
+      if(!is.null(Pcov)) {
+        Q <- qr(Pcov %*% fit$LM$X)
+      }
+    }
     H <- tcrossprod(solve(qr.R(Q)), qr.Q(Q))
     ind <- perm.index(N, iter, seed)
     pv <- sapply(1:(iter + 1), function(j){
