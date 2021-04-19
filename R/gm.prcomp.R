@@ -23,8 +23,8 @@
 #' signal rather than axis of greatest dispersion.  This analysis can use either OLS- or GLS-centering and projection.  
 #' Phylogenetic signal is strongest in the first few components of the OLS approach.  This analysis will make little sense with 
 #' GLS-centering and projection of transformed residuals, since phylogenetic signal is removed the transformed data.  
-#' See Collyer and Adams (2020) for more details. For greater flexibility for type of residuals and projection of trees, 
-#' use \code{\link{ordinate}}.  See Collyer and Adams (2020) for details.}
+#' See Collyer and Adams (2021) for more details. For greater flexibility for type of residuals and projection of trees, 
+#' use \code{\link{ordinate}}.  See Collyer and Adams (2021) for details.}
 #' }
 #' 
 #' \itemize{
@@ -90,8 +90,8 @@
 #' @seealso \code{\link{plot.gm.prcomp}}
 #' @seealso \code{\link{picknplot.shape}}
 #' @seealso \code{\link{ordinate}}{ A more bare-bones ordination function on which gm.prcomp depends.}
-#' @references Collyer, M.L and D.C. Adams, 2020. Phylogenetically-aligned component analysis. 
-#' Methods in Ecology and Evolution (in review).
+#' @references Collyer, M.L and D.C. Adams, 2021. Phylogenetically Aligned component analysis. 
+#' Methods in Ecology and Evolution, 12: 369-372.
 #' @references Revell, L. J. (2009). Size-correction and principal components for interspecific 
 #' comparative studies. Evolution, 63: 3258-3268.
 #' @author Antigoni Kaliontzopoulou, Michael Collyer, & Dean Adams

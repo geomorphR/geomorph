@@ -1,5 +1,8 @@
 # INCIPIENT CHANGES IN GEOMORPH VERSION 4.0.0.99
 
+### NEW FEATURES
+* Added a transform argument to `morphol.disparity` for PGLS models, consistent with `gm.prcomp` approaches.
+
 # CHANGES IN GEOMORPH VERSION 4.0.0
 
 ### NEW FEATURES
