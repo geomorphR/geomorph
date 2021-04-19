@@ -29,7 +29,7 @@
 #'
 #' @param A A 3D array (p x k x n) containing GPA-aligned coordinates for all specimens, or a matrix (n x variables)
 #' @param phy A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape
-#' @param gp A factor array designating group membership
+#' @param gp A factor array designating group membership for individuals
 #' @param method One of "simulation" or "permutation", to choose which approach should be used to assess significance. 
 #' @param iter Number of iterations for significance testing
 #' @param seed An optional argument for setting the seed for random permutations of the resampling procedure.  

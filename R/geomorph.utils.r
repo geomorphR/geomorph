@@ -6,6 +6,7 @@
 #' 
 #' @param x print/summary object (from \code{\link{gpagen}})
 #' @param ... other arguments passed to print/summary
+#' @method print gpagen
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities
@@ -31,6 +32,7 @@ print.gpagen <- function (x, ...) {
 #' 
 #' @param object print/summary object (from \code{\link{gpagen}})
 #' @param ... other arguments passed to print/summary
+#' @method summary gpagen
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities
@@ -43,6 +45,7 @@ summary.gpagen <- function(object, ...) {
 #' 
 #' @param x plot object (from \code{\link{gpagen}})
 #' @param ... other arguments passed to plotAllSpecimens
+#' @method plot gpagen
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities
@@ -58,6 +61,7 @@ plot.gpagen <- function(x, ...){
 #' 
 #' @param x print/summary object (from \code{\link{procD.lm}})
 #' @param ... other arguments passed to print/summary
+#' @method print procD.lm
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities
@@ -71,6 +75,7 @@ print.procD.lm<- function(x,...) {
 #' 
 #' @param object print/summary object (from \code{\link{procD.lm}})
 #' @param ... other arguments passed to print/summary
+#' @method summary procD.lm
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities
@@ -102,6 +107,7 @@ summary.procD.lm <- function(object,...){
 #' @return An object of class "plot.procD.lm" is a list with components
 #'  that can be used in other plot functions, such as the type of plot, points, 
 #'  a group factor, and other information depending on the plot parameters used.
+#'@method plot procD.lm
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities
@@ -125,6 +131,7 @@ plot.procD.lm <- function(x, type = c("diagnostics", "regression",
 #' 
 #' @param x print/summary object (from \code{\link{morphol.disparity}})
 #' @param ... other arguments passed to print/summary
+#' @method print morphol.disparity
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities
@@ -155,6 +162,7 @@ print.morphol.disparity <- function (x, ...) {
 #' 
 #' @param object print/summary object (from \code{\link{morphol.disparity}})
 #' @param ... other arguments passed to print/summary
+#' @method summary morphol.disparity
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities
@@ -169,6 +177,7 @@ summary.morphol.disparity <- function(object, ...) {
 #' 
 #' @param x print/summary object (from \code{\link{phylo.integration}} or \code{\link{two.b.pls}})
 #' @param ... other arguments passed to print/summary
+#' @method print pls
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities
@@ -206,6 +215,7 @@ print.pls <- function (x, ...) {
 #' 
 #' @param object print/summary object (from \code{\link{phylo.integration}} or \code{\link{two.b.pls}})
 #' @param ... other arguments passed to print/summary
+#' @method summary pls
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities
@@ -223,6 +233,7 @@ summary.pls <- function(object, ...) {
 #' flexibility can be attained with using \code{\link{plotRefToTarget}} and \code{\link{shape.predictor}}.
 #' @return If shapes = TRUE, function returns a list containing the shape coordinates of the extreme ends of axis1 and axis2 
 #' if 3D arrays were originally provided for each
+#' @method plot pls
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities
@@ -259,6 +270,7 @@ plot.pls <- function(x, label = NULL, ...) {
 #' 
 #' @param x print/summary object (from \code{\link{bilat.symmetry}})
 #' @param ... other arguments passed to print/summary
+#' @method print bilat.symmetry
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities
@@ -284,6 +296,7 @@ print.bilat.symmetry <- function (x, ...) {
 #' 
 #' @param object print/summary object (from \code{\link{bilat.symmetry}})
 #' @param ... other arguments passed to print/summary
+#' @method summary bilat.symmetry
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities
@@ -298,6 +311,7 @@ summary.bilat.symmetry <- function(object, ...) {
 #' @param warpgrids Logical argument whether to include warpgrids
 #' @param mesh Option to include mesh in warpgrids plots
 #' @param ... other arguments passed to plot
+#' @method plot bilat.symmetry
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities
@@ -375,6 +389,7 @@ plot.bilat.symmetry <- function(x, warpgrids = TRUE, mesh= NULL, ...){
 #' 
 #' @param x print/summary object (from \code{\link{phylo.modularity}})
 #' @param ... other arguments passed to print/summary
+#' @method print CR
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities
@@ -394,6 +409,7 @@ print.CR <- function (x, ...) {
 #' 
 #' @param object print/summary object (from \code{\link{phylo.modularity}})
 #' @param ... other arguments passed to print/summary
+#' @method summary CR
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities
@@ -406,6 +422,7 @@ summary.CR <- function(object, ...) {
 #' 
 #' @param x plot object (from \code{\link{phylo.modularity}})
 #' @param ... other arguments passed to plot
+#' @method plot CR
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities
@@ -429,6 +446,7 @@ plot.CR <- function(x, ...){
 #' 
 #' @param x print/summary object (from \code{\link{phylo.modularity}})
 #' @param ... other arguments passed to print/summary
+#' @method print CR.phylo
 #' @export
 #' @author Dean Adams
 #' @keywords utilities
@@ -446,6 +464,7 @@ print.CR.phylo <- function (x, ...) {
 #' 
 #' @param object print/summary object (from \code{\link{phylo.modularity}})
 #' @param ... other arguments passed to print/summary
+#' @method summary CR.phylo
 #' @export
 #' @author Dean Adams
 #' @keywords utilities
@@ -458,6 +477,7 @@ summary.CR.phylo <- function(object, ...) {
 #' 
 #' @param x plot object (from \code{\link{phylo.modularity}})
 #' @param ... other arguments passed to plot
+#' @method plot CR.phylo
 #' @export
 #' @author Dean Adams
 #' @keywords utilities
@@ -483,6 +503,7 @@ plot.CR.phylo <- function(x, ...){
 #' 
 #' @param x print/summary object (from \code{\link{physignal}})
 #' @param ... other arguments passed to print/summary
+#' @method print physignal
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities
@@ -500,6 +521,7 @@ print.physignal <- function(x, ...){
 #' 
 #' @param object print/summary object (from \code{\link{physignal}})
 #' @param ... other arguments passed to print/summary
+#' @method summary physignal
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities
@@ -512,6 +534,7 @@ summary.physignal <- function(object, ...) {
 #' 
 #' @param x plot object (from \code{\link{physignal}})
 #' @param ... other arguments passed to plot
+#' @method plot physignal
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities
@@ -536,6 +559,7 @@ plot.physignal <- function(x, ...){
 #' 
 #' @param x print/summary object
 #' @param ... other arguments passed to print/summary
+#' @method print evolrate
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities
@@ -553,6 +577,7 @@ print.evolrate <- function (x, ...) {
 #' 
 #' @param object print/summary object
 #' @param ... other arguments passed to print/summary
+#' @method summary evolrate
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities
@@ -567,6 +592,7 @@ summary.evolrate <- function(object, ...) {
 #' 
 #' @param x print/summary object
 #' @param ... other arguments passed to print/summary
+#' @method print evolrate1
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities
@@ -580,6 +606,7 @@ print.evolrate1 <- function (x, ...) {
 #' 
 #' @param object print/summary object
 #' @param ... other arguments passed to print/summary
+#' @method summary evolrate1
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities
@@ -592,6 +619,7 @@ summary.evolrate1 <- function(object, ...) {
 #' 
 #' @param x plot object
 #' @param ... other arguments passed to plot
+#' @method plot evolrate
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities
@@ -615,6 +643,7 @@ plot.evolrate <- function(x, ...){
 #' 
 #' @param x print/summary object
 #' @param ... other arguments passed to print/summary
+#' @method print compare.pls
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities
@@ -637,6 +666,7 @@ print.compare.pls <- function(x,...){
 #' 
 #' @param object print/summary object
 #' @param ... other arguments passed to print/summary
+#' @method summary compare.CR
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities
@@ -646,6 +676,7 @@ summary.compare.CR<- function(object, ...) print.compare.CR(object,...)
 #' 
 #' @param x print/summary object
 #' @param ... other arguments passed to print/summary
+#' @method print compare.CR
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities
@@ -667,6 +698,7 @@ print.compare.CR<- function(x,...){
 #' 
 #' @param object print/summary object
 #' @param ... other arguments passed to print/summary
+#' @method summary compare.pls
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities
@@ -676,6 +708,7 @@ summary.compare.pls <- function(object, ...) print.compare.pls(object,...)
 #' 
 #' @param x print/summary object
 #' @param ... other arguments passed to print/summary
+#' @method print combined.set
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities
@@ -703,6 +736,7 @@ print.combined.set <- function(x,...){
 #' 
 #' @param object print/summary object
 #' @param ... other arguments passed to print/summary
+#' @method summary combined.set
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities
@@ -716,6 +750,7 @@ summary.combined.set <- function(object, ...) print.combined.set(object, ...)
 #' @param x plot object (from \code{\link{mshape}})
 #' @param links An optional matrix defining for links between landmarks
 #' @param ... other arguments passed to plot
+#' @method plot mshape
 #' @export
 #' @author Antigoni Kaliontzopoulou
 #' @keywords utilities
@@ -764,6 +799,7 @@ plot.mshape <- function(x, links=NULL,...){
 #' 
 #' @param x print/summary object
 #' @param ... other arguments passed to print/summary
+#' @method print gm.prcomp
 #' @export
 #' @author Antigoni Kaliontzopoulou
 #' @keywords utilities
@@ -803,6 +839,7 @@ print.gm.prcomp <- function (x, ...) {
 #' 
 #' @param object print/summary object
 #' @param ... other arguments passed to print/summary
+#' @method summary gm.prcomp
 #' @export
 #' @author Antigoni Kaliontzopoulou
 #' @keywords utilities
@@ -834,7 +871,7 @@ summary.gm.prcomp <- function (object, ...) {
 #'  
 #'  NOTE: To visualize shape variation across PC axes in 2d plots, use \code{\link{picknplot.shape}}.
 #'  
-#'  
+#' @method plot gm.prcomp
 #' @export
 #' @author Antigoni Kaliontzopoulou, Michael Collyer
 #' @keywords utilities
@@ -1012,6 +1049,7 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, flip = NULL, phylo = FALSE,
 #' 
 #' @param x print/summary object
 #' @param ... other arguments passed to print/summary
+#' @method print geomorphShapes
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities
@@ -1033,6 +1071,7 @@ print.geomorphShapes <- function (x, ...) {
 #' 
 #' @param object print/summary object
 #' @param ... other arguments passed to print/summary
+#' @method summary geomorphShapes
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities

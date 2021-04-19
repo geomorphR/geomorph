@@ -39,6 +39,20 @@
 #'   The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{gpagen}}.
 #'   The generic function, \code{\link{plot}}, calls \code{\link{plotAllSpecimens}}.
 #'
+#'  \subsection{Notes for geomorph 4.0}{ 
+#'  Starting with geomorph version 4.0, it is possible to use approximated thin-plate spline (TPS) mapping
+#'  to estimate bending energy (when bending energy is used for sliding semi-landmarks).  Approximated TPS
+#'  has some computational benefit for large data sets (more GPA iterations are possible in a shorter time), but
+#'  one should make sure first that results are reasonable.  Approximated TPS uses a subset of points (semilandmarks) 
+#'  to estimate bending energy locally, where points are free to slide.  Some subsets might be misrepresentative of
+#'  the global (full configuration) bending energy, and strange results are possible.  A comparison between TPS
+#'  and approximated TPS outcomes could be tried with a few specimens to verify consistency of results before using
+#'  approximated TPS on a large data set.
+#'  
+#'  Choosing to use approximated TPS with only a few sliders is dangerous, as the subset of points might be too small
+#'  to be reliable.  Approximated TPS will work best for data sets with a sufficient number of surface landmarks.  If a
+#'  data set is nearly 100% semilandmarks, TPS and approximated TPS should converge, but no time savings is likely.
+#' }
 #'  \subsection{Notes for geomorph 3.0}{ 
 #' Compared to older versions of geomorph, users might notice subtle differences in Procrustes shape variables when using
 #' semilandmarks (curves or surfaces).  This difference is a result of using recursive updates of the 
@@ -51,19 +65,44 @@
 
 #' @param A Either an object of class geomorphShapes or a 3D array (p x k x n) containing landmark coordinates 
 #' for a set of specimens.  If A is a geomorphShapes object, the curves argument is not needed.
-#' @param Proj A logical value indicating whether or not the Procrustes aligned specimens should be projected 
-#'   into tangent space 
-#' @param ProcD A logical value indicating whether or not Procrustes distance should be used as the criterion
-#'   for optimizing the positions of semilandmarks (if not, bending energy is used)
 #' @param PrinAxes A logical value indicating whether or not to align the shape data by principal axes 
-#' @param max.iter The maximum number of GPA iterations to perform before superimposition is halted.  The final
-#' number of iterations could be larger than this, if curves or surface semilandmarks are involved.
 #' @param curves An optional matrix defining which landmarks should be treated as semilandmarks on boundary 
 #'   curves, and which landmarks specify the tangent directions for their sliding.  This matrix is generated 
 #'   with \code{\link{readland.shapes}} following digitizing of curves in StereoMorph, or may be generated
 #'   using the function \code{\link{define.sliders}}.
 #' @param surfaces An optional vector defining which landmarks should be treated as semilandmarks on surfaces
+#' @param ProcD A logical value indicating whether or not Procrustes distance should be used as the criterion
+#'   for optimizing the positions of semilandmarks (if not, bending energy is used)
+#' @param approxBE A logical value for whether bending energy should be estimated via approximate 
+#' thin-plate spline (TPS) mapping for sliding semilandmarks.  Approximate TPS mapping is much faster and allows 
+#' for more iterations, which might return more reliable results than few iterations with full TPS.  
+#' If using full TPS, one should probably change max.iter to be few for large data sets.
+#' @param sen A numeric value between 0.1 and 1 to adjust the sensitivity of true bending 
+#' energy to use in an approximated thin plate mapping of bending energy. This value is the proportion of landmarks
+#' (excluding semilandmarks) to seek for estimating bending energy.  Sliding semilandmarks are always included in
+#' the final set of landmarks used to make estimates, so the actual sensitivity is higher than the chosen value.
+#' @param max.iter The maximum number of GPA iterations to perform before superimposition is halted.  The final
+#' number of iterations will be larger than max.iter, if curves or surface semilandmarks are involved, as max.iter
+#' will pertain only to iterations with sliding of landmarks.
+#' @param tol A numeric value that can be adjusted for evaluation of the convergence criterion.  If the criterion
+#' is lower than the tolerance, iterations will be stopped.
+#' @param Proj A logical value indicating whether or not the Procrustes aligned specimens should be projected 
+#'   into tangent space 
+#' @param verbose A logical value for whether to include statistics that take a long time to 
+#' calculate with large data sets, including a Procrustes distance matrix among specimens, 
+#' a variance-covariance matrix among 
+#' Procrustes coordinates (shape variables), and variances of landmark points.  Formatting a data frame
+#' for coordinates and centroid size is also embedded within this option.
+#' This argument should be FALSE unless 
+#' explicitly needed.  For large data sets, it will slow down the analysis, extensively.  
 #' @param print.progress A logical value to indicate whether a progress bar should be printed to the screen.  
+#' @param Parallel For sliding semi-landmarks only, either a logical value to indicate whether 
+#' parallel processing should be used or a numeric value to indicate the number of cores to use in 
+#' parallel processing via the \code{parallel} library. 
+#' If TRUE, this argument invokes forking of all processor cores, except one.  If
+#' FALSE, only one core is used. A numeric value directs the number of cores to use,
+#' but one core will always be spared.  Parallel processing is probably only valuable with
+#' large data sets.
 #' @keywords analysis
 #' @export
 #' @author Dean Adams and Michael Collyer
@@ -149,8 +188,15 @@
 #' # NOTE can summarize as: summary(Y.gpa)
 #' # NOTE can plot as: plot(Y.gpa) 
 gpagen = function(A, curves=NULL, surfaces=NULL, PrinAxes = TRUE, 
-                  max.iter = NULL, ProcD=FALSE, Proj = TRUE,
-                  print.progress = TRUE){
+                  max.iter = NULL, tol = 1e-4, 
+                  ProcD=FALSE, approxBE = FALSE, 
+                  sen = 0.5,
+                  Proj = TRUE, verbose = FALSE,
+                  print.progress = TRUE, Parallel = FALSE){
+  
+  if(Parallel != FALSE) {
+    if(is.numeric(Parallel) && Parallel <= 1) Parallel <- FALSE
+  }
   
   if(inherits(A, "geomorphShapes")) {
     Y <- A$landmarks
@@ -187,56 +233,66 @@ gpagen = function(A, curves=NULL, surfaces=NULL, PrinAxes = TRUE,
   }
   
   if(!is.logical(ProcD)) prD <- TRUE else prD <- ProcD
-  if(is.null(max.iter)) max.it <- 5 else max.it <- as.numeric(max.iter)
+  if(is.null(max.iter)) max.it <- 10 else max.it <- as.numeric(max.iter)
   if(is.numeric(max.it) & max.it > 50) {
     warning("GPA might be halted ahead of maximum iterations, 
             as the number chosen is exceedingly large")
-    max.it = 10
+    max.it = 50
   }
-  if(is.na(max.it)) max.it <- 5
-  if(max.it < 0) max.it <- 5
+  if(is.na(max.it)) max.it <- 10
+  if(max.it < 0) max.it <- 10
   if(!is.null(curves)) {
     curves <- as.matrix(curves) 
     if(ncol(curves) != 3) stop("curves must be a matrix of three columns")
   } else curves <- NULL
   if(!is.null(surfaces)) surf <- as.vector(surfaces) else surf <- NULL
+  
+  if(print.progress && Parallel != FALSE) {
+        print.progress = FALSE
+        message("\nResults status turned off for parallel processing.\n")
+      }  
+  
+  
   if(print.progress == TRUE){
-    if(!is.null(curves) || !is.null(surf)) gpa <- pGpa.wSliders(Y, curves = curves, surf=surf,
-                                                                PrinAxes = PrinAxes, max.iter=max.it, 
-                                                                ProcD=prD) else
-                                                                  gpa <- pGpa(Y, PrinAxes = PrinAxes, max.iter=max.it)
+    cat("\nPerforming GPA\n")
+    if(!is.null(curves) || !is.null(surf)) 
+      gpa <- pGpa.wSliders(Y, curves = curves, surf=surf,
+                           PrinAxes = PrinAxes, max.iter=max.it, 
+                           tol = tol, appBE = approxBE, sen = sen, ProcD=prD) else
+                             gpa <- pGpa(Y, PrinAxes = PrinAxes, 
+                                         max.iter=max.it, tol = tol)
+                                                                
   } else {
-    if(!is.null(curves) || !is.null(surf)) gpa <- .pGpa.wSliders(Y, curves = curves, surf=surf,
-                                                                 PrinAxes = PrinAxes, max.iter=max.it, 
-                                                                 ProcD=prD) else
-                                                                   gpa <- .pGpa(Y, PrinAxes = PrinAxes, max.iter=max.it)
+    if(!is.null(curves) || !is.null(surf)) 
+      gpa <- .pGpa.wSliders(Y, curves = curves, surf=surf,
+                            PrinAxes = PrinAxes, max.iter=max.it, 
+                            tol = tol, appBE= approxBE, sen = sen, ProcD=prD, 
+                            Parallel = Parallel) else
+                              gpa <- .pGpa(Y, PrinAxes = PrinAxes, 
+                                           max.iter=max.it, tol = tol, 
+                                           Parallel = Parallel)
   }
   
   coords <- gpa$coords
   M <- gpa$consensus
   dimnames(M) <- list(p.names, k.names)
-    
+  if(is.null(colnames(M))) colnames(M) <- c("X", "Y", "Z")[1:k] 
+  
   if (Proj == TRUE) {
+    if(print.progress) cat("\nMaking projections... ")
     coords <- orp(coords)
     M <- Reduce("+",coords)/n
     dimnames(M) <- list(p.names, k.names)
+    if(print.progress) cat("Finished!\n")
   }
   Csize <- gpa$CS
   names(Csize) <- spec.names
   iter <- gpa$iter
-  pt.var <- Reduce("+",Map(function(y) y^2/n, coords))
+  coordsL <- coords
   coords <- simplify2array(coords)
   dimnames(coords) <- list(p.names, k.names, spec.names)
-  two.d.coords = two.d.array(coords)
-  rownames(two.d.coords) <- spec.names
-  pt.VCV <- var(two.d.coords)
-  rownames(pt.var) <- p.names
-  colnames(pt.var) <- c("Var.X", "Var.Y", "Var.Z")[1:k]
-
-  if(is.null(colnames(M))) colnames(M) <- c("X", "Y", "Z")[1:k] 
-
-  procD <- try(dist(two.d.coords), silent = TRUE)
-  if(inherits(procD, "try-error")) procD <- NULL
+  
+  
   if(!is.null(curves) || !is.null(surf)) {
     nsliders <- nrow(curves)
     nsurf <- length(surf)
@@ -247,14 +303,32 @@ gpagen = function(A, curves=NULL, surfaces=NULL, PrinAxes = TRUE,
     smeth <- NULL
   }
   if(is.null(nsliders)) nsliders <- 0; if(is.null(nsurf)) nsurf <- 0
+  
+  if(verbose) {
+    if(print.progress) cat("\nCompiling additional results ... ")
+    
+    two.d.coords <- two.d.array(coords)
+    rownames(two.d.coords) <- spec.names
+    dat <- data.frame(coords = two.d.coords, Csize = Csize)
+    pt.var <- Reduce("+", Map(function(y) y^2/n, coordsL))
+    rownames(pt.var) <- p.names
+    colnames(pt.var) <- c("Var.X", "Var.Y", "Var.Z")[1:k]
+    pt.VCV <- var(two.d.coords)
+    procD <- try(dist(two.d.coords), silent = TRUE)
+    if(inherits(procD, "try-error")) procD <- NULL
+    if(print.progress) cat("Finished!\n")
+  } else pt.var <- pt.VCV <- procD <- two.d.coords <- dat <- NULL
+  
 
   out <- list(coords=coords, Csize=Csize, 
               iter=iter, 
-              points.VCV = pt.VCV, points.var = pt.var, 
               consensus = M, procD = procD, 
-              p=p,k=k, nsliders=nsliders, nsurf = nsurf,
-              data = data.frame(coords = two.d.coords, Csize = Csize),
+              p = p,k = k, nsliders=nsliders, nsurf = nsurf,
+              points.VCV = pt.VCV, points.var = pt.var, 
+              data = dat,
               Q = gpa$Q, slide.method = smeth, call= match.call())
   class(out) <- "gpagen"
+  
+
   out
 }

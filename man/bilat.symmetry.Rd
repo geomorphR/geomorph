@@ -15,6 +15,9 @@ bilat.symmetry(
   iter = 999,
   seed = NULL,
   RRPP = TRUE,
+  SS.type = c("I", "II", "III"),
+  turbo = TRUE,
+  Parallel = FALSE,
   print.progress = TRUE,
   ...
 )
@@ -54,6 +57,18 @@ which might be of interest for advanced users.}
 \item{RRPP}{A logical value indicating whether residual randomization should be used for 
 significance testing.}
 
+\item{SS.type}{A choice between type I (sequential), type II (hierarchical), or type III (marginal).}
+
+\item{turbo}{A logical value that if TRUE, suppresses coefficient estimation in every random permutation, 
+in order to speed up computation time.}
+
+\item{Parallel}{Either a logical value to indicate whether parallel processing 
+should be used or a numeric value to indicate the number of cores to use in 
+parallel processing via the \code{parallel} library. 
+If TRUE, this argument invokes forking of all processor cores, except one.  If
+FALSE, only one core is used. A numeric value directs the number of cores to use,
+but one core will always be spared.}
+
 \item{print.progress}{A logical value to indicate whether a progress bar should be printed to 
 the screen.  
 This is helpful for long-running analyses.}
@@ -70,6 +85,10 @@ An object of class "bilat.symmetry" returns a list of the following
 \item{FA.component}{The fluctuating asymmetry component for each specimen, 
 found as the specimen specific side deviation adjusted for the mean 
 directional asymmetry in the dataset.}
+\item{signed.AI}{Individual signed asymmetry index, as per Klingenberg and McIntyre, 1998;
+Lazić et al 2005.}
+#' \item{unsigned.AI}{Individual unsigned asymmetry index, as per Klingenberg and McIntyre, 1998;
+Lazić et al 2005.}
 \item{data.type}{A value indicating whether the analysis was performed as Object or Matching 
 symmetry.}
 \item{permutations}{The number of random permutations used.}
@@ -124,6 +143,12 @@ axes. The landmarks across the line of symmetry are then relabeled to obtain lan
 correspondence. The user must supply a list of landmark pairs. A vector containing information 
 on individuals must also be supplied. Replicates of each specimen may also be included in the 
 dataset, and when specified will be used as measurement error. 
+
+The function also provides individual measures of signed and unsigned asymmetry, calculated as the
+Procrustes distance between the right and left element (for paired structures, as detailed in 
+Klingenberg and McIntyre 1998) or side of the structure (for object symmetry, following Lazić 
+et al 2005). The computational difference betwen the two approaches consists in that, for object
+symmetry, only paired landmarks are considered, excluding the landmarks of the midline.
  
 \subsection{Notes for geomorph 3.0}{ 
 Compared to older versions of geomorph, some results can be expected to be slightly different. 
@@ -204,8 +229,13 @@ bilateral symmetry of shapes. Biometrika. 87:285-300.
 
 Klingenberg, C.P., M. Barluenga, and A. Meyer. 2002. Shape analysis of symmetric 
 structures: quantifying variation among individuals and asymmetry. Evolution. 56:1909-1920.
+
+Lazić, M. M., M. A. Carretero, J. Crnobrnja-Isailović, and A. Kaliontzopoulou. 2015.
+Effects of environmental disturbance on phenotypic variation: an integrated assessment of 
+canalization, developmental stability, modularity, and allometry in lizard head shape. The American
+Naturalist 185:44–58.
 }
 \author{
-Dean Adams and Michael Collyer
+Dean Adams, Michael Collyer and Antigoni Kaliontzopoulou
 }
 \keyword{analysis}

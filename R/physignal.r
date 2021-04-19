@@ -152,23 +152,28 @@ physignal <- function(A, phy, iter = 999, seed = NULL, print.progress = FALSE){
   
   # Kmult by paca
   x <- as.matrix(x)
-  PaCA <- ordinate(x, A = C, newdata = anc.BM(phy, x))
-  class(PaCA) <- c("gm.prcomp", class(PaCA))
-  PaCA$phy <- phy
-  names(PaCA)[[which(names(PaCA) == "xn")]] <- "anc.x"
-  P <- PaCA$x
-  p <- NCOL(P)
-  
-  K.by.p <- sapply(1:p, function(j) {
-    K.args$x <- as.matrix(P[, 1:j])
-    do.call(Kmult, K.args)
-  })
-  
+  p <- NCOL(x)
+  if(p > 1) {
+    PaCA <- ordinate(x, A = C, newdata = anc.BM(phy, x))
+    class(PaCA) <- c("gm.prcomp", class(PaCA))
+    PaCA$phy <- phy
+    names(PaCA)[[which(names(PaCA) == "xn")]] <- "anc.x"
+    P <- PaCA$x
+    
+    K.by.p <- sapply(1:ncol(P), function(j) {
+      K.args$x <- as.matrix(P[, 1:j])
+      do.call(Kmult, K.args)
+    })
+
+  } else {
+    PaCA <- P <- K.by.p <- NULL
+  }
   
   out <- list(phy.signal = K.rand[[1]], pvalue = p.val, random.K = K.rand, Z = Z,
               permutations = iter+1, 
               PACA = PaCA, K.by.p = K.by.p, call=match.call())
   
+    
   class(out) <- "physignal"
   out
 }

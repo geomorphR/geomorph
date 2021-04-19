@@ -220,7 +220,7 @@ integration.test <-function(A, A2 = NULL,
     }
     
     x <- center(x)
-    y <- center(x)
+    y <- center(y)
     pls.rand <- sapply(1:perms, function(j) {
       step <- j
       if(print.progress) setTxtProgressBar(pb,step)

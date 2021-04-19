@@ -43,7 +43,7 @@
 #'  the resampling procedure.
 #'
 #' @param A A matrix (n x [p x k]) or 3D array (p x k x n) containing Procrustes shape variables for a set of specimens
-#' @param gp A factor array designating group membership
+#' @param gp A factor array designating group membership for landmarks
 #' @param phy A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape
 #' @param Subset A logical value indicating whether or not the traits are subsets from a single 
 #' landmark configuration (default is TRUE)
