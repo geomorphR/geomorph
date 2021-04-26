@@ -246,7 +246,7 @@ summary(PW, test.type = "dist", confidence = 0.95, stat.table = FALSE)
 # (same as morphol.disaprity):
 summary(PW, test.type = "var", confidence = 0.95, stat.table = TRUE)
 summary(PW, test.type = "var", confidence = 0.95, stat.table = FALSE)
-morphol.disparity(fit.full, groups = gp, iter=299)
+morphol.disparity(fit.full, groups = gp, iter = 999)
 
 ### Regression example
 data(ratland)
