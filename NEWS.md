@@ -3,6 +3,9 @@
 ### NEW FEATURES
 * Added a transform argument to `morphol.disparity` for PGLS models, consistent with `gm.prcomp` approaches.
 
+### BUG FIXES
+* Fixed typo bug in `integration.test` (only affcted separate matrices).
+
 # CHANGES IN GEOMORPH VERSION 4.0.0 
 
 ### NEW FEATURES
