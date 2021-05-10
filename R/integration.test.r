@@ -142,7 +142,7 @@ integration.test <-function(A, A2 = NULL,
            call. = FALSE) 
     
     y <- try(two.d.array(A2), silent = TRUE)
-    if(inherits(y, "try-error")) y <- try(as.matrix(A), silent = TRUE)
+    if(inherits(y, "try-error")) y <- try(as.matrix(A2), silent = TRUE)
     if(inherits(y, "try-error"))
       stop("\nA2 is not a suitable data array for analysis. ", call. = FALSE)
     
