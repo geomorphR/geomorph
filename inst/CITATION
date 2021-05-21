@@ -23,7 +23,7 @@ citEntry(entry= "Misc",
   	year = "2021",
   	  	url = " https://cran.r-project.org/package=geomorph",
 
-        textVersion = paste("Adams, D. C., M. L. Collyer, A. Kaliontzopoulou, and E.K. Balken. 2021. Geomorph: Software for geometric morphometric analyses. R package version 4.0. https://cran.r-project.org/package=geomorph.",sep=""))
+        textVersion = paste("Adams, D. C., M. L. Collyer, A. Kaliontzopoulou, and E.K. Baken. 2021. Geomorph: Software for geometric morphometric analyses. R package version 4.0. https://cran.r-project.org/package=geomorph.",sep=""))
         
 citEntry(entry = "Misc",
 	title = "{RRPP}: Linear Model Evaluation with Randomized Residuals in a Permutation Procedure, R package version 0.6.2.",
