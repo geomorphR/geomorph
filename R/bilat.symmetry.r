@@ -44,7 +44,7 @@
 #' The function also provides individual measures of signed and unsigned asymmetry, calculated as the
 #' Procrustes distance between the right and left element (for paired structures, as detailed in 
 #' Klingenberg and McIntyre 1998) or side of the structure (for object symmetry, following Lazić 
-#' et al 2005). The computational difference betwen the two approaches consists in that, for object
+#' et al 2015). The computational difference betwen the two approaches consists in that, for object
 #' symmetry, only paired landmarks are considered, excluding the landmarks of the midline.
 #'  
 #' \subsection{Notes for geomorph 3.0}{ 
