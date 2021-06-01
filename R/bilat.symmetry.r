@@ -120,9 +120,9 @@
 #' found as the specimen specific side deviation adjusted for the mean 
 #' directional asymmetry in the dataset.}
 #' \item{signed.AI}{Individual signed asymmetry index, as per Klingenberg and McIntyre, 1998;
-#' Lazić et al 2005.}
+#' Lazić et al 2015.}
 #' #' \item{unsigned.AI}{Individual unsigned asymmetry index, as per Klingenberg and McIntyre, 1998;
-#' Lazić et al 2005.}
+#' Lazić et al 2015.}
 #' \item{data.type}{A value indicating whether the analysis was performed as Object or Matching 
 #' symmetry.}
 #' \item{permutations}{The number of random permutations used.}
