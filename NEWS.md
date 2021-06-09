@@ -5,6 +5,7 @@
 
 ### BUG FIXES
 * Fixed typo bug in `integration.test` (only affcted separate matrices).
+* Fixed bug in `estimate.missing` (only affecting method = "Reg").
 
 # CHANGES IN GEOMORPH VERSION 4.0.0 
 
