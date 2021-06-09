@@ -124,7 +124,7 @@ estimate.missing <- function(A, method=c("TPS","Reg")){
       miss.xsc <- c(1,A.2d[spec.NA[i],-missing.coord]%*%U)
       miss.ysc <- miss.xsc%*%beta
       pred.val <- miss.ysc%*%t(V)
-      for (j in 1:length(V)){
+      for (j in 1:length(pred.val)){
         A.2d[spec.NA[i] ,missing.coord[j]] <- pred.val[j]    
       }
     }
