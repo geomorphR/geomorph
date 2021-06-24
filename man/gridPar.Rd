@@ -24,7 +24,7 @@ gridPar(
   grid.lwd = 1,
   grid.lty = 1,
   txt.adj = NULL,
-  txt.pos = NULL,
+  txt.pos = 2,
   txt.cex = 0.8,
   txt.col = "black"
 )
