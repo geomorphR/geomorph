@@ -47,7 +47,7 @@ a598044482a6c3e39517b798b654c57e *man/hummingbirds.Rd
 073ec603983e6cd70eb01e40d5c091ec *man/lizards.Rd
 31efbd675ae82ac9136d6510fd8ad6b6 *man/make_ggplot.Rd
 35109bbb064750725a5f7cde7232832f *man/modularity.test.Rd
-285b9372f165e93179755632be13e85d *man/module.eigen.Rd
+d68c308fdda2377ee303f87fbce9da5f *man/module.eigen.Rd
 e9c51057da8d4b9d442331c837da35c0 *man/morphol.disparity.Rd
 00e77dd77ac4f29ace5334a4df4aa23e *man/mosquito.Rd
 ffadebd6be893bbc403d22f884329a9a *man/mshape.Rd
@@ -154,7 +154,7 @@ aac6a4f8a759473e8c37048e5c8e3d91 *R/findMeanSpec.r
 067124d4119de55a6089c6aefdd0eac5 *R/fixed.angle.r
 3d7958991ae174c24ba7c570f4e03b27 *R/geomorph.data.frame.r
 6e201dee8948fb3577dd4b2d1dd187c8 *R/geomorph.support.code.r
-50db8ac5e911857a61ed95a2a7fcaf55 *R/geomorph.utils.r
+577960d4793f013fe8e53545843185d5 *R/geomorph.utils.r
 b0de2a67cff633e27e7a00860187240f *R/globalIntegration.r
 fa94a434ca094a407ec33009dca9843c *R/gm.prcomp.R
 d737fcb101b337b0737e98eea0af6e3a *R/gpagen.r
@@ -163,7 +163,7 @@ a6c3643aba0a098878d2768d57ff8ded *R/gridPar.r
 0cbfe6b5655e2751cdd03ca2a1550768 *R/interlmkdist.r
 0f92a7f17f93c5e10630294e43fe3ac4 *R/make_ggplot.r
 03ed10e7d0a7537e7ae33dd8f7287ff3 *R/modularity.test.r
-71109c79374c36493009edd7bf8e1b2e *R/module.eigen.r
+6558aaf878c323bfd2322ce39d2bc7de *R/module.eigen.r
 754af4a0bc2c4f9187c3f9c51451636a *R/morphol.disparity.r
 dd9ce57e2e2f13f7bba6b3246004f578 *R/phylo.integration.r
 5756dc9cc5fa46650b06ae71b6f14bb0 *R/phylo.modularity.r

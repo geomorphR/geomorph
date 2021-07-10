@@ -1,8 +1,8 @@
-#' Eigen-analysis for different covariance matrices defined by modules
+#' Eigen-analysis for different covariance matrices defined by a modular hypothesis
 #'
-#' Function performs eigen analysis on covariance matrices for modules only, integration only, and
+#' Function performs eigen analysis on covariance matrices for modularity only, integration only, and
 #' both integration and modularity (total), as a descriptive way to understand whether modularity or integration are more
-#' prominent in a data set.
+#' prominent in a data set, for a particular modular hypothesis.
 #'
 #' The function performs eigen-analysis on a covariance matrix (of shape data) four different ways: the observed covariance
 #' matrix, a covariance matrix that has only within-module covariances (modularity) , a covariance matrix that has only 
@@ -53,6 +53,10 @@
 #'  \item{evecs}{The eigenvectors of all covariance matrices. This is NULL if only values are returned.}
 #'  \item{rel.dim}{The relevant dimensions based on a broken stick model.}
 #'  \item{n.modules}{The number of modules considered.}
+#'  \item{prop.mod.cells}{The proportion of elements (cells) in the covariance matrix corresponding to 
+#'  modularity covariances.}
+#'  \item{prop.int.cells}{The proportion of elements (cells) in the covariance matrix corresponding to 
+#'  integration covariances.}
 #' @references  Krzanowski, W. J. 1979. Between-groups comparison of principal components. 
 #' Journal of the American Statistical Association, 74, 703–707.
 #' @references Burns et al. In review.
@@ -87,12 +91,12 @@
 #' # from residuals rendered independent of phylogenetic covariances.
 #' 
 #' ME.glst <- module.eigen(Y.gpa$coords, partition.gp = land.gps,
-#' only.values = TRUE, phy = plethspecies$phy, transform = FALSE)
+#' only.values = TRUE, phy = plethspecies$phy, transform. = TRUE)
 #' summary(ME.glst)
 #' plot(ME.glst)
 
 module.eigen <- function(A, A2 = NULL, partition.gp = NULL, 
-                         phy = NULL, transform = TRUE, only.values = TRUE,
+                         phy = NULL, transform. = TRUE, only.values = TRUE,
                          tol = 0.001){
   
   if(any(is.na(A)))
@@ -167,7 +171,7 @@ module.eigen <- function(A, A2 = NULL, partition.gp = NULL,
       ones <- matrix(1, n)
       B <- lm.fit(Pcov %*% ones, Pcov %*% x)$coefficients
       R <- x - ones %*% B
-      V <- if(transform) crossprod(Pcov %*% R) / (n-1) else
+      V <- if(transform.) crossprod(Pcov %*% R) / (n-1) else
         crossprod(R) / (n-1)
     } else V <- var(x)
     
@@ -180,6 +184,11 @@ module.eigen <- function(A, A2 = NULL, partition.gp = NULL,
     for(i in 1:length(gp.n)) 
       M[starts[i]:ends[i], starts[i]:ends[i]] <- V[starts[i]:ends[i], starts[i]:ends[i]]
     Int <- V - M + Ind
+    
+    mcells <- length(which(M != 0)) - nrow(V)
+    icells <- length(which(Int != 0)) - nrow(V)
+    mprop <- mcells / (length(V) - nrow(V))
+    iprop <- icells / (length(V) - nrow(V))
     
     S <- svd(V)
     Sint <- svd(Int)
@@ -205,7 +214,9 @@ module.eigen <- function(A, A2 = NULL, partition.gp = NULL,
                     ind = Sind$d),
       evecs = NULL,
       rel.dims = list(total = bsV, mod = bsM, int = bsI),
-      n.modules = ngps
+      n.modules = ngps,
+      prop.mod.cells = mprop,
+      prop.int.cells = iprop
     )
   
     if(!only.values)  

@@ -2,14 +2,14 @@
 % Please edit documentation in R/module.eigen.r
 \name{module.eigen}
 \alias{module.eigen}
-\title{Eigen-analysis for different covariance matrices defined by modules}
+\title{Eigen-analysis for different covariance matrices defined by a modular hypothesis}
 \usage{
 module.eigen(
   A,
   A2 = NULL,
   partition.gp = NULL,
   phy = NULL,
-  transform = TRUE,
+  transform. = TRUE,
   only.values = TRUE,
   tol = 0.001
 )
@@ -24,11 +24,6 @@ module.eigen(
 
 \item{phy}{Optional argument to include a class \code{phylo} phylogenetic tree.  Tip labels must match data names.}
 
-\item{transform}{A logical argument for whether to use transformed residuals, if a phylogeny is provided.  If TRUE,
-a GLS covariance matrix will be estimated; if FALSE, data will be centered on GLS mean but an OLS covariance matrix 
-will be estimated.  The former is more representative of covariances independent of phylogeny;  the latter 
-is more representative of dispersion in the tangent space.}
-
 \item{only.values}{A logical argument for whether to only return eigenvalues.  If TRUE, vector correlations
 using \code{\link{summary.module.eigen}} will not be possible.}
 
@@ -36,6 +31,11 @@ using \code{\link{summary.module.eigen}} will not be possible.}
 This value is the fraction of the standard deviation of the first eigenvector.  It helps to cut off dimensions that are 
 no different in eigenvalue than independent vectors.  If tol = 0, a strict criterion is used to retain all vectors
 that have larger eigenvalues than expected from independent variables.}
+
+\item{transform}{A logical argument for whether to use transformed residuals, if a phylogeny is provided.  If TRUE,
+a GLS covariance matrix will be estimated; if FALSE, data will be centered on GLS mean but an OLS covariance matrix 
+will be estimated.  The former is more representative of covariances independent of phylogeny;  the latter 
+is more representative of dispersion in the tangent space.}
 }
 \value{
 Objects of class "model.eigen" return a list of the following:
@@ -43,11 +43,15 @@ Objects of class "model.eigen" return a list of the following:
  \item{evecs}{The eigenvectors of all covariance matrices. This is NULL if only values are returned.}
  \item{rel.dim}{The relevant dimensions based on a broken stick model.}
  \item{n.modules}{The number of modules considered.}
+ \item{prop.mod.cells}{The proportion of elements (cells) in the covariance matrix corresponding to 
+ modularity covariances.}
+ \item{prop.int.cells}{The proportion of elements (cells) in the covariance matrix corresponding to 
+ integration covariances.}
 }
 \description{
-Function performs eigen analysis on covariance matrices for modules only, integration only, and
+Function performs eigen analysis on covariance matrices for modularity only, integration only, and
 both integration and modularity (total), as a descriptive way to understand whether modularity or integration are more
-prominent in a data set.
+prominent in a data set, for a particular modular hypothesis.
 }
 \details{
 The function performs eigen-analysis on a covariance matrix (of shape data) four different ways: the observed covariance
@@ -101,7 +105,7 @@ plot(ME.glsc)
 # from residuals rendered independent of phylogenetic covariances.
 
 ME.glst <- module.eigen(Y.gpa$coords, partition.gp = land.gps,
-only.values = TRUE, phy = plethspecies$phy, transform = FALSE)
+only.values = TRUE, phy = plethspecies$phy, transform. = TRUE)
 summary(ME.glst)
 plot(ME.glst)
 }

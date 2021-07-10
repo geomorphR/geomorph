@@ -1164,7 +1164,10 @@ summary.module.eigen <- function(object, use.rel.dims = TRUE, PC = 1) {
   out <- list(rPC.mat = rp, rKrz.mat = rK,
               eig.tab = eig.tab, prop.tab = prop.tab,
               use.rel.dims = use.rel.dims,
-              PC = PC, total.dims = length(object$eval$total))
+              PC = PC, total.dims = length(object$eval$total),
+              prop.mod.cells = object$prop.mod.cells,
+              prop.int.cells = object$prop.int.cells)
+  
   class(out) <- "summary.module.eigen"
   out
 }
@@ -1179,6 +1182,12 @@ summary.module.eigen <- function(object, use.rel.dims = TRUE, PC = 1) {
 #' @author Michael Collyer
 #' @keywords utilities
 print.summary.module.eigen <- function(x, ...) {
+  
+  cat("\nPercentage of covariance matrix represented by modularity covariances:", 
+      round(x$prop.mod.cells * 100, 2), "percent.\n")
+  cat("\nPercentage of covariance matrix represented by integration covariances:", 
+      round(x$prop.int.cells * 100, 2), "percent.\n")
+  
   if(x$use.rel.dims) {
     cat("\nDisplaying results for only", nrow(x$eig.tab), "relevant dimensions, of", x$total.dims, "dimensions, total,\n")
     cat("based on a broken stick model (from the distribution of 'independence' eigen values).\n")
@@ -1194,10 +1203,10 @@ print.summary.module.eigen <- function(x, ...) {
   if(!is.null(x$rPC.mat)) {
     
     cat("\nPairwise vector correlations between PC", x$PC, "\n")
-    print(x$rPC.mat)
+    print(as.dist(x$rPC.mat))
     
     cat("\nKrzanowski (squared) vector correlations, using defined components\n")
-    print(x$rKrz.mat)
+    print(as.dist(x$rKrz.mat))
     
   }
     
