@@ -1078,3 +1078,196 @@ print.geomorphShapes <- function (x, ...) {
 summary.geomorphShapes <- function (object, ...) {
   print.geomorphShapes(object, ...)
 }
+
+# module.eigen
+
+#' Print/Summary function for geomorph
+#' 
+#' @param x An object of class \code{\link{module.eigen}}
+#' @param ... other arguments passed to print/summary
+#' @method print module.eigen
+#' @export
+#' @author Michael Collyer
+#' @keywords utilities
+print.module.eigen <- function(x, ...) {
+  cat("\nEigen-analysis of covariance matrices for", x$n.modules, "modules\n")
+}
+
+
+#' Print/Summary function for geomorph
+#' 
+#' @param object An object of class \code{\link{module.eigen}}
+#' @param use.rel.dims A logical argument for whether to use only the relevant dimensions in the summary, 
+#' based on a broken stick model.
+#' @param PC A numeric value to indicate for which principal component to perform vector correlations
+#' @param ... other arguments passed to print/summary
+#' @method summary module.eigen
+#' @export
+#' @author Michael Collyer
+#' @return An object of class "summary.module.eigen" is a list with components
+#' including table of eigenvalues, table of proportion of variation explained,
+#' a pairwise table of vector correlations (for indicated principal component), and a apirwise
+#' table of Krzanowski squared correlations.
+#' @keywords utilities
+summary.module.eigen <- function(object, use.rel.dims = TRUE, PC = 1) {
+  
+  m <- if(use.rel.dims) 1:max(unlist(object$rel.dims)) else 
+    1:length(object$evals$total)
+  
+  if(PC > max(m)) {
+    cat("\nPC is a number greater than the number of relevant dimensions.  Setting it to PC = 1\n")
+    PC <- 1
+  }
+  
+  if(!is.null(object$evecs)) {
+    v0 <- object$evecs$ind[,m]
+    vM <- object$evecs$mod[,m]
+    vI <- object$evecs$int[,m]
+    vT <- object$evecs$total[,m]
+    
+    rp <- abs(vec.cor.matrix(rbind(Independence= v0[, PC],
+                                   Modularity = vM[, PC], 
+                                   Integration = vI[, PC], 
+                                   Total = vT[, PC])))
+    
+    krzCor <- function(v1, v2){
+      m <- min(ncol(v1), ncol(v2))
+      sum(crossprod(v1[, 1:m], v2[, 1:m])^2) / m
+    }
+    
+    rK <- as.dist(diag(4))
+    rK[1:6] <- c(krzCor(vM, v0), krzCor(v0, vI), krzCor(v0, vT),
+                 krzCor(vM, vI), krzCor(vM, vT), krzCor(vI, vT))
+    rK <- as.matrix(rK)
+    diag(rK) <- 1
+    dimnames(rK) <- dimnames(rp)
+    
+  } else rp <- rK <- NULL
+  
+  
+  rel.dims <- if(use.rel.dims) object$rel.dims[c("mod", "int", "total")] else lapply(1:3, function(.) m)
+  rel.eigs <- object$evals[c("mod", "int", "total")]
+  rel.eigs <- Map(function(e, d) e[d], rel.eigs, rel.dims)
+  rel.eigs <- lapply(rel.eigs, function(x){
+    y <- matrix(NA, max(m))
+    y[1:length(x)] <- x
+    y
+  })
+  rel.eigs <- c(list(ind = matrix(object$evals$ind[m])), rel.eigs)
+  eig.tab <- as.data.frame(do.call(cbind, rel.eigs))
+  colnames(eig.tab) <- c("Independence", "Modularity", "Integration", "Total")
+  rownames(eig.tab) <- paste("Comp", m)
+  
+  prop.tab <- eig.tab / sum(object$evals$total)
+  
+
+  out <- list(rPC.mat = rp, rKrz.mat = rK,
+              eig.tab = eig.tab, prop.tab = prop.tab,
+              use.rel.dims = use.rel.dims,
+              PC = PC, total.dims = length(object$eval$total))
+  class(out) <- "summary.module.eigen"
+  out
+}
+
+
+#' Print/Summary function for geomorph
+#' 
+#' @param x An object of class \code{\link{summary.module.eigen}}
+#' @param ... other arguments passed to print/summary
+#' @method print summary.module.eigen
+#' @export
+#' @author Michael Collyer
+#' @keywords utilities
+print.summary.module.eigen <- function(x, ...) {
+  if(x$use.rel.dims) {
+    cat("\nDisplaying results for only", nrow(x$eig.tab), "relevant dimensions, of", x$total.dims, "dimensions, total,\n")
+    cat("based on a broken stick model (from the distribution of 'independence' eigen values).\n")
+  } else {
+    cat("\nDisplaying results for all components.\n")
+  }
+  
+  cat("\nEigen values:\n")
+  print(x$eig.tab)
+  cat("\nProportion of variance explained:\n")
+  print(x$prop.tab)
+  
+  if(!is.null(x$rPC.mat)) {
+    
+    cat("\nPairwise vector correlations between PC", x$PC, "\n")
+    print(x$rPC.mat)
+    
+    cat("\nKrzanowski (squared) vector correlations, using defined components\n")
+    print(x$rKrz.mat)
+    
+  }
+    
+}
+
+#' Plot function for geomorph
+#' 
+#' @param x An object of class \code{\link{module.eigen}}
+#' @param use.rel.dims A logical argument for whether to use only the relevant dimensions in the plot, 
+#' based on a broken stick model.
+#' @param ... other arguments passed to plot.  This function vectorizes a summary table (for proportions of variance) 
+#' from \code{\link{summary.module.eigen}}.  For example, if a 5 x 4 table is produced, a vector of length 20 is produced
+#' by the columns of the table.  Some plot parameters can be manipulated, but one has to do it with respect to all values.  
+#' For example, for the 5 x 4 table, bg = c(rep(1:4, each = 5)) produces a vector of length 20 to describe point 
+#' background colors.
+#' @method plot module.eigen
+#' @export
+#' @author Michael Collyer
+#' @keywords utilities
+plot.module.eigen <- function(x, use.rel.dims = TRUE, 
+                             add.lines = TRUE, add.legend = TRUE,
+                             ...) {
+  s <- summary.module.eigen(x, use.rel.dims = use.rel.dims)
+  df <- s$prop.tab
+  y <- as.vector(as.matrix(df))
+  x <- rep(1:nrow(df), 4)
+  
+  plot.args <- list(...)
+  plot.args$x <- x
+  plot.args$y <- y
+  if(is.null(plot.args$pch)) plot.args$pch <- rep(19, length(y))
+  if(is.null(plot.args$col)) plot.args$col <- rep(c(8, 4, 6, 1), each = nrow(df))
+  if(is.null(plot.args$bg)) plot.args$bg <- rep(c(8, 4, 6, 1), each = nrow(df))
+  
+  if(is.null(plot.args$xlab)) plot.args$xlab = "Component"
+  if(is.null(plot.args$ylab)) plot.args$ylab = "Proportion of total variance"
+
+  do.call(plot, plot.args)
+  
+  if(add.lines) {
+    pt.lty <- plot.args$lty
+    if(is.null(pt.lty)) pt.lty <- 1
+    pt.lwd <- plot.args$lwd
+    if(is.null(pt.lwd)) pt.lwd<- 1
+    points(1:nrow(df), df[,1], type = "l", lty = pt.lty, lwd = pt.lwd,
+           col = plot.args$col[1])
+    points(1:nrow(df), df[,2], type = "l", lty = pt.lty, lwd = pt.lwd,
+           col = plot.args$col[nrow(df) + 1])
+    points(1:nrow(df), df[,3], type = "l", lty = pt.lty, lwd = pt.lwd,
+           col = plot.args$col[2* nrow(df) + 1])
+    points(1:nrow(df), df[,4], type = "l", lty = pt.lty, lwd = pt.lwd,
+           col = plot.args$col[3* nrow(df) + 1])
+    
+    plot.args$type = "p"
+    do.call(points, plot.args)
+  } else pt.lty <- pt.lwd <- NULL
+  
+  if(add.legend) {
+    pt.pch <- plot.args$pch[c(1, nrow(df) + 1, 2* nrow(df) + 1, 3* nrow(df) + 1)]
+    pt.col<- plot.args$col[c(1, nrow(df) + 1, 2* nrow(df) + 1, 3* nrow(df) + 1)]
+    pt.bg <- plot.args$bg[c(1, nrow(df) + 1, 2* nrow(df) + 1, 3* nrow(df) + 1)]
+    
+    if(add.lines) 
+      legend("topright",
+           c("Independence", "Modularity", "Integration", "Total"),
+           lty = pt.lty, lwd= pt.lwd, 
+           pch = pt.pch, col = pt.col, pt.bg = pt.bg) else 
+             legend("topright",
+                    c("Independence", "Modularity", "Integration", "Total"),
+                    pch = pt.pch, col = pt.col, pt.bg = pt.bg)
+  }
+    
+}

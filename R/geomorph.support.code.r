@@ -841,7 +841,6 @@ BE.slide <- function(curves = NULL, surf = NULL, Ya, ref, appBE = TRUE,
                        surf, ref, Lk, appBE, BEp)
     }
   
-  
   while(Q > tol){
     iter <- iter+1
     
@@ -849,6 +848,7 @@ BE.slide <- function(curves = NULL, surf = NULL, Ya, ref, appBE = TRUE,
       tans <- Map(function(y) tangents(curves, y, scaled=TRUE), 
                     slid0)
     } else tans <- NULL
+    
     
     L <- if(appBE) LtemplateApprox(ref[BEp,]) else Ltemplate(ref)
     Lk <- kronecker(diag(k), L)
@@ -909,6 +909,7 @@ BE.slidePP <- function(curves = NULL, surf = NULL, Ya, ref, max.iter=10,
         semilandmarks.slide.BE(slid0[[j]], tans = NULL, 
                                surf, ref, Lk, appBE, BEp)
   
+
   while(Q > tol){
     iter <- iter+1
     
@@ -979,6 +980,7 @@ BE.slidePP <- function(curves = NULL, surf = NULL, Ya, ref, max.iter=10,
                        surf, ref, Lk, appBE, BEp)
   }
   
+
   while(Q > tol){
     iter <- iter+1
     

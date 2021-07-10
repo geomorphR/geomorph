@@ -2,6 +2,7 @@
 
 ### NEW FEATURES
 * Added a transform argument to `morphol.disparity` for PGLS models, consistent with `gm.prcomp` approaches.
+* New function, `module.eigen`, plus S3 generic associated functions.
 
 ### BUG FIXES
 * Fixed small issue with label plotting in `gridPar.r`
