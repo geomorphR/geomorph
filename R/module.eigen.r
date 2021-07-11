@@ -175,6 +175,8 @@ module.eigen <- function(A, A2 = NULL, partition.gp = NULL,
         crossprod(R) / (n-1)
     } else V <- var(x)
     
+    V <- V[order(gps), order(gps)]
+    
     Ind <- diag(diag(V))
     gp.n <- as.vector(by(gps, gps, length))
     ends <- cumsum(gp.n)
