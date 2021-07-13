@@ -5,8 +5,9 @@
 * New function, `module.eigen`, plus S3 generic associated functions.
 
 ### BUG FIXES
-* Fixed small issue with label plotting in `gridPar.r`
-* Fixed typo bug in `integration.test` (only affcted separate matrices).
+* Added Pcov as needed output `phylo.integration` and `phylo.modularity`.
+* Fixed small issue with label plotting in `gridPar.r`.
+* Fixed typo bug in `integration.test` (only affected separate matrices).
 * Fixed bug in `estimate.missing` (only affecting method = "Reg").
 
 # CHANGES IN GEOMORPH VERSION 4.0.0 

@@ -54,6 +54,7 @@ Objects of class "pls" from integration.test return a list of the following:
    \item{A2}{Input values for the right block (for 2 modules only).}
    \item{A1.matrix}{Left block (matrix) found from A1 (for 2 modules only).}
    \item{A2.matrix}{Right block (matrix) found from A2 (for 2 modules only).}
+   \item{Pcov}{The phylogenetic transformation matrix, needed for certain other analyses.}
    \item{permutations}{The number of random permutations used in the resampling procedure.}
    \item{call}{The match call.}
 }

@@ -44,6 +44,7 @@ Objects of class "CR" from modularity.test return a list of the following:
   \item{Effect.Size}{The multivariate effect size associated with sigma.d.ratio.}
    \item{CR.mat}{For more than two partitions, the pairwise CRs among partitions.}
    \item{random.CR}{The CR calculated in each of the random permutations of the resampling procedure.}
+   \item{Pcov}{The phylogenetic transformation matrix, needed for certain other analyses.}
    \item{permutations}{The number of random permutations used in the resampling procedure.}
    \item{call}{The match call.}
 }

@@ -259,6 +259,7 @@ plot.pls <- function(x, label = NULL, ...) {
   out$plot.args <- plot.args
   out$A1 <- x$A1
   out$A2 <- x$A2
+  out$Pcov <- x$Pcov
   class(out) <- "plot.pls"
   invisible(out)
 }
