@@ -48,6 +48,7 @@
 #'   \item{Effect.Size}{The multivariate effect size associated with sigma.d.ratio.}
 #'    \item{CR.mat}{For more than two partitions, the pairwise CRs among partitions.}
 #'    \item{random.CR}{The CR calculated in each of the random permutations of the resampling procedure.}
+#'    \item{Pcov}{The phylogenetic transformation matrix, needed for certain other analyses.}
 #'    \item{permutations}{The number of random permutations used in the resampling procedure.}
 #'    \item{call}{The match call.}
 #'    
@@ -132,6 +133,7 @@ phylo.modularity<-function(A, partition.gp, phy, CI = FALSE,
   out <- list(CR=res$CR, CInterval=res$CInterval, CR.boot = res$CR.boot, 
               P.value=res$P.value, Z = res$Z,
               CR.mat = res$CR.mat, random.CR = res$random.CR,
+              Pcov = Ptrans,
               permutations=iter+1, call=match.call())
   class(out) <- "CR"
   out  

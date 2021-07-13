@@ -4,6 +4,7 @@
 * Added a transform argument to `morphol.disparity` for PGLS models, consistent with `gm.prcomp` approaches.
 
 ### BUG FIXES
+* Added Pcov as needed output `phylo.integration` and `phylo.modularity`.
 * Fixed small issue with label plotting in `gridPar.r`
 * Fixed typo bug in `integration.test` (only affected separate matrices).
 * Fixed bug in `estimate.missing` (only affecting method = "Reg").

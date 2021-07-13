@@ -81,6 +81,7 @@
 #'    \item{A2}{Input values for the right block (for 2 modules only).}
 #'    \item{A1.matrix}{Left block (matrix) found from A1 (for 2 modules only).}
 #'    \item{A2.matrix}{Right block (matrix) found from A2 (for 2 modules only).}
+#'    \item{Pcov}{The phylogenetic transformation matrix, needed for certain other analyses.}
 #'    \item{permutations}{The number of random permutations used in the resampling procedure.}
 #'    \item{call}{The match call.}
 #' @references  Adams, D.C. and R. Felice. 2014. Assessing phylogenetic morphological 
@@ -322,6 +323,7 @@ phylo.integration <-function(A, A2 = NULL, phy,
                 svd = pls.obs$pls.svd,
                 A1 = A1.new, A2 = A2.new,
                 A1.matrix = x, A2.matrix =y,
+                Pcov = Ptrans,
                 permutations = iter+1, call=match.call(),
                 method = "PLS")
   }
@@ -330,6 +332,7 @@ phylo.integration <-function(A, A2 = NULL, phy,
                 P.value = p.val, Z = Z,
                 pairwise.P.values = p.vals, pairwise.Z = Zs,
                 random.r = pls.rand, 
+                Pcov = Ptrans,
                 permutations = iter+1, call=match.call(),
                 method = "PLS")
   }
