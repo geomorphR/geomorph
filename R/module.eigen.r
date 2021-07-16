@@ -162,6 +162,7 @@ module.eigen <- function(A, A2 = NULL, partition.gp = NULL,
   }
     
     ngps <- nlevels(gps)
+    ind.levels <- levels(gps)
     x <- as.matrix(x)
     n <- nrow(x)
     
@@ -175,16 +176,13 @@ module.eigen <- function(A, A2 = NULL, partition.gp = NULL,
         crossprod(R) / (n-1)
     } else V <- var(x)
     
-    V <- V[order(gps), order(gps)]
     
     Ind <- diag(diag(V))
-    gp.n <- as.vector(by(gps, gps, length))
-    ends <- cumsum(gp.n)
-    starts <- ends - gp.n + 1
-    
     M <- Ind
-    for(i in 1:length(gp.n)) 
-      M[starts[i]:ends[i], starts[i]:ends[i]] <- V[starts[i]:ends[i], starts[i]:ends[i]]
+    for(i in 1:ngps) {
+      keep <- which(gps == ind.levels[i])
+      M[keep, keep] <- V[keep, keep]
+    }
     Int <- V - M + Ind
     
     mcells <- length(which(M != 0)) - nrow(V)
