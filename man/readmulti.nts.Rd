@@ -7,7 +7,7 @@
 readmulti.nts(filelist)
 }
 \arguments{
-\item{filelist}{A vector containing the file paths to all the tps files to be compiled}
+\item{filelist}{A vector containing the file paths to all the nts files to be compiled}
 }
 \value{
 Function returns a 3D array (p x k x n), where p is the number of landmark points, k is 
