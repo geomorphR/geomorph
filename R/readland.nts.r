@@ -1,11 +1,9 @@
 #' Read landmark data matrix from nts file
 #'
-#' Read single *.nts file containing landmark coordinates for a set of specimens
+#' Read single *.nts file containing landmark coordinates for one or more specimens
 #'
-#' Function reads a single *.nts file containing two- or three-dimensional landmark coordinates for multiple specimens. 
+#' Function reads a single *.nts file containing two- or three-dimensional landmark coordinates. 
 #' 
-#' This is for NTS files of the "multiple specimen format" (details below), which is not the same as \code{\link{readmulti.nts}}.  
-#'  
 #' NTS files are text files in one of the standard formats for geometric morphometrics (see Rohlf 2012).
 #' Multiple specimen format: 
 #'   The parameter line contains 5 or 6 elements, and must begin with a "1" to designate a rectangular 
@@ -63,29 +61,37 @@ readland.nts <- function(file){
   
   header <- sub("L", "", header)
   header <- as.numeric(sub("DIM=","", header))
-
+  
   missdata <- ifelse(header[4]!=0, T, F)
   if(missdata==TRUE) {
     missval <- ifelse(dimval==6, header[5], header[6]) 
   }
   
-  n <- header[2]; k <- header[dimval]; p <- header[3]/k
+  if(header[3] == header[dimval]){
+    n <- 1; k <- header[dimval]; p <- header[2]
+  } else {
+    n <- header[2]; k <- header[dimval]; p <- header[3]/k
+  }
   
   tmp <- unlist(strsplit(ntsfile[-1],"\\s+"))
   if(r.lab) {
     speclab <- tmp[1:n]
     tmp <- tmp[-(1:n)]
-    } else speclab <- NULL
+  } else speclab <- NULL
   
   if(c.lab) tmp <- tmp[-(1:(p*k))]
   
   if(missdata==TRUE) {tmp[grep(missval, as.integer(tmp))] <- NA}
   options(warn=-1)
   landdata <- matrix(as.numeric(tmp), ncol=k, byrow=TRUE)
-  
   if(sum(which(is.na(landdata)==TRUE))>0){cat("NOTE.  Missing data identified.")}
   
-  coords <- aperm(array(t(landdata), c(k,p,n)), c(2,1,3))
+  if(nrow(landdata) != p) {
+    coords <- aperm(array(t(landdata), c(k,p,n)), c(2,1,3))
+  } else {
+    coords <- array(landdata, c(p, k, n))
+  }
+  
   if(length(speclab)==1) {
     dimnames(coords)[[3]] <- list(speclab) 
   } else { dimnames(coords)[[3]] <- speclab }

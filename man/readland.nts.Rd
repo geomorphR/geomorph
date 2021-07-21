@@ -15,13 +15,11 @@ Function returns a 3D array (p x k x n), where p is the number of landmark point
   contains names for each specimen, which are obtained from the names in the *.nts file (if included).
 }
 \description{
-Read single *.nts file containing landmark coordinates for a set of specimens
+Read single *.nts file containing landmark coordinates for one or more specimens
 }
 \details{
-Function reads a single *.nts file containing two- or three-dimensional landmark coordinates for multiple specimens. 
+Function reads a single *.nts file containing two- or three-dimensional landmark coordinates. 
 
-This is for NTS files of the "multiple specimen format" (details below), which is not the same as \code{\link{readmulti.nts}}.  
- 
 NTS files are text files in one of the standard formats for geometric morphometrics (see Rohlf 2012).
 Multiple specimen format: 
   The parameter line contains 5 or 6 elements, and must begin with a "1" to designate a rectangular 
