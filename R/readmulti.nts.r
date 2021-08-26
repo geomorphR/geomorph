@@ -9,7 +9,7 @@
 #' for that (and therefore this) function to work correctly.
 #' 
 #'
-#' @param filelist A vector containing the file paths to all the tps files to be compiled
+#' @param filelist A vector containing the file paths to all the nts files to be compiled
 #' @author Antigoni Kaliontzopoulou
 #' @return Function returns a 3D array (p x k x n), where p is the number of landmark points, k is 
 #'   the number of landmark dimensions (2 or 3), and n is the number of specimens. The third dimension 
