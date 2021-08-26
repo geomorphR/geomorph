@@ -9,7 +9,7 @@
 #' among-module covariances (integration), and a diagonal matrix, matching the variable variances found in each other 
 #' covariance matrix (independence).  The trace of each of these matrices is the same, meaning the sum of eigenvalues is also
 #' the same among matrices.  However, they will differ in the distribution of eigenvalues.  How these distributions differ can provide
-#' descriptive support for whether modularity, integration, or both are prominant components of variation in the data.
+#' descriptive support for whether modularity, integration, or both are prominent components of variation in the data.
 #' 
 #' An eigen-analysis of the diagonal (independence) matrix is akin to a broken-stick model, providing eigen structure
 #' for the case that variables are all independent.  One can determine the dimensions for which eigenvalues
@@ -34,6 +34,11 @@
 #' @param partition.gp A list of which landmarks (or variables) belong in which partition: 
 #' (e.g. A, A, A, B, B, B, C, C, C). Required when only 1 dataset provided.
 #' @param phy Optional argument to include a class \code{phylo} phylogenetic tree.  Tip labels must match data names.
+#' This argument instructs the function to estimate a phylogenetic covariance matrix based on a Brownian motion model
+#' of evolutionary divergence.  The Cov argument allows a user to define a hypothetical covariance matrix, if different 
+#' than a BM model.
+#' @param Cov Optional argument to include a hypothetical covariance matrix used for non-independence of observations.  
+#' Row and column names must match data names.  If both a phy and Cov are provided, Cov will override phy.
 #' @param transform A logical argument for whether to use transformed residuals, if a phylogeny is provided.  If TRUE,
 #' a GLS covariance matrix will be estimated; if FALSE, data will be centered on GLS mean but an OLS covariance matrix 
 #' will be estimated.  The former is more representative of covariances independent of phylogeny;  the latter 
@@ -59,7 +64,7 @@
 #'  integration covariances.}
 #' @references  Krzanowski, W. J. 1979. Between-groups comparison of principal components. 
 #' Journal of the American Statistical Association, 74, 703–707.
-#' @references Burns et al. In review.
+#' @references Collyer et al. In review.
 #' @seealso \code{\link{summary.module.eigen}}, \code{\link{plot.module.eigen}}
 #' \code{\link{two.b.pls}}, \code{\link{modularity.test}}, 
 #' \code{\link{phylo.integration}}, \code{\link{phylo.modularity}},
@@ -96,7 +101,8 @@
 #' plot(ME.glst)
 
 module.eigen <- function(A, A2 = NULL, partition.gp = NULL, 
-                         phy = NULL, transform. = TRUE, only.values = TRUE,
+                         phy = NULL, Cov = NULL,
+                         transform. = TRUE, only.values = TRUE,
                          tol = 0.001){
   
   if(any(is.na(A)))
@@ -166,16 +172,33 @@ module.eigen <- function(A, A2 = NULL, partition.gp = NULL,
     x <- as.matrix(x)
     n <- nrow(x)
     
-    if(!is.null(phy)) {
-      Cov <- fast.phy.vcv(phy)
-      Pcov <- Cov.proj(Cov, rownames(x))
+    if(!is.null(phy) || !is.null(Cov)) {
+      if(!is.null(phy) && is.null(Cov)) {
+        Cov <- fast.phy.vcv(phy)
+        Pcov <- Cov.proj(Cov, rownames(x))}
+      
+      if(is.null(phy) && !is.null(Cov)) {
+        Pcov <- try(Cov.proj(Cov, rownames(x)), silent = TRUE)
+        if(inherits(Pcov, "try-error"))
+          stop("The names of Covariance matrix do not seem to match data names.\n",
+               call. = FALSE)
+      }
+      
+      if(!is.null(phy) && !is.null(Cov)) {
+        cat("Both phy and Cov were provided; only Cov will be used\n")
+        Pcov <- try(Cov.proj(Cov, rownames(x)), silent = TRUE)
+        if(inherits(Pcov, "try-error"))
+          stop("The names of Covariance matrix do not seem to match data names.\n",
+               call. = FALSE)
+      }
+      
       ones <- matrix(1, n)
       B <- lm.fit(Pcov %*% ones, Pcov %*% x)$coefficients
       R <- x - ones %*% B
       V <- if(transform.) crossprod(Pcov %*% R) / (n-1) else
         crossprod(R) / (n-1)
+      
     } else V <- var(x)
-    
     
     Ind <- diag(diag(V))
     M <- Ind

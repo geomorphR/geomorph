@@ -2176,6 +2176,54 @@ readland.tps2 <- function (file, specID = c("None", "ID", "imageID"))
   return(list(coords = coords,scale=imscale)  )
 }
 
+# get.VCV
+# generates a VCV matrix, based on arguments
+# used in K.modules
+
+get.VCV <- function(A, phy = NULL, Cov = NULL,
+                    transform. = TRUE) {
+  x <- try(two.d.array(A), silent = TRUE)
+  if(inherits(x, "try-error")) x <- try(as.matrix(A), silent = TRUE)
+  if(inherits(x, "try-error"))
+    stop("\nA is not a suitable data array for analysis. ", call. = FALSE)
+  
+  namesX <- rownames(x)
+  if (is.null(namesX)) namesX <- 1:NROW(x)
+  
+  x <- as.matrix(x)
+  n <- nrow(x)
+  
+  if(!is.null(phy) || !is.null(Cov)) {
+    if(!is.null(phy) && is.null(Cov)) {
+      Cov <- fast.phy.vcv(phy)
+      Pcov <- Cov.proj(Cov, rownames(x))}
+    
+    if(is.null(phy) && !is.null(Cov)) {
+      Pcov <- try(Cov.proj(Cov, rownames(x)), silent = TRUE)
+      if(inherits(Pcov, "try-error"))
+        stop("The names of Covariance matrix do not seem to match data names.\n",
+             call. = FALSE)
+    }
+    
+    if(!is.null(phy) && !is.null(Cov)) {
+      Pcov <- try(Cov.proj(Cov, rownames(x)), silent = TRUE)
+      if(inherits(Pcov, "try-error"))
+        stop("The names of Covariance matrix do not seem to match data names.\n",
+             call. = FALSE)
+    }
+    
+    ones <- matrix(1, n)
+    B <- lm.fit(Pcov %*% ones, Pcov %*% x)$coefficients
+    R <- x - ones %*% B
+    V <- if(transform.) crossprod(Pcov %*% R) / (n-1) else
+      crossprod(R) / (n-1)
+    
+  } else V <- var(x)
+  
+  return(V)
+}
+
+
 
 ### All functions below perform in a constrained way the same as functions in ape and geiger:
 ### -----------------------------------------------------------------------------------------
@@ -2302,3 +2350,5 @@ makePD <- function (x) {
   }
   X
 }
+
+

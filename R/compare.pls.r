@@ -95,9 +95,11 @@
    k <- length(list.check)
    if(is.null(list.names)) list.names <- as.list(substitute(list(...)))[-1L]
    k.combn <- combn(k,2)
-   list.drs <- sapply(1:k, function(j) dots[[j]]$random.r[1] - mean(dots[[j]]$random.r[-1])) 
-   list.sds <- sapply(1:k, function(j) sdn(dots[[j]]$random.r[-1]))
+   bct <- lapply(dots, function(x) box.cox(x$random.r)$transformed)
+   list.drs <- sapply(1:k, function(j) bct[[j]][1] - mean(bct[[j]][-1])) 
+   list.sds <- sapply(1:k, function(j) sdn(bct[[j]][-1]))
    list.zs <- sapply(1:k, function(j) effect.size(dots[[j]]$random.r, center=TRUE))
+
    z12 <- sapply(1:ncol(k.combn), function(j){
      a <- k.combn[1,j]; b <- k.combn[2,j]
      r1 <- list.drs[a]; r2 <- list.drs[b] 

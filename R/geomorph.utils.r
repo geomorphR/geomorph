@@ -1218,7 +1218,9 @@ print.summary.module.eigen <- function(x, ...) {
 #' @param x An object of class \code{\link{module.eigen}}
 #' @param use.rel.dims A logical argument for whether to use only the relevant dimensions in the plot, 
 #' based on a broken stick model.
-#' @param ... other arguments passed to plot.  This function vectorizes a summary table (for proportions of variance) 
+#' @param ... other arguments passed to plot.  
+#' 
+#' This function vectorizes a summary table (for proportions of variance) 
 #' from \code{\link{summary.module.eigen}}.  For example, if a 5 x 4 table is produced, a vector of length 20 is produced
 #' by the columns of the table.  Some plot parameters can be manipulated, but one has to do it with respect to all values.  
 #' For example, for the 5 x 4 table, bg = c(rep(1:4, each = 5)) produces a vector of length 20 to describe point 
@@ -1280,4 +1282,117 @@ plot.module.eigen <- function(x, use.rel.dims = TRUE,
                     pch = pt.pch, col = pt.col, pt.bg = pt.bg)
   }
     
+}
+
+# K.modules
+
+#' Print/Summary function for geomorph
+#' 
+#' @param x An object of class \code{\link{K.modules}}
+#' @param ... other arguments passed to print/summary
+#' @method print K.modules
+#' @export
+#' @author Michael Collyer
+#' @keywords utilities
+print.K.modules <- function(x, ...) {
+  M <- x$modules[[1]]
+  nlev <- nlevels(as.factor(M))
+  nsims <- length(x$modules)
+  
+  cat("\nK.modules analysis performed for", nlev, "modules, with", nsims, "simulations\n")
+  
+}
+
+#' Print/Summary function for geomorph
+#' 
+#' @param object An object of class \code{\link{K.modules}}
+#' @param ... other arguments passed to print/summary
+#' @method summary K.modules
+#' @export
+#' @author Michael Collyer
+#' @keywords utilities
+summary.K.modules <- function(object, ...) {
+  print.K.modules(object)
+  
+  if(object$hypothesis){
+    cat("An a priori hypothesis was defined:\n")
+    cat(object$modules[[object$hypothesis.rank]])
+    cat("\n\n")
+    cat("This hypothesis ranked", object$hypothesis.rank, "among the simulations\n")
+    cat("(A percentile of", round(object$hypothesis.rank/length(object$modules), 3) * 100, "percent.)\n")
+    cat("\n")
+    cat("This hypothesis had an eigenvalue of", object$eigs[[object$hypothesis.rank]])
+    cat("\n\nA summary of all eigenvalues is presented below (see plot.K.modules for plotting tools)\n\n")
+    summary(object$eigs)
+  }
+  
+}
+
+
+#' Plot function for geomorph
+#' 
+#' @param x An object of class \code{\link{K.modules}}
+#' @param modules A vector or integer for which modules to consider in plot (should generally be small in length
+#' if results are to be tractable).  If a profile plot is chosen, all eigenvalues will be plotted.  (The default value
+#' is the highest ranking 6 modules.)
+#' @param type One of "profile", config", or "pcoa" for plotting a profile of eigenvalues, 
+#' landmark configurations with modules formatted differently, 
+#' or a principal coordinate plot, respectively.
+#' @param ... other arguments passed to plot, especially for changing points in a configuration.  
+#' 
+#' This function provides plotting support for \code{\link{K.modules}}.  One of two plots can be produced: (1) a 
+#' canvas of landmark configuration with points formatted differently for modules or (2) a principal coordinate plot, based
+#' on Riemannian distances among modular covariance matrices.  Based on the modules requested (output from a K.modules
+#' object), several configuration plots can be generated or one single principal coordinate plot with points equal in 
+#' number to the vector length for "modules".  The length of this vector should be reasonable to avoid long computation of 
+#' Riemmanian distance among modular covariance matrices, or to avoid generating many configurations.  See 
+#' \code{\link{K.modules}} for plotting examples.
+#' @method plot module.eigen
+#' @export
+#' @author Michael Collyer
+#' @keywords utilities
+#' 
+plot.K.modules <- function(x, modules = 1:6, type = c("profile", "config", "pcoa"), ...) {
+  M <- x$modules[modules]
+  plot.args <- list(...)
+  
+  if(type == "profile") {
+    plot.args$x <- 1:length(x$eigs)
+    plot.args$y<- x$eigs
+    plot.args$type <- "l"
+    if(is.null(plot.args$xlab)) plot.args$xlab <- "Ranked eigenvalues"
+    if(is.null(plot.args$ylab)) plot.args$ylab <- "Eigenvalue"
+    do.call(plot, plot.args)
+    if(x$hypothesis) {
+      point.args <- plot.args
+      point.args$x <- x$hypothesis.rank
+      point.args$y <- x$eigs[x$hypothesis.rank]
+      point.args$type <- "p"
+      do.call(points, point.args)
+      if(is.null(plot.args$main))
+        title("Modular eigenvalue profile, with described hypothesis indicated", 
+              cex = 0.7)
+    } else {
+      if(is.null(plot.args$main))
+        title("Modular eigenvalue profile")
+    }
+  }
+  
+  if(type == "config"){
+    
+    if(is.null(x$mean))
+      stop("Coordinate data not used in K.modules, so no configuration is possible.\n",
+           call. = FALSE)
+    
+    ### add trap for canvas size
+    
+    dims <- dim(mean)
+    if(length(dims) == 2) {
+      plot.args$x <- x$mean[,1]
+      plot.args$y <- x$mean[,2]
+    }
+    
+### left off here.  Need to make 2d or 3d plots, plus a pl,otting canvas
+    
+  }
 }

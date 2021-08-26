@@ -9,6 +9,7 @@ module.eigen(
   A2 = NULL,
   partition.gp = NULL,
   phy = NULL,
+  Cov = NULL,
   transform. = TRUE,
   only.values = TRUE,
   tol = 0.001
@@ -22,7 +23,13 @@ module.eigen(
 \item{partition.gp}{A list of which landmarks (or variables) belong in which partition: 
 (e.g. A, A, A, B, B, B, C, C, C). Required when only 1 dataset provided.}
 
-\item{phy}{Optional argument to include a class \code{phylo} phylogenetic tree.  Tip labels must match data names.}
+\item{phy}{Optional argument to include a class \code{phylo} phylogenetic tree.  Tip labels must match data names.
+This argument instructs the function to estimate a phylogenetic covariance matrix based on a Brownian motion model
+of evolutionary divergence.  The Cov argument allows a user to define a hypothetical covariance matrix, if different 
+than a BM model.}
+
+\item{Cov}{Optional argument to include a hypothetical covariance matrix used for non-independence of observations.
+Row and column names must match data names.  If both a phy and Cov are provided, Cov will override phy.}
 
 \item{only.values}{A logical argument for whether to only return eigenvalues.  If TRUE, vector correlations
 using \code{\link{summary.module.eigen}} will not be possible.}
@@ -59,7 +66,7 @@ matrix, a covariance matrix that has only within-module covariances (modularity)
 among-module covariances (integration), and a diagonal matrix, matching the variable variances found in each other 
 covariance matrix (independence).  The trace of each of these matrices is the same, meaning the sum of eigenvalues is also
 the same among matrices.  However, they will differ in the distribution of eigenvalues.  How these distributions differ can provide
-descriptive support for whether modularity, integration, or both are prominant components of variation in the data.
+descriptive support for whether modularity, integration, or both are prominent components of variation in the data.
 
 An eigen-analysis of the diagonal (independence) matrix is akin to a broken-stick model, providing eigen structure
 for the case that variables are all independent.  One can determine the dimensions for which eigenvalues
@@ -113,7 +120,7 @@ plot(ME.glst)
 Krzanowski, W. J. 1979. Between-groups comparison of principal components. 
 Journal of the American Statistical Association, 74, 703–707.
 
-Burns et al. In review.
+Collyer et al. In review.
 }
 \seealso{
 \code{\link{summary.module.eigen}}, \code{\link{plot.module.eigen}}

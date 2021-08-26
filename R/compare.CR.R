@@ -102,9 +102,11 @@ compare.CR <- function(..., CR.null = TRUE, two.tailed = TRUE){
    k <- length(list.check)
    if(is.null(list.names)) list.names <- as.list(substitute(list(...)))[-1L]
    k.combn <- combn(k,2)
-   list.drs <- sapply(1:k, function(j) dots[[j]]$random.CR[1] - mean(dots[[j]]$random.CR[-1])) 
-   list.sds <- sapply(1:k, function(j) sdn(dots[[j]]$random.CR[-1]))
-   list.zs <- sapply(1:k, function(j) effect.size(dots[[j]]$random.CR, center=TRUE))  
+   bct <- lapply(dots, function(x) box.cox(x$random.CR)$transformed)
+   list.drs <- sapply(1:k, function(j) bct[[j]][1] - mean(bct[[j]][-1])) 
+   list.sds <- sapply(1:k, function(j) sdn(bct[[j]][-1]))
+   list.zs <- sapply(1:k, function(j) effect.size(dots[[j]]$random.CR, center=TRUE))
+   
    if (CR.null == TRUE){
       k <- k + 1
       k.combn <- combn(k,2)
