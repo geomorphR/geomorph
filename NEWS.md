@@ -4,6 +4,7 @@
 * Added a transform argument to `morphol.disparity` for PGLS models, consistent with `gm.prcomp` approaches.
 
 ### BUG FIXES
+* Fixed pairwise Z-scores in `compare.pls` and `compare.CR` to use box-cox transformed values.
 * Added Pcov as needed output `phylo.integration` and `phylo.modularity`.
 * Fixed small issue with label plotting in `gridPar.r`
 * Fixed bug in `readmulti.tps` to allow for any kind of tps input and correctly combine them into an array

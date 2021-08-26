@@ -31,7 +31,7 @@
 #' @author Michael Collyer
 #' @return An object of class compare.pls, returns a list of the following
 #' \item{sample.z}{A vector of effect sizes for each sample.}
-#' \item{sample.r.sd}{A vector of standard deviations for each sampling distribution.}
+#' \item{sample.r.sd}{A vector of standard deviations for each sampling distribution (following Box-Cox transformation).}
 #' \item{pairwise.z}{A matrix of pairwise, two-sample z scores between all pairs of effect sizes.}
 #' \item{pairwise.p}{A matrix of corresponding P-values.}
 #' @references Collyer, M.L., D.J. Sekora, and D.C. Adams. 2015. A method for analysis of phenotypic change for phenotypes described 
@@ -95,8 +95,9 @@
    k <- length(list.check)
    if(is.null(list.names)) list.names <- as.list(substitute(list(...)))[-1L]
    k.combn <- combn(k,2)
-   list.drs <- sapply(1:k, function(j) dots[[j]]$random.r[1] - mean(dots[[j]]$random.r[-1])) 
-   list.sds <- sapply(1:k, function(j) sdn(dots[[j]]$random.r[-1]))
+   bct <- lapply(dots, function(x) box.cox(x$random.r)$transformed)
+   list.drs <- sapply(1:k, function(j) bct[[j]][1] - mean(bct[[j]])) 
+   list.sds <- sapply(1:k, function(j) sdn(bct[[j]]))
    list.zs <- sapply(1:k, function(j) effect.size(dots[[j]]$random.r, center=TRUE))
    z12 <- sapply(1:ncol(k.combn), function(j){
      a <- k.combn[1,j]; b <- k.combn[2,j]
