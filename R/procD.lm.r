@@ -226,7 +226,7 @@
 #' # (same as morphol.disaprity):
 #' summary(PW, test.type = "var", confidence = 0.95, stat.table = TRUE)
 #' summary(PW, test.type = "var", confidence = 0.95, stat.table = FALSE)
-#' morphol.disparity(fit.full, groups = gp, iter=299)
+#' morphol.disparity(fit.full, groups = gp, iter = 999)
 #' 
 #' ### Regression example
 #' data(ratland)
@@ -349,6 +349,7 @@ procD.lm <- function(f1, iter = 999, seed=NULL, RRPP = TRUE,
                  print.progress = print.progress, 
                  Parallel = Parallel, ...)
   
+  n <- out$LM$n
   out$ANOVA$effect.type <- match.arg(effect.type)
   out$GM <- NULL
   

@@ -1079,3 +1079,432 @@ print.geomorphShapes <- function (x, ...) {
 summary.geomorphShapes <- function (object, ...) {
   print.geomorphShapes(object, ...)
 }
+
+# module.eigen
+
+#' Print/Summary function for geomorph
+#' 
+#' @param x An object of class \code{\link{module.eigen}}
+#' @param ... other arguments passed to print/summary
+#' @method print module.eigen
+#' @export
+#' @author Michael Collyer
+#' @keywords utilities
+print.module.eigen <- function(x, ...) {
+  cat("\nEigen-analysis of covariance matrices for", x$n.modules, "modules\n")
+}
+
+
+#' Print/Summary function for geomorph
+#' 
+#' @param object An object of class \code{\link{module.eigen}}
+#' @param use.rel.dims A logical argument for whether to use only the relevant dimensions in the summary, 
+#' based on a broken stick model.
+#' @param PC A numeric value to indicate for which principal component to perform vector correlations
+#' @param ... other arguments passed to print/summary
+#' @method summary module.eigen
+#' @export
+#' @author Michael Collyer
+#' @return An object of class "summary.module.eigen" is a list with components
+#' including table of eigenvalues, table of proportion of variation explained,
+#' a pairwise table of vector correlations (for indicated principal component), and a apirwise
+#' table of Krzanowski squared correlations.
+#' @keywords utilities
+summary.module.eigen <- function(object, use.rel.dims = TRUE, PC = 1) {
+  
+  m <- if(use.rel.dims) 1:max(unlist(object$rel.dims)) else 
+    1:length(object$evals$total)
+  
+  if(PC > max(m)) {
+    cat("\nPC is a number greater than the number of relevant dimensions.  Setting it to PC = 1\n")
+    PC <- 1
+  }
+  
+  if(!is.null(object$evecs)) {
+    v0 <- object$evecs$ind[,m]
+    vM <- object$evecs$mod[,m]
+    vI <- object$evecs$int[,m]
+    vT <- object$evecs$total[,m]
+    
+    rp <- abs(vec.cor.matrix(rbind(Independence= v0[, PC],
+                                   Modularity = vM[, PC], 
+                                   Integration = vI[, PC], 
+                                   Total = vT[, PC])))
+    
+    krzCor <- function(v1, v2){
+      m <- min(ncol(v1), ncol(v2))
+      sum(crossprod(v1[, 1:m], v2[, 1:m])^2) / m
+    }
+    
+    rK <- as.dist(diag(4))
+    rK[1:6] <- c(krzCor(vM, v0), krzCor(v0, vI), krzCor(v0, vT),
+                 krzCor(vM, vI), krzCor(vM, vT), krzCor(vI, vT))
+    rK <- as.matrix(rK)
+    diag(rK) <- 1
+    dimnames(rK) <- dimnames(rp)
+    
+  } else rp <- rK <- NULL
+  
+  
+  rel.dims <- if(use.rel.dims) object$rel.dims[c("mod", "int", "total")] else lapply(1:3, function(.) m)
+  rel.eigs <- object$evals[c("mod", "int", "total")]
+  rel.eigs <- Map(function(e, d) e[d], rel.eigs, rel.dims)
+  rel.eigs <- lapply(rel.eigs, function(x){
+    y <- matrix(NA, max(m))
+    y[1:length(x)] <- x
+    y
+  })
+  rel.eigs <- c(list(ind = matrix(object$evals$ind[m])), rel.eigs)
+  eig.tab <- as.data.frame(do.call(cbind, rel.eigs))
+  colnames(eig.tab) <- c("Independence", "Modularity", "Integration", "Total")
+  rownames(eig.tab) <- paste("Comp", m)
+  
+  prop.tab <- eig.tab / sum(object$evals$total)
+  
+
+  out <- list(rPC.mat = rp, rKrz.mat = rK,
+              eig.tab = eig.tab, prop.tab = prop.tab,
+              use.rel.dims = use.rel.dims,
+              PC = PC, total.dims = length(object$eval$total),
+              prop.mod.cells = object$prop.mod.cells,
+              prop.int.cells = object$prop.int.cells)
+  
+  class(out) <- "summary.module.eigen"
+  out
+}
+
+
+#' Print/Summary function for geomorph
+#' 
+#' @param x An object of class \code{\link{summary.module.eigen}}
+#' @param ... other arguments passed to print/summary
+#' @method print summary.module.eigen
+#' @export
+#' @author Michael Collyer
+#' @keywords utilities
+print.summary.module.eigen <- function(x, ...) {
+  
+  cat("\nPercentage of covariance matrix represented by modularity covariances:", 
+      round(x$prop.mod.cells * 100, 2), "percent.\n")
+  cat("\nPercentage of covariance matrix represented by integration covariances:", 
+      round(x$prop.int.cells * 100, 2), "percent.\n")
+  
+  if(x$use.rel.dims) {
+    cat("\nDisplaying results for only", nrow(x$eig.tab), "relevant dimensions, of", x$total.dims, "dimensions, total,\n")
+    cat("based on a broken stick model (from the distribution of 'independence' eigen values).\n")
+  } else {
+    cat("\nDisplaying results for all components.\n")
+  }
+  
+  cat("\nEigen values:\n")
+  print(x$eig.tab)
+  cat("\nProportion of variance explained:\n")
+  print(x$prop.tab)
+  
+  if(!is.null(x$rPC.mat)) {
+    
+    cat("\nPairwise vector correlations between PC", x$PC, "\n")
+    print(as.dist(x$rPC.mat))
+    
+    cat("\nKrzanowski (squared) vector correlations, using defined components\n")
+    print(as.dist(x$rKrz.mat))
+    
+  }
+    
+}
+
+#' Plot function for geomorph
+#' 
+#' @param x An object of class \code{\link{module.eigen}}
+#' @param use.rel.dims A logical argument for whether to use only the relevant dimensions in the plot, 
+#' based on a broken stick model.
+#' @param ... other arguments passed to plot.  
+#' 
+#' This function vectorizes a summary table (for proportions of variance) 
+#' from \code{\link{summary.module.eigen}}.  For example, if a 5 x 4 table is produced, a vector of length 20 is produced
+#' by the columns of the table.  Some plot parameters can be manipulated, but one has to do it with respect to all values.  
+#' For example, for the 5 x 4 table, bg = c(rep(1:4, each = 5)) produces a vector of length 20 to describe point 
+#' background colors.
+#' @method plot module.eigen
+#' @export
+#' @author Michael Collyer
+#' @keywords utilities
+plot.module.eigen <- function(x, use.rel.dims = TRUE, 
+                             add.lines = TRUE, add.legend = TRUE,
+                             ...) {
+  s <- summary.module.eigen(x, use.rel.dims = use.rel.dims)
+  df <- s$prop.tab
+  y <- as.vector(as.matrix(df))
+  x <- rep(1:nrow(df), 4)
+  
+  plot.args <- list(...)
+  plot.args$x <- x
+  plot.args$y <- y
+  if(is.null(plot.args$pch)) plot.args$pch <- rep(19, length(y))
+  if(is.null(plot.args$col)) plot.args$col <- rep(c(8, 4, 6, 1), each = nrow(df))
+  if(is.null(plot.args$bg)) plot.args$bg <- rep(c(8, 4, 6, 1), each = nrow(df))
+  
+  if(is.null(plot.args$xlab)) plot.args$xlab = "Component"
+  if(is.null(plot.args$ylab)) plot.args$ylab = "Proportion of total variance"
+
+  do.call(plot, plot.args)
+  
+  if(add.lines) {
+    pt.lty <- plot.args$lty
+    if(is.null(pt.lty)) pt.lty <- 1
+    pt.lwd <- plot.args$lwd
+    if(is.null(pt.lwd)) pt.lwd<- 1
+    points(1:nrow(df), df[,1], type = "l", lty = pt.lty, lwd = pt.lwd,
+           col = plot.args$col[1])
+    points(1:nrow(df), df[,2], type = "l", lty = pt.lty, lwd = pt.lwd,
+           col = plot.args$col[nrow(df) + 1])
+    points(1:nrow(df), df[,3], type = "l", lty = pt.lty, lwd = pt.lwd,
+           col = plot.args$col[2* nrow(df) + 1])
+    points(1:nrow(df), df[,4], type = "l", lty = pt.lty, lwd = pt.lwd,
+           col = plot.args$col[3* nrow(df) + 1])
+    
+    plot.args$type = "p"
+    do.call(points, plot.args)
+  } else pt.lty <- pt.lwd <- NULL
+  
+  if(add.legend) {
+    pt.pch <- plot.args$pch[c(1, nrow(df) + 1, 2* nrow(df) + 1, 3* nrow(df) + 1)]
+    pt.col<- plot.args$col[c(1, nrow(df) + 1, 2* nrow(df) + 1, 3* nrow(df) + 1)]
+    pt.bg <- plot.args$bg[c(1, nrow(df) + 1, 2* nrow(df) + 1, 3* nrow(df) + 1)]
+    
+    if(add.lines) 
+      legend("topright",
+           c("Independence", "Modularity", "Integration", "Total"),
+           lty = pt.lty, lwd= pt.lwd, 
+           pch = pt.pch, col = pt.col, pt.bg = pt.bg) else 
+             legend("topright",
+                    c("Independence", "Modularity", "Integration", "Total"),
+                    pch = pt.pch, col = pt.col, pt.bg = pt.bg)
+  }
+    
+}
+
+# K.modules
+
+#' Print/Summary function for geomorph
+#' 
+#' @param x An object of class \code{\link{K.modules}}
+#' @param ... other arguments passed to print/summary
+#' @method print K.modules
+#' @export
+#' @author Michael Collyer
+#' @keywords utilities
+print.K.modules <- function(x, ...) {
+  M <- x$modules[[1]]
+  nlev <- nlevels(as.factor(M))
+  nsims <- length(x$modules)
+  
+  cat("\nK.modules analysis performed for", nlev, "modules, with", nsims, "simulations\n")
+  
+}
+
+#' Print/Summary function for geomorph
+#' 
+#' @param object An object of class \code{\link{K.modules}}
+#' @param ... other arguments passed to print/summary
+#' @method summary K.modules
+#' @export
+#' @author Michael Collyer
+#' @keywords utilities
+summary.K.modules <- function(object, ...) {
+  print.K.modules(object)
+  
+  if(object$hypothesis){
+    cat("An a priori hypothesis was defined:\n")
+    cat(object$modules[[object$hypothesis.rank]])
+    cat("\n\n")
+    cat("This hypothesis ranked", object$hypothesis.rank, "among the simulations\n")
+    cat("(A percentile of", round(object$hypothesis.rank/length(object$modules), 3) * 100, "percent.)\n")
+    cat("\n")
+    cat("This hypothesis had an eigenvalue of", object$eigs[[object$hypothesis.rank]])
+    cat("\n\nA summary of all eigenvalues is presented below (see plot.K.modules for plotting tools)\n\n")
+    summary(object$eigs)
+  }
+  
+}
+
+
+#' Plot function for geomorph
+#' 
+#' @param x An object of class \code{\link{K.modules}}
+#' @param modules A vector or integer for which modules to consider in plot (should generally be small in length
+#' if results are to be tractable).  If a profile plot is chosen, all eigenvalues will be plotted.  (The default value
+#' is the highest ranking 6 modules.)
+#' @param type One of "profile", config", or "pcoa" for plotting a profile of eigenvalues, 
+#' landmark configurations with modules formatted differently, 
+#' or a principal coordinate plot, respectively.
+#' @param ... other arguments passed to plot, especially for changing points in a configuration.
+#' 
+#' This function provides plotting support for \code{\link{K.modules}}.  One of two plots can be produced: (1) a 
+#' canvas of landmark configuration with points formatted differently for modules or (2) a principal coordinate plot, based
+#' on Riemannian distances among modular covariance matrices.  Based on the modules requested (output from a K.modules
+#' object), several configuration plots can be generated or one single principal coordinate plot with points equal in 
+#' number to the vector length for "modules".  The length of this vector should be reasonable to avoid long computation of 
+#' Riemmanian distance among modular covariance matrices, or to avoid generating many configurations.  See 
+#' \code{\link{K.modules}} for plotting examples.
+#' @method plot module.eigen
+#' @export
+#' @author Michael Collyer
+#' @keywords utilities
+#' 
+plot.K.modules <- function(x, modules = 1:6, type = c("profile", "config", "pcoa"), ...) {
+  M <- x$modules[modules]
+  plot.args <- list(...)
+  
+  if(type == "profile") {
+    plot.args$x <- 1:length(x$eigs)
+    plot.args$y<- x$eigs
+    plot.args$type <- "l"
+    if(is.null(plot.args$xlab)) plot.args$xlab <- "Ranked eigenvalues"
+    if(is.null(plot.args$ylab)) plot.args$ylab <- "Eigenvalue"
+    do.call(plot, plot.args)
+    if(x$hypothesis) {
+      point.args <- plot.args
+      point.args$x <- x$hypothesis.rank
+      point.args$y <- x$eigs[x$hypothesis.rank]
+      point.args$type <- "p"
+      do.call(points, point.args)
+      if(is.null(plot.args$main))
+        title("Modular eigenvalue profile, with described hypothesis indicated", 
+              cex = 0.7)
+    } else {
+      if(is.null(plot.args$main))
+        title("Modular eigenvalue profile")
+    }
+  }
+  
+  if(type == "config"){
+    
+    opar <- par()
+    
+    if(is.null(x$mean))
+      stop("Coordinate data not used in K.modules, so no configuration is possible.\n",
+           call. = FALSE)
+    mn <- x$mean
+    class(mn) <- "matrix"
+    
+    if(length(modules) > 16){
+      cat("Warning: too many modules were chosen for effective plotting.\n")
+      cat("Only the first 16 will shown.\n")
+      M <- modules[1:16]
+    }
+    
+    m <- length(M)
+    crow <- ceiling(sqrt(m))
+    ccol <- ceiling(m / crow)
+    cdims <- c(crow, ccol)
+    
+    dims <- dim(mn)
+    plot.args$x <- mn[,1]
+    plot.args$y <- mn[,2]
+    plot.args$xlab <- "x"
+    plot.args$ylab <- "y"
+    plot.args$asp = 1
+    
+    if(dims[2] == 3) {
+      plot.args$z <- mn[,3]
+      plot.args$zlab <- "z"
+    }
+    
+    if(dims[2] == 3) mfrow3d(crow, ccol) else
+      par(mfrow = cdims)
+    
+    for(i in 1:m){
+      plot.args$col <- plot.args$bg <- M[[i]]
+      if(dims[2] == 3) {
+        do.call(plot3d, plot.args)
+        aspect3d("iso")
+        title3d(names(M)[[i]])
+      } else {
+        do.call(plot, plot.args)
+        title(names(M)[[i]])
+      }
+    }
+    par(opar)
+  }
+  
+  if(type == "pcoa"){
+    
+    cat("\nThis can be a computationally intensive procedure.\n")
+    if(length(modules) > 100) {
+      modules <- modules[1:100]
+      cat("Truncating the number of modules to the first 100 requested,\n")
+      cat("in order to have a reasonable result.\n")
+    }
+    
+    M <- if(length(x$modules) < length(modules)) x$modules else
+       x$modules[modules]
+    
+    Dist <- function(C){
+      d <-lapply(1:(length(C) - 1), function(j){
+        xx <- C[[j]]
+        yy <- C[-(1:j)]
+        sapply(1:length(yy), function(jj){
+          d <- Re(eigen(fast.solve(xx) %*% yy[[jj]])$values)
+          d <- d[d>0]
+          sqrt(sum(log(d)^2))
+        })
+      })
+      d <- unlist(d)
+      Dmat <- dist(matrix(0, length(C), length(C)))
+      for(i in 1:length(Dmat)) Dmat[[i]] <- d[i]
+      as.matrix(Dmat)
+    }
+    
+    Covs <- lapply(M, function(y){
+      KM <- K.modules(x$A, hyp = y, nsims = 1)
+      cov <- KM$VCV
+      k <- ncol(cov) / length(y)
+      keep <- rep(y, each = k)
+      gps <- levels(as.factor(y))
+      res <- matrix(0, nrow(cov), ncol(cov))
+      for(i in 1:length(gps)) {
+        found <- which(keep == gps[i])
+        res[found, found] <- cov[found, found]
+      }
+     res 
+    })
+    
+    names(Covs) <- names(M)
+    d <- Dist(Covs)
+    pcoa <- as.data.frame(cmdscale(d))
+    names(pcoa) <- paste("C", 1:ncol(pcoa), sep = "")
+    plot(pcoa, ...)
+    text(pcoa, names(M), pos=3)
+  }
+  
+}
+
+
+## geomorph.data.frame
+
+#' Handle missing values in rrpp.data.frame objects
+#'
+#' @param object object (from \code{\link{geomorph.data.frame}})
+#' @param ... further arguments (currently not used)
+#' @method na.omit geomorph.data.frame
+#' @export
+#' @author Michael Collyer
+#' @keywords utilities
+#' @examples
+#' data(plethspecies)
+#' Y.gpa <- gpagen(plethspecies$land, verbose = TRUE)
+#' gdf <- geomorph.data.frame(Y.gpa)
+#' gdf$d <- Y.gpa$procD
+#' gdf$group <- c(rep(1, 4), rep(2, 4), NA) # one unknown group designation
+#' gdf
+#' ndf <- na.omit(gdf)
+#' ndf
+
+na.omit.geomorph.data.frame <- function(object, ...) {
+  class(object) <- "rrpp.data.frame"
+  out <- na.omit(object)
+  class(out) <- "geomorph.data.frame"
+  out
+}
+
