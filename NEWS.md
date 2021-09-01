@@ -3,6 +3,7 @@
 ### NEW FEATURES
 * Added a transform argument to `morphol.disparity` for PGLS models, consistent with `gm.prcomp` approaches.
 * New function, `module.eigen`, plus S3 generic associated functions.
+* New function, `na.omit.geomorph.data.frame`.
 
 ### BUG FIXES
 * Fixed pairwise Z-scores in `compare.pls` and `compare.CR` to use box-cox transformed values.

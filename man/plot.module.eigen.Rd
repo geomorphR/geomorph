@@ -12,7 +12,9 @@
 \item{use.rel.dims}{A logical argument for whether to use only the relevant dimensions in the plot, 
 based on a broken stick model.}
 
-\item{...}{other arguments passed to plot.  This function vectorizes a summary table (for proportions of variance) 
+\item{...}{other arguments passed to plot.
+
+This function vectorizes a summary table (for proportions of variance) 
 from \code{\link{summary.module.eigen}}.  For example, if a 5 x 4 table is produced, a vector of length 20 is produced
 by the columns of the table.  Some plot parameters can be manipulated, but one has to do it with respect to all values.  
 For example, for the 5 x 4 table, bg = c(rep(1:4, each = 5)) produces a vector of length 20 to describe point 

@@ -349,6 +349,7 @@ procD.lm <- function(f1, iter = 999, seed=NULL, RRPP = TRUE,
                  print.progress = print.progress, 
                  Parallel = Parallel, ...)
   
+  n <- out$LM$n
   out$ANOVA$effect.type <- match.arg(effect.type)
   out$GM <- NULL
   

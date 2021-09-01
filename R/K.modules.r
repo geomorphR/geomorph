@@ -35,8 +35,10 @@
 #' 
 #' @param A A 3D array (p x k x n) containing Procrustes shape variables for all specimens, or a matrix (n x variables)
 #' @param K The number of modules into which the data are partitioned.
-#' @param hyp A list of which landmarks (or variables) belong in which partition: 
-#' (e.g. A, A, A, B, B, B, C, C, C). This is the same as partition.gp in, e.g., \code{\link{module.eigen}}
+#' @param hyp An optional vector for an a priori, modular  hypothesis, explaining
+#' which landmarks (or variables) belong in which partition: 
+#' (e.g. A, A, A, B, B, B, C, C, C). This is the same as partition.gp in, e.g., \code{\link{module.eigen}}.  If provided, it
+#' will be one of simulated hypotheses considered.
 #' @param nsims The number of simulations to use.
 #' @param phy Optional argument to include a class \code{phylo} phylogenetic tree.  Tip labels must match data names.
 #' This argument instructs the function to estimate a phylogenetic covariance matrix based on a Brownian motion model
@@ -85,8 +87,6 @@ K.modules <- function(A, K = 2, hyp = NULL, nsims = 1000,
   
   K.args <- c(K.args, sup.args)
 
-
-  
   if(!is.numeric(seed)) {
     if(is.null(seed)) seed <-nsims else
       seed <- sample(1:nsims, 1) 
@@ -99,7 +99,10 @@ K.modules <- function(A, K = 2, hyp = NULL, nsims = 1000,
     tol <- 0
     while(tol < min.lmk){
       res <- sample(1:K, size = p, replace = TRUE)
-      tol <- min(by(res, res, length))
+      res <- factor(res, levels = 1:K)
+      gps <- by(res, res, length)
+      gps[is.na(gps)] <- 0
+      tol <- min(gps)
     }
     
     res
@@ -148,6 +151,7 @@ K.modules <- function(A, K = 2, hyp = NULL, nsims = 1000,
   
   vcv.args <- K.args[c("A", "phy", "Cov", "transform.")]
   out$VCV <- do.call(get.VCV, vcv.args)
+  out$A <- A
   
   class(out) <- "K.modules"
   out

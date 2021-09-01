@@ -21,8 +21,10 @@ K.modules(
 
 \item{K}{The number of modules into which the data are partitioned.}
 
-\item{hyp}{A list of which landmarks (or variables) belong in which partition: 
-(e.g. A, A, A, B, B, B, C, C, C). This is the same as partition.gp in, e.g., \code{\link{module.eigen}}}
+\item{hyp}{An optional vector for an a priori, modular  hypothesis, explaining
+which landmarks (or variables) belong in which partition: 
+(e.g. A, A, A, B, B, B, C, C, C). This is the same as partition.gp in, e.g., \code{\link{module.eigen}}.  If provided, it
+will be one of simulated hypotheses considered.}
 
 \item{nsims}{The number of simulations to use.}
 
@@ -99,7 +101,7 @@ land.gps<-c("A","A","A","A","A","B","B","B","B","B","B")
 Collyer et al. In review.
 }
 \seealso{
-\code{\link{summary.K.modules}}, \code{\link{plot.K.mdules}}
+\code{\link{summary.K.modules}}, \code{\link{plot.K.modules}}
 \code{\link{module.eigen}}, \code{\link{modularity.test}}, 
 \code{\link{phylo.integration}}, \code{\link{phylo.modularity}},
 }

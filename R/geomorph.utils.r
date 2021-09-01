@@ -1338,7 +1338,7 @@ summary.K.modules <- function(object, ...) {
 #' @param type One of "profile", config", or "pcoa" for plotting a profile of eigenvalues, 
 #' landmark configurations with modules formatted differently, 
 #' or a principal coordinate plot, respectively.
-#' @param ... other arguments passed to plot, especially for changing points in a configuration.  
+#' @param ... other arguments passed to plot, especially for changing points in a configuration.
 #' 
 #' This function provides plotting support for \code{\link{K.modules}}.  One of two plots can be produced: (1) a 
 #' canvas of landmark configuration with points formatted differently for modules or (2) a principal coordinate plot, based
@@ -1380,19 +1380,131 @@ plot.K.modules <- function(x, modules = 1:6, type = c("profile", "config", "pcoa
   
   if(type == "config"){
     
+    opar <- par()
+    
     if(is.null(x$mean))
       stop("Coordinate data not used in K.modules, so no configuration is possible.\n",
            call. = FALSE)
+    mn <- x$mean
+    class(mn) <- "matrix"
     
-    ### add trap for canvas size
-    
-    dims <- dim(mean)
-    if(length(dims) == 2) {
-      plot.args$x <- x$mean[,1]
-      plot.args$y <- x$mean[,2]
+    if(length(modules) > 16){
+      cat("Warning: too many modules were chosen for effective plotting.\n")
+      cat("Only the first 16 will shown.\n")
+      M <- modules[1:16]
     }
     
-### left off here.  Need to make 2d or 3d plots, plus a pl,otting canvas
+    m <- length(M)
+    crow <- ceiling(sqrt(m))
+    ccol <- ceiling(m / crow)
+    cdims <- c(crow, ccol)
     
+    dims <- dim(mn)
+    plot.args$x <- mn[,1]
+    plot.args$y <- mn[,2]
+    plot.args$xlab <- "x"
+    plot.args$ylab <- "y"
+    plot.args$asp = 1
+    
+    if(dims[2] == 3) {
+      plot.args$z <- mn[,3]
+      plot.args$zlab <- "z"
+    }
+    
+    if(dims[2] == 3) mfrow3d(crow, ccol) else
+      par(mfrow = cdims)
+    
+    for(i in 1:m){
+      plot.args$col <- plot.args$bg <- M[[i]]
+      if(dims[2] == 3) {
+        do.call(plot3d, plot.args)
+        aspect3d("iso")
+        title3d(names(M)[[i]])
+      } else {
+        do.call(plot, plot.args)
+        title(names(M)[[i]])
+      }
+    }
+    par(opar)
   }
+  
+  if(type == "pcoa"){
+    
+    cat("\nThis can be a computationally intensive procedure.\n")
+    if(length(modules) > 100) {
+      modules <- modules[1:100]
+      cat("Truncating the number of modules to the first 100 requested,\n")
+      cat("in order to have a reasonable result.\n")
+    }
+    
+    M <- if(length(x$modules) < length(modules)) x$modules else
+       x$modules[modules]
+    
+    Dist <- function(C){
+      d <-lapply(1:(length(C) - 1), function(j){
+        xx <- C[[j]]
+        yy <- C[-(1:j)]
+        sapply(1:length(yy), function(jj){
+          d <- Re(eigen(fast.solve(xx) %*% yy[[jj]])$values)
+          d <- d[d>0]
+          sqrt(sum(log(d)^2))
+        })
+      })
+      d <- unlist(d)
+      Dmat <- dist(matrix(0, length(C), length(C)))
+      for(i in 1:length(Dmat)) Dmat[[i]] <- d[i]
+      as.matrix(Dmat)
+    }
+    
+    Covs <- lapply(M, function(y){
+      KM <- K.modules(x$A, hyp = y, nsims = 1)
+      cov <- KM$VCV
+      k <- ncol(cov) / length(y)
+      keep <- rep(y, each = k)
+      gps <- levels(as.factor(y))
+      res <- matrix(0, nrow(cov), ncol(cov))
+      for(i in 1:length(gps)) {
+        found <- which(keep == gps[i])
+        res[found, found] <- cov[found, found]
+      }
+     res 
+    })
+    
+    names(Covs) <- names(M)
+    d <- Dist(Covs)
+    pcoa <- as.data.frame(cmdscale(d))
+    names(pcoa) <- paste("C", 1:ncol(pcoa), sep = "")
+    plot(pcoa, ...)
+    text(pcoa, names(M), pos=3)
+  }
+  
 }
+
+
+## geomorph.data.frame
+
+#' Handle missing values in rrpp.data.frame objects
+#'
+#' @param object object (from \code{\link{geomorph.data.frame}})
+#' @param ... further arguments (currently not used)
+#' @method na.omit geomorph.data.frame
+#' @export
+#' @author Michael Collyer
+#' @keywords utilities
+#' @examples
+#' data(plethspecies)
+#' Y.gpa <- gpagen(plethspecies$land, verbose = TRUE)
+#' gdf <- geomorph.data.frame(Y.gpa)
+#' gdf$d <- Y.gpa$procD
+#' gdf$group <- c(rep(1, 4), rep(2, 4), NA) # one unknown group designation
+#' gdf
+#' ndf <- na.omit(gdf)
+#' ndf
+
+na.omit.geomorph.data.frame <- function(object, ...) {
+  class(object) <- "rrpp.data.frame"
+  out <- na.omit(object)
+  class(out) <- "geomorph.data.frame"
+  out
+}
+
