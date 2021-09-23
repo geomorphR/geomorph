@@ -35,8 +35,8 @@ The second approach (method="Reg") is multivariate regression. Here each landmar
 regressed on all other landmarks for the set of complete specimens, and the missing landmark values are
 then predicted by this linear regression model. Because the number of variables can exceed the number of
 specimens, the regression is implemented on scores along the first set of PLS axes for the complete and 
-incomplete blocks of landmarks (see Gunz et al. 2009). Note, however, that a minimum of 2m+2 specimens 
-are required to estimate m missing landmarks in any one specimen using the regression method.
+incomplete blocks of landmarks (see Gunz et al. 2009). Note, however, that a minimum of k*m+k specimens 
+are required to estimate m missing landmarks (of k-dimension) in any one specimen using the regression method.
 More generally, if the number of missing landmarks approaches the number of reference specimens used to 
 estimate them, estimation will become increasingly imprecise with the regression method. Additionally, 
 the location of missing landmarks (contiguous versus disparate in location) can also influence the precision 
