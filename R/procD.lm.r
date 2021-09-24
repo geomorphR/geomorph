@@ -322,17 +322,23 @@ procD.lm <- function(f1, iter = 999, seed=NULL, RRPP = TRUE,
       Y <- try(eval(f1[[2]], envir = parent.frame), silent = TRUE)
     if(inherits(Y, "try-error")) stop("Cannot find data in data frame or global environment.\n",
                                       call. = FALSE)
+    
+    nms <- if(is.vector(Y)) names(Y) else if(is.dist(Y)) attr(Y, "Labels") else
+        if(is.matrix(Y)) rownames(Y) else dimnames(Y)[[3]]
     dims.Y <- dim(Y)
     f <- update(f1, Y ~ .)
     if(length(dims.Y) == 3) {
       GM <- TRUE
       Y <- two.d.array(Y) 
+      rownames(Y) <- nms
       p <- dims.Y[[1]]
       k <- dims.Y[[2]]
       n <- dims.Y[[3]]
     } else {
       GM <- FALSE
       Y <- as.matrix(Y)
+      rownames(Y) <- nms
+      if(isSymmetric(Y)) colnames(Y) <- nms
     }
     data$Y <- Y
     
