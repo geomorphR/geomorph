@@ -11,7 +11,7 @@ d8e8360c03c03fe45d2100e9c05d4a89 *data/plethodon.rda
 80c6fa53b642b23b378cf036d1b962f1 *data/ratland.rda
 9ba51ab9be03930a4acdcddde8169b33 *data/scallopPLY.rda
 6e5e71b242462e422b716800ffc3c464 *data/scallops.rda
-f9b856c1d5d7d00ba1be9ff990968612 *DESCRIPTION
+9a14195c81fb9671b0cb00d95bbdcdca *DESCRIPTION
 f4f2080e745b8d689f17caf549449ab5 *geomorph.Rproj
 605c37476a6689368cd29f41024a6f4c *inst/CITATION
 593e42548fcbd08b6027b15bbca38808 *man/arrayspecs.Rd
@@ -64,8 +64,6 @@ b8a3ca222e5ef0e2470e1d5833dd7bb4 *man/plethspecies.Rd
 85bbe6b70e860a14116746ef4ecac51f *man/plot.evolrate.Rd
 6e5296c99562dc85e219488db84596cc *man/plot.gm.prcomp.Rd
 0116d21c6ae9389dc425aaca082fd67c *man/plot.gpagen.Rd
-69054b1b9a53a7c96f8eff6a7173b0dc *man/plot.K.modules.Rd
-a56c5838afd523951ecebe4d011e34a0 *man/plot.module.eigen.Rd
 71208a14b679efbbaf55f8daba7a0ef3 *man/plot.mshape.Rd
 c243df60434118dddca6904f3d6de9b0 *man/plot.physignal.Rd
 e1b19a991aa5c05b644349eb00687e39 *man/plot.pls.Rd
@@ -86,13 +84,10 @@ e54a53855f3a44b7d98a2e3802fad0cf *man/print.evolrate1.Rd
 5e2cbf01c34483fa25a8d809d746d6f1 *man/print.geomorphShapes.Rd
 b7e6c44a6550481ceb569b5bf0c94c89 *man/print.gm.prcomp.Rd
 5a1b43e6d504c8876fb2a8fff1f88a83 *man/print.gpagen.Rd
-66e7d9b7f9aa7cdb9c8cb5ebf9903ea2 *man/print.K.modules.Rd
-42685a16be7f4e5a391a6a7a1f03f843 *man/print.module.eigen.Rd
 05e172a5b2f3efa4de8f89af3da3d190 *man/print.morphol.disparity.Rd
 c099404c82877d5f4efc349589e2d21d *man/print.physignal.Rd
 c9459503ec13f843f971edda31289dc6 *man/print.pls.Rd
 e186bde97e98a204b53457a14eb0a52d *man/print.procD.lm.Rd
-2f54dd98734bfa4292a53b60b33e7907 *man/print.summary.module.eigen.Rd
 256d3e86289fec5f2f59f925a02116c7 *man/procD.lm.Rd
 30a048274f75e65ff65275c3cdd52607 *man/procD.pgls.Rd
 2e915d39d1b79932fb1633dbdcc28ce8 *man/pupfish.Rd
@@ -105,7 +100,7 @@ b39d46bb839407d0748d39c6838fcc33 *man/readland.fcsv.Rd
 e268bdaf2ef10f2027709e5f9ab2518b *man/readland.tps.Rd
 e822e958f8d9123fdf579214295b0fab *man/readmulti.nts.Rd
 a19f005bd83e97a4f20bf357483726c5 *man/readmulti.tps.Rd
-cc963a327d23f0e830749124ba9854d9 *man/rotate.coords.Rd
+4a9e3fd9859000bb3d361df7d624a7e8 *man/rotate.coords.Rd
 8be198584c10582597e98c6cecbb26f7 *man/scallopPLY.Rd
 c4f3fe2e244677c2504bbe0283590d1c *man/scallops.Rd
 59896dd8865ee5d8bdf8e6514d073747 *man/shape.predictor.Rd
@@ -121,8 +116,6 @@ b855ab3d098d9c88761b8c74e60836c4 *man/summary.CR.phylo.Rd
 8991ad846347e197a872570f79f50313 *man/summary.geomorphShapes.Rd
 68dd4db00f079fea47218ea51e9dc8b6 *man/summary.gm.prcomp.Rd
 4650837bdbeb227d95c700d3cb00811a *man/summary.gpagen.Rd
-949b81be5c6ba1b7d8747a8fc192bdb5 *man/summary.K.modules.Rd
-2d72194b126f834bdd6f734398870553 *man/summary.module.eigen.Rd
 959f66c73c14ff74e2b3f3807d6ef6d7 *man/summary.morphol.disparity.Rd
 cebd4d3722633f6509a04c416d0a8fc9 *man/summary.physignal.Rd
 70ff60d1fd9254c8c5ef5e4aa57b2d7c *man/summary.pls.Rd
@@ -132,7 +125,7 @@ da1241dd835f95675cc7126b2a7ec61a *man/two.d.array.Rd
 d2755155772526527e4224b17d0dd05d *man/warpRefMesh.Rd
 7bea8d6b17918fd4889e2056ebe0e3d0 *man/warpRefOutline.Rd
 d9119f721918f22c267db843023a86fe *man/writeland.tps.Rd
-d00167e05b43cd6874337d70defb3464 *NAMESPACE
+65314aab623b6577fb3f2cb0e485e622 *NAMESPACE
 d7fede3e502e0045d719ffa5b2642a85 *NEWS.md
 d80d05ef890863f1b3004473627ea5f1 *R/arrayspecs.r
 471a441e39f4f561d4526c238c6979f9 *R/bilat.symmetry.r
@@ -157,7 +150,7 @@ aac6a4f8a759473e8c37048e5c8e3d91 *R/findMeanSpec.r
 067124d4119de55a6089c6aefdd0eac5 *R/fixed.angle.r
 3d7958991ae174c24ba7c570f4e03b27 *R/geomorph.data.frame.r
 1e261f693f1f1de92c248dd036b25b89 *R/geomorph.support.code.r
-89db546e5dab70912cdf7640812aca29 *R/geomorph.utils.r
+d666ce889feee536db5fa9dfd96b5b39 *R/geomorph.utils.r
 b0de2a67cff633e27e7a00860187240f *R/globalIntegration.r
 fa94a434ca094a407ec33009dca9843c *R/gm.prcomp.R
 d737fcb101b337b0737e98eea0af6e3a *R/gpagen.r
@@ -176,7 +169,7 @@ f9043772e114ec0f814ab4782383a5dc *R/plotAllSpecimens.r
 650349cc43c0ad77865aea74dc2f61bf *R/plotOutliers.r
 52af40caeff3fce3636d0e75b3bd4808 *R/plotRefToTarget.r
 fde58408b523c760a200ae1a94aed3f5 *R/plotspec.r
-8904025c571e327ec04d5301bdfcf099 *R/procD.lm.r
+50f0be1f4fc53e37ffd46bb325fd1530 *R/procD.lm.r
 545f72a4cff0e6605ae999b332695629 *R/procD.pgls.r
 df3f4cc6406dc0c737ee2ff08c2a0e3d *R/read.morphologika.r
 b6f1390d9225c822d20796cae88643c7 *R/read.ply.r
