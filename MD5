@@ -158,10 +158,10 @@ a6c3643aba0a098878d2768d57ff8ded *R/gridPar.r
 b5e056ae16d61d5f4d0637b2d4f28582 *R/integration.test.r
 0cbfe6b5655e2751cdd03ca2a1550768 *R/interlmkdist.r
 0f92a7f17f93c5e10630294e43fe3ac4 *R/make_ggplot.r
-03ed10e7d0a7537e7ae33dd8f7287ff3 *R/modularity.test.r
+de8a7705c2569b4459143bb189211272 *R/modularity.test.r
 754af4a0bc2c4f9187c3f9c51451636a *R/morphol.disparity.r
 dd09bec9a8c98301cb86d5b0563c8a77 *R/phylo.integration.r
-540092282697d43ca83dfb58b69a9490 *R/phylo.modularity.r
+d5afd24cc150710512b164f411d3cc3f *R/phylo.modularity.r
 1f163631bad0749c9269491b2ec97668 *R/physignal.r
 51499bded635b5c0c06b6bf8cfd1bad1 *R/picknplot.shape.r
 e61483ce68db0750515dc110212e77f2 *R/plotAllometry.r
