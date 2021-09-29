@@ -6,6 +6,7 @@
 * New function, `na.omit.geomorph.data.frame`.
 
 ### BUG FIXES
+* Fixed some `as.matrix` names dropping in support code.
 * Fixed pairwise Z-scores in `compare.pls` and `compare.CR` to use box-cox transformed values.
 * Added Pcov as needed output `phylo.integration` and `phylo.modularity`.
 * Fixed small issue with label plotting in `gridPar.r`.
