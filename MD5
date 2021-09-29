@@ -126,7 +126,7 @@ d2755155772526527e4224b17d0dd05d *man/warpRefMesh.Rd
 7bea8d6b17918fd4889e2056ebe0e3d0 *man/warpRefOutline.Rd
 d9119f721918f22c267db843023a86fe *man/writeland.tps.Rd
 a7c62641aa1a64c4c97b17e406b68229 *NAMESPACE
-d7fede3e502e0045d719ffa5b2642a85 *NEWS.md
+2f964a7ee86373aeef4165a80df27810 *NEWS.md
 d80d05ef890863f1b3004473627ea5f1 *R/arrayspecs.r
 471a441e39f4f561d4526c238c6979f9 *R/bilat.symmetry.r
 4de44720708760426e94d2f2ffef904b *R/build.template.r
@@ -160,7 +160,7 @@ a6c3643aba0a098878d2768d57ff8ded *R/gridPar.r
 0f92a7f17f93c5e10630294e43fe3ac4 *R/make_ggplot.r
 03ed10e7d0a7537e7ae33dd8f7287ff3 *R/modularity.test.r
 754af4a0bc2c4f9187c3f9c51451636a *R/morphol.disparity.r
-1c1d22f8f6657dc2559cf450703c0593 *R/phylo.integration.r
+dd09bec9a8c98301cb86d5b0563c8a77 *R/phylo.integration.r
 540092282697d43ca83dfb58b69a9490 *R/phylo.modularity.r
 1f163631bad0749c9269491b2ec97668 *R/physignal.r
 51499bded635b5c0c06b6bf8cfd1bad1 *R/picknplot.shape.r

@@ -159,6 +159,7 @@ phylo.integration <-function(A, A2 = NULL, phy,
       stop("\nA2 is not a suitable data array for analysis. ", call. = FALSE)
     
     namesY <- rownames(y)
+    cnamesY <- colnames(y)
     
     if(is.null(namesY))
       stop("\nNo specimen names in data matrix 2. Please assign specimen names",
@@ -226,7 +227,7 @@ phylo.integration <-function(A, A2 = NULL, phy,
   
   if(!is.null(A2)){
     ngps <- 2
-    y <- as.matrix(y[match(namesX, namesY),])  
+    y <- as.matrix(y[match(namesX, namesY), ]); colnames(y) <- cnamesY
   }
   
   n <- NROW(x)
