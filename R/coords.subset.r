@@ -24,12 +24,13 @@ coords.subset <- function(A, group){
   if(length(dims) != 3) stop("coordinates must be in the form of a 3D array - consider using arrayspecs")
   p <- dims[1]; k <- dims[2]; n <- dims[3]
   group <- as.factor(group)
+  M <- mshape(A); M[M!=0] <- 0
   if(length(group) != n) stop("number of specimens do not match between coords and grouping factor")
   Y <- as.data.frame(two.d.array(A))
   X <- split(Y, group)
   redo <- function(x) {
     x <- as.matrix(x)
-    y <- lapply(1:NROW(x), function(j) matrix(x[j,], p, k, byrow = TRUE))
+    y <- lapply(1:NROW(x), function(j) M + matrix(x[j,], p, k, byrow = TRUE))
     names(y) <- rownames(x)
     simplify2array(y) 
   } 
