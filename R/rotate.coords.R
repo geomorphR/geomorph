@@ -89,25 +89,31 @@ rotate.coords <- function(A, type = c("flipX", "flipY", "rotateC", "rotateCC"),
    } else index <- rep(1, n)
    
    if(obj == "gpagen") {
+     id <- dimnames(A$coords)
      Y <- A$coords
      Y <- lapply(1:(dim(Y)[[3]]), function(j) as.matrix(Y[,,j]))
      Y <- lapply(1:length(Y), function(j){
        if(index[j] == 1) Y[[j]] %*% rot else Y[[j]]
      })
      A$coords <- simplify2array(Y)
+     dimnames(A$coords) <- id
    }
    
    if(obj == "array") {
+     id <- dimnames(A)  
      Y <- A
      Y <- lapply(1:(dim(Y)[[3]]), function(j) as.matrix(Y[,,j]))
      Y <- lapply(1:length(Y), function(j){
        if(index[j] == 1) Y[[j]] %*% rot else Y[[j]]
      })
      A <- simplify2array(Y)
+     dimnames(A) <- id
    }
    
    if(obj == "matrix") {
+     id <- dimnames(A)  
      A <- A %*% rot
+     dimnames(A) <- id
    }
    return(A)
 }
