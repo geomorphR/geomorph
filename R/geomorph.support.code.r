@@ -1657,8 +1657,8 @@ phylo.mat<-function(x,phy){
 pls.phylo <- function(x,y, Ptrans, verbose = FALSE){
   x <- as.matrix(x); y <- as.matrix(y)
   px <- ncol(x); py <- ncol(y); pmin <- min(px,py)
-  x <- Ptrans%*%x
-  y <- Ptrans%*%y
+  x <- as.matrix(center(Ptrans %*% x))
+  y <- as.matrix(center(Ptrans %*% y))
   R12<-  crossprod(x,y)/(nrow(x)-1)
   pls <- La.svd(R12, pmin, pmin)
   U <- pls$u; V <- t(pls$vt)
