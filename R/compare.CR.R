@@ -117,29 +117,43 @@ compare.CR <- function(..., CR.null = TRUE, two.tailed = TRUE){
    z12 <- sapply(1:ncol(k.combn), function(j){
      a <- k.combn[1,j]; b <- k.combn[2,j]
      r1 <- list.drs[a]; r2 <- list.drs[b] 
-     sd1 <- list.sds[a]; sd2 <- list.sds[b]
-     (r1-r2)/sqrt(sd1^2+sd2^2)
+     r1-r2
    })
+   pooled.se <- sapply(1:ncol(k.combn), function(j){
+      a <- k.combn[1,j]; b <- k.combn[2,j]
+      sd1 <- list.sds[a]; sd2 <- list.sds[b]
+      sqrt(sd1^2+sd2^2)
+   })
+   
+   z12 <- z12 / pooled.se
+   
    z12.p <- sapply(1:length(z12), function(j) pnorm(abs(z12[[j]]), lower.tail = FALSE)* tails)  
    d <- rep(0,k); names(d) <- list.names
    D <-dist(d)
-   z12.pw <- p12.pw <- D
-   for(i in 1:length(z12)) z12.pw[i] <-z12[i]
-   for(i in 1:length(z12)) p12.pw[i] <-z12.p[i]
+   z12.pw <- p12.pw <- se12.pw <- D
+   for(i in 1:length(z12)) z12.pw[i] <- z12[i]
+   for(i in 1:length(z12)) p12.pw[i] <- z12.p[i]
+   for(i in 1:length(z12)) se12.pw[i] <- pooled.se[i]
    names(list.zs) <- names(list.sds) <-list.names
    pairwise.z <- as.matrix(z12.pw)
    pairwise.P <- as.matrix(p12.pw)
+   pairwise.se <- as.matrix(se12.pw)
    diag(pairwise.P) <- 1
+   diag(pairwise.se) <- list.sds
+   
    if (CR.null == TRUE){
       names(list.zs) <- names(list.sds) <-c("No_Modules",list.names)
       pairwise.z <- as.matrix(z12.pw); rownames(pairwise.z) <- colnames(pairwise.z)<-c("No_Modules",list.names)
       pairwise.P <- as.matrix(p12.pw); rownames(pairwise.P) <- colnames(pairwise.P)<-c("No_Modules",list.names)
+      pairwise.se <- as.matrix(se12.pw); rownames(pairwise.se) <- colnames(pairwise.se)<-c("No_Modules",list.names)
       diag(pairwise.P) <- 1
+      diag(pairwise.se) <- c(0, list.sds)
    }
    comment <- c("NOTE: more negative effects represent stronger modular signal!")
    out <- list(comment=comment, sample.z = list.zs,
-               sample.r.sd = list.sds,
+               sample.se = list.sds,
                pairwise.z = abs(pairwise.z),
+               pairwise.pooled.se = pairwise.se,
                pairwise.P = pairwise.P)
    class(out) <- "compare.CR"
    out
