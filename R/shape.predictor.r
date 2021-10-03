@@ -209,8 +209,11 @@ shape.predictor <- function(A,
   pr.shape <- function(x) crossprod(x,B)
   preds <- lapply(dots, pr.shape)
   M <- mshape(A)
+  if(is.null(rownames(M))) rownames(M) <- 1:nrow(M)
+  if(is.null(colnames(M))) colnames(M) <- 1:ncol(M)
+  M0 <- M; M0[M0!=0] <- 0
   if(!Intercept) reshape <- function(x) M + arrayspecs(x,p,k)[,,1] else
-    reshape <- function(x) arrayspecs(x,p,k)[,,1] 
+    reshape <- function(x) M0 + arrayspecs(x,p,k)[,,1] 
   preds <- lapply(preds, reshape)
   return(preds)
 }

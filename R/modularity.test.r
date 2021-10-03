@@ -88,6 +88,7 @@ modularity.test<-function(A, partition.gp, iter = 999, CI = FALSE, seed = NULL,
             }
   gps<-as.factor(partition.gp)
   gps.obs <- as.factor(rep(gps,k,each = k, length=p*k))
+  if(any(table(gps.obs)==1)){stop("Must have at least two variables per partition.")}
   if(!is.null(seed) && seed=="random") seed = sample(1:iter, 1)
   ngps<-nlevels(gps)
   if (length(dim(A))==2){
