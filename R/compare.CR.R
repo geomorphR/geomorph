@@ -28,7 +28,7 @@
 #' \item{pairwise.z}{A matrix of pairwise, two-sample z scores between all pairs of effect sizes.}
 #' \item{pairwise.p}{A matrix of corresponding P-values.}
 #' @references Adams, D.C. and M.L. Collyer. 2019.  Comparing the strength of modular signal, and evaluating alternative modular hypotheses,
-#' using covariance ratio effect sizes for morphometric data. *Evolution*. (Accepted).
+#' using covariance ratio effect sizes for morphometric data. *Evolution*. 73:2352-2367.
 #' @examples
 #' 
 #' #NOT RUN
