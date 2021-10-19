@@ -3,14 +3,14 @@
 #' A function to read ply files, which can be used for digitizing landmark coordinates or for shape warps.
 #'
 #' Function reads three-dimensional surface data in the form of a single ply file
-#'  (Polygon File Format; ASCII format only, from 3D scanners such as NextEngine and David scanners). 
+#'  (Polygon File Format; from 3D scanners such as NextEngine and David scanners). 
 #'  Vertices of the surface may then be used to digitize three-dimensional points, 
 #'  and semilandmarks on curves and surfaces. The surface may also be used as a mesh for visualizing 3D deformations (\code{\link{warpRefMesh}}).
 #'  The function opens the ply file and plots the mesh,
 #'  with faces rendered if file contains faces, and colored if the file contains vertex color.
 #'  Vertex normals allow better visualization and more accurate digitizing with \code{\link{digit.fixed}}.
 #'
-#' @param file An ASCII ply file
+#' @param file An ASCII or binary ply file
 #' @param ShowSpecimen logical Indicating whether or not the ply file should be displayed
 #' @param addNormals logical Indicating whether or not the normals of each vertex should be calculated (using \code{\link[rgl]{addNormals}})
 #' @export
@@ -34,8 +34,23 @@ read.ply <- function (file, ShowSpecimen = TRUE, addNormals = TRUE)
   is.ply <- grep("ply", plyfile)
   if ((length(is.ply) ==0) ) stop ("File is not a PLY file")
   format <- unlist(strsplit(grep(c("format "), plyfile, value = TRUE), " "))
-  if (format[2] != "ascii")
-    stop("PLY file is not ASCII format: ","format = ", format[2:length(format)])
+  if (format[2] == "ascii")
+    out <- read.ascii.ply(plyfile)
+  else
+    out <- read.bin.ply(file)
+  mesh <- list(vb = out$vertices, it = out$face, primitivetype = "triangle", 
+               material = out$material)
+  class(mesh) <- c("mesh3d", "shape3d")
+  if(addNormals==TRUE){ mesh <- addNormals(mesh)}
+  if(ShowSpecimen==TRUE){ 
+    clear3d()
+    if (length(face) == 0) { dot3d(mesh) }
+    if (length(material) != 0){ shade3d(mesh, meshColor="legacy") }
+    shade3d(mesh, meshColor="legacy") }
+  return(mesh)
+}
+
+read.ascii.ply <- function(plyfile) {
   face <- NULL
   material <- NULL
   xline <- unlist(strsplit(grep(c("element vertex "), plyfile, value = TRUE), " "))
@@ -63,19 +78,89 @@ read.ply <- function (file, ShowSpecimen = TRUE, addNormals = TRUE)
     face <- t(matrix(face, nrow = nface, byrow = T))
     face <- face[2:4,]
     face = face +1 
-    }
-  if (nuchar !=0) {
+  }
+  if (nuchar > 0) {
     color <- rgb(points[,4], points[,5], points[,6], maxColorValue = 255)
-    material$color <- matrix(color[face], dim(face))}   
+    material$color <- matrix(color[face], dim(face))
+  }
+  list(
+    vertices=vertices,
+    face=face,
+    material=material
+  )
+}
+
+types_map <- list(
+  char = list(type=character(), size=1L, signed=T),
+  uchar = list(type=character(), size=1L, signed=F),
+  short = list(type=integer(), size=2L, signed=T),
+  ushort = list(type=integer(), size=2L, signed=F),
+  int = list(type=integer(), size=4L, signed=T),
+  uint = list(type=integer(), size=4L, signed=F),
+  float = list(type=double(), size=4L, signed=T),
+  double = list(type=double(), size=8L, signed=T)
+)
+
+format_map <- list(
+  binary_little_endian = "little",
+  binary_big_endian = "big"
+)
+
+read.bin.ply <- function(file_name) {
+  con <- file("FANC.ply", "rb")
   
-  mesh <- list(vb = vertices, it = face, primitivetype = "triangle", 
-               material = material)
-  class(mesh) <- c("mesh3d", "shape3d")
-  if(addNormals==TRUE){ mesh <- addNormals(mesh)}
-  if(ShowSpecimen==TRUE){ 
-    clear3d()
-    if (length(face) == 0) { dot3d(mesh) }
-    if (length(material) != 0){ shade3d(mesh, meshColor="legacy") }
-    shade3d(mesh, meshColor="legacy") }
-  return(mesh)
+  # read header
+  header_lines <- list()
+  while (TRUE) {
+    line <- readLines(con, n = 1L)
+    header_lines <- c(header_lines, line)
+    if (line == "end_header")
+      break
+  }
+  
+  format_vec <- unlist(strsplit(header_lines[[grep(c("format"), header_lines)]], " "))
+  num_format <- format_map[[format_vec[[2]]]]
+  ncolpts <- length(grep(c("property float"), header_lines))
+  nuchar <- length(grep(c("property uchar"), header_lines))
+
+  xline <- unlist(strsplit(grep(c("element vertex "), header_lines, value = TRUE), " "))
+  
+  # read vertices
+  vertices <- c()
+  cols <- c()
+  for (i in 1:nvertices) {
+    val <- readBin(con, double(), n = ncolpts, size = 4L, endian = num_format)
+    vertices <- c(vertices, val)
+    if (nuchar > 0)
+      val <- readBin(con, integer(), n = nuchar, size = 1L, endian = num_format)
+      cols <- c(cols, val)
+  }
+  #vertices <- readBin(con, double(), n = nvertices*ncolpts, size = 4L, endian = num_format)
+  vertices <- matrix(vertices, ncol = ncolpts, byrow = TRUE)
+
+  material <- NULL
+  if (nuchar >0) {
+    cols <- matrix(cols, ncol = nuchar, byrow = TRUE)
+    color <- rgb(cols[,1], cols[,2], cols[,3], maxColorValue = 255)
+    material$color <- matrix(color[face], dim(face))
+  }
+  
+  # read faces
+  face <- c()
+  for (i in 1:nfaces) {
+    nuchar <- readBin(con, integer(), n = 1, size = 1L, endian = num_format)
+    for (k in 1:nuchar) {
+      val <- readBin(con, integer(), n = 1, size = 4L, endian = num_format)
+      face <- c(face, val)
+    }
+  }
+  face <- matrix(face, ncol = nuchar, byrow = TRUE)
+  
+  close(con)
+
+  list(
+    vertices=vertices,
+    face=face,
+    material=material
+  )
 }
