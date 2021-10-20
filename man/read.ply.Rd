@@ -7,7 +7,7 @@
 read.ply(file, ShowSpecimen = TRUE, addNormals = TRUE)
 }
 \arguments{
-\item{file}{An ASCII ply file}
+\item{file}{An ASCII or binary ply file}
 
 \item{ShowSpecimen}{logical Indicating whether or not the ply file should be displayed}
 
@@ -22,7 +22,7 @@ A function to read ply files, which can be used for digitizing landmark coordina
 }
 \details{
 Function reads three-dimensional surface data in the form of a single ply file
- (Polygon File Format; ASCII format only, from 3D scanners such as NextEngine and David scanners). 
+ (Polygon File Format; from 3D scanners such as NextEngine and David scanners). 
  Vertices of the surface may then be used to digitize three-dimensional points, 
  and semilandmarks on curves and surfaces. The surface may also be used as a mesh for visualizing 3D deformations (\code{\link{warpRefMesh}}).
  The function opens the ply file and plots the mesh,
@@ -42,6 +42,6 @@ myply$material$color <- "#FCE6C9" # using RGB code
 \code{\link[rgl]{rgl-package}} (used in 3D plotting)
 }
 \author{
-Dean Adams & Emma Sherratt
+Dean Adams & Emma Sherratt & Dominik Krzemiński
 }
 \keyword{IO}

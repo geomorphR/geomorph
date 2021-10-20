@@ -15,7 +15,7 @@
 #' @param addNormals logical Indicating whether or not the normals of each vertex should be calculated (using \code{\link[rgl]{addNormals}})
 #' @export
 #' @keywords IO
-#' @author Dean Adams & Emma Sherratt
+#' @author Dean Adams & Emma Sherratt & Dominik Krzemiński
 #' @seealso  \code{\link[rgl]{rgl-package}} (used in 3D plotting)
 #' @return Function returns the following components:
 #'   \item{mesh3d}{list of class mesh3d- see rgl for details}
@@ -44,12 +44,13 @@ read.ply <- function (file, ShowSpecimen = TRUE, addNormals = TRUE)
   if(addNormals==TRUE){ mesh <- addNormals(mesh)}
   if(ShowSpecimen==TRUE){ 
     clear3d()
-    if (length(face) == 0) { dot3d(mesh) }
-    if (length(material) != 0){ shade3d(mesh, meshColor="legacy") }
+    if (length(out$face) == 0) { dot3d(mesh) }
+    if (length(out$material) != 0){ shade3d(mesh, meshColor="legacy") }
     shade3d(mesh, meshColor="legacy") }
   return(mesh)
 }
 
+#' Internal function for reading PLY data in ASCII format
 read.ascii.ply <- function(plyfile) {
   face <- NULL
   material <- NULL
@@ -90,6 +91,7 @@ read.ascii.ply <- function(plyfile) {
   )
 }
 
+# mapping PLY data types to R types
 types_map <- list(
   char = list(type=character(), size=1L, signed=T),
   uchar = list(type=character(), size=1L, signed=F),
@@ -101,13 +103,15 @@ types_map <- list(
   double = list(type=double(), size=8L, signed=T)
 )
 
+# mapping PLY numbers ordering to R
 format_map <- list(
   binary_little_endian = "little",
   binary_big_endian = "big"
 )
 
+#' Internal function for reading binary PLY data
 read.bin.ply <- function(file_name) {
-  con <- file("FANC.ply", "rb")
+  con <- file(file_name, "rb")
   
   # read header
   header_lines <- list()
@@ -118,12 +122,15 @@ read.bin.ply <- function(file_name) {
       break
   }
   
+  # parse header
   format_vec <- unlist(strsplit(header_lines[[grep(c("format"), header_lines)]], " "))
   num_format <- format_map[[format_vec[[2]]]]
   ncolpts <- length(grep(c("property float"), header_lines))
-  nuchar <- length(grep(c("property uchar"), header_lines))
-
+  nprop <- length(grep(c("property uchar"), header_lines))
   xline <- unlist(strsplit(grep(c("element vertex "), header_lines, value = TRUE), " "))
+  nvertices <- as.numeric(xline[grep(c("vertex"), xline) + 1])
+  yline <- unlist(strsplit(grep(c("element face"), header_lines, value = TRUE), " "))
+  nfaces <- as.numeric(yline[grep(c("face"), yline) + 1])
   
   # read vertices
   vertices <- c()
@@ -131,20 +138,12 @@ read.bin.ply <- function(file_name) {
   for (i in 1:nvertices) {
     val <- readBin(con, double(), n = ncolpts, size = 4L, endian = num_format)
     vertices <- c(vertices, val)
-    if (nuchar > 0)
-      val <- readBin(con, integer(), n = nuchar, size = 1L, endian = num_format)
+    if (nprop > 0)
+      val <- readBin(con, integer(), n = nprop, size = 1L, endian = num_format)
       cols <- c(cols, val)
   }
-  #vertices <- readBin(con, double(), n = nvertices*ncolpts, size = 4L, endian = num_format)
   vertices <- matrix(vertices, ncol = ncolpts, byrow = TRUE)
-
-  material <- NULL
-  if (nuchar >0) {
-    cols <- matrix(cols, ncol = nuchar, byrow = TRUE)
-    color <- rgb(cols[,1], cols[,2], cols[,3], maxColorValue = 255)
-    material$color <- matrix(color[face], dim(face))
-  }
-  
+  vertices <- t(cbind(vertices, 1))
   # read faces
   face <- c()
   for (i in 1:nfaces) {
@@ -155,7 +154,14 @@ read.bin.ply <- function(file_name) {
     }
   }
   face <- matrix(face, ncol = nuchar, byrow = TRUE)
-  
+  face <- t(face) + 1 # r indexing starts from 1
+  # add colors if available
+  material <- NULL
+  if (nprop > 0) {
+    cols <- matrix(cols, ncol = nprop, byrow = TRUE)
+    color <- rgb(cols[,1], cols[,2], cols[,3], maxColorValue = 255)
+    material$color <- matrix(color[face], dim(face))
+  }
   close(con)
 
   list(
