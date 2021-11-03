@@ -1,3 +1,8 @@
+# INCIPIENT CHANGES IN GEOMORPH VERSION 4.0.1.99
+
+### BUG FIXES
+* Fixed issue in `compare.CR` when CR.null = TRUE.
+
 # CHANGES IN GEOMORPH VERSION 4.0.1
 
 ### NEW FEATURES
