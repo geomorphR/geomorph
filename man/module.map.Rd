@@ -96,11 +96,11 @@ hyp3 <- c(rep(1, 3), 2, 1, rep(3, 4),
 rep(2, 9), rep(1, 12), rep(3, 8), rep(2, 18))
 
 par(mfrow = c(1, 2))
-plot(pupfish$coords[,,1], pch = 21, bg = hyp2)
-plot(pupfish$coords[,,1], pch = 21, bg = hyp3)
+plot(pupfish$coords[,,1], pch = 21, bg = hyp2, asp = 1)
+plot(pupfish$coords[,,1], pch = 21, bg = hyp3, asp = 1)
 
-module.map(pupfish$coords, partition.gp = hyp2, asp = 1)
-module.map(pupfish$coords, partition.gp = hyp3, asp = 1)
+module.map(pupfish$coords, partition.gp = hyp2)
+module.map(pupfish$coords, partition.gp = hyp3)
 
 par(mfrow = c(1, 1))
 }

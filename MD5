@@ -50,7 +50,7 @@ a598044482a6c3e39517b798b654c57e *man/hummingbirds.Rd
 31efbd675ae82ac9136d6510fd8ad6b6 *man/make_ggplot.Rd
 35109bbb064750725a5f7cde7232832f *man/modularity.test.Rd
 ae2bc3e0b2c59e3169f0486332cac95f *man/module.eigen.Rd
-5a3fb294e33a8a76a75fc442fffd4760 *man/module.map.Rd
+48c514267f3277cb87bc8eaf8deb4cd3 *man/module.map.Rd
 e9c51057da8d4b9d442331c837da35c0 *man/morphol.disparity.Rd
 00e77dd77ac4f29ace5334a4df4aa23e *man/mosquito.Rd
 ffadebd6be893bbc403d22f884329a9a *man/mshape.Rd
@@ -179,7 +179,7 @@ afa115834e6708293165de2a9abe9d4c *R/integration.test.r
 0f92a7f17f93c5e10630294e43fe3ac4 *R/make_ggplot.r
 de8a7705c2569b4459143bb189211272 *R/modularity.test.r
 2232f1d1ff6eccc07d1c97e81bb73189 *R/module.eigen.r
-92aba0993d278f83361c451c20ba32ac *R/module.map.r
+3255f5d31722a911a6c06c72c5c41727 *R/module.map.r
 754af4a0bc2c4f9187c3f9c51451636a *R/morphol.disparity.r
 dd09bec9a8c98301cb86d5b0563c8a77 *R/phylo.integration.r
 d5afd24cc150710512b164f411d3cc3f *R/phylo.modularity.r
