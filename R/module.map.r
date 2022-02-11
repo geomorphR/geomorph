@@ -73,8 +73,8 @@
 #' plot(pupfish$coords[,,1], pch = 21, bg = hyp2)
 #' plot(pupfish$coords[,,1], pch = 21, bg = hyp3)
 #' 
-#' module.map(pupfish$coords, partition.gp = hyp2)
-#' module.map(pupfish$coords, partition.gp = hyp3)
+#' module.map(pupfish$coords, partition.gp = hyp2, asp = 1)
+#' module.map(pupfish$coords, partition.gp = hyp3, asp = 1)
 #' 
 #' par(mfrow = c(1, 1))
 
