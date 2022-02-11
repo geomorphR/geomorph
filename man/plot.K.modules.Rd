@@ -4,7 +4,13 @@
 \alias{plot.K.modules}
 \title{Plot function for geomorph}
 \usage{
-\method{plot}{module.eigen}(x, modules = 1:6, type = c("profile", "config", "pcoa"), ...)
+\method{plot}{K.modules}(
+  x,
+  modules = 1:6,
+  type = c("profile", "config", "pcoa"),
+  relativize = TRUE,
+  ...
+)
 }
 \arguments{
 \item{x}{An object of class \code{\link{K.modules}}}
@@ -17,6 +23,9 @@ is the highest ranking 6 modules.)}
 landmark configurations with modules formatted differently, 
 or a principal coordinate plot, respectively.}
 
+\item{relativize}{A logical aregument for whether to make eigenvalues a fraction of the maximum possible
+(for profile plots).}
+
 \item{...}{other arguments passed to plot, especially for changing points in a configuration.
 
 This function provides plotting support for \code{\link{K.modules}}.  One of two plots can be produced: (1) a 
@@ -24,7 +33,7 @@ canvas of landmark configuration with points formatted differently for modules o
 on Riemannian distances among modular covariance matrices.  Based on the modules requested (output from a K.modules
 object), several configuration plots can be generated or one single principal coordinate plot with points equal in 
 number to the vector length for "modules".  The length of this vector should be reasonable to avoid long computation of 
-Riemmanian distance among modular covariance matrices, or to avoid generating many configurations.  See 
+Riemannian distance among modular covariance matrices, or to avoid generating many configurations.  See 
 \code{\link{K.modules}} for plotting examples.}
 }
 \description{

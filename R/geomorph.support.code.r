@@ -2351,4 +2351,93 @@ makePD <- function (x) {
   X
 }
 
+# physignal.z support functions
 
+updateCov <- function(Cov, lambda) {
+  D <- diag(diag(Cov))
+  Cn <- (Cov - D) * lambda
+  Cn + D
+}
+
+logLikh <- function(y, Cov = NULL, Pcov = NULL){
+  y <- as.matrix(y)
+  n <- nrow(y)
+  p <- ncol(y)
+  u <- matrix(1, n)
+  gls <- !is.null(Pcov)
+  yhat <- if(gls) u %*% lm.fit(Pcov %*% u, Pcov %*% y)$coefficients else fastFit(u, y, n, p)
+  R <- as.matrix(y - yhat)
+  Sig <- if(gls) crossprod(Pcov %*% R)/n else crossprod(R) / n
+  logdetC <- if(gls) determinant(Cov, logarithm = TRUE)$modulus else 0
+  logdetSig <- determinant(Sig, logarithm = TRUE)$modulus
+  
+  ll <- -0.5 * (n * p * log(2 * pi) + p * logdetC +
+                  n * logdetSig + n) 
+  
+  as.numeric(ll)
+}
+
+
+lambda.opt<- function(y, tree) {
+  y <- as.matrix(y)
+  dims <- dim(y)
+  n <- dims[1]
+  p <- dims[2]
+  Cov <- fast.phy.vcv(tree)
+  
+  LL <- function(lambda) {
+    Cov.i <- updateCov(Cov, lambda)
+    Cov.i <- Cov.i[rownames(y), rownames(y)]
+    Pcov <- Cov.proj(Cov.i)
+    logLikh(y, Cov = Cov.i, Pcov = Pcov)
+  }
+  opt <- optimise(LL, interval = c(1e-6, 1), maximum = TRUE, tol = 0.0001)$maximum
+  
+  if(opt < 1e-6) opt <- 1e-6
+  if(opt > 0.999) opt <- 1
+  
+  opt
+}
+
+get.VCV <- function(A, phy = NULL, Cov = NULL,
+                    transform. = TRUE) {
+  x <- try(two.d.array(A), silent = TRUE)
+  if(inherits(x, "try-error")) x <- try(as.matrix(A), silent = TRUE)
+  if(inherits(x, "try-error"))
+    stop("\nA is not a suitable data array for analysis. ", call. = FALSE)
+  
+  namesX <- rownames(x)
+  if (is.null(namesX)) namesX <- 1:NROW(x)
+  
+  x <- as.matrix(x)
+  n <- nrow(x)
+  
+  if(!is.null(phy) || !is.null(Cov)) {
+    if(!is.null(phy) && is.null(Cov)) {
+      Cov <- fast.phy.vcv(phy)
+      Pcov <- Cov.proj(Cov, rownames(x))}
+    
+    if(is.null(phy) && !is.null(Cov)) {
+      Pcov <- try(Cov.proj(Cov, rownames(x)), silent = TRUE)
+      if(inherits(Pcov, "try-error"))
+        stop("The names of Covariance matrix do not seem to match data names.\n",
+             call. = FALSE)
+    }
+    
+    if(!is.null(phy) && !is.null(Cov)) {
+      Pcov <- try(Cov.proj(Cov, rownames(x)), silent = TRUE)
+      if(inherits(Pcov, "try-error"))
+        stop("The names of Covariance matrix do not seem to match data names.\n",
+             call. = FALSE)
+    }
+    
+    ones <- matrix(1, n)
+    B <- lm.fit(Pcov %*% ones, Pcov %*% x)$coefficients
+    R <- x - ones %*% B
+    V <- if(transform.) crossprod(Pcov %*% R) / (n-1) else
+      crossprod(R) / (n-1)
+    
+  } else V <- var(x)
+  
+  return(V)
+}

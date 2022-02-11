@@ -31,6 +31,11 @@ than a BM model.}
 \item{Cov}{Optional argument to include a hypothetical covariance matrix used for non-independence of observations.
 Row and column names must match data names.  If both a phy and Cov are provided, Cov will override phy.}
 
+\item{transform.}{A logical argument for whether to use transformed residuals, if a phylogeny is provided.  If TRUE,
+a GLS covariance matrix will be estimated; if FALSE, data will be centered on GLS mean but an OLS covariance matrix 
+will be estimated.  The former is more representative of covariances independent of phylogeny;  the latter 
+is more representative of dispersion in the tangent space.}
+
 \item{only.values}{A logical argument for whether to only return eigenvalues.  If TRUE, vector correlations
 using \code{\link{summary.module.eigen}} will not be possible.}
 
@@ -38,11 +43,6 @@ using \code{\link{summary.module.eigen}} will not be possible.}
 This value is the fraction of the standard deviation of the first eigenvector.  It helps to cut off dimensions that are 
 no different in eigenvalue than independent vectors.  If tol = 0, a strict criterion is used to retain all vectors
 that have larger eigenvalues than expected from independent variables.}
-
-\item{transform}{A logical argument for whether to use transformed residuals, if a phylogeny is provided.  If TRUE,
-a GLS covariance matrix will be estimated; if FALSE, data will be centered on GLS mean but an OLS covariance matrix 
-will be estimated.  The former is more representative of covariances independent of phylogeny;  the latter 
-is more representative of dispersion in the tangent space.}
 }
 \value{
 Objects of class "model.eigen" return a list of the following:
@@ -82,7 +82,7 @@ correlations and Krzanowski (1979) correlations (mean of squared vector cross-pr
 
 If a phylogeny is provided, a generalized least-squares (GLS) approach is used to estimate the mean vector (tree root values).
 One has the option whether to transform residuals to obtain a GLS covariance matrix or simply center data on the GLS mean
-to estimate a covariance matrix.  The latter (transform = FALSE) centers data on the GLS mean rather than the ordinary least-squares 
+to estimate a covariance matrix.  The latter (transform. = FALSE) centers data on the GLS mean rather than the ordinary least-squares 
 (OLS) mean but does not condition residuals on the phylogenetic covariances in the estimation of variances and covariances.
 }
 \examples{
@@ -99,11 +99,11 @@ summary(ME.ols)
 plot(ME.ols)
 
 # GLS-centered approach.  This approach find the GLS mean but does not
-# transform residuals.  Thus, it is produces OLS-like covariance matrcies
+# transform residuals.  Thus, it is produces OLS-like covariance matricies
 # that are centered on the GLS mean rather than the OLS mean
 
 ME.glsc <- module.eigen(Y.gpa$coords, partition.gp = land.gps,
-only.values = FALSE, phy = plethspecies$phy, transform = FALSE)
+only.values = FALSE, phy = plethspecies$phy, transform. = FALSE)
 summary(ME.glsc)
 plot(ME.glsc)
 

@@ -13,6 +13,7 @@ K.modules(
   Cov = NULL,
   min.lmk = 2,
   seed = NULL,
+  print.progress = FALSE,
   ...
 )
 }
@@ -42,6 +43,9 @@ equal to or less than p/k.}
 
 \item{seed}{An optional value for seed control of simulations.  The value can be NULL, "random",
 or an integer.  See  \code{\link{set.seed}}}
+
+\item{print.progress}{A logical value to indicate whether a progress bar should be printed to the screen. 
+This is helpful for long-running analyses.}
 
 \item{...}{Arguments passed onto \code{\link{module.eigen}}.}
 }

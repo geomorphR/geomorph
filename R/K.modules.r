@@ -49,6 +49,8 @@
 #' @param min.lmk A numeric value to indicate the minimum number of landmarks (or variables) for a module.  
 #' If this value is larger than p/K, for p landmarks in K partitions, it will be adjusted to be the largest integer 
 #' equal to or less than p/k.
+#' @param print.progress A logical value to indicate whether a progress bar should be printed to the screen. 
+#' This is helpful for long-running analyses.
 #' @param seed An optional value for seed control of simulations.  The value can be NULL, "random",
 #' or an integer.  See  \code{\link{set.seed}}
 #' @param ... Arguments passed onto \code{\link{module.eigen}}.
@@ -75,17 +77,23 @@
 #' 
 K.modules <- function(A, K = 2, hyp = NULL, nsims = 1000, 
                       phy = NULL, Cov = NULL, min.lmk = 2, seed = NULL,
+                      print.progress = FALSE,
                       ...){
   
+  if(print.progress) {
+    cat("Acquiring covariance matrix and", nsims, "modular hypotheses:\n")
+    pb <- txtProgressBar(min = 0, max = nsims, initial = 0, style=3)
+  }
+    
   p <- if(is.matrix(A)) dim(A)[2] else dim(A)[1]
   
   L <- list(...)
-  K.args <- list(A = A, partition.gp = rep(1, p), only.values = TRUE)
-  sup.args <- list(phy = NULL, Cov = NULL, transform. = FALSE, tol = 0.001)
-  pass <- match(names(L), c("phy", "Cov", "tranform.", "tol"))
-  sup.args[pass] <- L[pass]
-  
-  K.args <- c(K.args, sup.args)
+  vcv.args <- list(A = A, phy = NULL, Cov = NULL, 
+                   transform. = TRUE)
+  pass <- match(names(L), c("A", "phy", "Cov", "tranform."))
+  vcv.args[pass] <- L[pass]
+  VCV <- do.call(get.VCV, vcv.args)
+  eig1.ref <- La.svd(VCV, 0, 0)$d[1]
 
   if(!is.numeric(seed)) {
     if(is.null(seed)) seed <-nsims else
@@ -95,7 +103,7 @@ K.modules <- function(A, K = 2, hyp = NULL, nsims = 1000,
   
   if(min.lmk > p/K) min.lmk <- floor(p/K)
   
-  sims <- lapply(1:nsims, function(J){
+  sims <- lapply(1:nsims, function(j){
     tol <- 0
     while(tol < min.lmk){
       res <- sample(1:K, size = p, replace = TRUE)
@@ -104,7 +112,7 @@ K.modules <- function(A, K = 2, hyp = NULL, nsims = 1000,
       gps[is.na(gps)] <- 0
       tol <- min(gps)
     }
-    
+    if(print.progress) setTxtProgressBar(pb, j)
     res
   })
   
@@ -112,6 +120,7 @@ K.modules <- function(A, K = 2, hyp = NULL, nsims = 1000,
   
   rm(.Random.seed, envir=globalenv())
   attr(sims, "seed") <- seed
+  if(print.progress) close(pb)
   
   if(!is.null(hyp)) {
     hyp <- as.factor(hyp)
@@ -125,19 +134,37 @@ K.modules <- function(A, K = 2, hyp = NULL, nsims = 1000,
     names(sims)[[1]] <- "hypothesis"
   }
   
-  result <- sapply(sims, function(x){
-    K.args$partition.gp <- x
-    ME <- do.call(module.eigen, K.args)
-    ME$evals$mod[1]
+  modVCV <- function(VCV, sim.i) {
+    dims <- dim(VCV)
+    M <- matrix(0, dims[1], dims[2])
+    for(i in 1:K) {
+      keep <- which(sim.i == i)
+      M[keep, keep] <- VCV[keep, keep]
+    }
+    M
+  }
+  
+  get.eig <- function(M) La.svd(M, 0, 0)$d[1]
+  
+  if(print.progress) {
+    cat("\nEigen-analysis for", nsims, "covariance matrices:\n")
+    pb <- txtProgressBar(min = 0, max = nsims, initial = 0, style=3)
+  }
+   
+  result <- sapply(1:nsims, function(j){
+    sim.j <- sims[[j]]
+    M <- modVCV(VCV, sim.j)
+    if(print.progress) setTxtProgressBar(pb, j)
+    get.eig(M)
   })
   
+  if(print.progress) close(pb)
   ranks <- order(result, decreasing = TRUE)
   sims.sorted <- sims[ranks]
   result <- result[ranks]
   names(result) <- names(sims.sorted)
   
   out <- list(eigs = result, modules = sims.sorted)
-  
   out$hypothesis <- !is.null(hyp) 
   
   out$hypothesis.rank <- which(names(sims.sorted) == "hypothesis")
@@ -149,9 +176,9 @@ K.modules <- function(A, K = 2, hyp = NULL, nsims = 1000,
   } else mn <- NULL
   out$mean <- mn
   
-  vcv.args <- K.args[c("A", "phy", "Cov", "transform.")]
-  out$VCV <- do.call(get.VCV, vcv.args)
+  out$VCV <- VCV
   out$A <- A
+  out$eig1.ref <- eig1.ref
   
   class(out) <- "K.modules"
   out

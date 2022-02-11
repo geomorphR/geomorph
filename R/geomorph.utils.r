@@ -498,7 +498,7 @@ plot.CR.phylo <- function(x, ...){
   options(scipen = 0)
 }
 
-## physignal
+## physignal abd physignal.z
 
 #' Print/Summary Function for geomorph
 #' 
@@ -513,8 +513,48 @@ print.physignal <- function(x, ...){
   cat(deparse(x$call), fill=TRUE, "\n\n")
   cat(paste("\nObserved Phylogenetic Signal (K):", round(x$phy.signal, nchar(x$permutations))))
   cat(paste("\n\nP-value:", round(x$pvalue, nchar(x$permutations))))
-  cat(paste("\n\nEffect Size:", round(x$Z, nchar(x$permutations))))
   cat(paste("\n\nBased on", x$permutations, "random permutations"))
+  cat("\n\n Use physignal.z to estimate effect size.")
+  invisible(x)
+}
+
+#' Print/Summary Function for geomorph
+#' 
+#' @param x print/summary object (from \code{\link{physignal.z}})
+#' @param ... other arguments passed to print/summary
+#' @method print physignal.z
+#' @export
+#' @author Michael Collyer
+#' @keywords utilities
+print.physignal.z <- function(x, ...){
+  cat("\nCall:\n")
+  cat(deparse(x$call), fill=TRUE, "\n")
+  
+  cat("Evaluation of phylogenetic signal effect size\n")
+  cat("Optimization method:", x$opt.method)
+  cat("\nOptimization performed in", x$opt.dim, "data dimensions.\n")
+  
+  if(is.na(x$Z)) {
+    cat("The scaling parameter, lambda, was optimized at 0.")
+    cat("\nThis means that the log-likehood was invariant across permutations")
+    cat("\nand there is no phylogenetic signal in the data.\n\n")
+  } else {
+    cat(paste("\nObserved phylogenetic signal effect size (Z):", round(x$Z, nchar(x$permutations))))
+    cat(paste("\n\nP-value:", round(x$pvalue, nchar(x$permutations))), "based on", x$permutations, "random permutations")
+    cat("\n\nFor a model with a log-likelihood of", round(x$rand.logL[[1]], nchar(x$permutations)))
+    cat("\na branch-scaling (lambda) of", round(x$lambda, nchar(x$permutations)))
+    cat("\nand a ratio of Bownian Motion fit (K) of", round(x$K, nchar(x$permutations)), "\n")
+    
+    if(!is.null(x$K.by.p)) {
+      cat("\nK measured across phylogenetically-aligned components (1, 1:2, 1:3, ...\n")
+      print(x$K.by.p)
+      cat("\nLambda measured across phylogenetically-aligned components (1, 1:2, 1:3, ...\n")
+      print(x$lambda.by.p)
+      cat("\nLog-likelihood measured across phylogenetically-aligned components (1, 1:2, 1:3, ...\n")
+      print(x$logL.by.p)
+    }
+  }
+    
   invisible(x)
 }
 
@@ -529,6 +569,19 @@ print.physignal <- function(x, ...){
 summary.physignal <- function(object, ...) {
   x <- object
   print.physignal(x, ...)
+}
+
+#' Print/Summary Function for geomorph
+#' 
+#' @param object print/summary object (from \code{\link{physignal.z}})
+#' @param ... other arguments passed to print/summary
+#' @method summary physignal.z
+#' @export
+#' @author Michael Collyer
+#' @keywords utilities
+summary.physignal.z <- function(object, ...) {
+  x <- object
+  print.physignal.z(x, ...)
 }
 
 #' Plot Function for geomorph
@@ -551,6 +604,50 @@ plot.physignal <- function(x, ...){
   hist(K.val,30,freq=TRUE,col="gray",xlab="Phylogenetic Signal, K",
        main=main.txt, cex.main=0.8)
   arrows(K.obs,50,K.obs,5,length=0.1,lwd=2)
+}
+
+#' Plot Function for geomorph
+#' 
+#' @param x plot object (from \code{\link{physignal.z}})
+#' @param ... other arguments passed to plot
+#' @method plot physignal.z
+#' @export
+#' @author Michael Collyer
+#' @keywords utilities
+#' @keywords visualization
+plot.physignal.z <- function(x, ...){
+  
+  if(is.na(x$Z)) {
+    cat("The scaling parameter, lambda, was optimized at 0.")
+    cat("\nThis means that the log-likehood was invariant across permutations,")
+    cat("\nthere is no phylogenetic signal in the data, and there is nothing to plot.\n\n")
+  } else {
+    
+    ll <- x$rand.logL
+    z <- box.cox(ll)$transformed
+    z[1] <- x$Z
+    
+    opar <- par()$mfrow
+    par(mfrow = c(1,2))
+    p <- x$pvalue
+    ndec <- nchar(1 / x$permutations) - 2
+    ll.obs <- round(ll[[1]], ndec)
+    Z.obs <- round(z[[1]], ndec)
+    p <- round(p, ndec)
+    main.txt <- paste("Observed log-likelihood =", ll.obs,";", "P-value =", p)
+    hist(ll, 30, freq=TRUE, col = "gray", 
+         xlab = paste("log-liklihoods:", x$permutations, "RRPP premutations"),
+         main = main.txt, cex.main = 0.8)
+    arrows(ll.obs, 50, ll.obs, 5, length = 0.1, lwd=2)
+    
+    main.txt <- paste("Standardized effect size =", Z.obs)
+    hist(z, 30, freq=TRUE, col = "gray", 
+         xlab = "Standardized values",
+         main = main.txt, cex.main = 0.8)
+    arrows(Z.obs, 50, Z.obs, 5, length = 0.1, lwd=2)
+    
+    par(mfrow = opar)
+  }
 }
 
 
@@ -704,6 +801,39 @@ print.compare.CR<- function(x,...){
 #' @author Michael Collyer
 #' @keywords utilities
 summary.compare.pls <- function(object, ...) print.compare.pls(object,...)
+
+#' Print/Summary Function for geomorph
+#' 
+#' @param x print/summary object
+#' @param ... other arguments passed to print/summary
+#' @method print compare.physignal.z
+#' @export
+#' @author Michael Collyer
+#' @keywords utilities
+print.compare.physignal.z<- function(x,...){
+  z <- x$sample.z
+  z.pw <- x$pairwise.z
+  p <- x$pairwise.P
+  cat("\nEffect sizes\n\n")
+  print(z)
+  cat("\nEffect sizes for pairwise differences in phylogenetic signal effect size\n\n")
+  print(z.pw)
+  cat("\nP-values\n\n")
+  print(p)
+  invisible(x)
+}
+
+#' Print/Summary Function for geomorph
+#' 
+#' @param object print/summary object
+#' @param ... other arguments passed to print/summary
+#' @method summary compare.physignal.z
+#' @export
+#' @author Michael Collyer
+#' @keywords utilities
+summary.compare.physignal.z <- function(object, ...) 
+  print.compare.physignal.z(object,...)
+
 
 #' Print/Summary Function for geomorph
 #' 
@@ -1321,7 +1451,9 @@ summary.K.modules <- function(object, ...) {
     cat("This hypothesis ranked", object$hypothesis.rank, "among the simulations\n")
     cat("(A percentile of", round(object$hypothesis.rank/length(object$modules), 3) * 100, "percent.)\n")
     cat("\n")
-    cat("This hypothesis had an eigenvalue of", object$eigs[[object$hypothesis.rank]])
+    cat("This hypothesis had an eigenvalue of", object$eigs[[object$hypothesis.rank]], ",\n")
+    cat("which is ", round(object$eigs[[object$hypothesis.rank]] / object$eig1.ref *100, 2), 
+        "% of the maximum eigenvalue for these data.")
     cat("\n\nA summary of all eigenvalues is presented below (see plot.K.modules for plotting tools)\n\n")
     summary(object$eigs)
   }
@@ -1338,6 +1470,8 @@ summary.K.modules <- function(object, ...) {
 #' @param type One of "profile", config", or "pcoa" for plotting a profile of eigenvalues, 
 #' landmark configurations with modules formatted differently, 
 #' or a principal coordinate plot, respectively.
+#' @param relativize A logical aregument for whether to make eigenvalues a fraction of the maximum possible
+#' (for profile plots).
 #' @param ... other arguments passed to plot, especially for changing points in a configuration.
 #' 
 #' This function provides plotting support for \code{\link{K.modules}}.  One of two plots can be produced: (1) a 
@@ -1345,33 +1479,45 @@ summary.K.modules <- function(object, ...) {
 #' on Riemannian distances among modular covariance matrices.  Based on the modules requested (output from a K.modules
 #' object), several configuration plots can be generated or one single principal coordinate plot with points equal in 
 #' number to the vector length for "modules".  The length of this vector should be reasonable to avoid long computation of 
-#' Riemmanian distance among modular covariance matrices, or to avoid generating many configurations.  See 
+#' Riemannian distance among modular covariance matrices, or to avoid generating many configurations.  See 
 #' \code{\link{K.modules}} for plotting examples.
-#' @method plot module.eigen
+#' @method plot K.modules
 #' @export
 #' @author Michael Collyer
 #' @keywords utilities
 #' 
-plot.K.modules <- function(x, modules = 1:6, type = c("profile", "config", "pcoa"), ...) {
+plot.K.modules <- function(x, modules = 1:6, 
+                           type = c("profile", "config", "pcoa"),
+                           relativize = TRUE, ...) {
+  type <- match.arg(type)
   M <- x$modules[modules]
   plot.args <- list(...)
   
   if(type == "profile") {
-    plot.args$x <- 1:length(x$eigs)
-    plot.args$y<- x$eigs
+    y <- if(relativize) as.vector(x$eigs) / x$eig1.ref else 
+      as.vector(x$eigs)
+    plot.args$x <- 1:length(y)
+    plot.args$y<- y
     plot.args$type <- "l"
-    if(is.null(plot.args$xlab)) plot.args$xlab <- "Ranked eigenvalues"
-    if(is.null(plot.args$ylab)) plot.args$ylab <- "Eigenvalue"
+    if(is.null(plot.args$xlab)) plot.args$xlab <- "Rank of eigenvalues"
+    if(is.null(plot.args$ylab)) {
+      plot.args$ylab <- if(relativize)  "Eigevalue (fraction of max)" else 
+        "Eigenvalue"
+    }
+    
     do.call(plot, plot.args)
+    
     if(x$hypothesis) {
       point.args <- plot.args
       point.args$x <- x$hypothesis.rank
-      point.args$y <- x$eigs[x$hypothesis.rank]
+      point.args$y <- y[x$hypothesis.rank]
       point.args$type <- "p"
+      if(is.null(point.args$pch)) point.args$pch <- 19
+      if(is.null(point.args$cex)) point.args$cex <- 1.2
       do.call(points, point.args)
       if(is.null(plot.args$main))
         title("Modular eigenvalue profile, with described hypothesis indicated", 
-              cex = 0.7)
+              cex.main = 0.7)
     } else {
       if(is.null(plot.args$main))
         title("Modular eigenvalue profile")
@@ -1456,8 +1602,9 @@ plot.K.modules <- function(x, modules = 1:6, type = c("profile", "config", "pcoa
       as.matrix(Dmat)
     }
     
+    K <- length(unique(M[[1]]))
     Covs <- lapply(M, function(y){
-      KM <- K.modules(x$A, hyp = y, nsims = 1)
+      KM <- K.modules(x$A, K = K, hyp = y, nsims = 1)
       cov <- KM$VCV
       k <- ncol(cov) / length(y)
       keep <- rep(y, each = k)
@@ -1475,7 +1622,7 @@ plot.K.modules <- function(x, modules = 1:6, type = c("profile", "config", "pcoa
     pcoa <- as.data.frame(cmdscale(d))
     names(pcoa) <- paste("C", 1:ncol(pcoa), sep = "")
     plot(pcoa, ...)
-    text(pcoa, names(M), pos=3)
+    text(pcoa, names(M), pos=3, ...)
   }
   
 }
