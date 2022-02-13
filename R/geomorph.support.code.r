@@ -11,6 +11,7 @@
 #' @importFrom jpeg readJPEG
 #' @importFrom ape multi2di.phylo
 #' @importFrom ape root.phylo
+#' @importFrom ape collapse.singles
 #' @import RRPP
 #' @import parallel
 #' @import rgl
