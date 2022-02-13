@@ -457,6 +457,7 @@ anc.BM <- function(phy, Y){
   n <- length(phy$tip.label)
   out <- t(sapply(1:phy$Nnode, function(j){
     phy.j <- multi2di.phylo(root.phylo(phy, node = j + n))
+    phy.j <- collapse.singles(phy.j)
     preps <- pic.prep(phy.j, NROW(Y), NCOL(Y))
     preps$x <- Y
     preps$tip.label <- phy$tip.label
