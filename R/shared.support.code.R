@@ -70,21 +70,27 @@ apply.pPsup<-function(M, Ya) {	# M = mean (reference); Ya all Y targets
 # used in any function requiring a generalized inverse
 fast.ginv <- function(X, tol = sqrt(.Machine$double.eps)){
   k <- ncol(X)
-  Xsvd <- La.svd(X, k, k)
-  Positive <- Xsvd$d > max(tol * Xsvd$d[1L], 0)
-  rtu <-((1/Xsvd$d[Positive]) * t(Xsvd$u[, Positive, drop = FALSE]))
-  v <-t(Xsvd$vt)[, Positive, drop = FALSE]
-  v%*%rtu
+  if(inherits(X, "matrix")) {
+    Xsvd <- La.svd(X, k, k)
+    Positive <- Xsvd$d > max(tol * Xsvd$d[1L], 0)
+    rtu <-((1/Xsvd$d[Positive]) * t(Xsvd$u[, Positive, drop = FALSE]))
+    v <-t(Xsvd$vt)[, Positive, drop = FALSE]
+  } else {
+    Xsvd <- svd(X, k, k)
+    Positive <- Xsvd$d > max(tol * Xsvd$d[1L], 0)
+    rtu <-((1/Xsvd$d[Positive]) * t(Xsvd$u[, Positive, drop = FALSE]))
+    v <-Xsvd$v[, Positive, drop = FALSE]
+  }
+  
+  v %*% rtu
 }
 
 # fast.solve
 # same as solve, but without traps (faster)
 # used in any function requiring a generalized inverse
 fast.solve <- function(x) { 
-  if(det(x) > 1e-8) {
-    res <- try(chol2inv(chol(x)), silent = TRUE)
-    if(inherits(res, "try-error")) res <- fast.ginv(x)
-  } else  res <- fast.ginv(x)
+  res <- try(solve(x), silent = TRUE)
+  if(inherits(res, "try-error")) res <- fast.ginv(x)
   return(res)
 }
 
@@ -134,7 +140,8 @@ boot.index <-function(n, iter, seed=NULL){
     if(seed == "random") seed = sample(1:iter,1) else
       if(!is.numeric(seed)) seed = iter
       set.seed(seed)
-      ind <- c(list(1:n),(Map(function(x) sample.int(n, n, replace = TRUE), 1:iter)))
+      ind <- c(list(1:n),(Map(function(x) sample.int(n, n, replace = TRUE), 
+                              1:iter)))
       rm(.Random.seed, envir=globalenv())
       attr(ind, "seed") <- seed
       ind
@@ -200,7 +207,8 @@ box.cox.true <- function(y, eps = 0.001){
   y <- c(y.obs, y)
   res <- if(lambda.opt == 0) log(y) else (y^lambda.opt - 1)/lambda.opt
   
-  list(opt.lambda = lambda.opt, transformed = res, lambda = lambda, loglik = loglik)
+  list(opt.lambda = lambda.opt, transformed = res, lambda = lambda, 
+       loglik = loglik)
   
 }
 
@@ -237,7 +245,8 @@ box.cox.spline <- function(y, eps = 0.001) {
 
 box.cox.iter <- function(y, eps = 0.001) {
   bc <- box.cox.spline(y, eps = eps)
-  if(bc$opt.lambda == -0.5 || bc$opt.lambda == 1.5) bc <- box.cox.true(y, eps = eps)
+  if(bc$opt.lambda == -0.5 || bc$opt.lambda == 1.5) 
+    bc <- box.cox.true(y, eps = eps)
   return(bc)
 }
 
@@ -272,6 +281,7 @@ box.cox <- function(y, eps = 0.001, iterate = FALSE) {
   return(result)
 }
 
+
 # effect.size
 # Effect sizes (standard deviates) form random outcomes
 # any analytical function
@@ -286,7 +296,7 @@ effect.size <- function(x, center = TRUE) {
     if(center) x <- center(x)
     sdx <- sqrt((sum(x^2)/n))
   }
-
+  
   (x[1]- mean(x)) / sdx
 }
 
@@ -333,12 +343,23 @@ Effect.size.matrix <- function(M, center=TRUE){
 
 Cov.proj <- function(Cov, id = NULL){
   Cov <- if(is.null(id)) Cov else Cov[id, id]
-  sym <- isSymmetric(Cov)
-  eigC <- eigen(Cov, symmetric = sym)
-  eigC.vect = t(eigC$vectors)
-  L <- eigC.vect *sqrt(abs(eigC$values))
-  P <- fast.solve(crossprod(L, eigC.vect))
-  dimnames(P) <- dimnames(Cov)
+  if(inherits(Cov, "matrix")) {
+    Cov.s <- Matrix(Cov, sparse = TRUE)
+    if(object.size(Cov.s) < object.size(Cov)) Cov <- Cov.s
+    Cov.s <- NULL
+  }
+  ow <- options()$warn
+  options(warn = -1)
+  Chol <- try(chol(Cov), silent = TRUE)
+  if(inherits(Chol, "try-error")) {
+    sym <- isSymmetric(Cov)
+    eigC <- eigen(Cov, symmetric = sym)
+    eigC.vect = t(eigC$vectors)
+    L <- eigC.vect *sqrt(abs(eigC$values))
+    P <- fast.solve(crossprod(L, eigC.vect))
+    dimnames(P) <- dimnames(Cov)
+  } else P <- solve(Chol)
+  options(warn = ow)
   P
 }
 
@@ -346,7 +367,8 @@ Cov.proj <- function(Cov, id = NULL){
 # ape replacement functions below ----------------------------------------------------
 
 # sim.char has a similar function to this but it is called in every simulation
-# and defers to C for help.  This is done once only here. (Produces a projection matrix)
+# and defers to C for help.  This is done once only here. 
+# (Produces a projection matrix)
 phy.sim.mat <- function(phy) {
   N <- length(phy$tip.label)
   n <- nrow(phy$edge)
