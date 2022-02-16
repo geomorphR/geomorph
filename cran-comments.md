@@ -18,4 +18,7 @@ Error : Bioconductor does not yet build and check packages for R version 4.2; se
 This error appears to be insurmountable until `Bioconductor 3.14` is released.  This should have no bearing on the `geomorph 4.0.1` package.
 
 ## Downstream dependencies
-I have also run R CMD check on downstream dependencies of geomorph. All packages that I could install passed. 
+I checked 10 reverse dependencies, comparing R CMD check results across CRAN and dev versions of this package.
+
+ * I saw 0 new problems
+ * I failed to check 0 packages
