@@ -1,5 +1,5 @@
 ## Resubmission
-This is a patch release, 4.0.1, that accompanies a minor update to the `RRPP` to version 1.1.0. The package, `RRPP`, is developed by the same authors as `geomorph`. `RRPP 1.1.0` and `geomorph 4.0.1` are to be concurrently updated and released.
+This is a patch release, 4.0.2.
 
 ## Test environments
 * local OS X install, R 4.0.3
