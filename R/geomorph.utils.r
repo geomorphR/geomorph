@@ -859,10 +859,12 @@ summary.gm.prcomp <- function (object, ...) {
 #' @param phylo A logical value indicating whether the phylogeny should be projected to PC space
 #' @param time.plot A logical value indicating if a 3D plot with the phylogeny and time as the 
 #' z-axis is desired
-#' @param phylo.par A list of plotting parameters for the inclusion of a phylogeny, including: logicals for 
-#' whether features should be included (tip.labels, nodel.labels, anc.states), toggled as TRUE/FALSE; 
-#' edge parameters (edge.color, edge.width, edge.lty); node parameters (node.bg, node.pch, node.cex);
-#' and label parameters (tip.txt.cex, tip.txt.col, tip.txt.adj, node.txt.cex, node.txt.col, node.txt.adj).
+#' @param phylo.par A list of plotting parameters for the inclusion of a 
+#' phylogeny, including: logicals for whether features should be included 
+#' (tip.labels, nodel.labels, anc.states), toggled as TRUE/FALSE; edge parameters
+#' (edge.color, edge.width, edge.lty); node parameters (node.bg, node.pch, 
+#' node.cex); and label parameters (tip.txt.cex, tip.txt.col, tip.txt.adj, 
+#' node.txt.cex, node.txt.col, node.txt.adj).
 #' @param ... other arguments passed to plot.  For plots with a phylogeny, these parameters pertain to 
 #' the tip values.
 #' @return An object of class "plot.gm.prcomp" is a list with components

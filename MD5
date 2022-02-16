@@ -1,6 +1,4 @@
-5b95a7656ce6162446a2de7367e736b9 *cran-comments.md
-8eb32c47aae26c08017673c4c0d5c6f1 *cran-comments.md.bak
-2e20b05eaa608cce6c4b1a131dbdc4f7 *CRAN-RELEASE
+29cd07f24372995d920b3d8aa0b58a0f *cran-comments.md
 247b6e5658356e87edfd560687b239fc *data/hummingbirds.rda
 56558754725fea156eb0820f67a4f508 *data/larvalMorph.rda
 c3fc0e7a97f4cbd5b6cd8944d737b11a *data/lizards.rda
@@ -63,7 +61,7 @@ b8a3ca222e5ef0e2470e1d5833dd7bb4 *man/plethspecies.Rd
 59b44888645cbbeeb4cf0d3406e4ee45 *man/plot.CR.phylo.Rd
 97892e1293dbb2c4a6e994a90c27dc83 *man/plot.CR.Rd
 85bbe6b70e860a14116746ef4ecac51f *man/plot.evolrate.Rd
-6e5296c99562dc85e219488db84596cc *man/plot.gm.prcomp.Rd
+c0d81af9aa8b98fa6257b1785b88d9d2 *man/plot.gm.prcomp.Rd
 0116d21c6ae9389dc425aaca082fd67c *man/plot.gpagen.Rd
 71208a14b679efbbaf55f8daba7a0ef3 *man/plot.mshape.Rd
 c243df60434118dddca6904f3d6de9b0 *man/plot.physignal.Rd
@@ -151,7 +149,7 @@ aac6a4f8a759473e8c37048e5c8e3d91 *R/findMeanSpec.r
 067124d4119de55a6089c6aefdd0eac5 *R/fixed.angle.r
 3d7958991ae174c24ba7c570f4e03b27 *R/geomorph.data.frame.r
 fcb310f579380f80d41c97df501403cb *R/geomorph.support.code.r
-d666ce889feee536db5fa9dfd96b5b39 *R/geomorph.utils.r
+387790e25a70e0c88e25c9988b5a708f *R/geomorph.utils.r
 b0de2a67cff633e27e7a00860187240f *R/globalIntegration.r
 fa94a434ca094a407ec33009dca9843c *R/gm.prcomp.R
 d737fcb101b337b0737e98eea0af6e3a *R/gpagen.r
