@@ -91,7 +91,7 @@ should be specified. Finally, one may perform the comparison as either a one-tai
 }
 \references{
 Adams, D.C. and M.L. Collyer. 2019.  Comparing the strength of modular signal, and evaluating alternative modular hypotheses,
-using covariance ratio effect sizes for morphometric data. *Evolution*. 73:2352-2367.
+using covariance ratio effect sizes for morphometric data. Evolution. 73:2352-2367.
 }
 \author{
 Dean Adams and Michael Collyer
