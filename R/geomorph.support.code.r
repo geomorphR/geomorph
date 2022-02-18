@@ -2408,37 +2408,48 @@ get.VCV <- function(A, phy = NULL, Cov = NULL,
     stop("\nA is not a suitable data array for analysis. ", call. = FALSE)
   
   namesX <- rownames(x)
-  if (is.null(namesX)) namesX <- 1:NROW(x)
-  
+  if(is.null(namesX)) namesX <- 1:NROW(x)
   x <- as.matrix(x)
   n <- nrow(x)
+  ones <- matrix(1, n)
   
-  if(!is.null(phy) || !is.null(Cov)) {
-    if(!is.null(phy) && is.null(Cov)) {
+  gls <- (!is.null(Cov) || !is.null(phy)) 
+  
+  if(gls) {
+    if(!is.null(Cov)) {
+      if(!is.null(phy)) {
+        cat("\nBoth a phylogeny and covariance matrix were provided.")
+        cat("\nOnly the covariance matrix will be used.\n")
+      }
+        
+      Pcov <- try(Cov.proj(Cov, rownames(x)), silent = TRUE)
+      if(inherits(Pcov, "try-error"))
+        stop("The names of Covariance matrix do not seem to match data names.\n",
+             call. = FALSE)
+    } else {
       Cov <- fast.phy.vcv(phy)
-      Pcov <- Cov.proj(Cov, rownames(x))}
-    
-    if(is.null(phy) && !is.null(Cov)) {
       Pcov <- try(Cov.proj(Cov, rownames(x)), silent = TRUE)
-      if(inherits(Pcov, "try-error"))
-        stop("The names of Covariance matrix do not seem to match data names.\n",
-             call. = FALSE)
+      if(inherits(Pcov, "try-error")) {
+        cat("\nUnable to match taxa names between tree and data.")
+        cat("\nAssuming data have been sorted to match tree.\n")
+        Pcov <- try(Cov.proj(Cov), silent = TRUE)
+        if(inherits(Pcov, "try-error"))
+          stop("Unable to create a covariance matrix from the tree.\n", 
+               call. = FALSE)
+      }
+    }
+    U <- qr.Q(qr(ones))
+    if(transform.) {
+      R <- fastLM(U, Pcov %*% x)$residuals
+    } else {
+      fit <- lm.fit(ones, as.matrix(Pcov%*% x))
+      B <- coef(fit)
+      R <- x - (ones %*% B)
     }
     
-    if(!is.null(phy) && !is.null(Cov)) {
-      Pcov <- try(Cov.proj(Cov, rownames(x)), silent = TRUE)
-      if(inherits(Pcov, "try-error"))
-        stop("The names of Covariance matrix do not seem to match data names.\n",
-             call. = FALSE)
-    }
-    
-    ones <- matrix(1, n)
-    B <- lm.fit(Pcov %*% ones, Pcov %*% x)$coefficients
-    R <- x - ones %*% B
-    V <- if(transform.) crossprod(Pcov %*% R) / (n-1) else
-      crossprod(R) / (n-1)
-    
-  } else V <- var(x)
+    V <-  crossprod(R) / (n-1)
+
+    } else V <- var(x)
   
   return(V)
 }
