@@ -172,34 +172,7 @@ module.eigen <- function(A, A2 = NULL, partition.gp = NULL,
     x <- as.matrix(x)
     n <- nrow(x)
     
-    if(!is.null(phy) || !is.null(Cov)) {
-      
-      if(!is.null(phy) && !is.null(Cov)) {
-        cat("Both phy and Cov were provided; only Cov will be used\n")
-        Pcov <- try(Cov.proj(Cov, rownames(x)), silent = TRUE)
-        if(inherits(Pcov, "try-error"))
-          stop("The names of Covariance matrix do not seem to match data names.\n",
-               call. = FALSE)
-      }
-      
-      if(!is.null(phy) && is.null(Cov)) {
-        Cov <- fast.phy.vcv(phy)
-        Pcov <- Cov.proj(Cov, rownames(x))}
-      
-      if(is.null(phy) && !is.null(Cov)) {
-        Pcov <- try(Cov.proj(Cov, rownames(x)), silent = TRUE)
-        if(inherits(Pcov, "try-error"))
-          stop("The names of Covariance matrix do not seem to match data names.\n",
-               call. = FALSE)
-      }
-      
-      ones <- matrix(1, n)
-      B <- lm.fit(Pcov %*% ones, Pcov %*% x)$coefficients
-      R <- x - ones %*% B
-      V <- if(transform.) crossprod(Pcov %*% R) / (n-1) else
-        crossprod(R) / (n-1)
-      
-    } else V <- var(x)
+    V <- get.VCV(x, phy, Cov)
     
     Ind <- diag(diag(V))
     M <- Ind
