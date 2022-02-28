@@ -178,7 +178,7 @@ afa115834e6708293165de2a9abe9d4c *R/integration.test.r
 0827d3c4c6025e216737a3e8739d7410 *R/K.modules.r
 0f92a7f17f93c5e10630294e43fe3ac4 *R/make_ggplot.r
 de8a7705c2569b4459143bb189211272 *R/modularity.test.r
-0e480b4a91f4a1386cb5c92c252f5642 *R/module.eigen.r
+7ebfd424cc4888599c42d03385ae9f7e *R/module.eigen.r
 3255f5d31722a911a6c06c72c5c41727 *R/module.map.r
 754af4a0bc2c4f9187c3f9c51451636a *R/morphol.disparity.r
 dd09bec9a8c98301cb86d5b0563c8a77 *R/phylo.integration.r
@@ -204,7 +204,7 @@ d688cf3fbc6c3351526c422948e457ba *R/readmulti.tps.R
 bd2676b20bf5bc7b10e1c6df7139d069 *R/rotate.coords.R
 b4c0aa90b24f3c277c7e4631c2045261 *R/shape.predictor.r
 f191c54f3b3c75baea0b045758af5362 *R/shapeHulls.r
-7445309221b5bf36ecaa5a847f872f85 *R/shared.support.code.R
+7e4808bceeec6a971521f3a90f2db9a6 *R/shared.support.code.R
 611fcf60cc64a0811bbb7eadecd5bd17 *R/two.b.pls.r
 2e693d8b4f3c21d742737b97d1773119 *R/two.d.array.r
 7385019797d3400eac9dbce0ea33b74f *R/warpRefMesh.r

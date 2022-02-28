@@ -172,7 +172,7 @@ module.eigen <- function(A, A2 = NULL, partition.gp = NULL,
     x <- as.matrix(x)
     n <- nrow(x)
     
-    V <- get.VCV(x, phy, Cov)
+    V <- as.matrix(get.VCV(x, phy, Cov))
     
     Ind <- diag(diag(V))
     M <- Ind
