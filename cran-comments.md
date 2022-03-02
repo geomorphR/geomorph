@@ -1,5 +1,5 @@
 ## Resubmission
-This is a patch release, 4.0.2.
+This is a patch release, 4.0.3.  It updates one function, `Cov.proj`, to be accommodate updates made to the `RRPP` package, on which `geomorph` depends.
 
 ## Test environments
 * local OS X install, R 4.0.3
@@ -10,11 +10,7 @@ This is a patch release, 4.0.2.
 There were no ERRORs or WARNINGs. 
 
 ## R-hub check results
-There was one error on Fedora Linux R-Devel
-
-"Failed with error:  ‘there is no package called ‘shiny’’"
-
-Shiny is not a dependency of 'geomorph' or any of its dependencies. This should have no bearing on the `geomorph 4.0.2` package.
+There were no ERRORs or WARNINGs. 
 
 ## Downstream dependencies
 I checked 10 reverse dependencies, comparing R CMD check results across CRAN and dev versions of this package.
