@@ -42,9 +42,7 @@ citEntry(entry = "Misc",
   	volume = "9",
   	issue = "2",
   	pages = "1772-1779",
-  	url = "https://besjournals.onlinelibrary.wiley.com/doi/10.1111/2041-210X.13029",
   	textVersion = paste("Collyer, M. L. and D. C. Adams. 2018. RRPP: RRPP: An R package for fitting linear models to high‐dimensional data using residual randomization. Methods in Ecology and Evolution. 9(2): 1772-1779. ", 
-  	"https://besjournals.onlinelibrary.wiley.com/doi/10.1111/2041-210X.13029",
   	sep = ""))
   	
 citFooter("As geomorph is evolving quickly, you may want to cite also its version number (found with 'library(help = geomorph)').  Additionally, the RRPP package should also be cited for any analyses using RRPP. (See 'library(help = RRPP)' or 'citation('RRPP')'.)")
