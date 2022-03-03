@@ -135,7 +135,7 @@ module.map <- function(A, partition.gp,
   df <- df[, order(c(1,2))]
   gps.ord <- df[, 1]
   
-  V <- V[order(gps.ord, gps), order(gps.ord)]
+  V <- V[order(gps.ord, gps), order(gps.ord)] 
   
   ngps <- nlevels(gps.ord)
   ind.levels <- levels(gps.ord)
