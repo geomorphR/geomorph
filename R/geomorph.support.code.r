@@ -2214,9 +2214,10 @@ get.VCV <- function(A, phy = NULL, Cov = NULL,
     }
     
     ones <- matrix(1, n)
-    B <- lm.fit(Pcov %*% ones, Pcov %*% x)$coefficients
+    fit <- lm.fit(Pcov %*% ones, Pcov %*% x)
+    B <- fit$coefficients
     R <- x - ones %*% B
-    V <- if(transform.) crossprod(Pcov %*% R) / (n-1) else
+    V <- if(transform.) crossprod(fit$resdiuals) / (n-1) else
       crossprod(R) / (n-1)
     
   } else V <- var(x)

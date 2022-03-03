@@ -2,13 +2,18 @@
 #'
 #' Function makes a plot of a covariance matrix arrange by modules, with colors that
 #' measure the intensity of covariances within and between modules.
-#' @param A A 3D array (p x k x n) containing Procrustes shape variables for all specimens, or a matrix (n x variables)
+#' @param A A 3D array (p x k x n) containing Procrustes shape variables for all specimens, 
+#' or a matrix (n x variables), or an already estimated covariance or correlation matrix.  
 #' @param partition.gp A vector for an a priori, modular hypothesis, explaining
 #' which landmarks (or variables) belong in which partition: 
 #' (e.g. A, A, A, B, B, B, C, C, C). This is the same as partition.gp in, e.g., \code{\link{module.eigen}}.  
 #' @param mincol The plot color for the minimum, non-0 covariance found.
 #' @param maxcol The plot color for the maximum covariance found.
 #' @param col0 The plot color for 0 (lacking) covariance.
+#' @param bins The number  of color bins to us for covariance gradient.
+#' @param near0 A logical value for whether covariances near 0 should be considered 0.  This is especially helpful
+#' for geometric morphometric data that tend to be correlated because of generalized Procrustes analysis.  If TRUE,
+#' more of the module map will be colored the same as col0, except the more intense covariances.
 #' @param phy Optional argument to include a class \code{phylo} phylogenetic tree.  Tip labels must match data names.
 #' This argument instructs the function to estimate a phylogenetic covariance matrix based on a Brownian motion model
 #' of evolutionary divergence.  The Cov argument allows a user to define a hypothetical covariance matrix, if different 
@@ -45,7 +50,7 @@
 #' module.map(Y.gpa$coords, partition.gp = land.gps)
 #' 
 #' # GLS-centered approach.  This approach find the GLS mean but does not
-#' # transform residuals.  Thus, it is produces OLS-like covariance matricies
+#' # transform residuals.  Thus, it is produces OLS-like covariance matrices
 #' # that are centered on the GLS mean rather than the OLS mean
 #' 
 #' module.map(Y.gpa$coords, partition.gp = land.gps,
@@ -79,15 +84,17 @@
 #' par(mfrow = c(1, 1))
 
 module.map <- function(A, partition.gp, 
-                       mincol = "light gray", maxcol = "dark red", 
+                       mincol = "gray", maxcol = "dark red", 
                        col0 = "white",
                        bins = 10, 
+                       near0 = TRUE,
                        phy = NULL, Cov = NULL,
                        transform. = TRUE,
                        label.vars = FALSE,
                        label.mods = TRUE,
                        label.cex = 0.5,
                        borders = TRUE){
+  
   
   if(any(is.na(A)))
     stop("\nData matrix contains missing values. Estimate these first (see 'estimate.missing').",
@@ -114,28 +121,47 @@ module.map <- function(A, partition.gp,
     
   }
   
-  V <- get.VCV(A, phy, Cov, transform.)
+  dims <- dim(A)
+  n <- dims[1]
+  p <- dims[2]
   
-  V <- V[order(gps), order(gps)]
+  if(n == p){
+    if(round(sum(A - t(A)), 12) == 0)
+      V <- A
+  } else V <- get.VCV(A, phy, Cov, transform.)
   
-  gps.ord <- sort(gps)
+  or.ord <- 1:nrow(V)
+  df <- data.frame(gps = gps, or.ord = or.ord)
+  df <- df[, order(c(1,2))]
+  gps.ord <- df[, 1]
   
-  M <- matrix(0, nrow(V), ncol(V))
+  V <- V[order(gps.ord, gps), order(gps.ord)]
+  
   ngps <- nlevels(gps.ord)
   ind.levels <- levels(gps.ord)
-  
   
   plot(1:nrow(V), 1:nrow(V), type = "n", xaxt = "n", yaxt = "n", 
        xlab = "", ylab = "", bty = "n")
   colpal <- colorRampPalette(colors = c(mincol, maxcol))
   
-  col.check <- seq.int(min(V), max(V), length.out = bins)
+  V <- abs(V)
+  VV <- round(V, 6)
+  diag(VV) <- 0
+  if(all(VV == 0)) VV <- V
+ 
+  col.check <- seq.int(min(VV), max(VV), length.out = bins)
+  
   col.vec <- c(col0, colpal(bins - 1))
+  
+  if(near0) {
+    l <- round(bins/4)
+    col.vec[1:l] <- col0
+  }
   
   nRow <- nrow(V)
   Cex <- 100 / nRow
   
-  colors.id <- lapply(1:length(V), function(x) which.min(abs(V[x] - col.check)))
+  colors.id <-  lapply(1:length(V), function(x) which.min(abs(V[x] - col.check)))
   colors <- sapply(colors.id, function(x) col.vec[x])
   
   xid <- nRow:1

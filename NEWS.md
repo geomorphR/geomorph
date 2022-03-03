@@ -1,4 +1,13 @@
-# INCIPIENT CHANGES IN GEOMORPH VERSION 4.0.2.99
+# CHANGES IN GEOMORPH VERSION 4.0.3
+
+### OTHER CHANGES
+* Updated `Cov.proj` function to work with `RRPP`
+
+# CHANGES IN GEOMORPH VERSION 4.0.2
+
+### BUG FIXES
+* Fixed issue in `compare.CR` when CR.null = TRUE.
+* Added catch to `anc.BM` for singleton nodes
 
 # CHANGES IN GEOMORPH VERSION 4.0.1
 

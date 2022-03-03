@@ -7,10 +7,11 @@
 module.map(
   A,
   partition.gp,
-  mincol = "light gray",
+  mincol = "white",
   maxcol = "dark red",
   col0 = "white",
   bins = 10,
+  near0 = TRUE,
   phy = NULL,
   Cov = NULL,
   transform. = TRUE,
@@ -32,6 +33,12 @@ which landmarks (or variables) belong in which partition:
 \item{maxcol}{The plot color for the maximum covariance found.}
 
 \item{col0}{The plot color for 0 (lacking) covariance.}
+
+\item{bins}{The number  of color bins to us for covariance gradient.}
+
+\item{near0}{A logical value for whether covariances near 0 should be considered 0.  This is especially helpful
+for geometric morphometric data that tend to be correlated because of generalized Procrustes analysis.  If TRUE,
+more of the module map will be colored the same as col0, except the more intense covariances.}
 
 \item{phy}{Optional argument to include a class \code{phylo} phylogenetic tree.  Tip labels must match data names.
 This argument instructs the function to estimate a phylogenetic covariance matrix based on a Brownian motion model
@@ -71,7 +78,7 @@ land.gps<-c("A","A","A","A","A","B","B","B","B","B","B")
 module.map(Y.gpa$coords, partition.gp = land.gps)
 
 # GLS-centered approach.  This approach find the GLS mean but does not
-# transform residuals.  Thus, it is produces OLS-like covariance matricies
+# transform residuals.  Thus, it is produces OLS-like covariance matrices
 # that are centered on the GLS mean rather than the OLS mean
 
 module.map(Y.gpa$coords, partition.gp = land.gps,

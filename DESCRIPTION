@@ -1,6 +1,6 @@
 Package: geomorph
 Title: Geometric Morphometric Analyses of 2D/3D Landmark Data
-Version: 4.0.2.99
+Version: 4.0.3
 Authors@R: c(
     person("Dean", "Adams", , "dcadams@iastate.edu", c("aut", "cre")),
     person("Michael", "Collyer", , role = "aut"),
