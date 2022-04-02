@@ -8,6 +8,7 @@ procD.pgls(
   f1,
   phy,
   Cov = NULL,
+  lambda = 1,
   iter = 999,
   seed = NULL,
   int.first = FALSE,
@@ -27,6 +28,10 @@ procD.pgls(
 coefficients and sums of squares and cross-products (see Adams and Collyer 2018), if one wishes to override the
 calculation of a covariance matrix based on a Brownian Motion model of evolution.  Using this argument essentially turns this 
 function into an alternate version of \code{\link{procD.lm}}.}
+
+\item{lambda}{Pagel's lambda, scaling parameter, between 0 and 1, for rescaling
+the internal branches of the phylogenetic tree or covariance matrix used.  If no rescaling 
+is required, then the default value of 1 should be retained.}
 
 \item{iter}{Number of iterations for significance testing}
 
@@ -124,6 +129,7 @@ Note that the specimen labels for both X and Y must match the labels on the tips
 data(plethspecies)
 Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment
 gdf <- geomorph.data.frame(Y.gpa, phy = plethspecies$phy)
+
 pleth.pgls <- procD.pgls(coords ~ Csize, phy = phy, data = gdf, 
 iter = 999)
 anova(pleth.pgls)
@@ -139,6 +145,14 @@ pleth.pgls$LM$Pcov # the projection matrix derived from the
 # phylogenetic covariance matrix
 pleth.pgls$pgls.fitted # the PGLS fitted values 
 pleth.pgls$GM$pgls.fitted # The same fitted values, in a 3D array
+
+# Changing lambda value
+
+pleth.pgls2 <- procD.pgls(coords ~ Csize, phy = phy, lambda = 0.5, 
+data = gdf, iter = 999)
+
+anova(pleth.pgls)
+anova(pleth.pgls2)
 }
 \references{
 Adams, D.C. 2014. A method for assessing phylogenetic least squares models for shape and other high-dimensional 
