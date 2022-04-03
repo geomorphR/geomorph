@@ -1,6 +1,6 @@
 Package: geomorph
 Title: Geometric Morphometric Analyses of 2D/3D Landmark Data
-Version: 4.0.3
+Version: 4.0.3.999
 Authors@R: c(
     person("Dean", "Adams", , "dcadams@iastate.edu", c("aut", "cre")),
     person("Michael", "Collyer", , role = "aut"),
@@ -24,7 +24,7 @@ Suggests: knitr,
     dplyr
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2022-02-16
+Packaged: 2022-03-02
 Author: Dean Adams [aut, cre],
   Michael Collyer [aut],
   Antigoni Kaliontzopoulou [aut],

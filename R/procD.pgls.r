@@ -67,6 +67,9 @@
 #' coefficients and sums of squares and cross-products (see Adams and Collyer 2018), if one wishes to override the
 #' calculation of a covariance matrix based on a Brownian Motion model of evolution.  Using this argument essentially turns this 
 #' function into an alternate version of \code{\link{procD.lm}}.
+#' @param lambda Pagel's lambda, scaling parameter, between 0 and 1, for rescaling
+#' the internal branches of the phylogenetic tree or covariance matrix used.  If no rescaling 
+#' is required, then the default value of 1 should be retained.
 #' @param iter Number of iterations for significance testing
 #' @param seed An optional argument for setting the seed for random permutations of the resampling procedure.  
 #' If left NULL (the default), the exact same P-values will be found for repeated runs of the analysis (with the same number of iterations).
@@ -103,6 +106,7 @@
 #' data(plethspecies)
 #' Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment
 #' gdf <- geomorph.data.frame(Y.gpa, phy = plethspecies$phy)
+#' 
 #' pleth.pgls <- procD.pgls(coords ~ Csize, phy = phy, data = gdf, 
 #' iter = 999)
 #' anova(pleth.pgls)
@@ -118,7 +122,16 @@
 #' # phylogenetic covariance matrix
 #' pleth.pgls$pgls.fitted # the PGLS fitted values 
 #' pleth.pgls$GM$pgls.fitted # The same fitted values, in a 3D array
-procD.pgls<-function(f1, phy, Cov = NULL, iter=999, seed=NULL, int.first = FALSE, 
+#' 
+#' # Changing lambda value
+#' 
+#' pleth.pgls2 <- procD.pgls(coords ~ Csize, phy = phy, lambda = 0.5, 
+#' data = gdf, iter = 999)
+#' 
+#' anova(pleth.pgls)
+#' anova(pleth.pgls2)
+procD.pgls<-function(f1, phy, Cov = NULL, lambda = 1,
+                     iter=999, seed=NULL, int.first = FALSE, 
                      SS.type = c("I", "II", "III"),
                      effect.type = c("F", "cohen"),
                      data=NULL, print.progress = TRUE, ...){
@@ -135,7 +148,15 @@ procD.pgls<-function(f1, phy, Cov = NULL, iter=999, seed=NULL, int.first = FALSE
       stop(paste("No phylo object called,", phy.name,", found in data or global environment.\n"),
          call. = FALSE)
     Cov <- fast.phy.vcv(phy)
+    
+    if(lambda < 0 || lambda > 1){
+      cat("A value of lambda between 0 and 1 is required.\n")
+      cat("Resetting to lambda = 1.\n")
+      lambda <- 1
+    }
   }
+  
+  Cov <- scaleCov(Cov, scale. = lambda)
     
   pgls <- procD.lm(f1, iter = iter, seed = seed, RRPP = TRUE, SS.type = SS.type,
                    effect.type = effect.type,int.first = int.first, Cov = Cov, 
@@ -146,6 +167,8 @@ procD.pgls<-function(f1, phy, Cov = NULL, iter=999, seed=NULL, int.first = FALSE
   
   names(pgls) <- gsub("gls", "pgls", x = names(pgls))
   if(!is.null(pgls$GM)) names(pgls$GM) <- gsub("gls", "pgls", x = names(pgls$GM))
+  
+  pgls$lambda <- lambda
   
   pgls
 }

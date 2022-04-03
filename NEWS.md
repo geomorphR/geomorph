@@ -1,3 +1,7 @@
+# CHANGES IN GEOMORPH VERSION 4.0.3.999
+
+* Added a `lambda` argument to `procD.pgls`.
+
 # CHANGES IN GEOMORPH VERSION 4.0.3
 
 ### OTHER CHANGES

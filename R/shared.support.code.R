@@ -1,6 +1,14 @@
 ### Functions that both RRPP and geomorph use, but should remain internal
 ### any alterations to these functions must be saved for both RRPP and geomorph
 
+# get.names
+# a universal subject name search
+# used in lm.rrpp and its descendants
+get.names <- function(Y) {
+  nms <- if(is.vector(Y)) names(Y) else if(inherits(Y, "dist")) attr(Y, "Labels") else
+    if(inherits(Y, "matrix")) rownames(Y) else dimnames(Y)[[3]]
+  nms
+}
 
 # center
 # centers a matrix faster than scale()

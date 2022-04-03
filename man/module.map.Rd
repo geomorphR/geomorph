@@ -7,7 +7,7 @@
 module.map(
   A,
   partition.gp,
-  mincol = "white",
+  mincol = "gray",
   maxcol = "dark red",
   col0 = "white",
   bins = 10,
@@ -22,7 +22,8 @@ module.map(
 )
 }
 \arguments{
-\item{A}{A 3D array (p x k x n) containing Procrustes shape variables for all specimens, or a matrix (n x variables)}
+\item{A}{A 3D array (p x k x n) containing Procrustes shape variables for all specimens, 
+or a matrix (n x variables), or an already estimated covariance or correlation matrix.}
 
 \item{partition.gp}{A vector for an a priori, modular hypothesis, explaining
 which landmarks (or variables) belong in which partition: 

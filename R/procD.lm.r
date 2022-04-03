@@ -323,8 +323,7 @@ procD.lm <- function(f1, iter = 999, seed=NULL, RRPP = TRUE,
     if(inherits(Y, "try-error")) stop("Cannot find data in data frame or global environment.\n",
                                       call. = FALSE)
     
-    nms <- if(is.vector(Y)) names(Y) else if(inherits(Y, "matrix")) attr(Y, "Labels") else
-        if(is.matrix(Y)) rownames(Y) else dimnames(Y)[[3]]
+    nms <- get.names(Y)
     dims.Y <- dim(Y)
     f <- update(f1, Y ~ .)
     if(length(dims.Y) == 3) {
