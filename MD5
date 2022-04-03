@@ -10,7 +10,7 @@ d8e8360c03c03fe45d2100e9c05d4a89 *data/plethodon.rda
 80c6fa53b642b23b378cf036d1b962f1 *data/ratland.rda
 9ba51ab9be03930a4acdcddde8169b33 *data/scallopPLY.rda
 6e5e71b242462e422b716800ffc3c464 *data/scallops.rda
-5253956c35a80b0d63021c72264757d2 *DESCRIPTION
+0bac35d477b0e70276e0b3705524a0be *DESCRIPTION
 f4f2080e745b8d689f17caf549449ab5 *geomorph.Rproj
 67ea07d64ab8d21f96d7ed1a2cbf4f18 *inst/CITATION
 593e42548fcbd08b6027b15bbca38808 *man/arrayspecs.Rd
@@ -125,7 +125,7 @@ d2755155772526527e4224b17d0dd05d *man/warpRefMesh.Rd
 7bea8d6b17918fd4889e2056ebe0e3d0 *man/warpRefOutline.Rd
 d9119f721918f22c267db843023a86fe *man/writeland.tps.Rd
 f53034106a33df2c42a3adfd58f4a01a *NAMESPACE
-d980369886a0e43fa5c7c5ac80852a63 *NEWS.md
+31fcfbb5ea7855183e39c89f2b2e4998 *NEWS.md
 d80d05ef890863f1b3004473627ea5f1 *R/arrayspecs.r
 471a441e39f4f561d4526c238c6979f9 *R/bilat.symmetry.r
 4de44720708760426e94d2f2ffef904b *R/build.template.r
@@ -168,7 +168,7 @@ f9043772e114ec0f814ab4782383a5dc *R/plotAllSpecimens.r
 650349cc43c0ad77865aea74dc2f61bf *R/plotOutliers.r
 52af40caeff3fce3636d0e75b3bd4808 *R/plotRefToTarget.r
 fde58408b523c760a200ae1a94aed3f5 *R/plotspec.r
-d5a2e7531e4b2556b7d4827a44606847 *R/procD.lm.r
+1aa88b4187d60abb9caea3df23d2c007 *R/procD.lm.r
 47dfef03c2a0c57898251a84fe8c5f48 *R/procD.pgls.r
 df3f4cc6406dc0c737ee2ff08c2a0e3d *R/read.morphologika.r
 b6f1390d9225c822d20796cae88643c7 *R/read.ply.r
@@ -181,7 +181,7 @@ d688cf3fbc6c3351526c422948e457ba *R/readmulti.tps.R
 f269280a76f5b0cbd1b015cc6c1ca5b5 *R/rotate.coords.R
 b4c0aa90b24f3c277c7e4631c2045261 *R/shape.predictor.r
 f191c54f3b3c75baea0b045758af5362 *R/shapeHulls.r
-7e4808bceeec6a971521f3a90f2db9a6 *R/shared.support.code.R
+69d12a23b58aefc41394ffe5cbe30830 *R/shared.support.code.R
 3a898fe0871381fa613ccea3f82b0058 *R/two.b.pls.r
 2e693d8b4f3c21d742737b97d1773119 *R/two.d.array.r
 7385019797d3400eac9dbce0ea33b74f *R/warpRefMesh.r
