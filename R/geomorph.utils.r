@@ -1086,7 +1086,7 @@ summary.geomorphShapes <- function (object, ...) {
 #' 
 #' @param x print/summary object
 #' @param ... other arguments passed to print/summary
-#' @method print compare.ZVerl
+#' @method print compare.ZVrel
 #' @export
 #' @author Dean Adams
 #' @keywords utilities

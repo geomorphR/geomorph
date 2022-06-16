@@ -4,7 +4,7 @@
 \alias{print.compare.ZVrel}
 \title{Print/Summary function for geomorph}
 \usage{
-\method{print}{compare.ZVerl}(x, ...)
+\method{print}{compare.ZVrel}(x, ...)
 }
 \arguments{
 \item{x}{print/summary object}
