@@ -1,5 +1,9 @@
-# CHANGES IN GEOMORPH VERSION 4.0.3.999
+# CHANGES IN GEOMORPH VERSION 4.0.4
 
+### NEW FEATURES
+
+* New function, `integration.Vrel`
+* New function, `compare.ZVrel`
 * Added a `lambda` argument to `procD.pgls`.
 
 # CHANGES IN GEOMORPH VERSION 4.0.3

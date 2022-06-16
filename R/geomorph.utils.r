@@ -1082,6 +1082,43 @@ summary.geomorphShapes <- function (object, ...) {
   print.geomorphShapes(object, ...)
 }
 
+#' Print/Summary function for geomorph
+#' 
+#' @param x print/summary object
+#' @param ... other arguments passed to print/summary
+#' @method print compare.ZVerl
+#' @export
+#' @author Dean Adams
+#' @keywords utilities
+print.compare.ZVrel <- function(x,...){
+  z <- x$sample.Z.obs
+  z.pw <- x$pairwise.z
+  p <- x$pairwise.P
+  cat("\nEffect sizes\n\n")
+  print(z)
+  cat("\nEffect sizes for pairwise differences in rel.eig effect size\n\n")
+  print(z.pw)
+  cat("\nP-values\n\n")
+  print(p)
+  invisible(x)
+}
+
+#' Print/Summary Function for geomorph
+#' 
+#' @param object print/summary object
+#' @param ... other arguments passed to print/summary
+#' @method summary compare.ZVrel
+#' @export
+#' @author Dean Adams
+#' @keywords utilities
+summary.compare.ZVrel <- function(object, ...) {
+  print.compare.ZVrel(object,...)
+}
+
+
+
+
+
 ## geomorph.data.frame
 
 #' Handle missing values in rrpp.data.frame objects
