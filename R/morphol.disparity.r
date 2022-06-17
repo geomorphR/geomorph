@@ -131,7 +131,7 @@
 #' ### procD.lm or lm.rrpp class objects
 #' 
 #' data(plethspecies)
-#' Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment
+#' Y.gpa<-gpagen(plethspecies$land, print.progress = FALSE)    #GPA-alignment
 #' gp.end<-factor(c(0,0,1,0,0,1,1,0,0))  #endangered species vs. rest
 #' names(gp.end)<-plethspecies$phy$tip
 #' 

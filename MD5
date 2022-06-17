@@ -11,7 +11,7 @@ d8e8360c03c03fe45d2100e9c05d4a89 *data/plethodon.rda
 80c6fa53b642b23b378cf036d1b962f1 *data/ratland.rda
 9ba51ab9be03930a4acdcddde8169b33 *data/scallopPLY.rda
 6e5e71b242462e422b716800ffc3c464 *data/scallops.rda
-0096fa62261c95b18ebcbfeeb2a2edae *DESCRIPTION
+684d5a3dc5e1cb99b28403cef472abb4 *DESCRIPTION
 73f723a130c92f8b84a81465a15add7c *geomorph.Rproj
 a0bfc1602bc216cf8f5d90af16183b36 *inst/CITATION
 593e42548fcbd08b6027b15bbca38808 *man/arrayspecs.Rd
@@ -49,7 +49,7 @@ f8f8efc9ceef8891e64fef0373b12f6e *man/integration.Vrel.Rd
 073ec603983e6cd70eb01e40d5c091ec *man/lizards.Rd
 31efbd675ae82ac9136d6510fd8ad6b6 *man/make_ggplot.Rd
 32ab07952ff5ab9a67778f3d0018e9a0 *man/modularity.test.Rd
-e9c51057da8d4b9d442331c837da35c0 *man/morphol.disparity.Rd
+f809b7b805eeefd9ace2b563eefe8450 *man/morphol.disparity.Rd
 00e77dd77ac4f29ace5334a4df4aa23e *man/mosquito.Rd
 ffadebd6be893bbc403d22f884329a9a *man/mshape.Rd
 9809c8341989ac2b605478f117c9b5bc *man/na.omit.geomorph.data.frame.Rd
@@ -165,7 +165,7 @@ b5e056ae16d61d5f4d0637b2d4f28582 *R/integration.test.r
 0cbfe6b5655e2751cdd03ca2a1550768 *R/interlmkdist.r
 0f92a7f17f93c5e10630294e43fe3ac4 *R/make_ggplot.r
 4f19f84480b5aec06a9390610ecd09d7 *R/modularity.test.r
-754af4a0bc2c4f9187c3f9c51451636a *R/morphol.disparity.r
+bc317fe5c45381cb50ac302c867f5261 *R/morphol.disparity.r
 dd09bec9a8c98301cb86d5b0563c8a77 *R/phylo.integration.r
 d5afd24cc150710512b164f411d3cc3f *R/phylo.modularity.r
 1f163631bad0749c9269491b2ec97668 *R/physignal.r
