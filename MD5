@@ -16,7 +16,7 @@ a0bfc1602bc216cf8f5d90af16183b36 *inst/CITATION
 593e42548fcbd08b6027b15bbca38808 *man/arrayspecs.Rd
 67aaabd0db27937f03502646bb68e586 *man/bilat.symmetry.Rd
 1ff6222663ac98e0dd1b6aaae0dd9962 *man/buildtemplate.Rd
-7711615a3e9256db952fcd509fbcc967 *man/combine.subsets.Rd
+6103f407d86bdcfe9673ae68b1b75dec *man/combine.subsets.Rd
 a4a81b8c46f803dca99fdeaf5fe07c36 *man/compare.CR.Rd
 b2ef3270d5bea2a4e063331303554df5 *man/compare.evol.rates.Rd
 38624521861b7541e90e4d8f477b5004 *man/compare.multi.evol.rates.Rd
@@ -133,7 +133,7 @@ ca56ff565bbb6971e2d19cb1aeebf7e2 *NAMESPACE
 d80d05ef890863f1b3004473627ea5f1 *R/arrayspecs.r
 471a441e39f4f561d4526c238c6979f9 *R/bilat.symmetry.r
 4de44720708760426e94d2f2ffef904b *R/build.template.r
-79db674b122f0b856e1324eb46fb54f5 *R/combine.subsets.R
+1871038495c073972333b581b6018f8b *R/combine.subsets.R
 57cb340bbe2c7d8aefd78af57b87214c *R/compare.CR.R
 0f595872139aa081a5b8629826e804cf *R/compare.evol.rates.r
 78bd97b401035b2283f6351ca7cfc5ad *R/compare.multi.evol.rates.r
