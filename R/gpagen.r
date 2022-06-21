@@ -51,7 +51,7 @@
 #'  
 #'  Choosing to use approximated TPS with only a few sliders is dangerous, as the subset of points might be too small
 #'  to be reliable.  Approximated TPS will work best for data sets with a sufficient number of surface landmarks.  If a
-#'  data set is nearly 100% semilandmarks, TPS and approximated TPS should converge, but no time savings is likely.
+#'  data set is nearly 100 \% semilandmarks, TPS and approximated TPS should converge, but no time savings is likely.
 #' }
 #'  \subsection{Notes for geomorph 3.0}{ 
 #' Compared to older versions of geomorph, users might notice subtle differences in Procrustes shape variables when using
