@@ -67,9 +67,9 @@
 #' @examples
 #' data(larvalMorph) 
 #' head.gpa <- gpagen(larvalMorph$headcoords, 
-#'   curves = larvalMorph$head.sliders)
+#'   curves = larvalMorph$head.sliders, print.progress = F)
 #' tail.gpa <- gpagen(larvalMorph$tailcoords, 
-#'   curves = larvalMorph$tail.sliders)
+#'   curves = larvalMorph$tail.sliders, print.progress = F)
 #' 
 #' # Combine original data without GPA (plot to see relative size of  
 #' # heads and tails)
@@ -121,24 +121,22 @@
 #' # irrelevant and the head size is inflated because of the fewer 
 #' # landmarks in the configuration.
 #' 
-#' ## NOT RUN
 #' ## Weighting centroid size
 #' 
-#' # comb.lm <- combine.subsets(head = head.gpa, 
-#' # tail = tail.gpa, gpa = TRUE, norm.CS = FALSE, weights = c(0.3, 0.7))
-#' # summary(comb.lm)
-#' # par(mfrow = c(1,2))
-#' # plotAllSpecimens(comb.lm$coords)
-#' # plot(comb.lm$coords[,,1], pch = 21, bg = c(rep(1,26), 
-#' # rep(2,64)), asp = 1)
-#' # par(mfrow = c(1,1))
+#' comb.lm <- combine.subsets(head = head.gpa, 
+#' tail = tail.gpa, gpa = TRUE, norm.CS = FALSE, weights = c(0.3, 0.7))
+#' summary(comb.lm)
+#' par(mfrow = c(1,2))
+#' plotAllSpecimens(comb.lm$coords)
+#' plot(comb.lm$coords[,,1], pch = 21, bg = c(rep(1,26), 
+#' rep(2,64)), asp = 1)
+#' par(mfrow = c(1,1))
 #' 
 #' # Note that the head is way too small, compared to a real specimen.  
 #' # This option allows one to dictate the relative sizes of subsets
 #' #  as portions of the combined set.  An option like this should be 
 #' # used with caution, but can help overcome issues caused by landmark 
 #' # density.
-
 
 combine.subsets <- function(..., gpa = TRUE, CS.sets = NULL, norm.CS = FALSE, weights = NULL){
   sets <- list(...)
