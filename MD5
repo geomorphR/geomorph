@@ -11,7 +11,7 @@ d8e8360c03c03fe45d2100e9c05d4a89 *data/plethodon.rda
 80c6fa53b642b23b378cf036d1b962f1 *data/ratland.rda
 9ba51ab9be03930a4acdcddde8169b33 *data/scallopPLY.rda
 6e5e71b242462e422b716800ffc3c464 *data/scallops.rda
-ad3a05a5c50884d68774be97b5d9b5d5 *DESCRIPTION
+ccdd6eaa910b7af9ca27d377f35aade1 *DESCRIPTION
 c1b1a4bdfac8decf989501289600e592 *geomorph.Rproj
 67ea07d64ab8d21f96d7ed1a2cbf4f18 *inst/CITATION
 593e42548fcbd08b6027b15bbca38808 *man/arrayspecs.Rd
@@ -39,7 +39,7 @@ e5ea7eb05043e14bf36bb1c553de0576 *man/findMeanSpec.Rd
 4681bbf9711d9eafd48798c7537bf5b7 *man/geomorph.data.frame.Rd
 c7fdffac3135bde168be933be6bf2243 *man/globalIntegration.Rd
 fa3facc45b9d3824494f79924b49f72e *man/gm.prcomp.Rd
-7c0c6196198fd014e358818c1f8f0133 *man/gpagen.Rd
+7da7c7f135306f015366a422fe29a1bf *man/gpagen.Rd
 e20e54a5d966dd6bb9af96259be90276 *man/gridPar.Rd
 a598044482a6c3e39517b798b654c57e *man/hummingbirds.Rd
 6725d202cc91d2039fee6e02157f232a *man/integration.test.Rd
@@ -171,7 +171,7 @@ dbe3e670d68e3296d722c120e1c9e89e *R/geomorph.support.code.r
 73ab330e57b7af5faba59d58cca0b343 *R/geomorph.utils.r
 b0de2a67cff633e27e7a00860187240f *R/globalIntegration.r
 fa94a434ca094a407ec33009dca9843c *R/gm.prcomp.R
-d737fcb101b337b0737e98eea0af6e3a *R/gpagen.r
+aae357257ab80ffe5a34099f782d18ac *R/gpagen.r
 a6c3643aba0a098878d2768d57ff8ded *R/gridPar.r
 afa115834e6708293165de2a9abe9d4c *R/integration.test.r
 0cbfe6b5655e2751cdd03ca2a1550768 *R/interlmkdist.r
