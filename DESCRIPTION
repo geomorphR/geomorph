@@ -24,7 +24,7 @@ Suggests: knitr,
     dplyr
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2022-06-16
+Packaged: 2022-06-21
 Author: Dean Adams [aut, cre],
   Michael Collyer [aut],
   Antigoni Kaliontzopoulou [aut],

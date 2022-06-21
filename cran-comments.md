@@ -1,8 +1,8 @@
 ## Resubmission
-This is a patch release, 4.0.3.  It updates one function, `Cov.proj`, to be accommodate updates made to the `RRPP` package, on which `geomorph` depends.
+This is a patch release, 4.0.4.  It provides two new functions.
 
 ## Test environments
-* local OS X install, R 4.0.3
+* local OS X install, R 4.0.4
 * win-builder (devel and release)
 * R-hub (all platforms)
 
@@ -13,7 +13,7 @@ There were no ERRORs or WARNINGs.
 There were no ERRORs or WARNINGs. 
 
 ## Downstream dependencies
-I checked 10 reverse dependencies, comparing R CMD check results across CRAN and dev versions of this package.
+I checked 11 reverse dependencies, comparing R CMD check results across CRAN and dev versions of this package.
 
  * I saw 0 new problems
  * I failed to check 0 packages
