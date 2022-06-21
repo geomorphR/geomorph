@@ -89,7 +89,7 @@ land.gps<-rep('a',56); land.gps[39:48]<-'b'
 MT <- modularity.test(Y.gpa$coords,land.gps,CI=FALSE,iter=99, opt.rot = FALSE, 
 print.progress = FALSE)
 ## NOTE: for actual analysis one should increase iterations and use 
-opt.rot = TRUE!
+# opt.rot = TRUE!
 summary(MT) # Test summary
 plot(MT) # Histogram of CR sampling distribution 
 # Result implies modularity present
