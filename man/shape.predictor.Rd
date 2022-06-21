@@ -85,7 +85,7 @@ plotRefToTarget(M, preds$predmax, mag=3)
 # allometry example - using RegScore or PredLine via procD.lm
 
 gdf <- geomorph.data.frame(Y.gpa)
-plethAllometry <- procD.lm(coords ~ log(Csize), data=gdf)
+plethAllometry <- procD.lm(coords ~ log(Csize), data=gdf, iter = 1)
 allom.plot <- plot(plethAllometry, 
 type = "regression", 
 predictor = log(gdf$Csize),
@@ -113,7 +113,7 @@ plotRefToTarget(M, preds$predmax, mag=3)
 
 gdf <- geomorph.data.frame(Y.gpa, species = plethodon$species, 
        site = plethodon$site)
-pleth <- procD.lm(coords ~ species*site, data=gdf)
+pleth <- procD.lm(coords ~ species*site, data=gdf, iter = 1)
 PCA <- prcomp(pleth$fitted)
 plot(PCA$x, asp=1, pch=19)
 
@@ -150,7 +150,7 @@ data(plethShapeFood)
 Y.gpa<-gpagen(plethShapeFood$land)    #GPA-alignment    
 
 # 2B-PLS between head shape and food use data
-PLS <-two.b.pls(A1 = plethShapeFood$food, A2 = Y.gpa$coords, iter=999) 
+PLS <-two.b.pls(A1 = plethShapeFood$food, A2 = Y.gpa$coords, iter=1) 
 summary(PLS)
 plot(PLS)
 

@@ -121,16 +121,17 @@
 #' # irrelevant and the head size is inflated because of the fewer 
 #' # landmarks in the configuration.
 #' 
+#' ## NOT RUN
 #' ## Weighting centroid size
 #' 
-#' comb.lm <- combine.subsets(head = head.gpa, 
-#' tail = tail.gpa, gpa = TRUE, norm.CS = FALSE, weights = c(0.3, 0.7))
-#' summary(comb.lm)
-#' par(mfrow = c(1,2))
-#' plotAllSpecimens(comb.lm$coords)
-#' plot(comb.lm$coords[,,1], pch = 21, bg = c(rep(1,26), 
-#' rep(2,64)), asp = 1)
-#' par(mfrow = c(1,1))
+#' # comb.lm <- combine.subsets(head = head.gpa, 
+#' # tail = tail.gpa, gpa = TRUE, norm.CS = FALSE, weights = c(0.3, 0.7))
+#' # summary(comb.lm)
+#' # par(mfrow = c(1,2))
+#' # plotAllSpecimens(comb.lm$coords)
+#' # plot(comb.lm$coords[,,1], pch = 21, bg = c(rep(1,26), 
+#' # rep(2,64)), asp = 1)
+#' # par(mfrow = c(1,1))
 #' 
 #' # Note that the head is way too small, compared to a real specimen.  
 #' # This option allows one to dictate the relative sizes of subsets
