@@ -98,32 +98,32 @@
 #' 
 #' # Morphological disparity for entire data set
 #' morphol.disparity(coords ~ 1, groups = NULL, data = gdf, 
-#' iter = 999, print.progress = FALSE)
+#' iter = 299, print.progress = FALSE)
 #' 
 #' # Morphological disparity for entire data set, accounting for allometry
 #' morphol.disparity(coords ~ Csize, groups= NULL, data = gdf, 
-#' iter = 999, print.progress = FALSE)
+#' iter = 299, print.progress = FALSE)
 #' 
 #' # Morphological disparity without covariates, using overall mean
 #' morphol.disparity(coords ~ 1, groups= ~ species*site, data = gdf, 
-#' iter = 999, print.progress = FALSE)
+#' iter = 299, print.progress = FALSE)
 #' 
 #' # Morphological partial disparities for overal mean
 #' morphol.disparity(coords ~ 1, groups= ~ species*site, partial = TRUE, 
-#' data = gdf, iter = 999, print.progress = FALSE)
+#' data = gdf, iter = 299, print.progress = FALSE)
 #' 
 #' # Morphological disparity without covariates, using group means
 #' morphol.disparity(coords ~ species*site, groups= ~species*site, 
-#' data = gdf, iter = 999, print.progress = FALSE)
+#' data = gdf, iter = 299, print.progress = FALSE)
 #' 
 #' # Morphological disparity of different groups than those 
 #' # described by the linear model
 #' morphol.disparity(coords ~ Csize + species*site, groups= ~ species, 
-#' data = gdf, iter = 999, print.progress = FALSE)
+#' data = gdf, iter = 299, print.progress = FALSE)
 #' 
 #' # Extracting components
 #' MD <- morphol.disparity(coords ~ Csize + species*site, groups= ~ species, 
-#' data = gdf, iter = 999, print.progress = FALSE)
+#' data = gdf, iter = 299, print.progress = FALSE)
 #' MD$Procrustes.var # just the Procrustes variances
 #' 
 #' 
@@ -131,7 +131,7 @@
 #' ### procD.lm or lm.rrpp class objects
 #' 
 #' data(plethspecies)
-#' Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment
+#' Y.gpa<-gpagen(plethspecies$land, print.progress = FALSE)    #GPA-alignment
 #' gp.end<-factor(c(0,0,1,0,0,1,1,0,0))  #endangered species vs. rest
 #' names(gp.end)<-plethspecies$phy$tip
 #' 
@@ -139,21 +139,21 @@
 #' gp.end = gp.end)
 #' 
 #' pleth.ols <- procD.lm(coords ~ Csize + gp.end, 
-#' data = gdf, iter = 999) # ordinary least squares
+#' data = gdf, iter = 299) # ordinary least squares
 #' pleth.pgls <- procD.pgls(coords ~ Csize + gp.end, phy = phy, 
-#' data = gdf, iter = 999) # phylogenetic generalized least squares
+#' data = gdf, iter = 299) # phylogenetic generalized least squares
 #' 
 #' summary(pleth.ols)
 #' summary(pleth.pgls)
 #' 
 #' morphol.disparity(f1 = pleth.ols, groups = ~ gp.end, data = gdf, 
-#' iter = 999, print.progress = FALSE)
+#' iter = 299, print.progress = FALSE)
 #' morphol.disparity(f1 = pleth.pgls, groups = ~ gp.end, 
 #' transform = FALSE, data = gdf, 
-#' iter = 999, print.progress = FALSE) # disparity in tangent space
+#' iter = 299, print.progress = FALSE) # disparity in tangent space
 #' morphol.disparity(f1 = pleth.pgls, groups = ~ gp.end,
 #' transform = TRUE, data = gdf, 
-#' iter = 999, print.progress = FALSE) # disparity in transformed space 
+#' iter = 299, print.progress = FALSE) # disparity in transformed space 
 #' 
 #' # Three plots that correspond to the three tests
 #' PCA <- gm.prcomp(Y.gpa$coords, phy = plethspecies$phy)
@@ -337,4 +337,5 @@ morphol.disparity <- function(f1, groups = NULL, partial = FALSE, transform = FA
     
   }
 }
+
 

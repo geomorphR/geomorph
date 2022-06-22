@@ -77,9 +77,9 @@ for articulated structures.
 \examples{
 data(larvalMorph) 
 head.gpa <- gpagen(larvalMorph$headcoords, 
-  curves = larvalMorph$head.sliders)
+  curves = larvalMorph$head.sliders, print.progress = FALSE)
 tail.gpa <- gpagen(larvalMorph$tailcoords, 
-  curves = larvalMorph$tail.sliders)
+  curves = larvalMorph$tail.sliders, print.progress = FALSE)
 
 # Combine original data without GPA (plot to see relative size of  
 # heads and tails)
