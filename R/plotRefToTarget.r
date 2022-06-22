@@ -202,7 +202,7 @@ plotRefToTarget<-function(M1, M2, mesh= NULL, outline=NULL,
   }
   if(k==3){
     #for shape predictor k=2
-    if(method=="TPS" && class(M2) == "predshape.k2"){
+    if(method=="TPS" && inherits(M2, "predshape.k2")){
       tps(M1[,1:2],M2[,1:2],gP$n.col.cell, sz=gP$tar.pt.size, pt.bg=gP$tar.pt.bg, 
           grid.col=gP$grid.col, grid.lwd=gP$grid.lwd, grid.lty=gP$grid.lty, refpts=useRefPts, 
           k3=TRUE)
@@ -223,7 +223,7 @@ plotRefToTarget<-function(M1, M2, mesh= NULL, outline=NULL,
       }
     }
     #for shape predictor k=3
-    if(method=="TPS" && class(M2) == "predshape.k3"){
+    if(method=="TPS" && inherits(M2, "predshape.k3")){
       layout3d(matrix(c(1,2),1,2))
       tps(M1[,1:2],M2[,1:2],gP$n.col.cell, sz=gP$tar.pt.size, pt.bg=gP$tar.pt.bg, 
           grid.col=gP$grid.col, grid.lwd=gP$grid.lwd, grid.lty=gP$grid.lty, refpts=useRefPts,
