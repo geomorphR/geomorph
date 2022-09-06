@@ -1011,7 +1011,6 @@ summary.gm.prcomp <- function (object, ...) {
 #' @keywords visualization
 #' @seealso  \code{\link{plotRefToTarget}} \code{\link{picknplot.shape}}
 
-
 plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, flip = NULL, phylo = FALSE, 
                            time.plot = FALSE, axes = TRUE, add.abline = TRUE,
                            phylo.par = list(tip.labels = TRUE, 
