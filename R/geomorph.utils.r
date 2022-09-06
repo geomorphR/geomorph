@@ -989,6 +989,7 @@ summary.gm.prcomp <- function (object, ...) {
 #' @param phylo A logical value indicating whether the phylogeny should be projected to PC space
 #' @param time.plot A logical value indicating if a 3D plot with the phylogeny and time as the 
 #' z-axis is desired
+#' @param add.abline A logical value indicating whether to add xy reference lines at x = 0 and y = 0 
 #' @param phylo.par A list of plotting parameters for the inclusion of a phylogeny, including: logicals for 
 #' whether features should be included (tip.labels, nodel.labels, anc.states), toggled as TRUE/FALSE; 
 #' edge parameters (edge.color, edge.width, edge.lty); node parameters (node.bg, node.pch, node.cex);
@@ -1011,7 +1012,7 @@ summary.gm.prcomp <- function (object, ...) {
 
 
 plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, flip = NULL, phylo = FALSE, 
-                           time.plot = FALSE, 
+                           time.plot = FALSE, add.abline = TRUE,
                            phylo.par = list(tip.labels = TRUE, 
                                             node.labels = TRUE, 
                                             anc.states = TRUE,
@@ -1033,9 +1034,8 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, flip = NULL, phylo = FALSE,
   Pcov <- x$Pcov
   xx <- plot(x, axis1 = axis1, axis2 = axis2, flip = flip, ...)
   plot.args <- xx$plot.args
-  if(!is.null(plot.args$axes)) axes <- plot.args$axes else axes <- TRUE
-
-  if(axes){
+  
+  if(add.abline==TRUE){
     abline(h = 0, lty=2)
     abline(v = 0, lty=2)
   }
