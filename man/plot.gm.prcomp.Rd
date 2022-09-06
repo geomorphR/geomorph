@@ -11,6 +11,7 @@
   flip = NULL,
   phylo = FALSE,
   time.plot = FALSE,
+  axes = TRUE,
   add.abline = TRUE,
   phylo.par = list(tip.labels = TRUE, node.labels = TRUE, anc.states = TRUE, node.pch =
     21, node.bg = "grey", node.cex = 1, edge.color = "black", edge.width = 1, tip.txt.cex
@@ -34,6 +35,8 @@ change either axis; flip = 3 will flip only the horizontal axis; flip = c(3, 4) 
 
 \item{time.plot}{A logical value indicating if a 3D plot with the phylogeny and time as the 
 z-axis is desired}
+
+\item{axes}{A logical value indicating whether to plot the xy axes}
 
 \item{add.abline}{A logical value indicating whether to add xy reference lines at x = 0 and y = 0}
 
