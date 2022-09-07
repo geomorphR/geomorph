@@ -2,6 +2,7 @@
 
 ### NEW FEATURES
 
+* Generalized `plot.gm.prcomp` to work with new include.axes option from `RRPP`
 * New function, `integration.Vrel`
 * New function, `compare.ZVrel`
 * Added a `lambda` argument to `procD.pgls`.

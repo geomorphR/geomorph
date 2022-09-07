@@ -41,10 +41,6 @@ and label parameters (tip.txt.cex, tip.txt.col, tip.txt.adj, node.txt.cex, node.
 
 \item{...}{other arguments passed to plot.  For plots with a phylogeny, these parameters pertain to 
 the tip values.}
-
-\item{axes}{A logical value indicating whether to plot the xy axes}
-
-\item{add.abline}{A logical value indicating whether to add xy reference lines at x = 0 and y = 0}
 }
 \value{
 An object of class "plot.gm.prcomp" is a list with components
@@ -58,7 +54,7 @@ An object of class "plot.gm.prcomp" is a list with components
 Plot Function for geomorph
 }
 \seealso{
-\code{\link{plotRefToTarget}} \code{\link{picknplot.shape}}
+\code{\link{plotRefToTarget}} \code{\link{picknplot.shape}} \code{\link[RRPP]{plot.ordinate}}
 }
 \author{
 Antigoni Kaliontzopoulou, Michael Collyer
