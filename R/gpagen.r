@@ -236,7 +236,8 @@ gpagen = function(A, curves=NULL, surfaces=NULL, PrinAxes = TRUE,
   if(is.null(max.iter)) max.it <- 10 else max.it <- as.numeric(max.iter)
   if(is.numeric(max.it) & max.it > 100) {
     warning("GPA might be halted ahead of maximum iterations, 
-            as the number chosen is exceedingly large")
+            as the number chosen is exceedingly large", immediate. = TRUE,
+            call. = FALSE, noBreaks. = TRUE)
     max.it = 100
   }
   if(is.na(max.it)) max.it <- 10

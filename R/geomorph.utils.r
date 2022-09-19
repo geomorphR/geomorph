@@ -1007,7 +1007,8 @@ summary.gm.prcomp <- function (object, ...) {
 #' @author Antigoni Kaliontzopoulou, Michael Collyer
 #' @keywords utilities
 #' @keywords visualization
-#' @seealso  \code{\link{plotRefToTarget}} \code{\link{picknplot.shape}} \code{\link[RRPP]{plot.ordinate}}
+#' @seealso  \code{\link{plotRefToTarget}} \code{\link{picknplot.shape}}
+
 
 plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, flip = NULL, phylo = FALSE, 
                            time.plot = FALSE, 
@@ -1026,13 +1027,19 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, flip = NULL, phylo = FALSE,
                                             node.txt.col = "grey",
                                             node.txt.adj = c(-0.1, -0.1)), 
                            ...){
-  
+
   class(x) <- "ordinate"
   pcdata <- as.matrix(x$x[, c(axis1, axis2)])
   Pcov <- x$Pcov
   xx <- plot(x, axis1 = axis1, axis2 = axis2, flip = flip, ...)
   plot.args <- xx$plot.args
+  if(!is.null(plot.args$axes)) axes <- plot.args$axes else axes <- TRUE
 
+  if(axes){
+    abline(h = 0, lty=2)
+    abline(v = 0, lty=2)
+  }
+  
   if(phylo || time.plot) {
     
     if(is.null(x$phy))
@@ -1047,12 +1054,12 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, flip = NULL, phylo = FALSE,
   if(phylo) {
     
     p.p <- list(tip.labels = TRUE, node.labels = TRUE, anc.states = TRUE,
-                node.bg = "grey", node.pch = 21, node.cex = 1,
-                edge.color = "black", edge.width = 1,
-                tip.txt.cex = 1, tip.txt.col = "black", 
-                tip.txt.adj = c(-0.1, -0.1),
-                node.txt.cex = 1, node.txt.col = "grey",
-                node.txt.adj = c(-0.1, -0.1))
+                            node.bg = "grey", node.pch = 21, node.cex = 1,
+                            edge.color = "black", edge.width = 1,
+                            tip.txt.cex = 1, tip.txt.col = "black", 
+                            tip.txt.adj = c(-0.1, -0.1),
+                            node.txt.cex = 1, node.txt.col = "grey",
+                            node.txt.adj = c(-0.1, -0.1))
     
     m.p <- match(names(phylo.par), names(p.p))
     if(any(is.na(m.p)))
@@ -1528,8 +1535,8 @@ plot.K.modules <- function(x, modules = 1:6,
     class(mn) <- "matrix"
     
     if(length(modules) > 16){
-      cat("Warning: too many modules were chosen for effective plotting.\n")
-      cat("Only the first 16 will shown.\n")
+      warning("Too many modules were chosen for effective plotting. Only the first 16 will shown.\n",
+           immediate. = TRUE)
       M <- modules[1:16]
     }
     

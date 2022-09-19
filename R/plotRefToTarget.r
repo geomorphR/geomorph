@@ -58,18 +58,16 @@
 #' Y.gpa<-gpagen(plethodon$land)    #GPA-alignment
 #' ref<-mshape(Y.gpa$coords)
 #' plotRefToTarget(ref,Y.gpa$coords[,,39])
-#' 
-#' # NOT RUN
-#' # plotRefToTarget(ref,Y.gpa$coords[,,39], mag=2, outline=plethodon$outline)   
+#' plotRefToTarget(ref,Y.gpa$coords[,,39], mag=2, outline=plethodon$outline)   
 #' #magnify by 2X
-#' # plotRefToTarget(ref,Y.gpa$coords[,,39], method="vector", mag=3)
-#' # plotRefToTarget(ref,Y.gpa$coords[,,39], method="points", 
-#' # outline=plethodon$outline)
-#' # plotRefToTarget(ref,Y.gpa$coords[,,39], method="vector", 
-#' # outline=plethodon$outline, mag=2.5)
-#' # plotRefToTarget(ref,Y.gpa$coords[,,39], 
-#' # gridPars=gridPar(pt.bg = "green", pt.size = 1),
-#' # method="vector",mag=3)
+#' plotRefToTarget(ref,Y.gpa$coords[,,39], method="vector", mag=3)
+#' plotRefToTarget(ref,Y.gpa$coords[,,39], method="points", 
+#' outline=plethodon$outline)
+#' plotRefToTarget(ref,Y.gpa$coords[,,39], method="vector", 
+#' outline=plethodon$outline, mag=2.5)
+#' plotRefToTarget(ref,Y.gpa$coords[,,39], 
+#' gridPars=gridPar(pt.bg = "green", pt.size = 1),
+#' method="vector",mag=3)
 #'
 #' # Three dimensional data
 #' # data(scallops)
@@ -202,7 +200,7 @@ plotRefToTarget<-function(M1, M2, mesh= NULL, outline=NULL,
   }
   if(k==3){
     #for shape predictor k=2
-    if(method=="TPS" && inherits(M2, "predshape.k2")){
+    if(method=="TPS" && class(M2) == "predshape.k2"){
       tps(M1[,1:2],M2[,1:2],gP$n.col.cell, sz=gP$tar.pt.size, pt.bg=gP$tar.pt.bg, 
           grid.col=gP$grid.col, grid.lwd=gP$grid.lwd, grid.lty=gP$grid.lty, refpts=useRefPts, 
           k3=TRUE)
@@ -223,7 +221,7 @@ plotRefToTarget<-function(M1, M2, mesh= NULL, outline=NULL,
       }
     }
     #for shape predictor k=3
-    if(method=="TPS" && inherits(M2, "predshape.k3")){
+    if(method=="TPS" && class(M2) == "predshape.k3"){
       layout3d(matrix(c(1,2),1,2))
       tps(M1[,1:2],M2[,1:2],gP$n.col.cell, sz=gP$tar.pt.size, pt.bg=gP$tar.pt.bg, 
           grid.col=gP$grid.col, grid.lwd=gP$grid.lwd, grid.lty=gP$grid.lty, refpts=useRefPts,
@@ -367,4 +365,3 @@ plotRefToTarget<-function(M1, M2, mesh= NULL, outline=NULL,
     }
   }
 }
-

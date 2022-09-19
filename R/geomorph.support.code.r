@@ -211,8 +211,8 @@ mshape <- function(A, na.action = 1){
           n <- dims[[1]]
           p <- dims[[2]]
           k <- 1
-        cat("\nWarning: It appears that data are in a matrix with specimens as rows.")
-        cat("\nMeans are found for each column of the matrix.\n\n")
+          warning(paste("\nWarning: It appears that data are in a matrix with specimens as rows.\n",
+        "\nMeans are found for each column of the matrix.\n\n"), immediate. = TRUE)
         L <- lapply(1:n, function(j) matrix(A[j,], 1, ))
       }
     }
@@ -252,10 +252,15 @@ mshape <- function(A, na.action = 1){
     if(na.action == 2) {
       
       if(any(is.na(unlist(L)))) {
-        cat("Warning: Missing values detected.\n")
-        cat("NA is returned for any coordinate where missing values were found.\n")
-        cat("You can estimate missing values (see 'estimate.missing')\n")
-        cat("or change the na.action (see Arguments) to find the mean of just the remaining values\n\n.")
+        warning(
+          paste(
+            "\nThis is not an error!  It is a friendly warning.\n",
+            "\nMissing values detected.\n",
+            "\nNA is returned for any coordinate where missing values were found.",
+            "\nYou can estimate missing values (see 'estimate.missing')",
+            "\nor change the na.action (see Arguments) to find the mean of just the remaining values.\n",
+            "\nUse options(warn = -1) to turn off these warnings. \n\n", sep = " "),
+          noBreaks. = TRUE, call. = FALSE, immediate. = TRUE) 
       }
       res <- if(length(L) == 1) L else Reduce("+", L)/n
       }
@@ -264,11 +269,17 @@ mshape <- function(A, na.action = 1){
     if(na.action == 3) {
       
       if(any(is.na(unlist(L)))) {
-        cat("Warning: Missing values detected.\n")
-        cat("Means are calculated only for values that are found.\n")
-        cat("You can estimate missing values (see 'estimate.missing')\n")
-        cat("or change the na.action (see Arguments) to return NA for coordinates that have missing values.\n\n")
-      }
+        
+        warning(
+          paste(
+            "\nThis is not an error!  It is a friendly warning.\n",
+            "\nMissing values detected.\n",
+            "\nMeans are calculated only for values that are found.",
+            "\nYou can estimate missing values (see 'estimate.missing')",
+            "\nor change the na.action (see Arguments) to return NA for coordinates that have missing values.\n",
+            "\nUse options(warn = -1) to turn off these warnings. \n\n", sep = " "),
+          noBreaks. = TRUE, call. = FALSE, immediate. = TRUE) 
+           }
       
       mmean <- function(L) { 
         kp <- k * p
@@ -1647,7 +1658,7 @@ phylo.mat<-function(x,phy){
   if(any(Im(eigC$vectors)==0)) eigC$vectors<-Re(eigC$vectors)
   lambda <- zapsmall(abs(Re(eigC$values)))
   if(any(lambda == 0)){
-    warning("Singular phylogenetic covariance matrix. Proceed with caution")
+    warning("Singular phylogenetic covariance matrix. Proceed with caution", immediate. = TRUE)
   }
   D.mat <- fast.solve(eigC$vectors%*% diag(sqrt(abs(eigC$values))) %*% t(eigC$vectors))
   rownames(D.mat) <- colnames(D.mat) <- colnames(C)
@@ -1810,15 +1821,15 @@ GMfromShapes0 <- function(Shapes, scaled = TRUE){ # No curves
   lm.names <- dimnames(Shapes$landmarks.pixel)[[1]]
   if(is.null(scaling)) {
     landmarks <- Shapes$landmarks.pixel
-    cat("\nWarning: No specimens have scaling")
-    cat("\nUnscaled landmarks imported, as a result\n")
+    warning("No specimens have scaling.  Unscaled landmarks imported, as a result\n", 
+            immediate. = TRUE)
     scaled = FALSE
     } else {
       if(any(is.na(scaling))){
         sp.na <- which(is.na(scaling))
-        cat("\nWarning: Some specimens have no scaling\n")
-        cat(sp.names[sp.na])
-        cat("\nUnscaled landmarks imported, as a result\n")
+        warning(paste("\nWarning: Some specimens have no scaling:\n",
+        sp.names[sp.na],
+        "\nUnscaled landmarks imported, as a result.\n"), immediate. = TRUE)
         landmarks <- Shapes$landmarks.pixel
         scaled = FALSE
       } else {

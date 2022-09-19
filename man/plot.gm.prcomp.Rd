@@ -54,7 +54,7 @@ An object of class "plot.gm.prcomp" is a list with components
 Plot Function for geomorph
 }
 \seealso{
-\code{\link{plotRefToTarget}} \code{\link{picknplot.shape}} \code{\link[RRPP]{plot.ordinate}}
+\code{\link{plotRefToTarget}} \code{\link{picknplot.shape}}
 }
 \author{
 Antigoni Kaliontzopoulou, Michael Collyer

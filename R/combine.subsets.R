@@ -67,9 +67,9 @@
 #' @examples
 #' data(larvalMorph) 
 #' head.gpa <- gpagen(larvalMorph$headcoords, 
-#'   curves = larvalMorph$head.sliders, print.progress = FALSE)
+#'   curves = larvalMorph$head.sliders)
 #' tail.gpa <- gpagen(larvalMorph$tailcoords, 
-#'   curves = larvalMorph$tail.sliders, print.progress = FALSE)
+#'   curves = larvalMorph$tail.sliders)
 #' 
 #' # Combine original data without GPA (plot to see relative size of  
 #' # heads and tails)

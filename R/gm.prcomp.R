@@ -209,14 +209,16 @@ gm.prcomp <- function (A, phy = NULL, align.to.phy = FALSE,
     if(N != n)
       stop("Number of taxa in data matrix and tree are not equal.\n", call. = FALSE)
     if(is.null(rownames(Y))) {
-      warning("Shape dataset does not include species names. Assuming the order of data matches phy$tip.label")
+      warning("Shape dataset does not include species names. Assuming the order of data matches phy$tip.label.\n",
+              immediate. = TRUE, call. = FALSE)
       rownames(Y) <- phy$tip.label
     }
 
     ancY <- anc.BM(phy, Y)
     if(is.null(rownames(Y))) {
       rownames(Y) <- phy$tip.label
-      cat("Warning: Data are not labeled so it is assumed they are in the same order as tree names.\n")
+      warning("Data are not labeled so it is assumed they are in the same order as tree names.\n",
+              immediate. = TRUE, call. = FALSE)
     }
     phy.mat <- phylo.mat(Y, phy)
     C <- phy.mat$C
