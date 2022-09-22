@@ -124,32 +124,82 @@ pcoa <- function(D){
   Yp
 }
 
+
 # perm.index
 # creates a permutation index for resampling
 # used in all functions with a resampling procedure
-
-perm.index <-function(n, iter, seed=NULL){
+perm.index <-function(n, iter, block = NULL, seed = NULL){
+  
+  if(!is.null(block)){
+    block <- as.factor(block)
+    if(length(block) != n)
+      stop("block factor not the same length as the number of observations.\n",
+           call. = FALSE)
+    n <- length(block)
+    indx <- 1:n
+    g <- nlevels(block)
+    gp <- levels(block)
+    loc.list <- lapply(1:g, function(j) {
+      indx[block == gp[[j]]]
+    })
+    rindx <- unlist(loc.list)
+    
+  }
+  
   if(is.null(seed)) seed = iter else
     if(seed == "random") seed = sample(1:iter,1) else
       if(!is.numeric(seed)) seed = iter
       set.seed(seed)
-      ind <- c(list(1:n),(Map(function(x) sample.int(n,n), 1:iter)))
+      get.samp <- function(n){
+        if(!is.null(block)){
+          out <- array(NA, n)
+          r <- unlist(lapply(loc.list, sample, replace = FALSE))
+          for(i in indx) out[rindx[i]] <- r[i]
+        } else  out <- sample.int(n, n)
+        out
+      }
+      ind <- c(list(1:n), (Map(function(x) get.samp(n), 1:iter)))
       rm(.Random.seed, envir=globalenv())
       attr(ind, "seed") <- seed
       names(ind) <- c("obs", paste("iter", 1:(length(ind) - 1), sep = "."))
       ind
+      
 }
 
 
 # boot.index
 # creates a bootstrap index for resampling
 # used in lm.rrpp for intercept models
-boot.index <-function(n, iter, seed=NULL){
+boot.index <-function(n, iter, block = NULL, seed = NULL){
+  
+  if(!is.null(block)){
+    block <- as.factor(block)
+    if(length(block) != n)
+      stop("block factor not the same length as the number of observations.\n",
+           call. = FALSE)
+    n <- length(block)
+    indx <- 1:n
+    g <- nlevels(block)
+    gp <- levels(block)
+    loc.list <- lapply(1:g, function(j) {
+      indx[block == gp[[j]]]
+    })
+    rindx <- unlist(loc.list)
+  }
+  
   if(is.null(seed)) seed = iter else
     if(seed == "random") seed = sample(1:iter,1) else
       if(!is.numeric(seed)) seed = iter
       set.seed(seed)
-      ind <- c(list(1:n),(Map(function(x) sample.int(n, n, replace = TRUE), 
+      get.samp <- function(n){
+        if(!is.null(block)){
+          out <- array(NA, n)
+          r <- unlist(lapply(loc.list, sample, replace = TRUE))
+          for(i in indx) out[rindx[i]] <- r[i]
+        } else  out <- sample.int(n, n)
+        out
+      }
+      ind <- c(list(1:n), (Map(function(x) get.samp(n), 
                               1:iter)))
       rm(.Random.seed, envir=globalenv())
       attr(ind, "seed") <- seed
