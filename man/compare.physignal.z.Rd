@@ -37,8 +37,8 @@ and pairwise comparisons might not make sense.
 
 }
 \references{
-Collyer,  M.L., E.K. Baken, & D.C. Adams.  A standardized effect size for evaluating
-and comparing the strength of phylogenetic signal. Methods in Ecology and Evolution (In Press).
+Collyer,  M.L., E.K. Baken, & D.C. Adams.  2022. A standardized effect size for evaluating
+and comparing the strength of phylogenetic signal. Methods in Ecology and Evolution. 13:367-382.
 }
 \author{
 Michael Collyer

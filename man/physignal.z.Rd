@@ -78,13 +78,13 @@ The function estimates the degree of phylogenetic signal present in Procrustes s
 phylogeny, based on the standardized location of the log-likelihood in a distribution generated from
 randomization of residuals in a permutation procedure (RRPP). Unlike the analysis performed in
 \code{\link{physignal}}, this function finds the optimal branch-length transformation, lambda, which maximizes 
-likelihood.  This step results in better statistical properties (Collyer et al. 2021), and the effect
+likelihood.  This step results in better statistical properties (Collyer et al. 2022), and the effect
 size (Z) -- the standardized location of the observed log-likelihood in its sampling distribution -- has a linear 
-relationship with lambda.  Although, Pagel's lambda (Pagel et al. XXXX) and Blomberg's K (Blomberg et al. XXXX;
-Adams 2014) are frequently used as measures of the amount of phylogenetic signal (and both are also reported ), 
+relationship with lambda.  Although, Pagel's lambda (Pagel et al. 1999) and Blomberg's K (Blomberg et al. 2003;
+Adams 2014) are frequently used as measures of the amount of phylogenetic signal (and both are also reported), 
 the Z-score is an effect size that can be compared among different traits 
 (see \code{\link{compare.physignal.z}}), and it more precisely describes the fit of data to a tree 
-(Collyer et al. 2021).
+(Collyer et al. 2022).
 
 It is assumed that the landmarks have previously been aligned 
 using Generalized Procrustes Analysis (GPA) [e.g., with \code{\link{gpagen}}].  Multivariate data are subjected
@@ -92,7 +92,7 @@ to a phylogenetically aligned component analysis to assure that data dimensions 
 observations, making estimation of multivariate log-likelihoods possible.  The tolerance argument can be used to assure
 an appropriate number of data dimensions are used.  The number of phylogenetically aligned components (PAC.no) 
 can also be used to estimate log-likelihood in fewer dimensions.  This might be necessary for some data sets,
-as residual covariance matrices can be ill-conditioned, especially if the number of variables exceeeds the number
+as residual covariance matrices can be ill-conditioned, especially if the number of variables exceeds the number
 of observations.
 It is assumed that lambda is constant for all shape variables.  It would be possible to consider, for example,
 whether phylogenetic signal is consistent among different modules via separate analyses, followed by
@@ -164,8 +164,8 @@ summary(PS.size)
 plot(PS.size)
 }
 \references{
-Collyer,  M.L., E.K. Baken, & D.C. Adams.  A standardized effect size for evaluating
-and comparing the strength of phylogenetic signal. Methods in Ecology and Evolution (In Press).
+Collyer,  M.L., E.K. Baken, & D.C. Adams.  2022. A standardized effect size for evaluating
+and comparing the strength of phylogenetic signal. Methods in Ecology and Evolution. 13:367-382.
 
 Blomberg SP, Garland T, Ives AR. 2003. Testing for phylogenetic signal in comparative 
 data: behavioral traits are more labile. Evolution, 57:717-745.
@@ -176,6 +176,8 @@ other high-dimensional multivariate data. Systematic Biology.  63:685-697.
 Adams, D.C. and M.L. Collyer. 2019. Comparing the strength of modular signal, and evaluating 
 alternative modular hypotheses, using covariance ratio effect sizes with morphometric data. 
 Evolution. 73:2352-2367.
+
+Pagel, M. D. (1999). Inferring the historical patterns of biological evolution. Nature. 401:877-884.
 }
 \seealso{
 \code{\link{gm.prcomp}}, \code{\link{physignal}}

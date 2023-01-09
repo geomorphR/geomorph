@@ -114,9 +114,8 @@ plotspec <- function (spec, digitspec, fixed = NULL, fixed.pt.col = "red", fixed
   do.call(plot3d, plot3d.args)
 
   plot3d.args <- plot3d.args[c("x", "y", "z", "col", "size")]
-  plot3d.args$type = "points"
-  
-  do.call(rgl.primitive, plot3d.args)
+
+  do.call(points3d, plot3d.args)
   
   if(!is.null(mesh)) shade3d(mesh, meshColor = "legacy", add = TRUE)
   
@@ -124,8 +123,7 @@ plotspec <- function (spec, digitspec, fixed = NULL, fixed.pt.col = "red", fixed
     p2.args <- xyz.coords(digitspec[1:fixed,])
     p2.args$size = fixed.pt.size
     p2.args$col = fixed.pt.col
-    p2.args$type <- "points"
-    do.call(rgl.primitive, p2.args)
+    do.call(points3d, p2.args)
     
     if(nrow(digitspec) > fixed) {
       p2.args$x <- digitspec[(fixed + 1):nrow(digitspec), 1]
@@ -133,7 +131,7 @@ plotspec <- function (spec, digitspec, fixed = NULL, fixed.pt.col = "red", fixed
       p2.args$z <- digitspec[(fixed + 1):nrow(digitspec), 3]
       p2.args$size <- plot3d.args$size
       p2.args$col <- plot3d.args$col
-      do.call(rgl.primitive, p2.args)
+      do.call(points3d, p2.args)
     } 
   }
 

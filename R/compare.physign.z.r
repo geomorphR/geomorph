@@ -22,8 +22,8 @@
 #' \item{sample.r.sd}{A vector of standard deviations for each sampling distribution (following Box-Cox transformation).}
 #' \item{pairwise.z}{A matrix of pairwise, two-sample z scores between all pairs of effect sizes.}
 #' \item{pairwise.p}{A matrix of corresponding P-values.}
-#' @references Collyer,  M.L., E.K. Baken, & D.C. Adams.  A standardized effect size for evaluating
-#' and comparing the strength of phylogenetic signal. Methods in Ecology and Evolution (In Press).
+#' @references Collyer,  M.L., E.K. Baken, & D.C. Adams.  2022. A standardized effect size for evaluating
+#' and comparing the strength of phylogenetic signal. Methods in Ecology and Evolution. 13:367-382.
 #' @examples
 #'
 #' # Use plethspecies integration example data

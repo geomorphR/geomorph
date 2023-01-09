@@ -1,3 +1,13 @@
+# CHANGES IN GEOMORPH VERSION 4.0.5
+
+### NEW FEATURES
+
+* New function, `physignal.z`
+* New function, `compare.physignal.z`
+
+### OTHER CHANGES
+* Updated `plotspec` and `picknplot.shape` functions to accommodate changes in `rgl`
+
 # CHANGES IN GEOMORPH VERSION 4.0.4
 
 ### NEW FEATURES
