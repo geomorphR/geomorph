@@ -46,12 +46,12 @@ a598044482a6c3e39517b798b654c57e *man/hummingbirds.Rd
 6725d202cc91d2039fee6e02157f232a *man/integration.test.Rd
 f8f8efc9ceef8891e64fef0373b12f6e *man/integration.Vrel.Rd
 9ab40cb3c3d8ccec94850abe377bd773 *man/interlmkdist.Rd
-695685e789141c7a6591a9197c98c8a3 *man/K.modules.Rd
+1ee4619628273c467e3ec045d2facc7d *man/K.modules.Rd
 250260d69741416238284d376d952378 *man/larvalMorph.Rd
 073ec603983e6cd70eb01e40d5c091ec *man/lizards.Rd
 31efbd675ae82ac9136d6510fd8ad6b6 *man/make_ggplot.Rd
 35109bbb064750725a5f7cde7232832f *man/modularity.test.Rd
-ae2bc3e0b2c59e3169f0486332cac95f *man/module.eigen.Rd
+03a7fff89481397e5fa589026b70538b *man/module.eigen.Rd
 da6adcc4c330dc1d5e6ffe3a98ec082a *man/module.map.Rd
 e9c51057da8d4b9d442331c837da35c0 *man/morphol.disparity.Rd
 00e77dd77ac4f29ace5334a4df4aa23e *man/mosquito.Rd
@@ -173,7 +173,7 @@ aac6a4f8a759473e8c37048e5c8e3d91 *R/findMeanSpec.r
 067124d4119de55a6089c6aefdd0eac5 *R/fixed.angle.r
 3d7958991ae174c24ba7c570f4e03b27 *R/geomorph.data.frame.r
 c636784dd3f01af3604d1ee1e4d1e617 *R/geomorph.support.code.r
-782adeae996d109501f8b44194cafe4c *R/geomorph.utils.r
+f3a19f103263f154e31015523f50c702 *R/geomorph.utils.r
 b0de2a67cff633e27e7a00860187240f *R/globalIntegration.r
 31dfd3f01ecce6a9565dbcaa9b28e658 *R/gm.prcomp.R
 a359346ccbbd80e2889f1c1017208315 *R/gpagen.r
@@ -181,10 +181,10 @@ a6c3643aba0a098878d2768d57ff8ded *R/gridPar.r
 afa115834e6708293165de2a9abe9d4c *R/integration.test.r
 5313781dd1c8e3f002ff601126910d6d *R/integration.Vrel.r
 0cbfe6b5655e2751cdd03ca2a1550768 *R/interlmkdist.r
-0827d3c4c6025e216737a3e8739d7410 *R/K.modules.r
+fe20e20917b01dc02e2d6150f2d562bf *R/K.modules.r
 0f92a7f17f93c5e10630294e43fe3ac4 *R/make_ggplot.r
 de8a7705c2569b4459143bb189211272 *R/modularity.test.r
-7ebfd424cc4888599c42d03385ae9f7e *R/module.eigen.r
+d7fbf86449a0ac29ec98a7a2001295a6 *R/module.eigen.r
 7838ed223ab132f99bccf498ee4694d4 *R/module.map.r
 754af4a0bc2c4f9187c3f9c51451636a *R/morphol.disparity.r
 dd09bec9a8c98301cb86d5b0563c8a77 *R/phylo.integration.r

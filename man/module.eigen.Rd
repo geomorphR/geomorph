@@ -54,6 +54,11 @@ Objects of class "model.eigen" return a list of the following:
  modularity covariances.}
  \item{prop.int.cells}{The proportion of elements (cells) in the covariance matrix corresponding to 
  integration covariances.}
+ \item{VCV}{The covariance matrix that is the basis for analysis.}
+ \item{lm.hypothesis}{The landmark hypothesis, same as the partition group.}
+ \item{var.hypothesis}{The landmark hypothesis expanded to coordinates (variables). If a matrix is input, 
+ this is the same as lm.hypothesis, otherwise it is the lm.hypothesis repeated for each x, y, and 
+ possibly z coordinates.}
 }
 \description{
 Function performs eigen analysis on covariance matrices for modularity only, integration only, and

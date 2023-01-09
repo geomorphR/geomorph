@@ -1445,17 +1445,39 @@ summary.K.modules <- function(object, ...) {
   print.K.modules(object)
   
   if(object$hypothesis){
-    cat("An a priori hypothesis was defined:\n")
-    cat(object$modules[[object$hypothesis.rank]])
-    cat("\n\n")
-    cat("This hypothesis ranked", object$hypothesis.rank, "among the simulations\n")
-    cat("(A percentile of", round(object$hypothesis.rank/length(object$modules), 3) * 100, "percent.)\n")
-    cat("\n")
-    cat("This hypothesis had an eigenvalue of", object$eigs[[object$hypothesis.rank]], ",\n")
-    cat("which is ", round(object$eigs[[object$hypothesis.rank]] / object$eig1.ref *100, 2), 
-        "% of the maximum eigenvalue for these data.")
-    cat("\n\nA summary of all eigenvalues is presented below (see plot.K.modules for plotting tools)\n\n")
-    summary(object$eigs)
+    
+    if(object$rel.dims > 1){
+      
+      cat("An a priori hypothesis was defined as:\n")
+      cat(object$modules[[object$hypothesis.rank]])
+      cat("\n\nA total of", object$rel.dims, "relevant dimensions were used for evaluation.\n")
+      
+      cat("This hypothesis ranked", object$hypothesis.rank, "among the simulations\n")
+      cat("(A percentile of", round(object$hypothesis.rank/length(object$modules), 3) * 100, "percent.)\n")
+      cat("\n")
+      cat("The sum of the eigenvalues in the", object$rel.dims, "relevant dimensions for this hypothesis was:",
+          object$eig.sums[1], ",")
+      cat("which is", round(object$eig.sums[[object$hypothesis.rank]] / object$eig1.ref *100, 2), 
+          "% of the sum of the corresponding eigenvalues from the total covariance.")
+      cat("\n\nA summary of all simulated eigenvalue sums is presented below (see plot.K.modules for plotting tools)\n\n")
+      summary(object$eig.sums)
+      
+    } else {
+      
+      cat("An a priori hypothesis was defined as:\n")
+      cat(object$modules[[object$hypothesis.rank]])
+      cat("\n\nOne relevant dimension was used for evaluation.\n")
+      
+      cat("This hypothesis ranked", object$hypothesis.rank, "among the simulations\n")
+      cat("(A percentile of", round(object$hypothesis.rank/length(object$modules), 3) * 100, "percent.)\n")
+      cat("\n")
+      cat("The eigenvalue was:", object$eig.sums[1], ", which is", round(object$eig.sums[[object$hypothesis.rank]] / object$eig1.ref *100, 2), 
+          "% of the maximum value from the total covariance matrix.")
+      cat("\n\nA summary of all simulated eigenvalues is presented below (see plot.K.modules for plotting tools)\n\n")
+      summary(object$eig.sums)
+    }
+    
+   
   }
   
 }
@@ -1494,15 +1516,25 @@ plot.K.modules <- function(x, modules = 1:6,
   plot.args <- list(...)
   
   if(type == "profile") {
-    y <- if(relativize) as.vector(x$eigs) / x$eig1.ref else 
-      as.vector(x$eigs)
+    y <- if(relativize) as.vector(x$eig.sums) / x$eig1.ref else 
+      as.vector(x$eig.sums)
     plot.args$x <- 1:length(y)
     plot.args$y<- y
     plot.args$type <- "l"
-    if(is.null(plot.args$xlab)) plot.args$xlab <- "Rank of eigenvalues"
+    if(is.null(plot.args$xlab)) {
+      plot.args$xlab <- if(x$rel.dims == 1) "Rank of first eigenvalue" else "Rank of summed eigenvalues"
+    }
     if(is.null(plot.args$ylab)) {
-      plot.args$ylab <- if(relativize)  "Eigevalue (fraction of max)" else 
-        "Eigenvalue"
+      if(x$rel.dims == 1) {
+        
+        plot.args$ylab <- if(relativize)  "Eigenvalue (relativized)" else 
+          "Eigenvalue"
+        
+      } else {
+        
+        plot.args$ylab <- if(relativize)  "Summed eigenvalues (relativized)" else 
+          "Summed eigenvalues"
+      }
     }
     
     do.call(plot, plot.args)
@@ -1515,12 +1547,24 @@ plot.K.modules <- function(x, modules = 1:6,
       if(is.null(point.args$pch)) point.args$pch <- 19
       if(is.null(point.args$cex)) point.args$cex <- 1.2
       do.call(points, point.args)
-      if(is.null(plot.args$main))
-        title("Modular eigenvalue profile, with described hypothesis indicated", 
+      if(is.null(plot.args$main)) {
+        if(x$rel.dims == 1) 
+          title("Modular eigenvalue profile, with described hypothesis indicated", 
               cex.main = 0.7)
+      if(x$rel.dims > 1) 
+        title("Modular summed eigenvalues profile, with described hypothesis indicated", 
+              cex.main = 0.7)
+      }
+      
     } else {
-      if(is.null(plot.args$main))
-        title("Modular eigenvalue profile")
+      if(is.null(plot.args$main)) {
+        if(x$rel.dims == 1) 
+          title("Modular eigenvalue profile")
+        if(x$rel.dims > 1) 
+          title("Modular summed eigenvalues profile")
+        
+      }
+        
     }
   }
   
