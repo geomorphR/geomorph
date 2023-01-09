@@ -286,7 +286,7 @@ picknplot.shape <- function(x, ...){
       rgl.snapshot(filename = file.name)
     }
     if(ans=="n"){
-      try(rgl.close(), silent=T)
+      try(close3d(), silent=T)
     }
     continue <- readline("Do you want to pick another point (y/n)? ")
     p = p + 1
