@@ -7,7 +7,7 @@
 compare.physignal.z(..., two.tailed = TRUE)
 }
 \arguments{
-\item{...}{saved analyses of class pls}
+\item{...}{saved analyses of class physignal.z}
 
 \item{two.tailed}{A logical value to indicate whether a two-tailed test (typical and default) should be performed.}
 }
@@ -33,7 +33,26 @@ and pairwise comparisons might not make sense.
 }
 \examples{
 
-# Use plethspecies integration example data
+# Example: Compare phylogenetic signal of head components in Plethodon
+
+data(plethspecies) 
+Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment
+
+## landmarks of the jaw and cranium
+jaw <- 1:5
+cranium <- 6:11
+
+PS.jaw <- physignal.z(A = Y.gpa$coords[jaw,,], phy = plethspecies$phy, 
+lambda = "front", PAC.no = 7, iter=999)
+
+PS.cranium <- physignal.z(A = Y.gpa$coords[cranium,,], phy = plethspecies$phy, 
+lambda = "front", PAC.no = 7, iter=999)
+
+PS.list <-list(PS.jaw, PS.cranium)
+names(PS.list) <- c("jaw", "cranium")
+
+PS.Z <- compare.physignal.z(PS.list)
+summary(PS.Z)
 
 }
 \references{

@@ -21,7 +21,7 @@ a0bfc1602bc216cf8f5d90af16183b36 *inst/CITATION
 776002a53af0f5f18532c76911fcbf6b *man/compare.CR.Rd
 b2ef3270d5bea2a4e063331303554df5 *man/compare.evol.rates.Rd
 38624521861b7541e90e4d8f477b5004 *man/compare.multi.evol.rates.Rd
-3c6846af2a0ac123d2c466e1a59d8250 *man/compare.physignal.z.Rd
+e2357488559637c39227aa2ed0b9559d *man/compare.physignal.z.Rd
 dad06d395f869450fe20d03c72282af9 *man/compare.pls.Rd
 0228cbeecb2040017d9e8d2821710360 *man/compare.ZVrel.Rd
 7baab3cef0a9e9464d2ab25c23b22b94 *man/coords.subset.Rd
@@ -155,7 +155,7 @@ d80d05ef890863f1b3004473627ea5f1 *R/arrayspecs.r
 6d7c4a345ebe2809cc9552b7719f3aae *R/compare.CR.R
 0f595872139aa081a5b8629826e804cf *R/compare.evol.rates.r
 78bd97b401035b2283f6351ca7cfc5ad *R/compare.multi.evol.rates.r
-436a5af5f55f0cac3df89e806d3d4dab *R/compare.physign.z.r
+6e850aed08bd10fa5158c84ab43134d9 *R/compare.physign.z.r
 247fd23f1b16a4fb4a45f1b2c2acb97e *R/compare.pls.r
 5bc3970d4275483e8f9140e4c2947673 *R/compare.ZVrel.R
 45a73e9bace365b438b3fcf3a60b41ee *R/coords.subset.r
