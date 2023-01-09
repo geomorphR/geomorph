@@ -12,7 +12,7 @@
 #' and pairwise comparisons might not make sense.
 #'  
 #' 
-#' @param ... saved analyses of class pls
+#' @param ... saved analyses of class physignal.z
 #' @param two.tailed A logical value to indicate whether a two-tailed test (typical and default) should be performed.
 #' @keywords analysis
 #' @export
@@ -22,13 +22,32 @@
 #' \item{sample.r.sd}{A vector of standard deviations for each sampling distribution (following Box-Cox transformation).}
 #' \item{pairwise.z}{A matrix of pairwise, two-sample z scores between all pairs of effect sizes.}
 #' \item{pairwise.p}{A matrix of corresponding P-values.}
-#' @references Collyer,  M.L., E.K. Baken, & D.C. Adams.  A standardized effect size for evaluating
-#' and comparing the strength of phylogenetic signal. Methods in Ecology and Evolution (In Press).
+#' @references Collyer,  M.L., E.K. Baken, & D.C. Adams.  2022. A standardized effect size for evaluating
+#' and comparing the strength of phylogenetic signal. Methods in Ecology and Evolution. 13:367-382.
 #' @examples
 #'
-#' # Use plethspecies integration example data
+#' # Example: Compare phylogenetic signal of head components in Plethodon
 #' 
- compare.physignal.z <- function(..., two.tailed = TRUE){
+#' data(plethspecies) 
+#' Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment
+#' 
+#' ## landmarks of the jaw and cranium
+#' jaw <- 1:5
+#' cranium <- 6:11
+#' 
+#' PS.jaw <- physignal.z(A = Y.gpa$coords[jaw,,], phy = plethspecies$phy, 
+#' lambda = "front", PAC.no = 7, iter=999)
+#' 
+#' PS.cranium <- physignal.z(A = Y.gpa$coords[cranium,,], phy = plethspecies$phy, 
+#' lambda = "front", PAC.no = 7, iter=999)
+#' 
+#' PS.list <-list(PS.jaw, PS.cranium)
+#' names(PS.list) <- c("jaw", "cranium")
+#' 
+#' PS.Z <- compare.physignal.z(PS.list)
+#' summary(PS.Z)
+#' 
+compare.physignal.z <- function(..., two.tailed = TRUE){
    dots <- list(...)
    tails <- if(two.tailed) 2 else 1
    if(length(dots) == 1) n <- length(dots[[1]]) else n <- length(dots)

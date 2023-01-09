@@ -1,6 +1,6 @@
 Package: geomorph
 Title: Geometric Morphometric Analyses of 2D/3D Landmark Data
-Version: 4.0.4.999
+Version: 4.0.5.999
 Authors@R: c(
     person("Dean", "Adams", , "dcadams@iastate.edu", c("aut", "cre")),
     person("Michael", "Collyer", , role = "aut"),
@@ -15,7 +15,7 @@ License: GPL (>= 2)
 URL: https://github.com/geomorphR/geomorph
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3
 Depends: RRPP(>= 1.0.0), rgl, R(>= 3.5.0), Matrix
 Imports: graphics, grDevices, stats, utils, jpeg, ape, parallel, ggplot2
 Suggests: 
@@ -25,7 +25,7 @@ Suggests:
     dplyr
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2022-06-16
+Packaged: 2023-01-09
 Author: Dean Adams [aut, cre],
   Michael Collyer [aut],
   Antigoni Kaliontzopoulou [aut],
