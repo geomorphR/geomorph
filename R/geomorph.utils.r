@@ -814,9 +814,9 @@ print.compare.physignal.z<- function(x,...){
   z <- x$sample.z
   z.pw <- x$pairwise.z
   p <- x$pairwise.P
-  cat("\nEffect sizes\n\n")
+  cat("\nEffect sizes (Z-scores)\n\n")
   print(z)
-  cat("\nEffect sizes for pairwise differences in phylogenetic signal effect size\n\n")
+  cat("\nEffect sizes for pairwise differences in phylogenetic signal\n\n")
   print(z.pw)
   cat("\nP-values\n\n")
   print(p)
