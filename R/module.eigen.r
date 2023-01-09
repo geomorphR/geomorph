@@ -62,6 +62,11 @@
 #'  modularity covariances.}
 #'  \item{prop.int.cells}{The proportion of elements (cells) in the covariance matrix corresponding to 
 #'  integration covariances.}
+#'  \item{VCV}{The covariance matrix that is the basis for analysis.}
+#'  \item{lm.hypothesis}{The landmark hypothesis, same as the partition group.}
+#'  \item{var.hypothesis}{The landmark hypothesis expanded to coordinates (variables). If a matrix is input, 
+#'  this is the same as lm.hypothesis, otherwise it is the lm.hypothesis repeated for each x, y, and 
+#'  possibly z coordinates.}
 #' @references  Krzanowski, W. J. 1979. Between-groups comparison of principal components. 
 #' Journal of the American Statistical Association, 74, 703–707.
 #' @references Collyer et al. In review.
@@ -109,6 +114,17 @@ module.eigen <- function(A, A2 = NULL, partition.gp = NULL,
     stop("\nData matrix contains missing values. Estimate these first (see 'estimate.missing').",
          call. = FALSE)  
   
+  dims <- dim(A)
+  if(length(dims) == 3) {
+    p <- dims[1]
+    k <- dims[2]
+    n <- dims[3]
+  } else {
+    n <- dims[1]
+    p <- dims[2]
+    k <- 1
+  }
+
   x <- try(two.d.array(A), silent = TRUE)
   if(inherits(x, "try-error")) x <- try(as.matrix(A), silent = TRUE)
   if(inherits(x, "try-error"))
@@ -170,12 +186,11 @@ module.eigen <- function(A, A2 = NULL, partition.gp = NULL,
     ngps <- nlevels(gps)
     ind.levels <- levels(gps)
     x <- as.matrix(x)
-    n <- nrow(x)
     
     V <- as.matrix(get.VCV(x, phy, Cov))
     
     Ind <- diag(diag(V))
-    M <- Ind
+    M <- matrix(0, nrow(V), ncol(V))
     for(i in 1:ngps) {
       keep <- which(gps == ind.levels[i])
       M[keep, keep] <- V[keep, keep]
@@ -205,6 +220,7 @@ module.eigen <- function(A, A2 = NULL, partition.gp = NULL,
     if(length(bsM) == 0) bsM <- 1
     if(length(bsI) == 0) bsI <- 1
     
+    Aout <- if(k > 1) arrayspecs(x, p = p, k = k) else NULL
     
     out <- list(
       evals = list(total = S$d, mod = Sm$d, int = Sint$d,
@@ -213,7 +229,11 @@ module.eigen <- function(A, A2 = NULL, partition.gp = NULL,
       rel.dims = list(total = bsV, mod = bsM, int = bsI),
       n.modules = ngps,
       prop.mod.cells = mprop,
-      prop.int.cells = iprop
+      prop.int.cells = iprop,
+      VCV = V,
+      lm.hypothesis = partition.gp,
+      var.hypothesis = gps,
+      A = Aout
     )
   
     if(!only.values)  

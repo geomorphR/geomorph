@@ -1,28 +1,22 @@
 #' K-modules simulation
 #'
 #' Function finds many possible permutations of K modules and ranks them in terms of 
-#' greatest maximum eigenvalue,
+#' greatest maximum eigenvalue or summed eigenvalues for relevant vectors,
 #' based on covariance matrices for modules (see \code{\link{module.eigen}}).
 #'
 #' The function simulates a desired number of modular hypotheses for a set of morphometric data, and 
-#' ranks them in terms of their first eigenvalue, for an eigenanalysis performed on a covariance matrix 
+#' ranks them in terms of either their first eigenvalue or sum of a number of eigenvalues, which can
+#' be directed or assumed from a module eigen-analysis performed on a covariance matrix 
 #' containing only modular covariances (see \code{\link{module.eigen}}).  An a priori modular hypothesis can 
 #' be included (same input as in \code{\link{modularity.test}}, \code{\link{phylo.modularity}}, and 
 #' \code{\link{module.eigen}}), 
-#' and the minimum number of landmarks in a module can be adjusted.  Input data should be
-#' a p x k x n array of coordinates for p points in k dimensions, for n specimens.  A matrix of data can also
-#' be used but then variables rather than landmarks will be assigned to modules (not advised for 
-#' coordinate data).  A
-#' phylogeny can also be used for phylogenetic generalized least-squares calculation of covariances.  If a class
-#' phylo object is used, a covariance matrix based on a Brownian motion (BM) model of evolutionary divergence will
-#' be estimated to account for the non-independence among observations.  Alternatively, one can
-#' assert the covariance structure based on an alternative model, overriding BM covariance estimation.  All arguments
-#' used in \code{\link{module.eigen}} can be utilized in this function. 
+#' and the minimum number of landmarks in a module can be adjusted.  A module.eigen object
+#'  \code{\link{module.eigen}} is required for input. 
 #' 
 #' The function simulates many modular hypotheses and partitions covariance matrices by modules 
 #' (see \code{\link{module.eigen}}),
-#' performs eigen-analysis, and retains the first eigenvalue along with the hypothesis.  All simulated 
-#' outcomes are then 
+#' performs eigen-analysis, and retains the eigenvalues along with the hypothesis.  All simulated 
+#' outcomes (summed eigenvalues for relevant dimensions) are then 
 #' rank-ordered to ascertain which modular hypotheses produce the strongest modularity.  Note that the 
 #' analysis is "blind"
 #' in terms of anatomical feasibility; thus, a good solution might identify modules comprising integrative 
@@ -33,38 +27,39 @@
 #' Examples below
 #' should demonstrate how these tools can be used with real data.
 #' 
-#' @param A A 3D array (p x k x n) containing Procrustes shape variables for all specimens, or a matrix (n x variables)
+#' @param ME a module.eigen object, see \code{\link{module.eigen}}.
 #' @param K The number of modules into which the data are partitioned.
 #' @param hyp An optional vector for an a priori, modular  hypothesis, explaining
 #' which landmarks (or variables) belong in which partition: 
 #' (e.g. A, A, A, B, B, B, C, C, C). This is the same as partition.gp in, e.g., \code{\link{module.eigen}}.  If provided, it
 #' will be one of simulated hypotheses considered.
-#' @param nsims The number of simulations to use.
-#' @param phy Optional argument to include a class \code{phylo} phylogenetic tree.  Tip labels must match data names.
-#' This argument instructs the function to estimate a phylogenetic covariance matrix based on a Brownian motion model
-#' of evolutionary divergence.  The Cov argument allows a user to define a hypothetical covariance matrix, if different 
-#' than a BM model.
-#' @param Cov Optional argument to include a hypothetical covariance matrix used for non-independence of observations.  
-#' Row and column names must match data names.  If both a phy and Cov are provided, Cov will override phy.
+#' @param eig.no The number of eigenvalues to sum for ranking covariance strength.
+#' @param rel.dims The number of dimensions (eigenvectors) to sum for ranking outcomes.  If NULL, the relevant
+#' dimensions from the module.eigen results will be used.  If more dimensions than ar epossible are chosen, the
+#' number will be truncated.
 #' @param min.lmk A numeric value to indicate the minimum number of landmarks (or variables) for a module.  
 #' If this value is larger than p/K, for p landmarks in K partitions, it will be adjusted to be the largest integer 
 #' equal to or less than p/k.
-#' @param print.progress A logical value to indicate whether a progress bar should be printed to the screen. 
-#' This is helpful for long-running analyses.
+#' @param nsims The number of simulations to use.
 #' @param seed An optional value for seed control of simulations.  The value can be NULL, "random",
 #' or an integer.  See  \code{\link{set.seed}}
-#' @param ... Arguments passed onto \code{\link{module.eigen}}.
+#' @param print.progress A logical value to indicate whether a progress bar should be printed to the screen. 
+#' This is helpful for long-running analyses.
 #' @export
 #' @keywords analysis
 #' @author Michael Collyer
 #' @return Objects of class "K.modules" return a list of the following:
-#'  \item{eigs}{A rank-ordered vector of first eigen-values.}
+#'  \item{eig.sums}{A rank-ordered vector of the sum of relevant eigenvalues.}
 #'  \item{modules}{A rank-ordered list of modular hypotheses, consistent with eigenvalues.  Modules are 
 #'  categories presented numerically, irrespective of factor levels used for an a priori modular hypothesis.}
 #'  \item{hypothesis}{Whether an a priori hypothesis was used.}
 #'  \item{hypothesis.rank}{If an a priori hypothesis was used, where it ranks among all simulated.}
 #'  \item{mean}{If coordinate data are input, the mean configuration for use in plotting tools.}
 #'  \item{VCV}{The (variance-) covariance matrix produced, for use in plotting tools.}
+#'  \item{A}{The array of shape coordinates, if available, passed on for plotting purposes.}
+#'  \item{eig1.ref}{The first eigenvalue or sum of eignvalues for relevant dimensions, from eigenanalysis of the total coavriance matrix.
+#'  This value is used to relative the eigenvalue sums in random simulations.}
+#'  \item{rel.dims}{The relevant dimensions used in the analysis.}
 #' @references Collyer et al. In review.
 #' @seealso \code{\link{summary.K.modules}}, \code{\link{plot.K.modules}}
 #' \code{\link{module.eigen}}, \code{\link{modularity.test}}, 
@@ -75,33 +70,41 @@
 #' Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment
 #' land.gps<-c("A","A","A","A","A","B","B","B","B","B","B") 
 #' 
-K.modules <- function(A, K = 2, hyp = NULL, nsims = 1000, 
-                      phy = NULL, Cov = NULL, min.lmk = 2, seed = NULL,
-                      print.progress = FALSE,
-                      ...){
+K.modules <- function(ME, 
+                      rel.dims = NULL, 
+                      min.lmk = 2, 
+                      nsims = 1000,
+                      seed = NULL,
+                      print.progress = FALSE){
+  
+  if(!inherits(ME, "module.eigen"))
+    stop("\nNot a class module.eigen object.  Please use module.eigen first.\n",
+         call. = FALSE)
   
   if(print.progress) {
     cat("Acquiring covariance matrix and", nsims, "modular hypotheses:\n")
     pb <- txtProgressBar(min = 0, max = nsims, initial = 0, style=3)
   }
-    
-  p <- if(is.matrix(A)) dim(A)[2] else dim(A)[1]
   
-  L <- list(...)
-  vcv.args <- list(A = A, phy = NULL, Cov = NULL, 
-                   transform. = TRUE)
-  pass <- match(names(L), c("A", "phy", "Cov", "tranform."))
-  vcv.args[pass] <- L[pass]
-  VCV <- do.call(get.VCV, vcv.args)
-  eig1.ref <- La.svd(VCV, 0, 0)$d[1]
-
+  hyp <- ME$lm.hypothesis
+  var.hyp <- ME$var.hypothesis
+  k <- if(length(var.hyp) > length(hyp)) length(var.hyp)/ length(hyp) else 1
+  K <- nlevels(hyp <- as.factor(hyp))
+  if(is.null(rel.dims)) rel.dims <- max(ME$rel.dims$total)
+  V <- ME$VCV
+  eig1.ref <- La.svd(V, 0, 0)$d
+  eig1.ref <- eig1.ref[1:(min(length(eig1.ref), rel.dims))]
+  eig.no <- length(eig1.ref)
+  eig1.ref <- sum(eig1.ref)
+  p <- length(hyp)
+  if(min.lmk > p/K) min.lmk <- floor(p/K)
+  A <- ME$A
+  
   if(!is.numeric(seed)) {
     if(is.null(seed)) seed <-nsims else
       seed <- sample(1:nsims, 1) 
   }
   set.seed(seed)
-  
-  if(min.lmk > p/K) min.lmk <- floor(p/K)
   
   sims <- lapply(1:nsims, function(j){
     tol <- 0
@@ -112,48 +115,40 @@ K.modules <- function(A, K = 2, hyp = NULL, nsims = 1000,
       gps[is.na(gps)] <- 0
       tol <- min(gps)
     }
+    res <- rep(res, each = k)
     if(print.progress) setTxtProgressBar(pb, j)
     res
   })
   
   names(sims) <- paste("sim", 1:nsims, sep = ".")
+  sims[[1]] <- as.numeric(var.hyp)
+  names(sims)[[1]] <- "hypothesis"
   
   rm(.Random.seed, envir=globalenv())
   attr(sims, "seed") <- seed
   if(print.progress) close(pb)
   
-  if(!is.null(hyp)) {
-    hyp <- as.factor(hyp)
-    if(length(hyp) != p)
-      stop("The modular hypothesis is not consistent with the number of landmarks.\n",
-           call. = FALSE)
-    if(nlevels(hyp) != K)
-      stop("The number of levels in the modular hypothesis does not equal K.\n",
-           call. = FALSE)
-    sims[[1]] <- as.numeric(hyp)
-    names(sims)[[1]] <- "hypothesis"
-  }
-  
+  dims <- dim(V)
+  ind.levels <- levels(var.hyp)
   modVCV <- function(VCV, sim.i) {
-    dims <- dim(VCV)
     M <- matrix(0, dims[1], dims[2])
     for(i in 1:K) {
-      keep <- which(sim.i == i)
+      keep <- which(sim.i == ind.levels[i])
       M[keep, keep] <- VCV[keep, keep]
     }
     M
   }
   
-  get.eig <- function(M) La.svd(M, 0, 0)$d[1]
+  get.eig <- function(M) sum(La.svd(M, 0, 0)$d[1:eig.no])
   
   if(print.progress) {
     cat("\nEigen-analysis for", nsims, "covariance matrices:\n")
     pb <- txtProgressBar(min = 0, max = nsims, initial = 0, style=3)
   }
-   
+  
   result <- sapply(1:nsims, function(j){
     sim.j <- sims[[j]]
-    M <- modVCV(VCV, sim.j)
+    M <- modVCV(V, sim.j)
     if(print.progress) setTxtProgressBar(pb, j)
     get.eig(M)
   })
@@ -164,7 +159,7 @@ K.modules <- function(A, K = 2, hyp = NULL, nsims = 1000,
   result <- result[ranks]
   names(result) <- names(sims.sorted)
   
-  out <- list(eigs = result, modules = sims.sorted)
+  out <- list(eig.sums = result, modules = sims.sorted)
   out$hypothesis <- !is.null(hyp) 
   
   out$hypothesis.rank <- which(names(sims.sorted) == "hypothesis")
@@ -176,9 +171,10 @@ K.modules <- function(A, K = 2, hyp = NULL, nsims = 1000,
   } else mn <- NULL
   out$mean <- mn
   
-  out$VCV <- VCV
+  out$VCV <- V
   out$A <- A
   out$eig1.ref <- eig1.ref
+  out$rel.dims = eig.no
   
   class(out) <- "K.modules"
   out

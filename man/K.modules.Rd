@@ -5,20 +5,32 @@
 \title{K-modules simulation}
 \usage{
 K.modules(
-  A,
-  K = 2,
-  hyp = NULL,
-  nsims = 1000,
-  phy = NULL,
-  Cov = NULL,
+  ME,
+  rel.dims = NULL,
   min.lmk = 2,
+  nsims = 1000,
   seed = NULL,
-  print.progress = FALSE,
-  ...
+  print.progress = FALSE
 )
 }
 \arguments{
-\item{A}{A 3D array (p x k x n) containing Procrustes shape variables for all specimens, or a matrix (n x variables)}
+\item{ME}{a module.eigen object, see \code{\link{module.eigen}}.}
+
+\item{rel.dims}{The number of dimensions (eigenvectors) to sum for ranking outcomes.  If NULL, the relevant
+dimensions from the module.eigen results will be used.  If more dimensions than ar epossible are chosen, the
+number will be truncated.}
+
+\item{min.lmk}{A numeric value to indicate the minimum number of landmarks (or variables) for a module.
+If this value is larger than p/K, for p landmarks in K partitions, it will be adjusted to be the largest integer 
+equal to or less than p/k.}
+
+\item{nsims}{The number of simulations to use.}
+
+\item{seed}{An optional value for seed control of simulations.  The value can be NULL, "random",
+or an integer.  See  \code{\link{set.seed}}}
+
+\item{print.progress}{A logical value to indicate whether a progress bar should be printed to the screen. 
+This is helpful for long-running analyses.}
 
 \item{K}{The number of modules into which the data are partitioned.}
 
@@ -27,63 +39,41 @@ which landmarks (or variables) belong in which partition:
 (e.g. A, A, A, B, B, B, C, C, C). This is the same as partition.gp in, e.g., \code{\link{module.eigen}}.  If provided, it
 will be one of simulated hypotheses considered.}
 
-\item{nsims}{The number of simulations to use.}
-
-\item{phy}{Optional argument to include a class \code{phylo} phylogenetic tree.  Tip labels must match data names.
-This argument instructs the function to estimate a phylogenetic covariance matrix based on a Brownian motion model
-of evolutionary divergence.  The Cov argument allows a user to define a hypothetical covariance matrix, if different 
-than a BM model.}
-
-\item{Cov}{Optional argument to include a hypothetical covariance matrix used for non-independence of observations.
-Row and column names must match data names.  If both a phy and Cov are provided, Cov will override phy.}
-
-\item{min.lmk}{A numeric value to indicate the minimum number of landmarks (or variables) for a module.
-If this value is larger than p/K, for p landmarks in K partitions, it will be adjusted to be the largest integer 
-equal to or less than p/k.}
-
-\item{seed}{An optional value for seed control of simulations.  The value can be NULL, "random",
-or an integer.  See  \code{\link{set.seed}}}
-
-\item{print.progress}{A logical value to indicate whether a progress bar should be printed to the screen. 
-This is helpful for long-running analyses.}
-
-\item{...}{Arguments passed onto \code{\link{module.eigen}}.}
+\item{eig.no}{The number of eigenvalues to sum for ranking covariance strength.}
 }
 \value{
 Objects of class "K.modules" return a list of the following:
- \item{eigs}{A rank-ordered vector of first eigen-values.}
+ \item{eig.sums}{A rank-ordered vector of the sum of relevant eigenvalues.}
  \item{modules}{A rank-ordered list of modular hypotheses, consistent with eigenvalues.  Modules are 
  categories presented numerically, irrespective of factor levels used for an a priori modular hypothesis.}
  \item{hypothesis}{Whether an a priori hypothesis was used.}
  \item{hypothesis.rank}{If an a priori hypothesis was used, where it ranks among all simulated.}
  \item{mean}{If coordinate data are input, the mean configuration for use in plotting tools.}
  \item{VCV}{The (variance-) covariance matrix produced, for use in plotting tools.}
+ \item{A}{The array of shape coordinates, if available, passed on for plotting purposes.}
+ \item{eig1.ref}{The first eigenvalue or sum of eignvalues for relevant dimensions, from eigenanalysis of the total coavriance matrix.
+ This value is used to relative the eigenvalue sums in random simulations.}
+ \item{rel.dims}{The relevant dimensions used in the analysis.}
 }
 \description{
 Function finds many possible permutations of K modules and ranks them in terms of 
-greatest maximum eigenvalue,
+greatest maximum eigenvalue or summed eigenvalues for relevant vectors,
 based on covariance matrices for modules (see \code{\link{module.eigen}}).
 }
 \details{
 The function simulates a desired number of modular hypotheses for a set of morphometric data, and 
-ranks them in terms of their first eigenvalue, for an eigenanalysis performed on a covariance matrix 
+ranks them in terms of either their first eigenvalue or sum of a number of eigenvalues, which can
+be directed or assumed from a module eigen-analysis performed on a covariance matrix 
 containing only modular covariances (see \code{\link{module.eigen}}).  An a priori modular hypothesis can 
 be included (same input as in \code{\link{modularity.test}}, \code{\link{phylo.modularity}}, and 
 \code{\link{module.eigen}}), 
-and the minimum number of landmarks in a module can be adjusted.  Input data should be
-a p x k x n array of coordinates for p points in k dimensions, for n specimens.  A matrix of data can also
-be used but then variables rather than landmarks will be assigned to modules (not advised for 
-coordinate data).  A
-phylogeny can also be used for phylogenetic generalized least-squares calculation of covariances.  If a class
-phylo object is used, a covariance matrix based on a Brownian motion (BM) model of evolutionary divergence will
-be estimated to account for the non-independence among observations.  Alternatively, one can
-assert the covariance structure based on an alternative model, overriding BM covariance estimation.  All arguments
-used in \code{\link{module.eigen}} can be utilized in this function. 
+and the minimum number of landmarks in a module can be adjusted.  A module.eigen object
+ \code{\link{module.eigen}} is required for input. 
 
 The function simulates many modular hypotheses and partitions covariance matrices by modules 
 (see \code{\link{module.eigen}}),
-performs eigen-analysis, and retains the first eigenvalue along with the hypothesis.  All simulated 
-outcomes are then 
+performs eigen-analysis, and retains the eigenvalues along with the hypothesis.  All simulated 
+outcomes (summed eigenvalues for relevant dimensions) are then 
 rank-ordered to ascertain which modular hypotheses produce the strongest modularity.  Note that the 
 analysis is "blind"
 in terms of anatomical feasibility; thus, a good solution might identify modules comprising integrative 
