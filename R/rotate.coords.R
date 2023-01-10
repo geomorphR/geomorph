@@ -100,7 +100,7 @@ rotate.coords <- function(A, type = c("flipX", "flipY", "rotateC", "rotateCC"),
    }
    
    if(obj == "array") {
-     id <- dimnames(A)  
+     id <- dimnames(A)
      Y <- A
      Y <- lapply(1:(dim(Y)[[3]]), function(j) as.matrix(Y[,,j]))
      Y <- lapply(1:length(Y), function(j){
@@ -111,7 +111,7 @@ rotate.coords <- function(A, type = c("flipX", "flipY", "rotateC", "rotateCC"),
    }
    
    if(obj == "matrix") {
-     id <- dimnames(A)  
+     id <- dimnames(A)   
      A <- A %*% rot
      dimnames(A) <- id
    }

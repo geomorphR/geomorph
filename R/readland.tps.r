@@ -58,13 +58,15 @@ readland.tps <- function (file, specID = c("None", "ID", "imageID"), negNA = FAL
     }
   if(warnmsg){
     if(specID == "ID" && length(id[[1]]) == 0) {
-      cat("\nWarning: specID = 'ID' did not produce reliable ID information;")
-      cat("\nspecimens will be numbered 1, 2, 3 ...\n")
+      warning("specID = 'ID' did not produce reliable ID information; 
+              \nspecimens will be numbered 1, 2, 3 ...\n", call. = FALSE, immediate. = TRUE,
+              noBreaks. = TRUE)
       id <- 1:n
     }
     if(specID == "imageID" && length(id[[1]]) == 0) {
-      cat("\nWarning: specID = 'imageID' did not produce reliable ID information;")
-      cat("\nspecimens will be numbered 1, 2, 3 ...\n")
+      warning("specID = 'ID' did not produce reliable ID information; 
+              \nspecimens will be numbered 1, 2, 3 ...\n", call. = FALSE, immediate. = TRUE,
+              noBreaks. = TRUE)
       id <- 1:n
     }
     
@@ -84,7 +86,8 @@ readland.tps <- function (file, specID = c("None", "ID", "imageID"), negNA = FAL
   kcheck <- sapply(1:n, function(j) length(tpsf[[j]]$k))
   k.error <- which(kcheck > 1)
   if(length(k.error) == 0) k.error <- NULL else
-    cat("\nWarning: improper landmark number or formatting appear for specimen(s):", k.error,"\n")
+    warning(paste("Improper landmark number or formatting appear for specimen(s):", k.error,"\n"),
+    call. = FALSE, immediate. = TRUE)
   
   pcheck <- sapply(1:n, function(j) tpsf[[j]]$p)
   if(all(pcheck==0)) {
@@ -101,8 +104,9 @@ readland.tps <- function (file, specID = c("None", "ID", "imageID"), negNA = FAL
   
   scale.list <- unlist(lapply(1:n, function(j) tpsf[[j]]$scale))
   if(length(scale.list) != n && warnmsg) {
-    cat("\nWarning: not all specimens have scale adjustment (perhaps because they are already scaled);")
-    cat("\nno rescaling will be performed in these cases\n")
+    
+    warning(paste("Not all specimens have scale adjustment (perhaps because they are already scaled);",
+                  "\nno rescaling will be performed in these cases\n"), immediate. = TRUE, call. = TRUE)
   }
   
   if(!readcurves) {

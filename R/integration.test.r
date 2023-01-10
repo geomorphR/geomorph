@@ -193,7 +193,7 @@ integration.test <-function(A, A2 = NULL,
   
   if(!is.null(A2)){
     ngps <- 2
-    y <- as.matrix(y[match(namesX, namesY), ]); colnames(y) <- cnamesY 
+    y <- as.matrix(y[match(namesX, namesY), ]); colnames(y) <- cnamesY
   }
   
   n <- NROW(x)

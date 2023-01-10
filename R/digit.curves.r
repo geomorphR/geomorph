@@ -33,9 +33,16 @@ digit.curves <- function(start, curve, nPoints, closed=TRUE){
   if(nPoints > (nCurvePoints - 1)) {
     if((nCurvePoints - 1) == 1) nPoints = 1
     if((nCurvePoints - 1) > 1) nPoints = nCurvePoints - 2
-    cat("\nWarning: because the number of desired points exceeds the number of curve points,")
-    cat("\nthe number of points will be truncated to", nPoints, "\n\n")
+    
+    warning(
+      paste(
+        "\nThis is not an error!  It is a friendly warning.\n",
+        "\nBecause the number of desired points exceeds the number of curve points,",
+        "\nthe number of points will be truncated to", nPoints, "points.\n",
+        "\nUse options(warn = -1) to turn off these warnings. \n\n", sep = " "),
+      noBreaks. = TRUE, call. = FALSE, immediate. = TRUE) 
   }
+
   start <- as.numeric(start)
   if(!setequal(start, curve[1,])) curve <- rbind(start, curve)
   if(closed) curve <- rbind(curve, curve[1,])

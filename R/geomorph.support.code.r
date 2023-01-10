@@ -211,8 +211,8 @@ mshape <- function(A, na.action = 1){
           n <- dims[[1]]
           p <- dims[[2]]
           k <- 1
-        cat("\nWarning: It appears that data are in a matrix with specimens as rows.")
-        cat("\nMeans are found for each column of the matrix.\n\n")
+          warning(paste("\nWarning: It appears that data are in a matrix with specimens as rows.\n",
+        "\nMeans are found for each column of the matrix.\n\n"), immediate. = TRUE)
         L <- lapply(1:n, function(j) matrix(A[j,], 1, ))
       }
     }
@@ -252,10 +252,15 @@ mshape <- function(A, na.action = 1){
     if(na.action == 2) {
       
       if(any(is.na(unlist(L)))) {
-        cat("Warning: Missing values detected.\n")
-        cat("NA is returned for any coordinate where missing values were found.\n")
-        cat("You can estimate missing values (see 'estimate.missing')\n")
-        cat("or change the na.action (see Arguments) to find the mean of just the remaining values\n\n.")
+        warning(
+          paste(
+            "\nThis is not an error!  It is a friendly warning.\n",
+            "\nMissing values detected.\n",
+            "\nNA is returned for any coordinate where missing values were found.",
+            "\nYou can estimate missing values (see 'estimate.missing')",
+            "\nor change the na.action (see Arguments) to find the mean of just the remaining values.\n",
+            "\nUse options(warn = -1) to turn off these warnings. \n\n", sep = " "),
+          noBreaks. = TRUE, call. = FALSE, immediate. = TRUE) 
       }
       res <- if(length(L) == 1) L else Reduce("+", L)/n
       }
@@ -264,11 +269,17 @@ mshape <- function(A, na.action = 1){
     if(na.action == 3) {
       
       if(any(is.na(unlist(L)))) {
-        cat("Warning: Missing values detected.\n")
-        cat("Means are calculated only for values that are found.\n")
-        cat("You can estimate missing values (see 'estimate.missing')\n")
-        cat("or change the na.action (see Arguments) to return NA for coordinates that have missing values.\n\n")
-      }
+        
+        warning(
+          paste(
+            "\nThis is not an error!  It is a friendly warning.\n",
+            "\nMissing values detected.\n",
+            "\nMeans are calculated only for values that are found.",
+            "\nYou can estimate missing values (see 'estimate.missing')",
+            "\nor change the na.action (see Arguments) to return NA for coordinates that have missing values.\n",
+            "\nUse options(warn = -1) to turn off these warnings. \n\n", sep = " "),
+          noBreaks. = TRUE, call. = FALSE, immediate. = TRUE) 
+           }
       
       mmean <- function(L) { 
         kp <- k * p
@@ -842,7 +853,6 @@ BE.slide <- function(curves = NULL, surf = NULL, Ya, ref, appBE = TRUE,
                        surf, ref, Lk, appBE, BEp)
     }
   
-  
   while(Q > tol){
     iter <- iter+1
     
@@ -850,6 +860,7 @@ BE.slide <- function(curves = NULL, surf = NULL, Ya, ref, appBE = TRUE,
       tans <- Map(function(y) tangents(curves, y, scaled=TRUE), 
                     slid0)
     } else tans <- NULL
+    
     
     L <- if(appBE) LtemplateApprox(ref[BEp,]) else Ltemplate(ref)
     Lk <- kronecker(diag(k), L)
@@ -910,6 +921,7 @@ BE.slidePP <- function(curves = NULL, surf = NULL, Ya, ref, max.iter=10,
         semilandmarks.slide.BE(slid0[[j]], tans = NULL, 
                                surf, ref, Lk, appBE, BEp)
   
+
   while(Q > tol){
     iter <- iter+1
     
@@ -980,6 +992,7 @@ BE.slidePP <- function(curves = NULL, surf = NULL, Ya, ref, max.iter=10,
                        surf, ref, Lk, appBE, BEp)
   }
   
+
   while(Q > tol){
     iter <- iter+1
     
@@ -1645,7 +1658,7 @@ phylo.mat<-function(x,phy){
   if(any(Im(eigC$vectors)==0)) eigC$vectors<-Re(eigC$vectors)
   lambda <- zapsmall(abs(Re(eigC$values)))
   if(any(lambda == 0)){
-    warning("Singular phylogenetic covariance matrix. Proceed with caution")
+    warning("Singular phylogenetic covariance matrix. Proceed with caution", immediate. = TRUE)
   }
   D.mat <- fast.solve(eigC$vectors%*% diag(sqrt(abs(eigC$values))) %*% t(eigC$vectors))
   rownames(D.mat) <- colnames(D.mat) <- colnames(C)
@@ -1808,15 +1821,15 @@ GMfromShapes0 <- function(Shapes, scaled = TRUE){ # No curves
   lm.names <- dimnames(Shapes$landmarks.pixel)[[1]]
   if(is.null(scaling)) {
     landmarks <- Shapes$landmarks.pixel
-    cat("\nWarning: No specimens have scaling")
-    cat("\nUnscaled landmarks imported, as a result\n")
+    warning("No specimens have scaling.  Unscaled landmarks imported, as a result\n", 
+            immediate. = TRUE)
     scaled = FALSE
     } else {
       if(any(is.na(scaling))){
         sp.na <- which(is.na(scaling))
-        cat("\nWarning: Some specimens have no scaling\n")
-        cat(sp.names[sp.na])
-        cat("\nUnscaled landmarks imported, as a result\n")
+        warning(paste("\nWarning: Some specimens have no scaling:\n",
+        sp.names[sp.na],
+        "\nUnscaled landmarks imported, as a result.\n"), immediate. = TRUE)
         landmarks <- Shapes$landmarks.pixel
         scaled = FALSE
       } else {
@@ -2175,6 +2188,55 @@ readland.tps2 <- function (file, specID = c("None", "ID", "imageID"))
   return(list(coords = coords,scale=imscale)  )
 }
 
+# get.VCV
+# generates a VCV matrix, based on arguments
+# used in K.modules
+
+get.VCV <- function(A, phy = NULL, Cov = NULL,
+                    transform. = TRUE) {
+  x <- try(two.d.array(A), silent = TRUE)
+  if(inherits(x, "try-error")) x <- try(as.matrix(A), silent = TRUE)
+  if(inherits(x, "try-error"))
+    stop("\nA is not a suitable data array for analysis. ", call. = FALSE)
+  
+  namesX <- rownames(x)
+  if (is.null(namesX)) namesX <- 1:NROW(x)
+  
+  x <- as.matrix(x)
+  n <- nrow(x)
+  
+  if(!is.null(phy) || !is.null(Cov)) {
+    if(!is.null(phy) && is.null(Cov)) {
+      Cov <- fast.phy.vcv(phy)
+      Pcov <- Cov.proj(Cov, rownames(x))}
+    
+    if(is.null(phy) && !is.null(Cov)) {
+      Pcov <- try(Cov.proj(Cov, rownames(x)), silent = TRUE)
+      if(inherits(Pcov, "try-error"))
+        stop("The names of Covariance matrix do not seem to match data names.\n",
+             call. = FALSE)
+    }
+    
+    if(!is.null(phy) && !is.null(Cov)) {
+      Pcov <- try(Cov.proj(Cov, rownames(x)), silent = TRUE)
+      if(inherits(Pcov, "try-error"))
+        stop("The names of Covariance matrix do not seem to match data names.\n",
+             call. = FALSE)
+    }
+    
+    ones <- matrix(1, n)
+    fit <- lm.fit(Pcov %*% ones, Pcov %*% x)
+    B <- fit$coefficients
+    R <- x - ones %*% B
+    V <- if(transform.) crossprod(fit$resdiuals) / (n-1) else
+      crossprod(R) / (n-1)
+    
+  } else V <- var(x)
+  
+  return(V)
+}
+
+
 
 ### All functions below perform in a constrained way the same as functions in ape and geiger:
 ### -----------------------------------------------------------------------------------------
@@ -2300,4 +2362,106 @@ makePD <- function (x) {
     X <- D * X * rep(D, each = n)
   }
   X
+}
+
+# physignal.z support functions
+
+updateCov <- function(Cov, lambda) {
+  D <- diag(diag(Cov))
+  Cn <- (Cov - D) * lambda
+  Cn + D
+}
+
+logLikh <- function(y, Cov = NULL, Pcov = NULL){
+  y <- as.matrix(y)
+  n <- nrow(y)
+  p <- ncol(y)
+  u <- matrix(1, n)
+  gls <- !is.null(Pcov)
+  yhat <- if(gls) u %*% lm.fit(Pcov %*% u, Pcov %*% y)$coefficients else fastFit(u, y, n, p)
+  R <- as.matrix(y - yhat)
+  Sig <- if(gls) crossprod(Pcov %*% R)/n else crossprod(R) / n
+  logdetC <- if(gls) determinant(Cov, logarithm = TRUE)$modulus else 0
+  logdetSig <- determinant(Sig, logarithm = TRUE)$modulus
+  
+  ll <- -0.5 * (n * p * log(2 * pi) + p * logdetC +
+                  n * logdetSig + n) 
+  
+  as.numeric(ll)
+}
+
+
+lambda.opt<- function(y, tree) {
+  y <- as.matrix(y)
+  dims <- dim(y)
+  n <- dims[1]
+  p <- dims[2]
+  Cov <- fast.phy.vcv(tree)
+  
+  LL <- function(lambda) {
+    Cov.i <- updateCov(Cov, lambda)
+    Cov.i <- Cov.i[rownames(y), rownames(y)]
+    Pcov <- Cov.proj(Cov.i)
+    logLikh(y, Cov = Cov.i, Pcov = Pcov)
+  }
+  opt <- optimise(LL, interval = c(1e-6, 1), maximum = TRUE, tol = 0.0001)$maximum
+  
+  if(opt < 1e-6) opt <- 1e-6
+  if(opt > 0.999) opt <- 1
+  
+  opt
+}
+
+get.VCV <- function(A, phy = NULL, Cov = NULL,
+                    transform. = TRUE) {
+  x <- try(two.d.array(A), silent = TRUE)
+  if(inherits(x, "try-error")) x <- try(as.matrix(A), silent = TRUE)
+  if(inherits(x, "try-error"))
+    stop("\nA is not a suitable data array for analysis. ", call. = FALSE)
+  
+  namesX <- rownames(x)
+  if(is.null(namesX)) namesX <- 1:NROW(x)
+  x <- as.matrix(x)
+  n <- nrow(x)
+  ones <- matrix(1, n)
+  
+  gls <- (!is.null(Cov) || !is.null(phy)) 
+  
+  if(gls) {
+    if(!is.null(Cov)) {
+      if(!is.null(phy)) {
+        cat("\nBoth a phylogeny and covariance matrix were provided.")
+        cat("\nOnly the covariance matrix will be used.\n")
+      }
+        
+      Pcov <- try(Cov.proj(Cov, rownames(x)), silent = TRUE)
+      if(inherits(Pcov, "try-error"))
+        stop("The names of Covariance matrix do not seem to match data names.\n",
+             call. = FALSE)
+    } else {
+      Cov <- fast.phy.vcv(phy)
+      Pcov <- try(Cov.proj(Cov, rownames(x)), silent = TRUE)
+      if(inherits(Pcov, "try-error")) {
+        cat("\nUnable to match taxa names between tree and data.")
+        cat("\nAssuming data have been sorted to match tree.\n")
+        Pcov <- try(Cov.proj(Cov), silent = TRUE)
+        if(inherits(Pcov, "try-error"))
+          stop("Unable to create a covariance matrix from the tree.\n", 
+               call. = FALSE)
+      }
+    }
+    U <- qr.Q(qr(ones))
+    if(transform.) {
+      R <- fastLM(U, Pcov %*% x)$residuals
+    } else {
+      fit <- lm.fit(ones, as.matrix(Pcov%*% x))
+      B <- coef(fit)
+      R <- x - (ones %*% B)
+    }
+    
+    V <-  crossprod(R) / (n-1)
+
+    } else V <- var(x)
+  
+  return(V)
 }

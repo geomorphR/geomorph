@@ -77,9 +77,9 @@ for articulated structures.
 \examples{
 data(larvalMorph) 
 head.gpa <- gpagen(larvalMorph$headcoords, 
-  curves = larvalMorph$head.sliders, print.progress = FALSE)
+  curves = larvalMorph$head.sliders)
 tail.gpa <- gpagen(larvalMorph$tailcoords, 
-  curves = larvalMorph$tail.sliders, print.progress = FALSE)
+  curves = larvalMorph$tail.sliders)
 
 # Combine original data without GPA (plot to see relative size of  
 # heads and tails)
@@ -151,7 +151,7 @@ par(mfrow = c(1,1))
 \references{
 Davis, M.A., M.R. Douglas, M.L. Collyer, & M.E. Douglas, M. E. 2016.
  Deconstructing a species-complex: geometric morphometric and molecular analyses define species in the 
- Western Rattlesnake (Crotalus viridis). PloS one, 11(1), e0146166.
+ Western Rattlesnake (Crotalus viridis). PLoS one, 11(1), e0146166.
 
 Adams, D.C. 1999. Methods for shape analysis of landmark data from articulated structures. 
  Evolutionary Ecology Research. 1:959-970.

@@ -16,7 +16,7 @@ compare.CR(..., CR.null = TRUE, two.tailed = TRUE)
 \value{
 An object of class compare.CR, returns a list of the following
 \item{sample.z}{A vector of effect sizes for each sample.}
-\item{sample.r.sd}{A vector of standard deviations for each sampling distribution (following Box-Cox transformation).}
+\item{sample.r.sd}{A vector of standard deviations for each sampling distribution  (following Box-Cox transformation).}
 \item{pairwise.z}{A matrix of pairwise, two-sample z scores between all pairs of effect sizes.}
 \item{pairwise.p}{A matrix of corresponding P-values.}
 }

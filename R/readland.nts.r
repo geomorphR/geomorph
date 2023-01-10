@@ -61,7 +61,7 @@ readland.nts <- function(file){
   
   header <- sub("L", "", header)
   header <- as.numeric(sub("DIM=","", header))
-  
+
   missdata <- ifelse(header[4]!=0, T, F)
   if(missdata==TRUE) {
     missval <- ifelse(dimval==6, header[5], header[6]) 
@@ -69,9 +69,9 @@ readland.nts <- function(file){
   
   if(header[3] == header[dimval]){
     n <- 1; k <- header[dimval]; p <- header[2]
-  } else {
+    } else {
     n <- header[2]; k <- header[dimval]; p <- header[3]/k
-  }
+    }
   
   tmp <- unlist(strsplit(ntsfile[-1],"\\s+"))
   if(r.lab) {

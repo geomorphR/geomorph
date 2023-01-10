@@ -72,7 +72,8 @@ shapeHulls <- function(x, groups = NULL, group.cols = NULL,
   if(is.null(groups)) groups <- rep(1, n)
   groups <- as.factor(groups)
   if(length(unique(groups)) != length(levels(groups)))
-    cat("Warning: the levels in the grouping factor do not match the number of unique factor levels.\n")
+    warning("The levels in the grouping factor do not match the number of unique factor levels.\n",
+            call. = FALSE, immediate. = TRUE)
   ug <- unique(groups)
   g <- length(ug)
   if(is.null(group.cols)) group.cols <- 1:g

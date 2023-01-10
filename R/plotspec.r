@@ -114,7 +114,7 @@ plotspec <- function (spec, digitspec, fixed = NULL, fixed.pt.col = "red", fixed
   do.call(plot3d, plot3d.args)
 
   plot3d.args <- plot3d.args[c("x", "y", "z", "col", "size")]
-  
+
   do.call(points3d, plot3d.args)
   
   if(!is.null(mesh)) shade3d(mesh, meshColor = "legacy", add = TRUE)

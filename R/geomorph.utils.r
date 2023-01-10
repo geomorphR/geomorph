@@ -498,7 +498,7 @@ plot.CR.phylo <- function(x, ...){
   options(scipen = 0)
 }
 
-## physignal
+## physignal abd physignal.z
 
 #' Print/Summary Function for geomorph
 #' 
@@ -513,8 +513,48 @@ print.physignal <- function(x, ...){
   cat(deparse(x$call), fill=TRUE, "\n\n")
   cat(paste("\nObserved Phylogenetic Signal (K):", round(x$phy.signal, nchar(x$permutations))))
   cat(paste("\n\nP-value:", round(x$pvalue, nchar(x$permutations))))
-  cat(paste("\n\nEffect Size:", round(x$Z, nchar(x$permutations))))
   cat(paste("\n\nBased on", x$permutations, "random permutations"))
+  cat("\n\n Use physignal.z to estimate effect size.")
+  invisible(x)
+}
+
+#' Print/Summary Function for geomorph
+#' 
+#' @param x print/summary object (from \code{\link{physignal.z}})
+#' @param ... other arguments passed to print/summary
+#' @method print physignal.z
+#' @export
+#' @author Michael Collyer
+#' @keywords utilities
+print.physignal.z <- function(x, ...){
+  cat("\nCall:\n")
+  cat(deparse(x$call), fill=TRUE, "\n")
+  
+  cat("Evaluation of phylogenetic signal effect size\n")
+  cat("Optimization method:", x$opt.method)
+  cat("\nOptimization performed in", x$opt.dim, "data dimensions.\n")
+  
+  if(is.na(x$Z)) {
+    cat("The scaling parameter, lambda, was optimized at 0.")
+    cat("\nThis means that the log-likehood was invariant across permutations")
+    cat("\nand there is no phylogenetic signal in the data.\n\n")
+  } else {
+    cat(paste("\nObserved phylogenetic signal effect size (Z):", round(x$Z, nchar(x$permutations))))
+    cat(paste("\n\nP-value:", round(x$pvalue, nchar(x$permutations))), "based on", x$permutations, "random permutations")
+    cat("\n\nFor a model with a log-likelihood of", round(x$rand.logL[[1]], nchar(x$permutations)))
+    cat("\na branch-scaling (lambda) of", round(x$lambda, nchar(x$permutations)))
+    cat("\nand a ratio of Bownian Motion fit (K) of", round(x$K, nchar(x$permutations)), "\n")
+    
+    if(!is.null(x$K.by.p)) {
+      cat("\nK measured across phylogenetically-aligned components (1, 1:2, 1:3, ...\n")
+      print(x$K.by.p)
+      cat("\nLambda measured across phylogenetically-aligned components (1, 1:2, 1:3, ...\n")
+      print(x$lambda.by.p)
+      cat("\nLog-likelihood measured across phylogenetically-aligned components (1, 1:2, 1:3, ...\n")
+      print(x$logL.by.p)
+    }
+  }
+    
   invisible(x)
 }
 
@@ -529,6 +569,19 @@ print.physignal <- function(x, ...){
 summary.physignal <- function(object, ...) {
   x <- object
   print.physignal(x, ...)
+}
+
+#' Print/Summary Function for geomorph
+#' 
+#' @param object print/summary object (from \code{\link{physignal.z}})
+#' @param ... other arguments passed to print/summary
+#' @method summary physignal.z
+#' @export
+#' @author Michael Collyer
+#' @keywords utilities
+summary.physignal.z <- function(object, ...) {
+  x <- object
+  print.physignal.z(x, ...)
 }
 
 #' Plot Function for geomorph
@@ -551,6 +604,50 @@ plot.physignal <- function(x, ...){
   hist(K.val,30,freq=TRUE,col="gray",xlab="Phylogenetic Signal, K",
        main=main.txt, cex.main=0.8)
   arrows(K.obs,50,K.obs,5,length=0.1,lwd=2)
+}
+
+#' Plot Function for geomorph
+#' 
+#' @param x plot object (from \code{\link{physignal.z}})
+#' @param ... other arguments passed to plot
+#' @method plot physignal.z
+#' @export
+#' @author Michael Collyer
+#' @keywords utilities
+#' @keywords visualization
+plot.physignal.z <- function(x, ...){
+  
+  if(is.na(x$Z)) {
+    cat("The scaling parameter, lambda, was optimized at 0.")
+    cat("\nThis means that the log-likehood was invariant across permutations,")
+    cat("\nthere is no phylogenetic signal in the data, and there is nothing to plot.\n\n")
+  } else {
+    
+    ll <- x$rand.logL
+    z <- box.cox(ll)$transformed
+    z[1] <- x$Z
+    
+    opar <- par()$mfrow
+    par(mfrow = c(1,2))
+    p <- x$pvalue
+    ndec <- nchar(1 / x$permutations) - 2
+    ll.obs <- round(ll[[1]], ndec)
+    Z.obs <- round(z[[1]], ndec)
+    p <- round(p, ndec)
+    main.txt <- paste("Observed log-likelihood =", ll.obs,";", "P-value =", p)
+    hist(ll, 30, freq=TRUE, col = "gray", 
+         xlab = paste("log-liklihoods:", x$permutations, "RRPP premutations"),
+         main = main.txt, cex.main = 0.8)
+    arrows(ll.obs, 50, ll.obs, 5, length = 0.1, lwd=2)
+    
+    main.txt <- paste("Standardized effect size =", Z.obs)
+    hist(z, 30, freq=TRUE, col = "gray", 
+         xlab = "Standardized values",
+         main = main.txt, cex.main = 0.8)
+    arrows(Z.obs, 50, Z.obs, 5, length = 0.1, lwd=2)
+    
+    par(mfrow = opar)
+  }
 }
 
 
@@ -709,6 +806,39 @@ summary.compare.pls <- function(object, ...) print.compare.pls(object,...)
 #' 
 #' @param x print/summary object
 #' @param ... other arguments passed to print/summary
+#' @method print compare.physignal.z
+#' @export
+#' @author Michael Collyer
+#' @keywords utilities
+print.compare.physignal.z<- function(x,...){
+  z <- x$sample.z
+  z.pw <- x$pairwise.z
+  p <- x$pairwise.P
+  cat("\nEffect sizes (Z-scores)\n\n")
+  print(z)
+  cat("\nEffect sizes for pairwise differences in phylogenetic signal.\n\n")
+  print(z.pw)
+  cat("\nP-values\n\n")
+  print(p)
+  invisible(x)
+}
+
+#' Print/Summary Function for geomorph
+#' 
+#' @param object print/summary object
+#' @param ... other arguments passed to print/summary
+#' @method summary compare.physignal.z
+#' @export
+#' @author Michael Collyer
+#' @keywords utilities
+summary.compare.physignal.z <- function(object, ...) 
+  print.compare.physignal.z(object,...)
+
+
+#' Print/Summary Function for geomorph
+#' 
+#' @param x print/summary object
+#' @param ... other arguments passed to print/summary
 #' @method print combined.set
 #' @export
 #' @author Michael Collyer
@@ -859,12 +989,10 @@ summary.gm.prcomp <- function (object, ...) {
 #' @param phylo A logical value indicating whether the phylogeny should be projected to PC space
 #' @param time.plot A logical value indicating if a 3D plot with the phylogeny and time as the 
 #' z-axis is desired
-#' @param phylo.par A list of plotting parameters for the inclusion of a 
-#' phylogeny, including: logicals for whether features should be included 
-#' (tip.labels, nodel.labels, anc.states), toggled as TRUE/FALSE; edge parameters
-#' (edge.color, edge.width, edge.lty); node parameters (node.bg, node.pch, 
-#' node.cex); and label parameters (tip.txt.cex, tip.txt.col, tip.txt.adj, 
-#' node.txt.cex, node.txt.col, node.txt.adj).
+#' @param phylo.par A list of plotting parameters for the inclusion of a phylogeny, including: logicals for 
+#' whether features should be included (tip.labels, nodel.labels, anc.states), toggled as TRUE/FALSE; 
+#' edge parameters (edge.color, edge.width, edge.lty); node parameters (node.bg, node.pch, node.cex);
+#' and label parameters (tip.txt.cex, tip.txt.col, tip.txt.adj, node.txt.cex, node.txt.col, node.txt.adj).
 #' @param ... other arguments passed to plot.  For plots with a phylogeny, these parameters pertain to 
 #' the tip values.
 #' @return An object of class "plot.gm.prcomp" is a list with components
@@ -1082,6 +1210,7 @@ summary.geomorphShapes <- function (object, ...) {
   print.geomorphShapes(object, ...)
 }
 
+
 #' Print/Summary function for geomorph
 #' 
 #' @param x print/summary object
@@ -1114,9 +1243,6 @@ print.compare.ZVrel <- function(x,...){
 summary.compare.ZVrel <- function(object, ...) {
   print.compare.ZVrel(object,...)
 }
-
-
-
 
 
 ## geomorph.data.frame

@@ -128,7 +128,7 @@ two.b.pls <- function (A1, A2,  iter = 999, seed = NULL, print.progress=TRUE){
   
   if (is.null(namesX)) namesX <- 1:NROW(x)
   if (is.null(namesY)) {namesY <- namesX
-    rownames(y) <- namesY}
+     rownames(y) <- namesY}
   
   if (length(namesX) != length(namesY)) stop("\nData matrices have different numbers of specimens.",
                                call. = FALSE)

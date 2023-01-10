@@ -24,7 +24,7 @@
 #' @author Dean Adams and Michael Collyer
 #' @return An object of class compare.CR, returns a list of the following
 #' \item{sample.z}{A vector of effect sizes for each sample.}
-#' \item{sample.r.sd}{A vector of standard deviations for each sampling distribution (following Box-Cox transformation).}
+#' \item{sample.r.sd}{A vector of standard deviations for each sampling distribution  (following Box-Cox transformation).}
 #' \item{pairwise.z}{A matrix of pairwise, two-sample z scores between all pairs of effect sizes.}
 #' \item{pairwise.p}{A matrix of corresponding P-values.}
 #' @references Adams, D.C. and M.L. Collyer. 2019.  Comparing the strength of modular signal, and evaluating alternative modular hypotheses,
@@ -105,8 +105,8 @@ compare.CR <- function(..., CR.null = TRUE, two.tailed = TRUE){
    bct <- lapply(dots, function(x) box.cox(x$random.CR)$transformed)
    list.drs <- sapply(1:k, function(j) bct[[j]][1] - mean(bct[[j]])) 
    list.sds <- sapply(1:k, function(j) sdn(bct[[j]]))
-   list.zs <- sapply(1:k, function(j) effect.size(dots[[j]]$random.CR, center=TRUE))  
-
+   list.zs <- sapply(1:k, function(j) effect.size(dots[[j]]$random.CR, center=TRUE))
+   
    if (CR.null == TRUE){
       k <- k + 1
       k.combn <- combn(k,2)
@@ -115,9 +115,9 @@ compare.CR <- function(..., CR.null = TRUE, two.tailed = TRUE){
       list.zs <- c(0,list.zs)
    }
    z12 <- sapply(1:ncol(k.combn), function(j){
-      a <- k.combn[1,j]; b <- k.combn[2,j]
-      r1 <- list.drs[a]; r2 <- list.drs[b] 
-      r1-r2
+     a <- k.combn[1,j]; b <- k.combn[2,j]
+     r1 <- list.drs[a]; r2 <- list.drs[b] 
+     r1-r2
    })
    pooled.se <- sapply(1:ncol(k.combn), function(j){
       a <- k.combn[1,j]; b <- k.combn[2,j]
@@ -157,4 +157,5 @@ compare.CR <- function(..., CR.null = TRUE, two.tailed = TRUE){
                pairwise.P = pairwise.P)
    class(out) <- "compare.CR"
    out
-}
+ }
+ 
