@@ -12,7 +12,7 @@
 #' @importFrom ape multi2di.phylo
 #' @importFrom ape root.phylo
 #' @importFrom ape collapse.singles
-#' @importFrom graphics abline arrows hist identify layout lines locator mtext par plot.new plot.window plot.xy points rasterImage segments text title
+#' @importFrom graphics abline arrows hist identify layout lines locator mtext par plot.new plot.window plot.xy points rasterImage segments text title legend
 #' @importFrom stats na.omit .lm.fit anova as.dist as.formula cmdscale coef cor cov dist formula kmeans lm lm.fit model.matrix optimise pnorm prcomp predict quantile rnorm sd spline terms var
 #' @importFrom utils combn object.size read.csv read.table setTxtProgressBar txtProgressBar write.csv write.table
 #' @import RRPP
