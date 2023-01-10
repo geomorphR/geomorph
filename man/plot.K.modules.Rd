@@ -23,7 +23,7 @@ is the highest ranking 6 modules.)}
 landmark configurations with modules formatted differently, 
 or a principal coordinate plot, respectively.}
 
-\item{relativize}{A logical aregument for whether to make eigenvalues a fraction of the maximum possible
+\item{relativize}{A logical argument for whether to make eigenvalues a fraction of the maximum possible
 (for profile plots).}
 
 \item{...}{other arguments passed to plot, especially for changing points in a configuration.

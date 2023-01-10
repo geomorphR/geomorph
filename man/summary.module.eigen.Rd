@@ -19,7 +19,7 @@ based on a broken stick model.}
 \value{
 An object of class "summary.module.eigen" is a list with components
 including table of eigenvalues, table of proportion of variation explained,
-a pairwise table of vector correlations (for indicated principal component), and a apirwise
+a pairwise table of vector correlations (for indicated principal component), and a pairwise
 table of Krzanowski squared correlations.
 }
 \description{

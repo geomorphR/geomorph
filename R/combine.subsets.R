@@ -49,7 +49,7 @@
 #' @export
 #' @references Davis, M.A., M.R. Douglas, M.L. Collyer, & M.E. Douglas, M. E. 2016.
 #'  Deconstructing a species-complex: geometric morphometric and molecular analyses define species in the 
-#'  Western Rattlesnake (Crotalus viridis). PloS one, 11(1), e0146166.
+#'  Western Rattlesnake (Crotalus viridis). PLoS one, 11(1), e0146166.
 #' @references  Adams, D.C. 1999. Methods for shape analysis of landmark data from articulated structures. 
 #'  Evolutionary Ecology Research. 1:959-970. 
 #' @references  Dryden, I.L. and K.V Mardia. 2016. Statistical shape analysis, with applications in R: Second edition.

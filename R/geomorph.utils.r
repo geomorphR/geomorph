@@ -1237,7 +1237,7 @@ print.module.eigen <- function(x, ...) {
 #' @author Michael Collyer
 #' @return An object of class "summary.module.eigen" is a list with components
 #' including table of eigenvalues, table of proportion of variation explained,
-#' a pairwise table of vector correlations (for indicated principal component), and a apirwise
+#' a pairwise table of vector correlations (for indicated principal component), and a pairwise
 #' table of Krzanowski squared correlations.
 #' @keywords utilities
 summary.module.eigen <- function(object, use.rel.dims = TRUE, PC = 1) {
@@ -1492,7 +1492,7 @@ summary.K.modules <- function(object, ...) {
 #' @param type One of "profile", config", or "pcoa" for plotting a profile of eigenvalues, 
 #' landmark configurations with modules formatted differently, 
 #' or a principal coordinate plot, respectively.
-#' @param relativize A logical aregument for whether to make eigenvalues a fraction of the maximum possible
+#' @param relativize A logical argument for whether to make eigenvalues a fraction of the maximum possible
 #' (for profile plots).
 #' @param ... other arguments passed to plot, especially for changing points in a configuration.
 #' 

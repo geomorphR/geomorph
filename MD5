@@ -15,9 +15,9 @@ d8e8360c03c03fe45d2100e9c05d4a89 *data/plethodon.rda
 93888302df16c73a687a212581f6b04e *geomorph.Rproj
 a0bfc1602bc216cf8f5d90af16183b36 *inst/CITATION
 593e42548fcbd08b6027b15bbca38808 *man/arrayspecs.Rd
-67aaabd0db27937f03502646bb68e586 *man/bilat.symmetry.Rd
+ee576bdf583f389b725a5c722c6537b8 *man/bilat.symmetry.Rd
 1ff6222663ac98e0dd1b6aaae0dd9962 *man/buildtemplate.Rd
-59cd1a3d11342a473eb229a89952bab5 *man/combine.subsets.Rd
+480a85a446f26dea4c302a12cded41b3 *man/combine.subsets.Rd
 776002a53af0f5f18532c76911fcbf6b *man/compare.CR.Rd
 b2ef3270d5bea2a4e063331303554df5 *man/compare.evol.rates.Rd
 38624521861b7541e90e4d8f477b5004 *man/compare.multi.evol.rates.Rd
@@ -60,7 +60,7 @@ ffadebd6be893bbc403d22f884329a9a *man/mshape.Rd
 371df01acb1a8cef7ad9838b1754a32a *man/phylo.integration.Rd
 47896efdf2c5fc6a53ba57d13595560d *man/phylo.modularity.Rd
 f1858fb6ef41259b0309669ccb4fb3ca *man/physignal.Rd
-7e41e10046f702a4aaa5d335bc6a76a9 *man/physignal.z.Rd
+4c7bd5bd0902c4720f0d81569162d00a *man/physignal.z.Rd
 c0fd3efd20c49e6e1a0f816242912121 *man/picknplot.shape.Rd
 af93ecd1b6eb7fb84c529ee5d5ca59b4 *man/plethodon.Rd
 67af5edfcfef3d23440b41c805d143c6 *man/plethShapeFood.Rd
@@ -71,7 +71,7 @@ b8a3ca222e5ef0e2470e1d5833dd7bb4 *man/plethspecies.Rd
 85bbe6b70e860a14116746ef4ecac51f *man/plot.evolrate.Rd
 6e5296c99562dc85e219488db84596cc *man/plot.gm.prcomp.Rd
 0116d21c6ae9389dc425aaca082fd67c *man/plot.gpagen.Rd
-70f2541f9c25390932efc19804801a32 *man/plot.K.modules.Rd
+96ca9dd050c92c0b446967c27614ff0d *man/plot.K.modules.Rd
 a56c5838afd523951ecebe4d011e34a0 *man/plot.module.eigen.Rd
 71208a14b679efbbaf55f8daba7a0ef3 *man/plot.mshape.Rd
 c243df60434118dddca6904f3d6de9b0 *man/plot.physignal.Rd
@@ -135,7 +135,7 @@ b855ab3d098d9c88761b8c74e60836c4 *man/summary.CR.phylo.Rd
 68dd4db00f079fea47218ea51e9dc8b6 *man/summary.gm.prcomp.Rd
 4650837bdbeb227d95c700d3cb00811a *man/summary.gpagen.Rd
 949b81be5c6ba1b7d8747a8fc192bdb5 *man/summary.K.modules.Rd
-2d72194b126f834bdd6f734398870553 *man/summary.module.eigen.Rd
+c454aeae18c93b71a719d038593ab5ba *man/summary.module.eigen.Rd
 959f66c73c14ff74e2b3f3807d6ef6d7 *man/summary.morphol.disparity.Rd
 cebd4d3722633f6509a04c416d0a8fc9 *man/summary.physignal.Rd
 a129dcc4595b984842114893a2d7d14d *man/summary.physignal.z.Rd
@@ -149,9 +149,9 @@ d9119f721918f22c267db843023a86fe *man/writeland.tps.Rd
 bf5574e86e4ade849abf7f766bae3eb3 *NAMESPACE
 bd4b2290732284e9a619d9441b18734e *NEWS.md
 d80d05ef890863f1b3004473627ea5f1 *R/arrayspecs.r
-471a441e39f4f561d4526c238c6979f9 *R/bilat.symmetry.r
+7d9cf712d0787ca965f2dc313ec440d7 *R/bilat.symmetry.r
 4de44720708760426e94d2f2ffef904b *R/build.template.r
-00e0cc403fe77c0fce39fb6938b34593 *R/combine.subsets.R
+a673ce48e56eb51279c62fa6847238ae *R/combine.subsets.R
 6d7c4a345ebe2809cc9552b7719f3aae *R/compare.CR.R
 0f595872139aa081a5b8629826e804cf *R/compare.evol.rates.r
 78bd97b401035b2283f6351ca7cfc5ad *R/compare.multi.evol.rates.r
@@ -173,7 +173,7 @@ aac6a4f8a759473e8c37048e5c8e3d91 *R/findMeanSpec.r
 067124d4119de55a6089c6aefdd0eac5 *R/fixed.angle.r
 3d7958991ae174c24ba7c570f4e03b27 *R/geomorph.data.frame.r
 c636784dd3f01af3604d1ee1e4d1e617 *R/geomorph.support.code.r
-8b34565decb7e2624110d2ec9ee76fee *R/geomorph.utils.r
+c5f387a50e0f62813cbf08428738588b *R/geomorph.utils.r
 b0de2a67cff633e27e7a00860187240f *R/globalIntegration.r
 31dfd3f01ecce6a9565dbcaa9b28e658 *R/gm.prcomp.R
 a359346ccbbd80e2889f1c1017208315 *R/gpagen.r
@@ -190,7 +190,7 @@ d7fbf86449a0ac29ec98a7a2001295a6 *R/module.eigen.r
 dd09bec9a8c98301cb86d5b0563c8a77 *R/phylo.integration.r
 d5afd24cc150710512b164f411d3cc3f *R/phylo.modularity.r
 badc5610557a757b2b7f26b98ef3e6f8 *R/physignal.r
-a60986d782122436a999d6b55beffe8f *R/physignal.z.r
+a2f85c4744f773755e5125d66edf7983 *R/physignal.z.r
 5cfdd84df23c9a7d938c01b0de7d367a *R/picknplot.shape.r
 e61483ce68db0750515dc110212e77f2 *R/plotAllometry.r
 f9043772e114ec0f814ab4782383a5dc *R/plotAllSpecimens.r

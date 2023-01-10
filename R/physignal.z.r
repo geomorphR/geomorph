@@ -75,7 +75,7 @@
 #' @param lambda An indication for how lambda should be optimized.  This can be a numeric value between 0 and 1 to override 
 #' optimization.  Alternatively, it can be one of four methods: burn-in ("burn"); mean lambda across all data dimensions
 #' ("mean"); use a subset of all data dimensions where phylogenetic signal is possible, based on a front-loading
-#' of phylognetic signal in the lowest phylogenetically aligned 
+#' of phylogenetic signal in the lowest phylogenetically aligned 
 #' components ("front"); or use of all data dimensions to calculate the log-likelihood in the optimization process ("all").  See Details
 #' for more explanation.
 #' @param iter Number of iterations for significance testing
@@ -90,7 +90,7 @@
 #' choose fewer PACs than would be found, naturally.
 #' @param print.progress A logical value to indicate whether a progress bar should be printed to the screen.  
 #' This is helpful for long-running analyses.
-#' @param verbose Whether to include verbose output, including phylogentically-aligned
+#' @param verbose Whether to include verbose output, including phylogenetically-aligned
 #' component analysis (PACA), plus K, lambda,
 #' and the log-likelihood profiles across PAC dimensions.
 #' @keywords analysis
@@ -100,7 +100,7 @@
 #' @return Function returns a list with the following components: 
 #'   \item{Z}{Phylogenetic signal effect size.}
 #'   \item{pvalue}{The significance level of the observed signal.}
-#'   \item{random.detR}{The determinanats of the rates matrix for all random permutations.}
+#'   \item{random.detR}{The determinants of the rates matrix for all random permutations.}
 #'   \item{random.logL}{The log-likelihoods for all random permutations.}
 #'   \item{lambda}{The optimized lambda value.}
 #'   \item{K}{The multivariate K value.}  
