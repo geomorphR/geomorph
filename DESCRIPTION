@@ -18,10 +18,7 @@ LazyData: true
 RoxygenNote: 7.2.3
 Depends: RRPP(>= 1.0.0), rgl, R(>= 3.5.0), Matrix
 Imports: graphics, grDevices, stats, utils, jpeg, ape, parallel, ggplot2
-Suggests: knitr,
-    rmarkdown,
-    testthat,
-    dplyr
+Suggests: knitr, rmarkdown, testthat, dplyr
 VignetteBuilder: knitr
 NeedsCompilation: no
 Packaged: 2023-01-10
