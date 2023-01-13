@@ -11,8 +11,8 @@ d8e8360c03c03fe45d2100e9c05d4a89 *data/plethodon.rda
 80c6fa53b642b23b378cf036d1b962f1 *data/ratland.rda
 9ba51ab9be03930a4acdcddde8169b33 *data/scallopPLY.rda
 6e5e71b242462e422b716800ffc3c464 *data/scallops.rda
-125ce8126c4ab92b8111ce774f99ea04 *DESCRIPTION
-c1b1a4bdfac8decf989501289600e592 *geomorph.Rproj
+fea33dba9add037467d7f53b9f0ba3e9 *DESCRIPTION
+93888302df16c73a687a212581f6b04e *geomorph.Rproj
 a0bfc1602bc216cf8f5d90af16183b36 *inst/CITATION
 593e42548fcbd08b6027b15bbca38808 *man/arrayspecs.Rd
 ee576bdf583f389b725a5c722c6537b8 *man/bilat.symmetry.Rd
@@ -146,7 +146,7 @@ da1241dd835f95675cc7126b2a7ec61a *man/two.d.array.Rd
 d2755155772526527e4224b17d0dd05d *man/warpRefMesh.Rd
 7bea8d6b17918fd4889e2056ebe0e3d0 *man/warpRefOutline.Rd
 d9119f721918f22c267db843023a86fe *man/writeland.tps.Rd
-f6542324474b110e639f4dc2e30174a2 *NAMESPACE
+29ab01f34ce6b15ceb402f6f852af15f *NAMESPACE
 bd4b2290732284e9a619d9441b18734e *NEWS.md
 d80d05ef890863f1b3004473627ea5f1 *R/arrayspecs.r
 7d9cf712d0787ca965f2dc313ec440d7 *R/bilat.symmetry.r
