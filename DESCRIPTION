@@ -21,7 +21,7 @@ Imports: graphics, grDevices, stats, utils, jpeg, ape, parallel, ggplot2
 Suggests: knitr, rmarkdown, testthat, dplyr
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2023-01-10
+Packaged: 2023-01-16
 Author: Dean Adams [aut, cre],
   Michael Collyer [aut],
   Antigoni Kaliontzopoulou [aut],

@@ -1,5 +1,4 @@
-9e30529ac9e513d80111a9414a042437 *cran-comments.md
-979e29784f1e1e8c62b6958ff8859196 *CRAN-SUBMISSION
+e771f48a38aae58ab755b75f8d28bad7 *cran-comments.md
 247b6e5658356e87edfd560687b239fc *data/hummingbirds.rda
 56558754725fea156eb0820f67a4f508 *data/larvalMorph.rda
 c3fc0e7a97f4cbd5b6cd8944d737b11a *data/lizards.rda
@@ -11,7 +10,7 @@ d8e8360c03c03fe45d2100e9c05d4a89 *data/plethodon.rda
 80c6fa53b642b23b378cf036d1b962f1 *data/ratland.rda
 9ba51ab9be03930a4acdcddde8169b33 *data/scallopPLY.rda
 6e5e71b242462e422b716800ffc3c464 *data/scallops.rda
-4edebe9a5fafc142e53218ab64cbe628 *DESCRIPTION
+cb7799ae1050bbbb1c6dddee9303d1f0 *DESCRIPTION
 73f723a130c92f8b84a81465a15add7c *geomorph.Rproj
 a0bfc1602bc216cf8f5d90af16183b36 *inst/CITATION
 593e42548fcbd08b6027b15bbca38808 *man/arrayspecs.Rd
