@@ -8,6 +8,7 @@ gpagen(
   A,
   curves = NULL,
   surfaces = NULL,
+  rot.pts = NULL,
   PrinAxes = TRUE,
   max.iter = NULL,
   tol = 1e-04,
@@ -30,6 +31,12 @@ with \code{\link{readland.shapes}} following digitizing of curves in StereoMorph
 using the function \code{\link{define.sliders}}.}
 
 \item{surfaces}{An optional vector defining which landmarks should be treated as semilandmarks on surfaces}
+
+\item{rot.pts}{An optional vector defining which landmarks are used for rotation.  If NULL or "all", all fixed landmarks
+and semilandmarks will be used.  If "fixed", only fixed landmarks will be used.  If "sliders", only sliding
+semilandmarks will be used. Any other vector of values will
+direct which landmarks or semilandmarks will be used for rotation.  Illogical vectors (like choosing points that 
+do not exist or only choosing one point) will default to using all landmarks and semilandmarks.}
 
 \item{PrinAxes}{A logical value indicating whether or not to align the shape data by principal axes}
 
