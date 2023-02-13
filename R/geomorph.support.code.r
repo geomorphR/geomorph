@@ -2373,6 +2373,7 @@ updateCov <- function(Cov, lambda) {
 }
 
 logLikh <- function(y, Cov = NULL, Pcov = NULL){
+  Pcov <- as.matrix(Pcov)
   y <- as.matrix(y)
   n <- nrow(y)
   p <- ncol(y)
