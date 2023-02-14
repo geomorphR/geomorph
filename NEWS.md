@@ -1,3 +1,8 @@
+# CHANGES IN GEOMORPH VERSION 4.0.5.999
+
+### Bug fixes
+* Fixed a bug in `logLikh` internal function that required `matrix` class objects for calculation.
+
 # CHANGES IN GEOMORPH VERSION 4.0.5
 
 ### NEW FEATURES
