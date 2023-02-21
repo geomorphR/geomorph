@@ -120,6 +120,7 @@ phylo.modularity<-function(A, partition.gp, phy, CI = FALSE,
     x <- t(mapply(function(a) matrix(t(a%*%optRot)), Alist)); rownames(x) <- dimnames(A)[[3]]
     p<-dim(A)[1]; k<-dim(A)[2];n<-dim(A)[3]
     if(length(partition.gp)!=p){stop("Not all landmarks are assigned to a partition.")}
+    if(any(table(partition.gp)==1)){stop("Must have at least two landmarks per partition.")}
   }
   if (length(dim(A))==2){ x<-A; k <-1; p<-ncol(A)
   if(length(partition.gp)!=ncol(x)){stop("Not all variables are assigned to a partition.")}

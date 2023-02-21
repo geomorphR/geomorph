@@ -1,4 +1,5 @@
 e771f48a38aae58ab755b75f8d28bad7 *cran-comments.md
+56bbe703a3f0bddbe00fb27f88664607 *CRAN-SUBMISSION
 247b6e5658356e87edfd560687b239fc *data/hummingbirds.rda
 56558754725fea156eb0820f67a4f508 *data/larvalMorph.rda
 c3fc0e7a97f4cbd5b6cd8944d737b11a *data/lizards.rda
@@ -11,7 +12,7 @@ d8e8360c03c03fe45d2100e9c05d4a89 *data/plethodon.rda
 9ba51ab9be03930a4acdcddde8169b33 *data/scallopPLY.rda
 6e5e71b242462e422b716800ffc3c464 *data/scallops.rda
 a5c08d4c3c4e1a527b454449a305bc7d *DESCRIPTION
-f4f2080e745b8d689f17caf549449ab5 *geomorph.Rproj
+73f723a130c92f8b84a81465a15add7c *geomorph.Rproj
 a0bfc1602bc216cf8f5d90af16183b36 *inst/CITATION
 593e42548fcbd08b6027b15bbca38808 *man/arrayspecs.Rd
 594bf8cd6e7363911a7053558522de73 *man/bilat.symmetry.Rd
@@ -135,8 +136,8 @@ da1241dd835f95675cc7126b2a7ec61a *man/two.d.array.Rd
 d2755155772526527e4224b17d0dd05d *man/warpRefMesh.Rd
 7bea8d6b17918fd4889e2056ebe0e3d0 *man/warpRefOutline.Rd
 d9119f721918f22c267db843023a86fe *man/writeland.tps.Rd
-4cab93f48e2f949890d233fc1422cdc1 *NAMESPACE
-523ef803c6f07c7550e56230a13f5710 *NEWS.md
+7eab1e5370ef49ef8172706e883ca76d *NAMESPACE
+71194e812f7659da9349f5acf5977b29 *NEWS.md
 d80d05ef890863f1b3004473627ea5f1 *R/arrayspecs.r
 b71e29b1cb512afc8f696788c86bdcea *R/bilat.symmetry.r
 4de44720708760426e94d2f2ffef904b *R/build.template.r
@@ -171,10 +172,10 @@ afa115834e6708293165de2a9abe9d4c *R/integration.test.r
 5313781dd1c8e3f002ff601126910d6d *R/integration.Vrel.r
 0cbfe6b5655e2751cdd03ca2a1550768 *R/interlmkdist.r
 e1af6ccba67759ffb399ca7f4f1b0f44 *R/make_ggplot.r
-b8757ee9dae85b5c83f187c721342564 *R/modularity.test.r
+278d61244d505507e33e826ab25bc113 *R/modularity.test.r
 aa90f77d340beb3ff8b1e35caa8de402 *R/morphol.disparity.r
 dd09bec9a8c98301cb86d5b0563c8a77 *R/phylo.integration.r
-3bbc41f3f41bdc7152143eeb734bc8fe *R/phylo.modularity.r
+86887728e12d406be11bdb5fdae5fa3c *R/phylo.modularity.r
 badc5610557a757b2b7f26b98ef3e6f8 *R/physignal.r
 a2f85c4744f773755e5125d66edf7983 *R/physignal.z.r
 5cfdd84df23c9a7d938c01b0de7d367a *R/picknplot.shape.r
