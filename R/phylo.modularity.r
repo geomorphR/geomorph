@@ -80,6 +80,7 @@ phylo.modularity<-function(A, partition.gp, phy, CI = FALSE,
   if (length(dim(A))==3){ 
     p<-dim(A)[1]; k<-dim(A)[2];n<-dim(A)[3]
     gps<-as.factor(partition.gp)
+    if(any(table(partition.gp)==1)){stop("Must have at least two landmarks per partition.")}
     gps.obs <- as.factor(rep(gps,k,each = k, length=p*k))
     if(any(table(gps.obs)==1)){stop("Must have at least two variables per partition.")}
     angle <- seq(0,89.95,0.05)
