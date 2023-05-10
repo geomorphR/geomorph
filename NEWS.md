@@ -3,6 +3,9 @@
 ### Bug fixes
 * Fixed a bug in `logLikh` internal function that required `matrix` class objects for calculation.
 
+### OTHER CHANGES
+* Additional error checking in `modularity.test` and `phylo.modularity` `rgl`
+
 # CHANGES IN GEOMORPH VERSION 4.0.5
 
 ### NEW FEATURES
