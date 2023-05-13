@@ -414,7 +414,7 @@ procD.lm <- function(f1, iter = 999, seed=NULL, RRPP = TRUE,
   out2$Terms <- out$LM$Terms
   out2$term.labels <- out$LM$term.labels
   out2$data <- out$LM$data
-  out2$random.SS <- out2$ANOVA$SS
+  out2$random.SS <- out$ANOVA$SS
   out <- c(out2, out)
   class(out) <- c("procD.lm", o.class)
   out

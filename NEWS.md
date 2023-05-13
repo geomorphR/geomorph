@@ -2,6 +2,7 @@
 
 ### Bug fixes
 * Fixed a bug in `logLikh` internal function that required `matrix` class objects for calculation.
+* Fixed a typo bug in `procD.lm` that caused lost results.
 
 ### OTHER CHANGES
 * Additional error checking in `modularity.test` and `phylo.modularity` `rgl`
