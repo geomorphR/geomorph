@@ -117,9 +117,6 @@ estimate.missing <- function(A, method=c("TPS","Reg")){
       pls <- svd(S12)
       U <- pls$u; V <- pls$v
       XScores <- x%*%U; YScores <- y%*%V
-#      beta<-coef(lm(YScores[,1]~XScores[,1]))
-#      miss.xsc<-c(1,A.2d[spec.NA[i],-missing.coord]%*%U[,1])
-#      miss.ysc<-c(miss.xsc%*%beta,(rep(0,(ncol(y)-1))))
       beta <- coef(lm(YScores ~ XScores))
       miss.xsc <- c(1,A.2d[spec.NA[i],-missing.coord]%*%U)
       miss.ysc <- miss.xsc%*%beta
@@ -134,8 +131,7 @@ estimate.missing <- function(A, method=c("TPS","Reg")){
     a$landmarks <- lapply(1:length(a$landmarks), function(j) A2[,,j])
     A2 <- a
   }
-  if(sum(rowSums(is.na(two.d.array(A2))))>0){
-    warning("Not all landmarks could be estimated. Some specimens still contain missing landmarks).") 
-  }
+  if(sum(rowSums(is.na(two.d.array(A2))))>0)(
+    warning("Warning. Not all landmarks could be estimated. Some specimens still contain missing landmarks.")) 
   return(A2)
 }
