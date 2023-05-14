@@ -134,5 +134,8 @@ estimate.missing <- function(A, method=c("TPS","Reg")){
     a$landmarks <- lapply(1:length(a$landmarks), function(j) A2[,,j])
     A2 <- a
   }
+  if(rowSums(is.na(two.d.array(A)))>0){
+    warning("Not all landmarks could be estimated. Some specimens still contain missing landmarks).") 
+  }
   return(A2)
 }
