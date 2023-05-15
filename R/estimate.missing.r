@@ -64,6 +64,13 @@ estimate.missing <- function(A, method=c("TPS","Reg")){
     a <- A
     A <- simplify2array(a$landmarks)
   }
+  
+  dims <- dim(A)
+  n <- dims[[3]]
+  p <- dims[[1]]
+  k <- dims[[2]]
+  
+  A.names <- dimnames(A)
 
   if(any(is.na(A))==FALSE)  {stop("No missing data.")}
   method <- match.arg(method)
@@ -107,31 +114,57 @@ estimate.missing <- function(A, method=c("TPS","Reg")){
     }
     A2[,,-spec.NA] <- complete
     A2[,,spec.NA] <- incomplete
-    A.2d <- two.d.array(A2)    
-    for (i in 1:length(spec.NA)){
-      missing.coord <- which(is.na(A.2d[spec.NA[i],]))  
-      x <- A.2d[-spec.NA, -missing.coord]
-      y <- A.2d[-spec.NA, missing.coord]
-      XY.vcv <- cov(cbind(x,y))      
-      S12 <- XY.vcv[1:dim(x)[2], (dim(x)[2]+1):(dim(x)[2]+dim(y)[2])]
-      pls <- svd(S12)
-      U <- pls$u; V <- pls$v
-      XScores <- x%*%U; YScores <- y%*%V
-      beta <- coef(lm(YScores ~ XScores))
-      miss.xsc <- c(1,A.2d[spec.NA[i],-missing.coord]%*%U)
-      miss.ysc <- miss.xsc%*%beta
-      pred.val <- miss.ysc%*%t(V)
-      for (j in 1:length(pred.val)){
-        A.2d[spec.NA[i] ,missing.coord[j]] <- pred.val[j]    
-      }
+    
+    A2.list <- lapply(1:n, function(j) A2[,,j])
+    A2.temp <- lapply(A2.list, na.omit)
+    keep <- sapply(A2.temp, function(x) NROW(x) == p)
+    A2.complete <- A2.list[keep]
+    A2.2d.complete <- t(sapply(A2.complete, as.vector))
+    V <- crossprod(A2.2d.complete)
+    
+    A2.updated <- lapply(A2.list, function(x){
+      missing.coord <- attr(na.omit(as.vector(x)), "na.action")
+      if(!is.null(missing.coord)) {
+        Vr <- V[-missing.coord, missing.coord]
+        pls <- svd(Vr)
+        UU <- pls$u
+        VV <- pls$v
+        xx <- A2.2d.complete[, -missing.coord]
+        yy <- A2.2d.complete[, missing.coord]
+        XScores <- xx %*% UU
+        YScores <- yy %*% VV
+        beta <- coef(lm(YScores ~ XScores ))
+        miss.xsc <- c(1,  as.vector(x)[-missing.coord] %*% UU)
+        miss.ysc <- miss.xsc %*% beta
+        pred.val <- miss.ysc %*% t(VV)
+        x[missing.coord] <- pred.val
+      } else x <- x
+      x
+      
+    })
+    
+    names(A2.updated) <- A.names[[3]]
+    NA.check <- sapply(A2.updated, function(x) any(is.na(x)))
+    if(any(!NA.check)) {
+      
+      oldwarn <- options()$warn
+      options(warn = 1)
+      warning("Some specimens could not have all landmarks estimated.\n")
+      
+      cat("This is probably because of too many missing landmarks.\n")
+      cat("Consider using method = 'TPS' instead.\n")
+      cat("Specimens with NA:\n")
+      print(names(A2.updated[which(NA.check)]))
+      options(warn = oldwarn)
     }
-    A2 <- arrayspecs(A.2d, dim(A)[1], dim(A)[2])
+
+    A2 <- simplify2array(A2.updated)
+    dimnames(A2) <- A.names
   }
-  if("a"%in%ls()) {
-    a$landmarks <- lapply(1:length(a$landmarks), function(j) A2[,,j])
+  if("a" %in% ls()) {
+    a$landmarks <- A2.updated
+    names(A2.updated) <- A.names[[3]]
     A2 <- a
   }
-  if(sum(rowSums(is.na(two.d.array(A2))))>0)(
-    warning("Warning. Not all landmarks could be estimated. Some specimens still contain missing landmarks.")) 
-  return(A2)
+   return(A2)
 }

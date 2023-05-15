@@ -6,6 +6,7 @@
 
 ### OTHER CHANGES
 * Additional error checking in `modularity.test` and `phylo.modularity` `rgl`
+* Added better warning for `estimate.missing` when failing with `method = "Reg"` to estimate landmarks.
 
 # CHANGES IN GEOMORPH VERSION 4.0.5
 
