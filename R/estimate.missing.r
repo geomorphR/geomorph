@@ -145,7 +145,7 @@ estimate.missing <- function(A, method=c("TPS","Reg")){
     
     names(A2.updated) <- A.names[[3]]
     NA.check <- sapply(A2.updated, function(x) any(is.na(x)))
-    if(any(!NA.check)) {
+    if(any(NA.check)) {
       
       oldwarn <- options()$warn
       options(warn = 1)
