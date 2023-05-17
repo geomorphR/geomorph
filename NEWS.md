@@ -3,10 +3,11 @@
 ### Bug fixes
 * Fixed a bug in `logLikh` internal function that required `matrix` class objects for calculation.
 * Fixed a typo bug in `procD.lm` that caused lost results.
+* Fixed names being dropped from shape components in `bilat.symmetry`
 
 ### OTHER CHANGES
 * Additional error checking in `modularity.test` and `phylo.modularity` `rgl`
-* Added better warning for `estimate.missing` when failing with `method = "Reg"` to estimate landmarks.
+* Added better warning for `estimate.missing` for failing with `method = "Reg"` to estimate landmarks.
 
 # CHANGES IN GEOMORPH VERSION 4.0.5
 
