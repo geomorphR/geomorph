@@ -1424,10 +1424,10 @@ perm.CR.index <- function(g, k, iter, seed=NULL){ # g is numeric partition.gp
       ind
 }
 
-# boot.index
+# boot.indexCR
 # creates a bootstrap index for resampling
 # used in modularity test functions
-boot.index <-function(n, iter, seed=NULL){
+boot.indexCR <-function(n, iter, seed=NULL){
   if(is.null(seed)) seed = iter else
     if(seed == "random") seed = sample(1:iter,1) else
       if(!is.numeric(seed)) seed = iter
@@ -1609,7 +1609,7 @@ apply.CR <- function(x,g,k, iter, seed = NULL){# g = partition.gp
 # used in: modularity.test
 boot.CR <- function(x,gps, k,iter, seed = NULL){
   x<-as.matrix(x)
-  boot <- boot.index(nrow(x), iter, seed=seed)
+  boot <- boot.indexCR(nrow(x), iter, seed=seed)
   if(k==1){
     jj <- iter+1
     if(jj > 100) j <- 1:100 else j <- 1:jj
