@@ -1,6 +1,7 @@
 # CHANGES IN GEOMORPH VERSION 4.0.5.999
 
 ### Bug fixes
+* Fixed issue with bootstrap CI for `modularity.test` and `phylo.modularity`
 * Fixed a bug in `logLikh` internal function that required `matrix` class objects for calculation.
 * Fixed a typo bug in `procD.lm` that caused lost results.
 * Fixed names being dropped from shape components in `bilat.symmetry`
