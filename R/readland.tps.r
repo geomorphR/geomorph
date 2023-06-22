@@ -153,7 +153,15 @@ readland.tps <- function (file, specID = c("None", "ID", "imageID"), negNA = FAL
       cat("\nIf you want to treat them as NAs please set negNA = TRUE")
     }
   }
-  lmo <- arrayspecs(lmo, p.unique, ncol(lmo)/p.unique)
+#  lmo <- arrayspecs(lmo, p.unique, ncol(lmo)/p.unique)
+  if(readcurves) {
+    lmo <- arrayspecs(lmo, p.unique, ncol(lmo)/p.unique)
+  } else {
+    lmo <- arrayspecs(lmo, (p.unique-pcv.unique), ncol(lmo)/(p.unique-pcv.unique))
+  }
+  
+  
+  #BLOWS UP HERE (156). p.unique incorrect number. is landmarks + semi, even if ... = false
 
   if(!is.null(p.error) && warnmsg) {
     target <- as.numeric(names(sort(p.error, decreasing = TRUE))[1])

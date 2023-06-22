@@ -147,7 +147,7 @@ d2755155772526527e4224b17d0dd05d *man/warpRefMesh.Rd
 7bea8d6b17918fd4889e2056ebe0e3d0 *man/warpRefOutline.Rd
 d9119f721918f22c267db843023a86fe *man/writeland.tps.Rd
 29ab01f34ce6b15ceb402f6f852af15f *NAMESPACE
-e7fc2632080c13fb5a346284170af888 *NEWS.md
+d2e540695739b345daa7179ff5eeae8a *NEWS.md
 d80d05ef890863f1b3004473627ea5f1 *R/arrayspecs.r
 f8e43e7a986e64d8b268c0c4b226ac04 *R/bilat.symmetry.r
 4de44720708760426e94d2f2ffef904b *R/build.template.r
@@ -204,7 +204,7 @@ b6f1390d9225c822d20796cae88643c7 *R/read.ply.r
 4e8de3e436a6f2d13c1cbab1788d16d6 *R/readland.fcsv.r
 568eb3bd0490ab2d721016f422420c17 *R/readland.nts.r
 8139a7d8f4b18d87e558df14b3c509aa *R/readland.shapes.r
-b65cdd2ffbc017ef45a9016476dec36e *R/readland.tps.r
+a718b663cc9e5453f10d3f411bc268dd *R/readland.tps.r
 7a04864de2efb545425bc16b6c22263d *R/readmulti.nts.r
 d688cf3fbc6c3351526c422948e457ba *R/readmulti.tps.R
 bd2676b20bf5bc7b10e1c6df7139d069 *R/rotate.coords.R
