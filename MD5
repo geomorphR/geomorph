@@ -1,5 +1,4 @@
 e771f48a38aae58ab755b75f8d28bad7 *cran-comments.md
-56bbe703a3f0bddbe00fb27f88664607 *CRAN-SUBMISSION
 247b6e5658356e87edfd560687b239fc *data/hummingbirds.rda
 56558754725fea156eb0820f67a4f508 *data/larvalMorph.rda
 c3fc0e7a97f4cbd5b6cd8944d737b11a *data/lizards.rda
@@ -12,7 +11,7 @@ d8e8360c03c03fe45d2100e9c05d4a89 *data/plethodon.rda
 9ba51ab9be03930a4acdcddde8169b33 *data/scallopPLY.rda
 6e5e71b242462e422b716800ffc3c464 *data/scallops.rda
 a5c08d4c3c4e1a527b454449a305bc7d *DESCRIPTION
-73f723a130c92f8b84a81465a15add7c *geomorph.Rproj
+f4f2080e745b8d689f17caf549449ab5 *geomorph.Rproj
 a0bfc1602bc216cf8f5d90af16183b36 *inst/CITATION
 593e42548fcbd08b6027b15bbca38808 *man/arrayspecs.Rd
 594bf8cd6e7363911a7053558522de73 *man/bilat.symmetry.Rd
@@ -136,8 +135,8 @@ da1241dd835f95675cc7126b2a7ec61a *man/two.d.array.Rd
 d2755155772526527e4224b17d0dd05d *man/warpRefMesh.Rd
 7bea8d6b17918fd4889e2056ebe0e3d0 *man/warpRefOutline.Rd
 d9119f721918f22c267db843023a86fe *man/writeland.tps.Rd
-7eab1e5370ef49ef8172706e883ca76d *NAMESPACE
-d2e540695739b345daa7179ff5eeae8a *NEWS.md
+4cab93f48e2f949890d233fc1422cdc1 *NAMESPACE
+f0331f0bdd347b49f108d28b432898f7 *NEWS.md
 d80d05ef890863f1b3004473627ea5f1 *R/arrayspecs.r
 f8e43e7a986e64d8b268c0c4b226ac04 *R/bilat.symmetry.r
 4de44720708760426e94d2f2ffef904b *R/build.template.r
@@ -188,7 +187,7 @@ e397afc336bba5e141d925b44693b71d *R/plotspec.r
 47dfef03c2a0c57898251a84fe8c5f48 *R/procD.pgls.r
 df3f4cc6406dc0c737ee2ff08c2a0e3d *R/read.morphologika.r
 b6f1390d9225c822d20796cae88643c7 *R/read.ply.r
-4e8de3e436a6f2d13c1cbab1788d16d6 *R/readland.fcsv.r
+de7fbab53c56cd5cee4d1d16201f308d *R/readland.fcsv.r
 568eb3bd0490ab2d721016f422420c17 *R/readland.nts.r
 8139a7d8f4b18d87e558df14b3c509aa *R/readland.shapes.r
 19ed63698149dd23b3c1d64ebdf13c61 *R/readland.tps.r
