@@ -13,10 +13,12 @@
 readland.fcsv = function (file = NULL)  {
   
   res <- read.csv(file = file, skip = 2, header = T)[, 1:4]
-  res.nms <- res[, 1]
+  res.ind <- res[, 1]
+  res.nms <- try(
+    unlist(strsplit(res.ind, "vtkMRMLMarkups")), silent = TRUE)
+  if(inherits(res.nms, "try-error")) res.nms <- res.ind else
+    res.nms <- res.nms[seq(2, length(res.nms), 2)]
   res <- res[,-1]
-  res.nms <- unlist(strsplit(res.nms, "vtkMRMLMarkups"))
-  res.nms <- res.nms[seq(2, length(res.nms), 2)]
   rownames(res) <- res.nms
   return(as.matrix(res))
 }

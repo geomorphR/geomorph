@@ -6,6 +6,7 @@
 * Fixed a bug in `logLikh` internal function that required `matrix` class objects for calculation.
 * Fixed a typo bug in `procD.lm` that caused lost results.
 * Fixed names being dropped from shape components in `bilat.symmetry`
+* Fixed `readland.fcsv` to be consistent with SlicerMorph updates.
 
 ### OTHER CHANGES
 * Additional error checking in `modularity.test` and `phylo.modularity` `rgl`
