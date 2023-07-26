@@ -11,6 +11,7 @@
 ### OTHER CHANGES
 * Additional error checking in `modularity.test` and `phylo.modularity` `rgl`
 * Added better warning for `estimate.missing` for failing with `method = "Reg"` to estimate landmarks.
+* Added `shape.predictor` examples to PLS functions.
 
 # CHANGES IN GEOMORPH VERSION 4.0.5
 

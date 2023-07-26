@@ -89,13 +89,25 @@
 #' #2B-PLS between head shape and food use data
 #' PLS <-two.b.pls(Y.gpa$coords,plethShapeFood$food,iter=999)
 #' summary(PLS)
-#' plot(PLS)
+#' P <- plot(PLS)
+#'  
+#'  # Visualize shape at minimum and maximum PLS scores.
+#'  # This is the challenging way
+#'  
+#'  # Block 1 (shape)
+#'  minx <- min(P$plot.args$x)
+#'  maxx <- max(P$plot.args$x)
+#'  preds <- shape.predictor(P$A1, 
+#'  x = P$plot.args$x,
+#'  min = minx, max = maxx)
+#'  plotRefToTarget(mshape(P$A1), preds$min)
+#'  plotRefToTarget(mshape(P$A1), preds$max)
 #'  
 #'  ### Visualize shape variation using picknplot.shape Because picknplot  
 #'  ### requires user decisions, the following example
 #'  ### is not run (but can be with removal of #).
 #'  ### For detailed options, see the picknplot help file
-#'  # picknplot.shape(plot(PLS))
+#'  # picknplot.shape(P)
 #'  
 #' 
 

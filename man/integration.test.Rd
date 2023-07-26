@@ -116,14 +116,34 @@ Y.gpa<-gpagen(plethodon$land)    #GPA-alignment
 land.gps<-c("A","A","A","A","A","B","B","B","B","B","B","B") 
 IT <- integration.test(Y.gpa$coords, partition.gp=land.gps, iter=999)
 summary(IT) # Test summary
-plot(IT) # PLS plot
+P <- plot(IT) # PLS plot
 
+ # Visualize shape at minimum and maximum PLS scores.
+ # This is the challenging way
+ 
+ # Block 1 
+ minx <- min(P$plot.args$x)
+ maxx <- max(P$plot.args$x)
+ preds <- shape.predictor(P$A1, 
+ x = P$plot.args$x,
+ min = minx, max = maxx)
+ plotRefToTarget(mshape(P$A1), preds$min)
+ plotRefToTarget(mshape(P$A1), preds$max)
+
+ # Block 2 
+ miny <- min(P$plot.args$y)
+ maxy <- max(P$plot.args$y)
+ preds <- shape.predictor(P$A2, 
+ x = P$plot.args$y,
+ min = miny, max = maxy)
+ plotRefToTarget(mshape(P$A2), preds$min)
+ plotRefToTarget(mshape(P$A2), preds$max)
  
  ### Visualize shape variation using picknplot.shape Because picknplot  
  ### requires user decisions, the following example
  ### is not run (but can be with removal of #).
  ### For detailed options, see the picknplot help file
- # picknplot.shape(plot(IT))
+ # picknplot.shape(P)
 
 IT$left.pls.vectors # extracting just the left (first block) 
 # singular vectors
