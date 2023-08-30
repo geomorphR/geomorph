@@ -69,18 +69,17 @@ readland.tps <- function (file, specID = c("None", "ID", "imageID"), negNA = FAL
               noBreaks. = TRUE)
       id <- 1:n
     }
-    
-    pcv.check <- sapply(1:n, function(j) tpsf[[j]]$pcv)
-    pcv.unique <- unique(pcv.check)
-    if(length(pcv.unique) == 1 && pcv.unique == 0) {
-      cat("\nNo curves detected; all points appear to be fixed landmarks.\n")
-    } else if(length(pcv.unique) == 1 && pcv.unique > 0) {
-      cat("\n", pcv.unique, "curve points detected per specimen and are appended to fixed landmarks.\n")
-    } else if(length(pcv.unique) > 1){
-      cat("\nCurve points detected but numbers vary among specimens.\n")
-      cat("\nCurve point frequencies:\n")
-      print(table(factor(pcv.check)))
-    }
+  } 
+  pcv.check <- sapply(1:n, function(j) tpsf[[j]]$pcv)
+  pcv.unique <- unique(pcv.check)
+  if(length(pcv.unique) == 1 && pcv.unique == 0) {
+    cat("\nNo curves detected; all points appear to be fixed landmarks.\n")
+  } else if(length(pcv.unique) == 1 && pcv.unique > 0) {
+    cat("\n", pcv.unique, "curve points detected per specimen and are appended to fixed landmarks.\n")
+  } else if(length(pcv.unique) > 1){
+    cat("\nCurve points detected but numbers vary among specimens.\n")
+    cat("\nCurve point frequencies:\n")
+    print(table(factor(pcv.check)))
   }
   
   kcheck <- sapply(1:n, function(j) length(tpsf[[j]]$k))
@@ -153,7 +152,7 @@ readland.tps <- function (file, specID = c("None", "ID", "imageID"), negNA = FAL
       cat("\nIf you want to treat them as NAs please set negNA = TRUE")
     }
   }
-
+  
   if(readcurves) {
     lmo <- arrayspecs(lmo, p.unique, ncol(lmo)/p.unique)
   } else {
