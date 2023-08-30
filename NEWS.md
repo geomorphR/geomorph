@@ -1,4 +1,4 @@
-# CHANGES IN GEOMORPH VERSION 4.0.5.999
+# CHANGES IN GEOMORPH VERSION 4.0.6
 
 ### Bug fixes
 * Fixed issue with `bilat.symmetry` (updated nested model computations)
