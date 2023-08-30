@@ -318,7 +318,7 @@ bilat.symmetry <- function(A, ind = NULL, side = NULL, replicate = NULL, object.
   # build shape components for output
   X.ind <- model.matrix(~ind + 0, data = as.data.frame(dat.shape[-1]))
   symm.component <- arrayspecs(coef(lm.fit(X.ind, Y)),p,k)
-  if(!is.null(spec.names)){
+  if(length(spec.names)>0){
     dimnames(symm.component)[[3]] <- spec.names
   }
   X.side <- model.matrix(~(side:ind) + 0, data = as.data.frame(dat.shape[-1]))
@@ -331,7 +331,7 @@ bilat.symmetry <- function(A, ind = NULL, side = NULL, replicate = NULL, object.
   asymm.component <- simplify2array(lapply(1:n.ind, function(j) {
     t(matrix(asymm.component[j,],k,p)) + mn.shape
   }))
-  if(!is.null(spec.names)){
+  if(length(spec.names)>0){
     dimnames(asymm.component)[[3]] <- spec.names 
   }
   DA.est <- coef(.lm.fit(X.side, Y))
@@ -343,13 +343,13 @@ bilat.symmetry <- function(A, ind = NULL, side = NULL, replicate = NULL, object.
   FA.component <- ind.mns[-indsq,] - ind.mns[indsq,]
   FA.component <- simplify2array(lapply(1:n.ind, function(j) 
   {t(matrix(FA.component[j,],k,p)) + mn.shape - mn.DA}))
-  if(!is.null(spec.names)){
+  if(length(spec.names)>0){
     dimnames(FA.component)[[3]] <- spec.names  
   }
   # Calculate individual asymmetry indices
   signed.asymm <- two.d.array(asymm.component)
   signed.AI <- sqrt(apply(signed.asymm^2, 1, sum))
-  if(!is.null(spec.names)){
+  if(length(spec.names)>0){
     names(signed.AI) <- spec.names 
   }
   asymm.mean <- apply(signed.asymm, 2, mean)
@@ -358,7 +358,7 @@ bilat.symmetry <- function(A, ind = NULL, side = NULL, replicate = NULL, object.
     unsigned.asymm[i,] <- ifelse(signed.asymm[i,]%*%asymm.mean > 0, signed.asymm[i,], signed.asymm[i,]*(-1))
   } 
   unsigned.AI <- sqrt(apply(unsigned.asymm^2, 1, sum))
-  if(!is.null(spec.names)){
+  if(length(spec.names)>0){
     names(unsigned.AI) <- spec.names 
   }  
   
