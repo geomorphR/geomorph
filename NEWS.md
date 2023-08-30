@@ -1,6 +1,7 @@
 # CHANGES IN GEOMORPH VERSION 4.0.6
 
 ### Bug fixes
+* Fixed issue with `readland.tps` when `warnmsg = FALSE`
 * Fixed issue with `bilat.symmetry` (updated nested model computations)
 * Fixed issue with `readland.tps` when curves exist but are not to be read
 * Fixed issue with bootstrap CI for `modularity.test` and `phylo.modularity`
