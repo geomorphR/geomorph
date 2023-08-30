@@ -1,6 +1,6 @@
 citHeader("To cite package 'geomorph' in a publication use the first two references.  If analyses with RRPP were used, cite the subsequent three references:")
 
-bibEntry(bibtype = "misc",
+BibEntry(bibtype = "misc",
 	title = "geomorph v4.0 and gmShiny: enhanced analytics and a new graphical interface for a comprehensive morphometric experience.",
         author = c(person(c("E.", "K."), "Baken"),
                     person(c("M.", "L."), "Collyer"),
@@ -13,7 +13,7 @@ bibEntry(bibtype = "misc",
   	
   	textVersion = paste("Baken, E. K., M. L. Collyer, A. Kaliontzopoulou, and D. C. Adams. 2021. geomorph v4.0 and gmShiny: enhanced analytics and a new graphical interface for a comprehensive morphometric experience. Methods in Ecology and Evolution. Methods in Ecology and Evolution. 12:2355-2363."))
   	
-bibEntry(bibtype = "misc",
+BibEntry(bibtype = "misc",
 	title = "Geomorph: Software for geometric morphometric analyses. R package version 4.0.6",
         author = c(person(c("D.", "C."), "Adams"),
                   person(c("M.", "L."), "Collyer"),
@@ -24,7 +24,7 @@ bibEntry(bibtype = "misc",
 
         textVersion = paste("Adams, D. C., M. L. Collyer, A. Kaliontzopoulou, and E.K. Baken. 2023. Geomorph: Software for geometric morphometric analyses. R package version 4.0.6. https://cran.r-project.org/package=geomorph.",sep=""))
         
-bibEntry(bibtype = "misc",
+BibEntry(bibtype = "misc",
 	title = "{RRPP}: Linear Model Evaluation with Randomized Residuals in a Permutation Procedure, R package version 1.4.0.",
     author = c(person(c("M.", "L."), "Collyer"),
                person(c("D.", "C."), "Adams")), 
@@ -33,7 +33,7 @@ bibEntry(bibtype = "misc",
   	
   	textVersion = paste("Collyer, M. L. and D. C. Adams. 2023. RRPP: Linear Model Evaluation with Randomized Residuals in a Permutation Procedure. ", "https://cran.r-project.org/web/packages/RRPP", sep = ""))
   
-bibEntry(bibtype = "misc",
+BibEntry(bibtype = "misc",
 	title = "{RRPP}: An R package for fitting linear models to high‐dimensional data using residual randomization. ",
         author = c(person(c("M.", "L."), "Collyer"),
                person(c("D.", "C."), "Adams")),
