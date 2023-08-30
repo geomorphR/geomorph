@@ -12,7 +12,7 @@ d8e8360c03c03fe45d2100e9c05d4a89 *data/plethodon.rda
 6e5e71b242462e422b716800ffc3c464 *data/scallops.rda
 3f928b12207c778ba53fd4a17fbf98c8 *DESCRIPTION
 73f723a130c92f8b84a81465a15add7c *geomorph.Rproj
-77e8fab1efac8087f6912df68185eb03 *inst/CITATION
+6781f506b920c2c790575888f148d39e *inst/CITATION
 593e42548fcbd08b6027b15bbca38808 *man/arrayspecs.Rd
 594bf8cd6e7363911a7053558522de73 *man/bilat.symmetry.Rd
 1ff6222663ac98e0dd1b6aaae0dd9962 *man/buildtemplate.Rd
@@ -203,6 +203,7 @@ b7d9792137b816aa04dbe07837a3f10a *R/shapeHulls.r
 ce64f40b8badacea0852af718e718355 *R/warpRefOutline.r
 ad572d6203f667d37641cee3adbc72b7 *R/writeland.tps.r
 ba685ee02f8f9e6c5b54f5b0295f350a *README.md
+b1077dc95aafb44e6b61196e75b11d7e *revdep/data.sqlite
 d3e5db710ad3bfca0e5be89edc91a2a9 *vignettes/figs/example_spec2.png
 e108112cb2dec057facffbf5571b92bf *vignettes/figs/example_template.png
 f0eeb0d08e88fe8475db103df58344db *vignettes/figs/fixed.3D.png
