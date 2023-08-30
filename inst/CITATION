@@ -1,4 +1,4 @@
-citHeader("To cite package 'geomorph' in a publication use the first two references.  If analyses with RRPP were used, cite the subsequent three references:")
+citHeader("To cite package 'geomorph' in a publication use the first two references.  If analyses with RRPP were used, cite the four references:")
 
 bibentry(bibtype = "Article",
 	title = "geomorph v4.0 and gmShiny: enhanced analytics and a new graphical interface for a comprehensive morphometric experience.",
