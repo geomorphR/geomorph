@@ -1,6 +1,7 @@
 # CHANGES IN GEOMORPH VERSION 4.0.5.999
 
 ### Bug fixes
+* Fixed issue with `bilat.symmetry` (updated nested model computations)
 * Fixed issue with `readland.tps` when curves exist but are not to be read
 * Fixed issue with bootstrap CI for `modularity.test` and `phylo.modularity`
 * Fixed a bug in `logLikh` internal function that required `matrix` class objects for calculation.

@@ -279,29 +279,15 @@ bilat.symmetry <- function(A, ind = NULL, side = NULL, replicate = NULL, object.
                   Parallel = Parallel, turbo = turbo,
                   seed = seed, iter = iter, print.progress = print.progress, 
                   effect.type = "F")
-  shape.anova <- anova(PSh, print.progress = FALSE, effect.type = "F")$table
-  shape.anova$Z[is.nan(shape.anova$Z)] <- NA
   
-  MS <- PSh$ANOVA$MS
-  RSS <- PSh$ANOVA$RSS
-  MSE <- RSS / matrix(PSh$ANOVA$df[nrow(RSS) + 1], nrow(RSS), ncol(RSS))
-  random.shape.F <- MS/MSE
-  
-  if(length(form.names) > 4) {
-    MS <- random.shape.F <- PSh$ANOVA$MS
-    MS.mod <- PSh$ANOVA$RSS.model[3,]/PSh$ANOVA$df[4]
-    random.shape.F[1,] <- MS[1,]/MS[3,]
-    random.shape.F[2,] <- MS[2,]/MS[3,]
-    random.shape.F[3,] <- PSh$ANOVA$Fs[3,]
-    
-    newZ <- apply(random.shape.F, 1, effect.size)
-    newP <- apply(random.shape.F, 1, pval)
-    shape.anova$F[1:3] <- random.shape.F[1:3, 1]
-    shape.anova$Z[1:3] <- newZ
-    shape.anova[[ncol(shape.anova)]][1:3] <- newP
+  if(!is.null(replicate)) {
+    shape.anova <- anova(PSh, print.progress = FALSE, 
+                         error = c("ind:side", "ind:side", "Residuals"), 
+                         effect.type = "F")$table
+  } else {
+    shape.anova <- anova(PSh, print.progress = FALSE, effect.type = "F")$table
   }
   rownames(shape.anova) <- form.names
-  
   
   if(!object.sym){  
     if(!is.null(replicate)) {
@@ -317,26 +303,14 @@ bilat.symmetry <- function(A, ind = NULL, side = NULL, replicate = NULL, object.
                     Parallel = Parallel, turbo = turbo,
                     seed = seed, iter= iter, print.progress = print.progress, 
                     effect.type = "F")
-    size.anova <- anova(PSz, print.progress = FALSE, effect.type = "F")$table
-    size.anova$Z[is.nan(size.anova$Z)] <- NA
-    
-    MS <- PSz$ANOVA$MS
-    RSS <- PSz$ANOVA$RSS
-    MSE <- RSS / matrix(PSz$ANOVA$df[nrow(RSS) + 1], nrow(RSS), ncol(RSS))
-    random.size.F <- MS/MSE
-    
-    if(length(form.names) > 4) {
-      MS <- random.size.F <- PSz$ANOVA$MS
-      MS.mod <- PSz$ANOVA$RSS.model[3,]/PSz$ANOVA$df[4]
-      random.size.F[1,] <- MS[1,]/MS[3,]
-      random.size.F[2,] <- MS[2,]/MS[3,]
-      random.size.F[3,] <- PSz$ANOVA$Fs[3,]
-      newZ <- apply(random.size.F, 1, effect.size)
-      newP <- apply(random.size.F , 1, pval)
-      size.anova$F[1:3] <- random.size.F[1:3, 1]
-      size.anova$Z[1:3] <- newZ
-      size.anova[[ncol(size.anova)]][1:3] <- newP
-    }
+
+    if(!is.null(replicate)) {
+      size.anova <- anova(PSz, print.progress = FALSE, 
+                          error = c("ind:side", "ind:side", "Residuals"), 
+                          effect.type = "F")$table
+    } else {
+      size.anova <- anova(PSz, print.progress = FALSE, effect.type = "F")$table
+    }   
     rownames(PSz$aov.table) <- form.names
     size.anova <- PSz$aov.table
   }
@@ -344,7 +318,9 @@ bilat.symmetry <- function(A, ind = NULL, side = NULL, replicate = NULL, object.
   # build shape components for output
   X.ind <- model.matrix(~ind + 0, data = as.data.frame(dat.shape[-1]))
   symm.component <- arrayspecs(coef(lm.fit(X.ind, Y)),p,k)
-  dimnames(symm.component)[[3]] <- spec.names 
+  if(!is.null(spec.names)){
+    dimnames(symm.component)[[3]] <- spec.names
+  }
   X.side <- model.matrix(~(side:ind) + 0, data = as.data.frame(dat.shape[-1]))
   avg.side.symm <- coef(lm.fit(X.side, Y))
   n.ind <- nlevels(ind)
@@ -354,9 +330,10 @@ bilat.symmetry <- function(A, ind = NULL, side = NULL, replicate = NULL, object.
   mn.shape <- mshape(A)
   asymm.component <- simplify2array(lapply(1:n.ind, function(j) {
     t(matrix(asymm.component[j,],k,p)) + mn.shape
-    }))
-  dimnames(asymm.component)[[3]] <- spec.names 
-  
+  }))
+  if(!is.null(spec.names)){
+    dimnames(asymm.component)[[3]] <- spec.names 
+  }
   DA.est <- coef(.lm.fit(X.side, Y))
   DA.mns <- arrayspecs(rbind(apply(DA.est[-indsq,], 2, mean), apply(DA.est[indsq,], 2, mean)), p, k)
   mn.DA <- matrix(apply((DA.est[-indsq,] - DA.est[indsq,]), 2, mean), byrow=T, nrow=p, ncol=k)
@@ -366,33 +343,35 @@ bilat.symmetry <- function(A, ind = NULL, side = NULL, replicate = NULL, object.
   FA.component <- ind.mns[-indsq,] - ind.mns[indsq,]
   FA.component <- simplify2array(lapply(1:n.ind, function(j) 
   {t(matrix(FA.component[j,],k,p)) + mn.shape - mn.DA}))
-  dimnames(FA.component)[[3]] <- spec.names  
-  
+  if(!is.null(spec.names)){
+    dimnames(FA.component)[[3]] <- spec.names  
+  }
   # Calculate individual asymmetry indices
   signed.asymm <- two.d.array(asymm.component)
   signed.AI <- sqrt(apply(signed.asymm^2, 1, sum))
-  names(signed.AI) <- spec.names 
-  
+  if(!is.null(spec.names)){
+    names(signed.AI) <- spec.names 
+  }
   asymm.mean <- apply(signed.asymm, 2, mean)
   unsigned.asymm <- matrix(NA, nrow=nrow(signed.asymm), ncol=ncol(signed.asymm))
   for (i in 1:nrow(signed.asymm)){
     unsigned.asymm[i,] <- ifelse(signed.asymm[i,]%*%asymm.mean > 0, signed.asymm[i,], signed.asymm[i,]*(-1))
   } 
   unsigned.AI <- sqrt(apply(unsigned.asymm^2, 1, sum))
-  names(unsigned.AI) <- spec.names 
-
+  if(!is.null(spec.names)){
+    names(unsigned.AI) <- spec.names 
+  }  
+  
   out <- list(shape.anova = shape.anova, symm.shape = symm.component,
               asymm.shape = asymm.component, DA.component = DA.mns, FA.component = FA.component,
               signed.AI = signed.AI, unsigned.AI = unsigned.AI,
               data.type = ifelse(object.sym == TRUE, "Object", "Matching"),
               permutations = iter+1,
-              random.shape.F = random.shape.F, 
               perm.method = ifelse(RRPP==TRUE,"RRPP", "Raw"),
               procD.lm.shape = PSh)
   if(!object.sym) {
     out$size.anova = size.anova
     out$procD.lm.size = PSz
-    out$random.size.F = random.size.F
   }
   out$call <- match.call()
   class(out) <- "bilat.symmetry"
