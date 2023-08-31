@@ -33,12 +33,13 @@
 #' @seealso \code{\link{rgl-package}} (used in 3D plotting)
 #' @examples
 #' 
-#' data(scallopPLY)
-#' ply <- scallopPLY$ply
-#' digitdat <- scallopPLY$coords
-#' plotspec(spec = ply, digitspec = digitdat, fixed = 16, 
-#' centered = TRUE, fixed.pt.col = "red", 
-#' fixed.pt.size = 15, col = "blue", size = 5)
+#' ## Not Run
+#' # data(scallopPLY)
+#' # ply <- scallopPLY$ply
+#' # digitdat <- scallopPLY$coords
+#' # plotspec(spec = ply, digitspec = digitdat, fixed = 16, 
+#' # centered = TRUE, fixed.pt.col = "red", 
+#' # fixed.pt.size = 15, col = "blue", size = 5)
 #' @author Erik Otarola-Castillo, Emma Sherratt, Antigoni Kaliontzopoulou, & Michael Collyer
 
 plotspec <- function (spec, digitspec, fixed = NULL, fixed.pt.col = "red", fixed.pt.size = 10, 

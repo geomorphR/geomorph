@@ -54,12 +54,13 @@ to find solutions with \code{\link{rgl-package}} core functions.
 }
 \examples{
 
-data(scallopPLY)
-ply <- scallopPLY$ply
-digitdat <- scallopPLY$coords
-plotspec(spec = ply, digitspec = digitdat, fixed = 16, 
-centered = TRUE, fixed.pt.col = "red", 
-fixed.pt.size = 15, col = "blue", size = 5)
+## Not Run
+# data(scallopPLY)
+# ply <- scallopPLY$ply
+# digitdat <- scallopPLY$coords
+# plotspec(spec = ply, digitspec = digitdat, fixed = 16, 
+# centered = TRUE, fixed.pt.col = "red", 
+# fixed.pt.size = 15, col = "blue", size = 5)
 }
 \seealso{
 \code{\link{warpRefMesh}}

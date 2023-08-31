@@ -160,11 +160,12 @@
 #'  text(0, 0.95*par()$usr[4], labels = "PC2 - 18.80%", pos = 4, font = 2)
 #'  legend("topleft", pch=22, pt.bg = unique(gps), legend = levels(gps))
 #'  
+#'  ### NOT RUN
 #'  ### 3D plot with a phylogeny and time on the z-axis
-#'  plot(PCA.w.phylo, time.plot = TRUE)
-#'  plot(PCA.w.phylo, time.plot = TRUE, bg = "red", 
-#'     phylo.par = list(tip.labels = TRUE, 
-#'  tip.txt.cex = 2, edge.color = "blue", edge.width = 2))
+#'  # plot(PCA.w.phylo, time.plot = TRUE)
+#'  # plot(PCA.w.phylo, time.plot = TRUE, bg = "red", 
+#'  #    phylo.par = list(tip.labels = TRUE, 
+#'  # tip.txt.cex = 2, edge.color = "blue", edge.width = 2))
 #'  
 
 
