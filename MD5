@@ -39,7 +39,7 @@ e5ea7eb05043e14bf36bb1c553de0576 *man/findMeanSpec.Rd
 2b261eb04173f51ca56cf603b47a63fe *man/geomorph-package.Rd
 4681bbf9711d9eafd48798c7537bf5b7 *man/geomorph.data.frame.Rd
 c7fdffac3135bde168be933be6bf2243 *man/globalIntegration.Rd
-fa3facc45b9d3824494f79924b49f72e *man/gm.prcomp.Rd
+15ae9d3c8d30da71a7083a0c113bd8dd *man/gm.prcomp.Rd
 d4115638c58e7542b8d9fde49290830e *man/gpagen.Rd
 e20e54a5d966dd6bb9af96259be90276 *man/gridPar.Rd
 a598044482a6c3e39517b798b654c57e *man/hummingbirds.Rd
@@ -82,7 +82,7 @@ d27b1cfaf43fd29d0facc9dfa24b8215 *man/plotAllometry.Rd
 e7e2b2a3ae9fa7bdb0e3effabb53d537 *man/plotAllSpecimens.Rd
 03cdded7ec33cd5e1d76c01f79b1cd23 *man/plotOutliers.Rd
 b5ad697f1aa90ba72cf63e9470885de7 *man/plotRefToTarget.Rd
-e4e9f8aaee430f29944e59fc4f6fb561 *man/plotspec.Rd
+b04ce6f4ef262d37491f42b74d5793e8 *man/plotspec.Rd
 bf735457c885585781fa8dd86e2671b8 *man/print.bilat.symmetry.Rd
 61b3a2b02fa0a9976973470034a6f9d6 *man/print.combined.set.Rd
 364b89975a5ac219db379c2fab53f19e *man/print.compare.CR.Rd
@@ -172,10 +172,10 @@ e46ff035bdf051f8f90adafc7375e968 *R/estimate.missing.r
 aac6a4f8a759473e8c37048e5c8e3d91 *R/findMeanSpec.r
 067124d4119de55a6089c6aefdd0eac5 *R/fixed.angle.r
 3d7958991ae174c24ba7c570f4e03b27 *R/geomorph.data.frame.r
-a7c5e67d824387c615eb6dba96a47a72 *R/geomorph.support.code.r
+4a2b7eabd39902d462f5b809f0a3a413 *R/geomorph.support.code.r
 c5f387a50e0f62813cbf08428738588b *R/geomorph.utils.r
 b0de2a67cff633e27e7a00860187240f *R/globalIntegration.r
-31dfd3f01ecce6a9565dbcaa9b28e658 *R/gm.prcomp.R
+f0a3e30827a05015f8d2d54761dfa6cc *R/gm.prcomp.R
 d94f42b20fe041431c718c509e0ca61b *R/gpagen.r
 a6c3643aba0a098878d2768d57ff8ded *R/gridPar.r
 4fe96543a6b8d642c1a8d17249e52d42 *R/integration.test.r
@@ -196,7 +196,7 @@ e61483ce68db0750515dc110212e77f2 *R/plotAllometry.r
 f9043772e114ec0f814ab4782383a5dc *R/plotAllSpecimens.r
 650349cc43c0ad77865aea74dc2f61bf *R/plotOutliers.r
 eee09aec327235fd4c22f83a498ec6ed *R/plotRefToTarget.r
-e397afc336bba5e141d925b44693b71d *R/plotspec.r
+ad2be16301f031522aa9a4acc38de67f *R/plotspec.r
 150dbd634cab50a5d2fc245c59da5134 *R/procD.lm.r
 47dfef03c2a0c57898251a84fe8c5f48 *R/procD.pgls.r
 df3f4cc6406dc0c737ee2ff08c2a0e3d *R/read.morphologika.r
