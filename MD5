@@ -161,7 +161,7 @@ e46ff035bdf051f8f90adafc7375e968 *R/estimate.missing.r
 aac6a4f8a759473e8c37048e5c8e3d91 *R/findMeanSpec.r
 067124d4119de55a6089c6aefdd0eac5 *R/fixed.angle.r
 3d7958991ae174c24ba7c570f4e03b27 *R/geomorph.data.frame.r
-ac5d2685d2d9d5ba8a0bf310016ac99b *R/geomorph.support.code.r
+cd042dc3338ba067dc9e81a541e8921a *R/geomorph.support.code.r
 ecc99b9c339e2cc92ae963b97d463a57 *R/geomorph.utils.r
 b0de2a67cff633e27e7a00860187240f *R/globalIntegration.r
 31dfd3f01ecce6a9565dbcaa9b28e658 *R/gm.prcomp.R
@@ -203,7 +203,6 @@ b7d9792137b816aa04dbe07837a3f10a *R/shapeHulls.r
 ce64f40b8badacea0852af718e718355 *R/warpRefOutline.r
 ad572d6203f667d37641cee3adbc72b7 *R/writeland.tps.r
 ba685ee02f8f9e6c5b54f5b0295f350a *README.md
-b1077dc95aafb44e6b61196e75b11d7e *revdep/data.sqlite
 d3e5db710ad3bfca0e5be89edc91a2a9 *vignettes/figs/example_spec2.png
 e108112cb2dec057facffbf5571b92bf *vignettes/figs/example_template.png
 f0eeb0d08e88fe8475db103df58344db *vignettes/figs/fixed.3D.png

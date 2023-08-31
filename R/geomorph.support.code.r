@@ -1383,20 +1383,6 @@ tps2d3d <- function(M, matr, matt, PB=TRUE){		#DCA: altered from J. Claude 2008
   return(matg)
 }
 
-
-# In development for various functions
-
-model.matrix.g <- function(f1, data = NULL) {
-  f1 <- as.formula(f1)
-  Terms <- terms(f1)
-  labs <- attr(Terms, "term.labels")
-  if(!is.null(data)) {
-    matches <- na.omit(match(labs, names(data)))
-    dat <- as.data.frame(data[matches])
-  } else dat <- NULL
-  model.matrix(f1, data=dat)
-}
-
 # perm.CR.index
 # creates a permutation index for resampling, shuffling landmarks
 # used in all functions utilizing CR (modularity)
