@@ -1,5 +1,8 @@
 # CHANGES IN GEOMORPH VERSION 4.0.6.999
 
+### Bug fixes
+* Fixed names issue with `bilat.symmetry`
+
 # CHANGES IN GEOMORPH VERSION 4.0.6
 
 ### Bug fixes
