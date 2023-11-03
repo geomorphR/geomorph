@@ -435,6 +435,8 @@ Cov.proj <- function(Cov, id = NULL, symmetric = FALSE){
 # and defers to C for help.  This is done once only here. 
 # (Produces a projection matrix)
 phy.sim.mat <- function(phy) {
+  if(is.null(phy$edge.length))
+    stop("The tree has no branch lengths.\n", call. = FALSE)
   N <- length(phy$tip.label)
   n <- nrow(phy$edge)
   m <- matrix(0, N, n)
@@ -469,7 +471,10 @@ phy.sim.mat <- function(phy) {
 # fast.phy.vcv
 # same as vcv.phylo but without options, in order to not use ape
 
-fast.phy.vcv <- function (phy) tcrossprod(phy.sim.mat(phy))
+fast.phy.vcv <- function (phy) {
+  x <- phy.sim.mat(phy)
+  tcrossprod(x)
+}
 
 # reorder.phy
 # same as reorder function, but without options
