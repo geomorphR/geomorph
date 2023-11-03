@@ -1,5 +1,4 @@
 18d2fd81e78a7fffff6c1eedc85c7683 *cran-comments.md
-2b5c97d1be5472897d8975b9506b43b0 *CRAN-SUBMISSION
 247b6e5658356e87edfd560687b239fc *data/hummingbirds.rda
 56558754725fea156eb0820f67a4f508 *data/larvalMorph.rda
 c3fc0e7a97f4cbd5b6cd8944d737b11a *data/lizards.rda
@@ -12,7 +11,7 @@ d8e8360c03c03fe45d2100e9c05d4a89 *data/plethodon.rda
 9ba51ab9be03930a4acdcddde8169b33 *data/scallopPLY.rda
 6e5e71b242462e422b716800ffc3c464 *data/scallops.rda
 3f928b12207c778ba53fd4a17fbf98c8 *DESCRIPTION
-73f723a130c92f8b84a81465a15add7c *geomorph.Rproj
+f4f2080e745b8d689f17caf549449ab5 *geomorph.Rproj
 777f56c2f94a7c701c45e130664d25d1 *inst/CITATION
 593e42548fcbd08b6027b15bbca38808 *man/arrayspecs.Rd
 594bf8cd6e7363911a7053558522de73 *man/bilat.symmetry.Rd
@@ -136,7 +135,7 @@ da1241dd835f95675cc7126b2a7ec61a *man/two.d.array.Rd
 d2755155772526527e4224b17d0dd05d *man/warpRefMesh.Rd
 7bea8d6b17918fd4889e2056ebe0e3d0 *man/warpRefOutline.Rd
 d9119f721918f22c267db843023a86fe *man/writeland.tps.Rd
-7eab1e5370ef49ef8172706e883ca76d *NAMESPACE
+4cab93f48e2f949890d233fc1422cdc1 *NAMESPACE
 9dd21ceb158e1734ad451b613203a30e *NEWS.md
 d80d05ef890863f1b3004473627ea5f1 *R/arrayspecs.r
 464a3e53e0180c0ddb2b2ecef4521172 *R/bilat.symmetry.r
@@ -197,7 +196,7 @@ d688cf3fbc6c3351526c422948e457ba *R/readmulti.tps.R
 bd2676b20bf5bc7b10e1c6df7139d069 *R/rotate.coords.R
 6b6c4d8cd9c27ada384db316ff846aff *R/shape.predictor.r
 b7d9792137b816aa04dbe07837a3f10a *R/shapeHulls.r
-70cfb5fc752315e5da28b00ae9ec6143 *R/shared.support.code.R
+e1c8d08f10aa16de739a380ec3107603 *R/shared.support.code.R
 6c1eaa8df965073718a2266619d3a306 *R/two.b.pls.r
 2e693d8b4f3c21d742737b97d1773119 *R/two.d.array.r
 7385019797d3400eac9dbce0ea33b74f *R/warpRefMesh.r
