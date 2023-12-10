@@ -22,8 +22,9 @@ Read multiple tps files to obtain landmark coordinates and combine them into a s
 This is a wrapper of \code{\link{readland.tps}} to allow reading landmark coordinates, in 2D or 3D, from several tps files , and compiling them into an array for proceeding with GM procedures.
 
 The arguments specID and negNA of \code{\link{readland.tps}} can be directly set through this function.
-Note that if specID is set to either "None" or "ID", a check for duplicate specimen names is not possible and specimens will be numbered with 1:N, where N the total number of specimens.
 }
 \author{
 Antigoni Kaliontzopoulou
+
+Michael Collyer
 }

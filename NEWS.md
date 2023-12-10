@@ -2,6 +2,11 @@
 
 ### Bug fixes
 * Fixed names issue with `bilat.symmetry`
+* Fixed problems with ellipsis use in `readmulti.tps`
+
+### OTHER CHANGES
+
+* Added a table to identify inconsistent landmarking in`readmulti.tps`.
 
 # CHANGES IN GEOMORPH VERSION 4.0.6
 
