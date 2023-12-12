@@ -26,21 +26,23 @@ readmulti.tps <- function(filelist, ... ){
   
   file.ext <- substr(tps.list, nchar(tps.list)-3, nchar(tps.list))
   if(!all(file.ext%in%c(".tps", ".TPS"))) 
-    stop("File list includes files in a format other than tps, please ammend")
+    stop("\nFile list includes files in a format other than tps, please ammend",
+         call. = FALSE)
   
-
   readland.args$file <- tps.list[[1]]
   all.lms <- lapply(1:length(tps.list), function(j){
     readland.args$file <- tps.list[[j]]
     do.call(readland.tps, readland.args)
   })
   
-  specnames <- sapply(all.lms, function(x) dimnames(x)[[3]])
-  all.lms <- lapply(all.lms, function(x) x[,,1] )
-  
+  specnames <- unlist(lapply(all.lms, function(x) dimnames(x)[[3]]))
+  if(readland.args$specID == "None") specnames <- 1:length(specnames)
+  all.lms <- unlist(lapply(all.lms, function(x) 
+    lapply(1:(dim(x)[[3]]), 
+           function(y) as.matrix(x[,,y]))), recursive = FALSE)
   if(all(specnames == "1")) specnames <- rep(NULL, length(specnames))
   if(length(unique(specnames)) < length(specnames)) 
-    warning("\nInput files seem to include repeated specimen names.\n", 
+    warning("\n\nInput files seem to include repeated specimen names.\n", 
             call. = FALSE)
   
   names(all.lms) <- specnames
