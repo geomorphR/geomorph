@@ -310,7 +310,7 @@ mshape <- function(A, na.action = 1){
 
 # scanTPS
 # Scans data and other info from TPS files
-# used by readland.tps
+# used by .readland.tps
 scanTPS <- function(file) {
   ignore.case = TRUE
   tpsfile <- scan(file = file, what = "char", sep = "\n", quiet = TRUE)
@@ -359,6 +359,35 @@ scanTPS <- function(file) {
                 k = k, curve.pts = curve.pts, scale = scale, id = id, image = image)
     out  
   })
+}
+
+# .readland.tps
+# converts scanTPS data into a lm list with appropriate names
+# used by readland.tps
+readland.tps <- function (file, specID = c("None", "ID", "imageID"), negNA = FALSE,  
+                          readcurves = FALSE, warnmsg = TRUE) {
+  lmi <- .readland.tps(file, specID, negNA, readcurves, warnmsg)
+  tbl <- data.frame(id = names(lmi), 
+                    p = sapply(lmi, NROW),
+                    k = sapply(lmi, NCOL))
+  rownames(tbl) <- NULL
+  
+  lm.check <- apply(tbl[, -1], 2, unique)
+  
+  if(is.list(lm.check)){
+    cat("\nEither the number of landmarks (p) or the landmark dimensions (k) differ\n")
+    cat("among specimens.  An array is not returned but the following table is\n")
+    cat("provided so that discrepencies can be investigated.\n\n")
+    
+    print(tbl)
+    lmo <- tbl
+    
+  } else {
+    lmo <- simplify2array(lmi)
+  }
+  
+  invisible(lmo)
+  
 }
 
 # orp

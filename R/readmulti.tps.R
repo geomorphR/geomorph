@@ -32,38 +32,34 @@ readmulti.tps <- function(filelist, ... ){
   readland.args$file <- tps.list[[1]]
   all.lms <- lapply(1:length(tps.list), function(j){
     readland.args$file <- tps.list[[j]]
-    do.call(readland.tps, readland.args)
+    do.call(.readland.tps, readland.args)
   })
   
-  specnames <- unlist(lapply(all.lms, function(x) dimnames(x)[[3]]))
+  specnames <- unlist(lapply(all.lms, names))
   if(readland.args$specID == "None") specnames <- 1:length(specnames)
-  all.lms <- unlist(lapply(all.lms, function(x) 
-    lapply(1:(dim(x)[[3]]), 
-           function(y) as.matrix(x[,,y]))), recursive = FALSE)
-  if(all(specnames == "1")) specnames <- rep(NULL, length(specnames))
   if(length(unique(specnames)) < length(specnames)) 
     warning("\n\nInput files seem to include repeated specimen names.\n", 
             call. = FALSE)
   
-  names(all.lms) <- specnames
-    
-  dt.dims <- sapply(all.lms, dim)
-  dim.unique <- apply(dt.dims, 1, unique)
+  lm.tab<- do.call(cbind, lapply(all.lms, function(x) sapply(x, dim)))
+  lm.check <- apply(lm.tab, 1, unique)
+  bad.lm <- is.list(lm.check)
   
-  bad.lm <- is.list(dim.unique)
-  
+  if(bad.lm) {
+    lmo <- t(lm.tab)
+    colnames(lmo) <- c("p", "k")
+  } else {
+    lmo <- unlist(all.lms, recursive = FALSE)
+    names(lmo) <- specnames
+    lmo <- simplify2array(lmo)
+  }
+
   if(bad.lm) {
     cat("\nInput tps files include either different numbers of landmarks\n")
     cat("or different dimensions (2D or 3D) for some landmarks.\n\n")
-    cat("A table of dimensions is returned rather than an array, so the issue can be investigated.")
-    dt.dims <- dt.dims[1:2,]
-    rownames(dt.dims) <- c("points", "dimensions")
-    if(!all(is.na(specnames))) colnames(dt.dims) <- specnames
-    dt.dims <- as.table(dt.dims)
-    }
+    cat("A table of dimensions is returned rather than an array, so the issue can be investigated.\n\n")
+    print(lmo)
+  }
   
-  if(!bad.lm)
-    all.lms <- simplify2array(all.lms)
-  
-  if(bad.lm) print(dt.dims) else return(all.lms)
+  return(lmo)
 }

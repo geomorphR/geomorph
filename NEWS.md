@@ -6,7 +6,7 @@
 
 ### OTHER CHANGES
 
-* Added a table to identify inconsistent landmarking in`readmulti.tps`.
+* Added a feature to print a table to identify inconsistent landmarking in both `readland.tps` and `readmulti.tps`, rather than just return an error.
 
 # CHANGES IN GEOMORPH VERSION 4.0.6
 
