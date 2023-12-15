@@ -364,7 +364,7 @@ scanTPS <- function(file) {
 # .readland.tps
 # converts scanTPS data into a lm list with appropriate names
 # used by readland.tps
-readland.tps <- function (file, specID = c("None", "ID", "imageID"), negNA = FALSE,  
+.readland.tps <- function (file, specID = c("None", "ID", "imageID"), negNA = FALSE,  
                           readcurves = FALSE, warnmsg = TRUE) {
   lmi <- .readland.tps(file, specID, negNA, readcurves, warnmsg)
   tbl <- data.frame(id = names(lmi), 
