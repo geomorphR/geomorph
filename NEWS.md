@@ -1,6 +1,7 @@
 # CHANGES IN GEOMORPH VERSION 4.0.6.999
 
 ### Bug fixes
+* Fixed issue with `estimate.missing` for shapes files and TPS option
 * Fixed names issue with `bilat.symmetry`
 * Fixed problems with ellipsis use in `readmulti.tps`
 
