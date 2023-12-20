@@ -365,29 +365,118 @@ scanTPS <- function(file) {
 # converts scanTPS data into a lm list with appropriate names
 # used by readland.tps
 .readland.tps <- function (file, specID = c("None", "ID", "imageID"), negNA = FALSE,  
-                          readcurves = FALSE, warnmsg = TRUE) {
-  lmi <- .readland.tps(file, specID, negNA, readcurves, warnmsg)
-  tbl <- data.frame(id = names(lmi), 
-                    p = sapply(lmi, NROW),
-                    k = sapply(lmi, NCOL))
-  rownames(tbl) <- NULL
-  
-  lm.check <- apply(tbl[, -1], 2, unique)
-  
-  if(is.list(lm.check)){
-    cat("\nEither the number of landmarks (p) or the landmark dimensions (k) differ\n")
-    cat("among specimens.  An array is not returned but the following table is\n")
-    cat("provided so that discrepencies can be investigated.\n\n")
-    
-    print(tbl)
-    lmo <- tbl
-    
-  } else {
-    lmo <- simplify2array(lmi)
+                           readcurves = FALSE, warnmsg = TRUE) {
+  tpsf <- scanTPS(file)
+  n <- length(tpsf)
+  specID <- match.arg(specID)
+  if(specID == "ID") id <- sapply(1:n, function(j) tpsf[[j]]$id) else
+    if(specID == "imageID") id <- sapply(1:n, function(j) tpsf[[j]]$image) else {
+      if(warnmsg) cat("\nNo specID provided; specimens will be numbered 1, 2, 3 ...\n")
+      id <- 1:n
+    }
+  if(warnmsg){
+    if(specID == "ID" && length(id[[1]]) == 0) {
+      warning("specID = 'ID' did not produce reliable ID information; 
+              \nspecimens will be numbered 1, 2, 3 ...\n", call. = FALSE, immediate. = TRUE,
+              noBreaks. = TRUE)
+      id <- 1:n
+    }
+    if(specID == "imageID" && length(id[[1]]) == 0) {
+      warning("specID = 'ID' did not produce reliable ID information; 
+              \nspecimens will be numbered 1, 2, 3 ...\n", call. = FALSE, immediate. = TRUE,
+              noBreaks. = TRUE)
+      id <- 1:n
+    }
+  } 
+  pcv.check <- sapply(1:n, function(j) tpsf[[j]]$pcv)
+  pcv.unique <- unique(pcv.check)
+  if(length(pcv.unique) == 1 && pcv.unique == 0) {
+    cat("\nNo curves detected; all points appear to be fixed landmarks.\n")
+  } else if(length(pcv.unique) == 1 && pcv.unique > 0) {
+    cat("\n", pcv.unique, "curve points detected per specimen and are appended to fixed landmarks.\n")
+  } else if(length(pcv.unique) > 1){
+    cat("\nCurve points detected but numbers vary among specimens.\n")
+    cat("\nCurve point frequencies:\n")
+    print(table(factor(pcv.check)))
   }
   
-  invisible(lmo)
+  kcheck <- sapply(1:n, function(j) length(tpsf[[j]]$k))
+  k.error <- which(kcheck > 1)
+  if(length(k.error) == 0) k.error <- NULL else
+    warning(paste("Improper landmark number or formatting appear for specimen(s):", k.error,"\n"),
+            call. = FALSE, immediate. = TRUE)
   
+  pcheck <- sapply(1:n, function(j) tpsf[[j]]$p)
+  if(all(pcheck==0)) {
+    stop(paste("File", file, "does not contain landmark coordinates", sep = " "))
+  }
+  
+  scale.list <- unlist(lapply(1:n, function(j) tpsf[[j]]$scale))
+  if(length(scale.list) != n && warnmsg) {
+    
+    warning(paste("Not all specimens have scale adjustment (perhaps because they are already scaled);",
+                  "\nno rescaling will be performed in these cases\n"), immediate. = TRUE, call. = TRUE)
+  }
+  
+  if(!readcurves) {
+    lmo <- lapply(1:n, function(j) {
+      x <- tpsf[[j]]
+      l <- x$lm
+      k <- max(x$k)
+      p <- x$plm
+      lm <- matrix(NA, p, k)
+      for(i in 1:p) {
+        pts <- unlist(l[[i]])
+        kk <- length(pts)
+        if(kk > 0) lm[i,1:kk] <- pts
+      }
+      
+      if(length(x$scale) == 0) x$scale = 1
+      lm*x$scale
+    })
+  } else {
+    lmo <- lapply(1:n, function(j) {
+      x <- tpsf[[j]]
+      l <- c(x$lm, x$curve.lm)
+      k <- max(x$k)
+      p <- x$plm + x$pcv
+      lm <- matrix(NA, p, k)
+      for(i in 1:p) {
+        pts <- unlist(l[[i]])
+        kk <- length(pts)
+        if(kk > 0) lm[i,1:kk] <- pts
+      }
+      if(length(x$scale) == 0) x$scale = 1
+      lm*x$scale
+    })
+  }
+  
+  if(any(is.na(lmo))){
+    cat("\nNegative landmark coordinates have been identified and imported as such.") 
+    cat("\nIf you want to treat them as NAs please set negNA = TRUE")
+  } 
+  
+  if(!is.null(k.error)){
+    cat("\nThere appears to be missing or superfluous data.\n")
+    cat("Check these specimens for mistakes:", id[k.error], "\n")
+  }
+  
+  if(warnmsg){
+    if(length(pcv.unique) > 1){
+      cat("\n\nA break down of fixed and curve points per specimen:\n")
+      sp.list <- sapply(1:n, function(j) {
+        x <- tpsf[[j]]
+        c(x$plm, x$pcv)
+      })
+      rownames(sp.list) <- c("nFixedPts", "nCurvePts")
+      colnames(sp.list) <- id
+      print(sp.list)
+    }
+  }
+  
+  names(lmo) <- id
+  
+  invisible(lmo)
 }
 
 # orp
