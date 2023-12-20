@@ -161,5 +161,10 @@ estimate.missing <- function(A, method=c("TPS","Reg")){
     A2 <- simplify2array(A2.updated)
     dimnames(A2) <- A.names
   }
+  #  if("a" %in% ls()) {
+  #    a$landmarks <- A2.updated
+  #    names(A2.updated) <- A.names[[3]]
+  #    A2 <- a
+  #  }
    return(A2)
 }
