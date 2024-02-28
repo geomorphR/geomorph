@@ -26,7 +26,7 @@
 #' \item{pairwise.z}{A matrix of pairwise, two-sample z scores between all pairs of effect sizes.}
 #' \item{pairwise.p}{A matrix of corresponding P-values.}
 #' @references Conaway, M.A., and D.C. Adams. 2022. An effect size for comparing the strength of 
-#'   morphological integration across studies. Evolution. (Accepted).
+#'   morphological integration across studies. Evolution. 76: 2244-2259.
 #' @examples
 #'  
 #'  data("plethodon")

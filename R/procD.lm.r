@@ -230,7 +230,7 @@
 #' 
 #' ### Regression example
 #' data(ratland)
-#' rat.gpa<-gpagen(ratland)         #GPA-alignment
+#' rat.gpa <- gpagen(ratland)         #GPA-alignment
 #' gdf <- geomorph.data.frame(rat.gpa) # geomorph data frame is easy 
 #' # without additional input
 #' 

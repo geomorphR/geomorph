@@ -24,7 +24,7 @@ Three different methods are available for missing data (see Arguments and Exampl
 }
 \examples{
 data(plethodon)
-Y.gpa<-gpagen(plethodon$land)    #GPA-alignment
+Y.gpa <- gpagen(plethodon$land)    #GPA-alignment
 A <- Y.gpa$coords
 A[[1]] <- NA # make a missing value, just for example
 

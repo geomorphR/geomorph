@@ -1,4 +1,6 @@
-# CHANGES IN GEOMORPH VERSION 4.0.6.999
+# CHANGES IN GEOMORPH VERSION 4.0.7.999
+
+# CHANGES IN GEOMORPH VERSION 4.0.7
 
 ### Bug fixes
 * Fixed issue with `estimate.missing` for shapes files and TPS option
@@ -7,6 +9,7 @@
 
 ### OTHER CHANGES
 
+* Updated internal code and Rd file formats to match new CRAN policies
 * Added a feature to print a table to identify inconsistent landmarking in both `readland.tps` and `readmulti.tps`, rather than just return an error.
 
 # CHANGES IN GEOMORPH VERSION 4.0.6

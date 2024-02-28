@@ -29,7 +29,7 @@
 #' # Example: Compare phylogenetic signal of head components in Plethodon
 #' 
 #' data(plethspecies) 
-#' Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment
+#' Y.gpa <- gpagen(plethspecies$land)    #GPA-alignment
 #' 
 #' ## landmarks of the jaw and cranium
 #' jaw <- 1:5

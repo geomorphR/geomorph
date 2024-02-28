@@ -48,7 +48,7 @@ can be used with \code{\link{plotRefToTarget}} to generate graphical representat
 # Y.gpa <- gpagen(plethodon$land)    #GPA-alignment    
 # plot(gm.prcomp(Y.gpa$coords))
 
-# preds <- shape.predictor(Y.gpa$coords, x= NULL, Intercept = FALSE, 
+# preds <- shape.predictor(Y.gpa$coords, x = NULL, Intercept = FALSE, 
 # pred1 = -0.1, pred2 = 0.1) # PC 1 extremes, sort of
 # M <- mshape(Y.gpa$coords)
 # plotRefToTarget(M, preds$pred1)
@@ -57,14 +57,14 @@ can be used with \code{\link{plotRefToTarget}} to generate graphical representat
 
 # PCA <- gm.prcomp(Y.gpa$coords)
 # PC <- PCA$x[,1]
-# preds <- shape.predictor(Y.gpa$coords, x= PC, Intercept = FALSE, 
+# preds <- shape.predictor(Y.gpa$coords, x = PC, Intercept = FALSE, 
 # pred1 = min(PC), pred2 = max(PC)) # PC 1 extremes, more technically
 # plotRefToTarget(M, preds$pred1)
 # plotRefToTarget(M, preds$pred2)
 
 # PC <- PCA$x[,1:2]
 # user-picked spots can be anything, but it in this case, apparent groups
-# preds <- shape.predictor(Y.gpa$coords, x= PC, Intercept = FALSE, 
+# preds <- shape.predictor(Y.gpa$coords, x = PC, Intercept = FALSE, 
 #                          pred1 = c(0.045,-0.02), 
 #                          pred2 = c(-0.025,0.06), 
 #                          pred3 = c(-0.06,-0.04)) 
@@ -74,62 +74,62 @@ can be used with \code{\link{plotRefToTarget}} to generate graphical representat
 
 # allometry example - straight-up allometry
 
-# preds <- shape.predictor(Y.gpa$coords, x= log(Y.gpa$Csize), 
+# preds <- shape.predictor(Y.gpa$coords, x = log(Y.gpa$Csize), 
 #                          Intercept = TRUE, 
 #                          predmin = min(log(Y.gpa$Csize)), 
 #                          predmax = max(log(Y.gpa$Csize))) 
 
-# plotRefToTarget(M, preds$predmin, mag=3)
-# plotRefToTarget(M, preds$predmax, mag=3)
+# plotRefToTarget(M, preds$predmin, mag = 3)
+# plotRefToTarget(M, preds$predmax, mag = 3)
 
 # allometry example - using RegScore or PredLine via procD.lm
 
 # gdf <- geomorph.data.frame(Y.gpa)
-# plethAllometry <- procD.lm(coords ~ log(Csize), data=gdf)
+# plethAllometry <- procD.lm(coords ~ log(Csize), data = gdf)
 # allom.plot <- plot(plethAllometry, 
 # type = "regression", 
 # predictor = log(gdf$Csize),
 # reg.type ="RegScore") # make sure to have a predictor 
 
 # preds <- shape.predictor(plethAllometry$GM$fitted, 
-#                          x= allom.plot$RegScore, Intercept = FALSE, 
+#                          x = allom.plot$RegScore, Intercept = FALSE, 
 #                          predmin = min(allom.plot$RegScore), 
 #                          predmax = max(allom.plot$RegScore)) 
-# plotRefToTarget(M, preds$predmin, mag=3)
-# plotRefToTarget(M, preds$predmax, mag=3)
+# plotRefToTarget(M, preds$predmin, mag = 3)
+# plotRefToTarget(M, preds$predmax, mag = 3)
 
 # allom.plot <- plot(plethAllometry, 
 # type = "regression", 
 # predictor = log(gdf$Csize),
 # reg.type ="PredLine")
 # preds <- shape.predictor(plethAllometry$GM$fitted, 
-#                          x= allom.plot$PredLine, Intercept = FALSE, 
+#                          x = allom.plot$PredLine, Intercept = FALSE, 
 #                          predmin = min(allom.plot$PredLine), 
 #                          predmax = max(allom.plot$PredLine)) 
-# plotRefToTarget(M, preds$predmin, mag=3)
-# plotRefToTarget(M, preds$predmax, mag=3)
+# plotRefToTarget(M, preds$predmin, mag = 3)
+# plotRefToTarget(M, preds$predmax, mag = 3)
 
 # using factors via PCA
 
 # gdf <- geomorph.data.frame(Y.gpa, species = plethodon$species, 
 #         site = plethodon$site)
-# pleth <- procD.lm(coords ~ species*site, data=gdf)
+# pleth <- procD.lm(coords ~ species * site, data=gdf)
 # PCA <- prcomp(pleth$fitted)
-# plot(PCA$x, asp=1, pch=19)
+# plot(PCA$x, asp = 1, pch = 19)
 
-# means <- unique(round(PCA$x,3))
+# means <- unique(round(PCA$x, 3))
 # means # note: suggests 3 PCs useful enough
 
-# preds <- shape.predictor(arrayspecs(pleth$fitted, 12,2), x= PCA$x[,1:3],
+# preds <- shape.predictor(arrayspecs(pleth$fitted, 12,2), x = PCA$x[,1:3],
 #                          Intercept = FALSE,
 #                          pred1 = means[1,1:3], 
 #                          pred2 = means[2,1:3],
 #                          pred3 = means[3,1:3], 
 #                          pred4 = means[4,1:3])                   
-# plotRefToTarget(M, preds$pred1, mag=2)
-# plotRefToTarget(M, preds$pred2, mag=2)
-# plotRefToTarget(M, preds$pred3, mag=2)
-# plotRefToTarget(M, preds$pred4, mag=2)
+# plotRefToTarget(M, preds$pred1, mag = 2)
+# plotRefToTarget(M, preds$pred2, mag = 2)
+# plotRefToTarget(M, preds$pred3, mag = 2)
+# plotRefToTarget(M, preds$pred4, mag = 2)
 
 # Using a design matrix for factors
 
@@ -141,16 +141,16 @@ can be used with \code{\link{plotRefToTarget}} to generate graphical representat
 # preds <- shape.predictor(arrayspecs(pleth$fitted, 12,2), x = X, 
 #                          Intercept = TRUE, 
 #                          symJord=symJord, alloJord=alloJord)
-# plotRefToTarget(M, preds$symJord, mag=2)
-# plotRefToTarget(M, preds$alloJord, mag=2)
+# plotRefToTarget(M, preds$symJord, mag = 2)
+# plotRefToTarget(M, preds$alloJord, mag = 2)
 
 # PLS Example
 
 # data(plethShapeFood) 
-# Y.gpa<-gpagen(plethShapeFood$land)    #GPA-alignment    
+# Y.gpa <- gpagen(plethShapeFood$land)    #GPA-alignment    
 
 # 2B-PLS between head shape and food use data
-# PLS <-two.b.pls(A1 = plethShapeFood$food, A2 = Y.gpa$coords, iter=999) 
+# PLS <- two.b.pls(A1 = plethShapeFood$food, A2 = Y.gpa$coords) 
 # summary(PLS)
 # plot(PLS)
 
@@ -160,9 +160,9 @@ can be used with \code{\link{plotRefToTarget}} to generate graphical representat
 #                          pred1 = 2, pred2 = -4, pred3 = 2.5) 
                         # using PLS plot as a guide
 # M <- mshape(Y.gpa$coords)
-# plotRefToTarget(M, preds$pred1, mag=2)
-# plotRefToTarget(M, preds$pred2, mag=2)
-# plotRefToTarget(M, preds$pred3, mag=2)
+# plotRefToTarget(M, preds$pred1, mag = 2)
+# plotRefToTarget(M, preds$pred2, mag = 2)
+# plotRefToTarget(M, preds$pred3, mag = 2)
 
 }
 \author{

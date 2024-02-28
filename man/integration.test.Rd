@@ -111,10 +111,10 @@ perform a phylogenetic two-block PLS analysis.
 }
 \examples{
 data(plethodon) 
-Y.gpa<-gpagen(plethodon$land)    #GPA-alignment    
+Y.gpa <- gpagen(plethodon$land)    #GPA-alignment    
 #landmarks on the skull and mandible assigned to partitions
-land.gps<-c("A","A","A","A","A","B","B","B","B","B","B","B") 
-IT <- integration.test(Y.gpa$coords, partition.gp=land.gps, iter=999)
+land.gps <- c("A","A","A","A","A","B","B","B","B","B","B","B") 
+IT <- integration.test(Y.gpa$coords, partition.gp = land.gps)
 summary(IT) # Test summary
 P <- plot(IT) # PLS plot
 

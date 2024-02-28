@@ -28,7 +28,7 @@
 #' @param partition.gp A list of which landmarks (or variables) belong in which partition: 
 #' (e.g. A, A, A, B, B, B, C, C, C)
 #' @param CI A logical argument indicating whether bootstrapping should be used for estimating confidence intervals
-#' @param phy A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape
+#' @param phy A phylogenetic tree of class = "phylo" - see \code{\link[ape]{read.tree}} in library ape
 #' @param iter Number of iterations for significance testing
 #' @param seed An optional argument for setting the seed for random permutations of the resampling procedure.  
 #' If left NULL (the default), the exact same P-values will be found for repeated runs of the analysis (with the same number of iterations).
@@ -63,12 +63,12 @@
 #' @examples
 #' # Not Run
 #' # data(plethspecies)
-#' # Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment
-#' # land.gps<-c("A","A","A","A","A","B","B","B","B","B","B") 
+#' # Y.gpa <- gpagen(plethspecies$land)    #GPA-alignment
+#' # land.gps <- c("A","A","A","A","A","B","B","B","B","B","B") 
 #' 
-#' # MT <- phylo.modularity(Y.gpa$coords, partition.gp=land.gps, 
-#' # phy=plethspecies$phy, 
-#' # CI = FALSE, iter=499)
+#' # MT <- phylo.modularity(Y.gpa$coords, partition.gp = land.gps, 
+#' # phy = plethspecies$phy, 
+#' # CI = FALSE)
 #' # summary(MT) # Test summary
 #' # plot(MT) # Histogram of CR sampling distribution 
 phylo.modularity<-function(A, partition.gp, phy, CI = FALSE, 

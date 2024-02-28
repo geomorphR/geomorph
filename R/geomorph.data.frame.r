@@ -14,7 +14,7 @@
 #' @keywords utilities
 #' @examples
 #' data(plethodon) 
-#' Y.gpa <- gpagen(plethodon$land,PrinAxes=FALSE)
+#' Y.gpa <- gpagen(plethodon$land, PrinAxes = FALSE)
 #' gdf <- geomorph.data.frame(Y.gpa)
 #' attributes(gdf)
 #' 

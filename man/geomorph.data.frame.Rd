@@ -22,7 +22,7 @@ imported into a geomorph.data.frame to utilize the coordinates and centroid size
 }
 \examples{
 data(plethodon) 
-Y.gpa <- gpagen(plethodon$land,PrinAxes=FALSE)
+Y.gpa <- gpagen(plethodon$land, PrinAxes = FALSE)
 gdf <- geomorph.data.frame(Y.gpa)
 attributes(gdf)
 

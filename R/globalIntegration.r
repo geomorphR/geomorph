@@ -25,7 +25,7 @@
 #' 
 #' @examples
 #' data(plethodon) 
-#' Y.gpa<-gpagen(plethodon$land)    #GPA-alignment    
+#' Y.gpa <- gpagen(plethodon$land)    #GPA-alignment    
 #'
 #' globalIntegration(Y.gpa$coords)
 

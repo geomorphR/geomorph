@@ -44,7 +44,7 @@
 #'
 #' @param A A matrix (n x [p x k]) or 3D array (p x k x n) containing Procrustes shape variables for a set of specimens
 #' @param gp A factor array designating group membership for landmarks
-#' @param phy A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape
+#' @param phy A phylogenetic tree of class = "phylo" - see \code{\link[ape]{read.tree}} in library ape
 #' @param Subset A logical value indicating whether or not the traits are subsets from a single 
 #' landmark configuration (default is TRUE)
 #' @param iter Number of iterations for significance testing
@@ -77,12 +77,12 @@
 #' @examples
 #' 
 #' data(plethspecies) 
-#' Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment    
-#' land.gp<-c("A","A","A","A","A","B","B","B","B","B","B")  
+#' Y.gpa <- gpagen(plethspecies$land)    #GPA-alignment    
+#' land.gp <- c("A","A","A","A","A","B","B","B","B","B","B")  
 #'     #mandible and cranium subsets
 #'
-#' EMR<-compare.multi.evol.rates(A=Y.gpa$coords,gp=land.gp, 
-#'     Subset=TRUE, phy= plethspecies$phy,iter=999)
+#' EMR <- compare.multi.evol.rates(A = Y.gpa$coords, gp = land.gp, 
+#'     Subset = TRUE, phy = plethspecies$phy)
 #' summary(EMR)
 #' plot(EMR)
 compare.multi.evol.rates<-function(A, gp, phy, 

@@ -50,7 +50,7 @@ one-tailed or a two-tailed (default) test.
 }
 \references{
 Conaway, M.A., and D.C. Adams. 2022. An effect size for comparing the strength of 
-  morphological integration across studies. Evolution. (Accepted).
+  morphological integration across studies. Evolution. 76: 2244-2259.
 }
 \author{
 Dean Adams

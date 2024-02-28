@@ -10,11 +10,16 @@
 #' for subsequent analysis (see the function \code{\link{define.sliders}}).
 #' 
 #' \subsection{The Digitizing Session}{
-#' Digitizing landmarks from 2D photos requires that a scale bar is placed in the image in order to scale the coordinate data. The 'scale' option requires: a single number (e.g. 10) which means that the scale to be measured in all images is a 10mm scale bar; OR a vector the same length as the filelist containing a number for the scale of each image. If scale=NULL, then the digitized coordinates will not be scaled. This option is NOT recommended.
+#' Digitizing landmarks from 2D photos requires that a scale bar is placed in the image in order to scale the coordinate 
+#' data. The 'scale' option requires: a single number (e.g. 10) which means that the scale to be measured in all images 
+#' is a 10mm scale bar; OR a vector the same length as the filelist containing a number for the scale of each image. 
+#' If scale=NULL, then the digitized coordinates will not be scaled. This option is NOT recommended.
 #' 
-#' Users may digitize all specimens in one session, or may return at a later time to complete digitizing. In the latter case, the user provides the same filelist and TPS file and the function will determine where the user left off. 
+#' Users may digitize all specimens in one session, or may return at a later time to complete digitizing. In the latter 
+#' case, the user provides the same filelist and TPS file and the function will determine where the user left off. 
 #' 
-#' If specimens have missing landmarks, these can be incorporated during the digitizing process using the 'a' option as described below (a=absent).  
+#' If specimens have missing landmarks, these can be incorporated during the digitizing process using the 'a' option 
+#' as described below (a=absent).  
 #' }
 #' 
 #' 

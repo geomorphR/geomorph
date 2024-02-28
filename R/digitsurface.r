@@ -4,26 +4,28 @@
 #' Input for the function is either a matrix of vertex coordinates defining a 3D surface object
 #' or a mesh3d object as obtained from \code{\link{read.ply}}. 
 #' 
-#' Function for digitizing fixed 3D landmarks and placing surface sliding semilandmarks using a previously created template.
-#'  Following the selection of fixed points (see digitizing below), the function finds surface semilandmarks following the 
-#'  algorithm outlined in Gunz et al. (2005) and Mitteroecker and Gunz (2009). digitsurface finds the same number of surface 
-#'  semilandmarks as the template (created by \code{\link{buildtemplate}}) by downsampling the scanned mesh, after registering the template with 
-#'  the current specimen via GPA. A nearest neighbor algorithm is used to match template surface semilandmarks to mesh points of the current specimen. 
-#'  To use function digitsurface, the template must be constructed first, and 'template.txt' be in the working directory. Because template 
-#'  matching is based on the correspondence of fixed landmark points in the template and the specimen, a minimum of four fixed landmarks must be used. 
+#' Function for digitizing fixed 3D landmarks and placing surface sliding semilandmarks using a previously created 
+#' template. Following the selection of fixed points (see digitizing below), the function finds surface semilandmarks 
+#' following the algorithm outlined in Gunz et al. (2005) and Mitteroecker and Gunz (2009). digitsurface finds the 
+#' same number of surface semilandmarks as the template (created by \code{\link{buildtemplate}}) by downsampling the 
+#' scanned mesh, after registering the template with the current specimen via GPA. A nearest neighbor algorithm is 
+#' used to match template surface semilandmarks to mesh points of the current specimen. To use function digitsurface, 
+#' the template must be constructed first, and 'template.txt' be in the working directory. Because template matching 
+#' is based on the correspondence of fixed landmark points in the template and the specimen, a minimum of four fixed 
+#' landmarks must be used. 
 #' 
 #' 
 #' For details on the full procedure for digitizing fixed 3D landmarks and surface
 #' sliding semilandmarks, see the relevant vignette by running \code{vignette("geomorph.digitize3D")}.
 #'  
-#'  NOTE: Function centers the mesh before digitizing by default (center=TRUE). If one chooses not to center,
+#'  NOTE: Function centers the mesh before digitizing by default (center = TRUE). If one chooses not to center,
 #'  specimen may be difficult to manipulate in rgl window.
 #' 
 #' \subsection{Digitizing}{
-#' Digitizing of fixed landmarks is interactive. Once a point is selected, the user is asked if the system should keep or discard the 
-#' selection (y/n). If "y", the user is asked to continue to select the next landmark. If "n" the removes the last chosen
-#' landmark, and the user is asked to select it again. This can be repeated until the user is comfortable with the landmark
-#' chosen. 
+#' Digitizing of fixed landmarks is interactive. Once a point is selected, the user is asked if the system should 
+#' keep or discard the selection (y/n). If "y", the user is asked to continue to select the next landmark. If "n" 
+#' the removes the last chosen landmark, and the user is asked to select it again. This can be repeated until the 
+#' user is comfortable with the landmark chosen. 
 #' 
 #' To digitize with a standard 3-button (PC):
 #' \enumerate{

@@ -8,16 +8,16 @@
 #'  curves, semilandmarks on surfaces, or any combination. If data are provided in the form of a 3D array, all
 #'  landmarks and semilandmarks are contained in this object. If this is the only component provided, the function
 #'  will treat all points as if they were fixed landmarks. To designate some points as semilandmarks, one uses 
-#'  the "curves=" or "surfaces=" options (or both). To include semilandmarks on curves, a matrix defining 
-#'  which landmarks are to be treated as semilandmarks is provided using the "curves=" option. This matrix contains
+#'  the "curves =" or "surfaces =" options (or both). To include semilandmarks on curves, a matrix defining 
+#'  which landmarks are to be treated as semilandmarks is provided using the "curves =" option. This matrix contains
 #'  three columns that specify the semilandmarks and two neighboring landmarks which are used to specify the tangent 
 #'  direction for sliding. The matrix may be generated using the function \code{\link{define.sliders}}). Likewise, 
 #'  to include semilandmarks 
 #'  on surfaces, one must specify a vector listing which landmarks are to be treated as surface semilandmarks 
-#'  using the "surfaces=" option. The "ProcD=FALSE" option (the default) will slide the semilandmarks 
-#'  based on minimizing bending energy, while "ProcD=TRUE" will slide the semilandmarks along their tangent 
+#'  using the "surfaces=" option. The "ProcD = FALSE" option (the default) will slide the semilandmarks 
+#'  based on minimizing bending energy, while "ProcD = TRUE" will slide the semilandmarks along their tangent 
 #'  directions using the Procrustes distance criterion. The Procrustes aligned specimens may be projected into tangent
-#'  space using the "Proj=TRUE" option. 
+#'  space using the "Proj = TRUE" option. 
 #'  The function also outputs a matrix of pairwise Procrustes Distances, which correspond to Euclidean distances between specimens in tangent space if "Proj=TRUE", or to the geodesic distances in shape space if "Proj=FALSE".   
 #'  NOTE: Large datasets may exceed the memory limitations of R. 
 #'

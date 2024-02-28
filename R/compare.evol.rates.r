@@ -28,7 +28,7 @@
 #' }
 #'
 #' @param A A 3D array (p x k x n) containing GPA-aligned coordinates for all specimens, or a matrix (n x variables)
-#' @param phy A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape
+#' @param phy A phylogenetic tree of class = "phylo" - see \code{\link[ape]{read.tree}} in library ape
 #' @param gp A factor array designating group membership for individuals
 #' @param method One of "simulation" or "permutation", to choose which approach should be used to assess significance. 
 #' @param iter Number of iterations for significance testing
@@ -61,12 +61,12 @@
 #' Evolution. 73:2352-2367.
 #' @examples
 #' data(plethspecies) 
-#' Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment    
-#'  gp.end<-factor(c(0,0,1,0,0,1,1,0,0))  #endangered species vs. rest
-#'  names(gp.end)<-plethspecies$phy$tip
+#' Y.gpa <- gpagen(plethspecies$land)    #GPA-alignment    
+#'  gp.end <- factor(c(0,0,1,0,0,1,1,0,0))  #endangered species vs. rest
+#'  names(gp.end) <- plethspecies$phy$tip
 #' 
-#' ER<-compare.evol.rates(A=Y.gpa$coords, phy=plethspecies$phy,
-#'   method="simulation",gp=gp.end,iter=999)
+#' ER<-compare.evol.rates(A = Y.gpa$coords, phy = plethspecies$phy,
+#'   method = "simulation", gp = gp.end)
 #' summary(ER)
 #' plot(ER)
 compare.evol.rates<-function(A, phy, gp, iter = 999, seed = NULL,  

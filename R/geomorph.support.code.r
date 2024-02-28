@@ -1,5 +1,4 @@
 #' @name geomorph-package
-#' @docType package
 #' @aliases geomorph
 #' @title Geometric morphometric analyses for 2D/3D data
 #' @author Dean C. Adams, Michael Collyer, Antigoni Kaliontzopoulou, and Erica Baken
@@ -174,7 +173,7 @@ NULL
 #' @author Antigoni Kaliontzopoulou & Michael Collyer
 #' @examples
 #' data(plethodon)
-#' Y.gpa<-gpagen(plethodon$land)    #GPA-alignment
+#' Y.gpa <- gpagen(plethodon$land)    #GPA-alignment
 #' A <- Y.gpa$coords
 #' A[[1]] <- NA # make a missing value, just for example
 #'
@@ -1394,8 +1393,6 @@ pGpa.wSliders <- function (Y, curves = NULL, surf = NULL, rot.pts, ProcD = TRUE,
 }
 
 # tps
-#
-#
 tps <- function(matr, matt, n, sz=1.5, pt.bg="black",
               grid.col="black", grid.lwd=1, grid.lty=1, refpts=FALSE, k3 = FALSE){		#DCA: altered from J. Claude: 2D only
   xm <- min(matr[,1])
@@ -1445,8 +1442,6 @@ tps <- function(matr, matt, n, sz=1.5, pt.bg="black",
 }
 
 # tps2d
-#
-#
 tps2d <- function(M, matr, matt){
   p <- dim(matr)[1]; q <- dim(M)[1]; n1 <- p+3
   P <- matrix(NA, p, p)
@@ -1477,8 +1472,6 @@ tps2d <- function(M, matr, matt){
 }
 
 # tps2d3d
-#
-#
 tps2d3d <- function(M, matr, matt, PB=TRUE){		#DCA: altered from J. Claude 2008
   p <- dim(matr)[1]; k <- dim(matr)[2]; q <- dim(M)[1]
   Pdist <- as.matrix(dist(matr))

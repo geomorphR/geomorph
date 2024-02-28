@@ -49,7 +49,7 @@
 #' 
 #' @param A A 2D array (n x [p1 x k1]) or 3D array (p1 x k1 x n) containing Procrustes shape variables for the first block
 #' @param A2 An optional 2D array (n x [p2 x k2]) or 3D array (p2 x k2 x n) containing Procrustes shape variables for the second block 
-#' @param phy A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape
+#' @param phy A phylogenetic tree of class = "phylo" - see \code{\link[ape]{read.tree}} in library ape
 #' @param partition.gp A list of which landmarks (or variables) belong in which partition: 
 #' (e.g. A, A, A, B, B, B, C, C, C). This is required when only 1 dataset provided.
 #' @param iter Number of iterations for significance testing
@@ -101,11 +101,11 @@
 #' @examples
 #' 
 #' data(plethspecies) 
-#' Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment
-#' land.gps<-c("A","A","A","A","A","B","B","B","B","B","B") 
+#' Y.gpa <- gpagen(plethspecies$land)    #GPA-alignment
+#' land.gps <- c("A","A","A","A","A","B","B","B","B","B","B") 
 #' 
-#' IT<- phylo.integration(Y.gpa$coords,partition.gp=land.gps,
-#'   phy=plethspecies$phy,iter=999)
+#' IT <- phylo.integration(Y.gpa$coords, partition.gp = land.gps,
+#'   phy = plethspecies$phy)
 #' summary(IT) # Test summary
 #' P <- plot(IT) # PLS plot
 #' 

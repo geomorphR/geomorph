@@ -86,10 +86,10 @@ are exactly along the major axis of shape covariation.  This axis is also shown 
 }
 \examples{
 data(plethShapeFood) 
-Y.gpa<-gpagen(plethShapeFood$land)    #GPA-alignment    
+Y.gpa <- gpagen(plethShapeFood$land)    #GPA-alignment    
 
 #2B-PLS between head shape and food use data
-PLS <-two.b.pls(Y.gpa$coords,plethShapeFood$food,iter=999)
+PLS <- two.b.pls(Y.gpa$coords, plethShapeFood$food)
 summary(PLS)
 P <- plot(PLS)
  

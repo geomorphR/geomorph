@@ -31,7 +31,7 @@
 #' @examples
 #' 
 #' ### Because picknplot requires user decisions, the following examples
-#' ### are not run (but can be with removal of #s)
+#' ### are not run.
 #' 
 #' # 2d
 #' # data(plethodon) 
@@ -41,7 +41,7 @@
 #' # picknplot.shape(pleth.pca.plot) 
 #' # May change arguments for plotRefToTarget
 #' # picknplot.shape(plot(pleth.pca), method = "points", mag = 3, 
-#' # links=plethodon$links)
+#' # links = plethodon$links)
 #' 
 #' # 2d with phylogeny
 #' # data(plethspecies) 
@@ -60,7 +60,7 @@
 #' # 2d allometry 
 #' # gdf <- geomorph.data.frame(Y.gpa, site = plethodon$site, 
 #' # species = plethodon$species) 
-#' # fit <- procD.lm(coords ~ log(Csize), data=gdf, iter=0, 
+#' # fit <- procD.lm(coords ~ log(Csize), data=gdf, 
 #' # print.progress = FALSE)
 #' # Predline
 #' # PA <- plotAllometry(fit, size = gdf$Csize, logsz = TRUE, 
