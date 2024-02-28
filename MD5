@@ -73,7 +73,7 @@ c243df60434118dddca6904f3d6de9b0 *man/plot.physignal.Rd
 e1b19a991aa5c05b644349eb00687e39 *man/plot.pls.Rd
 13c6015521a9d77ac02f5175a7a74e2b *man/plot.procD.lm.Rd
 316dbb0756bab29bf1a4c85d116f7895 *man/plotAllometry.Rd
-288a6122fc176348bf2b1e485a88f7cd *man/plotAllSpecimens.Rd
+c097826d3931b024cfe9b1c3f430d430 *man/plotAllSpecimens.Rd
 212e8d06d536318fe6bba97ba66837c5 *man/plotOutliers.Rd
 448497ff3548ffb8fe195363cba7aaaf *man/plotRefToTarget.Rd
 318ab949ada14f9065d5c731d64c4232 *man/plotspec.Rd
@@ -162,7 +162,7 @@ aac6a4f8a759473e8c37048e5c8e3d91 *R/findMeanSpec.r
 b792f75d1fb825423b03a8711c0120a4 *R/fixed.angle.r
 14c82d650f7cbbf5ef8786303b1e0373 *R/geomorph.data.frame.r
 d14b76f8fcddd1343336bb4c86b2435f *R/geomorph.support.code.r
-ecc99b9c339e2cc92ae963b97d463a57 *R/geomorph.utils.r
+4f2bd5c452ed42eeb94162e9949b469f *R/geomorph.utils.r
 d8571c8894e54b32c96c2ce94c6b7101 *R/globalIntegration.r
 a13fba654d15205aa4ec578ea91a8913 *R/gm.prcomp.R
 c0852f88b9286461e0e485edcf982b9e *R/gpagen.r
@@ -177,9 +177,9 @@ efccfbda0e7a165e7c85f0a5991e6250 *R/phylo.integration.r
 5b3732663b03279af125011d51108032 *R/phylo.modularity.r
 a10d2351f5d3ce09e26e005f8f9c1676 *R/physignal.r
 0a69b816e19bd50eb5db8a2574399893 *R/physignal.z.r
-43f4f9652feba36c786ab34eeb565190 *R/picknplot.shape.r
-d985b03b5ef83e45433f464b8bd910c0 *R/plotAllometry.r
-b071218f0a9084e2e5b849d98a2fba46 *R/plotAllSpecimens.r
+65b0ea6a61725b1c87d69b3657e20c1f *R/picknplot.shape.r
+ca1c3976376d53292b7a2838a6d8ddd8 *R/plotAllometry.r
+ca34da1f17ac2989b1d0da05ba6f658c *R/plotAllSpecimens.r
 cdeda457fb247b2ffb195f25d920c960 *R/plotOutliers.r
 eee005275708199f691aa6c70afe1fb5 *R/plotRefToTarget.r
 21977370efd2d6e3e3302c8af1863813 *R/plotspec.r

@@ -240,30 +240,30 @@ plotAllometry <- function(fit, size, logsz = TRUE,
         if(method == "CAC") {
           
           par(mfcol = c(1,2))
-          plot.args <- list(x = xc, y = CAC,
+          plot_args <- list(x = xc, y = CAC,
                             xlab = if(logsz) "log(Size)" else "Size",
                             ylab = "CAC", ...)
-          plot2.args <- list(x = CAC, y = RSC[, 1],
+          plot2_args <- list(x = CAC, y = RSC[, 1],
                              xlab = "CAC", ylab = "RSC1", ...)
-          do.call(plot, plot.args)
-          do.call(plot, plot2.args)
+          do.call(plot, plot_args)
+          do.call(plot, plot2_args)
           par(mfcol = c(1,1))
-          out <- list(CAC = CAC, RSC = RSC, plot.args = plot.args,
-                      all.plot.args = list(CAC=plot.args, RSC = plot2.args))
+          out <- list(CAC = CAC, RSC = RSC, plot_args = plot_args,
+                      all.plot_args = list(CAC=plot_args, RSC = plot2_args))
         }
         
         if(method == "size.shape") {
           
           v <- round(PCA$sdev^2/sum(PCA$sdev^2) * 100, 2)
-          plot.args <- list(x = PC.points[,1], y = PC.points[,2],
+          plot_args <- list(x = PC.points[,1], y = PC.points[,2],
                             xlab = paste("PC 1: ", v[1], "%", sep = ""), 
                             ylab = paste("PC 2: ", v[2], "%", sep = ""),
                             ...)
-          do.call(plot, plot.args)
+          do.call(plot, plot_args)
           title("Size-Shape PC plot")
           
           out <- list(size.shape.PCA = PCA,
-                      PC.points = PC.points, plot.args = plot.args)
+                      PC.points = PC.points, plot_args = plot_args)
         }
       }
   
