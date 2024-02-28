@@ -85,6 +85,7 @@ are exactly along the major axis of shape covariation.  This axis is also shown 
 }
 }
 \examples{
+ \dontrun{
 data(plethShapeFood) 
 Y.gpa <- gpagen(plethShapeFood$land)    #GPA-alignment    
 
@@ -110,8 +111,7 @@ P <- plot(PLS)
  ### is not run (but can be with removal of #).
  ### For detailed options, see the picknplot help file
  # picknplot.shape(P)
- 
-
+ }
 }
 \references{
 Rohlf, F.J., and M. Corti. 2000. The use of partial least-squares to study covariation in shape. 

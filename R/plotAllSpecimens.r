@@ -19,10 +19,12 @@
 #' @author Dean Adams
 #' @seealso  \code{\link[rgl]{rgl-package}} (used in 3D plotting)
 #' @examples
+#' \dontrun{
 #' data(plethodon) 
 #' Y.gpa <- gpagen(plethodon$land)    #GPA-alignment
 #'
 #' plotAllSpecimens(Y.gpa$coords, links = plethodon$links)
+#' }
 plotAllSpecimens<-function(A,mean=TRUE,links=NULL,label=FALSE,plot.param = list()){
   if (length(dim(A))!=3){
     stop("Data matrix not a 3D array (see 'arrayspecs').")  }

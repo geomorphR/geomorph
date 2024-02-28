@@ -28,9 +28,11 @@
 
 #' @seealso \code{\link{compare.ZVrel}}
 #' @examples
+#' \dontrun{
 #' data(plethodon) 
 #' Y.gpa <- gpagen(plethodon$land)    #GPA-alignment    
 #' integration.Vrel(Y.gpa$coords)
+#' }
 
 integration.Vrel <- function(A,phy = NULL){ 
   if(length(dim(A))==3){ 

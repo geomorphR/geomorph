@@ -106,7 +106,7 @@
 #' Systematic Biology 49: 740-753.
 #' 
 #' @examples 
-#' 
+#' \dontrun{
 #' # Simple allometry
 #' data(plethodon) 
 #' Y.gpa <- gpagen(plethodon$land, print.progress = FALSE)    #GPA-alignment  
@@ -172,7 +172,7 @@
 #' pch = 19, col = as.numeric(gdf$species))
 #' 
 #' # No evidence this is the case
-#' 
+#' }
 plotAllometry <- function(fit, size, logsz = TRUE, 
         method = c("PredLine", "RegScore", "size.shape", "CAC"), ...){
   method <- match.arg(method)

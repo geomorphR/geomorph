@@ -146,51 +146,53 @@
 #' canalization, developmental stability, modularity, and allometry in lizard head shape. The American
 #' Naturalist 185:44–58.
 #' @examples
+#' \dontrun{
+#' 
 #' #Example of matching symmetry
-#' # NOT RUN
-#' # data(mosquito)
-#' # gdf <- geomorph.data.frame(wingshape = mosquito$wingshape, 
-#' # ind = mosquito$ind, 
-#' # side = mosquito$side,
-#' # replicate = mosquito$replicate)
-#' # mosquito.sym <- bilat.symmetry(A = wingshape, ind = ind, side = side,
-#' # replicate = replicate, object.sym = FALSE, RRPP = TRUE, 
-#' # data = gdf)
-#' # summary(mosquito.sym)
-#' # plot(mosquito.sym, warpgrids = TRUE)
-#' # mosquito.sym$shape.anova # extract just the anova table on shape
+#' data(mosquito)
+#' gdf <- geomorph.data.frame(wingshape = mosquito$wingshape, 
+#' ind = mosquito$ind, 
+#' side = mosquito$side,
+#' replicate = mosquito$replicate)
+#' mosquito.sym <- bilat.symmetry(A = wingshape, ind = ind, side = side,
+#' replicate = replicate, object.sym = FALSE, RRPP = TRUE, 
+#' data = gdf)
+#' summary(mosquito.sym)
+#' plot(mosquito.sym, warpgrids = TRUE)
+#' mosquito.sym$shape.anova # extract just the anova table on shape
 #' 
 #' # Previous example, performing GPA first
-#' # Y.gpa <- gpagen(mosquito$wingshape)
-#' # mosquito.sym2 <- bilat.symmetry(A = Y.gpa, ind = ind, side = side,
-#' # replicate = replicate, object.sym = FALSE, RRPP = TRUE, 
-#' # data = gdf)
-#' # summary(mosquito.sym2)
-#' # summary(mosquito.sym) # same results
+#' Y.gpa <- gpagen(mosquito$wingshape)
+#' mosquito.sym2 <- bilat.symmetry(A = Y.gpa, ind = ind, side = side,
+#' replicate = replicate, object.sym = FALSE, RRPP = TRUE, 
+#' data = gdf)
+#' summary(mosquito.sym2)
+#' summary(mosquito.sym) # same results
 #'
 #' #Example of object symmetry
 #'
-#' # data(lizards)
-#' # gdf <- geomorph.data.frame(shape = lizards$coords, 
-#' # ind = lizards$ind, 
-#' # replicate = lizards$rep)
-#' # liz.sym <- bilat.symmetry(A = shape, ind = ind, rep = rep, 
-#' # object.sym = TRUE, 
-#' # land.pairs = lizards$lm.pairs, data = gdf, RRPP = TRUE)
-#' # summary(liz.sym)
+#' data(lizards)
+#' gdf <- geomorph.data.frame(shape = lizards$coords, 
+#' ind = lizards$ind, 
+#' replicate = lizards$rep)
+#' liz.sym <- bilat.symmetry(A = shape, ind = ind, rep = rep, 
+#' object.sym = TRUE, 
+#' land.pairs = lizards$lm.pairs, data = gdf, RRPP = TRUE)
+#' summary(liz.sym)
 #' 
 #' # Example of object symmetry in 3D and including semilandmarks
 #' 
-#' # data(scallops)
-#' # gdf <- geomorph.data.frame(shape = scallops$coorddata, 
-#' # ind = scallops$ind)
-#' # scallop.sym <- bilat.symmetry(A = shape, ind = ind, 
-#' # object.sym = TRUE, 
-#' # curves= scallops$curvslide, surfaces = scallops$surfslide,
-#' # land.pairs=scallops$land.pairs, data = gdf, RRPP = TRUE)
-#' # summary(scallop.sym)
+#' data(scallops)
+#' gdf <- geomorph.data.frame(shape = scallops$coorddata, 
+#' ind = scallops$ind)
+#' scallop.sym <- bilat.symmetry(A = shape, ind = ind, 
+#' object.sym = TRUE, 
+#' curves= scallops$curvslide, surfaces = scallops$surfslide,
+#' land.pairs=scallops$land.pairs, data = gdf, RRPP = TRUE)
+#' summary(scallop.sym)
 #' # NOTE one can also: plot(scallop.sym, warpgrids = TRUE, mesh = NULL)
 #' # NOTE one can also: scallop.sym$data.type # recall the symmetry type
+#' }
 
 bilat.symmetry <- function(A, ind = NULL, side = NULL, replicate = NULL, object.sym = FALSE, land.pairs = NULL,
                            data = NULL, iter = 999, seed = NULL, RRPP = TRUE, SS.type = c("I", "II", "III"),

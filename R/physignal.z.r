@@ -127,6 +127,7 @@
 #' Evolution. 73:2352-2367.
 #' @references Pagel, M. D. (1999). Inferring the historical patterns of biological evolution. Nature. 401:877-884.
 #' @examples
+#' \dontrun{
 #' data(plethspecies) 
 #' Y.gpa <- gpagen(plethspecies$land)    #GPA-alignment    
 #'
@@ -148,6 +149,7 @@
 #' lambda = "front")
 #' summary(PS.size)
 #' plot(PS.size)
+#' }
 physignal.z <- function(A, phy, lambda = c("burn", "mean", "front", "all"), iter = 999, seed = NULL, 
                         tol = 1e-4, PAC.no = NULL, print.progress = FALSE,
                         verbose = FALSE){

@@ -53,14 +53,15 @@ to pass rgl-plot3d or rgl-points3d arguments should inspire the user
 to find solutions with \code{\link{rgl-package}} core functions.
 }
 \examples{
+\dontrun{
 
-# Not Run
-# data(scallopPLY)
-# ply <- scallopPLY$ply
-# digitdat <- scallopPLY$coords
-# plotspec(spec = ply, digitspec = digitdat, fixed = 16, 
-# centered = TRUE, fixed.pt.col = "red", 
-# fixed.pt.size = 15, col = "blue", size = 5)
+ data(scallopPLY)
+ ply <- scallopPLY$ply
+ digitdat <- scallopPLY$coords
+ plotspec(spec = ply, digitspec = digitdat, fixed = 16, 
+ centered = TRUE, fixed.pt.col = "red", 
+ fixed.pt.size = 15, col = "blue", size = 5)
+ }
 }
 \seealso{
 \code{\link{warpRefMesh}}

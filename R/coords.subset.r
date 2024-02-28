@@ -11,6 +11,7 @@
 #' @export
 #' @author Michael Collyer
 #' @examples
+#' \dontrun{
 #' data(pupfish) 
 #' group <- factor(paste(pupfish$Pop, pupfish$Sex))
 #' levels(group)
@@ -18,7 +19,7 @@
 #' names(new.coords) # see the list levels
 #' # group shape means
 #' lapply(new.coords, mshape)
-#'
+#' }
 coords.subset <- function(A, group){
   dims <- dim(A)
   if(length(dims) != 3) stop("coordinates must be in the form of a 3D array - consider using arrayspecs")

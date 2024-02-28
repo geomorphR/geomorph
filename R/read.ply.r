@@ -20,6 +20,7 @@
 #' @return Function returns the following components:
 #'   \item{mesh3d}{list of class mesh3d- see rgl for details}
 #' @examples 
+#' \dontrun{
 #' # If the file has no mesh color, or color is undesirable, user can 
 #' # assign this as follows:
 #' # Using the example scallop PLY
@@ -27,6 +28,7 @@
 #' myply <- scallopPLY$ply
 #' myply$material$color <- "gray" # using color word
 #' myply$material$color <- "#FCE6C9" # using RGB code
+#' }
 read.ply <- function (file, ShowSpecimen = TRUE, addNormals = TRUE) 
 {
   plyfile <- scan(file = file, what = "char", sep = "\n", strip.white = TRUE, 

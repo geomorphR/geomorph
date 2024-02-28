@@ -36,7 +36,7 @@ Any number of objects of class rel.eig can be input. One may perform the compari
 one-tailed or a two-tailed (default) test.
 }
 \examples{
- 
+\dontrun{
  data("plethodon")
  Y.gpa <- gpagen(plethodon$land)
  
@@ -46,7 +46,7 @@ one-tailed or a two-tailed (default) test.
  out <- compare.ZVrel(Vrel.gp$Jord, Vrel.gp$Teyah)
  
  summary(out)
- 
+ }
 }
 \references{
 Conaway, M.A., and D.C. Adams. 2022. An effect size for comparing the strength of 

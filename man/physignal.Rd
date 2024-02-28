@@ -66,6 +66,7 @@ multiple methods. Only Kmult is used. Thus, for older scripts method="" should b
 }
 }
 \examples{
+\dontrun{
 data(plethspecies) 
 Y.gpa <- gpagen(plethspecies$land)    #GPA-alignment    
 
@@ -80,6 +81,7 @@ PS.shape$K.by.p # Phylogenetic signal profile
 PS.size <- physignal(A = Y.gpa$Csize, phy = plethspecies$phy)
 summary(PS.size)
 plot(PS.size)
+}
 }
 \references{
 Blomberg SP, Garland T, Ives AR. 2003. Testing for phylogenetic signal in comparative 

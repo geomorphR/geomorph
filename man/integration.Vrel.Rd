@@ -32,9 +32,11 @@ Input for the analysis may be a 3D array of Procrustes coordinates, of a matrix 
  are species related by a phylogeny, the phylogeny may also be included.
 }
 \examples{
+\dontrun{
 data(plethodon) 
 Y.gpa <- gpagen(plethodon$land)    #GPA-alignment    
 integration.Vrel(Y.gpa$coords)
+}
 }
 \references{
 Pavlicev, M., J. M. Cheverud, and G. P. Wagner. 2009. Measuring morphological 

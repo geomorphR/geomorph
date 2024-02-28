@@ -51,6 +51,7 @@
 #' @references Gunz, P., P. Mitteroecker, S. Neubauer, G. W. Weber, and F. L. Bookstein. 2009. Principles for 
 #' the virtual reconstruction of hominin crania. J. Hum. Evol. 57:48-62.
 #' @examples
+#' \dontrun{
 #' data(plethodon)
 #' plethland <- plethodon$land
 #'   plethland[3,,2] <- plethland[8,,2] <- NA  #create missing landmarks
@@ -59,6 +60,7 @@
 #'   
 #' estimate.missing(plethland, method = "TPS")
 #' estimate.missing(plethland, method = "Reg")
+#' }
 estimate.missing <- function(A, method=c("TPS","Reg")){
   if(inherits(A, "geomorphShapes")) {
     a <- A

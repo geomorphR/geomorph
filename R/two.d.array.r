@@ -20,10 +20,12 @@
 #'   represent specimens and columns represent variables.
 #' @seealso \code{\link{arrayspecs}} 
 #' @examples
+#' \dontrun{
 #' data(plethodon) 
 #' plethodon$land    #original data in the form of 3D array
 #' 
 #' two.d.array(plethodon$land)   # Convert to a 2D data matrix
+#' }
 two.d.array<-function(A, sep = "."){  
   pxk <- dim(A)[1]*dim(A)[2]
   n <- dim(A)[3]

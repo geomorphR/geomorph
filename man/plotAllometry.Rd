@@ -114,7 +114,7 @@ The function returns values that can be used with \code{\link{picknplot.shape}} 
 \code{\link{shape.predictor}} and \code{\link{plotRefToTarget}} to visualize shape changes in the plot.
 }
 \examples{
-
+\dontrun{
 # Simple allometry
 data(plethodon) 
 Y.gpa <- gpagen(plethodon$land, print.progress = FALSE)    #GPA-alignment  
@@ -180,7 +180,7 @@ plotAllometry(fit3, size = gdf$Csize, logsz = TRUE, method = "RegScore",
 pch = 19, col = as.numeric(gdf$species))
 
 # No evidence this is the case
-
+}
 }
 \references{
 Adams, D. C., and A. Nistri. 2010. Ontogenetic convergence and evolution of foot morphology 

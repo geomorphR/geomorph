@@ -102,6 +102,7 @@
 #' @references Adams, D.C. and M.L. Collyer. 2018. Multivariate comparative methods: evaluations, comparisons, and
 #' recommendations. Systematic Biology. 67:14-31.
 #' @examples
+#' \dontrun{
 #' ### Example of D-PGLS for high-dimensional data 
 #' data(plethspecies)
 #' Y.gpa <- gpagen(plethspecies$land)    #GPA-alignment
@@ -129,6 +130,7 @@
 #' 
 #' anova(pleth.pgls)
 #' anova(pleth.pgls2)
+#' }
 procD.pgls<-function(f1, phy, Cov = NULL, lambda = 1,
                      iter=999, seed=NULL, int.first = FALSE, 
                      SS.type = c("I", "II", "III"),

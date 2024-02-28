@@ -72,6 +72,8 @@ distributions are log-transformed prior to effect size estimation, to assure nor
 }
 }
 \examples{
+\dontrun{
+
 data(plethspecies) 
 Y.gpa <- gpagen(plethspecies$land)    #GPA-alignment    
  gp.end <- factor(c(0,0,1,0,0,1,1,0,0))  #endangered species vs. rest
@@ -81,6 +83,7 @@ ER<-compare.evol.rates(A = Y.gpa$coords, phy = plethspecies$phy,
   method = "simulation", gp = gp.end)
 summary(ER)
 plot(ER)
+}
 }
 \references{
 Adams, D.C. 2014. Quantifying and comparing phylogenetic evolutionary rates for 

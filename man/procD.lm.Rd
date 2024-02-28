@@ -309,9 +309,6 @@ anova(fit) # treatment effect not adjusted
 anova(fit, error = c("treatment:family", "Residuals")) 
 # treatment effect updated (adjusted)
 }
-
-
-
 }
 \references{
 Anderson MJ. 2001. A new method for non-parametric multivariate analysis of variance. 

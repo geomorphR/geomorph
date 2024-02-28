@@ -83,6 +83,7 @@
 #' alternative modular hypotheses, using covariance ratio effect sizes with morphometric data. 
 #' Evolution. 73:2352-2367.
 #' @examples
+#'  \dontrun{
 #' data(plethShapeFood) 
 #' Y.gpa <- gpagen(plethShapeFood$land)    #GPA-alignment    
 #'
@@ -108,8 +109,7 @@
 #'  ### is not run (but can be with removal of #).
 #'  ### For detailed options, see the picknplot help file
 #'  # picknplot.shape(P)
-#'  
-#' 
+#'  }
 
 two.b.pls <- function (A1, A2,  iter = 999, seed = NULL, print.progress=TRUE){
     if (any(is.na(A1))) 

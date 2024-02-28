@@ -61,6 +61,7 @@
 #' alternative modular hypotheses, using covariance ratio effect sizes with morphometric data. 
 #' Evolution. 73:2352-2367.
 #' @examples
+#' \dontrun{
 #' data(plethspecies) 
 #' Y.gpa <- gpagen(plethspecies$land)    #GPA-alignment    
 #'
@@ -75,6 +76,7 @@
 #' PS.size <- physignal(A = Y.gpa$Csize, phy = plethspecies$phy)
 #' summary(PS.size)
 #' plot(PS.size)
+#' }
 physignal <- function(A, phy, iter = 999, seed = NULL, print.progress = FALSE){
   if(any(is.na(A)))
     stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').\n",

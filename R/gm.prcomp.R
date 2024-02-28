@@ -96,6 +96,7 @@
 #' comparative studies. Evolution, 63: 3258-3268.
 #' @author Antigoni Kaliontzopoulou, Michael Collyer, & Dean Adams
 #' @examples
+#' \dontrun{
 #'  data(plethspecies) 
 #'  Y.gpa <- gpagen(plethspecies$land)    #GPA-alignment
 #'  
@@ -166,7 +167,7 @@
 #'  # plot(PCA.w.phylo, time.plot = TRUE, bg = "red", 
 #'  #    phylo.par = list(tip.labels = TRUE, 
 #'  # tip.txt.cex = 2, edge.color = "blue", edge.width = 2))
-#'  
+#'  }
 
 gm.prcomp <- function (A, phy = NULL, align.to.phy = FALSE,
                        GLS = FALSE, transform = FALSE, ...) {

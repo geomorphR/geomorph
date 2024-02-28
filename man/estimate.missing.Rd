@@ -55,6 +55,7 @@ landmark coordinates is to proceed with subsequent analyses EXCLUDING
 specimens with missing values.
 }
 \examples{
+\dontrun{
 data(plethodon)
 plethland <- plethodon$land
   plethland[3,,2] <- plethland[8,,2] <- NA  #create missing landmarks
@@ -63,6 +64,7 @@ plethland <- plethodon$land
   
 estimate.missing(plethland, method = "TPS")
 estimate.missing(plethland, method = "Reg")
+}
 }
 \references{
 Claude, J. 2008. Morphometrics with R. Springer, New York.

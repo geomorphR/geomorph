@@ -29,6 +29,7 @@
 #' @export
 #' @references Adams, D. C. 1999. Methods for shape analysis of landmark data from articulated structures. Evolutionary Ecology Research. 1:959-970.
 #' @examples
+#' \dontrun{
 #' #Example using Plethodon
 #' #Articulation point is landmark 1, rotate mandibular landmarks (2-5) 
 #' # relative to cranium
@@ -49,7 +50,7 @@
 #' degrees = TRUE) # rotated points same as second partition
 #' Y.gpa2 <- gpagen(newLM2)
 #' plot(Y.gpa2, mean = FALSE)
-#' 
+#' }
 fixed.angle<-function(A, art.pt=NULL, angle.pts.1, angle.pts.2, 
                       rot.pts=NULL, angle=0, degrees = FALSE){
   if (length(dim(A)) != 3){

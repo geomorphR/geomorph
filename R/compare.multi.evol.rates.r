@@ -75,6 +75,7 @@
 #' alternative modular hypotheses, using covariance ratio effect sizes with morphometric data. 
 #' Evolution. 73:2352-2367.
 #' @examples
+#' \dontrun{
 #' 
 #' data(plethspecies) 
 #' Y.gpa <- gpagen(plethspecies$land)    #GPA-alignment    
@@ -85,6 +86,7 @@
 #'     Subset = TRUE, phy = plethspecies$phy)
 #' summary(EMR)
 #' plot(EMR)
+#' }
 compare.multi.evol.rates<-function(A, gp, phy, 
                                    Subset = TRUE, 
                                    iter = 999, 

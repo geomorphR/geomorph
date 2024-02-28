@@ -35,10 +35,12 @@ The function creates a plot of the landmark coordinates for all specimens. This 
  three-dimensional data (e.g. see \code{\link{define.links}}).
 }
 \examples{
+\dontrun{
 data(plethodon) 
 Y.gpa <- gpagen(plethodon$land)    #GPA-alignment
 
 plotAllSpecimens(Y.gpa$coords, links = plethodon$links)
+}
 }
 \seealso{
 \code{\link[rgl]{rgl-package}} (used in 3D plotting)

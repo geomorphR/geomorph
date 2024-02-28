@@ -45,6 +45,7 @@ To use this function, perform \code{\link{two.b.pls}}, \code{\link{integration.t
 }
 }
 \examples{
+\dontrun{
 # Example of comparative morphological integration between pupfish head 
 # and body shapes
 
@@ -82,7 +83,7 @@ To use this function, perform \code{\link{two.b.pls}}, \code{\link{integration.t
  # can also list different PLS analyses, separately
 
  compare.pls(MF = integ.tests$Marsh.F, MM = integ.tests$Marsh.M)
-
+}
 }
 \references{
 Collyer, M.L., D.J. Sekora, and D.C. Adams. 2015. A method for analysis of phenotypic change for phenotypes described 

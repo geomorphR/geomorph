@@ -19,6 +19,7 @@ This function splits a set of landmark coordinates into subsets, as described by
 result is a list of separate sets of landmarks.
 }
 \examples{
+\dontrun{
 data(pupfish) 
 group <- factor(paste(pupfish$Pop, pupfish$Sex))
 levels(group)
@@ -26,7 +27,7 @@ new.coords <- coords.subset(A = pupfish$coords, group = group)
 names(new.coords) # see the list levels
 # group shape means
 lapply(new.coords, mshape)
-
+}
 }
 \author{
 Michael Collyer

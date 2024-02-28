@@ -32,6 +32,7 @@ If the data have strong group structure and there is reasonable belief that the 
 then a factor defining the groups can be used.
 }
 \examples{
+\dontrun{
 data(plethodon)
 # let's make some outliers
 newland <- plethodon$land
@@ -46,7 +47,7 @@ plotOutliers(Y$coords, inspect.outliers = TRUE) # function also produces
 # example with groups
 plotOutliers(Y$coords, groups = plethodon$species, 
 inspect.outliers = TRUE)
- 
+ }
 }
 \seealso{
 \code{\link{gpagen}}

@@ -28,10 +28,12 @@ This function converts a (p x k x n) array of landmark coordinates into a two-di
  the original array.
 }
 \examples{
+\dontrun{
 data(plethodon) 
 plethodon$land    #original data in the form of 3D array
 
 two.d.array(plethodon$land)   # Convert to a 2D data matrix
+}
 }
 \seealso{
 \code{\link{arrayspecs}}

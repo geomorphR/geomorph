@@ -52,6 +52,7 @@ users may specify a single landmark in each subset as angle endpoints, or may sp
 Presently, the function is only implemented for two-dimensional landmark data.
 }
 \examples{
+\dontrun{
 #Example using Plethodon
 #Articulation point is landmark 1, rotate mandibular landmarks (2-5) 
 # relative to cranium
@@ -72,7 +73,7 @@ rot.pts = NULL, angle = 20,
 degrees = TRUE) # rotated points same as second partition
 Y.gpa2 <- gpagen(newLM2)
 plot(Y.gpa2, mean = FALSE)
-
+}
 }
 \references{
 Adams, D. C. 1999. Methods for shape analysis of landmark data from articulated structures. Evolutionary Ecology Research. 1:959-970.

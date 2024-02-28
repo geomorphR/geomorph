@@ -110,6 +110,7 @@ possible with \code{plotTangentSpace} and \code{plotGMPhyloMorphoSpace}, which
 have now been deprecated.
 }
 \examples{
+\dontrun{
  data(plethspecies) 
  Y.gpa <- gpagen(plethspecies$land)    #GPA-alignment
  
@@ -180,7 +181,7 @@ have now been deprecated.
  # plot(PCA.w.phylo, time.plot = TRUE, bg = "red", 
  #    phylo.par = list(tip.labels = TRUE, 
  # tip.txt.cex = 2, edge.color = "blue", edge.width = 2))
- 
+ }
 }
 \references{
 Collyer, M.L and D.C. Adams, 2021. Phylogenetically Aligned component analysis. 

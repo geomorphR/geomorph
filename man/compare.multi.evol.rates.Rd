@@ -88,6 +88,7 @@ Adams 2015). This option is identified by selecting Subset = FALSE.
  the resampling procedure.
 }
 \examples{
+\dontrun{
 
 data(plethspecies) 
 Y.gpa <- gpagen(plethspecies$land)    #GPA-alignment    
@@ -98,6 +99,7 @@ EMR <- compare.multi.evol.rates(A = Y.gpa$coords, gp = land.gp,
     Subset = TRUE, phy = plethspecies$phy)
 summary(EMR)
 plot(EMR)
+}
 }
 \references{
 Adams, D.C. 2014. Quantifying and comparing phylogenetic evolutionary rates for 

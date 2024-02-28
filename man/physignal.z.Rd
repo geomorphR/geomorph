@@ -141,6 +141,7 @@ lambda = 1 will be fundamentally the same as performing the analysis on multivar
  associated with the resampling procedure.
 }
 \examples{
+\dontrun{
 data(plethspecies) 
 Y.gpa <- gpagen(plethspecies$land)    #GPA-alignment    
 
@@ -162,6 +163,7 @@ PS.size <- physignal.z(A = Y.gpa$Csize, phy = plethspecies$phy,
 lambda = "front")
 summary(PS.size)
 plot(PS.size)
+}
 }
 \references{
 Collyer,  M.L., E.K. Baken, & D.C. Adams.  2022. A standardized effect size for evaluating

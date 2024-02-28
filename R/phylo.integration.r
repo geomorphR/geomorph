@@ -99,7 +99,7 @@
 #' @seealso \code{\link{integration.test}}, \code{\link{modularity.test}}, and 
 #' \code{\link{two.b.pls}}
 #' @examples
-#' 
+#' \dontrun{
 #' data(plethspecies) 
 #' Y.gpa <- gpagen(plethspecies$land)    #GPA-alignment
 #' land.gps <- c("A","A","A","A","A","B","B","B","B","B","B") 
@@ -129,10 +129,10 @@
 #'  
 #'  ### Visualize shape variation using picknplot.shape Because picknplot  
 #'  ### requires user decisions, the following example
-#'  ### is not run (but can be with removal of #).
+#'  ### is not run.
 #'  ### For detailed options, see the picknplot help file
 #'  # picknplot.shape(P)
-#'
+#' }
 phylo.integration <-function(A, A2 = NULL, phy, 
                              partition.gp = NULL,iter = 999, 
                              seed = NULL, print.progress = TRUE){ 

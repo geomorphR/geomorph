@@ -171,6 +171,7 @@ inferential analyses using Procrustes residuals.
 }
 }
 \examples{
+\dontrun{
 # Example 1: fixed points only
 data(plethodon) 
 Y.gpa <- gpagen(plethodon$land, PrinAxes = FALSE)
@@ -205,6 +206,7 @@ Y.gpa <- gpagen(A = scallops$coorddata, curves = scallops$curvslide,
 surfaces = scallops$surfslide)
 # NOTE can summarize as: summary(Y.gpa)
 # NOTE can plot as: plot(Y.gpa) 
+}
 }
 \references{
 Adams, D. C., F. J. Rohlf, and D. E. Slice. 2004. Geometric morphometrics: ten years of 

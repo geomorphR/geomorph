@@ -39,55 +39,55 @@ include the null hypothesis of no modularity (i.e., that all variables belong to
 should be specified. Finally, one may perform the comparison as either a one-tailed or a two-tailed (default) test.
 }
 \examples{
+\dontrun{
 
-#NOT RUN
 # Example 1: Compare modular signal across datasets
  
-# data(pupfish) 
-# Y.gpa<-gpagen(pupfish$coords, print.progress = FALSE)    #GPA-alignment   
+ data(pupfish) 
+ Y.gpa<-gpagen(pupfish$coords, print.progress = FALSE)    #GPA-alignment   
  
 ## landmarks on the body and operculum
-# land.gps<-rep('a',56); land.gps[39:48]<-'b'
+ land.gps<-rep('a',56); land.gps[39:48]<-'b'
 
-# group <- factor(paste(pupfish$Pop, pupfish$Sex, sep = "."))
-# levels(group)
+ group <- factor(paste(pupfish$Pop, pupfish$Sex, sep = "."))
+ levels(group)
 
-# coords.gp <- coords.subset(Y.gpa$coords, group)
+ coords.gp <- coords.subset(Y.gpa$coords, group)
 
-# modul.tests <- Map(function(x) modularity.test(x, land.gps,iter=999, 
-# print.progress = FALSE), coords.gp) 
+ modul.tests <- Map(function(x) modularity.test(x, land.gps,iter=999, 
+ print.progress = FALSE), coords.gp) 
          
 # the map function performs the integration test on each 3D array 
 # in the lists provided
 
-#  modul.tests$Marsh.F
-#  modul.tests$Marsh.M
-#  modul.tests$Sinkhole.F
-#  modul.tests$Sinkhole.M
+  modul.tests$Marsh.F
+  modul.tests$Marsh.M
+  modul.tests$Sinkhole.F
+  modul.tests$Sinkhole.M
 
-# group.Z <- compare.CR(modul.tests, CR.null = FALSE)
-# summary(group.Z)
+ group.Z <- compare.CR(modul.tests, CR.null = FALSE)
+ summary(group.Z)
 
 # Example 2: Compare alternative modular hypotheses
 
 # 3 module hypothesis (tail now a module)
-# land.gps3 <- rep('a',56); land.gps3[39:48]<-'b'; 
-# land.gps3[c(6:9,28:38)] <- 'c' 
+ land.gps3 <- rep('a',56); land.gps3[39:48]<-'b'; 
+ land.gps3[c(6:9,28:38)] <- 'c' 
    
 # 4 module hypothesis (eye now a module)
-# land.gps4 <- rep('a',56); land.gps4[39:48]<-'b'; 
-# land.gps4[c(6:9,28:38)] <- 'c'; 
-#  land.gps4[c(10,49:56)] <- 'd'  
+ land.gps4 <- rep('a',56); land.gps4[39:48]<-'b'; 
+ land.gps4[c(6:9,28:38)] <- 'c'; 
+  land.gps4[c(10,49:56)] <- 'd'  
 
-# m3.test <- modularity.test(coords.gp$Marsh.F,land.gps3, iter = 499, 
-# print.progress = FALSE)
-# m4.test <- modularity.test(coords.gp$Marsh.F,land.gps4, iter = 499, 
-# print.progress = FALSE)
+ m3.test <- modularity.test(coords.gp$Marsh.F,land.gps3, 
+ print.progress = FALSE)
+ m4.test <- modularity.test(coords.gp$Marsh.F,land.gps4, 
+ print.progress = FALSE)
 
-# model.Z <- compare.CR(modul.tests$Marsh.F,m3.test,m4.test, 
-# CR.null = TRUE)
-# summary(model.Z)
-
+ model.Z <- compare.CR(modul.tests$Marsh.F,m3.test,m4.test, 
+ CR.null = TRUE)
+ summary(model.Z)
+}
 }
 \references{
 Adams, D.C. and M.L. Collyer. 2019.  Comparing the strength of modular signal, and evaluating alternative modular hypotheses,

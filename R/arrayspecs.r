@@ -37,6 +37,8 @@
 #' this array contains names for each specimen if specified in the original 
 #' input matrix.
 #' @examples 
+#' \dontrun{
+#' 
 #' x <- matrix(rnorm(18), nrow = 3)  # Random triangles (all coordinates on same 
 #'  # row for each triangle)
 #' arrayspecs(x, 3, 2) 
@@ -44,6 +46,8 @@
 #' x2 <- matrix(rnorm(18), ncol = 2) # Random triangles (each landmark on its 
 #' # own row)
 #' arrayspecs(x2, 3, 2)
+#' }
+
 arrayspecs<-function(A, p, k, sep = NULL){  
   if(!is.matrix(A) && !is.data.frame(A)) stop("A must be a data frame or matrix")
   dnames <- dimnames(A)

@@ -158,6 +158,7 @@
 #' @references Zelditch, M. L., D. L. Swiderski, H. D. Sheets, and W. L. Fink. 2012. Geometric morphometrics 
 #'   for biologists: a primer. 2nd edition. Elsevier/Academic Press, Amsterdam.
 #' @examples
+#' \dontrun{
 #' # Example 1: fixed points only
 #' data(plethodon) 
 #' Y.gpa <- gpagen(plethodon$land, PrinAxes = FALSE)
@@ -192,6 +193,7 @@
 #' surfaces = scallops$surfslide)
 #' # NOTE can summarize as: summary(Y.gpa)
 #' # NOTE can plot as: plot(Y.gpa) 
+#' }
 gpagen = function(A, curves=NULL, surfaces=NULL, 
                   rot.pts = NULL,
                   PrinAxes = TRUE, 

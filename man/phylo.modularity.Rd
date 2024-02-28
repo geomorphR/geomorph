@@ -75,16 +75,18 @@ In addition, a multivariate effect size describing the strength of the effect is
   estimated from the empirically-generated sampling distribution (see details in Adams and Collyer 2019).
 }
 \examples{
-# Not Run
-# data(plethspecies)
-# Y.gpa <- gpagen(plethspecies$land)    #GPA-alignment
-# land.gps <- c("A","A","A","A","A","B","B","B","B","B","B") 
+\dontrun{
 
-# MT <- phylo.modularity(Y.gpa$coords, partition.gp = land.gps, 
-# phy = plethspecies$phy, 
-# CI = FALSE)
-# summary(MT) # Test summary
-# plot(MT) # Histogram of CR sampling distribution 
+ data(plethspecies)
+ Y.gpa <- gpagen(plethspecies$land)    #GPA-alignment
+ land.gps <- c("A","A","A","A","A","B","B","B","B","B","B") 
+
+ MT <- phylo.modularity(Y.gpa$coords, partition.gp = land.gps, 
+ phy = plethspecies$phy, 
+ CI = FALSE)
+ summary(MT) # Test summary
+ plot(MT) # Histogram of CR sampling distribution 
+ }
 }
 \references{
 Adams, D.C. 2016.Evaluating modularity in morphometric data: Challenges with the RV coefficient and a 

@@ -34,6 +34,7 @@
 #' @author Michael Collyer & Emma Sherratt
 #' @seealso  \code{\link{plotRefToTarget}}, \code{\link{text}}, \code{\link{text3d}} 
 #' @examples
+#' \dontrun{
 #' data(plethodon) 
 #' Y.gpa <- gpagen(plethodon$land)    #GPA-alignment
 #' ref <- mshape(Y.gpa$coords)
@@ -65,6 +66,7 @@
 #' GP5 <- gridPar(txt.pos = 3, txt.col = "red") 
 #' plotRefToTarget(ref, Y.gpa$coords[,,39], gridPars = GP5, mag = 3, 
 #' method = "vector", label = TRUE)
+#' }
 gridPar <- function(pt.bg = "gray", 
                     pt.size = 1.5,
                     link.col = "gray",

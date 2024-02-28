@@ -125,6 +125,7 @@ Note that the specimen labels for both X and Y must match the labels on the tips
 }
 }
 \examples{
+\dontrun{
 ### Example of D-PGLS for high-dimensional data 
 data(plethspecies)
 Y.gpa <- gpagen(plethspecies$land)    #GPA-alignment
@@ -152,6 +153,7 @@ data = gdf)
 
 anova(pleth.pgls)
 anova(pleth.pgls2)
+}
 }
 \references{
 Adams, D.C. 2014. A method for assessing phylogenetic least squares models for shape and other high-dimensional 

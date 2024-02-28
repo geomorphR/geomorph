@@ -82,6 +82,7 @@ The function allows users to vary certain plotting parameters to produce differe
 graphical outcomes for \code{\link{plotRefToTarget}}.  Not all parameters need to be adjusted to use this function, as the defaults above will be used.
 }
 \examples{
+\dontrun{
 data(plethodon) 
 Y.gpa <- gpagen(plethodon$land)    #GPA-alignment
 ref <- mshape(Y.gpa$coords)
@@ -113,6 +114,7 @@ outline = plethodon$outline, method = "TPS")
 GP5 <- gridPar(txt.pos = 3, txt.col = "red") 
 plotRefToTarget(ref, Y.gpa$coords[,,39], gridPars = GP5, mag = 3, 
 method = "vector", label = TRUE)
+}
 }
 \seealso{
 \code{\link{plotRefToTarget}}, \code{\link{text}}, \code{\link{text3d}}

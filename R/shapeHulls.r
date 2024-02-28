@@ -20,7 +20,7 @@
 #' @seealso \code{\link{procD.lm}}
 #' @keywords utilities
 #' @examples
-#' 
+#'  \dontrun{
 #' # Via procD.lm and plot.procD.lm
 #' 
 #' data("pupfish")
@@ -59,6 +59,7 @@
 #' group.lwd = rep(2, 2), group.lty = c(2, 1))
 #' legend("topright", c("P. cinereus clade", "P. hubrichti clade"), 
 #' col = 1:2, lwd = 2, lty = c(2, 1))
+#' }
 
 shapeHulls <- function(x, groups = NULL, group.cols = NULL, 
                        group.lwd = NULL, group.lty = NULL){
