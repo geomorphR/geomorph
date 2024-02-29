@@ -10,7 +10,7 @@ d8e8360c03c03fe45d2100e9c05d4a89 *data/plethodon.rda
 80c6fa53b642b23b378cf036d1b962f1 *data/ratland.rda
 9ba51ab9be03930a4acdcddde8169b33 *data/scallopPLY.rda
 6e5e71b242462e422b716800ffc3c464 *data/scallops.rda
-6dce5c6e418a35f92cb5e92e34dd911f *DESCRIPTION
+38759be70f33ace5cb81dcff38a2e3a6 *DESCRIPTION
 93888302df16c73a687a212581f6b04e *geomorph.Rproj
 777f56c2f94a7c701c45e130664d25d1 *inst/CITATION
 48ebf0e3514a533f2bf4c1abaa47953a *man/arrayspecs.Rd
@@ -57,7 +57,7 @@ a598044482a6c3e39517b798b654c57e *man/hummingbirds.Rd
 7f08bf6be6848cc41d9fe4a428827310 *man/phylo.modularity.Rd
 5d068ebaead7824eecc43bf7a372261a *man/physignal.Rd
 96417490d609895ff28e3ecb7b34a4ff *man/physignal.z.Rd
-4c4627369af8033e3aa5fa3060731435 *man/picknplot.shape.Rd
+0063d4a89dc1d1383dda335a5e552965 *man/picknplot.shape.Rd
 af93ecd1b6eb7fb84c529ee5d5ca59b4 *man/plethodon.Rd
 67af5edfcfef3d23440b41c805d143c6 *man/plethShapeFood.Rd
 b8a3ca222e5ef0e2470e1d5833dd7bb4 *man/plethspecies.Rd
@@ -65,7 +65,7 @@ b8a3ca222e5ef0e2470e1d5833dd7bb4 *man/plethspecies.Rd
 59b44888645cbbeeb4cf0d3406e4ee45 *man/plot.CR.phylo.Rd
 97892e1293dbb2c4a6e994a90c27dc83 *man/plot.CR.Rd
 85bbe6b70e860a14116746ef4ecac51f *man/plot.evolrate.Rd
-6e5296c99562dc85e219488db84596cc *man/plot.gm.prcomp.Rd
+7ea768fe62f9d79641ba9fa255b34aad *man/plot.gm.prcomp.Rd
 0116d21c6ae9389dc425aaca082fd67c *man/plot.gpagen.Rd
 71208a14b679efbbaf55f8daba7a0ef3 *man/plot.mshape.Rd
 c243df60434118dddca6904f3d6de9b0 *man/plot.physignal.Rd
@@ -162,7 +162,7 @@ aac6a4f8a759473e8c37048e5c8e3d91 *R/findMeanSpec.r
 b792f75d1fb825423b03a8711c0120a4 *R/fixed.angle.r
 14c82d650f7cbbf5ef8786303b1e0373 *R/geomorph.data.frame.r
 d14b76f8fcddd1343336bb4c86b2435f *R/geomorph.support.code.r
-4f2bd5c452ed42eeb94162e9949b469f *R/geomorph.utils.r
+35936febf018f561593d7d4c01d11c46 *R/geomorph.utils.r
 d8571c8894e54b32c96c2ce94c6b7101 *R/globalIntegration.r
 6dbacc3db3c0f57e8863d9847c8bd68e *R/gm.prcomp.R
 c0852f88b9286461e0e485edcf982b9e *R/gpagen.r
@@ -177,7 +177,7 @@ efccfbda0e7a165e7c85f0a5991e6250 *R/phylo.integration.r
 5b3732663b03279af125011d51108032 *R/phylo.modularity.r
 a10d2351f5d3ce09e26e005f8f9c1676 *R/physignal.r
 0a69b816e19bd50eb5db8a2574399893 *R/physignal.z.r
-65b0ea6a61725b1c87d69b3657e20c1f *R/picknplot.shape.r
+85ebbf8036df4f7b4a7498bd6550bfbe *R/picknplot.shape.r
 ca1c3976376d53292b7a2838a6d8ddd8 *R/plotAllometry.r
 ca34da1f17ac2989b1d0da05ba6f658c *R/plotAllSpecimens.r
 cdeda457fb247b2ffb195f25d920c960 *R/plotOutliers.r

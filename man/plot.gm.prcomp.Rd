@@ -12,9 +12,9 @@
   phylo = FALSE,
   time.plot = FALSE,
   phylo.par = list(tip.labels = TRUE, node.labels = TRUE, anc.states = TRUE, node.pch =
-    21, node.bg = "grey", node.cex = 1, edge.color = "black", edge.width = 1, tip.txt.cex
-    = 1, tip.txt.col = "black", tip.txt.adj = c(-0.1, -0.1), node.txt.cex = 1,
-    node.txt.col = "grey", node.txt.adj = c(-0.1, -0.1)),
+    21, node.bg = "grey", node.cex = 1, edge.color = "black", edge.width = 1, edge.lty =
+    1, tip.txt.cex = 1, tip.txt.col = "black", tip.txt.adj = c(-0.1, -0.1), node.txt.cex
+    = 1, node.txt.col = "grey", node.txt.adj = c(-0.1, -0.1)),
   ...
 )
 }
