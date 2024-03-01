@@ -38,7 +38,7 @@ ac1dfe0039664661983fd52a3016da46 *man/fixed.angle.Rd
 a6a3aaf17db71b32e910548cb49c55f4 *man/geomorph-package.Rd
 8db657c75b1254dbd47c5627084f078d *man/geomorph.data.frame.Rd
 b8463bd3f2a6f85d2a0ddb1540597d0e *man/globalIntegration.Rd
-e38b31bc8f705e8b54a7f422e6481ff9 *man/gm.measurement.error.Rd
+184d5e566bc4a7c577c961b31a5c93b6 *man/gm.measurement.error.Rd
 de7038fb427d48b1691c57aef81e0e40 *man/gm.prcomp.Rd
 9c6d1ff03066fde316c9cf43c50a14db *man/gpagen.Rd
 2f6aa48be8a685c796609c0ae410f32d *man/gridPar.Rd
@@ -165,7 +165,7 @@ b792f75d1fb825423b03a8711c0120a4 *R/fixed.angle.r
 d14b76f8fcddd1343336bb4c86b2435f *R/geomorph.support.code.r
 35936febf018f561593d7d4c01d11c46 *R/geomorph.utils.r
 d8571c8894e54b32c96c2ce94c6b7101 *R/globalIntegration.r
-11c1656e5157b712eb4f16647c046112 *R/gm.measurement.error.R
+04efd5ac68a91ab507b5edacfe90dcaa *R/gm.measurement.error.R
 6dbacc3db3c0f57e8863d9847c8bd68e *R/gm.prcomp.R
 c0852f88b9286461e0e485edcf982b9e *R/gpagen.r
 1354e54d17ae51a46376ab0772adad1e *R/gridPar.r

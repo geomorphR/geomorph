@@ -155,6 +155,10 @@ ICCstats(ME2, subjects = "Subjects",
   with_in = "Systematic ME", groups = "groups")
 P <- plot(ME2)
 focusMEonSubjects(P, subjects = 18:20, shadow = TRUE)
+
+#heat map of inter-subject variability
+int.var <- interSubVar(ME2, type = "var")
+plot(int.var)
 }
 
 }
