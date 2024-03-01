@@ -36,7 +36,7 @@ This would be of interest if one were concerned with systematic ME occurring per
 certain strata within the data.  For example, systematic ME because of an observer bias might
 only be observed with females or males.}
 
-\item{data}{An data frame, either of class \code{\link{geomorph.data.frame}}.}
+\item{data}{An data frame of class \code{\link{geomorph.data.frame}}.}
 
 \item{iter}{Number of iterations for significance testing}
 
@@ -143,12 +143,18 @@ plot(ME1)
 
 # Analysis concerned with groups 
 
-ME2 <- measurement.error(
+ME2 <- gm.measurement.error(
   Y = "coordsarray",
   subjects = "subj",
   replicates = "reps",
   groups = "groups",
   data = fishy)
+  
+anova(ME2)
+ICCstats(ME2, subjects = "Subjects", 
+  with_in = "Systematic ME", groups = "groups")
+P <- plot(ME2)
+focusMEonSubjects(P, subjects = 18:20, shadow = TRUE)
 }
 
 }
