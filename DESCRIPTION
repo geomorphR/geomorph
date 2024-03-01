@@ -25,7 +25,7 @@ Suggests:
     dplyr
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2024-02-28
+Packaged: 2024-03-05
 Author: Dean Adams [aut, cre],
   Michael Collyer [aut],
   Antigoni Kaliontzopoulou [aut],

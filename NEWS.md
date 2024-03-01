@@ -2,6 +2,10 @@
 
 # CHANGES IN GEOMORPH VERSION 4.0.7
 
+### NEW FEATURES
+
+* New function, `gm.measurement.error`
+
 ### Bug fixes
 * Fixed issue with `estimate.missing` for shapes files and TPS option
 * Fixed names issue with `bilat.symmetry`
