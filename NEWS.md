@@ -10,6 +10,7 @@
 * Fixed issue with `estimate.missing` for shapes files and TPS option
 * Fixed names issue with `bilat.symmetry`
 * Fixed problems with ellipsis use in `readmulti.tps`
+* Fixed issue with `lambda.opt` internal function, for use in `physignal.z`, which precluded verbose results.
 
 ### OTHER CHANGES
 

@@ -5,7 +5,7 @@
 \title{This function is a wrapper for the function measurement.error in RRPP}
 \usage{
 gm.measurement.error(
-  Y,
+  coords,
   subjects,
   replicates,
   groups = NULL,
@@ -22,7 +22,7 @@ gm.measurement.error(
 )
 }
 \arguments{
-\item{Y}{A 3D array (p x k x n) containing Procrustes shape variables for all specimens}
+\item{coords}{A 3D array (p x k x n) containing Procrustes shape variables for all specimens}
 
 \item{subjects}{A vector or factor of research subjects (each subject should occur twice or more).
 The length of the vector must equal the number of observations and will be coerced into a factor.}
@@ -132,7 +132,7 @@ points(rep2, pch = 16, col = gray(0.2, alpha = 0.5), cex = 2, asp = 1)
 # Analysis unconcerned with groups 
 
 ME1 <- gm.measurement.error(
-  Y = "coordsarray",
+  coords = "coordsarray",
   subjects = "subj",
   replicates = "reps",
   data = fishy)
@@ -144,7 +144,7 @@ plot(ME1)
 # Analysis concerned with groups 
 
 ME2 <- gm.measurement.error(
-  Y = "coordsarray",
+  coords = "coordsarray",
   subjects = "subj",
   replicates = "reps",
   groups = "groups",

@@ -342,7 +342,7 @@ physignal.z <- function(A, phy, lambda = c("burn", "mean", "front", "all"), iter
     })
     
     lambda.by.p <- sapply(1:p, function(j) {
-      lambda.opt(Y[,1:j], phy)$lambda
+      lambda.opt(Y[,1:j], phy)
     })
     
     logL.by.p <-sapply(1:p, function(j) {

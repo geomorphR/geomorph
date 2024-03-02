@@ -25,7 +25,7 @@
 #' component of ME.  The multivariate test is a form of multivariate ANOVA (MANOVA), using
 #' RRPP to generate sampling distributions of the major eigenvalue (Roy's maximum root).
 #' 
-#' @param Y A 3D array (p x k x n) containing Procrustes shape variables for all specimens
+#' @param coords A 3D array (p x k x n) containing Procrustes shape variables for all specimens
 #' @param subjects A vector or factor of research subjects (each subject should occur twice or more).  
 #' The length of the vector must equal the number of observations and will be coerced into a factor.
 #' @param replicates A vector or factor for replicate measurements for research subjects.  
@@ -103,7 +103,7 @@
 #' # Analysis unconcerned with groups 
 #' 
 #' ME1 <- gm.measurement.error(
-#'   Y = "coordsarray",
+#'   coords = "coordsarray",
 #'   subjects = "subj",
 #'   replicates = "reps",
 #'   data = fishy)
@@ -115,7 +115,7 @@
 #' # Analysis concerned with groups 
 #' 
 #' ME2 <- gm.measurement.error(
-#'   Y = "coordsarray",
+#'   coords = "coordsarray",
 #'   subjects = "subj",
 #'   replicates = "reps",
 #'   groups = "groups",
@@ -132,7 +132,7 @@
 #' plot(int.var)
 #' }
 #' 
-gm.measurement.error <- function(Y, 
+gm.measurement.error <- function(coords, 
                                  subjects, 
                                  replicates, 
                                  groups = NULL,
@@ -157,7 +157,7 @@ gm.measurement.error <- function(Y,
   }
   class(data) <- "rrpp.data.frame"
   
-  Y <- as.character(Y)
+  Y <- as.character(coords)
   Yslot <- which(names(data) %in% Y)
   if(length(Yslot) == 0)
     stop(paste("\nThe Y argument must be a character",
