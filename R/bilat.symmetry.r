@@ -328,7 +328,7 @@ bilat.symmetry <- function(A, ind = NULL, side = NULL, replicate = NULL, object.
   n.ind <- nlevels(ind)
   n.side <- nlevels(side)
   indsq <- seq(n.side, (n.ind*n.side), n.side)
-  asymm.component <- avg.side.symm[indsq,] - avg.side.symm[-indsq,]
+  asymm.component <- avg.side.symm[-indsq,] - avg.side.symm[indsq,]
   mn.shape <- mshape(A)
   asymm.component <- simplify2array(lapply(1:n.ind, function(j) {
     t(matrix(asymm.component[j,],k,p)) + mn.shape

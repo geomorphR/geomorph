@@ -14,6 +14,7 @@
 
 ### OTHER CHANGES
 
+* Reversed order of asymmetry components for internal consistency
 * Updated internal code and Rd file formats to match new CRAN policies
 * Added a feature to print a table to identify inconsistent landmarking in both `readland.tps` and `readmulti.tps`, rather than just return an error.
 
