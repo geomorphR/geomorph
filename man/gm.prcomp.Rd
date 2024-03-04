@@ -54,9 +54,9 @@ via ordinary least-squares (OLS) or via generalized least-squares (GLS).  The na
 of arguments and output, but this function is quite a bit more diverse.  This function has
 the capability of performing analyses generally referred to as:
 
-\itemize{
+\describe{
 \item{\bold{PCA}}{  Standard PCA based on OLS-centering and projection of data.}
-\item{\bold{  Phylomorphospace}}{  Standard PCA with estimated ancestral 
+\item{\bold{Phylomorphospace}}{  Standard PCA with estimated ancestral 
 states and phylogenetic branches projected into ordination plots.}
 \item{\bold{phyloPCA}}{  PCA based on GLS-centering and projection of data.  Also possible to 
 project ancestral states into plots. Note that if transformed GLS-residuals are used for projection, the ancestral states
@@ -70,11 +70,11 @@ See Collyer and Adams (2021) for more details. For greater flexibility for type 
 use \code{\link{ordinate}}.  See Collyer and Adams (2021) for details.}
 }
 
-\itemize{
-\item{\bold{phy}}{  Whether a phylogeny and estimated ancestral states are considered in plots.}
-\item{\bold{align.to.phy}}{  Whether components are aligned to phylogenetic signal (rather than principal axes).}
-\item{\bold{GLS}}{  Whether to use GLS-centering and estimation of covariance matrix.}
-\item{\bold{transform}} {Whether to transform GLS-residuals (making them independent of phylogeny and an orthogonal
+\describe{
+\item{\bold{phy}}{Whether a phylogeny and estimated ancestral states are considered in plots.}
+\item{\bold{align.to.phy}}{Whether components are aligned to phylogenetic signal (rather than principal axes).}
+\item{\bold{GLS}}{Whether to use GLS-centering and estimation of covariance matrix.}
+\item{\bold{transform}}{Whether to transform GLS-residuals (making them independent of phylogeny and an orthogonal
 projection from the transformed data space, as opposed to an oblique projection from the untransformed data space).}
 }
 
@@ -87,7 +87,7 @@ eigenvalues (variance by component), proportion of variance by component, and cu
 When data are aligned to a phylogenetic covariance matrix, the statistics are less straightforward.  A summary of
 of such an analysis (performed with \code{\link{summary.gm.prcomp}}) will produce these additional statistics:
 
-\itemize{
+\describe{
 \item{\bold{Singular Value}}{  Rather than eigenvalues, the singular values from singular value decomposition of the 
 cross-product of the scaled phylogenetic covariance matrix and the data.}
 \item{\bold{Proportion of Covariance}}{  Each component's singular value divided by the sum of singular values.  The cumulative
@@ -110,6 +110,7 @@ possible with \code{plotTangentSpace} and \code{plotGMPhyloMorphoSpace}, which
 have now been deprecated.
 }
 \examples{
+\dontrun{
  data(plethspecies) 
  Y.gpa <- gpagen(plethspecies$land)    #GPA-alignment
  
@@ -174,13 +175,12 @@ have now been deprecated.
  text(0, 0.95*par()$usr[4], labels = "PC2 - 18.80\%", pos = 4, font = 2)
  legend("topleft", pch=22, pt.bg = unique(gps), legend = levels(gps))
  
- ### NOT RUN
- ### 3D plot with a phylogeny and time on the z-axis
- # plot(PCA.w.phylo, time.plot = TRUE)
- # plot(PCA.w.phylo, time.plot = TRUE, bg = "red", 
- #    phylo.par = list(tip.labels = TRUE, 
- # tip.txt.cex = 2, edge.color = "blue", edge.width = 2))
- 
+ ## 3D plot with a phylogeny and time on the z-axis
+  plot(PCA.w.phylo, time.plot = TRUE)
+  plot(PCA.w.phylo, time.plot = TRUE, bg = "red", 
+     phylo.par = list(tip.labels = TRUE, 
+  tip.txt.cex = 2, edge.color = "blue", edge.width = 2))
+ }
 }
 \references{
 Collyer, M.L and D.C. Adams, 2021. Phylogenetically Aligned component analysis. 
@@ -194,7 +194,7 @@ comparative studies. Evolution, 63: 3258-3268.
 
 \code{\link{picknplot.shape}}
 
-\code{\link{ordinate}}{ A more bare-bones ordination function on which gm.prcomp depends.}
+\code{\link{ordinate}}
 }
 \author{
 Antigoni Kaliontzopoulou, Michael Collyer, & Dean Adams

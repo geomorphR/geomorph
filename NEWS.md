@@ -1,14 +1,20 @@
-# CHANGES IN GEOMORPH VERSION 4.0.6.999
+# CHANGES IN GEOMORPH VERSION 4.0.7
+
+### NEW FEATURES
+
+* New function, `gm.measurement.error`
 
 ### Bug fixes
 * Fixed issue with `estimate.missing` for shapes files and TPS option
 * Fixed names issue with `bilat.symmetry`
 * Fixed problems with ellipsis use in `readmulti.tps`
+* Fixed issue with `lambda.opt` internal function, for use in `physignal.z`, which precluded verbose results.
 
 ### OTHER CHANGES
 
-* Added a table to identify inconsistent landmarking in`readmulti.tps`.
-
+* Reversed order of asymmetry components for internal consistency
+* Updated internal code and Rd file formats to match new CRAN policies
+* Added a feature to print a table to identify inconsistent landmarking in both `readland.tps` and `readmulti.tps`, rather than just return an error.
 
 # CHANGES IN GEOMORPH VERSION 4.0.6
 

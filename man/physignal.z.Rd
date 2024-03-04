@@ -19,7 +19,7 @@ physignal.z(
 \arguments{
 \item{A}{A matrix (n x [p x k]) or 3D array (p x k x n) containing Procrustes shape variables for a set of specimens}
 
-\item{phy}{A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape}
+\item{phy}{A phylogenetic tree of class = "phylo" - see \code{\link[ape]{read.tree}} in library ape}
 
 \item{lambda}{An indication for how lambda should be optimized.  This can be a numeric value between 0 and 1 to override 
 optimization.  Alternatively, it can be one of four methods: burn-in ("burn"); mean lambda across all data dimensions
@@ -109,7 +109,7 @@ restricted to just some of the variables.  Therefore, optimization can can consi
 signal in different ways.  Below is a summary of optimization methods, including advantages or disadvantages that might be
 incurred.  Future versions of this function might update optimization methods, as more research affirms better methods.
 
-\itemize{
+\describe{
 \item{\bold{burn}}{  A burn-in optimization samples a spectrum of lambda from 0 to 1, finding the effect
 size, Z, from several distributions of log-likelihoods, in order to find the lambda value that maximizes the
 effect size rather than the log-likelihood.  Once this value of lambda is obtained, the requested number
@@ -141,27 +141,29 @@ lambda = 1 will be fundamentally the same as performing the analysis on multivar
  associated with the resampling procedure.
 }
 \examples{
+\dontrun{
 data(plethspecies) 
-Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment    
+Y.gpa <- gpagen(plethspecies$land)    #GPA-alignment    
 
 # Test for phylogenetic signal in shape
 PS.shape <- physignal.z(A = Y.gpa$coords, phy = plethspecies$phy, 
-lambda = "front", iter=999)
+lambda = "front")
 summary(PS.shape)
 
 # Problem with ill-conditioned residual covariance matrix; try shaving one dimension
 
 PS.shape <- physignal.z(A = Y.gpa$coords, phy = plethspecies$phy, 
-lambda = "front", PAC.no = 7, iter=999)
+lambda = "front", PAC.no = 7)
 summary(PS.shape)
 plot(PS.shape)
 plot(PS.shape$PACA, phylo = TRUE)
 
 # Test for phylogenetic signal in size
 PS.size <- physignal.z(A = Y.gpa$Csize, phy = plethspecies$phy, 
-lambda = "front", iter=999)
+lambda = "front")
 summary(PS.size)
 plot(PS.size)
+}
 }
 \references{
 Collyer,  M.L., E.K. Baken, & D.C. Adams.  2022. A standardized effect size for evaluating

@@ -230,7 +230,7 @@
 #' 
 #' ### Regression example
 #' data(ratland)
-#' rat.gpa<-gpagen(ratland)         #GPA-alignment
+#' rat.gpa <- gpagen(ratland)         #GPA-alignment
 #' gdf <- geomorph.data.frame(rat.gpa) # geomorph data frame is easy 
 #' # without additional input
 #' 
@@ -290,9 +290,7 @@
 #' anova(fit, error = c("treatment:family", "Residuals")) 
 #' # treatment effect updated (adjusted)
 #' }
-#' 
-#' 
-#' 
+ 
 procD.lm <- function(f1, iter = 999, seed=NULL, RRPP = TRUE, 
                      SS.type = c("I", "II", "III"),
                      effect.type = c("F", "cohenf", "SS", "MS", "Rsq"),

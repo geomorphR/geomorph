@@ -20,7 +20,7 @@ plotspec(
 
 \item{digitspec}{Name of data matrix containing 3D fixed and/or surface sliding coordinates.}
 
-\item{fixed}{Numeric The number of fixed template landmarks (listed first in {digitspec})}
+\item{fixed}{Numeric The number of fixed template landmarks (listed first in digitspec)}
 
 \item{fixed.pt.col}{The color for plotting fixed template landmarks (if any)}
 
@@ -28,8 +28,8 @@ plotspec(
 
 \item{mesh.ptsize}{Numeric Size to plot the mesh points (vertices), e.g. 0.1 for dense meshes, 3 for sparse meshes}
 
-\item{centered}{Logical Whether the data matrix is in the surface mesh coordinate system ({centered = FALSE}) or
-if the data were collected after the mesh was centered ({centered = TRUE})- see details.}
+\item{centered}{Logical Whether the data matrix is in the surface mesh coordinate system (centered = "FALSE") or
+if the data were collected after the mesh was centered (centered = "TRUE")- see details.}
 
 \item{...}{additional parameters which will be passed to rgl-plot3d or 
 rgl-points3d.}
@@ -42,9 +42,9 @@ Function to plot 3D specimens along with their digitized "fixed" landmarks and s
 "surface sliders" and "curve sliders". If specimen is a 3D surface (class shape3d/mesh3d) mesh is plotted.
 For visualization purposes, 3D coordinate data collected using \code{\link{digit.fixed}} or 
 \code{\link{digitsurface}} and \code{\link{buildtemplate}} prior to build 1.1-6 were centered by default. 
-Therefore use this function with {centered=TRUE}. Data collected outside geomorph should be read using
-{centered=FALSE}. The function assumes the fixed landmarks are listed at the beginning of
-the coordinate matrix ({digitspec}).
+Therefore use this function with centered = "TRUE". Data collected outside geomorph should be read using
+centered = "FALSE". The function assumes the fixed landmarks are listed at the beginning of
+the coordinate matrix (digitspec).
 
 This function is a wrapper for several functions in the \code{\link{rgl-package}} package.  
 Although there is some allowance for arguments to be passed to \code{\link{rgl-package}} functions,
@@ -53,14 +53,15 @@ to pass rgl-plot3d or rgl-points3d arguments should inspire the user
 to find solutions with \code{\link{rgl-package}} core functions.
 }
 \examples{
+\dontrun{
 
-## Not Run
-# data(scallopPLY)
-# ply <- scallopPLY$ply
-# digitdat <- scallopPLY$coords
-# plotspec(spec = ply, digitspec = digitdat, fixed = 16, 
-# centered = TRUE, fixed.pt.col = "red", 
-# fixed.pt.size = 15, col = "blue", size = 5)
+ data(scallopPLY)
+ ply <- scallopPLY$ply
+ digitdat <- scallopPLY$coords
+ plotspec(spec = ply, digitspec = digitdat, fixed = 16, 
+ centered = TRUE, fixed.pt.col = "red", 
+ fixed.pt.size = 15, col = "blue", size = 5)
+ }
 }
 \seealso{
 \code{\link{warpRefMesh}}

@@ -22,43 +22,43 @@
 #' @export
 #' @author Michael Collyer
 #' @examples
+#' \dontrun{
 #' 
 #' ### PLS Example
-#' # NOT RUN
-#' # data(plethodon) 
-#' # Y.gpa<-gpagen(plethodon$land)    #GPA-alignment    
-#' # landmarks on the skull and mandible assigned to partitions
-#' # land.gps<-c("A","A","A","A","A","B","B","B","B","B","B","B") 
-#' # IT <- integration.test(Y.gpa$coords, partition.gp=land.gps, iter=999)
-#' # summary(IT) # Test summary
-#' # P <- plot(IT) # PLS plot
-#' # make_ggplot(P) # same plot in ggplot
+#'  data(plethodon) 
+#'  Y.gpa <- gpagen(plethodon$land)    #GPA-alignment    
+#'  landmarks on the skull and mandible assigned to partitions
+#'  land.gps <- c("A","A","A","A","A","B","B","B","B","B","B","B") 
+#'  IT <- integration.test(Y.gpa$coords, partition.gp = land.gps, iter = 999)
+#'  summary(IT) # Test summary
+#'  P <- plot(IT) # PLS plot
+#'  make_ggplot(P) # same plot in ggplot
 #' 
 #' ### Allometry example
 #' 
-#' # data(plethodon) 
-#' # Y.gpa <- gpagen(plethodon$land, print.progress = FALSE)    #GPA-alignment  
+#'  data(plethodon) 
+#'  Y.gpa <- gpagen(plethodon$land, print.progress = FALSE)    #GPA-alignment  
 #'
-#' # gdf <- geomorph.data.frame(Y.gpa, site = plethodon$site, 
-#' #                           species = plethodon$species) 
+#'  gdf <- geomorph.data.frame(Y.gpa, site = plethodon$site, 
+#'                            species = plethodon$species) 
 #' 
-#' # fit <- procD.lm(coords ~ Csize * species * site, data=gdf, iter=0, 
-#' #                 print.progress = FALSE)
+#'  fit <- procD.lm(coords ~ Csize * species * site, data=gdf, iter=0, 
+#'                  print.progress = FALSE)
 #' 
-#' # P <- plotAllometry(fit, size = gdf$Csize, logsz = TRUE, method = "PredLine", 
-#' #                     pch = 19, col = as.numeric(interaction(gdf$species, gdf$site)))
+#'  P <- plotAllometry(fit, size = gdf$Csize, logsz = TRUE, method = "PredLine", 
+#'                      pch = 19, col = as.numeric(interaction(gdf$species, gdf$site)))
 #'
-#' # make_ggplot(P)
+#'  make_ggplot(P)
 #' 
 #' ### Tangent Space plot
 #' 
-#' # data(plethspecies) 
-#' # Y.gpa <- gpagen(plethspecies$land)    #GPA-alignment
+#'  data(plethspecies) 
+#'  Y.gpa <- gpagen(plethspecies$land)    #GPA-alignment
 #' 
-#' # PCA.w.phylo <- gm.prcomp(Y.gpa$coords, phy = plethspecies$phy)
-#' # P <- plot(PCA.w.phylo, phylo = TRUE, main = "PCA.w.phylo")
-#' # make_ggplot(P)
-#' 
+#'  PCA.w.phylo <- gm.prcomp(Y.gpa$coords, phy = plethspecies$phy)
+#'  P <- plot(PCA.w.phylo, phylo = TRUE, main = "PCA.w.phylo")
+#'  make_ggplot(P)
+#' }
 make_ggplot <- function(object){
   
   x <- y <- lbl <- NULL

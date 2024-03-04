@@ -22,7 +22,7 @@ procD.pgls(
 \arguments{
 \item{f1}{A formula for the linear model (e.g., y ~ x1 + x2)}
 
-\item{phy}{A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape}
+\item{phy}{A phylogenetic tree of class = "phylo" - see \code{\link[ape]{read.tree}} in library ape}
 
 \item{Cov}{An optional covariance matrix that can be used for generalized least squares estimates of
 coefficients and sums of squares and cross-products (see Adams and Collyer 2018), if one wishes to override the
@@ -76,7 +76,7 @@ matrix of dimension (n x [p x k]), or a 3D array (p x n x k).  It is assumed tha
 been aligned using Generalized Procrustes Analysis (GPA) [e.g., with \code{\link{gpagen}}].
 Linear model fits (using the  \code{\link{lm}} function)
 can also be input in place of a formula.  Arguments for \code{\link{lm}} can also be passed on via this function.
-The user must also specify a phylogeny describing the evolutionary relationships among species (of class phylo).
+The user must also specify a phylogeny describing the evolutionary relationships among species (of class = "phylo").
 Note that the specimen labels for both X and Y must match the labels on the tips of the phylogeny.
 
   The function \code{\link{two.d.array}} can be used to obtain a two-dimensional data matrix from a 3D array of landmark
@@ -125,19 +125,19 @@ Note that the specimen labels for both X and Y must match the labels on the tips
 }
 }
 \examples{
+\dontrun{
 ### Example of D-PGLS for high-dimensional data 
 data(plethspecies)
-Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment
+Y.gpa <- gpagen(plethspecies$land)    #GPA-alignment
 gdf <- geomorph.data.frame(Y.gpa, phy = plethspecies$phy)
 
-pleth.pgls <- procD.pgls(coords ~ Csize, phy = phy, data = gdf, 
-iter = 999)
+pleth.pgls <- procD.pgls(coords ~ Csize, phy = phy, data = gdf)
 anova(pleth.pgls)
 summary(pleth.pgls)  #similar output
 
 ### Working with procD.pgls objects
 predict(pleth.pgls)
-plot(pleth.pgls, type="regression", reg.type="RegScore", 
+plot(pleth.pgls, type = "regression", reg.type = "RegScore", 
 predictor = gdf$Csize)
 attributes(pleth.pgls) # Note the PGLS object
 attributes(pleth.pgls$PGLS) # PGLS details embedded within PGLS object
@@ -149,10 +149,11 @@ pleth.pgls$GM$pgls.fitted # The same fitted values, in a 3D array
 # Changing lambda value
 
 pleth.pgls2 <- procD.pgls(coords ~ Csize, phy = phy, lambda = 0.5, 
-data = gdf, iter = 999)
+data = gdf)
 
 anova(pleth.pgls)
 anova(pleth.pgls2)
+}
 }
 \references{
 Adams, D.C. 2014. A method for assessing phylogenetic least squares models for shape and other high-dimensional 

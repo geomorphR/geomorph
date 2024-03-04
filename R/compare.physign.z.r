@@ -25,11 +25,12 @@
 #' @references Collyer,  M.L., E.K. Baken, & D.C. Adams.  2022. A standardized effect size for evaluating
 #' and comparing the strength of phylogenetic signal. Methods in Ecology and Evolution. 13:367-382.
 #' @examples
-#'
+#' \dontrun{
+#' 
 #' # Example: Compare phylogenetic signal of head components in Plethodon
 #' 
 #' data(plethspecies) 
-#' Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment
+#' Y.gpa <- gpagen(plethspecies$land)    #GPA-alignment
 #' 
 #' ## landmarks of the jaw and cranium
 #' jaw <- 1:5
@@ -46,7 +47,7 @@
 #' 
 #' PS.Z <- compare.physignal.z(PS.list)
 #' summary(PS.Z)
-#' 
+#' }
 compare.physignal.z <- function(..., two.tailed = TRUE){
    dots <- list(...)
    tails <- if(two.tailed) 2 else 1

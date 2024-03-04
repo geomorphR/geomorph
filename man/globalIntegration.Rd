@@ -29,10 +29,12 @@ integrated, while shallower slopes (between -1 and 0) correspond to data that ar
 will have an expected slope of zero.
 }
 \examples{
+\dontrun{
 data(plethodon) 
-Y.gpa<-gpagen(plethodon$land)    #GPA-alignment    
+Y.gpa <- gpagen(plethodon$land)    #GPA-alignment    
 
 globalIntegration(Y.gpa$coords)
+}
 }
 \references{
 Bookstein, F. L. 2015. Integration, disintegration, and self-similarity: 

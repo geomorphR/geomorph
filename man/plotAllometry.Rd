@@ -91,19 +91,19 @@ between shape and another covariate, then performing plotAllometry with that fit
 
 The following are brief descriptions of the different plotting methods, with references.
 
-\itemize{
-  \item {If "method = PredLine" (the default) the function calculates fitted values from a \code{\link{procD.lm}} fit, and 
+\describe{
+  \item{"method = PredLine"}{calculates fitted values from a \code{\link{procD.lm}} fit, and 
   plots the first principal component of the "predicted" values versus size as a stylized graphic of the 
   allometric trend (Adams and Nistri 2010). This method is based on linear models and 
   can allow for other model variable to be incorporated.}
-  \item {If "method = RegScore" the function calculates standardized shape scores 
+  \item{"method = RegScore"}{calculates standardized shape scores 
   from the regression of shape on size, and plots these versus size (Drake and Klingenberg 2008). 
   For a single allometry, these shape scores are mathematically identical to the CAC (Adams et al. 2013).  
   This method is based on linear models and can allow for other model variable to be incorporated.}
-  \item {If "method = size.shape" the function perform principal components analysis on a data space containing both shape 
+  \item{"method = size.shape"}{performs principal components analysis on a data space containing both shape 
   and size (sensu Mitteroecker et al. 2004).  This method is not based on linear models and results will not be changed by 
   changing the allometry model.}
-  \item {If "method = CAC"  the function calculates the 
+  \item{"method = CAC"}{calculates the 
   common allometric component of the shape data, which is an estimate of the average allometric trend 
   for group-mean centered data (Mitteroecker et al. 2004). The function also calculates the residual shape component (RSC) for 
   the data.  This method is not based on linear models and results will not be changed by 
@@ -114,14 +114,14 @@ The function returns values that can be used with \code{\link{picknplot.shape}} 
 \code{\link{shape.predictor}} and \code{\link{plotRefToTarget}} to visualize shape changes in the plot.
 }
 \examples{
-
+\dontrun{
 # Simple allometry
 data(plethodon) 
 Y.gpa <- gpagen(plethodon$land, print.progress = FALSE)    #GPA-alignment  
 
 gdf <- geomorph.data.frame(Y.gpa, site = plethodon$site, 
 species = plethodon$species) 
-fit <- procD.lm(coords ~ log(Csize), data=gdf, iter=0, 
+fit <- procD.lm(coords ~ log(Csize), data = gdf, 
 print.progress = FALSE)
 
 # Predline
@@ -150,7 +150,7 @@ PLS <- two.b.pls(log(gdf$Csize), gdf$coords, print.progress = FALSE)
 plot(PLS)
 
 # Group Allometries
-fit <- procD.lm(coords ~ Csize * species * site, data=gdf, iter=0, 
+fit <- procD.lm(coords ~ Csize * species * site, data = gdf, 
 print.progress = FALSE)
 
 # CAC (should not change from last time; model change has no effect)
@@ -174,13 +174,13 @@ summary(pc.plot$size.shape.PCA)
 
 # Are species' shape differences just a manifestation of shape allometry?
 
-fit3 <- procD.lm(coords ~ species, data = gdf, iter = 0, 
+fit3 <- procD.lm(coords ~ species, data = gdf, 
 print.progress = FALSE)
 plotAllometry(fit3, size = gdf$Csize, logsz = TRUE, method = "RegScore", 
 pch = 19, col = as.numeric(gdf$species))
 
 # No evidence this is the case
-
+}
 }
 \references{
 Adams, D. C., and A. Nistri. 2010. Ontogenetic convergence and evolution of foot morphology 

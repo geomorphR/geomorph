@@ -42,15 +42,17 @@ Function returns a (p x k x n) array of landmark coordinates.
 A function for rotating a subset of landmarks so that the articulation angle between subsets is constant
 }
 \details{
-This function standardizes the angle between two subsets of landmarks for a set of specimens. The approach assumes a simple
- hinge-point articulation between the two subsets, and rotates all specimens such that the angle between landmark subsets 
- is equal across specimens (see Adams 1999).  As a default, the mean angle is used, though the user may specify an additional amount by which 
- this may be augmented. To quantify the angle, users may specify a single landmark in each subset as angle endpoints, or may specify a set of landmarks.
+This function standardizes the angle between two subsets of landmarks for a set of specimens. The approach 
+assumes a simple hinge-point articulation between the two subsets, and rotates all specimens such that the 
+angle between landmark subsets is equal across specimens (see Adams 1999).  As a default, the mean angle is 
+used, though the user may specify an additional amount by which this may be augmented. To quantify the angle, 
+users may specify a single landmark in each subset as angle endpoints, or may specify a set of landmarks.
  If the latter, the centroid of those points is used. 
 
 Presently, the function is only implemented for two-dimensional landmark data.
 }
 \examples{
+\dontrun{
 #Example using Plethodon
 #Articulation point is landmark 1, rotate mandibular landmarks (2-5) 
 # relative to cranium
@@ -58,20 +60,20 @@ Presently, the function is only implemented for two-dimensional landmark data.
 data(plethspecies) 
 # Using specific points:
 newLM1 <- fixed.angle(plethspecies$land,
-art.pt=1, angle.pts.1 = 5, 
+art.pt = 1, angle.pts.1 = 5, 
 angle.pts.2 = 6, rot.pts = c(2,3,4,5))
 Y.gpa1 <- gpagen(newLM1)
 plot(Y.gpa1, mean = FALSE)
 
 # Using centroids from subsets
-newLM2 <- fixed.angle(plethspecies$land,art.pt=1, 
+newLM2 <- fixed.angle(plethspecies$land, art.pt = 1, 
 angle.pts.1 = c(1, 6:11), 
 angle.pts.2 = 2:5, 
 rot.pts = NULL, angle = 20, 
 degrees = TRUE) # rotated points same as second partition
 Y.gpa2 <- gpagen(newLM2)
 plot(Y.gpa2, mean = FALSE)
-
+}
 }
 \references{
 Adams, D. C. 1999. Methods for shape analysis of landmark data from articulated structures. Evolutionary Ecology Research. 1:959-970.

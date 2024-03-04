@@ -31,7 +31,7 @@
 #' multiple methods. Only Kmult is used. Thus, for older scripts method="" should be removed from the function call.
 #' }
 #' 
-#' @param phy A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape
+#' @param phy A phylogenetic tree of class = "phylo" - see \code{\link[ape]{read.tree}} in library ape
 #' @param A A matrix (n x [p x k]) or 3D array (p x k x n) containing Procrustes shape variables for a set of specimens
 #' @param iter Number of iterations for significance testing
 #' @param seed An optional argument for setting the seed for random permutations of the resampling procedure.  
@@ -61,20 +61,22 @@
 #' alternative modular hypotheses, using covariance ratio effect sizes with morphometric data. 
 #' Evolution. 73:2352-2367.
 #' @examples
+#' \dontrun{
 #' data(plethspecies) 
-#' Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment    
+#' Y.gpa <- gpagen(plethspecies$land)    #GPA-alignment    
 #'
 #' #Test for phylogenetic signal in shape
-#' PS.shape <- physignal(A=Y.gpa$coords,phy=plethspecies$phy,iter=999)
+#' PS.shape <- physignal(A = Y.gpa$coords, phy = plethspecies$phy)
 #' summary(PS.shape)
 #' plot(PS.shape)
 #' plot(PS.shape$PACA, phylo = TRUE)
 #' PS.shape$K.by.p # Phylogenetic signal profile
 #' 
 #' #Test for phylogenetic signal in size
-#' PS.size <- physignal(A=Y.gpa$Csize,phy=plethspecies$phy,iter=999)
+#' PS.size <- physignal(A = Y.gpa$Csize, phy = plethspecies$phy)
 #' summary(PS.size)
 #' plot(PS.size)
+#' }
 physignal <- function(A, phy, iter = 999, seed = NULL, print.progress = FALSE){
   if(any(is.na(A)))
     stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').\n",

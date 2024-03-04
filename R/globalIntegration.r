@@ -24,10 +24,12 @@
 #' Characterizing the scales of shape variation in landmark data. Evol. Biol.42(4): 395-426.
 #' 
 #' @examples
+#' \dontrun{
 #' data(plethodon) 
-#' Y.gpa<-gpagen(plethodon$land)    #GPA-alignment    
+#' Y.gpa <- gpagen(plethodon$land)    #GPA-alignment    
 #'
 #' globalIntegration(Y.gpa$coords)
+#' }
 
 globalIntegration<-function(A,ShowPlot=TRUE){
   ref<-mshape(A)

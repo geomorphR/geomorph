@@ -36,7 +36,7 @@ This function is a wrapper for the \code{\link{points}} function. It is intentio
 as to not interfere with other plot parameter adjustments.
 }
 \examples{
-
+ \dontrun{
 # Via procD.lm and plot.procD.lm
 
 data("pupfish")
@@ -75,6 +75,7 @@ shapeHulls(pc.plot, groups = gp, group.cols = 1:2,
 group.lwd = rep(2, 2), group.lty = c(2, 1))
 legend("topright", c("P. cinereus clade", "P. hubrichti clade"), 
 col = 1:2, lwd = 2, lty = c(2, 1))
+}
 }
 \seealso{
 \code{\link{procD.lm}}

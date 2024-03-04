@@ -39,6 +39,7 @@
 #' @references Adams, D.C. and M.L. Collyer. 2016.  On the comparison of the strength of morphological integration across morphometric 
 #' datasets. Evolution. 70:2623-2631.
 #' @examples
+#' \dontrun{
 #' # Example of comparative morphological integration between pupfish head 
 #' # and body shapes
 #' 
@@ -76,7 +77,7 @@
 #'  # can also list different PLS analyses, separately
 #' 
 #'  compare.pls(MF = integ.tests$Marsh.F, MM = integ.tests$Marsh.M)
-#' 
+#' }
  compare.pls <- function(..., two.tailed = TRUE){
    dots <- list(...)
    tails <- if(two.tailed) 2 else 1

@@ -81,16 +81,17 @@ In this case, the partition.gp input should have each variable assigned to a par
  The generic function, \code{\link{plot}}, produces a histogram of random CR values associated with the resampling procedure.
 }
 \examples{
-# Not Run
-# data(pupfish) 
-# Y.gpa<-gpagen(pupfish$coords, print.progress = FALSE)    #GPA-alignment    
+\dontrun{
+ data(pupfish) 
+ Y.gpa <- gpagen(pupfish$coords, print.progress = FALSE)    #GPA-alignment    
  #landmarks on the body and operculum
-# land.gps<-rep('a',56); land.gps[39:48]<-'b'
+ land.gps <- rep('a',56); land.gps[39:48] <- 'b'
 
-# MT <- modularity.test(Y.gpa$coords,land.gps,CI=FALSE,iter=99)
-# summary(MT) # Test summary
-# plot(MT) # Histogram of CR sampling distribution 
+ MT <- modularity.test(Y.gpa$coords, land.gps, CI = FALSE)
+ summary(MT) # Test summary
+ plot(MT) # Histogram of CR sampling distribution 
 # Result implies modularity present
+}
 }
 \references{
 Adams, D.C. 2016.Evaluating modularity in morphometric data: Challenges with the RV coefficient and a 

@@ -28,7 +28,7 @@
 #' @param partition.gp A list of which landmarks (or variables) belong in which partition: 
 #' (e.g. A, A, A, B, B, B, C, C, C)
 #' @param CI A logical argument indicating whether bootstrapping should be used for estimating confidence intervals
-#' @param phy A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape
+#' @param phy A phylogenetic tree of class = "phylo" - see \code{\link[ape]{read.tree}} in library ape
 #' @param iter Number of iterations for significance testing
 #' @param seed An optional argument for setting the seed for random permutations of the resampling procedure.  
 #' If left NULL (the default), the exact same P-values will be found for repeated runs of the analysis (with the same number of iterations).
@@ -61,16 +61,18 @@
 #' alternative modular hypotheses, using covariance ratio effect sizes with morphometric data. 
 #' Evolution. 73:2352-2367.
 #' @examples
-#' # Not Run
-#' # data(plethspecies)
-#' # Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment
-#' # land.gps<-c("A","A","A","A","A","B","B","B","B","B","B") 
+#' \dontrun{
 #' 
-#' # MT <- phylo.modularity(Y.gpa$coords, partition.gp=land.gps, 
-#' # phy=plethspecies$phy, 
-#' # CI = FALSE, iter=499)
-#' # summary(MT) # Test summary
-#' # plot(MT) # Histogram of CR sampling distribution 
+#'  data(plethspecies)
+#'  Y.gpa <- gpagen(plethspecies$land)    #GPA-alignment
+#'  land.gps <- c("A","A","A","A","A","B","B","B","B","B","B") 
+#' 
+#'  MT <- phylo.modularity(Y.gpa$coords, partition.gp = land.gps, 
+#'  phy = plethspecies$phy, 
+#'  CI = FALSE)
+#'  summary(MT) # Test summary
+#'  plot(MT) # Histogram of CR sampling distribution 
+#'  }
 phylo.modularity<-function(A, partition.gp, phy, CI = FALSE, 
                            iter = 999, seed = NULL, print.progress = TRUE){
   if(any(is.na(A))==T){
@@ -80,6 +82,7 @@ phylo.modularity<-function(A, partition.gp, phy, CI = FALSE,
   if (length(dim(A))==3){ 
     p<-dim(A)[1]; k<-dim(A)[2];n<-dim(A)[3]
     gps<-as.factor(partition.gp)
+    if(any(table(partition.gp)==1)){stop("Must have at least two landmarks per partition.")}
     gps.obs <- as.factor(rep(gps,k,each = k, length=p*k))
     if(any(table(gps.obs)==1)){stop("Must have at least two variables per partition.")}
     angle <- seq(0,89.95,0.05)
@@ -120,7 +123,6 @@ phylo.modularity<-function(A, partition.gp, phy, CI = FALSE,
     x <- t(mapply(function(a) matrix(t(a%*%optRot)), Alist)); rownames(x) <- dimnames(A)[[3]]
     p<-dim(A)[1]; k<-dim(A)[2];n<-dim(A)[3]
     if(length(partition.gp)!=p){stop("Not all landmarks are assigned to a partition.")}
-    if(any(table(partition.gp)==1)){stop("Must have at least two landmarks per partition.")}
   }
   if (length(dim(A))==2){ x<-A; k <-1; p<-ncol(A)
   if(length(partition.gp)!=ncol(x)){stop("Not all variables are assigned to a partition.")}

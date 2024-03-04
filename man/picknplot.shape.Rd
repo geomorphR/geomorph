@@ -36,51 +36,53 @@ IF YOU EXPERIENCE AN ERROR, please use \code{\link{shape.predictor}} and \code{\
 geomorph package maintainer.)
 }
 \examples{
+\dontrun{
 
 ### Because picknplot requires user decisions, the following examples
-### are not run (but can be with removal of #s)
+### are not run.
 
 # 2d
-# data(plethodon) 
-# Y.gpa <- gpagen(plethodon$land)
-# pleth.pca <- gm.prcomp(Y.gpa$coords)
-# pleth.pca.plot <- plot(pleth.pca)
-# picknplot.shape(pleth.pca.plot) 
+ data(plethodon) 
+ Y.gpa <- gpagen(plethodon$land)
+ pleth.pca <- gm.prcomp(Y.gpa$coords)
+ pleth.pca.plot <- plot(pleth.pca)
+ picknplot.shape(pleth.pca.plot) 
 # May change arguments for plotRefToTarget
-# picknplot.shape(plot(pleth.pca), method = "points", mag = 3, 
-# links=plethodon$links)
+ picknplot.shape(plot(pleth.pca), method = "points", mag = 3, 
+ links = plethodon$links)
 
 # 2d with phylogeny
-# data(plethspecies) 
-# Y.gpa <- gpagen(plethspecies$land)
-# gps <- as.factor(c(rep("gp1", 5), rep("gp2", 4))) # Two random groups
-# pleth.phylo <- gm.prcomp(Y.gpa$coords, plethspecies$phy)
-# pleth.phylomorphospace <- plot(pleth.phylo, phylo = TRUE, cex = 2, 
-# pch = 22, bg = gps, phylo.par = list(edge.color = "blue", 
-# edge.width = 2, edge.lty = 2,
-# node.pch = 22, node.bg = "black"))
-# links.species <- plethodon$links[-11,]
-# links.species[11, 1] <- 11
-# picknplot.shape(pleth.phylomorphospace, method = "points", 
-# links = links.species)
+ data(plethspecies) 
+ Y.gpa.s <- gpagen(plethspecies$land)
+ gps <- as.factor(c(rep("gp1", 5), rep("gp2", 4))) # Two random groups
+ pleth.phylo <- gm.prcomp(Y.gpa.s$coords, plethspecies$phy)
+ pleth.phylomorphospace <- plot(pleth.phylo, phylo = TRUE, cex = 2, 
+ pch = 22, bg = gps, phylo.par = list(edge.color = "blue", 
+ edge.width = 2, 
+ node.pch = 22, node.bg = "black"))
+ links.species <- plethodon$links[-11,]
+ links.species[11, 1] <- 11
+ picknplot.shape(pleth.phylomorphospace, method = "points", 
+ links = links.species)
 
 # 2d allometry 
-# gdf <- geomorph.data.frame(Y.gpa, site = plethodon$site, 
-# species = plethodon$species) 
-# fit <- procD.lm(coords ~ log(Csize), data=gdf, iter=0, 
-# print.progress = FALSE)
+ gdf <- geomorph.data.frame(Y.gpa, site = plethodon$site, 
+ species = plethodon$species) 
+ fit <- procD.lm(coords ~ log(Csize), data=gdf, 
+ print.progress = FALSE)
 # Predline
-# PA <- plotAllometry(fit, size = gdf$Csize, logsz = TRUE, 
-# method = "PredLine", pch = 19)
-# picknplot.shape(PA)
+ PA <- plotAllometry(fit, size = gdf$Csize, logsz = TRUE, 
+ method = "PredLine", pch = 19)
+ picknplot.shape(PA)
 
 # 3d and two-b-pls
-# data("scallops")
-# Y.gpa <- gpagen(scallops$coorddata, curves = scallops$curvslide, 
-#              surfaces = scallops$surfslide)
-# PLS <- two.b.pls(Y.gpa$coords, Y.gpa$Csize)
-# PLS.plot = plot(PLS)
-# picknplot.shape(PLS.plot)
+ data("scallops")
+ Y.gpa <- gpagen(scallops$coorddata, curves = scallops$curvslide, 
+              surfaces = scallops$surfslide)
+ PLS <- two.b.pls(Y.gpa$coords, Y.gpa$Csize)
+ PLS.plot = plot(PLS)
+ picknplot.shape(PLS.plot)
+}
 }
 \seealso{
 \code{\link{shape.predictor}}, \code{\link{plotRefToTarget}}

@@ -29,51 +29,53 @@
 #' @seealso  \code{\link{shape.predictor}}, \code{\link{plotRefToTarget}}
 #' @seealso  \code{\link[rgl]{rgl-package}} (used in 3D plotting)
 #' @examples
+#' \dontrun{
 #' 
 #' ### Because picknplot requires user decisions, the following examples
-#' ### are not run (but can be with removal of #s)
+#' ### are not run.
 #' 
 #' # 2d
-#' # data(plethodon) 
-#' # Y.gpa <- gpagen(plethodon$land)
-#' # pleth.pca <- gm.prcomp(Y.gpa$coords)
-#' # pleth.pca.plot <- plot(pleth.pca)
-#' # picknplot.shape(pleth.pca.plot) 
+#'  data(plethodon) 
+#'  Y.gpa <- gpagen(plethodon$land)
+#'  pleth.pca <- gm.prcomp(Y.gpa$coords)
+#'  pleth.pca.plot <- plot(pleth.pca)
+#'  picknplot.shape(pleth.pca.plot) 
 #' # May change arguments for plotRefToTarget
-#' # picknplot.shape(plot(pleth.pca), method = "points", mag = 3, 
-#' # links=plethodon$links)
+#'  picknplot.shape(plot(pleth.pca), method = "points", mag = 3, 
+#'  links = plethodon$links)
 #' 
 #' # 2d with phylogeny
-#' # data(plethspecies) 
-#' # Y.gpa <- gpagen(plethspecies$land)
-#' # gps <- as.factor(c(rep("gp1", 5), rep("gp2", 4))) # Two random groups
-#' # pleth.phylo <- gm.prcomp(Y.gpa$coords, plethspecies$phy)
-#' # pleth.phylomorphospace <- plot(pleth.phylo, phylo = TRUE, cex = 2, 
-#' # pch = 22, bg = gps, phylo.par = list(edge.color = "blue", 
-#' # edge.width = 2, edge.lty = 2,
-#' # node.pch = 22, node.bg = "black"))
-#' # links.species <- plethodon$links[-11,]
-#' # links.species[11, 1] <- 11
-#' # picknplot.shape(pleth.phylomorphospace, method = "points", 
-#' # links = links.species)
+#'  data(plethspecies) 
+#'  Y.gpa.s <- gpagen(plethspecies$land)
+#'  gps <- as.factor(c(rep("gp1", 5), rep("gp2", 4))) # Two random groups
+#'  pleth.phylo <- gm.prcomp(Y.gpa.s$coords, plethspecies$phy)
+#'  pleth.phylomorphospace <- plot(pleth.phylo, phylo = TRUE, cex = 2, 
+#'  pch = 22, bg = gps, phylo.par = list(edge.color = "blue", 
+#'  edge.width = 2, 
+#'  node.pch = 22, node.bg = "black"))
+#'  links.species <- plethodon$links[-11,]
+#'  links.species[11, 1] <- 11
+#'  picknplot.shape(pleth.phylomorphospace, method = "points", 
+#'  links = links.species)
 #' 
 #' # 2d allometry 
-#' # gdf <- geomorph.data.frame(Y.gpa, site = plethodon$site, 
-#' # species = plethodon$species) 
-#' # fit <- procD.lm(coords ~ log(Csize), data=gdf, iter=0, 
-#' # print.progress = FALSE)
+#'  gdf <- geomorph.data.frame(Y.gpa, site = plethodon$site, 
+#'  species = plethodon$species) 
+#'  fit <- procD.lm(coords ~ log(Csize), data=gdf, 
+#'  print.progress = FALSE)
 #' # Predline
-#' # PA <- plotAllometry(fit, size = gdf$Csize, logsz = TRUE, 
-#' # method = "PredLine", pch = 19)
-#' # picknplot.shape(PA)
+#'  PA <- plotAllometry(fit, size = gdf$Csize, logsz = TRUE, 
+#'  method = "PredLine", pch = 19)
+#'  picknplot.shape(PA)
 #' 
 #' # 3d and two-b-pls
-#' # data("scallops")
-#' # Y.gpa <- gpagen(scallops$coorddata, curves = scallops$curvslide, 
-#' #              surfaces = scallops$surfslide)
-#' # PLS <- two.b.pls(Y.gpa$coords, Y.gpa$Csize)
-#' # PLS.plot = plot(PLS)
-#' # picknplot.shape(PLS.plot)
+#'  data("scallops")
+#'  Y.gpa <- gpagen(scallops$coorddata, curves = scallops$curvslide, 
+#'               surfaces = scallops$surfslide)
+#'  PLS <- two.b.pls(Y.gpa$coords, Y.gpa$Csize)
+#'  PLS.plot = plot(PLS)
+#'  picknplot.shape(PLS.plot)
+#' }
 
 picknplot.shape <- function(x, ...){
   if(!inherits(x, c("plot.gm.prcomp", "plot.procD.lm", "plotAllometry", "plot.pls"))){
@@ -81,7 +83,7 @@ picknplot.shape <- function(x, ...){
          call. = FALSE)
   }
   
-  do.call(plot, x$plot.args)
+  do.call(plot, x$plot_args)
   if(!is.null(x$phylo)){
     phylo.par <- x$phylo$phylo.par
     phy <- x$phylo$phy
@@ -105,7 +107,7 @@ picknplot.shape <- function(x, ...){
                     "links", "label", "axes", "gridPar", "useRefPts")
   prt.args.pos <- intersect(names(prt.args), prt.args.nms)
   
-  # plot.args currently not used but could be in the future
+  # plot_args currently not used but could be in the future
   # adding a phylogeny currently has no plotting options
   
  
@@ -126,12 +128,12 @@ picknplot.shape <- function(x, ...){
     
     if(!is.null(x$PredLine)) {
       if(!is.null(x$CAC)) {
-        if(identical(x$plot.args$y, x$CAC)) {
+        if(identical(x$plot_args$y, x$CAC)) {
           A1 <- A1 + x$GM$residuals
           type <- "regression2"
         }
       }
-      if(identical(x$plot.args$y, x$PredLine) || identical(x$plot.args$y, x$RegScore))
+      if(identical(x$plot_args$y, x$PredLine) || identical(x$plot_args$y, x$RegScore))
         type <- "regression2"
       if(length(dim(A1)) != 3) stop("No shape data provided\n", call. = FALSE)
     }
@@ -170,8 +172,8 @@ picknplot.shape <- function(x, ...){
 
   
     if(type == "PC") {
-      X <- as.matrix(cbind(x$plot.args$x, x$plot.args$y))
-      rownames(X) <- names(x$plot.args$x)
+      X <- as.matrix(cbind(x$plot_args$x, x$plot_args$y))
+      rownames(X) <- names(x$plot_args$x)
       if(!is.null(x$Pcov)) X <- fast.solve(x$Pcov) %*% X
       
       picked.shapes[[p]] <- shape.predictor(A1, X, 
@@ -180,8 +182,8 @@ picknplot.shape <- function(x, ...){
     if(type == "regression2") {
       h <- picked.pts[[p]][2]
       abline(h = h, col = "red")
-      X <- as.matrix(x$plot.args$y)
-      rownames(X) <- names(x$plot.args$x)
+      X <- as.matrix(x$plot_args$y)
+      rownames(X) <- names(x$plot_args$x)
       if(!is.null(x$Pcov)) X <- fast.solve(x$Pcov) %*% X
       
       picked.shapes[[p]] <- shape.predictor(A1, X, 
@@ -191,8 +193,8 @@ picknplot.shape <- function(x, ...){
     if(type == "regression1") {
       v <- picked.pts[[p]][1]
       abline(v = v, col = "red")
-      X <- as.matrix(x$plot.args$x)
-      rownames(X) <- names(x$plot.args$x)
+      X <- as.matrix(x$plot_args$x)
+      rownames(X) <- names(x$plot_args$x)
       if(!is.null(x$Pcov)) X <- fast.solve(x$Pcov) %*% X
       
       picked.shapes[[p]] <- shape.predictor(A1, X, 
@@ -200,8 +202,8 @@ picknplot.shape <- function(x, ...){
     }
 
     if(type == "PLS") {
-      X <- as.matrix(cbind(x$plot.args$x, x$plot.args$y))
-      rownames(X) <- names(x$plot.args$x)
+      X <- as.matrix(cbind(x$plot_args$x, x$plot_args$y))
+      rownames(X) <- names(x$plot_args$x)
       if(!is.null(x$Pcov)) X <- fast.solve(x$Pcov) %*% X
       
       picked.shapes[[p]] <- list(P1 = shape.predictor(A1, X, 

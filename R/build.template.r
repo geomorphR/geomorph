@@ -17,12 +17,13 @@
 #' This file will then be used to extract a set of similarly numbered surface semilandmarks on subsequent specimens 
 #' using the function \code{\link{digitsurface}}. Because template matching is based on the correspondence of fixed 
 #' landmark points in the template and the target specimen, a minimum of four fixed landmarks must be used. However,  
-#' to ensure a strong match between the scan and the template, it is recommended that a higher number of fixed points is used.
+#' to ensure a strong match between the scan and the template, it is recommended that a 
+#' higher number of fixed points is used.
 #' 
 #' For more details see the vignette: \code{vignette("geomorph.digitize3D")}.
 #' 
-#'  NOTE: Function centers the mesh before digitizing by default (center=TRUE). If one chooses not to center,
-#'  specimen may be difficult to manipulate in rgl window.
+#'  NOTE: Function centers the mesh before digitizing by default (center = TRUE). If one chooses not to 
+#'  center, the specimen may be difficult to manipulate in the rgl window.
 #' 
 #' \subsection{Digitizing}{
 #' Digitizing of fixed landmarks is interactive. Once a point is selected, the user is asked if the system should keep or discard the 
@@ -36,8 +37,9 @@
 #'  \item the LEFT mouse button (secondary) is used to rotate mesh, 
 #'  \item the mouse SCROLLER (third/middle) is used to zoom in and out.
 #' }
-#' NOTE: Digitizing functions on MACINTOSH computers using a standard 3-button mice works as specified. Macs using platform 
-#' specific single button mice, XQuartz must be configured: go to Preferences > Input > tick "Emulate three button mouse":
+#' NOTE: Digitizing functions on MACINTOSH computers using a standard 3-button mice works as specified. 
+#' Macs using platform specific single button mice, XQuartz must be configured: go to 
+#' Preferences > Input > tick "Emulate three button mouse":
 #' \enumerate{
 #'  \item press button to rotate 3D mesh,
 #'  \item press button while pressing COMMAND key to select vertex to be used as a landmark),
@@ -50,9 +52,10 @@
 #' }
 #' 
 #' \subsection{AUTO mode}{ 
-#' The function as described above (for interactive mode) calls \code{\link{digit.fixed}}, prompting the user to select fixed landmarks
-#' in the rgl window. However if the user has digitized these fixed landmark elsewhere (e.g., in other software), then the input for
-#' parameter 'fixed' can be a p-x-k matrix of 3D coordinates. In this case, the function will automatically use these landmarks to build the 
+#' The function as described above (for interactive mode) calls \code{\link{digit.fixed}}, prompting 
+#' the user to select fixed landmarks in the rgl window. However if the user has digitized these fixed 
+#' landmark elsewhere (e.g., in other software), then the input for parameter 'fixed' can be a 
+#' p-x-k matrix of 3D coordinates. In this case, the function will automatically use these landmarks to build the 
 #' template of sliding semilandmarks.
 #' }
 #'
@@ -67,10 +70,12 @@
 #' @export
 #' @keywords digitizing
 #' @author Erik Otarola-Castillo & Emma Sherratt
-#' @return The function writes to the working directory three files: an NTS file with the name of the specimen and .nts suffix containing 
-#' the landmark coordinates, "template.txt" containing the same coordinates for use with the function \code{\link{digitsurface}}, 
-#' and "surfslide.csv", a file containing the address of the landmarks defined as "surface sliders" for use with \code{\link{gpagen}}.
-#' The function also returns to the console an n x 3 matrix containing the x,y,z coordinates of the digitized landmarks. 
+#' @return The function writes to the working directory three files: an NTS file with the name of the 
+#' specimen and .nts suffix containing the landmark coordinates, "template.txt" containing the same 
+#' coordinates for use with the function \code{\link{digitsurface}}, and "surfslide.csv", a file 
+#' containing the address of the landmarks defined as "surface sliders" for use with \code{\link{gpagen}}.
+#' The function also returns to the console an n x 3 matrix containing the x,y,z coordinates of the 
+#' digitized landmarks. 
 #' @references Gunz P, Mitteroecker P, & Bookstein FJ (2005) Semilandmarks in Three Dimensions. Modern Morphometrics in Physical 
 #' Anthropology, ed Slice DE (Springer-Verlag, New York), pp 73-98.
 #' @references Mitteroecker P & Gunz P (2009) Advances in Geometric Morphometrics. Evolutionary Biology 36(2):235-247.

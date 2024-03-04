@@ -21,8 +21,9 @@ distance matrices, and phylogenetic trees.  Results from \code{\link{gpagen}} ca
 imported into a geomorph.data.frame to utilize the coordinates and centroid size as variables. (See Examples)
 }
 \examples{
+\dontrun{
 data(plethodon) 
-Y.gpa <- gpagen(plethodon$land,PrinAxes=FALSE)
+Y.gpa <- gpagen(plethodon$land, PrinAxes = FALSE)
 gdf <- geomorph.data.frame(Y.gpa)
 attributes(gdf)
 
@@ -32,6 +33,7 @@ attributes(gdf)
 
 # Using geomorph.data.frame to facilitate analysis
 anova(procD.lm(coords ~ Csize + species * site, data = gdf))
+}
 }
 \author{
 Michael Collyer

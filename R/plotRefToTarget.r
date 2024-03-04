@@ -3,7 +3,7 @@
 #' Function plots shape differences between a reference and target specimen
 #'
 #' The function generates a plot of the shape differences of a target specimen relative to a reference 
-#'  specimen. The option {mag} allows the user to indicates the degree of magnification to be used when 
+#'  specimen. The option "mag" allows the user to indicates the degree of magnification to be used when 
 #'  displaying the shape difference. The function will plot either two- or three-dimensional data. 
 #'  
 #'  For two-dimensional data and thin-plate spline deformation plots, the user may also supply boundary 
@@ -26,23 +26,23 @@
 #'  \item {points} a plot is displayed with the landmarks in the target overlaying 
 #'  those of the reference.  
 #'  \item {surface} a mesh3d surface is warped using thin-plate spline (for 3D data only). 
-#'  Requires mesh3d object in option {mesh}, made using \code{\link{warpRefMesh}}. 
+#'  Requires mesh3d object in option "mesh", made using \code{\link{warpRefMesh}}. 
 #'  }
 #'  This function combines numerous plotting functions found in Claude (2008).
 #'
 #' @param M1 Matrix of landmark coordinates for the first (reference) specimen
 #' @param M2 Matrix of landmark coordinates for the second (target) specimen
-#' @param mesh A mesh3d object for use with {method="surface"}
+#' @param mesh A mesh3d object for use with method = "surface"
 #' @param outline An x,y curve or curves warped to the reference (2D only)
 #' @param method Method used to visualize shape difference; see below for details
-#' @param mag The desired magnification to be used when visualizing the shape difference (e.g., mag=2)
+#' @param mag The desired magnification to be used when visualizing the shape difference (e.g., mag = 2)
 #' @param links An optional matrix defining for links between landmarks
 #' @param label A logical value indicating whether landmark numbers will be plotted
 #' @param axes A logical value indicating whether the box and axes should be plotted (points and vector only)
 #' @param gridPars An optional object made by \code{\link{gridPar}}
-#' @param useRefPts An option (logical value) to use reference configuration points rather than target configuration points (when {method = "TPS"})
+#' @param useRefPts An option (logical value) to use reference configuration points rather than target configuration points (when method = "TPS")
 #' @param ... Additional parameters not covered by \code{\link{gridPar}} to be passed to \code{\link{plot}}, \code{\link{plot3d}} or \code{\link{shade3d}}
-#' @return If using {method="surface"}, function will return the warped mesh3d object.
+#' @return If using method = "surface", function will return the warped mesh3d object.
 #' @keywords visualization
 #' @export
 #' @author Dean Adams, Emma Sherratt, Antigoni Kaliontzopoulou & Michael Collyer
@@ -53,34 +53,36 @@
 #' @seealso  \code{\link{warpRefOutline}}
 #' @seealso  \code{\link[rgl]{rgl-package}} (used in 3D plotting)
 #' @examples
-#' # Not Run
+#' \dontrun{
+#' 
 #' # Two dimensional data
-#' # data(plethodon) 
-#' # Y.gpa<-gpagen(plethodon$land)    #GPA-alignment
-#' # ref<-mshape(Y.gpa$coords)
-#' # plotRefToTarget(ref,Y.gpa$coords[,,39])
-#' # plotRefToTarget(ref,Y.gpa$coords[,,39], mag=2, outline=plethodon$outline)   
+#'  data(plethodon) 
+#'  Y.gpa <- gpagen(plethodon$land)    #GPA-alignment
+#'  ref <- mshape(Y.gpa$coords)
+#'  plotRefToTarget(ref, Y.gpa$coords[,,39])
+#'  plotRefToTarget(ref, Y.gpa$coords[,,39], mag = 2, outline = plethodon$outline)   
+#' 
 #' #magnify by 2X
-#' # plotRefToTarget(ref,Y.gpa$coords[,,39], method="vector", mag=3)
-#' # plotRefToTarget(ref,Y.gpa$coords[,,39], method="points", 
-#' # outline=plethodon$outline)
-#' # plotRefToTarget(ref,Y.gpa$coords[,,39], method="vector", 
-#' # outline=plethodon$outline, mag=2.5)
-#' # plotRefToTarget(ref,Y.gpa$coords[,,39], 
-#' # gridPars=gridPar(pt.bg = "green", pt.size = 1),
-#' # method="vector",mag=3)
+#'  plotRefToTarget(ref, Y.gpa$coords[,,39], method = "vector", mag = 3)
+#'  plotRefToTarget(ref, Y.gpa$coords[,,39], method = "points", 
+#'  outline = plethodon$outline)
+#'  plotRefToTarget(ref, Y.gpa$coords[,,39], method = "vector", 
+#'  outline = plethodon$outline, mag = 2.5)
+#'  plotRefToTarget(ref, Y.gpa$coords[,,39], 
+#'  gridPars = gridPar(pt.bg = "green", pt.size = 1),
+#'  method = "vector", mag = 3)
 #'
 #' # Three dimensional data
-#' # data(scallops)
-#' # Y.gpa<-gpagen(A=scallops$coorddata, curves=scallops$curvslide, 
-#' # surfaces=scallops$surfslide)
-#' # ref<-mshape(Y.gpa$coords)
-#' # plotRefToTarget(ref,Y.gpa$coords[,,1],method="points")
-#' # scallinks <- matrix(c(1,rep(2:16, each=2),1), nrow=16, byrow=TRUE)
-#' # plotRefToTarget(ref,Y.gpa$coords[,,1],
-#' # gridPars=gridPar(tar.pt.bg = "blue", tar.link.col="blue",
-#' # tar.link.lwd=2), method="points", links = scallinks)
-#' 
+#'  data(scallops)
+#'  Y.gpa <- gpagen(A = scallops$coorddata, curves = scallops$curvslide, 
+#'  surfaces = scallops$surfslide)
+#'  ref <- mshape(Y.gpa$coords)
+#'  plotRefToTarget(ref, Y.gpa$coords[,,1], method = "points")
+#'  scallinks <- matrix(c(1,rep(2:16, each=2),1), nrow = 16, byrow = TRUE)
+#'  plotRefToTarget(ref, Y.gpa$coords[,,1],
+#'  gridPars = gridPar(tar.pt.bg = "blue", tar.link.col="blue",
+#'  tar.link.lwd = 2), method = "points", links = scallinks)
+#' }
 plotRefToTarget<-function(M1, M2, mesh= NULL, outline=NULL, 
                           method=c("TPS","vector","points","surface"),
                           mag=1.0, links=NULL, label=FALSE, axes=FALSE, 

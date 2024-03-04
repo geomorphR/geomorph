@@ -13,8 +13,9 @@
 #' @author Michael Collyer
 #' @keywords utilities
 #' @examples
+#' \dontrun{
 #' data(plethodon) 
-#' Y.gpa <- gpagen(plethodon$land,PrinAxes=FALSE)
+#' Y.gpa <- gpagen(plethodon$land, PrinAxes = FALSE)
 #' gdf <- geomorph.data.frame(Y.gpa)
 #' attributes(gdf)
 #' 
@@ -24,6 +25,7 @@
 #' 
 #' # Using geomorph.data.frame to facilitate analysis
 #' anova(procD.lm(coords ~ Csize + species * site, data = gdf))
+#' }
 geomorph.data.frame <- function(...){
 dots <- list(...)
 list.check0 <- sapply(1:length(dots), function(j) any(is.geomorph.data.frame(dots[[j]])))

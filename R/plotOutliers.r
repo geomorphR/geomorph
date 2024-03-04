@@ -23,6 +23,7 @@
 #' @return Function returns the landmark addresses of all specimens ordered as in the plot. If groups are used, function returns 
 #' a list structure and a plot for each level in groups.
 #' @examples
+#' \dontrun{
 #' data(plethodon)
 #' # let's make some outliers
 #' newland <- plethodon$land
@@ -37,7 +38,7 @@
 #' # example with groups
 #' plotOutliers(Y$coords, groups = plethodon$species, 
 #' inspect.outliers = TRUE)
-#'  
+#'  }
 plotOutliers <- function(A, groups = NULL, inspect.outliers = FALSE){
   if (length(dim(A))!=3){
     stop("Data matrix not a 3D array (see 'arrayspecs').")  }

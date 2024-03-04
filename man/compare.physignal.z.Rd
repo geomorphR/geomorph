@@ -32,11 +32,12 @@ if the scaling parameter, lambda, is optimized at 0.  In these cases, the standa
 and pairwise comparisons might not make sense.
 }
 \examples{
+\dontrun{
 
 # Example: Compare phylogenetic signal of head components in Plethodon
 
 data(plethspecies) 
-Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment
+Y.gpa <- gpagen(plethspecies$land)    #GPA-alignment
 
 ## landmarks of the jaw and cranium
 jaw <- 1:5
@@ -53,7 +54,7 @@ names(PS.list) <- c("jaw", "cranium")
 
 PS.Z <- compare.physignal.z(PS.list)
 summary(PS.Z)
-
+}
 }
 \references{
 Collyer,  M.L., E.K. Baken, & D.C. Adams.  2022. A standardized effect size for evaluating

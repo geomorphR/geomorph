@@ -19,7 +19,7 @@ phylo.integration(
 
 \item{A2}{An optional 2D array (n x [p2 x k2]) or 3D array (p2 x k2 x n) containing Procrustes shape variables for the second block}
 
-\item{phy}{A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape}
+\item{phy}{A phylogenetic tree of class = "phylo" - see \code{\link[ape]{read.tree}} in library ape}
 
 \item{partition.gp}{A list of which landmarks (or variables) belong in which partition: 
 (e.g. A, A, A, B, B, B, C, C, C). This is required when only 1 dataset provided.}
@@ -108,13 +108,13 @@ are input, as found with \code{phylo.integration}.
 }
 }
 \examples{
-
+\dontrun{
 data(plethspecies) 
-Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment
-land.gps<-c("A","A","A","A","A","B","B","B","B","B","B") 
+Y.gpa <- gpagen(plethspecies$land)    #GPA-alignment
+land.gps <- c("A","A","A","A","A","B","B","B","B","B","B") 
 
-IT<- phylo.integration(Y.gpa$coords,partition.gp=land.gps,
-  phy=plethspecies$phy,iter=999)
+IT <- phylo.integration(Y.gpa$coords, partition.gp = land.gps,
+  phy = plethspecies$phy)
 summary(IT) # Test summary
 P <- plot(IT) # PLS plot
 
@@ -138,10 +138,10 @@ P <- plot(IT) # PLS plot
  
  ### Visualize shape variation using picknplot.shape Because picknplot  
  ### requires user decisions, the following example
- ### is not run (but can be with removal of #).
+ ### is not run.
  ### For detailed options, see the picknplot help file
  # picknplot.shape(P)
-
+}
 }
 \references{
 Adams, D.C. and R. Felice. 2014. Assessing phylogenetic morphological 

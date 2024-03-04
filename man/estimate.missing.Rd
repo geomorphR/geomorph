@@ -25,13 +25,13 @@ The function estimates the locations of missing landmarks for incomplete specime
 configurations, where missing landmarks in the incomplete specimens are designated by NA in place 
 of the x,y,z coordinates.  Two distinct approaches are implemented.
 
-The first approach (method="TPS") uses the thin-plate spline to interpolate landmarks on a reference specimen to estimate 
+The first approach (method = "TPS") uses the thin-plate spline to interpolate landmarks on a reference specimen to estimate 
 the locations of missing landmarks on a target specimen. Here, a reference specimen is obtained from 
 the set of specimens for which all landmarks are present, Next, each incomplete specimen is aligned to 
 the reference using the set of landmarks common to both. Finally, the thin-plate spline is used 
 to estimate the locations of the missing landmarks in the target specimen (Gunz et al. 2009).
 
-The second approach (method="Reg") is multivariate regression. Here each landmark with missing values is
+The second approach (method = "Reg") is multivariate regression. Here each landmark with missing values is
 regressed on all other landmarks for the set of complete specimens, and the missing landmark values are
 then predicted by this linear regression model. Because the number of variables can exceed the number of
 specimens, the regression is implemented on scores along the first set of PLS axes for the complete and 
@@ -55,14 +55,16 @@ landmark coordinates is to proceed with subsequent analyses EXCLUDING
 specimens with missing values.
 }
 \examples{
+\dontrun{
 data(plethodon)
-plethland<-plethodon$land
-  plethland[3,,2]<-plethland[8,,2]<-NA  #create missing landmarks
-  plethland[3,,5]<-plethland[8,,5]<-plethland[9,,5]<-NA  
-  plethland[3,,10]<-NA  
+plethland <- plethodon$land
+  plethland[3,,2] <- plethland[8,,2] <- NA  #create missing landmarks
+  plethland[3,,5] <- plethland[8,,5] <- plethland[9,,5] <- NA  
+  plethland[3,,10] <- NA  
   
-estimate.missing(plethland,method="TPS")
-estimate.missing(plethland,method="Reg")
+estimate.missing(plethland, method = "TPS")
+estimate.missing(plethland, method = "Reg")
+}
 }
 \references{
 Claude, J. 2008. Morphometrics with R. Springer, New York.

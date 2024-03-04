@@ -250,7 +250,7 @@ morphol.disparity(fit.full, groups = gp, iter = 999)
 
 ### Regression example
 data(ratland)
-rat.gpa<-gpagen(ratland)         #GPA-alignment
+rat.gpa <- gpagen(ratland)         #GPA-alignment
 gdf <- geomorph.data.frame(rat.gpa) # geomorph data frame is easy 
 # without additional input
 
@@ -309,9 +309,6 @@ anova(fit) # treatment effect not adjusted
 anova(fit, error = c("treatment:family", "Residuals")) 
 # treatment effect updated (adjusted)
 }
-
-
-
 }
 \references{
 Anderson MJ. 2001. A new method for non-parametric multivariate analysis of variance. 

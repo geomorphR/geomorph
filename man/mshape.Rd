@@ -23,8 +23,9 @@ Three different methods are available for missing data (see Arguments and Exampl
  positions and potentially add links, in order to review landmark positions
 }
 \examples{
+\dontrun{
 data(plethodon)
-Y.gpa<-gpagen(plethodon$land)    #GPA-alignment
+Y.gpa <- gpagen(plethodon$land)    #GPA-alignment
 A <- Y.gpa$coords
 A[[1]] <- NA # make a missing value, just for example
 
@@ -32,7 +33,7 @@ mshape(Y.gpa$coords)   # mean (consensus) configuration
 # mshape(A, na.action = 1) # will return an error
 mshape(A, na.action = 2) # returns NA in spot of missing value
 mshape(A, na.action = 3) # finds mean values from all possible values
-
+}
 }
 \author{
 Antigoni Kaliontzopoulou & Michael Collyer

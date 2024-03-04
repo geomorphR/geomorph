@@ -27,6 +27,7 @@
 #' @author Michael Collyer
 #' 
 #' @examples
+#' \dontrun{
 #' data(plethodon)
 #' Y.gpa <- gpagen(plethodon$land)
 #' plot(Y.gpa)
@@ -44,6 +45,7 @@
 #' plotAllSpecimens(specs1to3)
 #' specs1to3 <- rotate.coords(specs1to3, "rotateC")
 #' plotAllSpecimens(specs1to3)
+#' }
 rotate.coords <- function(A, type = c("flipX", "flipY", "rotateC", "rotateCC"),
                           index = NULL) {
   if(inherits(A, "gpagen")) {

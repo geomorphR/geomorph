@@ -48,13 +48,16 @@ k x n),
  coordinates for a single specimen.
 }
 \examples{
-x<-matrix(rnorm(18),nrow=3)  # Random triangles (all coordinates on same 
+\dontrun{
+
+x <- matrix(rnorm(18), nrow = 3)  # Random triangles (all coordinates on same 
  # row for each triangle)
-arrayspecs(x,3,2) 
+arrayspecs(x, 3, 2) 
  
-x2<-matrix(rnorm(18),ncol=2) # Random triangles (each landmark on its 
+x2 <- matrix(rnorm(18), ncol = 2) # Random triangles (each landmark on its 
 # own row)
-arrayspecs(x2,3,2)
+arrayspecs(x2, 3, 2)
+}
 }
 \seealso{
 \code{\link{two.d.array}}

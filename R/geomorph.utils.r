@@ -244,10 +244,10 @@ plot.pls <- function(x, label = NULL, ...) {
   YScores <- x$YScores
   if(is.matrix(XScores)) XScores <- XScores[,1]
   if(is.matrix(YScores)) YScores <- YScores[,1]
-  plot.args <- list(x = XScores, y = YScores,
+  plot_args <- list(x = XScores, y = YScores,
                     main = "PLS1 Plot: Block 1 (X) vs. Block 2 (Y)", xlab = "PLS1 Block 1", 
                     ylab = "PLS1 Block 2", ...)
-  do.call(plot, plot.args)
+  do.call(plot, plot_args)
   pc <- prcomp(cbind(XScores, YScores))$x[,1]
   px <- predict(lm(XScores~pc))
   py <- predict(lm(YScores~pc))
@@ -256,7 +256,7 @@ plot.pls <- function(x, label = NULL, ...) {
     text(XScores, YScores, label, adj = c(-0.7, -0.7))
   }
   out <- list()
-  out$plot.args <- plot.args
+  out$plot_args <- plot_args
   out$A1 <- x$A1
   out$A2 <- x$A2
   out$Pcov <- x$Pcov
@@ -1020,6 +1020,7 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, flip = NULL, phylo = FALSE,
                                             node.cex = 1, 
                                             edge.color = "black", 
                                             edge.width = 1,
+                                            edge.lty = 1,
                                             tip.txt.cex = 1, 
                                             tip.txt.col = "black", 
                                             tip.txt.adj = c(-0.1,-0.1),
@@ -1032,8 +1033,8 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, flip = NULL, phylo = FALSE,
   pcdata <- as.matrix(x$x[, c(axis1, axis2)])
   Pcov <- x$Pcov
   xx <- plot(x, axis1 = axis1, axis2 = axis2, flip = flip, ...)
-  plot.args <- xx$plot.args
-  if(!is.null(plot.args$axes)) axes <- plot.args$axes else axes <- TRUE
+  plot_args <- xx$plot_args
+  if(!is.null(plot_args$axes)) axes <- plot_args$axes else axes <- TRUE
 
   if(axes){
     abline(h = 0, lty=2)
@@ -1105,7 +1106,7 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, flip = NULL, phylo = FALSE,
       l
     }
     
-    t.p <- plot.args
+    t.p <- plot_args
     t.p$pch <- 19
     if(!is.null(p.p$bg)) t.p$col <- p.p$bg
     if(!is.null(t.p$bg)) t.p$col <- t.p$bg
@@ -1119,8 +1120,8 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, flip = NULL, phylo = FALSE,
            zlim = c(max(zaxis), min(zaxis)),
            size = 0.1,
            asp = c(1,1,1),
-           xlab = xx$plot.args$xlab, 
-           ylab = xx$plot.args$ylab, zlab = "Time")
+           xlab = xx$plot_args$xlab, 
+           ylab = xx$plot_args$ylab, zlab = "Time")
     
     for (i in 1:nrow(phy$edge)) {
       lines3d(phy.pcdata[(phy$edge[i, ]), 1], phy.pcdata[(phy$edge[i, ]), 2], zaxis[(phy$edge[i, ])], 
@@ -1159,7 +1160,7 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, flip = NULL, phylo = FALSE,
   out$GM <- list()
   out$GM$A <- x$A
   
-  out$plot.args <- plot.args
+  out$plot_args <- plot_args
   out$Pcov <- Pcov
   if(phylo) {
     out$phylo <- list()

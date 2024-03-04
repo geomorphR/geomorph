@@ -12,7 +12,7 @@
 #'  are species related by a phylogeny, the phylogeny may also be included. 
 #'  
 #' @param A A 3D array (p x k x n) containing Procrustes shape variables for all specimens, or a matrix (n x variables)
-#' @param phy A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape
+#' @param phy A phylogenetic tree of class = "phylo" - see \code{\link[ape]{read.tree}} in library ape
 #' @export
 #' @keywords analysis
 #' @author Dean Adams
@@ -24,13 +24,15 @@
 #' @references  Pavlicev, M., J. M. Cheverud, and G. P. Wagner. 2009. Measuring morphological 
 #' integration using eigenvalue variance. Evolutionary Biology 36:157-170.
 #' @references Conaway, M.A., and D.C. Adams. 2022. An effect size for comparing the strength of 
-#'   morphological integration across studies. Evolution. (Accepted).
+#'   morphological integration across studies. Evolution. 76: 2244-2259.
 
 #' @seealso \code{\link{compare.ZVrel}}
 #' @examples
+#' \dontrun{
 #' data(plethodon) 
-#' Y.gpa<-gpagen(plethodon$land)    #GPA-alignment    
+#' Y.gpa <- gpagen(plethodon$land)    #GPA-alignment    
 #' integration.Vrel(Y.gpa$coords)
+#' }
 
 integration.Vrel <- function(A,phy = NULL){ 
   if(length(dim(A))==3){ 

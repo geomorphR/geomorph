@@ -39,6 +39,7 @@ the coordinates of each specimen.  If multiple steps are required, the function
 can be used in a recursive fashion.
 }
 \examples{
+\dontrun{
 data(plethodon)
 Y.gpa <- gpagen(plethodon$land)
 plot(Y.gpa)
@@ -56,6 +57,7 @@ specs1to3 <- Y.gpa$coords[,,1:3]
 plotAllSpecimens(specs1to3)
 specs1to3 <- rotate.coords(specs1to3, "rotateC")
 plotAllSpecimens(specs1to3)
+}
 }
 \author{
 Michael Collyer

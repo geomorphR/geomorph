@@ -37,7 +37,7 @@ pairs receive the same label (replicates also receive the same label).}
 Alternatively, this can be a character value to indicate the name of the variable in the data frame to use.}
 
 \item{object.sym}{A logical value specifying whether the analysis should proceed based on object 
-symmetry {=TRUE} or matching symmetry {=FALSE}}
+symmetry = TRUE or matching symmetry = FALSE}
 
 \item{land.pairs}{An optional matrix (for object symmetry) containing numbers for matched pairs 
 of landmarks across the line of symmetry}
@@ -122,10 +122,10 @@ GPA to be performed) or a gpagen object (if GPA has been previously performed) o
 object. If one wishes to incorporate semilandmarks, GPA can either be performed first using gpagen,
 or within bilat.symmetry by passing adequate GPA arguments (i.e. curves, surfaces, ProcD etc, 
 see \code{\link{gpagen}}. If a geomorphShapes object is provided, semilandmarks are automatically 
-identified and slid during GPA. For "object.sym = FALSE, landmarks should be of dimension (p x k 
+identified and slid during GPA. For object.sym = FALSE, landmarks should be of dimension (p x k 
 x 2n), as each specimen is represented by both left and right configurations.
    
-Analyses of symmetry for matched pairs of objects is implemented when {object.sym=FALSE}. Here, 
+Analyses of symmetry for matched pairs of objects is implemented when object.sym = FALSE. Here, 
 a 3D array [p x k x 2n] contains the landmark coordinates for all pairs of structures (2 
 structures for each of n specimens). Because the two sets of structures are on opposite sides,
 they represent mirror images, and one set must be reflected prior to the analysis to allow 
@@ -136,7 +136,7 @@ containing information on individuals and sides must also be supplied. Replicate
 specimen may also be included in the dataset, and when specified will be used as measurement 
 error (see Klingenberg and McIntyre 1998). 
 
-Analyses of object symmetry is implemented when {object.sym=TRUE}. Here, a 3D array [p x k x n] 
+Analyses of object symmetry is implemented when object.sym = TRUE. Here, a 3D array [p x k x n] 
 contains the landmark coordinates for all n specimens. To obtain information about asymmetry, 
 the function generates a second set of objects by reflecting them about one of their coordinate 
 axes. The landmarks across the line of symmetry are then relabeled to obtain landmark 
@@ -174,51 +174,53 @@ The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\li
 with \code{\link{bilat.symmetry}}.
 }
 \examples{
+\dontrun{
+
 #Example of matching symmetry
-# NOT RUN
-# data(mosquito)
-# gdf <- geomorph.data.frame(wingshape = mosquito$wingshape, 
-# ind=mosquito$ind, 
-# side=mosquito$side,
-# replicate=mosquito$replicate)
-# mosquito.sym <- bilat.symmetry(A = wingshape, ind = ind, side = side,
-# replicate = replicate, object.sym = FALSE, RRPP = TRUE, iter = 149, 
-# data = gdf)
-# summary(mosquito.sym)
-# plot(mosquito.sym, warpgrids = TRUE)
-# mosquito.sym$shape.anova # extract just the anova table on shape
+data(mosquito)
+gdf <- geomorph.data.frame(wingshape = mosquito$wingshape, 
+ind = mosquito$ind, 
+side = mosquito$side,
+replicate = mosquito$replicate)
+mosquito.sym <- bilat.symmetry(A = wingshape, ind = ind, side = side,
+replicate = replicate, object.sym = FALSE, RRPP = TRUE, 
+data = gdf)
+summary(mosquito.sym)
+plot(mosquito.sym, warpgrids = TRUE)
+mosquito.sym$shape.anova # extract just the anova table on shape
 
 # Previous example, performing GPA first
-# Y.gpa <- gpagen(mosquito$wingshape)
-# mosquito.sym2 <- bilat.symmetry(A = Y.gpa, ind = ind, side = side,
-# replicate = replicate, object.sym = FALSE, RRPP = TRUE, iter = 149, 
-# data = gdf)
-# summary(mosquito.sym2)
-# summary(mosquito.sym) # same results
+Y.gpa <- gpagen(mosquito$wingshape)
+mosquito.sym2 <- bilat.symmetry(A = Y.gpa, ind = ind, side = side,
+replicate = replicate, object.sym = FALSE, RRPP = TRUE, 
+data = gdf)
+summary(mosquito.sym2)
+summary(mosquito.sym) # same results
 
 #Example of object symmetry
 
-# data(lizards)
-# gdf <- geomorph.data.frame(shape = lizards$coords, 
-# ind = lizards$ind, 
-# replicate = lizards$rep)
-# liz.sym <- bilat.symmetry(A = shape, ind = ind, rep = rep, 
-# object.sym = TRUE, 
-# land.pairs = lizards$lm.pairs, data = gdf, RRPP = TRUE, iter = 149)
-# summary(liz.sym)
+data(lizards)
+gdf <- geomorph.data.frame(shape = lizards$coords, 
+ind = lizards$ind, 
+replicate = lizards$rep)
+liz.sym <- bilat.symmetry(A = shape, ind = ind, rep = rep, 
+object.sym = TRUE, 
+land.pairs = lizards$lm.pairs, data = gdf, RRPP = TRUE)
+summary(liz.sym)
 
 # Example of object symmetry in 3D and including semilandmarks
 
-# data(scallops)
-# gdf <- geomorph.data.frame(shape = scallops$coorddata, 
-# ind = scallops$ind)
-# scallop.sym <- bilat.symmetry(A = shape, ind = ind, 
-# object.sym = TRUE, 
-# curves= scallops$curvslide, surfaces = scallops$surfslide,
-# land.pairs=scallops$land.pairs, data = gdf, RRPP = TRUE, iter = 149)
-# summary(scallop.sym)
+data(scallops)
+gdf <- geomorph.data.frame(shape = scallops$coorddata, 
+ind = scallops$ind)
+scallop.sym <- bilat.symmetry(A = shape, ind = ind, 
+object.sym = TRUE, 
+curves= scallops$curvslide, surfaces = scallops$surfslide,
+land.pairs=scallops$land.pairs, data = gdf, RRPP = TRUE)
+summary(scallop.sym)
 # NOTE one can also: plot(scallop.sym, warpgrids = TRUE, mesh = NULL)
 # NOTE one can also: scallop.sym$data.type # recall the symmetry type
+}
 }
 \references{
 Klingenberg, C.P. and G.S. McIntyre. 1998. Quantitative genetics of geometric shape 

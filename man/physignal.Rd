@@ -9,7 +9,7 @@ physignal(A, phy, iter = 999, seed = NULL, print.progress = FALSE)
 \arguments{
 \item{A}{A matrix (n x [p x k]) or 3D array (p x k x n) containing Procrustes shape variables for a set of specimens}
 
-\item{phy}{A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape}
+\item{phy}{A phylogenetic tree of class = "phylo" - see \code{\link[ape]{read.tree}} in library ape}
 
 \item{iter}{Number of iterations for significance testing}
 
@@ -66,20 +66,22 @@ multiple methods. Only Kmult is used. Thus, for older scripts method="" should b
 }
 }
 \examples{
+\dontrun{
 data(plethspecies) 
-Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment    
+Y.gpa <- gpagen(plethspecies$land)    #GPA-alignment    
 
 #Test for phylogenetic signal in shape
-PS.shape <- physignal(A=Y.gpa$coords,phy=plethspecies$phy,iter=999)
+PS.shape <- physignal(A = Y.gpa$coords, phy = plethspecies$phy)
 summary(PS.shape)
 plot(PS.shape)
 plot(PS.shape$PACA, phylo = TRUE)
 PS.shape$K.by.p # Phylogenetic signal profile
 
 #Test for phylogenetic signal in size
-PS.size <- physignal(A=Y.gpa$Csize,phy=plethspecies$phy,iter=999)
+PS.size <- physignal(A = Y.gpa$Csize, phy = plethspecies$phy)
 summary(PS.size)
 plot(PS.size)
+}
 }
 \references{
 Blomberg SP, Garland T, Ives AR. 2003. Testing for phylogenetic signal in comparative 

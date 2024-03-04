@@ -9,7 +9,7 @@ plotAllSpecimens(
   mean = TRUE,
   links = NULL,
   label = FALSE,
-  plot.param = list()
+  plot_param = list()
 )
 }
 \arguments{
@@ -21,24 +21,26 @@ plotAllSpecimens(
 
 \item{label}{A logical value indicating whether landmark numbers will be plotted (only if mean=TRUE)}
 
-\item{plot.param}{A list of plot parameters for the points (pt.bg, pt.cex), mean (mean.bg, mean.cex), links (link.col, link.lwd, link.lty) and landmark labels (txt.cex, txt.adj, txt.pos, txt.col)}
+\item{plot_param}{A list of plot parameters for the points (pt.bg, pt.cex), mean (mean.bg, mean.cex), links (link.col, link.lwd, link.lty) and landmark labels (txt.cex, txt.adj, txt.pos, txt.col)}
 }
 \description{
 Function plots landmark coordinates for a set of specimens
 }
 \details{
 The function creates a plot of the landmark coordinates for all specimens. This is useful for examining 
- patterns of variation in Procrustes shape variables, after a GPA has been performed. If "mean=TRUE", the mean shape will be calculated and added to the plot.
+ patterns of variation in Procrustes shape variables, after a GPA has been performed. If "mean = TRUE", the mean shape will be calculated and added to the plot.
  Additionally, if a matrix of links is provided, the landmarks of the mean shape will be connected by lines.  
  The link matrix is an m x 2 matrix, where m is the desired number of links. Each row of the link matrix 
  designates the two landmarks to be connected by that link. The function will plot either two- or 
  three-dimensional data (e.g. see \code{\link{define.links}}).
 }
 \examples{
+\dontrun{
 data(plethodon) 
-Y.gpa<-gpagen(plethodon$land)    #GPA-alignment
+Y.gpa <- gpagen(plethodon$land)    #GPA-alignment
 
-plotAllSpecimens(Y.gpa$coords,links=plethodon$links)
+plotAllSpecimens(Y.gpa$coords, links = plethodon$links)
+}
 }
 \seealso{
 \code{\link[rgl]{rgl-package}} (used in 3D plotting)

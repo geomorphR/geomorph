@@ -60,13 +60,14 @@ center.scale <- function(x) {
 # apply.pPsup
 # applies a partial Procrustes superimposition to matrices in a list
 # used in gpagen functions
-apply.pPsup<-function(M, Ya) {	# M = mean (reference); Ya all Y targets
+apply.pPsup<-function(M, Ya, rot.pts = NULL) {	# M = mean (reference); Ya all Y targets
   dims <- dim(Ya[[1]])
   k <- dims[2]; p <- dims[1]; n <- length(Ya)
+  if(is.null(rot.pts)) rot.pts <- 1:p
   M <- cs.scale(M)
   lapply(1:n, function(j){
     y <- Ya[[j]]
-    MY <- crossprod(M,y)
+    MY <- crossprod(M[rot.pts,], y[rot.pts, ])
     sv <- La.svd(MY,k,k)
     u <- sv$u; u[,k] <- u[,k]*determinant(MY)$sign
     tcrossprod(y,u%*%sv$vt)

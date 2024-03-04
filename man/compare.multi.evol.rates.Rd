@@ -19,7 +19,7 @@ compare.multi.evol.rates(
 
 \item{gp}{A factor array designating group membership for landmarks}
 
-\item{phy}{A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape}
+\item{phy}{A phylogenetic tree of class = "phylo" - see \code{\link[ape]{read.tree}} in library ape}
 
 \item{Subset}{A logical value indicating whether or not the traits are subsets from a single 
 landmark configuration (default is TRUE)}
@@ -88,16 +88,18 @@ Adams 2015). This option is identified by selecting Subset = FALSE.
  the resampling procedure.
 }
 \examples{
+\dontrun{
 
 data(plethspecies) 
-Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment    
-land.gp<-c("A","A","A","A","A","B","B","B","B","B","B")  
+Y.gpa <- gpagen(plethspecies$land)    #GPA-alignment    
+land.gp <- c("A","A","A","A","A","B","B","B","B","B","B")  
     #mandible and cranium subsets
 
-EMR<-compare.multi.evol.rates(A=Y.gpa$coords,gp=land.gp, 
-    Subset=TRUE, phy= plethspecies$phy,iter=999)
+EMR <- compare.multi.evol.rates(A = Y.gpa$coords, gp = land.gp, 
+    Subset = TRUE, phy = plethspecies$phy)
 summary(EMR)
 plot(EMR)
+}
 }
 \references{
 Adams, D.C. 2014. Quantifying and comparing phylogenetic evolutionary rates for 

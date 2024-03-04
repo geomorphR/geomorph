@@ -13,14 +13,14 @@
 #' For details on the full procedure for digitizing fixed 3D landmarks and surface
 #' sliding semilandmarks, see the relevant vignette by running \code{vignette("geomorph.digitize3D")}.
 #' 
-#'  NOTE: The function centers the mesh before digitizing by default (center=TRUE). If one chooses not to center,
+#'  NOTE: The function centers the mesh before digitizing by default (center = TRUE). If one chooses not to center,
 #'  specimen may be difficult to manipulate in rgl window.
 #' 
 #' \subsection{Digitizing}{ 
 #' Digitizing is interactive. Once a point is selected, the user is asked if the system should keep or discard the 
 #' selection (y/n). If "y", the user is asked to continue to select the next landmark. If "n" the removes the last chosen
-#' landmark, and the user is asked to select it again. This can be repeated until the user is comfortable with the landmark
-#' chosen. 
+#' landmark, and the user is asked to select it again. This can be repeated until the user is comfortable with the 
+#' landmark chosen. 
 #' 
 #' To digitize with a standard 3-button mouse (PC):
 #' \enumerate{

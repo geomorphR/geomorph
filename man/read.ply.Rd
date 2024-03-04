@@ -30,6 +30,7 @@ Function reads three-dimensional surface data in the form of a single ply file
  Vertex normals allow better visualization and more accurate digitizing with \code{\link{digit.fixed}}.
 }
 \examples{
+\dontrun{
 # If the file has no mesh color, or color is undesirable, user can 
 # assign this as follows:
 # Using the example scallop PLY
@@ -37,6 +38,7 @@ data(scallopPLY)
 myply <- scallopPLY$ply
 myply$material$color <- "gray" # using color word
 myply$material$color <- "#FCE6C9" # using RGB code
+}
 }
 \seealso{
 \code{\link[rgl]{rgl-package}} (used in 3D plotting)

@@ -1,16 +1,26 @@
 #' Calculate semilandmarks along a curve
 #'
-#' A function that "digitizes curves" by calculating equidistant two-dimensional or three-dimensional semilandmarks along a curve. These landmarks will be treated as "sliders" in Generalized Procrustes analysis \code{\link{gpagen}}. This type of semilandmark "slides" along curves lacking known landmarks (see Bookstein 1997 for algorithm details). Each sliding semilandmark ("sliders") will slide between two designated points, along a line tangent to the specified curvature, as specified by \code{\link{define.sliders}}. 
+#' A function that "digitizes curves" by calculating equidistant two-dimensional or three-dimensional semilandmarks along 
+#' a curve. These landmarks will be treated as "sliders" in Generalized Procrustes analysis \code{\link{gpagen}}. This 
+#' type of semilandmark "slides" along curves lacking known landmarks (see Bookstein 1997 for algorithm details). Each 
+#' sliding semilandmark ("sliders") will slide between two designated points, along a line tangent to the specified 
+#' curvature, as specified by \code{\link{define.sliders}}. 
 #'
 #' The function is based upon tpsDig2 'resample curve by length' for 2D data by James Rohlf (Rohlf 2015).
-#' The start of the curve is a fixed landmark on the curve that is equivalent (homologous) in each specimen in the sample (and will be treated as a fixed point during Procrustes Superimposition using \code{\link{gpagen}}). Then nPoints are calculated along the curve at equidistant points from the start to the end. 
+#' The start of the curve is a fixed landmark on the curve that is equivalent (homologous) in each specimen in the 
+#' sample (and will be treated as a fixed point during Procrustes Superimposition using \code{\link{gpagen}}). Then 
+#' nPoints are calculated along the curve at equidistant points from the start to the end. 
 #' 
-#' 'curve' is a p-x-k matrix of 2D or 3D coordinates for a set of ordered points defining a curve. This can be the pixels of an outline calculated in ImageJ (save xy coordinates) or any other reasonable way of obtaining ordered coordinates along a curve (including sampling by hand using 
-#' \code{\link{digit.fixed}} or \code{\link{digitize2d}} - but note that there should be more points defining the curve than nPoints in order to accurately calculate the semilandmarks).
+#' 'curve' is a p-x-k matrix of 2D or 3D coordinates for a set of ordered points defining a curve. This can be the pixels 
+#' of an outline calculated in ImageJ (save xy coordinates) or any other reasonable way of obtaining ordered coordinates
+#'  along a curve (including sampling by hand using \code{\link{digit.fixed}} or \code{\link{digitize2d}} - but note 
+#'  that there should be more points defining the curve than nPoints in order to accurately calculate the semilandmarks).
 #'
-#' If 'closed = T', the function returns the coordinates of the 'start' landmark plus nPoints. If 'closed = F', the function returns the coordinates of the 'start' landmark, plus nPoints and the end of the curve. 
+#' If 'closed = T', the function returns the coordinates of the 'start' landmark plus nPoints. If 'closed = F', the 
+#' function returns the coordinates of the 'start' landmark, plus nPoints and the end of the curve. 
 #' 
-#' If unsure if the points defining the curve are ordered, then plot and color them using the rainbow function, e.g. plot(curve, pch=19, cex=0.1, col=rainbow(nrow(outline))), and it should be easy to visualize.
+#' If unsure if the points defining the curve are ordered, then plot and color them using the rainbow function, 
+#' e.g. plot(curve, pch=19, cex=0.1, col=rainbow(nrow(outline))), and it should be easy to visualize.
 #'
 #' @param start A numeric vector of x,y,(z) coordinates for the landmark defining the start of the curve (can be simply first point on open outline: curve[1,])
 #' @param curve A matrix (p x k) of 2D or 3D coordinates for a set of ordered points defining a curve

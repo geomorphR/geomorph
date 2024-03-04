@@ -39,7 +39,7 @@
 #' signal in different ways.  Below is a summary of optimization methods, including advantages or disadvantages that might be
 #' incurred.  Future versions of this function might update optimization methods, as more research affirms better methods.
 #' 
-#' \itemize{
+#' \describe{
 #' \item{\bold{burn}}{  A burn-in optimization samples a spectrum of lambda from 0 to 1, finding the effect
 #' size, Z, from several distributions of log-likelihoods, in order to find the lambda value that maximizes the
 #' effect size rather than the log-likelihood.  Once this value of lambda is obtained, the requested number
@@ -70,7 +70,7 @@
 #'  The generic function, \code{\link{plot}}, produces a histogram of random log-likelihoods, 
 #'  associated with the resampling procedure.
 #' 
-#' @param phy A phylogenetic tree of {class phylo} - see \code{\link[ape]{read.tree}} in library ape
+#' @param phy A phylogenetic tree of class = "phylo" - see \code{\link[ape]{read.tree}} in library ape
 #' @param A A matrix (n x [p x k]) or 3D array (p x k x n) containing Procrustes shape variables for a set of specimens
 #' @param lambda An indication for how lambda should be optimized.  This can be a numeric value between 0 and 1 to override 
 #' optimization.  Alternatively, it can be one of four methods: burn-in ("burn"); mean lambda across all data dimensions
@@ -127,27 +127,29 @@
 #' Evolution. 73:2352-2367.
 #' @references Pagel, M. D. (1999). Inferring the historical patterns of biological evolution. Nature. 401:877-884.
 #' @examples
+#' \dontrun{
 #' data(plethspecies) 
-#' Y.gpa<-gpagen(plethspecies$land)    #GPA-alignment    
+#' Y.gpa <- gpagen(plethspecies$land)    #GPA-alignment    
 #'
 #' # Test for phylogenetic signal in shape
 #' PS.shape <- physignal.z(A = Y.gpa$coords, phy = plethspecies$phy, 
-#' lambda = "front", iter=999)
+#' lambda = "front")
 #' summary(PS.shape)
 #' 
 #' # Problem with ill-conditioned residual covariance matrix; try shaving one dimension
 #' 
 #' PS.shape <- physignal.z(A = Y.gpa$coords, phy = plethspecies$phy, 
-#' lambda = "front", PAC.no = 7, iter=999)
+#' lambda = "front", PAC.no = 7)
 #' summary(PS.shape)
 #' plot(PS.shape)
 #' plot(PS.shape$PACA, phylo = TRUE)
 #' 
 #' # Test for phylogenetic signal in size
 #' PS.size <- physignal.z(A = Y.gpa$Csize, phy = plethspecies$phy, 
-#' lambda = "front", iter=999)
+#' lambda = "front")
 #' summary(PS.size)
 #' plot(PS.size)
+#' }
 physignal.z <- function(A, phy, lambda = c("burn", "mean", "front", "all"), iter = 999, seed = NULL, 
                         tol = 1e-4, PAC.no = NULL, print.progress = FALSE,
                         verbose = FALSE){
@@ -340,7 +342,7 @@ physignal.z <- function(A, phy, lambda = c("burn", "mean", "front", "all"), iter
     })
     
     lambda.by.p <- sapply(1:p, function(j) {
-      lambda.opt(Y[,1:j], phy)$lambda
+      lambda.opt(Y[,1:j], phy)
     })
     
     logL.by.p <-sapply(1:p, function(j) {

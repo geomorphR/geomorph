@@ -8,16 +8,16 @@
 #'  curves, semilandmarks on surfaces, or any combination. If data are provided in the form of a 3D array, all
 #'  landmarks and semilandmarks are contained in this object. If this is the only component provided, the function
 #'  will treat all points as if they were fixed landmarks. To designate some points as semilandmarks, one uses 
-#'  the "curves=" or "surfaces=" options (or both). To include semilandmarks on curves, a matrix defining 
-#'  which landmarks are to be treated as semilandmarks is provided using the "curves=" option. This matrix contains
+#'  the "curves =" or "surfaces =" options (or both). To include semilandmarks on curves, a matrix defining 
+#'  which landmarks are to be treated as semilandmarks is provided using the "curves =" option. This matrix contains
 #'  three columns that specify the semilandmarks and two neighboring landmarks which are used to specify the tangent 
 #'  direction for sliding. The matrix may be generated using the function \code{\link{define.sliders}}). Likewise, 
 #'  to include semilandmarks 
 #'  on surfaces, one must specify a vector listing which landmarks are to be treated as surface semilandmarks 
-#'  using the "surfaces=" option. The "ProcD=FALSE" option (the default) will slide the semilandmarks 
-#'  based on minimizing bending energy, while "ProcD=TRUE" will slide the semilandmarks along their tangent 
+#'  using the "surfaces=" option. The "ProcD = FALSE" option (the default) will slide the semilandmarks 
+#'  based on minimizing bending energy, while "ProcD = TRUE" will slide the semilandmarks along their tangent 
 #'  directions using the Procrustes distance criterion. The Procrustes aligned specimens may be projected into tangent
-#'  space using the "Proj=TRUE" option. 
+#'  space using the "Proj = TRUE" option. 
 #'  The function also outputs a matrix of pairwise Procrustes Distances, which correspond to Euclidean distances between specimens in tangent space if "Proj=TRUE", or to the geodesic distances in shape space if "Proj=FALSE".   
 #'  NOTE: Large datasets may exceed the memory limitations of R. 
 #'
@@ -71,6 +71,11 @@
 #'   with \code{\link{readland.shapes}} following digitizing of curves in StereoMorph, or may be generated
 #'   using the function \code{\link{define.sliders}}.
 #' @param surfaces An optional vector defining which landmarks should be treated as semilandmarks on surfaces
+#' @param rot.pts An optional vector defining which landmarks are used for rotation.  If NULL or "all", all fixed landmarks
+#' and semilandmarks will be used.  If "fixed", only fixed landmarks will be used.  If "sliders", only sliding
+#' semilandmarks will be used. Any other vector of values will
+#' direct which landmarks or semilandmarks will be used for rotation.  Illogical vectors (like choosing points that 
+#' do not exist or only choosing one point) will default to using all landmarks and semilandmarks.
 #' @param ProcD A logical value indicating whether or not Procrustes distance should be used as the criterion
 #'   for optimizing the positions of semilandmarks (if not, bending energy is used)
 #' @param approxBE A logical value for whether bending energy should be estimated via approximate 
@@ -153,6 +158,7 @@
 #' @references Zelditch, M. L., D. L. Swiderski, H. D. Sheets, and W. L. Fink. 2012. Geometric morphometrics 
 #'   for biologists: a primer. 2nd edition. Elsevier/Academic Press, Amsterdam.
 #' @examples
+#' \dontrun{
 #' # Example 1: fixed points only
 #' data(plethodon) 
 #' Y.gpa <- gpagen(plethodon$land, PrinAxes = FALSE)
@@ -187,7 +193,10 @@
 #' surfaces = scallops$surfslide)
 #' # NOTE can summarize as: summary(Y.gpa)
 #' # NOTE can plot as: plot(Y.gpa) 
-gpagen = function(A, curves=NULL, surfaces=NULL, PrinAxes = TRUE, 
+#' }
+gpagen = function(A, curves=NULL, surfaces=NULL, 
+                  rot.pts = NULL,
+                  PrinAxes = TRUE, 
                   max.iter = NULL, tol = 1e-4, 
                   ProcD=FALSE, approxBE = FALSE, 
                   sen = 0.5,
@@ -248,6 +257,17 @@ gpagen = function(A, curves=NULL, surfaces=NULL, PrinAxes = TRUE,
   } else curves <- NULL
   if(!is.null(surfaces)) surf <- as.vector(surfaces) else surf <- NULL
   
+  fixed <- 1:p
+  if(!is.null(curves)) fixed <- fixed[which(!fixed %in% curves[,2])]
+  if(!is.null(surf)) fixed <- fixed[which(!fixed %in% surf)]
+  if(length(fixed) == 0) fixed <- 1:p
+  if(is.null(rot.pts)) rot.pts <- 1:p
+  if(length(rot.pts) == 1 && rot.pts  == "all") rot.pts <- 1:p
+  if(length(rot.pts) == 1 && rot.pts  == "fixed") rot.pts <- fixed
+  if(length(rot.pts) == 1 && rot.pts  == "sliders") rot.pts <- setdiff(1:p, fixed)
+  if(length(rot.pts) > p) rot.pts <- 1:p
+  if(length(rot.pts) < k) rot.pts <- 1:p
+  
   if(print.progress && Parallel != FALSE) {
         print.progress = FALSE
         message("\nResults status turned off for parallel processing.\n")
@@ -257,19 +277,19 @@ gpagen = function(A, curves=NULL, surfaces=NULL, PrinAxes = TRUE,
   if(print.progress == TRUE){
     cat("\nPerforming GPA\n")
     if(!is.null(curves) || !is.null(surf)) 
-      gpa <- pGpa.wSliders(Y, curves = curves, surf=surf,
+      gpa <- pGpa.wSliders(Y, curves = curves, surf=surf, rot.pts = rot.pts,
                            PrinAxes = PrinAxes, max.iter=max.it, 
                            tol = tol, appBE = approxBE, sen = sen, ProcD=prD) else
-                             gpa <- pGpa(Y, PrinAxes = PrinAxes, 
+                             gpa <- pGpa(Y, rot.pts = rot.pts, PrinAxes = PrinAxes, 
                                          max.iter=max.it, tol = tol)
                                                                 
   } else {
     if(!is.null(curves) || !is.null(surf)) 
-      gpa <- .pGpa.wSliders(Y, curves = curves, surf=surf,
+      gpa <- .pGpa.wSliders(Y, curves = curves, surf=surf, rot.pts = rot.pts,
                             PrinAxes = PrinAxes, max.iter=max.it, 
                             tol = tol, appBE= approxBE, sen = sen, ProcD=prD, 
                             Parallel = Parallel) else
-                              gpa <- .pGpa(Y, PrinAxes = PrinAxes, 
+                              gpa <- .pGpa(Y, rot.pts = rot.pts, PrinAxes = PrinAxes, 
                                            max.iter=max.it, tol = tol, 
                                            Parallel = Parallel)
   }
@@ -322,7 +342,7 @@ gpagen = function(A, curves=NULL, surfaces=NULL, PrinAxes = TRUE,
   
 
   out <- list(coords=coords, Csize=Csize, 
-              iter=iter, 
+              iter=iter, rot.pts = rot.pts,
               consensus = M, procD = procD, 
               p = p,k = k, nsliders=nsliders, nsurf = nsurf,
               points.VCV = pt.VCV, points.var = pt.var, 

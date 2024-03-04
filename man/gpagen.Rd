@@ -8,6 +8,7 @@ gpagen(
   A,
   curves = NULL,
   surfaces = NULL,
+  rot.pts = NULL,
   PrinAxes = TRUE,
   max.iter = NULL,
   tol = 1e-04,
@@ -30,6 +31,12 @@ with \code{\link{readland.shapes}} following digitizing of curves in StereoMorph
 using the function \code{\link{define.sliders}}.}
 
 \item{surfaces}{An optional vector defining which landmarks should be treated as semilandmarks on surfaces}
+
+\item{rot.pts}{An optional vector defining which landmarks are used for rotation.  If NULL or "all", all fixed landmarks
+and semilandmarks will be used.  If "fixed", only fixed landmarks will be used.  If "sliders", only sliding
+semilandmarks will be used. Any other vector of values will
+direct which landmarks or semilandmarks will be used for rotation.  Illogical vectors (like choosing points that 
+do not exist or only choosing one point) will default to using all landmarks and semilandmarks.}
 
 \item{PrinAxes}{A logical value indicating whether or not to align the shape data by principal axes}
 
@@ -108,16 +115,16 @@ The function performs a Generalized Procrustes Analysis (GPA) on two-dimensional
  curves, semilandmarks on surfaces, or any combination. If data are provided in the form of a 3D array, all
  landmarks and semilandmarks are contained in this object. If this is the only component provided, the function
  will treat all points as if they were fixed landmarks. To designate some points as semilandmarks, one uses 
- the "curves=" or "surfaces=" options (or both). To include semilandmarks on curves, a matrix defining 
- which landmarks are to be treated as semilandmarks is provided using the "curves=" option. This matrix contains
+ the "curves =" or "surfaces =" options (or both). To include semilandmarks on curves, a matrix defining 
+ which landmarks are to be treated as semilandmarks is provided using the "curves =" option. This matrix contains
  three columns that specify the semilandmarks and two neighboring landmarks which are used to specify the tangent 
  direction for sliding. The matrix may be generated using the function \code{\link{define.sliders}}). Likewise, 
  to include semilandmarks 
  on surfaces, one must specify a vector listing which landmarks are to be treated as surface semilandmarks 
- using the "surfaces=" option. The "ProcD=FALSE" option (the default) will slide the semilandmarks 
- based on minimizing bending energy, while "ProcD=TRUE" will slide the semilandmarks along their tangent 
+ using the "surfaces=" option. The "ProcD = FALSE" option (the default) will slide the semilandmarks 
+ based on minimizing bending energy, while "ProcD = TRUE" will slide the semilandmarks along their tangent 
  directions using the Procrustes distance criterion. The Procrustes aligned specimens may be projected into tangent
- space using the "Proj=TRUE" option. 
+ space using the "Proj = TRUE" option. 
  The function also outputs a matrix of pairwise Procrustes Distances, which correspond to Euclidean distances between specimens in tangent space if "Proj=TRUE", or to the geodesic distances in shape space if "Proj=FALSE".   
  NOTE: Large datasets may exceed the memory limitations of R. 
 
@@ -164,6 +171,7 @@ inferential analyses using Procrustes residuals.
 }
 }
 \examples{
+\dontrun{
 # Example 1: fixed points only
 data(plethodon) 
 Y.gpa <- gpagen(plethodon$land, PrinAxes = FALSE)
@@ -198,6 +206,7 @@ Y.gpa <- gpagen(A = scallops$coorddata, curves = scallops$curvslide,
 surfaces = scallops$surfslide)
 # NOTE can summarize as: summary(Y.gpa)
 # NOTE can plot as: plot(Y.gpa) 
+}
 }
 \references{
 Adams, D. C., F. J. Rohlf, and D. E. Slice. 2004. Geometric morphometrics: ten years of 
