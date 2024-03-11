@@ -62,7 +62,7 @@
 make_ggplot <- function(object){
   
   x <- y <- lbl <- NULL
-  pa <- object$plot.args
+  pa <- object$plot_args
   
   if(is.null(pa)) 
     stop("Plot object does not appear to be a type that can be converted to ggplot.\n",
