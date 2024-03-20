@@ -1012,21 +1012,7 @@ summary.gm.prcomp <- function (object, ...) {
 
 plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, flip = NULL, phylo = FALSE, 
                            time.plot = FALSE, 
-                           phylo.par = list(tip.labels = TRUE, 
-                                            node.labels = TRUE, 
-                                            anc.states = TRUE,
-                                            node.pch = 21, 
-                                            node.bg = "grey", 
-                                            node.cex = 1, 
-                                            edge.color = "black", 
-                                            edge.width = 1,
-                                            edge.lty = 1,
-                                            tip.txt.cex = 1, 
-                                            tip.txt.col = "black", 
-                                            tip.txt.adj = c(-0.1,-0.1),
-                                            node.txt.cex = 1, 
-                                            node.txt.col = "grey",
-                                            node.txt.adj = c(-0.1, -0.1)), 
+                           phylo.par = NULL, 
                            ...){
 
   class(x) <- "ordinate"
@@ -1061,12 +1047,21 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, flip = NULL, phylo = FALSE,
                             tip.txt.adj = c(-0.1, -0.1),
                             node.txt.cex = 1, node.txt.col = "grey",
                             node.txt.adj = c(-0.1, -0.1))
-    
     m.p <- match(names(phylo.par), names(p.p))
     if(any(is.na(m.p)))
       stop("Some of the arguments in phylo.pars are different than those that are possible (see Arguments).\n",
            call. = FALSE)
     p.p[m.p] <- phylo.par
+    if(!is.null(phylo.par)) {
+      if(!is.list(phylo.par))
+        stop("\nphylo.par must be a list.\n", call. = FALSE)
+      
+      m.p <- match(names(phylo.par), names(p.p))
+      if(any(is.na(m.p)))
+        stop("Some of the arguments in phylo.pars are different than those that are possible (see Arguments).\n",
+             call. = FALSE)
+      p.p[m.p] <- phylo.par
+    }
     
     phy <- x$phy
     tp <- add.tree(xx, phy, edge.col = p.p$edge.color,
