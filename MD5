@@ -1,5 +1,4 @@
 82f2b9bb2fe97f1aac513b888eef941e *cran-comments.md
-8779500d26cf50126e10b1551690e962 *CRAN-SUBMISSION
 247b6e5658356e87edfd560687b239fc *data/hummingbirds.rda
 56558754725fea156eb0820f67a4f508 *data/larvalMorph.rda
 c3fc0e7a97f4cbd5b6cd8944d737b11a *data/lizards.rda
@@ -12,7 +11,7 @@ d8e8360c03c03fe45d2100e9c05d4a89 *data/plethodon.rda
 9ba51ab9be03930a4acdcddde8169b33 *data/scallopPLY.rda
 6e5e71b242462e422b716800ffc3c464 *data/scallops.rda
 de6203101a8c24913d247f5ed2e3b66d *DESCRIPTION
-73f723a130c92f8b84a81465a15add7c *geomorph.Rproj
+f4f2080e745b8d689f17caf549449ab5 *geomorph.Rproj
 6c57326cbbaa6398a5bf5487ce7a5241 *inst/CITATION
 48ebf0e3514a533f2bf4c1abaa47953a *man/arrayspecs.Rd
 8b2a33992616fa4fea989131aeff80c7 *man/bilat.symmetry.Rd
@@ -67,7 +66,7 @@ b8a3ca222e5ef0e2470e1d5833dd7bb4 *man/plethspecies.Rd
 59b44888645cbbeeb4cf0d3406e4ee45 *man/plot.CR.phylo.Rd
 97892e1293dbb2c4a6e994a90c27dc83 *man/plot.CR.Rd
 85bbe6b70e860a14116746ef4ecac51f *man/plot.evolrate.Rd
-7ea768fe62f9d79641ba9fa255b34aad *man/plot.gm.prcomp.Rd
+2bb7dbd4a9e6455576b668cd7df86e98 *man/plot.gm.prcomp.Rd
 0116d21c6ae9389dc425aaca082fd67c *man/plot.gpagen.Rd
 71208a14b679efbbaf55f8daba7a0ef3 *man/plot.mshape.Rd
 c243df60434118dddca6904f3d6de9b0 *man/plot.physignal.Rd
@@ -137,8 +136,8 @@ f12b7c946e7eec22ae09fc9be56fdfa1 *man/two.b.pls.Rd
 d2755155772526527e4224b17d0dd05d *man/warpRefMesh.Rd
 7bea8d6b17918fd4889e2056ebe0e3d0 *man/warpRefOutline.Rd
 d9119f721918f22c267db843023a86fe *man/writeland.tps.Rd
-a55039218642f1f59fc828bb7ea5a77b *NAMESPACE
-75b2b3056f91611c5d3da2e9b82730a9 *NEWS.md
+11d6127712eabc9b071dfdcba1abb066 *NAMESPACE
+7b3e4584657fce03aec9a1faf6883615 *NEWS.md
 e65d7da576d1eb0948aacecf1b235a68 *R/arrayspecs.r
 76f48e1963dc3f0a9b1f26209c20d763 *R/bilat.symmetry.r
 2adab339b3d8b4daa0357786ac812dd1 *R/build.template.r
@@ -164,7 +163,7 @@ aac6a4f8a759473e8c37048e5c8e3d91 *R/findMeanSpec.r
 b792f75d1fb825423b03a8711c0120a4 *R/fixed.angle.r
 14c82d650f7cbbf5ef8786303b1e0373 *R/geomorph.data.frame.r
 d14b76f8fcddd1343336bb4c86b2435f *R/geomorph.support.code.r
-35936febf018f561593d7d4c01d11c46 *R/geomorph.utils.r
+9adc4e577781848f7fde81efecdab58e *R/geomorph.utils.r
 d8571c8894e54b32c96c2ce94c6b7101 *R/globalIntegration.r
 b84647a2aec9b9c7d6ff3c326644268b *R/gm.measurement.error.R
 6dbacc3db3c0f57e8863d9847c8bd68e *R/gm.prcomp.R
