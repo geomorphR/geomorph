@@ -451,6 +451,12 @@ scanTPS <- function(file) {
     })
   }
   
+  if(negNA == TRUE){
+    tmp <- simplify2array(lmo)
+    tmp[which(tmp < 0)] <- NA
+    lmo <- asplit(tmp, 3)
+  } 
+  
   if(any(is.na(lmo))){
     cat("\nNegative landmark coordinates have been identified and imported as such.") 
     cat("\nIf you want to treat them as NAs please set negNA = TRUE")

@@ -1,7 +1,8 @@
 # CHANGES IN GEOMORPH VERSION 4.0.7.999
 
 ### Bug fixes
-* Fixed issue with `plot.gm.prcomp` `phylo.par` default.
+* Fixed issue with `readland.tps` and negNA = TRUE
+* Fixed issue with `plot.gm.prcomp` `phylo.par` default
 
 # CHANGES IN GEOMORPH VERSION 4.0.7
 
