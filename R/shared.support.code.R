@@ -542,25 +542,65 @@ ace.pics <- function(ntip, nnode, edge1, edge2, edge_len, phe, contr,
 
 # anc.BM
 # multivariate as opposed to fastAnc
+# uses Ho and Ane (2014) algorithm
 
 anc.BM <- function(phy, Y){
-  if(!is.matrix(Y)) Y <- as.matrix(Y)
-  Y <- as.matrix(Y[phy$tip.label,])
-  phy <- reorder.phy(phy)
-  n <- length(phy$tip.label)
-  out <- t(sapply(1:phy$Nnode, function(j){
-    phy.j <- multi2di.phylo(root.phylo(phy, node = j + n))
-    phy.j <- collapse.singles(phy.j)
-    preps <- pic.prep(phy.j, NROW(Y), NCOL(Y))
-    preps$x <- Y
-    preps$tip.label <- phy$tip.label
-    out <- do.call(ace.pics, preps)
-    out[n + 1,]
-  }))
+  Y <- as.matrix(Y)
+  N <- length(phy$tip.label)
+  edge <- cbind(phy$edge, phy$edge.length)
+  ind <-rank(edge[,1], ties.method = "last")
+  edge <- edge[order(ind, decreasing = TRUE), ]
+  ev <- edge[,3]
+  anc <- edge[, 1]
+  des <- edge[, 2]
+  ne <- nrow(edge)
+  if (is.null(phy$node.label)) {
+    phy$node.label <- (length(phy$tip.label) + 1):(length(phy$tip.label) + 
+                                                     phy$Nnode)
+  }
+  nl <- phy$node.label
+  rm(phy, edge)
   
-  if(NROW(out) == 1) out <- t(out)
-  dimnames(out) <- list(1:phy$Nnode + length(phy$tip.label), colnames(Y))
-  out
+  Z <- matrix(0, ne + 1, NCOL(Y))
+  p <- rep(0, ne + 1)
+  
+  for(i in 1:ne){
+    a <- anc[i] 
+    d <- des[i] 
+    len <- ev[i] 
+    
+    if(d <= N){
+      p[d] <- 1 / len
+      Z[d, ] <- Y[d, ]
+    } else {
+      pA <- p[d]
+      Z[d, ] <- Z[d, ] / pA
+      p[d] <- pA / (1 + len * pA)
+    }
+    
+    p[a] <- p[a] + p[d]
+    Z[a, ] <- Z[a, ] + Z[d, ] * p[d]
+  }
+  
+  Z[a, ] <- Z[a, ] / p[a]
+  
+  for(i in ne:1){
+    a <- anc[i] 
+    d <- des[i] 
+    len <- ev[i]
+    
+    if(d > N) {
+      Z[d, ] <-  Z[d, ] * p[d] * len + 
+        Z[a, ] - Z[a, ] * p[d] * len
+    }
+  }
+  Z <- Z[-(1:N), , drop = FALSE]
+  rownames(Z) <- nl
+  if(!is.null(colnames(Y)))
+    colnames(Z) <- colnames(Y)
+  
+  Z
+  
 }
 
 # getNode Depth
