@@ -41,7 +41,7 @@
 #' on individuals must also be supplied. Replicates of each specimen may also be included in the 
 #' dataset, and when specified will be used as measurement error. 
 #' 
-#' The function also provides individual measures of signed and unsigned asymmetry, calculated as the
+#' The function also provides individual measures of unsigned asymmetry, calculated as the
 #' Procrustes distance between the right and left element (for paired structures, as detailed in 
 #' Klingenberg and McIntyre 1998) or side of the structure (for object symmetry, following Lazić 
 #' et al 2015). The computational difference between the two approaches consists in that, for object
@@ -119,9 +119,7 @@
 #' \item{FA.component}{The fluctuating asymmetry component for each specimen, 
 #' found as the specimen specific side deviation adjusted for the mean 
 #' directional asymmetry in the dataset.}
-#' \item{signed.AI}{Individual signed asymmetry index, as per Klingenberg and McIntyre, 1998;
-#' Lazić et al 2015.}
-#' #' \item{unsigned.AI}{Individual unsigned asymmetry index, as per Klingenberg and McIntyre, 1998;
+#' \item{unsigned.AI}{Individual unsigned asymmetry index, as per Klingenberg and McIntyre, 1998;
 #' Lazić et al 2015.}
 #' \item{data.type}{A value indicating whether the analysis was performed as Object or Matching 
 #' symmetry.}
@@ -346,20 +344,14 @@ bilat.symmetry <- function(A, ind = NULL, side = NULL, replicate = NULL, object.
   {t(matrix(FA.component[j,],k,p)) + mn.shape - mn.DA}))
   dimnames(FA.component)[[3]] <- dimnames(symm.component)[[3]]
 
-# Calculate individual asymmetry indices
-  signed.asymm <- two.d.array(asymm.component)
-  signed.AI <- sqrt(apply(signed.asymm^2, 1, sum))
-  asymm.mean <- apply(signed.asymm, 2, mean)
-  unsigned.asymm <- matrix(NA, nrow=nrow(signed.asymm), ncol=ncol(signed.asymm))
-  for (i in 1:nrow(signed.asymm)){
-    unsigned.asymm[i,] <- ifelse(signed.asymm[i,]%*%asymm.mean > 0, signed.asymm[i,], signed.asymm[i,]*(-1))
-  } 
+# Calculate individual unsigned asymmetry index (note: symmetric would be identical)
+  unsigned.asymm <- two.d.array(asymm.component)
   unsigned.AI <- sqrt(apply(unsigned.asymm^2, 1, sum))
   names(unsigned.AI) <- dimnames(symm.component)[[3]]
 
   out <- list(shape.anova = shape.anova, symm.shape = symm.component,
               asymm.shape = asymm.component, DA.component = DA.mns, FA.component = FA.component,
-              signed.AI = signed.AI, unsigned.AI = unsigned.AI,
+              unsigned.AI = unsigned.AI,
               data.type = ifelse(object.sym == TRUE, "Object", "Matching"),
               permutations = iter+1,
               perm.method = ifelse(RRPP==TRUE,"RRPP", "Raw"),

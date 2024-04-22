@@ -85,9 +85,7 @@ An object of class "bilat.symmetry" returns a list of the following
 \item{FA.component}{The fluctuating asymmetry component for each specimen, 
 found as the specimen specific side deviation adjusted for the mean 
 directional asymmetry in the dataset.}
-\item{signed.AI}{Individual signed asymmetry index, as per Klingenberg and McIntyre, 1998;
-Lazić et al 2015.}
-#' \item{unsigned.AI}{Individual unsigned asymmetry index, as per Klingenberg and McIntyre, 1998;
+\item{unsigned.AI}{Individual unsigned asymmetry index, as per Klingenberg and McIntyre, 1998;
 Lazić et al 2015.}
 \item{data.type}{A value indicating whether the analysis was performed as Object or Matching 
 symmetry.}
@@ -144,7 +142,7 @@ correspondence. The user must supply a list of landmark pairs. A vector containi
 on individuals must also be supplied. Replicates of each specimen may also be included in the 
 dataset, and when specified will be used as measurement error. 
 
-The function also provides individual measures of signed and unsigned asymmetry, calculated as the
+The function also provides individual measures of unsigned asymmetry, calculated as the
 Procrustes distance between the right and left element (for paired structures, as detailed in 
 Klingenberg and McIntyre 1998) or side of the structure (for object symmetry, following Lazić 
 et al 2015). The computational difference between the two approaches consists in that, for object
