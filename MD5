@@ -138,7 +138,7 @@ d2755155772526527e4224b17d0dd05d *man/warpRefMesh.Rd
 7bea8d6b17918fd4889e2056ebe0e3d0 *man/warpRefOutline.Rd
 d9119f721918f22c267db843023a86fe *man/writeland.tps.Rd
 a55039218642f1f59fc828bb7ea5a77b *NAMESPACE
-424ad3d7834fe7d4d7e5ff444164e7b5 *NEWS.md
+96564059b8879204cc479b259aa00d1f *NEWS.md
 e65d7da576d1eb0948aacecf1b235a68 *R/arrayspecs.r
 28a0cd88b6a7a020ff356227cbefe15d *R/bilat.symmetry.r
 2adab339b3d8b4daa0357786ac812dd1 *R/build.template.r
@@ -171,7 +171,7 @@ b84647a2aec9b9c7d6ff3c326644268b *R/gm.measurement.error.R
 c0852f88b9286461e0e485edcf982b9e *R/gpagen.r
 1354e54d17ae51a46376ab0772adad1e *R/gridPar.r
 4cdb3230902e4e4f3c406d96bd54acc6 *R/integration.test.r
-6c0aec38bbc9cd21d837f39eb254562d *R/integration.Vrel.r
+88ce73a8fe2c27ef9dfb047bed2ec792 *R/integration.Vrel.r
 63ac4e6afda228b2706bab41800aeb3d *R/interlmkdist.r
 ab4ed21f864d601552706e842de5148e *R/make_ggplot.r
 a154599cedb0b5548dcd575fa7532bfb *R/modularity.test.r

@@ -40,6 +40,27 @@ integration.Vrel <- function(A,phy = NULL){
   }
   n <- nrow(A)
   if (!is.null(phy)) {
+    
+    if (!inherits(phy, "phylo"))
+      stop("phy must be of class 'phylo.'") 
+    namesA <- rownames(A)
+    
+    if (is.null(namesA))
+      stop("\nNo specimen names in data matrix. Please assign specimen names.", call. = FALSE) 
+    
+    num.taxa <- length(phy$tip.label)
+    num.obs <- length(namesA)
+    
+    if(num.obs < num.taxa)
+      stop("\nTree contains some taxa not present in present in the data matrix", call. = FALSE)  
+    
+    if(num.obs > num.taxa)
+      stop("\nTree is missing some taxa present in the data matrix", call. = FALSE) 
+    
+    if(length(unique(c(namesA, phy$tip.label))) > num.taxa)
+      stop("\n The data names and taxa names do not match exactly.  Check for discrepancies.",
+           call. = FALSE)
+    
     phy.parts <- phylo.mat(A, phy)
     Ptrans <- phy.parts$D.mat %*% (diag(n) - matrix(1, n) %*% 
                                      crossprod(matrix(1, n), phy.parts$invC)/sum(phy.parts$invC))
