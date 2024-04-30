@@ -116,8 +116,8 @@
 #'  # This is the challenging way
 #'  
 #'  # Block 1 
-#'  minx <- min(P$plot.args$x)
-#'  maxx <- max(P$plot.args$x)
+#'  minx <- min(P$plot_args$x)
+#'  maxx <- max(P$plot_args$x)
 #'  preds <- shape.predictor(P$A1, 
 #'  x = P$plot.args$x,
 #'  min = minx, max = maxx)
@@ -125,8 +125,8 @@
 #'  plotRefToTarget(mshape(P$A1), preds$max)
 #' 
 #'  # Block 2 
-#'  miny <- min(P$plot.args$y)
-#'  maxy <- max(P$plot.args$y)
+#'  miny <- min(P$plot_args$y)
+#'  maxy <- max(P$plot_args$y)
 #'  preds <- shape.predictor(P$A2, 
 #'  x = P$plot.args$y,
 #'  min = miny, max = maxy)

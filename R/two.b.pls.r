@@ -96,8 +96,8 @@
 #'  # This is the challenging way
 #'  
 #'  # Block 1 (shape)
-#'  minx <- min(P$plot.args$x)
-#'  maxx <- max(P$plot.args$x)
+#'  minx <- min(P$plot_args$x)
+#'  maxx <- max(P$plot_args$x)
 #'  preds <- shape.predictor(P$A1, 
 #'  x = P$plot.args$x,
 #'  min = minx, max = maxx)
