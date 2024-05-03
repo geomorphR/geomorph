@@ -46,10 +46,13 @@ a598044482a6c3e39517b798b654c57e *man/hummingbirds.Rd
 0f54e773ed16b50037c0c87a4ea2eb0d *man/integration.test.Rd
 8ffec6069ef2d4792693e4695b7bcb61 *man/integration.Vrel.Rd
 5f36b63c679fc0b723679a769813c8cd *man/interlmkdist.Rd
+1ee4619628273c467e3ec045d2facc7d *man/K.modules.Rd
 250260d69741416238284d376d952378 *man/larvalMorph.Rd
 073ec603983e6cd70eb01e40d5c091ec *man/lizards.Rd
 2ef05ff61252df7a60252948028bb6d5 *man/make_ggplot.Rd
 352eb346d8fd1a7e7cf0ca9e214c301b *man/modularity.test.Rd
+03a7fff89481397e5fa589026b70538b *man/module.eigen.Rd
+da6adcc4c330dc1d5e6ffe3a98ec082a *man/module.map.Rd
 94a962a99b4b7a462eea1c02f0e136ca *man/morphol.disparity.Rd
 00e77dd77ac4f29ace5334a4df4aa23e *man/mosquito.Rd
 01d9bcc023ca86c3e974f5cc628c88ac *man/mshape.Rd
@@ -68,6 +71,8 @@ b8a3ca222e5ef0e2470e1d5833dd7bb4 *man/plethspecies.Rd
 85bbe6b70e860a14116746ef4ecac51f *man/plot.evolrate.Rd
 2bb7dbd4a9e6455576b668cd7df86e98 *man/plot.gm.prcomp.Rd
 0116d21c6ae9389dc425aaca082fd67c *man/plot.gpagen.Rd
+96ca9dd050c92c0b446967c27614ff0d *man/plot.K.modules.Rd
+a56c5838afd523951ecebe4d011e34a0 *man/plot.module.eigen.Rd
 71208a14b679efbbaf55f8daba7a0ef3 *man/plot.mshape.Rd
 c243df60434118dddca6904f3d6de9b0 *man/plot.physignal.Rd
 48b605c1c9d9d90af398205f051e564a *man/plot.physignal.z.Rd
@@ -91,11 +96,14 @@ e54a53855f3a44b7d98a2e3802fad0cf *man/print.evolrate1.Rd
 5e2cbf01c34483fa25a8d809d746d6f1 *man/print.geomorphShapes.Rd
 b7e6c44a6550481ceb569b5bf0c94c89 *man/print.gm.prcomp.Rd
 5a1b43e6d504c8876fb2a8fff1f88a83 *man/print.gpagen.Rd
+66e7d9b7f9aa7cdb9c8cb5ebf9903ea2 *man/print.K.modules.Rd
+42685a16be7f4e5a391a6a7a1f03f843 *man/print.module.eigen.Rd
 05e172a5b2f3efa4de8f89af3da3d190 *man/print.morphol.disparity.Rd
 c099404c82877d5f4efc349589e2d21d *man/print.physignal.Rd
 9be5e235b52942e79e8e82202f506ea5 *man/print.physignal.z.Rd
 c9459503ec13f843f971edda31289dc6 *man/print.pls.Rd
 e186bde97e98a204b53457a14eb0a52d *man/print.procD.lm.Rd
+2f54dd98734bfa4292a53b60b33e7907 *man/print.summary.module.eigen.Rd
 416e29944c2b592932f5e86843cc1b7a *man/procD.lm.Rd
 c224022a7a1e469adc399ca906518486 *man/procD.pgls.Rd
 2e915d39d1b79932fb1633dbdcc28ce8 *man/pupfish.Rd
@@ -126,6 +134,8 @@ b855ab3d098d9c88761b8c74e60836c4 *man/summary.CR.phylo.Rd
 8991ad846347e197a872570f79f50313 *man/summary.geomorphShapes.Rd
 68dd4db00f079fea47218ea51e9dc8b6 *man/summary.gm.prcomp.Rd
 4650837bdbeb227d95c700d3cb00811a *man/summary.gpagen.Rd
+949b81be5c6ba1b7d8747a8fc192bdb5 *man/summary.K.modules.Rd
+c454aeae18c93b71a719d038593ab5ba *man/summary.module.eigen.Rd
 959f66c73c14ff74e2b3f3807d6ef6d7 *man/summary.morphol.disparity.Rd
 cebd4d3722633f6509a04c416d0a8fc9 *man/summary.physignal.Rd
 a129dcc4595b984842114893a2d7d14d *man/summary.physignal.z.Rd
@@ -136,7 +146,7 @@ e01d50f314a354e0a440204c773bb501 *man/two.b.pls.Rd
 d2755155772526527e4224b17d0dd05d *man/warpRefMesh.Rd
 7bea8d6b17918fd4889e2056ebe0e3d0 *man/warpRefOutline.Rd
 d9119f721918f22c267db843023a86fe *man/writeland.tps.Rd
-a55039218642f1f59fc828bb7ea5a77b *NAMESPACE
+b4c26b4ff9250fd99389f8efcc8e17a9 *NAMESPACE
 96564059b8879204cc479b259aa00d1f *NEWS.md
 e65d7da576d1eb0948aacecf1b235a68 *R/arrayspecs.r
 28a0cd88b6a7a020ff356227cbefe15d *R/bilat.symmetry.r
@@ -163,7 +173,7 @@ aac6a4f8a759473e8c37048e5c8e3d91 *R/findMeanSpec.r
 b792f75d1fb825423b03a8711c0120a4 *R/fixed.angle.r
 14c82d650f7cbbf5ef8786303b1e0373 *R/geomorph.data.frame.r
 366732ccb3642e48c952f6aca3defdaf *R/geomorph.support.code.r
-953dcad71b6847b19bd9468cbb48fe2e *R/geomorph.utils.r
+a295814e9e2d3fe2189aee2ff344dc2b *R/geomorph.utils.r
 d8571c8894e54b32c96c2ce94c6b7101 *R/globalIntegration.r
 b84647a2aec9b9c7d6ff3c326644268b *R/gm.measurement.error.R
 6dbacc3db3c0f57e8863d9847c8bd68e *R/gm.prcomp.R
@@ -172,8 +182,11 @@ c0852f88b9286461e0e485edcf982b9e *R/gpagen.r
 a51858fffd638931cb0aaa72bd9ae965 *R/integration.test.r
 88ce73a8fe2c27ef9dfb047bed2ec792 *R/integration.Vrel.r
 63ac4e6afda228b2706bab41800aeb3d *R/interlmkdist.r
+fe20e20917b01dc02e2d6150f2d562bf *R/K.modules.r
 ab4ed21f864d601552706e842de5148e *R/make_ggplot.r
 a154599cedb0b5548dcd575fa7532bfb *R/modularity.test.r
+d7fbf86449a0ac29ec98a7a2001295a6 *R/module.eigen.r
+7838ed223ab132f99bccf498ee4694d4 *R/module.map.r
 90ae393f3d55eaf0b1eab45915efde57 *R/morphol.disparity.r
 4a95e963db830d97e378c3fd4460d56a *R/phylo.integration.r
 5b3732663b03279af125011d51108032 *R/phylo.modularity.r
