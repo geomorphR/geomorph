@@ -23,7 +23,11 @@ An interactive function to define which landmarks should be linked to aid visual
 \details{
 Function takes a matrix of digitized landmark coordinates (e.g. from \code{\link{mshape}}) and 
 allows the user to define pairs of landmarks to be linked, for visualization purposes. The output is a matrix 
-to be used by \code{\link{plotAllSpecimens}} & \code{\link{plotRefToTarget}} option 'links='.  
+to be used by \code{\link{plotAllSpecimens}} & \code{\link{plotRefToTarget}} option 'links='. 
+
+Note to RStudio users: if the 'zoom' of your RStudio window is set to something other than 100%, 
+sometimes the function can fail to identify the selected points ('warning: no point within 0.25 inches').
+In these cases, set your zoom to 100%: Tools -> Global Options... -> Appearance -> Zoom: 100%.
  
  \subsection{Selection}{ 
  In the plot window select two landmarks that will be linked. In the console, the user will be prompted
