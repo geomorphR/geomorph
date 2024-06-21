@@ -25,7 +25,7 @@ b983ebd49aeb80a13233dc09f17a6bcd *man/compare.physignal.z.Rd
 945dc7c016ca94b85a255797531d804e *man/compare.pls.Rd
 b2f39236e4c7823d8a36d463990fa9aa *man/compare.ZVrel.Rd
 21c608e529e15dcd4a84f6ebbd715d3d *man/coords.subset.Rd
-0d498563880e759264bc10711c12bd9d *man/define.links.Rd
+bf6e75848a9f50b3b98437a0bfe2a9b9 *man/define.links.Rd
 5e4a1f95f2d9a287be21c8682aa10999 *man/define.modules.Rd
 94572be137b6e6f3b399876d57b3e724 *man/define.sliders.Rd
 37c4d5c587aed4eabd629f75f04e93ca *man/digit.curves.Rd
@@ -150,7 +150,7 @@ d487d69ccfb0e5184dbe98d5fb68b562 *R/compare.multi.evol.rates.r
 909ae5062f3e6259468bb65ede03edfe *R/compare.pls.r
 2bbaf5aabc3870855bbd4057e7aca11e *R/compare.ZVrel.R
 5aa5c09ae5b0e2f6c79faae776e88d98 *R/coords.subset.r
-05b48431b4af18c29a7e021696edcad8 *R/define.links.r
+001e1036e6f9223fbbc70c6d32b5e6e8 *R/define.links.r
 ecee919cccfe945774c4cec0f3e9840c *R/define.modules.r
 02be70c0d5ce51ef1ff180e06fe47141 *R/define.sliders.r
 50aead8860abb45f0bbf97a685e3cc1d *R/deprecated.defunct.r
