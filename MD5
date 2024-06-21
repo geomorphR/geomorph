@@ -17,12 +17,12 @@ d8e8360c03c03fe45d2100e9c05d4a89 *data/plethodon.rda
 548e5a1ff3c51bdc410a89fdbc208852 *man/bilat.symmetry.Rd
 2283e592cedab381703efc534d3fb126 *man/buildtemplate.Rd
 3569daf79fb40943723dbc1333892326 *man/combine.subsets.Rd
-3910e82cf0a0bb3fb1c7b7f8e0c3fcef *man/compare.CR.Rd
-ba9f45a02aa4d9c42a985676665b73c3 *man/compare.evol.rates.Rd
-eb7fc87f09b2ea938ac7970845003537 *man/compare.multi.evol.rates.Rd
-b983ebd49aeb80a13233dc09f17a6bcd *man/compare.physignal.z.Rd
-945dc7c016ca94b85a255797531d804e *man/compare.pls.Rd
-b2f39236e4c7823d8a36d463990fa9aa *man/compare.ZVrel.Rd
+c58c4fb6d6d660c11b4d718265bbf0a3 *man/compare.CR.Rd
+3a494aaf5fc106d17272044aee111466 *man/compare.evol.rates.Rd
+6aa4c41d2759bbe81e6d54c682b5709b *man/compare.multi.evol.rates.Rd
+ea30cb62354b5e026dce4b9f3cac7ff5 *man/compare.physignal.z.Rd
+f1844ac39a7caa33b66afb75058bda3b *man/compare.pls.Rd
+dbeb271f336d50eb65400006b8ceccd2 *man/compare.ZVrel.Rd
 21c608e529e15dcd4a84f6ebbd715d3d *man/coords.subset.Rd
 bf6e75848a9f50b3b98437a0bfe2a9b9 *man/define.links.Rd
 5e4a1f95f2d9a287be21c8682aa10999 *man/define.modules.Rd
@@ -146,7 +146,7 @@ e01d50f314a354e0a440204c773bb501 *man/two.b.pls.Rd
 d2755155772526527e4224b17d0dd05d *man/warpRefMesh.Rd
 7bea8d6b17918fd4889e2056ebe0e3d0 *man/warpRefOutline.Rd
 d9119f721918f22c267db843023a86fe *man/writeland.tps.Rd
-b4c26b4ff9250fd99389f8efcc8e17a9 *NAMESPACE
+a7fb2a31774a1c43a207fa4ca532bf40 *NAMESPACE
 96564059b8879204cc479b259aa00d1f *NEWS.md
 e65d7da576d1eb0948aacecf1b235a68 *R/arrayspecs.r
 28a0cd88b6a7a020ff356227cbefe15d *R/bilat.symmetry.r
@@ -220,7 +220,7 @@ ad572d6203f667d37641cee3adbc72b7 *R/writeland.tps.r
 c74a911cb0e86f68f556cbff5c5f213c *README.md
 0c7f793ce4a81cedc1dfec479f7dce1f *tests/testthat.R
 959f8d24e479ab86397f280092fbd7e1 *tests/testthat/Rplots.pdf
-11944c28e235aa40e4de531289d01ca1 *tests/testthat/test-geomorph.R
+8e418d68fba4f90ed3afab282544dcfb *tests/testthat/test-geomorph.R
 d3e5db710ad3bfca0e5be89edc91a2a9 *vignettes/figs/example_spec2.png
 e108112cb2dec057facffbf5571b92bf *vignettes/figs/example_template.png
 f0eeb0d08e88fe8475db103df58344db *vignettes/figs/fixed.3D.png
