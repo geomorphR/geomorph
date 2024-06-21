@@ -4,7 +4,7 @@
 \alias{compare.physignal.z}
 \title{Comparisons of Phylogenetic Signal Effect Sizes}
 \usage{
-\method{compare}{physignal.z}(..., two.tailed = TRUE)
+compare.physignal.z(..., two.tailed = TRUE)
 }
 \arguments{
 \item{...}{saved analyses of class physignal.z}
