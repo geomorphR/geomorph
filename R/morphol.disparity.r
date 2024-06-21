@@ -296,7 +296,7 @@ morphol.disparity <- function(f1, groups = NULL, partial = FALSE, transform = FA
     pv <- sapply(1:(iter + 1), function(j){
       step <- j
       if(print.progress) setTxtProgressBar(pb,step)
-      H %*% d[ind[[j]]]
+      as.matrix(H %*% d[ind[[j]]])
     })
     
     if(print.progress) close(pb)
