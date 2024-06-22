@@ -2169,7 +2169,6 @@ is.geomorph.data.frame <- function(x) inherits(x, "geomorph.data.frame")
 #####-----------------------------------------------------------------------------------
 
 ### geomorph-specific S3 for internal use (copies of base functions)
-
 droplevels.geomorph.data.frame <- function (x, except = NULL, ...) {
   ix <- vapply(x, is.factor, NA)
   if (!is.null(except))

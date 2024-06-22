@@ -479,7 +479,6 @@ fast.phy.vcv <- function (phy) {
 
 # reorder.phy
 # same as reorder function, but without options
-
 reorder.phy <- function(phy){
   edge <- phy$edge
   edge.length <- phy$edge.length

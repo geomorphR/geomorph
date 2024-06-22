@@ -536,7 +536,7 @@ print.physignal.z <- function(x, ...){
   
   if(is.na(x$Z)) {
     cat("The scaling parameter, lambda, was optimized at 0.")
-    cat("\nThis means that the log-likehood was invariant across permutations")
+    cat("\nThis means that the log-likelihood was invariant across permutations")
     cat("\nand there is no phylogenetic signal in the data.\n\n")
   } else {
     cat(paste("\nObserved phylogenetic signal effect size (Z):", round(x$Z, nchar(x$permutations))))

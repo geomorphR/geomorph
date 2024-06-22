@@ -559,18 +559,19 @@ test_that("physignal1.works", {
 
 ### physignal.z --------------------------------------------------------------
 
-#test_that("physignal.z1.works", {
-#  data(plethspecies) 
-#  Y.gpa <- gpagen(plethspecies$land)   
-#  succeed(PS.shape <- physignal.z(A = Y.gpa$coords, phy = plethspecies$phy, 
-#       lambda = "front", iter = 3))
-#  succeed(summary(PS.shape))
-#  succeed(PS.shape <- physignal.z(A = Y.gpa$coords, phy = plethspecies$phy, 
-#       lambda = "front", PAC.no = 7, iter = 3))
-#  succeed(summary(PS.shape))
-#  succeed(plot(PS.shape))
-#  succeed(plot(PS.shape$PACA, phylo = TRUE))
-#})
+test_that("physignal.z1.works", {
+  skip_on_cran()
+  data(plethspecies) 
+  Y.gpa <- gpagen(plethspecies$land)   
+  succeed(PS.shape <- physignal.z(A = Y.gpa$coords, phy = plethspecies$phy, 
+       lambda = "front", iter = 3))
+  succeed(summary(PS.shape))
+  succeed(PS.shape <- physignal.z(A = Y.gpa$coords, phy = plethspecies$phy, 
+       lambda = "front", PAC.no = 7, iter = 3))
+  succeed(summary(PS.shape))
+  succeed(plot(PS.shape))
+  succeed(plot(PS.shape$PACA, phylo = TRUE))
+})
 
 ### plotAllometry --------------------------------------------------------------
 
