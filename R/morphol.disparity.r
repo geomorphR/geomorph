@@ -211,6 +211,8 @@ morphol.disparity <- function(f1, groups = NULL, partial = FALSE, transform = FA
     if(k == 0) int.model <- TRUE else
       int.model = FALSE
     Pcov <- if(f1$LM$gls) f1$LM$Pcov else NULL
+    if(f1$LM$gls && is.null(f1$LM$Pcov) &&!is.null(f1$LM$Cov))
+      Pcov <- Cov.proj(f1$LM$Cov)
   }
   
   if(inherits(f1, "formula")) {
@@ -282,18 +284,19 @@ morphol.disparity <- function(f1, groups = NULL, partial = FALSE, transform = FA
     newDf <- data.frame(d = d, groups = groups)
     fit <- lm.rrpp(d ~ groups + 0, iter = 0, data = newDf, print.progress = FALSE,
                    seed = seed, ...)
-    Q <- fit$LM$QR
+    Q <- getModels(fit, "qr")
+    Q <- Q$full[[length(Q$full)]]
     if(transform){
       if(!is.null(Pcov)) {
-        Q <- qr(Pcov %*% fit$LM$X)
+        Q <- QRforX(Pcov %*% fit$LM$X, reduce = FALSE)
       }
     }
-    H <- tcrossprod(solve(qr.R(Q)), qr.Q(Q))
+    H <- tcrossprod(solve(Q$R), Q$Q)
     ind <- perm.index(N, iter, seed)
     pv <- sapply(1:(iter + 1), function(j){
       step <- j
       if(print.progress) setTxtProgressBar(pb,step)
-      H %*% d[ind[[j]]]
+      as.matrix(H %*% d[ind[[j]]])
     })
     
     if(print.progress) close(pb)

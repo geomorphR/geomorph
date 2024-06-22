@@ -536,7 +536,7 @@ print.physignal.z <- function(x, ...){
   
   if(is.na(x$Z)) {
     cat("The scaling parameter, lambda, was optimized at 0.")
-    cat("\nThis means that the log-likehood was invariant across permutations")
+    cat("\nThis means that the log-likelihood was invariant across permutations")
     cat("\nand there is no phylogenetic signal in the data.\n\n")
   } else {
     cat(paste("\nObserved phylogenetic signal effect size (Z):", round(x$Z, nchar(x$permutations))))
@@ -1014,14 +1014,14 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, flip = NULL, phylo = FALSE,
                            time.plot = FALSE, 
                            phylo.par = NULL, 
                            ...){
-  
+
   class(x) <- "ordinate"
   pcdata <- as.matrix(x$x[, c(axis1, axis2)])
   Pcov <- x$Pcov
   xx <- plot(x, axis1 = axis1, axis2 = axis2, flip = flip, ...)
   plot_args <- xx$plot_args
   if(!is.null(plot_args$axes)) axes <- plot_args$axes else axes <- TRUE
-  
+
   if(axes){
     abline(h = 0, lty=2)
     abline(v = 0, lty=2)
@@ -1041,12 +1041,12 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, flip = NULL, phylo = FALSE,
   if(phylo) {
     
     p.p <- list(tip.labels = TRUE, node.labels = TRUE, anc.states = TRUE,
-                node.bg = "grey", node.pch = 21, node.cex = 1,
-                edge.color = "black", edge.width = 1,
-                tip.txt.cex = 1, tip.txt.col = "black", 
-                tip.txt.adj = c(-0.1, -0.1),
-                node.txt.cex = 1, node.txt.col = "grey",
-                node.txt.adj = c(-0.1, -0.1))
+                            node.bg = "grey", node.pch = 21, node.cex = 1,
+                            edge.color = "black", edge.width = 1,
+                            tip.txt.cex = 1, tip.txt.col = "black", 
+                            tip.txt.adj = c(-0.1, -0.1),
+                            node.txt.cex = 1, node.txt.col = "grey",
+                            node.txt.adj = c(-0.1, -0.1))
     m.p <- match(names(phylo.par), names(p.p))
     if(any(is.na(m.p)))
       stop("Some of the arguments in phylo.pars are different than those that are possible (see Arguments).\n",

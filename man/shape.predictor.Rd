@@ -64,7 +64,7 @@ can be used with \code{\link{plotRefToTarget}} to generate graphical representat
  plotRefToTarget(M, preds$pred1)
  plotRefToTarget(M, preds$pred2)
 
-# PC <- PCA$x[,1:2]
+ PC <- PCA$x[,1:2]
 # user-picked spots can be anything, but it in this case, apparent groups
  preds <- shape.predictor(Y.gpa$coords, x = PC, Intercept = FALSE, 
                           pred1 = c(0.045,-0.02), 

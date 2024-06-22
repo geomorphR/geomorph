@@ -1,8 +1,12 @@
-# CHANGES IN GEOMORPH VERSION 4.0.7.999
+# CHANGES IN GEOMORPH VERSION 4.0.8
 
 ### NEW FEATURES
 
 * Improved `anc.BM`
+
+### OTHER CHANGES
+
+* Internal changes for compliance with RRPP and Matrix changes
 
 ### Bug fixes
 * Fixed issue with `integration.Vrel` and phylogeny checks
