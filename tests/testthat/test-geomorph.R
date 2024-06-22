@@ -8,7 +8,7 @@
 
 ##NOT EXAMINED
   # all interactive functions (define.links, etc.)
-  # make.ggplot
+  # make.ggplot; no 3D plots (RGL)
   # read and write data functions
 
 ### arrayspecs --------------------------------------------------------------
@@ -543,3 +543,156 @@ test_that("phylo.modularity1.works", {
   succeed(summary(MT))
   succeed(plot(MT)) 
 })
+
+### physignal --------------------------------------------------------------
+
+test_that("physignal1.works", {
+  data(plethspecies) 
+  Y.gpa <- gpagen(plethspecies$land)
+  succeed(PS.shape <- physignal(A = Y.gpa$coords, phy = plethspecies$phy,
+              iter = 3))
+  succeed(summary(PS.shape))
+  succeed((PS.shape))
+  succeed(plot(PS.shape$PACA, phylo = TRUE))
+  succeed(PS.shape$K.by.p) 
+})
+
+### physignal.z --------------------------------------------------------------
+
+#test_that("physignal.z1.works", {
+#  data(plethspecies) 
+#  Y.gpa <- gpagen(plethspecies$land)   
+#  succeed(PS.shape <- physignal.z(A = Y.gpa$coords, phy = plethspecies$phy, 
+#       lambda = "front", iter = 3))
+#  succeed(summary(PS.shape))
+#  succeed(PS.shape <- physignal.z(A = Y.gpa$coords, phy = plethspecies$phy, 
+#       lambda = "front", PAC.no = 7, iter = 3))
+#  succeed(summary(PS.shape))
+#  succeed(plot(PS.shape))
+#  succeed(plot(PS.shape$PACA, phylo = TRUE))
+#})
+
+### plotAllometry --------------------------------------------------------------
+
+test_that("plotAllemtry1.works", {
+  data(plethodon) 
+  Y.gpa <- gpagen(plethodon$land, print.progress = FALSE) 
+  gdf <- geomorph.data.frame(Y.gpa, site = plethodon$site, 
+    species = plethodon$species) 
+  fit <- procD.lm(coords ~ log(Csize), data = gdf, 
+    iter = 3, print.progress = FALSE)
+  succeed(plotAllometry(fit, size = gdf$Csize, logsz = TRUE, 
+    method = "PredLine", pch = 19))
+  logSize <- log(gdf$Csize)
+  succeed(plot(fit, type = "regression", reg.type = "PredLine", 
+    predictor = logSize, pch = 19))
+})
+
+test_that("plotAllemtry2.works", {
+  data(plethodon) 
+  Y.gpa <- gpagen(plethodon$land, print.progress = FALSE) 
+  gdf <- geomorph.data.frame(Y.gpa, site = plethodon$site, 
+                             species = plethodon$species) 
+  logSize <- log(gdf$Csize)
+  fit <- procD.lm(coords ~ log(Csize), data = gdf, 
+                  iter = 3, print.progress = FALSE)
+  succeed(plotAllometry(fit, size = gdf$Csize, logsz = TRUE, 
+    method = "RegScore", pch = 19))
+  succeed(plot(fit, type = "regression", reg.type = "RegScore", 
+    predictor = logSize, pch = 19))
+})
+
+test_that("plotAllemtry3.works", {
+  data(plethodon) 
+  Y.gpa <- gpagen(plethodon$land, print.progress = FALSE) 
+  gdf <- geomorph.data.frame(Y.gpa, site = plethodon$site, 
+                             species = plethodon$species) 
+  logSize <- log(gdf$Csize)
+  fit <- procD.lm(coords ~ log(Csize), data = gdf, 
+                  iter = 3, print.progress = FALSE)
+  succeed(plotAllometry(fit, size = gdf$Csize, logsz = TRUE, 
+    method = "CAC", pch = 19))
+  succeed(PLS <- two.b.pls(log(gdf$Csize), gdf$coords, iter = 3, 
+                           print.progress = FALSE))
+  succeed(plot(PLS))
+})
+
+test_that("plotAllemtry4.works", {
+  data(plethodon) 
+  Y.gpa <- gpagen(plethodon$land, print.progress = FALSE) 
+  gdf <- geomorph.data.frame(Y.gpa, site = plethodon$site, 
+                             species = plethodon$species) 
+  logSize <- log(gdf$Csize)
+  fit <- procD.lm(coords ~ Csize * species * site, data = gdf, 
+    iter = 3, print.progress = FALSE)
+  succeed(plotAllometry(fit, size = gdf$Csize, logsz = TRUE, method = "CAC", 
+    pch = 19))
+  succeed(plotAllometry(fit, size = gdf$Csize, logsz = TRUE, method = "PredLine", 
+    pch = 19, col = as.numeric(interaction(gdf$species, gdf$site))))
+  succeed(plotAllometry(fit, size = gdf$Csize, logsz = TRUE, method = "RegScore", 
+    pch = 19, col = as.numeric(interaction(gdf$species, gdf$site))))
+  succeed(pc.plot <- plotAllometry(fit, size = gdf$Csize, logsz = TRUE, 
+    method = "size.shape", pch = 19, 
+    col = as.numeric(interaction(gdf$species, gdf$site))))
+  succeed(summary(pc.plot$size.shape.PCA))
+})
+
+test_that("plotAllemtry5.works", {
+  data(plethodon) 
+  Y.gpa <- gpagen(plethodon$land, print.progress = FALSE) 
+  gdf <- geomorph.data.frame(Y.gpa, site = plethodon$site, 
+                             species = plethodon$species) 
+  fit3 <- procD.lm(coords ~ species, data = gdf, 
+    iter = 3, print.progress = FALSE)
+  succeed(plotAllometry(fit3, size = gdf$Csize, logsz = TRUE, method = "RegScore", 
+    pch = 19, col = as.numeric(gdf$species)))
+})
+
+### plotAllSpecimens --------------------------------------------------------------
+
+test_that("plotAllSpecimens1.works", {
+  data(plethodon) 
+  Y.gpa <- gpagen(plethodon$land)
+  succeed(plotAllSpecimens(Y.gpa$coords, links = plethodon$links))
+})
+
+### plotOutliers --------------------------------------------------------------
+
+test_that("plotOutliers1.works", {
+  data(plethodon)
+  newland <- plethodon$land
+  newland[c(1,8),,2] <- newland[c(8,1),,2]
+  newland[c(3,11),,26] <- newland[c(11,3),,2]
+  Y<- gpagen(newland) 
+  succeed(out <- plotOutliers(Y$coords))
+  succeed(plotOutliers(Y$coords, inspect.outliers = TRUE))
+  succeed(plotOutliers(Y$coords, groups = plethodon$species, 
+    inspect.outliers = TRUE))
+})
+
+### plotRefToTarget --------------------------------------------------------------
+
+test_that("plotRefToTarget1.works", {
+  data(plethodon) 
+  Y.gpa <- gpagen(plethodon$land)
+  ref <- mshape(Y.gpa$coords)
+  succeed(plotRefToTarget(ref, Y.gpa$coords[,,39]))
+  succeed(plotRefToTarget(ref, Y.gpa$coords[,,39], mag = 2, 
+    outline = plethodon$outline)) 
+})
+
+test_that("plotRefToTarget2.works", {
+  data(plethodon) 
+  Y.gpa <- gpagen(plethodon$land)
+  ref <- mshape(Y.gpa$coords)
+  succeed(plotRefToTarget(ref, Y.gpa$coords[,,39], method = "vector", mag = 3))
+  succeed(plotRefToTarget(ref, Y.gpa$coords[,,39], method = "points", 
+    outline = plethodon$outline))
+  succeed(plotRefToTarget(ref, Y.gpa$coords[,,39], method = "vector", 
+    outline = plethodon$outline, mag = 2.5))
+  succeed(plotRefToTarget(ref, Y.gpa$coords[,,39], 
+    gridPars = gridPar(pt.bg = "green", pt.size = 1),
+    method = "vector", mag = 3))
+})
+
+
