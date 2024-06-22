@@ -695,4 +695,293 @@ test_that("plotRefToTarget2.works", {
     method = "vector", mag = 3))
 })
 
+### procD.lm --------------------------------------------------------------
+
+test_that("procD.lm.example1.works", {
+  data(plethodon) 
+  Y.gpa <- gpagen(plethodon$land)
+  gdf <- geomorph.data.frame(Y.gpa, 
+                             site = plethodon$site, 
+                             species = plethodon$species) 
+  succeed(fit1 <- procD.lm(coords ~ species * site, 
+                           data = gdf, iter = 3, verbose = TRUE,
+                           RRPP = FALSE, print.progress = FALSE))
+  succeed(summary(fit1))
+})
+
+test_that("procD.lm.example2.works", {
+  data(plethodon) 
+  Y.gpa <- gpagen(plethodon$land)
+  gdf <- geomorph.data.frame(Y.gpa, 
+                             site = plethodon$site, 
+                             species = plethodon$species) 
+  succeed(fit2 <- procD.lm(coords ~ species * site, 
+                           data = gdf, iter = 3, verbose = TRUE,
+                           RRPP = TRUE, print.progress = FALSE))
+  succeed(summary(fit2))
+  succeed(coef(fit2))
+  succeed(coef(fit2, test = TRUE))
+  succeed(anova(fit2)) 
+  succeed(anova(fit2, effect.type = "Rsq"))
+  succeed(anova(fit2, error = c("species:site", "species:site", "Residuals")))
+})
+
+test_that("procD.lm.example3.works", {
+  data(plethodon) 
+  Y.gpa <- gpagen(plethodon$land)
+  gdf <- geomorph.data.frame(Y.gpa, 
+                             site = plethodon$site, 
+                             species = plethodon$species) 
+  succeed(fit.null <- procD.lm(coords ~ log(Csize) + species + site, data = gdf, 
+                               iter = 3, print.progress = FALSE, verbose = TRUE))
+  succeed(fit.full <- procD.lm(coords ~ log(Csize) + species * site, data = gdf, 
+                               iter = 3, print.progress = FALSE, verbose = TRUE))
+  succeed(anova(fit.null, fit.full, print.progress = FALSE))
+  succeed(gp <-  interaction(gdf$species, gdf$site))
+  succeed(PW <- pairwise(fit.full, groups = gp, covariate = NULL))
+  succeed(summary(PW, test.type = "dist", confidence = 0.95, stat.table = TRUE))
+  succeed(summary(PW, test.type = "dist", confidence = 0.95, stat.table = FALSE))
+  succeed(summary(PW, test.type = "var", confidence = 0.95, stat.table = TRUE))
+  succeed(summary(PW, test.type = "var", confidence = 0.95, stat.table = FALSE))
+  succeed(morphol.disparity(fit.full, groups = gp, iter = 3))
+})
+
+test_that("procD.lm.example4.works", {  
+  data(ratland)
+  rat.gpa<-gpagen(ratland)         
+  gdf <- geomorph.data.frame(rat.gpa)  
+  succeed(fit <- procD.lm(coords ~ Csize, data = gdf, iter = 3, verbose = TRUE,
+                          RRPP = TRUE, print.progress = FALSE))
+  succeed(summary(fit))
+  succeed(plot(fit, type = "diagnostics"))
+  succeed(plot(fit, type = "diagnostics", outliers = TRUE))
+  succeed(plot(fit, type = "PC", pch = 19, col = "blue"))
+  succeed(plot(fit, type = "regression", 
+               predictor = gdf$Csize, reg.type = "RegScore", 
+               pch = 19, col = "green"))
+  succeed(rat.plot <- plot(fit, type = "regression", 
+                           predictor = gdf$Csize, reg.type = "RegScore", 
+                           pch = 21, bg = "yellow"))
+  succeed(preds <- shape.predictor(fit$GM$fitted, x = rat.plot$RegScore, 
+                                   predmin = min(rat.plot$RegScore), 
+                                   predmax = max(rat.plot$RegScore)))
+  M <- rat.gpa$consensus
+  succeed(plotRefToTarget(M, preds$predmin, mag=2))
+  succeed(plotRefToTarget(M, preds$predmax, mag=2))
+})
+
+test_that("procD.lm.example5.works", {  
+  data("larvalMorph")
+  Y.gpa <- gpagen(larvalMorph$tailcoords, 
+                  curves = larvalMorph$tail.sliders,
+                  ProcD = TRUE, print.progress = FALSE)
+  gdf <- geomorph.data.frame(Y.gpa, treatment = larvalMorph$treatment, 
+                             family = larvalMorph$family)
+  succeed(fit <- procD.lm(coords ~ treatment/family, data = gdf, verbose = TRUE,
+                          print.progress = FALSE, iter = 3))
+  succeed(anova(fit))
+  succeed(anova(fit, error = c("treatment:family", "Residuals")))
+})
+
+
+### procD.pgls --------------------------------------------------------------
+
+test_that("procD.pgls.example1.works", {
+  data(plethspecies)
+  Y.gpa <- gpagen(plethspecies$land)
+  gdf <- geomorph.data.frame(Y.gpa, phy = plethspecies$phy)
+  succeed(pleth.pgls <- procD.pgls(coords ~ Csize, phy = phy, 
+        iter = 3, data = gdf))
+  succeed(anova(pleth.pgls))
+  succeed(summary(pleth.pgls))
+})
+
+test_that("procD.pgls.example2.works", {
+  data(plethspecies)
+  Y.gpa <- gpagen(plethspecies$land)
+  gdf <- geomorph.data.frame(Y.gpa, phy = plethspecies$phy)
+  pleth.pgls <- procD.pgls(coords ~ Csize, phy = phy, 
+                                   iter = 3, data = gdf)
+  succeed(predict(pleth.pgls))
+  succeed(plot(pleth.pgls, type = "regression", reg.type = "RegScore", 
+    predictor = gdf$Csize))
+  succeed(pleth.pgls$LM$Pcov)
+  succeed(pleth.pgls2 <- procD.pgls(coords ~ Csize, phy = phy, lambda = 0.5, 
+   iter = 3, data = gdf))
+  succeed(anova(pleth.pgls))
+  succeed(anova(pleth.pgls2))
+})
+
+### rotate.coords --------------------------------------------------------------
+
+test_that("rotate.coords1.works", {
+  data(plethodon)
+  Y.gpa <- gpagen(plethodon$land)
+  succeed(Y.gpa2 <- rotate.coords(Y.gpa, "flipX"))
+  succeed(plot(Y.gpa2))
+  succeed(Y.gpa3 <- rotate.coords(Y.gpa2, "rotateCC"))
+  succeed(plot(Y.gpa3))
+  spec1 <- Y.gpa$coords[,,1]
+  succeed(spec1 <- rotate.coords(spec1, "flipY"))
+})
+
+### shape.predictor --------------------------------------------------------------
+
+test_that("shape.predictor1.works", {
+  data("plethodon")
+  Y.gpa <- gpagen(plethodon$land)      
+  succeed(preds <- shape.predictor(Y.gpa$coords, x = NULL, Intercept = FALSE, 
+    pred1 = -0.1, pred2 = 0.1))
+  M <- mshape(Y.gpa$coords)
+  succeed(plotRefToTarget(M, preds$pred1))
+  succeed(plotRefToTarget(M, preds$pred2))
+})
+
+test_that("shape.predictor2.works", {
+  data("plethodon")
+  Y.gpa <- gpagen(plethodon$land)     
+  M <- mshape(Y.gpa$coords)
+  PCA <- gm.prcomp(Y.gpa$coords)
+  PC <- PCA$x[,1]
+  succeed(preds <- shape.predictor(Y.gpa$coords, x = PC, Intercept = FALSE, 
+    pred1 = min(PC), pred2 = max(PC)))
+  succeed(plotRefToTarget(M, preds$pred1))
+  succeed(plotRefToTarget(M, preds$pred2))
+  PC <- PCA$x[,1:2]
+  succeed(preds <- shape.predictor(Y.gpa$coords, x = PC, Intercept = FALSE, 
+    pred1 = c(0.045,-0.02),   pred2 = c(-0.025,0.06), pred3 = c(-0.06,-0.04))) 
+  succeed(plotRefToTarget(M, preds$pred1))
+  succeed(plotRefToTarget(M, preds$pred2))
+  succeed(plotRefToTarget(M, preds$pred3))
+})
+
+test_that("shape.predictor3.works", {
+  data("plethodon")
+  Y.gpa <- gpagen(plethodon$land)   
+  M <- mshape(Y.gpa$coords)
+  succeed(preds <- shape.predictor(Y.gpa$coords, x = log(Y.gpa$Csize), 
+    Intercept = TRUE,  predmin = min(log(Y.gpa$Csize)), 
+    predmax = max(log(Y.gpa$Csize)))) 
+  succeed(plotRefToTarget(M, preds$predmin, mag = 3))
+  succeed(plotRefToTarget(M, preds$predmax, mag = 3))
+})
+
+test_that("shape.predictor4.works", {
+  data("plethodon")
+  Y.gpa <- gpagen(plethodon$land) 
+  M <- mshape(Y.gpa$coords)
+  gdf <- geomorph.data.frame(Y.gpa)
+  plethAllometry <- procD.lm(coords ~ log(Csize), iter = 3, data = gdf)
+  allom.plot <- plot(plethAllometry, type = "regression", 
+    predictor = log(gdf$Csize), reg.type ="RegScore") 
+  succeed(preds <- shape.predictor(plethAllometry$GM$fitted, 
+      x = allom.plot$RegScore, Intercept = FALSE, 
+      predmin = min(allom.plot$RegScore), 
+      predmax = max(allom.plot$RegScore))) 
+  succeed(plotRefToTarget(M, preds$predmin, mag = 3))
+  succeed(plotRefToTarget(M, preds$predmax, mag = 3))
+  succeed(preds <- shape.predictor(plethAllometry$GM$fitted, 
+    x = allom.plot$PredLine, Intercept = FALSE, 
+    predmin = min(allom.plot$PredLine), 
+    predmax = max(allom.plot$PredLine))) 
+  succeed(plotRefToTarget(M, preds$predmin, mag = 3))
+  succeed(plotRefToTarget(M, preds$predmax, mag = 3))
+})
+
+test_that("shape.predictor5.works", {
+  data("plethodon")
+  Y.gpa <- gpagen(plethodon$land) 
+  M <- mshape(Y.gpa$coords)
+  gdf <- geomorph.data.frame(Y.gpa, species = plethodon$species, 
+            site = plethodon$site)
+  pleth <- procD.lm(coords ~ species * site, data=gdf, iter = 3)
+  PCA <- prcomp(pleth$fitted)
+  means <- unique(round(PCA$x, 3))
+  succeed(preds <- shape.predictor(arrayspecs(pleth$fitted, 12,2), x = PCA$x[,1:3],
+    Intercept = FALSE, pred1 = means[1,1:3],   pred2 = means[2,1:3],
+    pred3 = means[3,1:3],  pred4 = means[4,1:3]))                   
+  succeed(plotRefToTarget(M, preds$pred1, mag = 2))
+  succeed(plotRefToTarget(M, preds$pred2, mag = 2))
+  succeed(plotRefToTarget(M, preds$pred3, mag = 2))
+  succeed(plotRefToTarget(M, preds$pred4, mag = 2))
+})
+
+test_that("shape.predictor6.works", {
+  data("plethodon")
+  Y.gpa <- gpagen(plethodon$land) 
+  M <- mshape(Y.gpa$coords)
+  gdf <- geomorph.data.frame(Y.gpa, species = plethodon$species, 
+                             site = plethodon$site)
+  pleth <- procD.lm(coords ~ species * site, data=gdf, iter = 3)
+  X <- pleth$X
+  X <- X[,-1]
+  symJord <- c(0,1,0) 
+  alloJord <- c(0,0,0) 
+  succeed(preds <- shape.predictor(arrayspecs(pleth$fitted, 12,2), x = X, 
+    Intercept = TRUE, symJord=symJord, alloJord=alloJord))
+  succeed(plotRefToTarget(M, preds$symJord, mag = 2))
+  succeed(plotRefToTarget(M, preds$alloJord, mag = 2))
+})
+
+test_that("shape.predictor7.works", {
+  data(plethShapeFood) 
+  Y.gpa <- gpagen(plethShapeFood$land)
+  PLS <- two.b.pls(A1 = plethShapeFood$food, A2 = Y.gpa$coords, iter = 3) 
+  succeed(preds <- shape.predictor(Y.gpa$coords, plethShapeFood$food, 
+    Intercept = FALSE,  method = "PLS", 
+    pred1 = 2, pred2 = -4, pred3 = 2.5)) 
+  M <- mshape(Y.gpa$coords)
+  succeed(plotRefToTarget(M, preds$pred1, mag = 2))
+  succeed(plotRefToTarget(M, preds$pred2, mag = 2))
+  succeed(plotRefToTarget(M, preds$pred3, mag = 2))
+})
+
+### shapeHulls --------------------------------------------------------------
+
+test_that("shapeHulls1.works", {
+  data("pupfish")
+  gdf <- geomorph.data.frame(coords = pupfish$coords, Sex = pupfish$Sex,
+    Pop = pupfish$Pop)
+  fit <- procD.lm(coords ~ Pop * Sex, data = gdf, 
+      iter = 3, print.progress = FALSE)
+  succeed(pc.plot <- plot(fit, type = "PC", pch = 19))
+  succeed(shapeHulls(pc.plot))
+  succeed(pc.plot <- plot(fit, type = "PC", pch = 19))
+  groups <- interaction(gdf$Pop, gdf$Sex)
+  succeed(shapeHulls(pc.plot, groups = groups, 
+    group.cols = c("dark red", "dark red", "dark blue", "dark blue"),
+    group.lwd = rep(2, 4), group.lty = c(2, 1, 2, 1)))
+  succeed(pc.plot <- plot(fit, type = "PC", pch = 19))
+  succeed(shapeHulls(pc.plot, groups = gdf$Sex, group.cols = c("black", "black"), 
+    group.lwd = rep(2, 2), group.lty = c(2, 1)))
+})
+
+test_that("shapeHulls2.works", {
+  data(plethspecies) 
+  Y.gpa <- gpagen(plethspecies$land)    #GPA-alignment
+  pleth.phylo <- gm.prcomp(Y.gpa$coords, phy = plethspecies$phy)
+  summary(pleth.phylo)
+  succeed(pc.plot <- plot(pleth.phylo, phylo = TRUE))
+  gp <- factor(c(rep(1, 5), rep(2, 4)))
+  succeed(shapeHulls(pc.plot, groups = gp, group.cols = 1:2, 
+    group.lwd = rep(2, 2), group.lty = c(2, 1)))
+})
+
+### two.b.pls --------------------------------------------------------------
+
+test_that("two.b.pls1.works", {
+  data(plethShapeFood) 
+  Y.gpa <- gpagen(plethShapeFood$land)  
+  succeed(PLS <- two.b.pls(Y.gpa$coords, plethShapeFood$food, iter = 3))
+  succeed(summary(PLS))
+  succeed(P <- plot(PLS))
+})
+
+### two.d.array --------------------------------------------------------------
+
+test_that("two.d.array1.works", {
+  data(plethodon) 
+  succeed(two.d.array(plethodon$land))   
+})
+
 
