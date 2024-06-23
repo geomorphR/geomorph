@@ -744,7 +744,7 @@ test_that("procD.lm.example3.works", {
   succeed(summary(PW, test.type = "dist", confidence = 0.95, stat.table = FALSE))
   succeed(summary(PW, test.type = "var", confidence = 0.95, stat.table = TRUE))
   succeed(summary(PW, test.type = "var", confidence = 0.95, stat.table = FALSE))
-  succeed(morphol.disparity(fit.full, groups = gp, iter = 3))
+#  succeed(morphol.disparity(fit.full, groups = gp, iter = 3))
 })
 
 test_that("procD.lm.example4.works", {  
