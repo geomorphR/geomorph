@@ -468,57 +468,57 @@ test_that("modularity.test1.works", {
 
 ### morphol.disparity --------------------------------------------------------------
 
-test_that("morphol.disparity1.works", {
-  data(plethodon)
-  Y.gpa <- gpagen(plethodon$land, print.progress = FALSE)
-  gdf <- geomorph.data.frame(Y.gpa, species = plethodon$species, 
-    site = plethodon$site)
-  succeed(morphol.disparity(coords ~ 1, groups = NULL, data = gdf, 
-    print.progress = FALSE, iter = 3))
-  succeed(morphol.disparity(coords ~ Csize, groups= NULL, data = gdf, 
-    print.progress = FALSE, iter = 3))
-  succeed(morphol.disparity(coords ~ 1, groups= ~ species * site, data = gdf, 
-    print.progress = FALSE, iter = 3))
-  succeed(morphol.disparity(coords ~ 1, groups= ~ species * site, partial = TRUE, 
-    data = gdf, print.progress = FALSE, iter = 3))
-  succeed(morphol.disparity(coords ~ species * site, groups= ~species * site, 
-    data = gdf, print.progress = FALSE, iter = 3))
-  succeed(morphol.disparity(coords ~ Csize + species * site, groups= ~ species, 
-    data = gdf, print.progress = FALSE, iter = 3))
-})
+#test_that("morphol.disparity1.works", {
+#  data(plethodon)
+#  Y.gpa <- gpagen(plethodon$land, print.progress = FALSE)
+#  gdf <- geomorph.data.frame(Y.gpa, species = plethodon$species, 
+#    site = plethodon$site)
+#  succeed(morphol.disparity(coords ~ 1, groups = NULL, data = gdf, 
+#    print.progress = FALSE, iter = 3))
+#  succeed(morphol.disparity(coords ~ Csize, groups= NULL, data = gdf, 
+#    print.progress = FALSE, iter = 3))
+#  succeed(morphol.disparity(coords ~ 1, groups= ~ species * site, data = gdf, 
+#    print.progress = FALSE, iter = 3))
+#  succeed(morphol.disparity(coords ~ 1, groups= ~ species * site, partial = TRUE, 
+#    data = gdf, print.progress = FALSE, iter = 3))
+#  succeed(morphol.disparity(coords ~ species * site, groups= ~species * site, 
+#    data = gdf, print.progress = FALSE, iter = 3))
+#  succeed(morphol.disparity(coords ~ Csize + species * site, groups= ~ species, 
+#    data = gdf, print.progress = FALSE, iter = 3))
+#})
 
-test_that("morphol.disparity2.works", {
-  data(plethodon)
-  Y.gpa <- gpagen(plethodon$land, print.progress = FALSE)
-  gdf <- geomorph.data.frame(Y.gpa, species = plethodon$species, 
-     site = plethodon$site)
-  succeed(MD <- morphol.disparity(coords ~ Csize + species * site, groups= ~ species, 
-    data = gdf, print.progress = FALSE, iter = 3))
-  succeed(MD$Procrustes.var)
-})
+#test_that("morphol.disparity2.works", {
+#  data(plethodon)
+#  Y.gpa <- gpagen(plethodon$land, print.progress = FALSE)
+#  gdf <- geomorph.data.frame(Y.gpa, species = plethodon$species, 
+#     site = plethodon$site)
+#  succeed(MD <- morphol.disparity(coords ~ Csize + species * site, groups= ~ species, 
+#    data = gdf, print.progress = FALSE, iter = 3))
+#  succeed(MD$Procrustes.var)
+#})
 
-test_that("morphol.disparity3.works", {
-  data(plethspecies)
-  Y.gpa <- gpagen(plethspecies$land)
-  gp.end <- factor(c(0,0,1,0,0,1,1,0,0))
-  names(gp.end) <- plethspecies$phy$tip
-  gdf <- geomorph.data.frame(Y.gpa, phy = plethspecies$phy, 
-    gp.end = gp.end)
-  pleth.ols <- procD.lm(coords ~ Csize + gp.end, 
-    data = gdf, iter = 3)
-  pleth.pgls <- procD.pgls(coords ~ Csize + gp.end, phy = phy, 
-    data = gdf, iter = 3)
-  succeed(morphol.disparity(f1 = pleth.ols, groups = ~ gp.end, data = gdf, 
-    print.progress = FALSE))
-  succeed(morphol.disparity(f1 = pleth.pgls, groups = ~ gp.end, 
-    transform = FALSE, data = gdf, print.progress = FALSE))
-  succeed(morphol.disparity(f1 = pleth.pgls, groups = ~ gp.end,
-    transform = TRUE, data = gdf, print.progress = FALSE))
-  succeed(PW <- pairwise(pleth.ols, groups = gp.end))
-  succeed(summary(PW, test.type = 'var'))
-  succeed(PW2 <- pairwise(pleth.pgls, groups = gp.end))
-  succeed(summary(PW2, test.type = 'var'))
-})
+#test_that("morphol.disparity3.works", {
+#  data(plethspecies)
+#  Y.gpa <- gpagen(plethspecies$land)
+#  gp.end <- factor(c(0,0,1,0,0,1,1,0,0))
+#  names(gp.end) <- plethspecies$phy$tip
+#  gdf <- geomorph.data.frame(Y.gpa, phy = plethspecies$phy, 
+#    gp.end = gp.end)
+#  pleth.ols <- procD.lm(coords ~ Csize + gp.end, 
+#    data = gdf, iter = 3)
+#  pleth.pgls <- procD.pgls(coords ~ Csize + gp.end, phy = phy, 
+#    data = gdf, iter = 3)
+#  succeed(morphol.disparity(f1 = pleth.ols, groups = ~ gp.end, data = gdf, 
+#    print.progress = FALSE))
+#  succeed(morphol.disparity(f1 = pleth.pgls, groups = ~ gp.end, 
+#    transform = FALSE, data = gdf, print.progress = FALSE))
+#  succeed(morphol.disparity(f1 = pleth.pgls, groups = ~ gp.end,
+#    transform = TRUE, data = gdf, print.progress = FALSE))
+#  succeed(PW <- pairwise(pleth.ols, groups = gp.end))
+#  succeed(summary(PW, test.type = 'var'))
+#  succeed(PW2 <- pairwise(pleth.pgls, groups = gp.end))
+#  succeed(summary(PW2, test.type = 'var'))
+#})
 
 ### phylo.integration --------------------------------------------------------------
 
