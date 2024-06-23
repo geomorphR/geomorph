@@ -49,7 +49,7 @@ a598044482a6c3e39517b798b654c57e *man/hummingbirds.Rd
 5f36b63c679fc0b723679a769813c8cd *man/interlmkdist.Rd
 250260d69741416238284d376d952378 *man/larvalMorph.Rd
 073ec603983e6cd70eb01e40d5c091ec *man/lizards.Rd
-2ef05ff61252df7a60252948028bb6d5 *man/make_ggplot.Rd
+834a9623c164eb1bd3ea71457a21de54 *man/make_ggplot.Rd
 352eb346d8fd1a7e7cf0ca9e214c301b *man/modularity.test.Rd
 94a962a99b4b7a462eea1c02f0e136ca *man/morphol.disparity.Rd
 00e77dd77ac4f29ace5334a4df4aa23e *man/mosquito.Rd
@@ -174,7 +174,7 @@ c0852f88b9286461e0e485edcf982b9e *R/gpagen.r
 a51858fffd638931cb0aaa72bd9ae965 *R/integration.test.r
 88ce73a8fe2c27ef9dfb047bed2ec792 *R/integration.Vrel.r
 63ac4e6afda228b2706bab41800aeb3d *R/interlmkdist.r
-ab4ed21f864d601552706e842de5148e *R/make_ggplot.r
+ef8fb918a1f5822f41ae42b23d955c76 *R/make_ggplot.r
 a154599cedb0b5548dcd575fa7532bfb *R/modularity.test.r
 c97b6e9ed33ee6b57700e89702818c23 *R/morphol.disparity.r
 4a95e963db830d97e378c3fd4460d56a *R/phylo.integration.r
