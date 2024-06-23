@@ -22,7 +22,7 @@ to make a ggplot that can be additionally updated, as desired.  Not all plot
 characteristics might be converted.  Nonetheless, a ggplot will be coerced and could
 be updated, according to user preference.
 
-This function assumes no responsibility for arguments made by \code{\link{ggplot}}.
+This function assumes no responsibility for arguments made by \code{\link[ggplot2]{ggplot}}.
 It merely produces a ggplot object that should resemble a geomorph plot default.  Any 
 augmentation of ggplot objects can be done either by direct intervention of the ggplot 
 produced or reformatting the initial geomorph plot produced.  One should not expect direct

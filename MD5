@@ -49,7 +49,7 @@ a598044482a6c3e39517b798b654c57e *man/hummingbirds.Rd
 1ee4619628273c467e3ec045d2facc7d *man/K.modules.Rd
 250260d69741416238284d376d952378 *man/larvalMorph.Rd
 073ec603983e6cd70eb01e40d5c091ec *man/lizards.Rd
-2ef05ff61252df7a60252948028bb6d5 *man/make_ggplot.Rd
+834a9623c164eb1bd3ea71457a21de54 *man/make_ggplot.Rd
 352eb346d8fd1a7e7cf0ca9e214c301b *man/modularity.test.Rd
 03a7fff89481397e5fa589026b70538b *man/module.eigen.Rd
 da6adcc4c330dc1d5e6ffe3a98ec082a *man/module.map.Rd
@@ -183,7 +183,7 @@ a51858fffd638931cb0aaa72bd9ae965 *R/integration.test.r
 88ce73a8fe2c27ef9dfb047bed2ec792 *R/integration.Vrel.r
 63ac4e6afda228b2706bab41800aeb3d *R/interlmkdist.r
 fe20e20917b01dc02e2d6150f2d562bf *R/K.modules.r
-ab4ed21f864d601552706e842de5148e *R/make_ggplot.r
+ef8fb918a1f5822f41ae42b23d955c76 *R/make_ggplot.r
 a154599cedb0b5548dcd575fa7532bfb *R/modularity.test.r
 d7fbf86449a0ac29ec98a7a2001295a6 *R/module.eigen.r
 7838ed223ab132f99bccf498ee4694d4 *R/module.map.r
