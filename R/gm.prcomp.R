@@ -24,7 +24,7 @@
 #' Phylogenetic signal is strongest in the first few components of the OLS approach.  This analysis will make little sense with 
 #' GLS-centering and projection of transformed residuals, since phylogenetic signal is removed the transformed data.  
 #' See Collyer and Adams (2021) for more details. For greater flexibility for type of residuals and projection of trees, 
-#' use \code{\link{ordinate}}.  See Collyer and Adams (2021) for details.}
+#' use \code{\link[RRPP]{ordinate}}.  See Collyer and Adams (2021) for details.}
 #' }
 #' 
 #' \describe{
@@ -74,7 +74,7 @@
 #' @param transform A logical value to indicate if transformed residuals should be projected.  This is only applicable if 
 #' GLS = TRUE.  If TRUE, an orthogonal projection of transformed data is made; if FALSE an oblique projection of untransformed 
 #' data is made.
-#' @param ... Other arguments passed to \code{\link{ordinate}} and \code{\link{scale}}.  The most common
+#' @param ... Other arguments passed to \code{\link[RRPP]{ordinate}} and \code{\link{scale}}.  The most common
 #' arguments are scale., tol, and rank.
 #' @return An object of class "gm.prcomp" contains a list of results for each of the PCA approaches implemented.
 #' Each of these lists includes the following components:
@@ -89,7 +89,7 @@
 #' @keywords visualization
 #' @seealso \code{\link{plot.gm.prcomp}}
 #' @seealso \code{\link{picknplot.shape}}
-#' @seealso \code{\link{ordinate}}
+#' @seealso \code{\link[RRPP]{ordinate}}
 #' @references Collyer, M.L and D.C. Adams, 2021. Phylogenetically Aligned component analysis. 
 #' Methods in Ecology and Evolution, 12: 369-372.
 #' @references Revell, L. J. (2009). Size-correction and principal components for interspecific 

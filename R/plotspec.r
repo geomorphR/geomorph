@@ -10,11 +10,11 @@
 #' centered = "FALSE". The function assumes the fixed landmarks are listed at the beginning of
 #' the coordinate matrix (digitspec).
 #' 
-#' This function is a wrapper for several functions in the \code{\link{rgl-package}} package.  
-#' Although there is some allowance for arguments to be passed to \code{\link{rgl-package}} functions,
+#' This function is a wrapper for several functions in the \code{rgl} package.  
+#' Although there is some allowance for arguments to be passed to \code{rgl} functions,
 #' some override of rgl-plot3d arguments is required.  Errors that result from trying
 #' to pass rgl-plot3d or rgl-points3d arguments should inspire the user
-#' to find solutions with \code{\link{rgl-package}} core functions.
+#' to find solutions with \code{rgl} core functions.
 #'
 #' @param spec An object of class shape3d/mesh3d, or matrix of 3D vertex coordinates.
 #' @param digitspec Name of data matrix containing 3D fixed and/or surface sliding coordinates.
@@ -30,7 +30,7 @@
 #' @keywords visualization
 #' @seealso \code{\link{warpRefMesh}}
 #' @seealso \code{\link{read.ply}}
-#' @seealso \code{\link{rgl-package}} (used in 3D plotting)
+#' @seealso \code{rgl} (used in 3D plotting)
 #' @examples
 #' \dontrun{
 #' 

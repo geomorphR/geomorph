@@ -42,7 +42,8 @@ plotRefToTarget(
 
 \item{useRefPts}{An option (logical value) to use reference configuration points rather than target configuration points (when method = "TPS")}
 
-\item{...}{Additional parameters not covered by \code{\link{gridPar}} to be passed to \code{\link{plot}}, \code{\link{plot3d}} or \code{\link{shade3d}}}
+\item{...}{Additional parameters not covered by \code{\link{gridPar}} to be passed to \code{\link{plot}}, \code{\link[rgl]{plot3d}} 
+or \code{\link[rgl]{shade3d}}}
 }
 \value{
 If using method = "surface", function will return the warped mesh3d object.

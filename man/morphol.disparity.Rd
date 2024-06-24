@@ -105,7 +105,7 @@ calculate disparity.  The former characterizes the dispersion of actual shapes a
 by group.
 
 \subsection{Notes for geomorph 3.1.0 and subsequent versions}{ 
- The function \code{\link{pairwise}} in the \code{RRPP} package can also be used to evaluate morphological 
+ The function \code{\link[RRPP]{pairwise}} in the \code{RRPP} package can also be used to evaluate morphological 
  disparity, and will yield results identical to those of the current function. A simple example is shown below
  }
 }
