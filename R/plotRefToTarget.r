@@ -41,7 +41,8 @@
 #' @param axes A logical value indicating whether the box and axes should be plotted (points and vector only)
 #' @param gridPars An optional object made by \code{\link{gridPar}}
 #' @param useRefPts An option (logical value) to use reference configuration points rather than target configuration points (when method = "TPS")
-#' @param ... Additional parameters not covered by \code{\link{gridPar}} to be passed to \code{\link{plot}}, \code{\link{plot3d}} or \code{\link{shade3d}}
+#' @param ... Additional parameters not covered by \code{\link{gridPar}} to be passed to \code{\link{plot}}, \code{\link[rgl]{plot3d}} 
+#' or \code{\link[rgl]{shade3d}}
 #' @return If using method = "surface", function will return the warped mesh3d object.
 #' @keywords visualization
 #' @export

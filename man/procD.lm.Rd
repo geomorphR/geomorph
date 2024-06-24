@@ -46,7 +46,7 @@ coefficients and sums of squares and cross-products (see Adams and Collyer 2018)
 
 \item{turbo}{A logical value that if TRUE, suppresses coefficient estimation 
 in every random permutation.  This will affect subsequent analyses that 
-require random coefficients (see \code{\link{coef.lm.rrpp}})
+require random coefficients (see \code{\link[RRPP]{coef.lm.rrpp}})
 but might be useful for large data sets for which only ANOVA is needed.}
 
 \item{Parallel}{Either a logical value to indicate whether parallel processing 
@@ -61,7 +61,7 @@ but one core will always be spared.}
 \item{print.progress}{A logical value to indicate whether a progress bar should be printed to the screen.
 This is helpful for long-running analyses.}
 
-\item{...}{Arguments not listed above that can passed on to \code{\link{lm.rrpp}}, like weights, offset.}
+\item{...}{Arguments not listed above that can passed on to \code{\link[RRPP]{lm.rrpp}}, like weights, offset.}
 }
 \value{
 An object of class "procD.lm" is a list containing the following
@@ -151,14 +151,14 @@ The function quantifies the relative amount of shape variation attributable to o
   than mean-centered values. 
   
  \subsection{Notes for geomorph 3.1.0 and subsequent versions}{ 
- The procD.lm function is now a wrapper for the \code{\link{lm.rrpp}} function
+ The procD.lm function is now a wrapper for the \code{\link[RRPP]{lm.rrpp}} function
  in the \code{RRPP} package.  Examples below illustrate how to utilize
  \code{RRPP} functions along with \code{geomorph} functions for procD.lm objects,
  increasing the breadth of possible downstream analyses.  
  
  An important update in version 3.1.0 is that advanced.procD.lm and nested.update have been deprecated.  
- The examples emphasize how pairwise comparisons can now be accomplished with \code{\link{pairwise}} and
- ANOVA updates for nested factors can be made with the \code{\link{anova.lm.rrpp}}, utilizing the error argument.
+ The examples emphasize how pairwise comparisons can now be accomplished with \code{\link[RRPP]{pairwise}} and
+ ANOVA updates for nested factors can be made with the \code{\link[RRPP]{anova.lm.rrpp}}, utilizing the error argument.
  These functions work on procD.lm objects that have already been created.
 }
 
@@ -331,7 +331,7 @@ recommendations. Systematic Biology. 67:14-31.
 }
 \seealso{
 \code{\link{procD.pgls}} and 
-\code{\link{lm.rrpp}} for more on linear model fits with RRPP. See \code{\link{RRPP-package}} for further
+\code{\link[RRPP]{lm.rrpp}} for more on linear model fits with RRPP. See \code{RRPP} for further
 details on functions that can use procD.lm objects.
 }
 \author{

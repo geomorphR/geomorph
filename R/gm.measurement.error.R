@@ -54,22 +54,22 @@
 #' @param tol A value indicating the magnitude below which 
 #' components should be omitted., if use.PCs is TRUE. (Components are omitted if their 
 #' standard deviations are less than or equal to tol times the 
-#' standard deviation of the first component.)  See \code{\link{ordinate}} for more details.
-#' @param Parallel The same argument as in \code{\link{lm.rrpp}} to govern parallel processing (
-#' either a logical vale -- TRUE or FALSE -- or the number of threaded cores to use).  See \code{\link{lm.rrpp}} 
+#' standard deviation of the first component.)  See \code{\link[RRPP]{ordinate}} for more details.
+#' @param Parallel The same argument as in \code{\link[RRPP]{lm.rrpp}} to govern parallel processing (
+#' either a logical vale -- TRUE or FALSE -- or the number of threaded cores to use).  See \code{\link[RRPP]{lm.rrpp}} 
 #' for additional details.
 #' @param turbo Logical value for whether to suppress coefficient estimation in RRPP iteration,
 #' thus turbo-charging RRPP.
 #' @param print.progress A logical value to indicate whether a progress 
 #' bar should be printed to the screen.
 #' @param verbose A logical value to indicate if all the output from an
-#' \code{\link{lm.rrpp}} analysis should be retained.  If FALSE, only the needed
+#' \code{\link[RRPP]{lm.rrpp}} analysis should be retained.  If FALSE, only the needed
 #' output for summaries and plotting is retained.
 #' @export
 #' @keywords analysis
 #' @author Michael Collyer and Dean Adams
 #' @return Objects of class "measurement.error" return the same objects
-#' as a \code{\link{lm.rrpp}} fit, plus a list of the following:
+#' as a \code{\link[RRPP]{lm.rrpp}} fit, plus a list of the following:
 #'  \item{AOV}{Analysis of variance to test for systematic error, based on dispersion of values.}
 #'  \item{mAOV}{Multivariate AOV based on product of the inverse of the random component (SSCP) of ME
 #'  times the systematic component of ME.}
@@ -85,7 +85,7 @@
 #' @references Bookstein, F.L., & Mitteroecker, P. (2014). Comparing covariance matrices by relative eigenanalysis, 
 #' with applications to organismal biology. Evolutionary biology, 41(2), 336-350.
 
-#' @seealso \code{\link{lm.rrpp.ws}}, \code{\link{manova.update}}
+#' @seealso \code{\link[RRPP]{lm.rrpp.ws}}, \code{\link[RRPP]{manova.update}}
 
 #' @examples
 #' \dontrun{

@@ -27,7 +27,7 @@ Alternatively, this can be an n x p matrix of any data, but output will not cont
 GLS = TRUE.  If TRUE, an orthogonal projection of transformed data is made; if FALSE an oblique projection of untransformed 
 data is made.}
 
-\item{...}{Other arguments passed to \code{\link{ordinate}} and \code{\link{scale}}.  The most common
+\item{...}{Other arguments passed to \code{\link[RRPP]{ordinate}} and \code{\link{scale}}.  The most common
 arguments are scale., tol, and rank.}
 }
 \value{
@@ -67,7 +67,7 @@ signal rather than axis of greatest dispersion.  This analysis can use either OL
 Phylogenetic signal is strongest in the first few components of the OLS approach.  This analysis will make little sense with 
 GLS-centering and projection of transformed residuals, since phylogenetic signal is removed the transformed data.  
 See Collyer and Adams (2021) for more details. For greater flexibility for type of residuals and projection of trees, 
-use \code{\link{ordinate}}.  See Collyer and Adams (2021) for details.}
+use \code{\link[RRPP]{ordinate}}.  See Collyer and Adams (2021) for details.}
 }
 
 \describe{
@@ -194,7 +194,7 @@ comparative studies. Evolution, 63: 3258-3268.
 
 \code{\link{picknplot.shape}}
 
-\code{\link{ordinate}}
+\code{\link[RRPP]{ordinate}}
 }
 \author{
 Antigoni Kaliontzopoulou, Michael Collyer, & Dean Adams

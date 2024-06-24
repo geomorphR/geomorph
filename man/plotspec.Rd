@@ -46,11 +46,11 @@ Therefore use this function with centered = "TRUE". Data collected outside geomo
 centered = "FALSE". The function assumes the fixed landmarks are listed at the beginning of
 the coordinate matrix (digitspec).
 
-This function is a wrapper for several functions in the \code{\link{rgl-package}} package.  
-Although there is some allowance for arguments to be passed to \code{\link{rgl-package}} functions,
+This function is a wrapper for several functions in the \code{rgl} package.  
+Although there is some allowance for arguments to be passed to \code{rgl} functions,
 some override of rgl-plot3d arguments is required.  Errors that result from trying
 to pass rgl-plot3d or rgl-points3d arguments should inspire the user
-to find solutions with \code{\link{rgl-package}} core functions.
+to find solutions with \code{rgl} core functions.
 }
 \examples{
 \dontrun{
@@ -68,7 +68,7 @@ to find solutions with \code{\link{rgl-package}} core functions.
 
 \code{\link{read.ply}}
 
-\code{\link{rgl-package}} (used in 3D plotting)
+\code{rgl} (used in 3D plotting)
 }
 \author{
 Erik Otarola-Castillo, Emma Sherratt, Antigoni Kaliontzopoulou, & Michael Collyer

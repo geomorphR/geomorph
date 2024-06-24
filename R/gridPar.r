@@ -24,15 +24,15 @@
 #' @param grid.col The color of grid lines (single value)
 #' @param grid.lwd Scale factor for the weight of grid lines (single numerical value)
 #' @param grid.lty The line type for grid lines (single numerical value, as in base R \code{\link{plot}})
-#' @param txt.adj The adjustment value of the landmark label (one or two values, as in base R \code{\link{text}} and \code{\link{text3d}}) 
-#' @param txt.pos The position of the landmark label, overrides txt.adj (single numerical value, as in base R \code{\link{text}} and \code{\link{text3d}}) 
-#' @param txt.cex The size of the landmark label text (single numerical value, as in base R \code{\link{text}} and \code{\link{text3d}})
-#' @param txt.col The color of the landmark label text (single numerical value, as in base R \code{\link{text}} and \code{\link{text3d}})
+#' @param txt.adj The adjustment value of the landmark label (one or two values, as in base R \code{\link{text}} and \code{\link[rgl]{text3d}}) 
+#' @param txt.pos The position of the landmark label, overrides txt.adj (single numerical value, as in base R \code{\link{text}} and \code{\link[rgl]{text3d}}) 
+#' @param txt.cex The size of the landmark label text (single numerical value, as in base R \code{\link{text}} and \code{\link[rgl]{text3d}})
+#' @param txt.col The color of the landmark label text (single numerical value, as in base R \code{\link{text}} and \code{\link[rgl]{text3d}})
 #' @keywords utilities
 #' @keywords visualization
 #' @export
 #' @author Michael Collyer & Emma Sherratt
-#' @seealso  \code{\link{plotRefToTarget}}, \code{\link{text}}, \code{\link{text3d}} 
+#' @seealso  \code{\link{plotRefToTarget}}, \code{\link{text}}, \code{\link[rgl]{text3d}} 
 #' @examples
 #' \dontrun{
 #' data(plethodon) 

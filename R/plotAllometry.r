@@ -7,7 +7,7 @@
 #' when procD.allometry was launched with geomorph 3.0.0, which performed homogeneity of slopes tests to determine
 #' if a common allometry or unique group allometries were more appropriate as a model.  The S3 generic, plot.procD.allometry
 #' provided the same plotting as plotAllometry before it.  In geomorph 3.1.0, procD.allometry has been deprecated in favor of using
-#' \code{\link{procD.lm}} and \code{\link{pairwise}} for analyses, which can include additional variables, 
+#' \code{\link{procD.lm}} and \code{\link[RRPP]{pairwise}} for analyses, which can include additional variables, 
 #' thus eliminating plot.procD.allometry.  This function coalesces a few plotting options found in other functions, 
 #' as a wrapper, for the purpose of retaining the plot.procD.allometry options in one place.  
 #' 
@@ -38,8 +38,8 @@
 #' unique allometries: shape ~ size * groups
 #' 
 #' However, other covariates can be added to these models.  One could define these models with \code{\link{procD.lm}}
-#' and use \code{\link{anova.lm.rrpp}} to explicitly test which model
-#' is most appropriate.  The function, \code{\link{pairwise}} can also be used to test pairwise differences among least-squares means or slopes.
+#' and use \code{\link[RRPP]{anova.lm.rrpp}} to explicitly test which model
+#' is most appropriate.  The function, \code{\link[RRPP]{pairwise}} can also be used to test pairwise differences among least-squares means or slopes.
 #' To visualize different allometric patterns, wither prediction lines (PredLine; Adams and Nistri 2010) or regression scores 
 #' (RegScore; Drake and Klingenberg 2008) can be used.  The former plots first PCs of fitted values against size; the latter calculates a regression score
 #' as a projection of data on normalized vector that expresses the covariation between shape and the regression coefficients for size, conditioned

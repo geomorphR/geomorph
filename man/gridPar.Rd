@@ -66,13 +66,13 @@ gridPar(
 
 \item{grid.lty}{The line type for grid lines (single numerical value, as in base R \code{\link{plot}})}
 
-\item{txt.adj}{The adjustment value of the landmark label (one or two values, as in base R \code{\link{text}} and \code{\link{text3d}})}
+\item{txt.adj}{The adjustment value of the landmark label (one or two values, as in base R \code{\link{text}} and \code{\link[rgl]{text3d}})}
 
-\item{txt.pos}{The position of the landmark label, overrides txt.adj (single numerical value, as in base R \code{\link{text}} and \code{\link{text3d}})}
+\item{txt.pos}{The position of the landmark label, overrides txt.adj (single numerical value, as in base R \code{\link{text}} and \code{\link[rgl]{text3d}})}
 
-\item{txt.cex}{The size of the landmark label text (single numerical value, as in base R \code{\link{text}} and \code{\link{text3d}})}
+\item{txt.cex}{The size of the landmark label text (single numerical value, as in base R \code{\link{text}} and \code{\link[rgl]{text3d}})}
 
-\item{txt.col}{The color of the landmark label text (single numerical value, as in base R \code{\link{text}} and \code{\link{text3d}})}
+\item{txt.col}{The color of the landmark label text (single numerical value, as in base R \code{\link{text}} and \code{\link[rgl]{text3d}})}
 }
 \description{
 Function produces a list of parameter changes within \code{\link{plotRefToTarget}}.
@@ -117,7 +117,7 @@ method = "vector", label = TRUE)
 }
 }
 \seealso{
-\code{\link{plotRefToTarget}}, \code{\link{text}}, \code{\link{text3d}}
+\code{\link{plotRefToTarget}}, \code{\link{text}}, \code{\link[rgl]{text3d}}
 }
 \author{
 Michael Collyer & Emma Sherratt

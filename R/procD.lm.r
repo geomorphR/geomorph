@@ -56,14 +56,14 @@
 #'   than mean-centered values. 
 #'   
 #'  \subsection{Notes for geomorph 3.1.0 and subsequent versions}{ 
-#'  The procD.lm function is now a wrapper for the \code{\link{lm.rrpp}} function
+#'  The procD.lm function is now a wrapper for the \code{\link[RRPP]{lm.rrpp}} function
 #'  in the \code{RRPP} package.  Examples below illustrate how to utilize
 #'  \code{RRPP} functions along with \code{geomorph} functions for procD.lm objects,
 #'  increasing the breadth of possible downstream analyses.  
 #'  
 #'  An important update in version 3.1.0 is that advanced.procD.lm and nested.update have been deprecated.  
-#'  The examples emphasize how pairwise comparisons can now be accomplished with \code{\link{pairwise}} and
-#'  ANOVA updates for nested factors can be made with the \code{\link{anova.lm.rrpp}}, utilizing the error argument.
+#'  The examples emphasize how pairwise comparisons can now be accomplished with \code{\link[RRPP]{pairwise}} and
+#'  ANOVA updates for nested factors can be made with the \code{\link[RRPP]{anova.lm.rrpp}}, utilizing the error argument.
 #'  These functions work on procD.lm objects that have already been created.
 #' }
 #' 
@@ -87,7 +87,7 @@
 #' @param iter Number of iterations for significance testing
 #' @param turbo A logical value that if TRUE, suppresses coefficient estimation 
 #' in every random permutation.  This will affect subsequent analyses that 
-#' require random coefficients (see \code{\link{coef.lm.rrpp}})
+#' require random coefficients (see \code{\link[RRPP]{coef.lm.rrpp}})
 #' but might be useful for large data sets for which only ANOVA is needed.
 #' @param seed An optional argument for setting the seed for random permutations of the resampling procedure.  
 #' If left NULL (the default), the exact same P-values will be found for repeated runs of the analysis (with the same number of iterations).
@@ -111,7 +111,7 @@
 #' If TRUE, this argument invokes forking of all processor cores, except one.  If
 #' FALSE, only one core is used. A numeric value directs the number of cores to use,
 #' but one core will always be spared.
-#' @param ... Arguments not listed above that can passed on to \code{\link{lm.rrpp}}, like weights, offset.
+#' @param ... Arguments not listed above that can passed on to \code{\link[RRPP]{lm.rrpp}}, like weights, offset.
 #' @keywords analysis
 #' @export
 #' @author Dean Adams and Michael Collyer
@@ -156,7 +156,7 @@
 #' @references Adams, D.C. and M.L. Collyer. 2018. Multivariate comparative methods: evaluations, comparisons, and
 #' recommendations. Systematic Biology. 67:14-31.
 #' @seealso \code{\link{procD.pgls}} and 
-#' \code{\link{lm.rrpp}} for more on linear model fits with RRPP. See \code{\link{RRPP-package}} for further
+#' \code{\link[RRPP]{lm.rrpp}} for more on linear model fits with RRPP. See \code{RRPP} for further
 #' details on functions that can use procD.lm objects.
 #' @examples
 #' \dontrun{
