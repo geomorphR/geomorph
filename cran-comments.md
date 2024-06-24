@@ -22,5 +22,5 @@ This caused geomorph to not install on this platform. This seems to be internal 
 
 ## Downstream dependencies
 I checked 9 reverse dependencies:
-OK: 9
+OK: 9 
 BROKEN: 0
