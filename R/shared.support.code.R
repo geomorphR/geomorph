@@ -544,8 +544,10 @@ ace.pics <- function(ntip, nnode, edge1, edge2, edge_len, phe, contr,
 # uses Ho and Ane (2014) algorithm
 
 anc.BM <- function(phy, Y){
+  phy <- reorder.phy(phy)
   Y <- as.matrix(Y)
   N <- length(phy$tip.label)
+  Y <- Y[phy$tip.label, ]
   edge <- cbind(phy$edge, phy$edge.length)
   ind <-rank(edge[,1], ties.method = "last")
   edge <- edge[order(ind, decreasing = TRUE), ]
