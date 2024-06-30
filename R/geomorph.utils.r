@@ -1728,3 +1728,120 @@ plot.K.modules <- function(x, modules = 1:6,
   }
   
 }
+
+## physignal.eigen
+#' Plot Function for geomorph
+#' 
+#' @param x plot object (from \code{\link{physignal.eigen}})
+#' @param type the manner in which the distribution of permuted outcomes is represented:
+#' confidence bands (type = "conf"), vectors (type = "vectors"), or both (type = "both")
+#' @param ... other arguments passed to plot
+#' @method plot physignal.eigen
+#' @export
+#' @author Michael Collyer and Dean Adams
+#' @keywords utilities
+#' @keywords visualization
+plot.physignal.eigen <- function(x, type = c("conf", "vectors", "both"), 
+                                 confidence = 0.95, ...){
+  
+  type <- try(match.arg(type), silent = TRUE)
+  if(inherits(type, "try-error")) type <- "both"
+  
+  test <- !is.null(x$rand.eigen.values)
+  
+  if(test)
+    neigs <- NROW(x$rand.eigen.values) else
+      neigs <- length(x$eig.ob$values)
+  
+  alpha = (1 - confidence) / 2
+  ucl = 1 - alpha
+  lcl = alpha
+  
+  if(test) {
+    
+    UCL <- apply(x$rand.eigen.values, 1, function(y) quantile(y, ucl))
+    LCL <- apply(x$rand.eigen.values, 1, function(y) quantile(y, lcl))
+    
+  }
+  
+  plot.args <- list(...)
+  plot.args$x <- 1:neigs
+  plot.args$y <- rep(max(c(UCL, x$rand.eigen.values)), neigs)
+  if(is.null(plot.args$xlab))
+    plot.args$xlab <- "PC"
+  if(is.null(plot.args$ylab))
+    plot.args$ylab <- "Eigenvalue"
+  plot.args$type <- "n"
+  if(is.null(plot.args$ylim))
+    plot.args$ylim <- c(0, max(plot.args$y))
+  do.call(plot, plot.args)
+  
+  
+  if(test) {
+    
+    if(type == "vectors" || type == "both"){
+      
+      for(i in 1:NCOL(x$rand.eigen.values))
+        points(x$rand.eigen.values[, i],
+               type = "l", col = gray(0.8, alpha = 0.3), lwd = 0.5)
+    }
+    
+    if(type == "conf" || type == "both"){
+      polygon.args <- list()
+      polygon.args$x <- c(1:neigs, neigs:1)
+      polygon.args$y <- c(LCL, UCL[length(UCL):1])
+      polygon.args$col = rgb(1, 0, 0, alpha = 0.2)
+      polygon.args$border = FALSE
+      do.call(polygon, polygon.args)
+      
+    } 
+    
+  }
+  
+  points(x$eig.ob$values, type = "l", lty = 1, lwd = 2,
+         ...)
+  
+}
+
+## physignal.eigen 
+
+#' Print/Summary Function for geomorph
+#' 
+#' @param x print/summary object (from \code{\link{physignal.eigen}})
+#' @param ... other arguments passed to print/summary
+#' @method print physignal.eigen
+#' @export
+#' @author Dean Adams
+#' @keywords utilities
+
+print.physignal.eigen <- function(x, ...){
+
+  cat(paste("\nObserved Phylogenetic Signal (traceK):", round(x$traceK.obs, nchar(x$permutations))))
+  cat(paste("\nObserved Effect Size (Z-traceK):", round(x$Z.traceK, nchar(x$permutations))))
+  cat(paste("\nP-value (traceK):", round(x$p.traceK, nchar(x$permutations))))
+  
+  cat(paste("\n\nObserved Phylogenetic Signal (detK):", round(x$detK.obs, nchar(x$permutations))))
+  cat(paste("\nObserved Effect Size (Z-detK):", round(x$Z.detK, nchar(x$permutations))))
+  cat(paste("\nP-value (detK):", round(x$p.detK, nchar(x$permutations))))
+  
+  cat(paste("\n\nObserved Phylogenetic Signal (Kmult):", round(x$Kmult.obs, nchar(x$permutations))))
+  cat(paste("\nObserved Effect Size (Z-Kmult):", round(x$Z.Kmult, nchar(x$permutations))))
+  cat(paste("\nP-value (Kmult):", round(x$p.Kmult, nchar(x$permutations))))
+  
+  cat(paste("\n\nBased on", x$permutations, "random permutations"))
+  invisible(x)
+}
+
+#' Print/Summary Function for geomorph
+#' 
+#' @param object print/summary object (from \code{\link{physignal.eigen}})
+#' @param ... other arguments passed to print/summary
+#' @method summary physignal.eigen
+#' @export
+#' @author Dean Adams
+#' @keywords utilities
+ 
+summary.physignal.eigen <- function(object, ...) {
+  x <- object
+  print.physignal.eigen(x,...)
+}

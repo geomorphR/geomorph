@@ -1,5 +1,9 @@
 # CHANGES IN GEOMORPH VERSION 4.0.8.999
 
+### NEW FEATURES
+
+* New function `physignal.eigen` for evaluating the dimensions of phylogenetic signal in multivariate data
+
 ### BUG FIXES
 + Fixed the missing re-order of data for `anc.BM`.
 
