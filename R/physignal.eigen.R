@@ -26,13 +26,15 @@
 #' 
 #' Importantly, because detK and traceK are based on the covariance matrix K, singularity can become
 #' an issue. In particular, geometric morphometric shape data will not be of full rank, as several 
-#' dimensions are standardized during the Generalized Procrustes Analysis. For this reason, a principal 
-#' components analysis of the data is performed, and the redundant dimensions are removed so that detK 
-#' and traceK may be computed. The user has the ability to manipulate the percentage of variation that is 
-#' retained for the analysis using the 'cut.off' parameter (see also Mitteroecker et al. 2024). 
+#' dimensions are standardized during the Generalized Procrustes Analysis (one may also have fewer 
+#' observations than variables, which will also generate redundancies). For this reason, a 
+#' principal components analysis of the data is performed, and the redundant dimensions are 
+#' removed so that detK and traceK may be computed (see Mitteroecker et al. 2024). Additionally, if 
+#' n< (p X k), the last nontrivial PC dimension is also removed, as in this case, using 100% of the 
+#' variation results in invariant K-statistics across permutations. 
 #'   
 #' The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{physignal.eigen}}.
-#'  
+#'   
 #' @param Y A matrix (n x [p x k]) or 3D array (p x k x n) containing Procrustes shape variables for a 
 #' set of specimens (it is assumed that the data have been subjected to a Generalized Procrustes Analysis)
 #' @param phy A phylogenetic tree of class = "phylo" - see \code{\link[ape]{read.tree}} in library ape
@@ -44,9 +46,6 @@
 #' parameter lambda)
 #' @param test A logical value to indicate whether significance testing should be performed 
 #' @param iter Number of iterations for significance testing
-#' @param cut.off A value indicating the percentage of variation below which 
-#' components should be omitted. The default is 0.025, meaning that 97.5\% percent of the variation 
-#' is retained, and the last 2.5\% is omitted. 
 #' @param seed An optional argument for setting the seed for random permutations of the resampling procedure.  
 #' If left NULL (the default), the exact same P-values will be found for repeated runs of the analysis (with the same number of iterations).
 #' If seed = "random", a random seed will be used, and P-values will vary.  One can also specify an integer for specific seed values,
@@ -95,8 +94,7 @@ physignal.eigen <- function(Y, phy = NULL, Cov = NULL,
                    Blomberg = FALSE,
                    unit.tree = TRUE,
                    lambda = 1, test = TRUE,
-                   iter = 999, seed = NULL,
-                   cut.off = 0.025){
+                   iter = 999, seed = NULL){
 
   if (length(dim(Y)) == 3){ 
     if(is.null(dimnames(Y)[[3]]))
@@ -111,13 +109,11 @@ physignal.eigen <- function(Y, phy = NULL, Cov = NULL,
   Y <- center(as.matrix(Y))
   n <- NROW(Y)
   p <- ncol(Y)
-  
-  #reduce dimensionality 
-  PCA <- ordinate(Y, tol = 0, rank. = p)
-  PCA.perc <- cumsum(PCA$sdev)/sum(PCA$sdev)
-  retain <- which(PCA.perc <= (1 - cut.off))
-  Y <- PCA$x[,retain]
-  
+  tol = 1e-7
+  PCA <- ordinate(Y, tol = tol, rank. = p)
+  Y <- PCA$x
+  if(n<p){Y <- Y[,-ncol(Y)]}
+
   if(is.null(phy) && is.null(Cov))
     stop("Either a tree or covariance matrix is needed.\n",
          call. = FALSE)

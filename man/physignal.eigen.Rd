@@ -13,8 +13,7 @@ physignal.eigen(
   lambda = 1,
   test = TRUE,
   iter = 999,
-  seed = NULL,
-  cut.off = 0.025
+  seed = NULL
 )
 }
 \arguments{
@@ -41,10 +40,6 @@ parameter lambda)}
 If left NULL (the default), the exact same P-values will be found for repeated runs of the analysis (with the same number of iterations).
 If seed = "random", a random seed will be used, and P-values will vary.  One can also specify an integer for specific seed values,
 which might be of interest for advanced users.}
-
-\item{cut.off}{A value indicating the percentage of variation below which 
-components should be omitted. The default is 0.025, meaning that 97.5\% percent of the variation 
-is retained, and the last 2.5\% is omitted.}
 }
 \value{
 Function returns a list with the following components: 
@@ -93,10 +88,12 @@ obtained with this function will be identical to that obtained when using \code{
 
 Importantly, because detK and traceK are based on the covariance matrix K, singularity can become
 an issue. In particular, geometric morphometric shape data will not be of full rank, as several 
-dimensions are standardized during the Generalized Procrustes Analysis. For this reason, a principal 
-components analysis of the data is performed, and the redundant dimensions are removed so that detK 
-and traceK may be computed. The user has the ability to manipulate the percentage of variation that is 
-retained for the analysis using the 'cut.off' parameter (see also Mitteroecker et al. 2024). 
+dimensions are standardized during the Generalized Procrustes Analysis (one may also have fewer 
+observations than variables, which will also generate redundancies). For this reason, a 
+principal components analysis of the data is performed, and the redundant dimensions are 
+removed so that detK and traceK may be computed (see Mitteroecker et al. 2024). Additionally, if 
+n< (p X k), the last nontrivial PC dimension is also removed, as in this case, using 100% of the 
+variation results in invariant K-statistics across permutations. 
   
 The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{physignal.eigen}}.
 }
