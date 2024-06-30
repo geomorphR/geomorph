@@ -46,6 +46,9 @@
 #' parameter lambda)
 #' @param test A logical value to indicate whether significance testing should be performed 
 #' @param iter Number of iterations for significance testing
+#' @param tol A value indicating the magnitude below which 
+#' components should be omitted, following projection.  See \code{\link[RRPP]{ordinate}} 
+#' for details.
 #' @param seed An optional argument for setting the seed for random permutations of the resampling procedure.  
 #' If left NULL (the default), the exact same P-values will be found for repeated runs of the analysis (with the same number of iterations).
 #' If seed = "random", a random seed will be used, and P-values will vary.  One can also specify an integer for specific seed values,
@@ -94,8 +97,11 @@ physignal.eigen <- function(Y, phy = NULL, Cov = NULL,
                    Blomberg = FALSE,
                    unit.tree = TRUE,
                    lambda = 1, test = TRUE,
-                   iter = 999, seed = NULL){
+                   iter = 999, seed = NULL,
+                   tol = 0.001){
 
+  if(tol < 0.001) {tol = 0.001}
+  
   if (length(dim(Y)) == 3){ 
     if(is.null(dimnames(Y)[[3]]))
       stop("Data array does not include taxa names as dimnames for 3rd dimension.\n", call. = FALSE)  
@@ -108,9 +114,7 @@ physignal.eigen <- function(Y, phy = NULL, Cov = NULL,
   }
   Y <- center(as.matrix(Y))
   n <- NROW(Y)
-  p <- ncol(Y)
-  tol = 1e-7
-  PCA <- ordinate(Y, tol = tol, rank. = p)
+  PCA <- ordinate(Y, tol = tol)
   Y <- PCA$x
   if(n<p){Y <- Y[,-ncol(Y)]}
 
