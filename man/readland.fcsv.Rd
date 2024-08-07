@@ -21,6 +21,6 @@ Read landmark data for a single specimen from an fcsv file obtained from SlicerM
 This function merely extracts x, y, z coordinates from an fcsv file.
 }
 \author{
-Murat Maga and Michael Collyer
+Murat Maga, Michael Collyer and Dean Adams
 }
 \keyword{IO}
