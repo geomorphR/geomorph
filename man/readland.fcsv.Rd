@@ -16,9 +16,8 @@ Function returns a p x 3 matrix of x, y, z coordinates for p landmarks.
 
 Note: to read in multiple files the following is useful:
 
-filelist <- list.files(path = "PATH TO FOLDER with FILES", pattern = "*.fcsv", 
-             full.names = TRUE)
-mydata <- simplify2array(lapply(fcsv_files, readland.fcsv))
+# filelist <- list.files(path = "PATH TO FOLDER with FILES", pattern = "*.fcsv", full.names = TRUE)
+# mydata <- simplify2array(lapply(filelist, readland.fcsv))
 }
 \description{
 Read landmark data for a single specimen from an fcsv file obtained from SlicerMorph.
