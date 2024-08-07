@@ -113,7 +113,7 @@ c224022a7a1e469adc399ca906518486 *man/procD.pgls.Rd
 24203f2fe7e9af73e10becb83f54f937 *man/ratland.Rd
 ecab6392d46a77ea8fd4b351d563d923 *man/read.morphologika.Rd
 2d9fefd5516bc6806d59c6813143844e *man/read.ply.Rd
-61ca378470c4ec95c1c4a1290413d21f *man/readland.fcsv.Rd
+58168a9dd3a9a81b1779d8eb1d13973a *man/readland.fcsv.Rd
 8c448b44dd91968e4e47544ecbff0fb4 *man/readland.nts.Rd
 0ed125749888a7d7914c59891d970c89 *man/readland.shapes.Rd
 e268bdaf2ef10f2027709e5f9ab2518b *man/readland.tps.Rd
@@ -207,7 +207,7 @@ dae329c741f1469944e4ab78afa391c4 *R/plotRefToTarget.r
 07e17dc5088caf1ab5a4df9f876fdfc3 *R/procD.pgls.r
 bfa404039b5ed71dd1093bb596a56621 *R/read.morphologika.r
 d1577995a99d09e16df5f4b9c8106791 *R/read.ply.r
-4cdf61b1f88f12a574a3911993f16609 *R/readland.fcsv.r
+4638015521fd561d58c0dcb9fcae3a49 *R/readland.fcsv.r
 568eb3bd0490ab2d721016f422420c17 *R/readland.nts.r
 8139a7d8f4b18d87e558df14b3c509aa *R/readland.shapes.r
 16833bcc4848769b2142e0c14c8d0e0a *R/readland.tps.r
