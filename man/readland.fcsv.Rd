@@ -4,12 +4,10 @@
 \alias{readland.fcsv}
 \title{Read landmark data matrix from fcsv file}
 \usage{
-readland.fcsv(file = NULL, header_no = 3)
+readland.fcsv(file = NULL)
 }
 \arguments{
 \item{file}{The name of a *.fcsv file containing three-dimensional landmark data to be read in}
-
-\item{header_no}{The number of header lines in the fscv file, needed for knowing these lines are not data.}
 }
 \value{
 Function returns a p x 3 matrix of x, y, z coordinates for p landmarks.

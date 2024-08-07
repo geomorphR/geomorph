@@ -5,7 +5,6 @@
 #' This function merely extracts x, y, z coordinates from an fcsv file.  
 #'
 #' @param file The name of a *.fcsv file containing three-dimensional landmark data to be read in
-#' @param header_no The number of header lines in the fscv file, needed for knowing these lines are not data.
 #' @keywords IO
 #' @export
 #' @author Murat Maga, Michael Collyer and Dean Adams
@@ -17,7 +16,7 @@
 #'
 #' mydata <- simplify2array(lapply(filelist, readland.fcsv))
 
-readland.fcsv = function (file = NULL, header_no = 3)  {
+readland.fcsv = function (file = NULL)  {
   testfile <- scan(file=file, what="char", quote="", sep="\n", strip.white=TRUE, comment.char="\"", quiet=TRUE)
   header_no <- length(grep("#", testfile))
   res <- read.csv(file = file, skip = header_no, header = F)[, 1:4]
