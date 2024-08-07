@@ -10,6 +10,12 @@
 #' @export
 #' @author Murat Maga, Michael Collyer and Dean Adams
 #' @return Function returns a p x 3 matrix of x, y, z coordinates for p landmarks.
+#' 
+#' Note: to read in multiple files the following is useful:
+#' 
+#' filelist <- list.files(path = "PATH TO FOLDER with FILES", pattern = "*.fcsv", 
+#'              full.names = TRUE)
+#' mydata <- simplify2array(lapply(fcsv_files, readland.fcsv))
 
 readland.fcsv = function (file = NULL, header_no = 3)  {
   testfile <- scan(file=file, what="char", quote="", sep="\n", strip.white=TRUE, comment.char="\"", quiet=TRUE)
