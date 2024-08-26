@@ -39,7 +39,7 @@ a6a3aaf17db71b32e910548cb49c55f4 *man/geomorph-package.Rd
 8db657c75b1254dbd47c5627084f078d *man/geomorph.data.frame.Rd
 b8463bd3f2a6f85d2a0ddb1540597d0e *man/globalIntegration.Rd
 061d751d923bcc0ea0259e194e2ae064 *man/gm.measurement.error.Rd
-76932272d439bbeaf30c4ff758e5e7dc *man/gm.prcomp.Rd
+904b67a0270cce88566d5cb1acc3a240 *man/gm.prcomp.Rd
 9c6d1ff03066fde316c9cf43c50a14db *man/gpagen.Rd
 1a955f652ea3933d16b955c37126550b *man/gridPar.Rd
 a598044482a6c3e39517b798b654c57e *man/hummingbirds.Rd
@@ -151,7 +151,7 @@ d2755155772526527e4224b17d0dd05d *man/warpRefMesh.Rd
 7bea8d6b17918fd4889e2056ebe0e3d0 *man/warpRefOutline.Rd
 d9119f721918f22c267db843023a86fe *man/writeland.tps.Rd
 290d182f51df4a22d1ff4ebcab086e9a *NAMESPACE
-8997d63a01ed3d2b27da72a253e11498 *NEWS.md
+de64c59d7246c833ea550dd7f9f471a7 *NEWS.md
 e65d7da576d1eb0948aacecf1b235a68 *R/arrayspecs.r
 28a0cd88b6a7a020ff356227cbefe15d *R/bilat.symmetry.r
 2adab339b3d8b4daa0357786ac812dd1 *R/build.template.r
@@ -180,7 +180,7 @@ e040f02b971f9c622b4360ffaac6b49a *R/geomorph.support.code.r
 3f52ca378d0971719cc2dd79156fc3fa *R/geomorph.utils.r
 d8571c8894e54b32c96c2ce94c6b7101 *R/globalIntegration.r
 5893e8490458593e78a0d7473ef0b881 *R/gm.measurement.error.R
-d6ef890cd443256c90b058681f78896f *R/gm.prcomp.R
+a0b4ba98f28aeffebbbe6a5a45e1fc94 *R/gm.prcomp.R
 c0852f88b9286461e0e485edcf982b9e *R/gpagen.r
 a1b1f9c8d92a53ef74f5c653ad5b2746 *R/gridPar.r
 a51858fffd638931cb0aaa72bd9ae965 *R/integration.test.r

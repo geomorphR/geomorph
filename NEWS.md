@@ -3,6 +3,7 @@
 ### NEW FEATURES
 
 * New function `physignal.eigen` for evaluating the dimensions of phylogenetic signal in multivariate data
+* Added an option to `gm.prcomp` to allow the phylogeny to be scaled to unit length
 
 ### BUG FIXES
 + Fixed the missing re-order of data for `anc.BM`.

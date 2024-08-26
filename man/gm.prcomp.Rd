@@ -8,6 +8,7 @@ gm.prcomp(
   A,
   phy = NULL,
   align.to.phy = FALSE,
+  unit.tree = TRUE,
   GLS = FALSE,
   transform = FALSE,
   ...
@@ -20,6 +21,8 @@ Alternatively, this can be an n x p matrix of any data, but output will not cont
 \item{phy}{An optional phylogenetic tree of class phylo}
 
 \item{align.to.phy}{An optional argument for whether \bold{PaCA} (if TRUE) should be performed}
+
+\item{unit.tree}{An optional argument for whether (if TRUE) the phylogeny should be scaled to unit length}
 
 \item{GLS}{Whether GLS-centering and covariance estimation should be used (rather than OLS).}
 
