@@ -248,10 +248,15 @@ gm.prcomp <- function (A, phy = NULL, align.to.phy = FALSE,
   if(!is.null(k)) {
     
     out$A <- A
+    
     out$shapes <- lapply(1:ncol(out$x),  
                          function(x){shape.predictor(A, out$x[,x], 
                                                      min = min(out$x[,x]),
                                                      max = max(out$x[,x]))})
+    
+    out$shapes <- lapply(out$shapes, function(x){
+      lapply(x, function(j) cs.scale(j))})
+
     names(out$shapes) <- paste("shapes.comp", 1:length(out$d), sep = "")
   }
 

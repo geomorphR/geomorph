@@ -6,7 +6,8 @@
 * Added an option to `gm.prcomp` to allow the phylogeny to be scaled to unit length
 
 ### BUG FIXES
-+ Fixed the missing re-order of data for `anc.BM`.
+* Ensured proper size-scaling of predicted shapes in `gm.prcomp`
+* Fixed the missing re-order of data for `anc.BM`.
 
 # CHANGES IN GEOMORPH VERSION 4.0.8
 
