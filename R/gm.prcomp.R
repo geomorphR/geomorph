@@ -70,6 +70,7 @@
 #' Alternatively, this can be an n x p matrix of any data, but output will not contain information about shapes.
 #' @param phy An optional phylogenetic tree of class phylo 
 #' @param align.to.phy An optional argument for whether \bold{PaCA} (if TRUE) should be performed
+#' @param unit.tree An optional argument for whether (if TRUE) the phylogeny should be scaled to unit length
 #' @param GLS Whether GLS-centering and covariance estimation should be used (rather than OLS).
 #' @param transform A logical value to indicate if transformed residuals should be projected.  This is only applicable if 
 #' GLS = TRUE.  If TRUE, an orthogonal projection of transformed data is made; if FALSE an oblique projection of untransformed 
@@ -169,7 +170,7 @@
 #'  }
 
 gm.prcomp <- function (A, phy = NULL, align.to.phy = FALSE,
-                       GLS = FALSE, transform = FALSE, ...) {
+                       unit.tree = TRUE, GLS = FALSE, transform = FALSE, ...) {
   
   if(is.array(A)) {
   
@@ -222,6 +223,17 @@ gm.prcomp <- function (A, phy = NULL, align.to.phy = FALSE,
     }
     phy.mat <- phylo.mat(Y, phy)
     C <- phy.mat$C
+    Cov.nms <- rownames(C)
+    if(unit.tree) {
+      if(length(unique(diag(C))) == 1)
+        C <- C <- C / C[1,1] else {
+          D <- diag(1 / sqrt(diag(C)))
+          Cov <- D %*% C %*% D
+          D <- NULL
+        }
+      dimnames(C) <- list(Cov.nms, Cov.nms)
+    }
+    
     if(align.to.phy) ord.args$A <- C
     if(GLS) ord.args$Cov <- C
 
@@ -236,10 +248,15 @@ gm.prcomp <- function (A, phy = NULL, align.to.phy = FALSE,
   if(!is.null(k)) {
     
     out$A <- A
+    
     out$shapes <- lapply(1:ncol(out$x),  
                          function(x){shape.predictor(A, out$x[,x], 
                                                      min = min(out$x[,x]),
                                                      max = max(out$x[,x]))})
+    
+    out$shapes <- lapply(out$shapes, function(x){
+      lapply(x, function(j) cs.scale(j))})
+
     names(out$shapes) <- paste("shapes.comp", 1:length(out$d), sep = "")
   }
 
