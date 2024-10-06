@@ -292,7 +292,8 @@ morphol.disparity <- function(f1, groups = NULL, partial = FALSE, transform = FA
       }
     }
     H <- tcrossprod(solve(Q$R), Q$Q)
-    ind <- perm.index(N, iter, seed)
+    block <- list(...)$block
+    ind <- perm.index(N, iter = iter, block = block, seed = seed)
     pv <- sapply(1:(iter + 1), function(j){
       step <- j
       if(print.progress) setTxtProgressBar(pb,step)

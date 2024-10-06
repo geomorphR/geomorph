@@ -6,6 +6,8 @@
 * Added an option to `gm.prcomp` to allow the phylogeny to be scaled to unit length
 
 ### BUG FIXES
+
+* Fixed missing argument in `perm.index` within `morphol.disparity`.
 * Ensured proper size-scaling of predicted shapes in `gm.prcomp`
 * Fixed the missing re-order of data for `anc.BM`.
 
