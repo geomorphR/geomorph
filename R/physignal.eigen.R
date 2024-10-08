@@ -114,15 +114,16 @@ physignal.eigen <- function(Y, phy = NULL, Cov = NULL,
   }
   Y <- center(as.matrix(Y))
   n <- NROW(Y)
+  p <- ncol(Y)
   PCA <- ordinate(Y, tol = tol)
   Y <- PCA$x
-  if(n<p){Y <- Y[,-ncol(Y)]}
+  if(n<p && Blomberg == FALSE){Y <- Y[,-ncol(Y)]}
 
   if(is.null(phy) && is.null(Cov))
     stop("Either a tree or covariance matrix is needed.\n",
          call. = FALSE)
   if(is.null(Cov))
-    Cov <- vcv(phy)
+    Cov <- RRPP:::fast.phy.vcv(phy)
   Cov.nms <- rownames(Cov)
   if(unit.tree) {
     if(length(unique(diag(Cov))) == 1)
