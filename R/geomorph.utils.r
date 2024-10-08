@@ -1816,15 +1816,15 @@ plot.physignal.eigen <- function(x, type = c("conf", "vectors", "both"),
 
 print.physignal.eigen <- function(x, ...){
 
-  cat(paste("\nObserved Phylogenetic Signal (traceK):", round(x$traceK.obs, nchar(x$permutations))))
+  cat(paste("\nObserved Phylogenetic Signal (traceK):", x$traceK.obs))
   cat(paste("\nObserved Effect Size (Z-traceK):", round(x$Z.traceK, nchar(x$permutations))))
   cat(paste("\nP-value (traceK):", round(x$p.traceK, nchar(x$permutations))))
   
-  cat(paste("\n\nObserved Phylogenetic Signal (detK):", round(x$detK.obs, nchar(x$permutations))))
+  cat(paste("\n\nObserved Phylogenetic Signal (detK):", x$detK.obs))
   cat(paste("\nObserved Effect Size (Z-detK):", round(x$Z.detK, nchar(x$permutations))))
   cat(paste("\nP-value (detK):", round(x$p.detK, nchar(x$permutations))))
   
-  cat(paste("\n\nObserved Phylogenetic Signal (Kmult):", round(x$Kmult.obs, nchar(x$permutations))))
+  cat(paste("\n\nObserved Phylogenetic Signal (Kmult):", x$Kmult.obs))
   cat(paste("\nObserved Effect Size (Z-Kmult):", round(x$Z.Kmult, nchar(x$permutations))))
   cat(paste("\nP-value (Kmult):", round(x$p.Kmult, nchar(x$permutations))))
   
