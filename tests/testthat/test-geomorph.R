@@ -985,4 +985,13 @@ test_that("two.d.array1.works", {
   succeed(two.d.array(plethodon$land))   
 })
 
+### physignal.eigen --------------------------------------------------------------
+
+test_that("physignal.eigen.works", {
+  data(plethspecies) 
+  Y.gpa <- gpagen(plethspecies$land)
+  succeed(PSe.shape <- physignal.eigen(Y = Y.gpa$coords, phy = plethspecies$phy))
+  succeed(summary(PSe.shape))
+  succeed(plot(PSe.shape))
+})
 

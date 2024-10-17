@@ -225,7 +225,7 @@ ce64f40b8badacea0852af718e718355 *R/warpRefOutline.r
 ad572d6203f667d37641cee3adbc72b7 *R/writeland.tps.r
 c74a911cb0e86f68f556cbff5c5f213c *README.md
 0c7f793ce4a81cedc1dfec479f7dce1f *tests/testthat.R
-8fcf835144a9cad277eb8ce1739d935f *tests/testthat/test-geomorph.R
+0a1e88d1e52640e8160a9b92413122ea *tests/testthat/test-geomorph.R
 d3e5db710ad3bfca0e5be89edc91a2a9 *vignettes/figs/example_spec2.png
 e108112cb2dec057facffbf5571b92bf *vignettes/figs/example_template.png
 f0eeb0d08e88fe8475db103df58344db *vignettes/figs/fixed.3D.png
