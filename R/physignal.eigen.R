@@ -76,7 +76,7 @@
 #'   \item{call}{The matched call}
 #'   
 #' @references Mitteroecker, P., M.L. Collyer, and D.C. Adams. 2024. Exploring phylogenetic signal in 
-#' multivariate phenotypes by maximizing Blomberg's K. Systematic Biology. (Accepted).
+#' multivariate phenotypes by maximizing Blomberg's K. Systematic Biology. (In Press).
 #' @references Blomberg SP, Garland T, Ives AR. 2003. Testing for phylogenetic signal in comparative 
 #' data: behavioral traits are more labile. Evolution, 57:717-745.
 #' @references Adams, D.C. 2014. A generalized K statistic for estimating phylogenetic signal from shape and 
