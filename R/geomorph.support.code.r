@@ -162,12 +162,13 @@ NULL
 #' @docType data
 #' @author Dean Adams and Michael Collyer
 #' @keywords datasets
-#' @description Landmark data from pupfish body shapes, with indication of Sex, Poplulation and
-#' Species from which fish were sampled. A phylogeny and phylogenetic covariance matrix are
+#' @description Landmark data from pupfish body shapes, with indication of Sex, Population and
+#' Species from which fish were sampled. Landmarks represent a subset of those from the 
+#' original publication. A phylogeny and phylogenetic covariance matrix are
 #' included. 
 #' @details These data were previously aligned
 #' with GPA.  Centroid size (CS) is also provided.
-#' @references dams, D.C and M.L Collyer. 2024. Extending phylogenetic regression models for 
+#' @references Adams, D.C and M.L Collyer. 2024. Extending phylogenetic regression models for 
 #' comparing within-species patterns across the tree of life. 
 #' Methods in Ecology and Evolution. DOI: 10.1111/2041-210X.14438
 NULL
