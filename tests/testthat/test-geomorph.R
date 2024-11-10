@@ -995,3 +995,20 @@ test_that("physignal.eigen.works", {
   succeed(plot(PSe.shape))
 })
 
+### extended.pgls --------------------------------------------------------------
+
+test_that("physignal.eigen.works", {
+  data(pupfish.ws) 
+  succeed(fit <- extended.pgls(f1 = coords~Species * Sex + Population, 
+                               data = pupfish.ws, subjects = "Species",
+                               phy = pupfish.ws$phy))
+  succeed(anova(fit)$table)
+  succeed(fit.mult <- manova.update(fit, PC.no = 40))
+  succeed(summary(fit.mult, test = "Wilks"))
+  succeed(fit2 <- extended.pgls(f1 = coords ~ Species * Sex + Population, 
+                                data = pupfish.ws, subjects = "Species",
+                                Cov = pupfish.ws$Cov))
+  succeed(anova(fit2)$table)
+  succeed(fit2.mult <- manova.update(fit2, PC.no = 40))
+  succeed(summary(fit2.mult, test = "Wilks"))
+})

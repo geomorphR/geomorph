@@ -9,6 +9,7 @@ gm.measurement.error(
   subjects,
   replicates,
   groups = NULL,
+  groups.first = FALSE,
   data,
   iter = 999,
   seed = NULL,
@@ -35,6 +36,10 @@ The length of the vector must equal the number of observations and will be coerc
 This would be of interest if one were concerned with systematic ME occurring perhaps differently among 
 certain strata within the data.  For example, systematic ME because of an observer bias might
 only be observed with females or males.}
+
+\item{groups.first}{A logical value for whether to use groups as a term before subjects, so that it can be included
+in an ANOVA table (if TRUE).  Otherwise, a group effect is likely subsumed by a subject effect, since subjects are 
+unique to groups.}
 
 \item{data}{An data frame of class \code{\link{geomorph.data.frame}}.}
 
