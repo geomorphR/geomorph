@@ -8,7 +8,7 @@ extended.pgls(
   f1,
   phy = NULL,
   Cov = NULL,
-  subjects = NULL,
+  species = NULL,
   delta = 0.001,
   gamma = c("sample", "equal"),
   iter = 999,
@@ -31,17 +31,18 @@ extended.pgls(
 provided. This may be obtained under any evolutionary model, and if included, 
 any weights are ignored.  This matrix must match in dimensions the number of species.}
 
-\item{subjects}{A variable that can be found in the data frame indicating the species to which 
-each subject belongs. This variable must be in the data frame.  It is imperative that these names
+\item{species}{A variable that can be found in the data frame indicating the species 
+to which each individual belongs. This variable must be in the data frame.  It is 
+imperative that these names
 match the species names in the phylogeny or phylogenetic covariance matrix. The data do not need 
-to have row names but the subjects variable has to be provided.}
+to have row names but the species variable has to be provided.}
 
-\item{delta}{A within-subject scaling parameter for covariances, ranging from 
+\item{delta}{A within-species scaling parameter for covariances, ranging from 
 0 to 1.  If delta = 0, a sight value (0.001) is added to assure variances of the 
 covariance matrix are 0.1 percent larger than covariances.}
 
 \item{gamma}{A sample-size scaling parameter that is adjusted to be 1 ("equal")
-scaling or the square-root of the sample size for subject observations ("sample").}
+scaling or the square-root of the sample size for species observations ("sample").}
 
 \item{iter}{Number of iterations for significance testing}
 
@@ -139,7 +140,7 @@ Data input is specified by several components, including minimally: 1) a formula
 matrix of dimension (n x [p x k]), or a 3D array (p x n x k).  It is assumed that the landmarks 
 have previously been aligned using Generalized Procrustes Analysis (GPA) [e.g., with \code{\link{gpagen}}].
 
-2) An argument for subjects is also required, which specifies the species to which each 
+2) An argument for species is also required, which specifies the species to which each 
 observation belongs. 
 
 3) Either phy or COV must be included, which specifies the expected phylogenetic 
@@ -162,7 +163,7 @@ data(pupfish.ws)
 
 # With phylogeny
 fit <- extended.pgls(f1 = coords~Species * Sex + Population, 
-  data = pupfish.ws, subjects = "Species",
+  data = pupfish.ws, species = "Species",
   phy = pupfish.ws$phy) 
   
 anova(fit) 
@@ -174,7 +175,7 @@ summary(fit.mult, test = "Wilks")
 # With phylogenetic covariance matrix
 
 fit2 <- extended.pgls(f1 = coords ~ Species * Sex + Population, 
-  data = pupfish.ws, subjects = "Species",
+  data = pupfish.ws, species = "Species",
   Cov = pupfish.ws$Cov)
   
 anova(fit2)

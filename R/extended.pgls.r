@@ -16,7 +16,7 @@
 #' matrix of dimension (n x [p x k]), or a 3D array (p x n x k).  It is assumed that the landmarks 
 #' have previously been aligned using Generalized Procrustes Analysis (GPA) [e.g., with \code{\link{gpagen}}].
 #' 
-#' 2) An argument for subjects is also required, which specifies the species to which each 
+#' 2) An argument for species is also required, which specifies the species to which each 
 #' observation belongs. 
 #' 
 #' 3) Either phy or COV must be included, which specifies the expected phylogenetic 
@@ -34,19 +34,20 @@
 #' for each species. Additional statistical and philosophical details are found in Adams and Collyer 2024. 
 #' 
 #' @param f1 A formula for the linear model (e.g., y~x1+x2).  
-#' @param subjects A variable that can be found in the data frame indicating the species to which 
-#' each subject belongs. This variable must be in the data frame.  It is imperative that these names
+#' @param species A variable that can be found in the data frame indicating the species 
+#' to which each individual belongs. This variable must be in the data frame.  It is 
+#' imperative that these names
 #' match the species names in the phylogeny or phylogenetic covariance matrix. The data do not need 
-#' to have row names but the subjects variable has to be provided.
+#' to have row names but the species variable has to be provided.
 #' @param phy A phylogenetic tree of class = "phylo" - see \code{\link[ape]{read.tree}} in library ape
 #' @param Cov An argument for including a phylogenetic covariance matrix if a phylogeny is not 
 #' provided. This may be obtained under any evolutionary model, and if included, 
 #' any weights are ignored.  This matrix must match in dimensions the number of species.
-#' @param delta A within-subject scaling parameter for covariances, ranging from 
+#' @param delta A within-species scaling parameter for covariances, ranging from 
 #' 0 to 1.  If delta = 0, a sight value (0.001) is added to assure variances of the 
 #' covariance matrix are 0.1 percent larger than covariances.
 #' @param gamma A sample-size scaling parameter that is adjusted to be 1 ("equal")
-#' scaling or the square-root of the sample size for subject observations ("sample").
+#' scaling or the square-root of the sample size for species observations ("sample").
 #' @param data A data frame for the function environment, see 
 #' \code{\link{rrpp.data.frame}}.  A data frame is required for this analysis.
 #' @param print.progress A logical value to indicate whether a progress 
@@ -128,7 +129,7 @@
 #' 
 #' # With phylogeny
 #' fit <- extended.pgls(f1 = coords~Species * Sex + Population, 
-#'   data = pupfish.ws, subjects = "Species",
+#'   data = pupfish.ws, species = "Species",
 #'   phy = pupfish.ws$phy) 
 #'   
 #' anova(fit) 
@@ -140,7 +141,7 @@
 #' # With phylogenetic covariance matrix
 #' 
 #' fit2 <- extended.pgls(f1 = coords ~ Species * Sex + Population, 
-#'   data = pupfish.ws, subjects = "Species",
+#'   data = pupfish.ws, species = "Species",
 #'   Cov = pupfish.ws$Cov)
 #'   
 #' anova(fit2)
@@ -150,7 +151,7 @@
 #' summary(fit2.mult, test = "Wilks") 
 #' }
 
-extended.pgls<-function(f1, phy = NULL, Cov = NULL, subjects = NULL,
+extended.pgls<-function(f1, phy = NULL, Cov = NULL, species = NULL,
                  delta = 0.001, gamma = c("sample", "equal"), iter=999, 
                  seed=NULL, int.first = FALSE, 
                  turbo = FALSE, Parallel = FALSE,
@@ -200,6 +201,7 @@ extended.pgls<-function(f1, phy = NULL, Cov = NULL, subjects = NULL,
     f <- f1
     GM <- FALSE
   }
+  subjects <- species
   
   epgls.args <- list(
     f = f,
