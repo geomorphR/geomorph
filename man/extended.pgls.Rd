@@ -165,7 +165,7 @@ fit <- extended.pgls(f1 = coords~Species * Sex + Population,
   data = pupfish.ws, subjects = "Species",
   phy = pupfish.ws$phy) 
   
-anova(fit)$table   
+anova(fit) 
  
 # multivariate stats 
 fit.mult <- manova.update(fit, PC.no = 40)
@@ -177,7 +177,7 @@ fit2 <- extended.pgls(f1 = coords ~ Species * Sex + Population,
   data = pupfish.ws, subjects = "Species",
   Cov = pupfish.ws$Cov)
   
-anova(fit2)$table
+anova(fit2)
 
 #sultivariate stats
 fit2.mult <- manova.update(fit2, PC.no = 40)

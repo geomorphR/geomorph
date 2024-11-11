@@ -131,7 +131,7 @@
 #'   data = pupfish.ws, subjects = "Species",
 #'   phy = pupfish.ws$phy) 
 #'   
-#' anova(fit)$table   
+#' anova(fit) 
 #'  
 #' # multivariate stats 
 #' fit.mult <- manova.update(fit, PC.no = 40)
@@ -143,7 +143,7 @@
 #'   data = pupfish.ws, subjects = "Species",
 #'   Cov = pupfish.ws$Cov)
 #'   
-#' anova(fit2)$table
+#' anova(fit2)
 #' 
 #' #sultivariate stats
 #' fit2.mult <- manova.update(fit2, PC.no = 40)
@@ -216,6 +216,7 @@ extended.pgls<-function(f1, phy = NULL, Cov = NULL, subjects = NULL,
   )
   
   out<- suppressWarnings(do.call(lm.rrpp.ws, epgls.args))
+  out$call <- match.call()
   out
 
 }
