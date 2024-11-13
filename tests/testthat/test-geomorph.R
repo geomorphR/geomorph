@@ -290,7 +290,8 @@ test_that("gm.measurement.error1.works", {
   rep1 <- matrix(fishy$coords[1,], 11, 2, byrow = TRUE)
   rep2 <- matrix(fishy$coords[61,], 11, 2, byrow = TRUE)
   succeed(ME1 <- gm.measurement.error(coords = "coordsarray",
-    subjects = "subj", replicates = "reps", data = fishy, iter = 3))
+    subjects = "subj", replicates = "reps", data = fishy, turbo = FALSE, 
+    groups.first = FALSE, iter = 3))
   succeed(anova(ME1))
   succeed(ICCstats(ME1, subjects = "Subjects", with_in = "Systematic ME"))
   succeed(plot(ME1))
@@ -302,7 +303,8 @@ test_that("gm.measurement.error2.works", {
   rep1 <- matrix(fishy$coords[1,], 11, 2, byrow = TRUE)
   rep2 <- matrix(fishy$coords[61,], 11, 2, byrow = TRUE)
   succeed(ME2 <- gm.measurement.error(coords = "coordsarray", subjects = "subj", 
-    replicates = "reps", groups = "groups", data = fishy, iter = 3))
+    replicates = "reps", groups = "groups", data = fishy, turbo = FALSE, 
+    groups.first = FALSE, iter = 3))
   succeed(anova(ME2))
   succeed(ICCstats(ME2, subjects = "Subjects", 
       with_in = "Systematic ME", groups = "groups"))
@@ -997,16 +999,16 @@ test_that("physignal.eigen.works", {
 
 ### extended.pgls --------------------------------------------------------------
 
-test_that("physignal.eigen.works", {
+test_that("extended.pgls.works", {
   data(pupfish.ws) 
   succeed(fit <- extended.pgls(f1 = coords~Species * Sex + Population, 
-                               data = pupfish.ws, subjects = "Species",
+                               data = pupfish.ws, species = "Species",
                                phy = pupfish.ws$phy))
   succeed(anova(fit))
   succeed(fit.mult <- manova.update(fit, PC.no = 40))
   succeed(summary(fit.mult, test = "Wilks"))
   succeed(fit2 <- extended.pgls(f1 = coords ~ Species * Sex + Population, 
-                                data = pupfish.ws, subjects = "Species",
+                                data = pupfish.ws, species = "Species",
                                 Cov = pupfish.ws$Cov))
   succeed(anova(fit2))
   succeed(fit2.mult <- manova.update(fit2, PC.no = 40))

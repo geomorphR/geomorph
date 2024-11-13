@@ -59,16 +59,12 @@ main effects should precede subsequent main effects}
 
 \item{turbo}{A logical value that if TRUE, suppresses coefficient estimation 
 in every random permutation.  This will affect subsequent analyses that 
-require random coefficients (see \code{\link{coef.lm.rrpp}})
+require random coefficients (see \code{\link[RRPP]{coef.lm.rrpp}})
 but might be useful for large data sets for which only ANOVA is needed.}
 
 \item{Parallel}{Either a logical value to indicate whether parallel processing 
 should be used, a numeric value to indicate the number of cores to use, or a predefined
-socket cluster.  This argument defines parallel processing via the \code{parallel} library. 
-If TRUE, this argument invokes forking or socket cluster assignment of all processor cores, 
-except one.  If FALSE, only one core is used. A numeric value directs the number of cores to 
-use, but one core will always be spared.  If a predefined socket cluster (Windows) is provided,
-the cluster information will be passed to \code{parallel}.}
+socket cluster.}
 
 \item{verbose}{A logical value to indicate if all possible output from an analysis 
 should be retained. Generally this should be FALSE, unless one wishes to extract, 
@@ -76,7 +72,7 @@ e.g., all possible terms, model matrices, QR decomposition, or random permutatio
 schemes.}
 
 \item{data}{A data frame for the function environment, see 
-\code{\link{rrpp.data.frame}}.  A data frame is required for this analysis.}
+\code{\link[RRPP]{rrpp.data.frame}}.  A data frame is required for this analysis.}
 
 \item{print.progress}{A logical value to indicate whether a progress 
 bar should be printed to the screen.
@@ -84,14 +80,14 @@ This is helpful for long-running analyses.}
 
 \item{...}{Arguments typically used in \code{\link{lm}}, such as 
 weights or offset, passed on to
-\code{lm.rrpp} for estimation of coefficients.  If both weights and 
+\code{\link[RRPP]{lm.rrpp}} for estimation of coefficients.  If both weights and 
 a covariance matrix are included,
 weights are ignored (since inverses of weights are the diagonal elements 
 of weight matrix, used in lieu
 of a covariance matrix.)}
 }
 \value{
-An object of class \code{lm.rrpp.ws} is a list containing the 
+An object of class \code{\link[RRPP]{lm.rrpp.ws}} is a list containing the 
 following
 \item{call}{The matched call.}
 \item{LM}{Linear Model objects, including data (Y), coefficients, 
@@ -191,7 +187,7 @@ comparing within-species patterns across the tree of life.
 Methods in Ecology and Evolution. DOI: 10.1111/2041-210X.14438
 }
 \seealso{
-\code{\link{lm.rrpp.ws}}
+\code{\link[RRPP]{lm.rrpp.ws}}
 }
 \author{
 Dean Adams

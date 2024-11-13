@@ -52,7 +52,7 @@ Function returns a list with the following components:
   \item{rand.eigen.values}{The set of eigenvalues from the permuted datasets.}
   \item{traceK.obs}{The observed traceK statistic.}
   \item{traceK}{The set of traceK statistics from the permuted datasets.}
-  \item{p.traceK}{The p-value of trackK from permutation.}
+  \item{p.traceK}{The p-value of traceK from permutation.}
   \item{Z.traceK}{The effect size of traceK.}
   \item{detK.obs}{The observed detK statistic.}
   \item{detK}{The set of detK statistics from the permuted datasets.}

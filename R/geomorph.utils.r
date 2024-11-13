@@ -1735,6 +1735,7 @@ plot.K.modules <- function(x, modules = 1:6,
 #' @param x plot object (from \code{\link{physignal.eigen}})
 #' @param type the manner in which the distribution of permuted outcomes is represented:
 #' confidence bands (type = "conf"), vectors (type = "vectors"), or both (type = "both")
+#' @param confidence A numerical value designating the confidence interval range
 #' @param ... other arguments passed to plot
 #' @method plot physignal.eigen
 #' @export

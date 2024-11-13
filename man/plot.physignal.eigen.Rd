@@ -12,6 +12,8 @@
 \item{type}{the manner in which the distribution of permuted outcomes is represented:
 confidence bands (type = "conf"), vectors (type = "vectors"), or both (type = "both")}
 
+\item{confidence}{A numerical value designating the confidence interval range}
+
 \item{...}{other arguments passed to plot}
 }
 \description{
