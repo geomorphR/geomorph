@@ -12,7 +12,7 @@ bibentry(bibtype = "Article",
   	pages = "2355-2363")
   	
 bibentry(bibtype = "misc",
-	title = "Geomorph: Software for geometric morphometric analyses. R package version 4.0.8",
+	title = "Geomorph: Software for geometric morphometric analyses. R package version 4.0.9",
         author = c(person("D. C.", "Adams"),
                    person("M. L.", "Collyer"),
                    person("A.", "Kaliontzopoulou"),
@@ -21,7 +21,7 @@ bibentry(bibtype = "misc",
   	  	url = " https://cran.r-project.org/package=geomorph")
         
 bibentry(bibtype = "misc",
-	title = "{RRPP}: Linear Model Evaluation with Randomized Residuals in a Permutation Procedure, R package version 2.0.3.",
+	title = "{RRPP}: Linear Model Evaluation with Randomized Residuals in a Permutation Procedure, R package version 2.0.4.",
     author = c(person("M. L.", "Collyer"),
                person("D. C.", "Adams")), 
   	year = "2024",
