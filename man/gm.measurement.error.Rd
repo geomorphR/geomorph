@@ -9,7 +9,6 @@ gm.measurement.error(
   subjects,
   replicates,
   groups = NULL,
-  groups.first = FALSE,
   data,
   iter = 999,
   seed = NULL,
@@ -19,7 +18,8 @@ gm.measurement.error(
   Parallel = FALSE,
   turbo = TRUE,
   print.progress = FALSE,
-  verbose = FALSE
+  verbose = FALSE,
+  ...
 )
 }
 \arguments{
@@ -36,10 +36,6 @@ The length of the vector must equal the number of observations and will be coerc
 This would be of interest if one were concerned with systematic ME occurring perhaps differently among 
 certain strata within the data.  For example, systematic ME because of an observer bias might
 only be observed with females or males.}
-
-\item{groups.first}{A logical value for whether to use groups as a term before subjects, so that it can be included
-in an ANOVA table (if TRUE).  Otherwise, a group effect is likely subsumed by a subject effect, since subjects are 
-unique to groups.}
 
 \item{data}{An data frame of class \code{\link{geomorph.data.frame}}.}
 
@@ -79,7 +75,8 @@ bar should be printed to the screen.}
 
 \item{verbose}{A logical value to indicate if all the output from an
 \code{\link[RRPP]{lm.rrpp}} analysis should be retained.  If FALSE, only the needed
-output for summaries and plotting is retained.}
+output for summaries and plotting is retained.
+#' @param ... Arguments passed on to \code{\link[RRPP]{lm.rrpp.ws}}.}
 }
 \value{
 Objects of class "measurement.error" return the same objects

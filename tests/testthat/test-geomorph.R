@@ -291,7 +291,7 @@ test_that("gm.measurement.error1.works", {
   rep2 <- matrix(fishy$coords[61,], 11, 2, byrow = TRUE)
   succeed(ME1 <- gm.measurement.error(coords = "coordsarray",
     subjects = "subj", replicates = "reps", data = fishy, turbo = FALSE, 
-    groups.first = FALSE, iter = 3))
+    iter = 3))
   succeed(anova(ME1))
   succeed(ICCstats(ME1, subjects = "Subjects", with_in = "Systematic ME"))
   succeed(plot(ME1))
@@ -304,7 +304,7 @@ test_that("gm.measurement.error2.works", {
   rep2 <- matrix(fishy$coords[61,], 11, 2, byrow = TRUE)
   succeed(ME2 <- gm.measurement.error(coords = "coordsarray", subjects = "subj", 
     replicates = "reps", groups = "groups", data = fishy, turbo = FALSE, 
-    groups.first = FALSE, iter = 3))
+     iter = 3))
   succeed(anova(ME2))
   succeed(ICCstats(ME2, subjects = "Subjects", 
       with_in = "Systematic ME", groups = "groups"))

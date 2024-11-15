@@ -34,10 +34,7 @@
 #' (as an interaction with replicates)..
 #' This would be of interest if one were concerned with systematic ME occurring perhaps differently among 
 #' certain strata within the data.  For example, systematic ME because of an observer bias might
-#' only be observed with females or males. 
-#' @param groups.first A logical value for whether to use groups as a term before subjects, so that it can be included
-#' in an ANOVA table (if TRUE).  Otherwise, a group effect is likely subsumed by a subject effect, since subjects are 
-#' unique to groups. 
+#' only be observed with females or males.  
 #' @param data An data frame of class \code{\link{geomorph.data.frame}}.
 #' @param iter Number of iterations for significance testing
 #' @param seed An optional argument for setting the seed for random 
@@ -68,6 +65,7 @@
 #' @param verbose A logical value to indicate if all the output from an
 #' \code{\link[RRPP]{lm.rrpp}} analysis should be retained.  If FALSE, only the needed
 #' output for summaries and plotting is retained.
+#' #' @param ... Arguments passed on to \code{\link[RRPP]{lm.rrpp.ws}}.
 #' @export
 #' @keywords analysis
 #' @author Michael Collyer and Dean Adams
@@ -139,7 +137,6 @@ gm.measurement.error <- function(coords,
                                  subjects, 
                                  replicates, 
                                  groups = NULL,
-                                 groups.first = FALSE,
                                  data,
                                  iter = 999, 
                                  seed = NULL,
@@ -149,7 +146,7 @@ gm.measurement.error <- function(coords,
                                  Parallel = FALSE,
                                  turbo = TRUE,
                                  print.progress = FALSE,
-                                 verbose = FALSE) {
+                                 verbose = FALSE, ...) {
   
   if(!inherits(data, "geomorph.data.frame")){
     if(!inherits(data, "data.frame") && 
@@ -176,13 +173,12 @@ gm.measurement.error <- function(coords,
   } else{
     stop("Data not a 3D array.\n")
   } 
-  
+  me.args <- c(as.list(environment()), list(...))
   me.args <- list(
     Y = "Y.2D",
     subjects = subjects, 
     replicates = replicates, 
     groups = groups,
-    groups.first = groups.first,
     data = data,
     iter = iter, 
     seed = seed,
