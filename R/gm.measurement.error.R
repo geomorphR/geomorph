@@ -65,7 +65,7 @@
 #' @param verbose A logical value to indicate if all the output from an
 #' \code{\link[RRPP]{lm.rrpp}} analysis should be retained.  If FALSE, only the needed
 #' output for summaries and plotting is retained.
-#' #' @param ... Arguments passed on to \code{\link[RRPP]{lm.rrpp.ws}}.
+#' @param ... Arguments passed on to \code{\link[RRPP]{lm.rrpp.ws}}.
 #' @export
 #' @keywords analysis
 #' @author Michael Collyer and Dean Adams
