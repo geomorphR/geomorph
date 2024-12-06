@@ -118,7 +118,7 @@
 #' @seealso \code{\link[RRPP]{lm.rrpp.ws}}
 #' @references Adams, D.C and M.L Collyer. 2024. Extending phylogenetic regression models for 
 #' comparing within-species patterns across the tree of life. 
-#' Methods in Ecology and Evolution. DOI: 10.1111/2041-210X.14438
+#' Methods in Ecology and Evolution. 15:2234-2246.
 #' @examples 
 #' \dontrun{
 #' data(pupfish.ws)
