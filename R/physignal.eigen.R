@@ -29,10 +29,13 @@
 #' dimensions are standardized during the Generalized Procrustes Analysis (one may also have fewer 
 #' observations than variables, which will also generate redundancies). For this reason, a 
 #' principal components analysis of the data is performed, and the redundant dimensions are 
-#' removed so that detK and traceK may be computed (see Mitteroecker et al. 2024). Additionally, if 
-#' n< (p X k), the last nontrivial PC dimension is also removed, as in this case, using 100% of the 
-#' variation results in invariant K-statistics across permutations. 
-#'   
+#' removed so that detK and traceK may be computed (see Mitteroecker et al. 2024). Additionally, in 
+#' cases where the number of trait dimensions (p) exceeds the number of species (n), i.e., p > n,
+#' there are n - 1 rather than p dimensions, but there are no more than n - 2 dimensions of K, because 
+#' of additional singularity imposed by a matrix product that finds ratio of residual 
+#' covariance matrices. In these cases, an additional dimension is removed (leaving n - 2) to ensure 
+#' that K-statistics across permutations are not invariant. 
+#' 
 #' The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{physignal.eigen}}.
 #'   
 #' @param Y A matrix (n x [p x k]) or 3D array (p x k x n) containing Procrustes shape variables for a 
@@ -115,10 +118,17 @@ physignal.eigen <- function(Y, phy = NULL, Cov = NULL,
   Y <- center(as.matrix(Y))
   n <- NROW(Y)
   p <- ncol(Y)
-  PCA <- ordinate(Y, tol = tol)
-  Y <- PCA$x
-  if(n<p && Blomberg == FALSE){Y <- Y[,-ncol(Y)]}
+  
+  if(p >= n) {
+    PCA <- ordinate(Y, rank. = n - 2)
+    Y <- PCA$x
+  }
 
+  if(p < n) {
+    PCA <- ordinate(Y)
+    Y <- PCA$x
+  }
+    
   if(is.null(phy) && is.null(Cov))
     stop("Either a tree or covariance matrix is needed.\n",
          call. = FALSE)

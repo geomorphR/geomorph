@@ -1,5 +1,9 @@
 # CHANGES IN GEOMORPH VERSION 4.0.9.999
 
+### BUG FIXES
+
+* Updated handling of p > n conditions in `physignal.eigen`.
+
 # CHANGES IN GEOMORPH VERSION 4.0.9
 
 ### NEW FEATURES
