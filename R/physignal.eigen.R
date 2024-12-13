@@ -115,7 +115,7 @@ physignal.eigen <- function(Y, phy = NULL, Cov = NULL,
     if(is.null(rownames(Y))) stop("Data matrix does not include taxa names as dimnames for rows.\n", 
                                   call. = FALSE)  
   }
-  Y <- center(as.matrix(Y))
+  Y <- Y.orig <- center(as.matrix(Y))
   n <- NROW(Y)
   p <- ncol(Y)
   
@@ -204,7 +204,7 @@ physignal.eigen <- function(Y, phy = NULL, Cov = NULL,
           stop("An input phylogeny is required for Blomberg = TRUE.\n",
                call. = FALSE)
       if(test){iter = iter} else iter = 0
-        Kmult <- physignal(A = Y, phy = phy, iter = iter)$random.K
+        Kmult <- physignal(A = Y.orig, phy = phy, iter = iter)$random.K
       } 
  
   if(!is.null(eigs)){
