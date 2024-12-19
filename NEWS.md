@@ -1,5 +1,9 @@
 # CHANGES IN GEOMORPH VERSION 4.0.9.999
 
+### NEW FEATURES
+
+* Added new K-components output and plots to `physignal.eigen`.
+
 ### BUG FIXES
 
 * Updated handling of p > n conditions in `physignal.eigen`.
