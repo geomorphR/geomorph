@@ -13,7 +13,7 @@ d8e8360c03c03fe45d2100e9c05d4a89 *data/plethodon.rda
 6e5e71b242462e422b716800ffc3c464 *data/scallops.rda
 b7a7de4ba983239a9340189c4927f681 *debug.log
 f3908707dbec33a873c100f0131fb7ba *DESCRIPTION
-dc46dcdece0b698797b85ad5f966dc07 *geomorph.Rproj
+b9ff150f39714f1185d92ac398cf12eb *geomorph.Rproj
 fea090412f23fac4647bd4a9fe54f616 *inst/CITATION
 48ebf0e3514a533f2bf4c1abaa47953a *man/arrayspecs.Rd
 548e5a1ff3c51bdc410a89fdbc208852 *man/bilat.symmetry.Rd
@@ -199,7 +199,7 @@ d7fbf86449a0ac29ec98a7a2001295a6 *R/module.eigen.r
 2703528f676e23e05b6491d94cd5a01b *R/morphol.disparity.r
 4a95e963db830d97e378c3fd4460d56a *R/phylo.integration.r
 5b3732663b03279af125011d51108032 *R/phylo.modularity.r
-1cb93d7ab90982953cf58b893590d2fa *R/physignal.eigen.R
+71eb4debea3b0d6e235b12975bc9da6c *R/physignal.eigen.R
 a10d2351f5d3ce09e26e005f8f9c1676 *R/physignal.r
 97f333aab7db7d1c1899281ad5ab7dcd *R/physignal.z.r
 85ebbf8036df4f7b4a7498bd6550bfbe *R/picknplot.shape.r
