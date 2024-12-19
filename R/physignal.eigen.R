@@ -29,11 +29,16 @@
 #' dimensions are standardized during the Generalized Procrustes Analysis (one may also have fewer 
 #' observations than variables, which will also generate redundancies). For this reason, a 
 #' principal components analysis of the data is performed, and the redundant dimensions are 
-#' removed so that detK and traceK may be computed (see Mitteroecker et al. 2024). Additionally, if 
-#' n< (p X k), the last nontrivial PC dimension is also removed, as in this case, using 100% of the 
-#' variation results in invariant K-statistics across permutations. 
-#'   
-#' The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{physignal.eigen}}.
+#' removed so that detK and traceK may be computed (see Mitteroecker et al. 2024). Additionally, in 
+#' cases where the number of trait dimensions (p) exceeds the number of species (n), i.e., p > n,
+#' there are n - 1 rather than p dimensions, but there are no more than n - 2 dimensions of K, because 
+#' of additional singularity imposed by a matrix product that finds ratio of residual 
+#' covariance matrices. In these cases, an additional dimension is removed (leaving n - 2) to ensure 
+#' that K-statistics across permutations are not invariant. 
+#' 
+#' The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work 
+#' with \code{\link{physignal.eigen}}. The ability to plot the species in the space of K-components is 
+#' available (see example).
 #'   
 #' @param Y A matrix (n x [p x k]) or 3D array (p x k x n) containing Procrustes shape variables for a 
 #' set of specimens (it is assumed that the data have been subjected to a Generalized Procrustes Analysis)
@@ -58,6 +63,7 @@
 #' @seealso \code{\link{gm.prcomp}}, \code{\link{physignal}}
 #' @export
 #' @return Function returns a list with the following components: 
+#'   \item{KC}{The K-components from an eigenanalysis of the phylogenetic signal matrix, K.} 
 #'   \item{eib.obs}{The observed eigenvalues of the phylogenetic signal matrix, K.}
 #'   \item{rand.eigen.values}{The set of eigenvalues from the permuted datasets.}
 #'   \item{traceK.obs}{The observed traceK statistic.}
@@ -91,6 +97,8 @@
 #' summary(PSe.shape)
 #' plot(PSe.shape)
 #' plot(PSe.shape, type = "vectors")
+#' KC.plot <- plot(PSe.shape$KC)
+#' add.tree(KC.plot, plethspecies$phy, edge.col = 4)
 #' 
 #' }
 physignal.eigen <- function(Y, phy = NULL, Cov = NULL,
@@ -112,13 +120,20 @@ physignal.eigen <- function(Y, phy = NULL, Cov = NULL,
     if(is.null(rownames(Y))) stop("Data matrix does not include taxa names as dimnames for rows.\n", 
                                   call. = FALSE)  
   }
-  Y <- center(as.matrix(Y))
+  Y <- Y.orig <- center(as.matrix(Y))
   n <- NROW(Y)
   p <- ncol(Y)
-  PCA <- ordinate(Y, tol = tol)
-  Y <- PCA$x
-  if(n<p && Blomberg == FALSE){Y <- Y[,-ncol(Y)]}
+  
+  if(p >= n) {
+    PCA <- ordinate(Y, rank. = n - 2)
+    Y <- PCA$x
+  }
 
+  if(p < n) {
+    PCA <- ordinate(Y)
+    Y <- PCA$x
+  }
+    
   if(is.null(phy) && is.null(Cov))
     stop("Either a tree or covariance matrix is needed.\n",
          call. = FALSE)
@@ -194,7 +209,7 @@ physignal.eigen <- function(Y, phy = NULL, Cov = NULL,
           stop("An input phylogeny is required for Blomberg = TRUE.\n",
                call. = FALSE)
       if(test){iter = iter} else iter = 0
-        Kmult <- physignal(A = Y, phy = phy, iter = iter)$random.K
+        Kmult <- physignal(A = Y.orig, phy = phy, iter = iter)$random.K
       } 
  
   if(!is.null(eigs)){
@@ -213,8 +228,9 @@ physignal.eigen <- function(Y, phy = NULL, Cov = NULL,
     ztrace <- effect.size(traceK)
     zdet <- effect.size(detK)
     zKm <- effect.size(Kmult)
+    KC <- kcomp(Y,Cov, transform. = FALSE)
 
-  out <- list(eig.obs = eig.ob, rand.eigen.values = eigs,
+  out <- list(KC = KC, eig.obs = eig.ob, rand.eigen.values = eigs,
               traceK.obs = traceK[1], traceK = traceK, 
               detK.obs = detK[1], detK = detK,
               Kmult.obs = Kmult[1], Kmult = Kmult,

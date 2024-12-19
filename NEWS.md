@@ -1,18 +1,27 @@
+# CHANGES IN GEOMORPH VERSION 4.0.9.999
+
+### NEW FEATURES
+
+* Added new K-components output and plots to `physignal.eigen`.
+
+### BUG FIXES
+
+* Updated handling of p > n conditions in `physignal.eigen`.
+
 # CHANGES IN GEOMORPH VERSION 4.0.9
 
-### NEW FEATURES 
+### NEW FEATURES
 
 * New function 'extended.pgls' for evaluating within-species trends in a phylogenetic context
 * New dataset 'pupfish.ws'
 * New function `physignal.eigen` for evaluating the dimensions of phylogenetic signal in multivariate data
 * Added an option to `gm.prcomp` to allow the phylogeny to be scaled to unit length
-* Added `groups.first` argument to `gm.measurement.error`, to optionally include groups in ANOVA table. 
-
+* Added `groups.first` argument to `gm.measurement.error`, to optionally include groups in ANOVA table.
 
 ### BUG FIXES
 
 * Fixed missing argument in `perm.index` within `morphol.disparity`.
-* Ensured proper size-scaling of predicted shapes in `gm.prcomp`
+* Ensured proper size-scaling of predicted shapes in `gm.prcomp`.
 * Fixed the missing re-order of data for `anc.BM`.
 
 # CHANGES IN GEOMORPH VERSION 4.0.8
