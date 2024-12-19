@@ -228,7 +228,7 @@ physignal.eigen <- function(Y, phy = NULL, Cov = NULL,
     ztrace <- effect.size(traceK)
     zdet <- effect.size(detK)
     zKm <- effect.size(Kmult)
-    KC <- kcomp(Y,Cov)
+    KC <- kcomp(Y,Cov, transform. = FALSE)
 
   out <- list(KC = KC, eig.obs = eig.ob, rand.eigen.values = eigs,
               traceK.obs = traceK[1], traceK = traceK, 
