@@ -48,6 +48,7 @@ for details.}
 }
 \value{
 Function returns a list with the following components: 
+  \item{KC}{The K-components from an eigenanalysis of the phylogenetic signal matrix, K.} 
   \item{eib.obs}{The observed eigenvalues of the phylogenetic signal matrix, K.}
   \item{rand.eigen.values}{The set of eigenvalues from the permuted datasets.}
   \item{traceK.obs}{The observed traceK statistic.}
@@ -103,7 +104,9 @@ of additional singularity imposed by a matrix product that finds ratio of residu
 covariance matrices. In these cases, an additional dimension is removed (leaving n - 2) to ensure 
 that K-statistics across permutations are not invariant. 
 
-The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{physignal.eigen}}.
+The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work 
+with \code{\link{physignal.eigen}}. The ability to plot the species in the space of K-components is 
+available (see example).
 }
 \examples{
 \dontrun{
@@ -115,6 +118,8 @@ PSe.shape <- physignal.eigen(Y = Y.gpa$coords, phy = plethspecies$phy)
 summary(PSe.shape)
 plot(PSe.shape)
 plot(PSe.shape, type = "vectors")
+KC.plot <- plot(PSe.shape$KC)
+add.tree(KC.plot, plethspecies$phy, edge.col = 4)
 
 }
 }

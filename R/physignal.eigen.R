@@ -36,7 +36,9 @@
 #' covariance matrices. In these cases, an additional dimension is removed (leaving n - 2) to ensure 
 #' that K-statistics across permutations are not invariant. 
 #' 
-#' The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work with \code{\link{physignal.eigen}}.
+#' The generic functions, \code{\link{print}}, \code{\link{summary}}, and \code{\link{plot}} all work 
+#' with \code{\link{physignal.eigen}}. The ability to plot the species in the space of K-components is 
+#' available (see example).
 #'   
 #' @param Y A matrix (n x [p x k]) or 3D array (p x k x n) containing Procrustes shape variables for a 
 #' set of specimens (it is assumed that the data have been subjected to a Generalized Procrustes Analysis)
@@ -61,6 +63,7 @@
 #' @seealso \code{\link{gm.prcomp}}, \code{\link{physignal}}
 #' @export
 #' @return Function returns a list with the following components: 
+#'   \item{KC}{The K-components from an eigenanalysis of the phylogenetic signal matrix, K.} 
 #'   \item{eib.obs}{The observed eigenvalues of the phylogenetic signal matrix, K.}
 #'   \item{rand.eigen.values}{The set of eigenvalues from the permuted datasets.}
 #'   \item{traceK.obs}{The observed traceK statistic.}
@@ -94,6 +97,8 @@
 #' summary(PSe.shape)
 #' plot(PSe.shape)
 #' plot(PSe.shape, type = "vectors")
+#' KC.plot <- plot(PSe.shape$KC)
+#' add.tree(KC.plot, plethspecies$phy, edge.col = 4)
 #' 
 #' }
 physignal.eigen <- function(Y, phy = NULL, Cov = NULL,
@@ -223,8 +228,9 @@ physignal.eigen <- function(Y, phy = NULL, Cov = NULL,
     ztrace <- effect.size(traceK)
     zdet <- effect.size(detK)
     zKm <- effect.size(Kmult)
+    KC <- kcomp(Y,Cov)
 
-  out <- list(eig.obs = eig.ob, rand.eigen.values = eigs,
+  out <- list(KC = KC, eig.obs = eig.ob, rand.eigen.values = eigs,
               traceK.obs = traceK[1], traceK = traceK, 
               detK.obs = detK[1], detK = detK,
               Kmult.obs = Kmult[1], Kmult = Kmult,
