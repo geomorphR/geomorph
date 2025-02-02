@@ -2,7 +2,7 @@
 This is a patch release, 4.0.9.  It also provides several new functions.
 
 ## Test environments
-* local OS X install, R 4.4.1
+* local OS X install, R 4.4.2
 * win-builder (devel and release)
 * R-hub (all platforms)
 
@@ -22,6 +22,6 @@ This caused geomorph to not install on Linux-R-devel and MacOS-Arm64 platforms. 
 should have no bearing on the `geomorph 4.0.9` package.
 
 ## Downstream dependencies
-I checked 11 reverse dependencies:
-OK: 11 
+I checked 12 reverse dependencies:
+OK: 12 
 BROKEN: 0
