@@ -580,7 +580,6 @@ test_that("physignal.z1.works", {
   skip_on_cran()
   data(plethspecies) 
   Y.gpa <- gpagen(plethspecies$land, print.progress = F)   
-  succeed(summary(PS.shape))
   succeed(PS.shape <- physignal.z(A = Y.gpa$coords, phy = plethspecies$phy, 
        lambda = "front", PAC.no = 7, iter = 3, print.progress = F))
   succeed(summary(PS.shape))
