@@ -14,7 +14,7 @@ d8e8360c03c03fe45d2100e9c05d4a89 *data/plethodon.rda
 b7a7de4ba983239a9340189c4927f681 *debug.log
 9001c11d163c1475993c4d40ce4f4d57 *DESCRIPTION
 b9ff150f39714f1185d92ac398cf12eb *geomorph.Rproj
-fea090412f23fac4647bd4a9fe54f616 *inst/CITATION
+4afad0005661782d3e81efb5e3a377e9 *inst/CITATION
 48ebf0e3514a533f2bf4c1abaa47953a *man/arrayspecs.Rd
 548e5a1ff3c51bdc410a89fdbc208852 *man/bilat.symmetry.Rd
 2283e592cedab381703efc534d3fb126 *man/buildtemplate.Rd
@@ -229,7 +229,7 @@ ce64f40b8badacea0852af718e718355 *R/warpRefOutline.r
 ad572d6203f667d37641cee3adbc72b7 *R/writeland.tps.r
 c74a911cb0e86f68f556cbff5c5f213c *README.md
 0c7f793ce4a81cedc1dfec479f7dce1f *tests/testthat.R
-92d5cba58dd29fd94c7311b93d32743f *tests/testthat/test-geomorph.R
+a6d5b8cdb0cf52cf7a7499a585743137 *tests/testthat/test-geomorph.R
 d3e5db710ad3bfca0e5be89edc91a2a9 *vignettes/figs/example_spec2.png
 e108112cb2dec057facffbf5571b92bf *vignettes/figs/example_template.png
 f0eeb0d08e88fe8475db103df58344db *vignettes/figs/fixed.3D.png

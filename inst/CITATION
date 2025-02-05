@@ -12,12 +12,12 @@ bibentry(bibtype = "Article",
   	pages = "2355-2363")
   	
 bibentry(bibtype = "misc",
-	title = "Geomorph: Software for geometric morphometric analyses. R package version 4.0.9",
+	title = "Geomorph: Software for geometric morphometric analyses. R package version 4.0.10",
         author = c(person("D. C.", "Adams"),
                    person("M. L.", "Collyer"),
                    person("A.", "Kaliontzopoulou"),
                    person("E. K.", "Baken")),
-  	year = "2024",
+  	year = "2025",
   	  	url = " https://cran.r-project.org/package=geomorph")
         
 bibentry(bibtype = "misc",
