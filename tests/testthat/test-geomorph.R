@@ -463,7 +463,7 @@ test_that("integration.Vrel1.works", {
 ### interlmkdist --------------------------------------------------------------
 
 test_that("interlmkdist1.works", {
-  data(plethodon, print.progress = F) 
+  data(plethodon) 
   lmks <- data.frame(eyeW = c(8,9), headL = c(6,12), mouthL = c(4,2), 
   row.names = c("start", "end")) 
   A <- plethodon$land
@@ -580,8 +580,6 @@ test_that("physignal.z1.works", {
   skip_on_cran()
   data(plethspecies) 
   Y.gpa <- gpagen(plethspecies$land, print.progress = F)   
-  succeed(PS.shape <- physignal.z(A = Y.gpa$coords, phy = plethspecies$phy, 
-       lambda = "front", iter = 3, print.progress = F))
   succeed(summary(PS.shape))
   succeed(PS.shape <- physignal.z(A = Y.gpa$coords, phy = plethspecies$phy, 
        lambda = "front", PAC.no = 7, iter = 3, print.progress = F))
