@@ -4,7 +4,7 @@
 \alias{compare.multi.evol.rates}
 \title{Comparing net rates of evolution among traits on phylogenies}
 \usage{
-compare.multi.evol.rates(
+\method{compare}{multi.evol.rates}(
   A,
   gp,
   phy,
