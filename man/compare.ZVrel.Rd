@@ -4,7 +4,7 @@
 \alias{compare.ZVrel}
 \title{Comparisons of Effect Sizes from Overall Integration Analyses}
 \usage{
-\method{compare}{ZVrel}(..., two.tailed = TRUE)
+compare.ZVrel(..., two.tailed = TRUE)
 }
 \arguments{
 \item{...}{saved analyses of class rel.eig}
