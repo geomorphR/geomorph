@@ -217,7 +217,6 @@ ad572d6203f667d37641cee3adbc72b7 *R/writeland.tps.r
 c74a911cb0e86f68f556cbff5c5f213c *README.md
 0c7f793ce4a81cedc1dfec479f7dce1f *tests/testthat.R
 a6d5b8cdb0cf52cf7a7499a585743137 *tests/testthat/test-geomorph.R
-e38457520062fb02c6d9c8adf08cae55 *vignettes/cran-comments.md
 d3e5db710ad3bfca0e5be89edc91a2a9 *vignettes/figs/example_spec2.png
 e108112cb2dec057facffbf5571b92bf *vignettes/figs/example_template.png
 f0eeb0d08e88fe8475db103df58344db *vignettes/figs/fixed.3D.png
