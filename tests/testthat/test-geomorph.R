@@ -204,7 +204,7 @@ test_that("compare.pls1.works", {
   tail.coords.gp <- coords.subset(tail.coords, group)
   head.coords.gp <- coords.subset(head.coords, group)
   integ.tests <- Map(function(x,y) integration.test(x, y, iter=3, 
-       print.progress = FALSE), head.coords.gp, tail.coords.gp, print.progress = F)
+       print.progress = FALSE), head.coords.gp, tail.coords.gp)
   succeed(group.Z <- compare.pls(integ.tests))
   succeed(summary(group.Z))
 })
@@ -475,7 +475,7 @@ test_that("interlmkdist1.works", {
 
 test_that("modularity.test1.works", {
   data(pupfish) 
-  Y.gpa <- gpagen(pupfish$coords, print.progress = FALSE, print.progress = F)
+  Y.gpa <- gpagen(pupfish$coords, print.progress = FALSE)
   land.gps <- rep('a',56); land.gps[39:48] <- 'b'
   succeed(MT <- modularity.test(Y.gpa$coords, land.gps, opt.rot = FALSE, 
                                 CI = FALSE, iter = 3, print.progress = F))
@@ -1011,7 +1011,7 @@ test_that("physignal.eigen.works", {
   data(plethspecies) 
   Y.gpa <- gpagen(plethspecies$land, print.progress = F)
   succeed(PSe.shape <- physignal.eigen(Y = Y.gpa$coords, phy = plethspecies$phy,
-                                       iter = 3, print.progress = F))
+                                       iter = 3))
   succeed(summary(PSe.shape))
   succeed(plot(PSe.shape))
 })
