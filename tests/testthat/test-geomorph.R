@@ -115,7 +115,7 @@ test_that("compareCR1.works", {
   group <- factor(paste(pupfish$Pop, pupfish$Sex, sep = "."))
   coords.gp <- coords.subset(Y.gpa$coords, group)
   succeed(modul.tests <- Map(function(x) modularity.test(x, land.gps,iter=3, 
-           print.progress = FALSE), coords.gp)) 
+               opt.rot = FALSE, print.progress = FALSE), coords.gp)) 
   succeed(group.Z <- compare.CR(modul.tests, CR.null = FALSE))
   succeed(summary(group.Z))
 })
@@ -127,13 +127,15 @@ test_that("compareCR2.works", {
   group <- factor(paste(pupfish$Pop, pupfish$Sex, sep = "."))
   coords.gp <- coords.subset(Y.gpa$coords, group)
   modul.tests <- Map(function(x) modularity.test(x, land.gps,iter=3, 
-            print.progress = FALSE), coords.gp)
+            opt.rot = FALSE, print.progress = FALSE), coords.gp)
   land.gps3 <- rep('a',56); land.gps3[39:48]<-'b'
   land.gps3[c(6:9,28:38)] <- 'c' 
   land.gps4 <- rep('a',56); land.gps4[39:48]<-'b'
   land.gps4[c(6:9,28:38)] <- 'c'; land.gps4[c(10,49:56)] <- 'd'  
-  m3.test <- modularity.test(coords.gp$Marsh.F,land.gps3, iter = 3, print.progress = FALSE)
-  m4.test <- modularity.test(coords.gp$Marsh.F,land.gps4, iter = 3, print.progress = FALSE)
+  m3.test <- modularity.test(coords.gp$Marsh.F,land.gps3, iter = 3, opt.rot = FALSE, 
+                             print.progress = FALSE)
+  m4.test <- modularity.test(coords.gp$Marsh.F,land.gps4, iter = 3, opt.rot = FALSE, 
+                             print.progress = FALSE)
   succeed(model.Z <- compare.CR(modul.tests$Marsh.F,m3.test,m4.test, CR.null = TRUE))
   succeed(summary(model.Z))
 })
@@ -157,7 +159,7 @@ test_that("compare.evol.rates1.works", {
   Y.gpa <- gpagen(plethspecies$land)   
   land.gp <- c("A","A","A","A","A","B","B","B","B","B","B")
   succeed(EMR <- compare.multi.evol.rates(A = Y.gpa$coords, gp = land.gp, 
-           Subset = TRUE, phy = plethspecies$phy))
+           Subset = TRUE, phy = plethspecies$phy, iter = 3))
   succeed(summary(EMR))
 })
 
@@ -430,7 +432,8 @@ test_that("integration.test1.works", {
   data(plethodon) 
   Y.gpa <- gpagen(plethodon$land)
   land.gps <- c("A","A","A","A","A","B","B","B","B","B","B","B") 
-  succeed(IT <- integration.test(Y.gpa$coords, partition.gp = land.gps))
+  succeed(IT <- integration.test(Y.gpa$coords, partition.gp = land.gps, 
+                                 iter = 3))
   succeed(summary(IT))
   succeed(P <- plot(IT))
   succeed(IT$left.pls.vectors)
@@ -463,7 +466,8 @@ test_that("modularity.test1.works", {
   data(pupfish) 
   Y.gpa <- gpagen(pupfish$coords, print.progress = FALSE)
   land.gps <- rep('a',56); land.gps[39:48] <- 'b'
-  succeed(MT <- modularity.test(Y.gpa$coords, land.gps, CI = FALSE, iter = 3))
+  succeed(MT <- modularity.test(Y.gpa$coords, land.gps, opt.rot = FALSE, 
+                                CI = FALSE, iter = 3))
   succeed(summary(MT))
   succeed(plot(MT))
 })
@@ -511,11 +515,11 @@ test_that("morphol.disparity3.works", {
   pleth.pgls <- procD.pgls(coords ~ Csize + gp.end, phy = phy, 
     data = gdf, iter = 3)
   succeed(morphol.disparity(f1 = pleth.ols, groups = ~ gp.end, data = gdf, 
-    print.progress = FALSE))
+    print.progress = FALSE, iter = 3))
   succeed(morphol.disparity(f1 = pleth.pgls, groups = ~ gp.end, 
-    transform = FALSE, data = gdf, print.progress = FALSE))
+    transform = FALSE, data = gdf, print.progress = FALSE, iter = 3))
   succeed(morphol.disparity(f1 = pleth.pgls, groups = ~ gp.end,
-    transform = TRUE, data = gdf, print.progress = FALSE))
+    transform = TRUE, data = gdf, print.progress = FALSE, iter = 3))
   succeed(PW <- pairwise(pleth.ols, groups = gp.end))
   succeed(summary(PW, test.type = 'var'))
   succeed(PW2 <- pairwise(pleth.pgls, groups = gp.end))
@@ -1003,13 +1007,13 @@ test_that("extended.pgls.works", {
   data(pupfish.ws) 
   succeed(fit <- extended.pgls(f1 = coords~Species * Sex + Population, 
                                data = pupfish.ws, species = "Species",
-                               phy = pupfish.ws$phy))
+                               phy = pupfish.ws$phy, iter = 3))
   succeed(anova(fit))
   succeed(fit.mult <- manova.update(fit, PC.no = 40))
   succeed(summary(fit.mult, test = "Wilks"))
   succeed(fit2 <- extended.pgls(f1 = coords ~ Species * Sex + Population, 
                                 data = pupfish.ws, species = "Species",
-                                Cov = pupfish.ws$Cov))
+                                Cov = pupfish.ws$Cov, iter = 3))
   succeed(anova(fit2))
   succeed(fit2.mult <- manova.update(fit2, PC.no = 40))
   succeed(summary(fit2.mult, test = "Wilks"))

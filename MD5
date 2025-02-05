@@ -1,5 +1,5 @@
 4ead318c37abf1cbd55fc08ab2f07a07 *cran-comments.md
-01793157a0d722f0292a67c1fc4336ae *CRAN-SUBMISSION
+f94bc794cf83fb77781ad78fc4f0b687 *CRAN-SUBMISSION
 247b6e5658356e87edfd560687b239fc *data/hummingbirds.rda
 56558754725fea156eb0820f67a4f508 *data/larvalMorph.rda
 c3fc0e7a97f4cbd5b6cd8944d737b11a *data/lizards.rda
@@ -216,7 +216,7 @@ ce64f40b8badacea0852af718e718355 *R/warpRefOutline.r
 ad572d6203f667d37641cee3adbc72b7 *R/writeland.tps.r
 c74a911cb0e86f68f556cbff5c5f213c *README.md
 0c7f793ce4a81cedc1dfec479f7dce1f *tests/testthat.R
-c5f98a849c58e6f537a6a9c07bd79004 *tests/testthat/test-geomorph.R
+bef6643cd2e18cb09bfb3b0f4c7eb216 *tests/testthat/test-geomorph.R
 e38457520062fb02c6d9c8adf08cae55 *vignettes/cran-comments.md
 d3e5db710ad3bfca0e5be89edc91a2a9 *vignettes/figs/example_spec2.png
 e108112cb2dec057facffbf5571b92bf *vignettes/figs/example_template.png
