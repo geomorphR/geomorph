@@ -11,6 +11,7 @@ gm.prcomp(
   unit.tree = TRUE,
   GLS = FALSE,
   transform = FALSE,
+  unit.size = TRUE,
   ...
 )
 }
@@ -29,6 +30,9 @@ Alternatively, this can be an n x p matrix of any data, but output will not cont
 \item{transform}{A logical value to indicate if transformed residuals should be projected.  This is only applicable if 
 GLS = TRUE.  If TRUE, an orthogonal projection of transformed data is made; if FALSE an oblique projection of untransformed 
 data is made.}
+
+\item{unit.size}{Logical value for whether shapes estimated at axis extremes should be unit size (divided by centroid size).
+If input coordinates are not unit size (e.g., Boas coordinates), this argument should be changed to FALSE.}
 
 \item{...}{Other arguments passed to \code{\link[RRPP]{ordinate}} and \code{\link{scale}}.  The most common
 arguments are scale., tol, and rank.}

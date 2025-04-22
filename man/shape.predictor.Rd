@@ -4,7 +4,14 @@
 \alias{shape.predictor}
 \title{Shape prediction from numeric predictors}
 \usage{
-shape.predictor(A, x = NULL, Intercept = FALSE, method = c("LS", "PLS"), ...)
+shape.predictor(
+  A,
+  x = NULL,
+  Intercept = FALSE,
+  method = c("LS", "PLS"),
+  unit.size = FALSE,
+  ...
+)
 }
 \arguments{
 \item{A}{A 3D array (p x k x n) containing Procrustes shape variables either from GPA or fitted values from a previous
@@ -22,6 +29,8 @@ shape at the point the predictor has a value of 0 is not the mean shape.}
 to LS prediction.  PLS might be chosen in cases where correlation is preferred over linear regression.  If PLS is chosen, a two-block
 PLS analysis using  \code{\link{two.b.pls}} should be performed first, as only the first singular vector for predictors will be used
 for defining prediction criteria (see below).}
+
+\item{unit.size}{Logical value for whether predicted coordinates should be scaled to unit size (divided by centroid size).}
 
 \item{...}{Any number of prediction criteria.  Criteria should be presented as either a scalar (if one predictor is provided) or 
 a vector (if more than one predictor or a prediction matrix is provided); e.g., pred1 = c(0.1, -0.5), pred2 = c(-0.2, -0.1) (which

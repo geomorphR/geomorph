@@ -16,6 +16,7 @@
 #' to LS prediction.  PLS might be chosen in cases where correlation is preferred over linear regression.  If PLS is chosen, a two-block
 #' PLS analysis using  \code{\link{two.b.pls}} should be performed first, as only the first singular vector for predictors will be used
 #' for defining prediction criteria (see below).
+#' @param unit.size Logical value for whether predicted coordinates should be scaled to unit size (divided by centroid size).
 #' @param ... Any number of prediction criteria.  Criteria should be presented as either a scalar (if one predictor is provided) or 
 #' a vector (if more than one predictor or a prediction matrix is provided); e.g., pred1 = c(0.1, -0.5), pred2 = c(-0.2, -0.1) (which
 #' would be the case if two predictors were provided).  It is essential that the number of elements in any prediction criterion matches
@@ -156,7 +157,8 @@
 shape.predictor <- function(A, 
                             x = NULL, 
                             Intercept = FALSE, 
-                            method = c("LS", "PLS"), ...){
+                            method = c("LS", "PLS"), 
+                            unit.size = FALSE, ...){
   if(length(dim(A)) != 3) stop("Shape data must be in the form of a p x k x n array")
   dims <- dim(A); p <- dims[1]; k <- dims[2]; n <- dims[3]
   Y <- two.d.array(A)
@@ -217,5 +219,8 @@ shape.predictor <- function(A,
   if(!Intercept) reshape <- function(x) M + arrayspecs(x,p,k)[,,1] else
     reshape <- function(x) M0 + arrayspecs(x,p,k)[,,1] 
   preds <- lapply(preds, reshape)
+  if(unit.size)
+    preds <- lapply(preds, cs.scale)
+  
   return(preds)
 }

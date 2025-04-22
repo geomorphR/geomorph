@@ -1,4 +1,9 @@
-# CHANGES IN GEOMORPH VERSION 4.0.9.999
+# CHANGES IN GEOMORPH VERSION 4.0.10.999
+
+### NEW FEATURES
+
+* New argument in `shape.predictor` and `gm.prcomp` to indicate if estimated configurations
+should be scaled to unit size.
 
 # CHANGES IN GEOMORPH VERSION 4.0.10
 

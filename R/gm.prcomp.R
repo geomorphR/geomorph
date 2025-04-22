@@ -75,6 +75,8 @@
 #' @param transform A logical value to indicate if transformed residuals should be projected.  This is only applicable if 
 #' GLS = TRUE.  If TRUE, an orthogonal projection of transformed data is made; if FALSE an oblique projection of untransformed 
 #' data is made.
+#' @param unit.size Logical value for whether shapes estimated at axis extremes should be unit size (divided by centroid size).  
+#' If input coordinates are not unit size (e.g., Boas coordinates), this argument should be changed to FALSE.
 #' @param ... Other arguments passed to \code{\link[RRPP]{ordinate}} and \code{\link{scale}}.  The most common
 #' arguments are scale., tol, and rank.
 #' @return An object of class "gm.prcomp" contains a list of results for each of the PCA approaches implemented.
@@ -170,7 +172,8 @@
 #'  }
 
 gm.prcomp <- function (A, phy = NULL, align.to.phy = FALSE,
-                       unit.tree = TRUE, GLS = FALSE, transform = FALSE, ...) {
+                       unit.tree = TRUE, GLS = FALSE, transform = FALSE, 
+                       unit.size = TRUE, ...) {
   
   if(is.array(A)) {
   
@@ -252,10 +255,8 @@ gm.prcomp <- function (A, phy = NULL, align.to.phy = FALSE,
     out$shapes <- lapply(1:ncol(out$x),  
                          function(x){shape.predictor(A, out$x[,x], 
                                                      min = min(out$x[,x]),
-                                                     max = max(out$x[,x]))})
-    
-    out$shapes <- lapply(out$shapes, function(x){
-      lapply(x, function(j) cs.scale(j))})
+                                                     max = max(out$x[,x]),
+                                                     unit.size = unit.size)})
 
     names(out$shapes) <- paste("shapes.comp", 1:length(out$d), sep = "")
   }
