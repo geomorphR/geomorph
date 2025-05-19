@@ -125,12 +125,12 @@ physignal.eigen <- function(Y, phy = NULL, Cov = NULL,
   p <- ncol(Y)
   
   if(p >= n) {
-    PCA <- ordinate(Y, rank. = n - 2)
+    PCA <- ordinate(Y, rank. = n - 2, tol = tol)
     Y <- PCA$x
   }
 
   if(p < n) {
-    PCA <- ordinate(Y)
+    PCA <- ordinate(Y, tol = tol)
     Y <- PCA$x
   }
     

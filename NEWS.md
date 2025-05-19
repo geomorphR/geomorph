@@ -5,6 +5,10 @@
 * New argument in `shape.predictor` and `gm.prcomp` to indicate if estimated configurations
 should be scaled to unit size.
 
+### BUG FIXES
+
+* Fixed unused tol argument in `physignal.eigen`.
+
 # CHANGES IN GEOMORPH VERSION 4.0.10
 
 ### NEW FEATURES
