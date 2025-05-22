@@ -547,6 +547,7 @@ anc.BM <- function(phy, Y){
   phy <- reorder.phy(phy)
   Y <- as.matrix(Y)
   N <- length(phy$tip.label)
+  print("Custom version")
   # Y <- Y[phy$tip.label, ]
   edge <- cbind(phy$edge, phy$edge.length)
   ind <-rank(edge[,1], ties.method = "last")
