@@ -297,7 +297,7 @@ physignal.z <- function(A, phy, lambda = c("burn", "mean", "front", "all"), iter
   Pcov.o <- Cov.proj(Cov.o, rownames(Y))
   U.o <- qr.Q(qr(Pcov.o %*% x))
   
-  ind <- perm.index(n, iter, seed)
+  ind <- perm.index(n, iter, seed = seed)
   perms <- length(ind)
   
   if(print.progress) {
