@@ -84,7 +84,7 @@ e1b19a991aa5c05b644349eb00687e39 *man/plot.pls.Rd
 13c6015521a9d77ac02f5175a7a74e2b *man/plot.procD.lm.Rd
 da57015bbc56148b9e42302e5a0d3196 *man/plotAllometry.Rd
 c097826d3931b024cfe9b1c3f430d430 *man/plotAllSpecimens.Rd
-212e8d06d536318fe6bba97ba66837c5 *man/plotOutliers.Rd
+8fc14f3df197b993808efe37a27fe3cb *man/plotOutliers.Rd
 b49f28f87fc0f9d424d0a0c96e2df8b0 *man/plotRefToTarget.Rd
 bad0fa4d3d6465692e14f17b4f06bba6 *man/plotspec.Rd
 bf735457c885585781fa8dd86e2671b8 *man/print.bilat.symmetry.Rd
@@ -204,7 +204,7 @@ aa77b1fafa764c2e06199951593f2f67 *R/physignal.z.r
 85ebbf8036df4f7b4a7498bd6550bfbe *R/picknplot.shape.r
 c66f942ba7e910f13fdee6ca8aec31bd *R/plotAllometry.r
 ca34da1f17ac2989b1d0da05ba6f658c *R/plotAllSpecimens.r
-cdeda457fb247b2ffb195f25d920c960 *R/plotOutliers.r
+3bec830504f5f9bfd3b1cc180db61649 *R/plotOutliers.r
 dae329c741f1469944e4ab78afa391c4 *R/plotRefToTarget.r
 0af3cbcee4235b9445e271cd98c34a2c *R/plotspec.r
 12d763d62ae7b2affa6a047671664b6d *R/procD.lm.r
