@@ -2,12 +2,22 @@
 #' 
 #' Function plots all specimens ordered by distance from the mean.
 #' 
-#' The function creates a plot of all specimens ordered by their Procrustes distance from the mean shape. 
-#' The median distance (unbroken line) and upper and lower quartiles (dashed lines) summarize the distances
-#' from the mean shape. Specimens falling above the upper quartile are plotted in red. The user may optionally 
-#' also inspect the shapes of identified outlier configurations as compared to the consensus, in order
-#' to identify digitization errors or other data issues. The addresses of all specimens are
-#' returned in the order displayed in the plot for further inspection by \code{\link{plotRefToTarget}}.
+#' The function creates a plot of all specimens ordered by their Procrustes
+#' distance from the mean shape.
+#' 
+#' The median distance (unbroken line), along with upper and lower limits
+#' (dashed lines) computed following Tukey's boxplot rule, summarize the
+#' distances from the mean shape.
+#' After computing the first and third quartiles of all Procrustes distances,
+#' specimens falling above the upper limit (i.e., with a Procrustes distance
+#' greater than \eqn{Q_3 + 1.5 \times (Q_3 - Q_1)}) are flagged as
+#' potential outliers and are plotted in red.
+#' 
+#' The user may optionally also inspect the shapes of identified outlier
+#' configurations as compared to the consensus, in order to identify
+#' digitization errors or other data issues.
+#' The addresses of all specimens are returned in the order displayed in
+#' the plot for further inspection by \code{\link{plotRefToTarget}}.
 #' 
 #' If the data have strong group structure and there is reasonable belief that the whole sample mean should not be used,
 #' then a factor defining the groups can be used.
@@ -59,9 +69,9 @@ plotOutliers <- function(A, groups = NULL, inspect.outliers = FALSE){
       abline(a=LL, b=0,lty=2,col= "blue")
       abline(a=Med,b=0,col= "blue")
       abline(a=UL,b=0,lty=2,col= "blue")
-      text(x= nrow(A.d), y=LL, labels= "lower quartile", col = "blue", cex=0.5, adj=c(0.5, 1))
+      text(x= nrow(A.d), y=LL, labels= "lower limit", col = "blue", cex=0.5, adj=c(0.5, 1))
       text(x= nrow(A.d), y=Med, labels= "median",col = "blue", cex=0.5, adj=c(0.5, -0.5))
-      text(x= nrow(A.d), y=UL, labels= "upper quartile",col = "blue", cex=0.5, adj=c(0.5, -0.5))
+      text(x= nrow(A.d), y=UL, labels= "upper limit",col = "blue", cex=0.5, adj=c(0.5, -0.5))
     if(any(D >= UL)) { 
       points(D[which(D >= UL)], pch=19, col="red")
       text(D[which(D >= UL)], labels=names(D)[which(D >= UL)], col= "red", adj=0.8, pos=4, cex=0.5)

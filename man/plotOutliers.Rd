@@ -21,12 +21,22 @@ a list structure and a plot for each level in groups.
 Function plots all specimens ordered by distance from the mean.
 }
 \details{
-The function creates a plot of all specimens ordered by their Procrustes distance from the mean shape. 
-The median distance (unbroken line) and upper and lower quartiles (dashed lines) summarize the distances
-from the mean shape. Specimens falling above the upper quartile are plotted in red. The user may optionally 
-also inspect the shapes of identified outlier configurations as compared to the consensus, in order
-to identify digitization errors or other data issues. The addresses of all specimens are
-returned in the order displayed in the plot for further inspection by \code{\link{plotRefToTarget}}.
+The function creates a plot of all specimens ordered by their Procrustes
+distance from the mean shape.
+
+The median distance (unbroken line), along with upper and lower limits
+(dashed lines) computed following Tukey's boxplot rule, summarize the
+distances from the mean shape.
+After computing the first and third quartiles of all Procrustes distances,
+specimens falling above the upper limit (i.e., with a Procrustes distance
+greater than \eqn{Q_3 + 1.5 \times (Q_3 - Q_1)}) are flagged as
+potential outliers and are plotted in red.
+
+The user may optionally also inspect the shapes of identified outlier
+configurations as compared to the consensus, in order to identify
+digitization errors or other data issues.
+The addresses of all specimens are returned in the order displayed in
+the plot for further inspection by \code{\link{plotRefToTarget}}.
 
 If the data have strong group structure and there is reasonable belief that the whole sample mean should not be used,
 then a factor defining the groups can be used.
