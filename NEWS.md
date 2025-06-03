@@ -4,6 +4,7 @@
 
 * New argument in `shape.predictor` and `gm.prcomp` to indicate if estimated configurations
 should be scaled to unit size.
+* Updates `plotOutliers` to allow distances from limited PCs.
 
 ### BUG FIXES
 

@@ -79,7 +79,7 @@ e1b19a991aa5c05b644349eb00687e39 *man/plot.pls.Rd
 13c6015521a9d77ac02f5175a7a74e2b *man/plot.procD.lm.Rd
 da57015bbc56148b9e42302e5a0d3196 *man/plotAllometry.Rd
 c097826d3931b024cfe9b1c3f430d430 *man/plotAllSpecimens.Rd
-212e8d06d536318fe6bba97ba66837c5 *man/plotOutliers.Rd
+8fc14f3df197b993808efe37a27fe3cb *man/plotOutliers.Rd
 b49f28f87fc0f9d424d0a0c96e2df8b0 *man/plotRefToTarget.Rd
 bad0fa4d3d6465692e14f17b4f06bba6 *man/plotspec.Rd
 bf735457c885585781fa8dd86e2671b8 *man/print.bilat.symmetry.Rd
@@ -143,8 +143,8 @@ e01d50f314a354e0a440204c773bb501 *man/two.b.pls.Rd
 d2755155772526527e4224b17d0dd05d *man/warpRefMesh.Rd
 7bea8d6b17918fd4889e2056ebe0e3d0 *man/warpRefOutline.Rd
 d9119f721918f22c267db843023a86fe *man/writeland.tps.Rd
-70b508649391a240faadb6b5ae76d833 *NAMESPACE
-18fa80a1dfb74d9acd21357e3626f1b4 *NEWS.md
+69fd7768609101d4fbfc5e7ca33b9d61 *NAMESPACE
+b6c9a2e68ada53b7cfe22267d5f513d3 *NEWS.md
 e65d7da576d1eb0948aacecf1b235a68 *R/arrayspecs.r
 28a0cd88b6a7a020ff356227cbefe15d *R/bilat.symmetry.r
 2adab339b3d8b4daa0357786ac812dd1 *R/build.template.r
@@ -170,7 +170,7 @@ ef63dcd9d476d5d29d6029f08c57e29d *R/extended.pgls.r
 aac6a4f8a759473e8c37048e5c8e3d91 *R/findMeanSpec.r
 b792f75d1fb825423b03a8711c0120a4 *R/fixed.angle.r
 14c82d650f7cbbf5ef8786303b1e0373 *R/geomorph.data.frame.r
-17629816d48fbe4b168151d6013cfc6a *R/geomorph.support.code.r
+d99acf67202fb90b34b2cbda8719d8b6 *R/geomorph.support.code.r
 eee699717575ddcc5f10df191e8f60ec *R/geomorph.utils.r
 d8571c8894e54b32c96c2ce94c6b7101 *R/globalIntegration.r
 02c3a9f0242f86753003cdba36f3db4f *R/gm.measurement.error.R
@@ -191,7 +191,7 @@ aa77b1fafa764c2e06199951593f2f67 *R/physignal.z.r
 85ebbf8036df4f7b4a7498bd6550bfbe *R/picknplot.shape.r
 c66f942ba7e910f13fdee6ca8aec31bd *R/plotAllometry.r
 ca34da1f17ac2989b1d0da05ba6f658c *R/plotAllSpecimens.r
-cdeda457fb247b2ffb195f25d920c960 *R/plotOutliers.r
+64a4d62c7d3d71d04aea6e7bfb48822b *R/plotOutliers.r
 dae329c741f1469944e4ab78afa391c4 *R/plotRefToTarget.r
 0af3cbcee4235b9445e271cd98c34a2c *R/plotspec.r
 12d763d62ae7b2affa6a047671664b6d *R/procD.lm.r
