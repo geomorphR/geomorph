@@ -543,7 +543,7 @@ print.physignal.z <- function(x, ...){
     cat(paste("\n\nP-value:", round(x$pvalue, nchar(x$permutations))), "based on", x$permutations, "random permutations")
     cat("\n\nFor a model with a log-likelihood of", round(x$rand.logL[[1]], nchar(x$permutations)))
     cat("\na branch-scaling (lambda) of", round(x$lambda, nchar(x$permutations)))
-    cat("\nand a ratio of Bownian Motion fit (K) of", round(x$K, nchar(x$permutations)), "\n")
+    cat("\nand a ratio of Brownian Motion fit (K) of", round(x$K, nchar(x$permutations)), "\n")
     
     if(!is.null(x$K.by.p)) {
       cat("\nK measured across phylogenetically-aligned components (1, 1:2, 1:3, ...\n")
