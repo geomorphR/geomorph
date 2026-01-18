@@ -67,7 +67,7 @@ the capability of performing analyses generally referred to as:
 states and phylogenetic branches projected into ordination plots.}
 \item{\bold{phyloPCA}}{  PCA based on GLS-centering and projection of data.  Also possible to 
 project ancestral states into plots. Note that if transformed GLS-residuals are used for projection, the ancestral states
-might not appear logical, as the projection is independent of phylogeny.  With OLS-centering, a phyloPCA as described by 
+might not appear logical, as the projection is independent of phylogeny.  With GLS-centering (but not transformation), a phyloPCA as described by 
 Revell (2009) is produced.}
 \item{\bold{PaCA}}{  Phylogenetically-aligned component analysis.  Data are aligned to an axis of greatest phylogenetic
 signal rather than axis of greatest dispersion.  This analysis can use either OLS- or GLS-centering and projection.  
