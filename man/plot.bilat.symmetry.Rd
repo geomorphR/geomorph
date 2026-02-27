@@ -19,7 +19,7 @@
 Plot Function for geomorph
 }
 \author{
-Michael Collyer
+Dean Adams and Michael Collyer
 }
 \keyword{utilities}
 \keyword{visualization}

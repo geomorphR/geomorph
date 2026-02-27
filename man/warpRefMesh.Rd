@@ -4,7 +4,7 @@
 \alias{warpRefMesh}
 \title{Creates a mesh3d object warped to the mean shape}
 \usage{
-warpRefMesh(mesh, mesh.coord, ref, color = NULL, centered = FALSE)
+warpRefMesh(mesh, mesh.coord, ref, centered = FALSE)
 }
 \arguments{
 \item{mesh}{A mesh3d object (e.g. made by \code{\link{read.ply}})}
@@ -12,9 +12,6 @@ warpRefMesh(mesh, mesh.coord, ref, color = NULL, centered = FALSE)
 \item{mesh.coord}{A p x k matrix of 3D coordinates digitized on the ply file.}
 
 \item{ref}{A p x k matrix of 3D coordinates made by \code{\link{mshape}}}
-
-\item{color}{Color to set the ply file $material. If the ply already has color, use NULL. 
-For ply files without color, color=NULL will be plotted as gray.}
 
 \item{centered}{Logical If the data in mesh.coords were collected from a centered mesh (see details).}
 }
@@ -36,13 +33,13 @@ reference for warping (see Rohlf 1998). The workflow is as follows:
 \item{Choose an actual specimen to use for the warping. The specimen used as the template for this warping 
 is recommended as one most similar in shape to the average of the sample, but can be any reasonable 
 specimen - do this by eye, or use \code{\link{findMeanSpec}} }
-\item{Warp this specimen into the mean shape using \code{\link{warpRefMesh}} }
+\item{Warp this specimen into the mean shape using this function (warpRefMesh) }
 \item{Use this average mesh where it asks for a mesh= in the analysis functions and visualization functions  }
 }
 Users should ensure that their mesh and mesh.coord matrix are in the same scale (a common issue is that the mesh is in micrometers and coordinates are in mm or cm). Use range(mesh$vb[1:3,]) and range(mesh.coord) to check and adjust mesh.coord as necessary.
 
 For landmark coordinates digitized with geomorph digitizing functions, centered = TRUE. This refers to the
-specimen being centered prior to landmark acquisition in the RGL window. For landmark data collected outside
+specimen being centered prior to landmark acquisition. For landmark data collected outside
 of geomorph, centered=FALSE will usually be the case. The returned mesh3d object is for use in geomorph
 functions where shape deformations are plotted (\code{\link{picknplot.shape}}, 
 \code{\link{two.b.pls}}, \code{\link{bilat.symmetry}}, and \code{\link{plotRefToTarget}}).
@@ -55,11 +52,9 @@ Rohlf, F. J. 1998. On Applications of Geometric Morphometrics to Studies of Onto
 }
 \seealso{
 \code{\link{findMeanSpec}}
-
-\code{\link[rgl]{rgl-package}} (used in 3D plotting)
 }
 \author{
-Emma Sherratt
+Dean Adams and Emma Sherratt
 }
 \keyword{utilities}
 \keyword{visualization}

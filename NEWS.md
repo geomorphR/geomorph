@@ -1,4 +1,9 @@
-# CHANGES IN GEOMORPH VERSION 4.0.10.999
+# CHANGES IN GEOMORPH VERSION 4.1.0
+
+### MAJOR CHANGES
+
+* Internal switch to `plotly` for 3D graphics (was previously `RGL`)
+* All 3D digitizing functions now deprecated (previously depended on `RGL`)
 
 ### NEW FEATURES 
 

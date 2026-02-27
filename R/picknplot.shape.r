@@ -8,8 +8,7 @@
 #' \code{\link{plot.pls}}, or \code{\link{plotAllometry}}, and makes them interactive to visualize shape variation by selecting one or more points in morphospace. 
 #' The function uses \code{\link{shape.predictor}} 
 #' to estimate the shape corresponding to the selected point(s) based on the prediction underlying the scatterplot, and it plots the estimated 
-#' shape as compared to the consensus landmark configuration using \code{\link{plotRefToTarget}}. The user is then prompted as to whether the plotted
-#' shape is to be saved as a png file, in which case the name of the file needs to be provided (without quotation marks).
+#' shape as compared to the consensus landmark configuration using \code{\link{plotRefToTarget}}.
 #' Interactive plots are at present available for plots produced by \code{\link{plot.gm.prcomp}}.  The function is limited in terms of the options for 
 #' \code{\link{plotRefToTarget}} (because of the complexity of graphics); using \code{\link{shape.predictor}} and \code{\link{plotRefToTarget}}, directly, 
 #' will always offer more flexibility.
@@ -25,9 +24,8 @@
 #' \item{shapes}{A list with the corresponding estimated shapes.}
 #' @keywords visualization
 #' @export
-#' @author Antigoni Kaliontzopoulou, Emma Sherratt, & Michael Collyer
+#' @author Dean Adams, Antigoni Kaliontzopoulou, Emma Sherratt, & Michael Collyer
 #' @seealso  \code{\link{shape.predictor}}, \code{\link{plotRefToTarget}}
-#' @seealso  \code{\link[rgl]{rgl-package}} (used in 3D plotting)
 #' @examples
 #' \dontrun{
 #' 
@@ -82,6 +80,8 @@ picknplot.shape <- function(x, ...){
     stop("Class of plot object not compatible with picknplot.shape. \nPlease see the help file for allowed plot objects\n",
          call. = FALSE)
   }
+  op <- options(viewer = NULL)
+  on.exit(options(op), add = TRUE) 
   
   do.call(plot, x$plot_args)
   if(!is.null(x$phylo)){
@@ -110,7 +110,6 @@ picknplot.shape <- function(x, ...){
   # plot_args currently not used but could be in the future
   # adding a phylogeny currently has no plotting options
   
- 
   prt.args <- prt.args[prt.args.pos] 
    
   if(is.null(prt.args$method)) prt.args$method <- "TPS"
@@ -163,14 +162,12 @@ picknplot.shape <- function(x, ...){
         "\nSwitching to method = 'points'.  Use shape.predictor and plotRefToTarget for more options.\n\n")
     prt.args$method <- "points"
   }
-  
   while(continue == "y"){
     cat("Pick a point in the shape space", "\n")
     picked.pts[[p]] <- unlist(locator(n = 1, type = "p", pch = 20, col = "red", cex = 1))
     cat("Picked point coordinates are:", "\n")
     cat(picked.pts[[p]], "\n")
 
-  
     if(type == "PC") {
       X <- as.matrix(cbind(x$plot_args$x, x$plot_args$y))
       rownames(X) <- names(x$plot_args$x)
@@ -213,24 +210,18 @@ picknplot.shape <- function(x, ...){
     }
 
     if(type == "PC" || type == "regression1" || type == "regression2") {
-      
+
       if (dim(A1)[2] == 2) {
-        prt.args$M1 <- cbind(mshape(A1), 0)
-        prt.args$M2 <- cbind(picked.shapes[[p]], 0)
-        class(prt.args$M2) <- "predshape.k2"
-        view3d(phi = 0, fov = 30, interactive = FALSE) 
-        do.call(plotRefToTarget, prt.args)
+        prt.args$M1 <- mshape(A1)
+        prt.args$M2 <- picked.shapes[[p]]
+        dev.new()
+        do.call(plotRefToTarget, prt.args) 
       }
       if (dim(A1)[2] == 3){
         prt.args$M1 <- mshape(A1)
         prt.args$M2 <- picked.shapes[[p]]
-        class(prt.args$M2) <- "predshape.k3"
-        if(prt.args$method == "TPS"){
-          view3d(phi = 0, fov = 30, interactive = FALSE)
-        } else {
-          view3d(phi = 0, fov = 30, interactive = TRUE)
-        }
-        do.call(plotRefToTarget,  prt.args)
+        fig <- do.call(plotRefToTarget,  prt.args)
+        print(fig)
       }
       
     }
@@ -238,65 +229,39 @@ picknplot.shape <- function(x, ...){
     if(type == "PLS") {
       
       if (dim(A1)[2] == 2) {
-        
-        prt.args$M1 <- cbind(mshape(A1), 0)
-        prt.args$M2 <- cbind(picked.shapes[[p]][[1]], 0)
-        class(prt.args$M2) <- "predshape.k2"
-        view3d(phi = 0, fov = 30, interactive = FALSE) 
-        mfrow3d(1, 2)
-        do.call(plotRefToTarget, prt.args)
-        
+        prt.args$M1 <- mshape(A1)
+        prt.args$M2 <- picked.shapes[[p]]
+        dev.new()
+        do.call(plotRefToTarget, prt.args) 
       }
       if (dim(A1)[2] == 3){
         prt.args$main = "PLS Block 1"
         prt.args$M1 <- mshape(A1)
         prt.args$M2 <- picked.shapes[[p]][[1]]
         class(prt.args$M2) <- "predshape.k3"
-        if(prt.args$method == "TPS"){
-          open3d()
-          mfrow3d(1, 2)
-        } else {
-          open3d()
-          mfrow3d(1, 2)
-        }
-        do.call(plotRefToTarget,  prt.args)
-        
+        fig <- do.call(plotRefToTarget,  prt.args)
+        print(fig)
       }
       
       if (dim(A2)[2] == 2) {
         prt.args$main = "PLS Block 2"
-        prt.args$M1 <- cbind(mshape(A2), 0)
-        prt.args$M2 <- cbind(picked.shapes[[p]][[2]], 0)
-        class(prt.args$M2) <- "predshape.k2"
-        do.call(plotRefToTarget, prt.args)
-        
+        prt.args$M1 <- mshape(A1)
+        prt.args$M2 <- picked.shapes[[p]]
+        dev.new()
+        do.call(plotRefToTarget, prt.args) 
       }
       if (dim(A2)[2] == 3){
         prt.args$main = "PLS Block 2"
         prt.args$M1 <- mshape(A2)
         prt.args$M2 <- picked.shapes[[p]][[2]]
-        class(prt.args$M2) <- "predshape.k3"
-        do.call(plotRefToTarget,  prt.args)
-        
+        fig <- do.call(plotRefToTarget,  prt.args)
+        print(fig)
       }
-      
     }
 
-    ans <- readline("Save deformation grid as png file (y/n)? ")
-    if(ans=="y") {
-      file.name <- readline("Please provide file name for saving deformation grid (without quotes) ")
-      rgl.snapshot(filename = file.name)
-    }
-    if(ans=="n"){
-      try(close3d(), silent=T)
-    }
     continue <- readline("Do you want to pick another point (y/n)? ")
     p = p + 1
   } 
   out <- list(points = picked.pts, shapes = picked.shapes)
   invisible(out)
 }
-
-  
-  
-

@@ -1,8 +1,8 @@
 ## Resubmission
-This is a patch release, 4.10.  It also provides several new functions.
+This is a minor release, 4.1.0.  This switches 3D graphics to plotly away from RGL.
 
 ## Test environments
-* local OS X install, R 4.4.2
+* local OS X install, R 4.5.2
 * win-builder (devel and release)
 * R-hub (all platforms)
 

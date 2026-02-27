@@ -12,6 +12,10 @@
 \item{use.rel.dims}{A logical argument for whether to use only the relevant dimensions in the plot, 
 based on a broken stick model.}
 
+\item{add.lines}{A logical for whether lines should be added}
+
+\item{add.legend}{A logical for whether the legend should be included}
+
 \item{...}{other arguments passed to plot.
 
 This function vectorizes a summary table (for proportions of variance) 

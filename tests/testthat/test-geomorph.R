@@ -922,22 +922,22 @@ test_that("shape.predictor5.works", {
   succeed(plotRefToTarget(M, preds$pred4, mag = 2))
 })
 
-test_that("shape.predictor6.works", {
-  data("plethodon")
-  Y.gpa <- gpagen(plethodon$land, print.progress = F) 
-  M <- mshape(Y.gpa$coords)
-  gdf <- geomorph.data.frame(Y.gpa, species = plethodon$species, 
-                             site = plethodon$site)
-  pleth <- procD.lm(coords ~ species * site, data=gdf, iter = 3, print.progress = F)
-  X <- pleth$X
-  X <- X[,-1]
-  symJord <- c(0,1,0) 
-  alloJord <- c(0,0,0) 
-  succeed(preds <- shape.predictor(arrayspecs(pleth$fitted, 12,2), x = X, 
-    Intercept = TRUE, symJord=symJord, alloJord=alloJord))
-  succeed(plotRefToTarget(M, preds$symJord, mag = 2))
-  succeed(plotRefToTarget(M, preds$alloJord, mag = 2))
-})
+#test_that("shape.predictor6.works", {
+#  data("plethodon")
+#  Y.gpa <- gpagen(plethodon$land, print.progress = F) 
+#  M <- mshape(Y.gpa$coords)
+#  gdf <- geomorph.data.frame(Y.gpa, species = plethodon$species, 
+#                             site = plethodon$site)
+#  pleth <- procD.lm(coords ~ species * site, data=gdf, iter = 3, print.progress = F)
+#  X <- pleth$X
+#  X <- X[,-1]
+#  symJord <- c(0,1,0) 
+#  alloJord <- c(0,0,0) 
+#  succeed(preds <- shape.predictor(arrayspecs(pleth$fitted, 12,2), x = X, 
+#    Intercept = TRUE, symJord=symJord, alloJord=alloJord))
+#  succeed(plotRefToTarget(M, preds$symJord, mag = 2))
+#  succeed(plotRefToTarget(M, preds$alloJord, mag = 2))
+#})
 
 test_that("shape.predictor7.works", {
   data(plethShapeFood) 

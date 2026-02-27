@@ -4,7 +4,7 @@
 \alias{summary.module.eigen}
 \title{Print/Summary function for geomorph}
 \usage{
-\method{summary}{module.eigen}(object, use.rel.dims = TRUE, PC = 1)
+\method{summary}{module.eigen}(object, use.rel.dims = TRUE, PC = 1, ...)
 }
 \arguments{
 \item{object}{An object of class \code{\link{module.eigen}}}

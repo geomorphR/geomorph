@@ -1,14 +1,13 @@
 #' Read mesh data (vertices and faces) from ply files
 #'
-#' A function to read ply files, which can be used for digitizing landmark coordinates or for shape warps.
+#' A function to read ply files, which can be used for shape warps.
 #'
 #' Function reads three-dimensional surface data in the form of a single ply file
 #'  (Polygon File Format; ASCII format only, from 3D scanners such as NextEngine and David scanners). 
-#'  Vertices of the surface may then be used to digitize three-dimensional points, 
-#'  and semilandmarks on curves and surfaces. The surface may also be used as a mesh for visualizing 3D deformations (\code{\link{warpRefMesh}}).
+#' The surface may then be used as a mesh for visualizing 3D deformations (\code{\link{warpRefMesh}}).
 #'  The function opens the ply file and plots the mesh,
 #'  with faces rendered if file contains faces, and colored if the file contains vertex color.
-#'  Vertex normals allow better visualization and more accurate digitizing with \code{\link{digit.fixed}}.
+#'  Vertex normals allow better visualization.
 #'
 #' @param file An ASCII ply file
 #' @param ShowSpecimen logical Indicating whether or not the ply file should be displayed
@@ -16,7 +15,6 @@
 #' @export
 #' @keywords IO
 #' @author Dean Adams & Emma Sherratt
-#' @seealso  \code{\link[rgl]{rgl-package}} (used in 3D plotting)
 #' @return Function returns the following components:
 #'   \item{mesh3d}{list of class mesh3d- see rgl for details}
 #' @examples 
@@ -75,9 +73,25 @@ read.ply <- function (file, ShowSpecimen = TRUE, addNormals = TRUE)
   class(mesh) <- c("mesh3d", "shape3d")
   if(addNormals==TRUE){ mesh <- addNormals(mesh)}
   if(ShowSpecimen==TRUE){ 
-    clear3d()
-    if (length(face) == 0) { dot3d(mesh) }
-    if (length(material) != 0){ shade3d(mesh, meshColor="legacy") }
-    shade3d(mesh, meshColor="legacy") }
+    fig <- plot_ly()
+    if (is.null(mesh$material$color)){mesh$material$color <- "gray"} 
+    fig <- fig |>
+      plotly::layout(scene = list(aspectmode = "data",
+         xaxis = list(title = '', 
+            showgrid = F, visible = F,showticklabels = F, 
+            zeroline = F, showbackground = F),
+         yaxis = list(title = '', showgrid = F, 
+            visible = F, showticklabels = F, zeroline = F, 
+            showbackground = F),
+         zaxis = list(title = '', showgrid = F, 
+            visible = F, showticklabels = F, zeroline = F, 
+            showbackground = F)),showlegend = FALSE) |>
+      add_trace(type = "mesh3d",
+        x = mesh$vb[1,], y = mesh$vb[2,], z = mesh$vb[3,],
+        i = mesh$it[1,] - 1, j = mesh$it[2,] - 1, k = mesh$it[3,] - 1,
+        vertexcolor = t(grDevices::col2rgb(mesh$material$color, alpha = TRUE)),
+        inherit = FALSE)
+    print(fig)
+  }
   return(mesh)
 }

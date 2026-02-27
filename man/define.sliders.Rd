@@ -7,7 +7,7 @@
 define.sliders(landmarks, nsliders, surfsliders = NULL, write.file = TRUE)
 }
 \arguments{
-\item{landmarks}{A matrix containing 2D or 3D landmark coordinates of landmarks and semilandmarks, OR A vector containing a sequence of numbers corresponding to the landmarks in the order they appear along the curve (for AUTO mode)}
+\item{landmarks}{A matrix containing landmark coordinates of landmarks and semilandmarks, OR A vector containing a sequence of numbers corresponding to the landmarks in the order they appear along the curve (for AUTO mode)}
 
 \item{nsliders}{Number of landmarks to be semilandmarks that slide along curves}
 
@@ -20,18 +20,17 @@ these should be given as a vector or use surfsliders = T, and function looks for
 Function returns a 'nsliders-x-3' matrix containing the landmark address of the curve sliders, indicating the landmarks between which the slider landmarks will "slide". If write.file = T the matrix is also written to working directory as "curveslide.csv". Matrix (or "curveslide.csv") is designed for use by \code{\link{gpagen}} during GPA.
 }
 \description{
-An interactive function to define which landmarks will "slide" along two-dimensional (2D) or
-three-dimensional (3D) curves.
+An interactive function to define which landmarks will "slide" along curves.
 }
 \details{
-Function takes a matrix of digitized landmark coordinates, such as made by \code{\link{digitize2d}} or \code{\link{digit.fixed}},
+Function takes a matrix of digitized landmark coordinates, such as made by \code{\link{digitize2d}},
  and helps user choose which landmarks will be treated as "sliders" in Generalized Procrustes analysis
  \code{\link{gpagen}}. This type of semilandmark "slides" along curves lacking known landmarks 
  (see Bookstein 1997 for algorithm details). 
  Each sliding semilandmark ("sliders") will slide between two designated points, along a line 
  tangent to the specified curvature.
  
-Defining landmarks is an interactive procedure (see below for 2D and 3D routines). The procedure is overlapping. 
+Defining landmarks is an interactive procedure (see below for 2D routines). The procedure is overlapping. 
 For example: there are 5 landmarks (1:5), 1 and 5 are landmarks and 2,3,4 are sliders,
 the user must select '1' '2' '3', and then '2' '3' '4', and then '3' '4' '5'.
 
@@ -48,31 +47,11 @@ in the following order:
  and will highlight the sliding semilandmark in red and the flanking landmarks in blue. 
 } }
 
-\subsection{Selection in 3D}{ 
-Choosing which landmarks will be sliders involves landmark selection using a mouse in the rgl plot window. 
-With a standard 3-button (PC) buildtemplate uses:
-\enumerate{
- \item the RIGHT mouse button (primary) to choose points to be defined as sliders,
- \item the LEFT mouse button (secondary) is used to rotate mesh, 
- \item the mouse SCROLLER (third/middle) is used to zoom in and out.
-}
-NOTE: Digitizing functions on MACINTOSH computers using a standard 3-button mice works as specified. Macs using platform 
-specific single button mice, XQuartz must be configured: go to Preferences > Input > tick "Emulate three button mouse":
-\enumerate{
- \item press button to rotate 3D mesh,
- \item press button while pressing COMMAND key to select points to be defined as sliders,
- \item press button while pressing OPTION key to adjust mesh perspective.
- \item the mouse SCROLLER or trackpad two finger scroll is used to zoom in an out.
+ \subsection{Notes for geomorph 4.1}{ 
+ Starting with geomorph version 4.1, interactive module selection in 3D is no longer
+ supported, as RGL is not supported under MacOS Tahoe.  Only AUTO mode is available.
  }
-
-To define the sliders, for each sliding landmark along the curve in the format 'before-slider-after':
-\enumerate{
- \item Click to choose the first landmark between which semi-landmark will "slide",
- \item Click to choose sliding landmark,
- \item Click to choose the last landmark between which semi-landmark will "slide",
-Screen will show lines connecting the three landmarks, and will highlight the sliding semilandmark in red. 
-} }
-
+ 
 \subsection{AUTO mode}{ 
 The input 'landmarks' can be simply a vector of numbers corresponding to the "sliders" (semilandmarks) in the order they appear along a curve on the specimen. This can be made by c() or seq() or any other reasonable method.
  
@@ -81,13 +60,9 @@ The input 'landmarks' can be simply a vector of numbers corresponding to the "sl
 }
 \examples{
  
-## (not run) Use interactive function in rgl window
- # data(scallops)
- # define.sliders(scallops$coorddata[,,1], nsliders=11,
- #   surfsliders = scallops$surfslide) 
- # here the first specimen is used for plotting purposes only
- 
+## (not run)
 ## Examples of AUTO mode 
+ # data(scallops)
  ## 1 curve of sliding semilandmark
  # Define sliders for scallopdata
  #sliders = define.sliders(c(5:16,1))
@@ -103,9 +78,7 @@ Bookstein, F. J. 1997 Landmark Methods for Forms without Landmarks: Morphometric
 Group Differences in Outline Shape. Medical Image Analysis 1(3):225-243.
 }
 \seealso{
-\code{\link{digitize2d}}, \code{\link{digit.fixed}}, \code{\link{gpagen}}, \code{\link{digit.curves}}
-
-\code{\link[rgl]{rgl-package}} (used in 3D plotting)
+\code{\link{digitize2d}}, \code{\link{gpagen}}, \code{\link{digit.curves}}
 }
 \author{
 Emma Sherratt & Dean Adams

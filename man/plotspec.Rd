@@ -9,8 +9,9 @@ plotspec(
   digitspec,
   fixed = NULL,
   fixed.pt.col = "red",
-  fixed.pt.size = 10,
-  mesh.ptsize = 1,
+  fixed.pt.size = 4,
+  mesh.pt.col = "black",
+  mesh.pt.size = 2,
   centered = FALSE,
   ...
 )
@@ -26,13 +27,14 @@ plotspec(
 
 \item{fixed.pt.size}{The size for plotting fixed template landmarks (if any)}
 
-\item{mesh.ptsize}{Numeric Size to plot the mesh points (vertices), e.g. 0.1 for dense meshes, 3 for sparse meshes}
+\item{mesh.pt.col}{The color for plotting mesh template landmarks}
+
+\item{mesh.pt.size}{The size to plot the mesh template points}
 
 \item{centered}{Logical Whether the data matrix is in the surface mesh coordinate system (centered = "FALSE") or
 if the data were collected after the mesh was centered (centered = "TRUE")- see details.}
 
-\item{...}{additional parameters which will be passed to rgl-plot3d or 
-rgl-points3d.}
+\item{...}{additional parameters which will be passed}
 }
 \description{
 A function to plot three-dimensional (3D) specimen along with its landmarks.
@@ -40,17 +42,10 @@ A function to plot three-dimensional (3D) specimen along with its landmarks.
 \details{
 Function to plot 3D specimens along with their digitized "fixed" landmarks and semilandmarks
 "surface sliders" and "curve sliders". If specimen is a 3D surface (class shape3d/mesh3d) mesh is plotted.
-For visualization purposes, 3D coordinate data collected using \code{\link{digit.fixed}} or 
-\code{\link{digitsurface}} and \code{\link{buildtemplate}} prior to build 1.1-6 were centered by default. 
-Therefore use this function with centered = "TRUE". Data collected outside geomorph should be read using
-centered = "FALSE". The function assumes the fixed landmarks are listed at the beginning of
-the coordinate matrix (digitspec).
-
-This function is a wrapper for several functions in the \code{rgl} package.  
-Although there is some allowance for arguments to be passed to \code{rgl} functions,
-some override of rgl-plot3d arguments is required.  Errors that result from trying
-to pass rgl-plot3d or rgl-points3d arguments should inspire the user
-to find solutions with \code{rgl} core functions.
+Data collected outside geomorph should likely be read using centered = "FALSE". 
+3D coordinate data collected using geomorph versions prior to build. 1.1-6 were centered by 
+default, and thus use centered = "TRUE". The function assumes the fixed landmarks are listed at the beginning of
+the coordinate matrix  (digitspec).
 }
 \examples{
 \dontrun{
@@ -64,13 +59,9 @@ to find solutions with \code{rgl} core functions.
  }
 }
 \seealso{
-\code{\link{warpRefMesh}}
-
 \code{\link{read.ply}}
-
-\code{rgl} (used in 3D plotting)
 }
 \author{
-Erik Otarola-Castillo, Emma Sherratt, Antigoni Kaliontzopoulou, & Michael Collyer
+Dean Adams, Antigoni Kaliontzopoulou, & Michael Collyer
 }
 \keyword{visualization}

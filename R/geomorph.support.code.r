@@ -2,7 +2,7 @@
 #' @aliases geomorph
 #' @title Geometric morphometric analyses for 2D/3D data
 #' @author Dean C. Adams, Michael Collyer, Antigoni Kaliontzopoulou, and Erica Baken
-#' @description Functions in this package allow one to read, manipulate, and digitize landmark data; generate shape
+#' @description Functions in this package allow one to read and manipulate landmark data; generate shape
 #'  variables via Procrustes analysis for points, curves and surface data, perform statistical analyses
 #'  of shape variation and covariation, and provide graphical depictions of shapes and patterns of
 #'  shape variation.
@@ -16,11 +16,11 @@
 #' @importFrom stats na.omit .lm.fit anova as.dist as.formula cmdscale coef cor cov dist formula kmeans lm lm.fit model.matrix optimise pnorm prcomp predict quantile rnorm sd spline terms var IQR
 #' @importFrom utils combn object.size read.csv read.table setTxtProgressBar txtProgressBar write.csv write.table
 #' @importFrom graphics polygon
+#' @importFrom plotly plot_ly add_trace add_markers config 
+#' @importFrom ggplot2 ggplot aes geom_point geom_line labs xlim ylim coord_fixed geom_path geom_text
 #' @import RRPP
 #' @import parallel
-#' @import rgl
 #' @import grDevices
-#' @import ggplot2
 #' @import Matrix
 #'
 #' @section geomorph TOC:
@@ -1448,22 +1448,6 @@ tps <- function(matr, matt, n, sz=1.5, pt.bg="black",
     } else {
       plot.xy(xy.coords(matr), type="p", pch=21, bg=pt.bg, cex=sz)
     }
-  }
-  # added in for shape.predictor; plots in rgl window
-  if(k3 == TRUE){
-    ngrid <- cbind(ngrid,0)
-    plot3d(ngrid, cex=0.2, aspect=FALSE, axes=FALSE, xlab="", ylab="", zlab="")
-    for (i in 1:m){
-      lines3d(ngrid[(1:n)+(i-1)*n,], col=grid.col, lwd=grid.lwd, lty=grid.lty)
-      }
-    for (i in 1:n){
-      lines3d(ngrid[(1:m)*n-i+1,], col=grid.col, lwd=grid.lwd, lty=grid.lty)
-      }
-    if(refpts==FALSE) {
-      points3d(cbind(matt,0), col=pt.bg, size=sz*10)
-      } else {
-        points3d(cbind(matr,0),col=pt.bg,size=sz*10)
-      }
   }
 }
 

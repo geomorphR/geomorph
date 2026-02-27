@@ -29,11 +29,11 @@
 #' 
 #' @param ME a module.eigen object, see \code{\link{module.eigen}}.
 #' @param K The number of modules into which the data are partitioned.
-#' @param hyp An optional vector for an a priori, modular  hypothesis, explaining
+# #' @param hyp An optional vector for an a priori, modular  hypothesis, explaining
 #' which landmarks (or variables) belong in which partition: 
 #' (e.g. A, A, A, B, B, B, C, C, C). This is the same as partition.gp in, e.g., \code{\link{module.eigen}}.  If provided, it
 #' will be one of simulated hypotheses considered.
-#' @param eig.no The number of eigenvalues to sum for ranking covariance strength.
+# #' @param eig.no The number of eigenvalues to sum for ranking covariance strength.
 #' @param rel.dims The number of dimensions (eigenvectors) to sum for ranking outcomes.  If NULL, the relevant
 #' dimensions from the module.eigen results will be used.  If more dimensions than ar epossible are chosen, the
 #' number will be truncated.

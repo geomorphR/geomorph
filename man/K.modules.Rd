@@ -32,14 +32,10 @@ or an integer.  See  \code{\link{set.seed}}}
 \item{print.progress}{A logical value to indicate whether a progress bar should be printed to the screen. 
 This is helpful for long-running analyses.}
 
-\item{K}{The number of modules into which the data are partitioned.}
-
-\item{hyp}{An optional vector for an a priori, modular  hypothesis, explaining
+\item{K}{The number of modules into which the data are partitioned.
 which landmarks (or variables) belong in which partition: 
 (e.g. A, A, A, B, B, B, C, C, C). This is the same as partition.gp in, e.g., \code{\link{module.eigen}}.  If provided, it
 will be one of simulated hypotheses considered.}
-
-\item{eig.no}{The number of eigenvalues to sum for ranking covariance strength.}
 }
 \value{
 Objects of class "K.modules" return a list of the following:
