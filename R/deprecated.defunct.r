@@ -1,12 +1,27 @@
-#' Deprecated and defunct functions in geomorph
+#' Deprecated functions in geomorph
 #'
 #' The following functions are now deprecated
-#' 
-#' build.template
-#' digit.fixed
-#' digitsurface
-#' editTemplate
-#' 
-#'  Starting with geomorph version 4.1, this function is deprecated, as 
-#'  RGL is not supported under MacOS Tahoe. 
-#'  @export 
+#'
+#' This function has been deprecated.   
+#' @export
+build.template <- function(){
+  .Defunct("")
+}
+
+#' This function has been deprecated, as RGL no longer  
+#' @export
+digit.fixed <- function(){
+  .Defunct("")
+}
+
+#' This function has been deprecated.   
+#' @export
+digitsurface <- function(){
+  .Defunct("")
+}
+
+#' This function has been deprecated.   
+#' @export
+editTemplate <- function(){
+  .Defunct("")
+}
