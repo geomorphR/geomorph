@@ -1,3 +1,9 @@
+## FROZEN VERSION 4.0.10.999
+
+* Version frozen March, 2026. Contains RGL-based 3D graphics and digitizing.
+
+* Version is no longer being maintained
+
 # CHANGES IN GEOMORPH VERSION 4.0.10.999
 
 ### NEW FEATURES
