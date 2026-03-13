@@ -4,7 +4,7 @@
 \alias{compare.CR}
 \title{Comparisons of Effect Sizes from Modularity Analyses}
 \usage{
-\method{compare}{CR}(..., CR.null = TRUE, two.tailed = TRUE)
+compare.CR(..., CR.null = TRUE, two.tailed = TRUE)
 }
 \arguments{
 \item{...}{saved analyses of class CR}
