@@ -11,10 +11,8 @@ There were no ERRORs or WARNINGs.
 
 ## R-hub check results
 Windows: OK
-macos: OK 
-
-macos-arm64:
-linux-R-devel:
+macos-arm64: OK
+linux-R-devel: OK
 
 ## Downstream dependencies
 I checked 9 reverse dependencies:
