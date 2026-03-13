@@ -16,7 +16,7 @@ b9ff150f39714f1185d92ac398cf12eb *geomorph.Rproj
 0bf655972d2a51f6a409a26ae3eca8d2 *inst/CITATION
 1f6dcd080f8280741829c0fc5861e2ff *man/arrayspecs.Rd
 c30a54a1de8c2e612102a9cb7ff2a91a *man/bilat.symmetry.Rd
-942bdc27593275eb14da9dbf1fe6c8fe *man/build.template.Rd
+9f0b87bb7efb9b940576c5eeb40994f3 *man/build.template.Rd
 d4b9074e994ab91d679680cb19864d48 *man/combine.subsets.Rd
 bbbd68811cc80502bdae866d0f2481ed *man/compare.CR.Rd
 0a48c0811c9f6c4a2e6b09c56c1c7072 *man/compare.evol.rates.Rd
@@ -29,10 +29,10 @@ f3b7b709a94019ee9c38d0e510d7d8f3 *man/coords.subset.Rd
 5cfdadaa31de2faa595357cf76830f2d *man/define.modules.Rd
 af5b481ae96a24e4272d62c8432feff6 *man/define.sliders.Rd
 1a6c48f471e0876c1506e81818bd4c92 *man/digit.curves.Rd
-27466282a46275dc49eac72eed181547 *man/digit.fixed.Rd
+e7fe48d46bc3513f2185c6e34cd6aa95 *man/digit.fixed.Rd
 a9105238571b6f1f6f233cc2570fcec4 *man/digitize2d.Rd
-b0c68ed738f0eb445bb310eabd29fa10 *man/digitsurface.Rd
-3d21bdfc0c40b19436f1ee916c85a1af *man/editTemplate.Rd
+abddd472d95be453faa8744f58018dd1 *man/digitsurface.Rd
+b0b82a47f9c7c2e70b043f0ab086c4c9 *man/editTemplate.Rd
 cbd650a7cabe3658cea600861d4e0bb5 *man/estimate.missing.Rd
 035306268b0c131dabc6ef7c9cae36a3 *man/extended.pgls.Rd
 e1a4eb6651e808c3702773df3eb7bd77 *man/findMeanSpec.Rd
@@ -154,7 +154,7 @@ ab4f364c13ae919766bd1720ee9e34c4 *man/warpRefMesh.Rd
 653338d224a0bdc694436ffe32f53f71 *man/warpRefOutline.Rd
 aac14dd389a4f2cd73e97e8fbc0bfbad *man/writeland.tps.Rd
 0643bd6b702cb996921c093997a93086 *NAMESPACE
-0f765317e83e1ff72b8391ef8a82af3b *NEWS.md
+7d354052c38a2cd69c9126d11aa27de6 *NEWS.md
 30e087ae264ca51cb446a66bbbbec440 *R/arrayspecs.r
 e4fee65cd8240655e43ab013bbac5d35 *R/bilat.symmetry.r
 e3f90273ad93ce866df2d82001ce50a7 *R/build.template.r
