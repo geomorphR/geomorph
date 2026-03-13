@@ -13,7 +13,7 @@ Geomorph is a software package for performing all stages of geometric morphometr
 
 <code> install.packages("devtools")</code>
 
-<code> devtools::install_github("geomorphR/geomorph", ref = "Stable", build_vignettes = TRUE)</code>
+<code> devtools::install_github("geomorphR/geomorph", ref = "Stable")</code>
 
 This installs a stable release of the current version of geomorph on CRAN, allowing us to quickly fix errors that slip thorough the cracks and are uploaded with the CRAN version.
 
