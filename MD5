@@ -1,4 +1,5 @@
 0b2a33277d23f2e484063f272f8a79e6 *cran-comments.md
+c3f81dd7ddcd9dd0cd458e7349532a7f *CRAN-SUBMISSION
 247b6e5658356e87edfd560687b239fc *data/hummingbirds.rda
 56558754725fea156eb0820f67a4f508 *data/larvalMorph.rda
 c3fc0e7a97f4cbd5b6cd8944d737b11a *data/lizards.rda
@@ -213,6 +214,6 @@ caffb467d24d317af11c77ac3a591214 *R/shapeHulls.r
 b845dc8051276abf289f035119f4b5af *R/warpRefMesh.r
 ce64f40b8badacea0852af718e718355 *R/warpRefOutline.r
 8b1130e60c2f728555fb787a54a01aad *R/writeland.tps.r
-9d94d655d59563f30670c93ba4cc013f *README.md
+ef912ea23202b2358991b1527824073d *README.md
 6c02fd04993800b58036caf90014d760 *tests/testthat.R
 e492254a6696c3b50c7dcf352709ff43 *tests/testthat/test-geomorph.R
