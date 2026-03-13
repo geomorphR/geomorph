@@ -33,17 +33,19 @@ In these cases, set your zoom to 100%: Tools -> Global Options... -> Appearance 
  In the plot window select two landmarks that will be linked. In the console, the user will be prompted
  to continue linking landmarks to build the wireframe or end the session (typing y or n respectively).
  For 2D data in plot window, use LEFT mouse button to select landmarks.
- For 3D data in rgl window, use RIGHT mouse button (or command+LEFT for mac) to select landmarks.
 }
+
+ \subsection{Notes for geomorph 4.1}{ 
+ Starting with geomorph version 4.1, interactive module selection in 3D is no longer
+ supported, as RGL is not supported under MacOS Tahoe.  Only AUTO mode is available.
+ }
 }
 \seealso{
 \code{\link{plotAllSpecimens}}
 
 \code{\link{plotRefToTarget}}
-
-\code{\link[rgl]{rgl-package}} (used in 3D plotting)
 }
 \author{
-Emma Sherratt
+Dean Adams and Emma Sherratt
 }
 \keyword{utilities}

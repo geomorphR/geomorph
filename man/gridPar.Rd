@@ -117,7 +117,7 @@ method = "vector", label = TRUE)
 }
 }
 \seealso{
-\code{\link{plotRefToTarget}}, \code{\link{text}}, \code{\link[rgl]{text3d}}
+\code{\link{plotRefToTarget}}, \code{\link{text}}
 }
 \author{
 Michael Collyer & Emma Sherratt

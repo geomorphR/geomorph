@@ -32,7 +32,7 @@
 #' @keywords visualization
 #' @export
 #' @author Michael Collyer & Emma Sherratt
-#' @seealso  \code{\link{plotRefToTarget}}, \code{\link{text}}, \code{\link[rgl]{text3d}} 
+#' @seealso  \code{\link{plotRefToTarget}}, \code{\link{text}} 
 #' @examples
 #' \dontrun{
 #' data(plethodon) 

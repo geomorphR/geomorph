@@ -7,8 +7,6 @@ Geomorph is a software package for performing all stages of geometric morphometr
 
 <code> install.packages("geomorph") </code>
 
-For Mac users:  please also install XQuartz from <https://www.xquartz.org/>. This allows the library(rgl) to function.
-
 ### To install the current version of geomorph R-package from Github using devtools:
 
 <i> Within R:</i>

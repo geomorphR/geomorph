@@ -73,7 +73,7 @@ plotOutliers <- function(A, groups = NULL,
   if(any(glen < 3))
     stop("\n One or more groups have fewer than 3 shapes.  Outliers cannot be deteced.\n",
          call. = FALSE)
-  
+  options(viewer = NULL)  # for 3D plotting
   Ymat <- gm.prcomp(A)$x
   if(is.null(PC)) PC <- 1:ncol(Ymat)
   if(any(PC > ncol(Ymat)))
@@ -84,7 +84,7 @@ plotOutliers <- function(A, groups = NULL,
   
   if(is.null(dimnames(A)[[3]]))
     dimnames(A)[[3]] <- rownames(Ymat) <- 1:n
-  
+
   res <- lapply(levels(groups), function(j){
     y <- as.matrix(center(Ymat[which(groups == j), ]))
     D <- sqrt(rowSums(y^2))
@@ -92,54 +92,48 @@ plotOutliers <- function(A, groups = NULL,
     bc <- box.cox(D)
     b <- bc$transformed
     UL <- quantile(b, 0.75) + 1.5 * IQR(b)
-    
     UL <- (UL * bc$opt.lambda + 1)^(1/bc$opt.lambda)
-    
+
     plot(D, type="p", ylab= "Distance from Mean", pch=19, xlab="", xaxt='n', main = j)
-    abline(a=UL,b=0,lty=2,col= "blue")
-    text(x= nrow(y), y=UL, labels= "upper limit",col = "blue", cex=0.5, adj=c(0.5, -0.5))
+      abline(a=UL,b=0,lty=2,col= "blue")
+      text(x= nrow(y), y=UL, labels= "upper limit",col = "blue", cex=0.5, adj=c(0.5, -0.5))
     if(any(D >= UL)) { 
       ol <- D[which(D >= UL)]
       p <- 1:length(ol)
       points(p, ol, pch=19, col="red")
       text(p, ol, labels = names(ol), col= "red", adj=0.8, pos=4, cex=0.5)
+    }
       
+    if(any(D >= UL)) {   
       if(inspect.outliers == TRUE){
         out.config <- names(ol)
-        y <- two.d.array(A)
         Alist <- lapply(1:n, function(x) as.matrix(A[,, x]))
         names(Alist) <- dimnames(A)[[3]]
         OLlist <- Alist[names(ol)]
         M <- mshape(A)
         
         if(dim(A)[2] == 2){
-          
-          Map(function(o, n){
-            plotRefToTarget(M, o, method="vector", label=TRUE)
-            title(main = paste("group: ", j, ", specimen: ", n, sep=""))
-          }, OLlist, out.config)
+          for(i in seq_along(OLlist)){
+            plotRefToTarget(M, OLlist[[i]], method="vector", label=TRUE)
+            title(main = paste("group:", j, ", specimen:", out.config[i]))
+          }
         }
         
         if(dim(A)[2] == 3){
-          
-          Map(function(o, n){
-            open3d()
-            plotRefToTarget(M, o, method="vector", label=TRUE)
-            title(main = paste("group: ", j, ", specimen: ", n, sep=""))
-            bgplot3d({
-              plot.new()
-              title(main = paste("specimen: ", n, sep=""), line = 3)
-              mtext(side = 3, paste("group: ", j, sep = ""), line = 1.5)
-            })
-          }, OLlist, out.config)
+          for(i in seq_along(OLlist)){
+            fig <- plotRefToTarget(M, OLlist[[i]], 
+                                   method="vector", label=TRUE)
+            fig <- fig |>
+              plotly::layout(title = paste("group:", j,
+                                   "<br>specimen:", out.config[i]))
+            print(fig)
+          }
         }
       }
-      
     } else { text(1:n, D, labels=names(D), adj=c(0.5, 0.1), pos=4, cex=0.5)}
     names(D)
   })
   names(res) <- levels(groups)
   if(length(glen) == 1) res <- res$`All Specimens`
   res
-  
 }

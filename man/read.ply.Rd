@@ -18,16 +18,15 @@ Function returns the following components:
   \item{mesh3d}{list of class mesh3d- see rgl for details}
 }
 \description{
-A function to read ply files, which can be used for digitizing landmark coordinates or for shape warps.
+A function to read ply files, which can be used for shape warps.
 }
 \details{
 Function reads three-dimensional surface data in the form of a single ply file
  (Polygon File Format; ASCII format only, from 3D scanners such as NextEngine and David scanners). 
- Vertices of the surface may then be used to digitize three-dimensional points, 
- and semilandmarks on curves and surfaces. The surface may also be used as a mesh for visualizing 3D deformations (\code{\link{warpRefMesh}}).
+The surface may then be used as a mesh for visualizing 3D deformations (\code{\link{warpRefMesh}}).
  The function opens the ply file and plots the mesh,
  with faces rendered if file contains faces, and colored if the file contains vertex color.
- Vertex normals allow better visualization and more accurate digitizing with \code{\link{digit.fixed}}.
+ Vertex normals allow better visualization.
 }
 \examples{
 \dontrun{
@@ -39,9 +38,6 @@ myply <- scallopPLY$ply
 myply$material$color <- "gray" # using color word
 myply$material$color <- "#FCE6C9" # using RGB code
 }
-}
-\seealso{
-\code{\link[rgl]{rgl-package}} (used in 3D plotting)
 }
 \author{
 Dean Adams & Emma Sherratt

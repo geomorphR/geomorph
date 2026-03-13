@@ -314,7 +314,7 @@ summary.bilat.symmetry <- function(object, ...) {
 #' @param ... other arguments passed to plot
 #' @method plot bilat.symmetry
 #' @export
-#' @author Michael Collyer
+#' @author Dean Adams and Michael Collyer
 #' @keywords utilities
 #' @keywords visualization
 plot.bilat.symmetry <- function(x, warpgrids = TRUE, mesh= NULL, ...){
@@ -328,27 +328,32 @@ plot.bilat.symmetry <- function(x, warpgrids = TRUE, mesh= NULL, ...){
         plotRefToTarget(x$FA.component[,,1],x$FA.component[,,2],method="TPS",main="Fluctuating Asymmetry")
         mtext("Symmetric Shape Component (left) and Asymmetric Shape Component (right)",outer = TRUE,side=3)
         mtext("Mean directional (left) and fluctuating (right) asymmetry",side = 1, outer = TRUE)
-        par(mfrow=c(1,1))
+        par(mfrow=c(1,1),oma = c(0,0,0,0))
       }
       if(k==3){
         if (is.null(mesh)){
-          open3d() ; mfrow3d(1, 2) 
-          plotRefToTarget(x$DA.component[,,1],x$DA.component[,,2],method="points",main="Directional Asymmetry",box=FALSE, axes=FALSE)
-          next3d()
-          plotRefToTarget(x$FA.component[,,1],x$FA.component[,,2],method="points",main="Fluctuating Asymmetry",box=FALSE, axes=FALSE)
+          figDA <- plotRefToTarget(x$DA.component[,,1],
+                      x$DA.component[,,2],method="points", axes=FALSE)
+          figDA <- plotly::layout(figDA, title = list(text = "Directional Asymmetry"))
+          print(figDA)
+          figFA <- plotRefToTarget(x$FA.component[,,1],
+                      x$FA.component[,,2],method="points", axes=FALSE)
+          figFA <- plotly::layout(figFA, title = list(text = "Fluctuating Asymmetry"))  
+          print(figFA)
         } 
         if(!is.null(mesh)){
-          open3d() ; mfrow3d(1, 2) 
-          cat("\nWarping mesh\n")
-          plotRefToTarget(x$DA.component[,,1],x$DA.component[,,2],mesh,method="surface")
-          title3d(main="Directional Asymmetry")
-          next3d()
-          cat("\nWarping mesh\n")
-          plotRefToTarget(x$FA.component[,,1],x$FA.component[,,2],mesh,method="surface")
-          title3d(main="Fluctuating Asymmetry")
+          figDA <- plotRefToTarget(x$DA.component[,,1],
+                      x$DA.component[,,2],method="surface", 
+                      mesh = mesh, axes=FALSE)
+          figDA <- plotly::layout(figDA, title = list(text = "Directional Asymmetry"))
+          print(figDA)
+          figFA <- plotRefToTarget(x$FA.component[,,1],
+                      x$FA.component[,,2],method="surface",
+                      mesh = mesh, axes=FALSE)
+          figFA <- plotly::layout(figFA, title = list(text = "Fluctuating Asymmetry"))  
+          print(figFA)
         }
       }
-      layout(1) 
     }
     if(x$data.type == "Object"){
       if(warpgrids==TRUE){
@@ -360,26 +365,32 @@ plot.bilat.symmetry <- function(x, warpgrids = TRUE, mesh= NULL, ...){
           plotRefToTarget(x$FA.component[,,1],x$FA.component[,,2],method="TPS",main="Fluctuating Asymmetry")
           mtext("Symmetric Shape Component (left) and Asymmetric Shape Component (right)",outer = TRUE,side=3)
           mtext("Mean directional (left) and fluctuating (right) asymmetry",side = 1, outer = TRUE)
+          par(mfrow=c(1,1),oma = c(0,0,0,0))
         }
         if(k==3){
           if(is.null(mesh)) {
-            open3d() ; mfrow3d(1, 2) 
-            plotRefToTarget(x$DA.component[,,1],x$DA.component[,,2],method="points",main="Directional Asymmetry",box=FALSE, axes=FALSE)
-            next3d()
-            plotRefToTarget(x$FA.component[,,1],x$FA.component[,,2],method="points",main="Fluctuating Asymmetry",box=FALSE, axes=FALSE)
+            figDA <- plotRefToTarget(x$DA.component[,,1],
+                  x$DA.component[,,2],method="points", axes=FALSE)
+            figDA <- plotly::layout(figDA, title = list(text = "Directional Asymmetry"))  
+            print(figDA)
+            figFA <- plotRefToTarget(x$FA.component[,,1],
+                  x$FA.component[,,2],method="points", axes=FALSE)
+            figFA <- plotly::layout(figFA, title = list(text = "Fluctuating Asymmetry"))  
+            print(figFA)
           } 
           if(!is.null(mesh)){
-            open3d() ; mfrow3d(1, 2) 
-            cat("\nWarping mesh\n")
-            plotRefToTarget(x$DA.component[,,1],x$DA.component[,,2],mesh,method="surface")
-            title3d(main="Directional Asymmetry")
-            next3d()
-            cat("\nWarping mesh\n")
-            plotRefToTarget(x$FA.component[,,1],x$FA.component[,,2],mesh,method="surface")
-            title3d(main="Fluctuating Asymmetry")
+            figDA <- plotRefToTarget(x$DA.component[,,1],
+                      x$DA.component[,,2],method="surface", 
+                      mesh = mesh, axes=FALSE)
+            figDA <- plotly::layout(figDA, title = list(text = "Directional Asymmetry"))  
+            print(figDA)
+            figFA <- plotRefToTarget(x$FA.component[,,1],
+                      x$FA.component[,,2],method="surface",
+                      mesh = mesh, axes=FALSE)
+            figFA <- plotly::layout(figFA, title = list(text = "Fluctuating Asymmetry"))  
+            print(figFA)
           }  
         }
-        layout(1) 
       } 
     }
   }
@@ -883,7 +894,7 @@ summary.combined.set <- function(object, ...) print.combined.set(object, ...)
 #' @param ... other arguments passed to plot
 #' @method plot mshape
 #' @export
-#' @author Antigoni Kaliontzopoulou
+#' @author Dean Adams and Antigoni Kaliontzopoulou
 #' @keywords utilities
 #' @keywords visualization
 #' @seealso  \code{\link{define.links}}
@@ -910,16 +921,41 @@ plot.mshape <- function(x, links=NULL,...){
     par(xpd=F)
   } else {
   if(ncol(x)==3){
-    plot3d(x, type="n", aspect=FALSE, xlab="", ylab="", zlab="", axes=F,...)
-    if(!is.null(links)){
-      for(i in 1:nrow(links)){
-        segments3d(c(x[links[i,1], 1], x[links[i,2], 1]),
-                   c(x[links[i,1], 2], x[links[i,2], 2]), 
-                   c(x[links[i,1], 3], x[links[i,2], 3]))
+    fig <- plot_ly()
+    fig <- fig |>
+      plotly::layout(scene = list(aspectmode = "data",
+         xaxis = list(title = '', 
+           showgrid = F, visible = F,showticklabels = F, 
+           zeroline = F, showbackground = F),
+         yaxis = list(title = '', showgrid = F, 
+           visible = F, showticklabels = F, zeroline = F, 
+           showbackground = F),
+         zaxis = list(title = '', showgrid = F, 
+           visible = F, showticklabels = F, zeroline = F, 
+           showbackground = F)),showlegend = FALSE) 
+    fig <- fig |>
+      add_trace(x = ~x[,1], y = ~x[,2], z = ~x[,3], 
+                type = "scatter3d", mode = "markers", 
+                name = "Mean", marker = list(color = "black", 
+                size = 5),
+                showlegend = FALSE,
+                inherit = FALSE)
+    if(is.null(links)==FALSE){ 
+      line_df <- data.frame()
+      for (i in 1:nrow(links)) {
+        line_df <- rbind(line_df,
+          x[links[i, 1], ],
+          x[links[i, 2], ],
+          data.frame(X = NA, Y = NA, Z = NA))
       }
+      fig <- fig |>
+        add_trace(x = ~line_df$X, y = ~line_df$Y, z = ~line_df$Z,
+                  type = "scatter3d", mode = "lines",      
+                  line = list(color = "gray", width = 2),
+                  showlegend = FALSE,
+                  inherit = FALSE)    
     }
-    plot3d(x, add=T, type="s", col="white", alpha=0.25, shininess=2, fog=F)
-    text3d(x, texts=1:nrow(x), cex=0.7, font=2)
+  fig  
   }
   }
 }
@@ -1004,7 +1040,7 @@ summary.gm.prcomp <- function (object, ...) {
 #'  
 #' @method plot gm.prcomp
 #' @export
-#' @author Antigoni Kaliontzopoulou, Michael Collyer
+#' @author Dean Adams, Antigoni Kaliontzopoulou, and Michael Collyer
 #' @keywords utilities
 #' @keywords visualization
 #' @seealso  \code{\link{plotRefToTarget}} \code{\link{picknplot.shape}}
@@ -1107,49 +1143,79 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, flip = NULL, phylo = FALSE,
     if(!is.null(t.p$bg)) t.p$col <- t.p$bg
     if(is.null(t.p$col)) t.p$col <- "black"
     if(is.null(t.p$cex)) t.p$cex <- 1
-    
-    view3d(phi=90, fov=30)
-    plot3d(xx$points[,1], xx$points[,2], zaxis, type="n", 
-           xlim = limits(phy.pcdata[,1], 1.5),
-           ylim = limits(phy.pcdata[,2], 1.5),
-           zlim = c(max(zaxis), min(zaxis)),
-           size = 0.1,
-           asp = c(1,1,1),
-           xlab = xx$plot_args$xlab, 
-           ylab = xx$plot_args$ylab, zlab = "Time")
-    
-    for (i in 1:nrow(phy$edge)) {
-      lines3d(phy.pcdata[(phy$edge[i, ]), 1], phy.pcdata[(phy$edge[i, ]), 2], zaxis[(phy$edge[i, ])], 
-              col = p.p$edge.color, lwd = p.p$edge.width)}
-    
-    points3d(xx$points[,1], xx$points[,2], zaxis[1:N.tips],
-             col = t.p$col, size = t.p$cex*4)
-    
+
+    fig <- plot_ly() 
+    fig <- fig |>
+      plotly::layout(
+      scene = list(
+        xaxis = list(title = 'PC 1', range = limits(phy.pcdata[,1], 1.5)),
+        yaxis = list(title = 'PC 2', range = limits(phy.pcdata[,2], 1.5)),
+        zaxis = list(title = 'Time', range = c(max(zaxis), min(zaxis))),
+        aspectmode = 'manual',
+        aspectratio = list(x = 1, y = 1, z = 1)
+      )
+    )
+    fig <- fig |>
+      add_trace(x = ~xx$points[,1], y = ~xx$points[,2], z = ~zaxis[1:N.tips], 
+          type = "scatter3d", mode = "markers", 
+          name = "PC data", marker = list(color = t.p$col, 
+          size = t.p$cex*4),
+          showlegend = FALSE,
+          inherit = FALSE)  
     if(p.p$anc.states){
-      points3d(tp[, 1], 
-               tp[, 2], 
-               zaxis[(N.tips + 1):nrow(phy.pcdata)], 
-               col = p.p$node.bg, size = p.p$node.cex*4)
+      fig <- fig |>
+        add_trace(x = ~tp[, 1], y = ~tp[, 2], z = ~zaxis[(N.tips + 1):nrow(phy.pcdata)], 
+           type = "scatter3d", mode = "markers", 
+           name = "Anc data", marker = list(color = p.p$node.bg, 
+           size = p.p$node.cex*4),
+           showlegend = FALSE,
+           inherit = FALSE)   
     }
-    
+    for (i in 1:nrow(phy$edge)) {
+      nodes <- phy$edge[i, ]
+      fig <- fig |>
+        add_trace(
+          x = phy.pcdata[nodes, 1],
+          y = phy.pcdata[nodes, 2],
+          z = zaxis[nodes],
+          type = "scatter3d",
+          mode = "lines",
+          line = list(
+            color = p.p$edge.color,
+            width = p.p$edge.width
+          ),
+          showlegend = FALSE,
+          inherit = FALSE
+        )
+    }
     if(p.p$tip.labels){
-      text3d(xx$points[,1], xx$points[,2], zaxis[1:N.tips], 
-             rownames(xx$points),
-             col = p.p$tip.txt.col, 
-             cex = p.p$tip.txt.cex, 
-             adj = p.p$tip.txt.adj) }
-    
+      fig <- fig |>
+        add_trace(x = xx$points[,1],y = xx$points[,2],
+          z = zaxis[1:N.tips],
+          type = "scatter3d", mode = "text",
+          text = rownames(xx$points),
+          textposition = "top center", 
+          textfont = list(color = p.p$tip.txt.col,
+            size = 12 * p.p$tip.txt.cex),
+          showlegend = FALSE,
+          inherit = FALSE
+        )
+    }
     if(p.p$node.labels){
-      text3d(tp[, 1], tp[, 2],
-             zaxis[(N.tips + 1):nrow(phy.pcdata)], 
-             rownames(tp),
-             col = p.p$node.txt.col, 
-             cex = p.p$node.txt.cex, 
-             adj = p.p$node.txt.adj)}
-    
+      fig <- fig |>
+        add_trace(x = tp[, 1], y = tp[, 2], 
+          z = zaxis[(N.tips + 1):nrow(phy.pcdata)],
+          type = "scatter3d", mode = "text",
+          text = rownames(tp),
+          textposition = "top center", 
+          textfont = list(color = p.p$node.txt.col,
+            size = 12 * p.p$node.txt.cex),
+          showlegend = FALSE,
+          inherit = FALSE
+        )
+    }
+    print(fig)
   }
-  
-  
   out <- list(PC.points = pcdata,   
               call = match.call())
   out$GM <- list()
@@ -1164,9 +1230,7 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, flip = NULL, phylo = FALSE,
     out$phylo$phy.pcdata <- phy.pcdata
   }
   class(out) <- "plot.gm.prcomp" 
-  
   invisible(out)
-  
 }
 
 
@@ -1268,6 +1332,7 @@ na.omit.geomorph.data.frame <- function(object, ...) {
   out
 }
 
+
 ## physignal.eigen
 #' Plot Function for geomorph
 #' 
@@ -1355,7 +1420,7 @@ plot.physignal.eigen <- function(x, type = c("conf", "vectors", "both"),
 #' @keywords utilities
 
 print.physignal.eigen <- function(x, ...){
-  
+
   cat(paste("\nObserved Phylogenetic Signal (traceK):", signif(x$traceK.obs, nchar(x$permutations))))
   cat(paste("\nObserved Effect Size (Z-traceK):", round(x$Z.traceK, nchar(x$permutations))))
   cat(paste("\nP-value (traceK):", round(x$p.traceK, nchar(x$permutations))))
@@ -1380,9 +1445,8 @@ print.physignal.eigen <- function(x, ...){
 #' @export
 #' @author Dean Adams
 #' @keywords utilities
-
+ 
 summary.physignal.eigen <- function(object, ...) {
   x <- object
   print.physignal.eigen(x,...)
 }
-

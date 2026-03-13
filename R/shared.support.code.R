@@ -646,6 +646,3 @@ getNodeDepth <- function(phy){
   
   c(tips.depths, nodes.depths)
 }
-
-# fast.phy.vcv
-# replaces vcv.phylo

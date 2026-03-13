@@ -14,8 +14,12 @@
 #'  In the plot window select two landmarks that will be linked. In the console, the user will be prompted
 #'  to continue linking landmarks to build the wireframe or end the session (typing y or n respectively).
 #'  For 2D data in plot window, use LEFT mouse button to select landmarks.
-#'  For 3D data in rgl window, use RIGHT mouse button (or command+LEFT for mac) to select landmarks.
 #' }
+#' 
+#'  \subsection{Notes for geomorph 4.1}{ 
+#'  Starting with geomorph version 4.1, interactive module selection in 3D is no longer
+#'  supported, as RGL is not supported under MacOS Tahoe.  Only AUTO mode is available.
+#'  }
 #' 
 #' @param spec Name of specimen, as an object matrix containing 2D or 3D landmark coordinates
 #' @param ptsize Numeric Size to plot the landmarks
@@ -26,8 +30,7 @@
 #' @keywords utilities
 #' @seealso  \code{\link{plotAllSpecimens}}
 #' @seealso  \code{\link{plotRefToTarget}}
-#' @author Emma Sherratt
-#' @seealso  \code{\link[rgl]{rgl-package}} (used in 3D plotting)
+#' @author Dean Adams and Emma Sherratt
 #' 
 define.links <- function(spec, ptsize = 1, links = NULL){
   spec.name <- deparse(substitute(spec))
@@ -59,33 +62,8 @@ define.links <- function(spec, ptsize = 1, links = NULL){
             if(ans == "n"){ break}
             }
       }
-  # 3D
   if (checkdim == 3) {
-    if(is.null(ptsize)){ ptsize = 5 }
-    ids <- plot3d(spec[, 1], spec[, 2],spec[, 3], size = ptsize, aspect=FALSE, 
-                  box=F, axes=F, xlab="", ylab="", zlab="")
-    text3d(spec[, 1], spec[, 2], spec[, 3], texts = paste(1:dim(spec)[1]), 
-         adj = 1.3, pos = 4)
-    if(!is.null(links)){
-      for (i in 1:nrow(links)){
-        segments3d(rbind(spec[links[i,1],],spec[links[i,2],]))
-      } }
-    repeat{
-            rgl.bringtotop(stay = FALSE)
-            cat("Select landmarks to link","\n")
-            sel1 <- sel2 <- ans <- NULL
-            sel1 <- selectpoints3d(ids["data"], value= FALSE, button = "right")[2]
-            points3d(spec[sel1,1],spec[sel1,2],spec[sel1,3],size=ptsize*2,color="red",add=TRUE)
-            sel2 <- selectpoints3d(ids["data"], value= FALSE, button = "right")[2]
-            points3d(spec[sel2,1],spec[sel2,2],spec[sel2,3],size=ptsize*2,color="red",add=TRUE)
-            segments3d(rbind(spec[sel1,], spec[sel2,]), lwd = 1)
-            links <- rbind(links, c(sel1,sel2)) 
-            cat(paste("link made between landmarks", sel1, "&", sel2, "\n", "Continue? type y/n"))
-            ans <- readline()
-            if(ans == "y"){ sel <- NULL
-                            rgl.bringtotop(stay = FALSE)}
-            if(ans == "n"){ break}
-            }
+    stop("3D no longer supported.") 
     }
   return(as.matrix(links))
 }

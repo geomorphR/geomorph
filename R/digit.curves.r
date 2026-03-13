@@ -13,7 +13,7 @@
 #' 
 #' 'curve' is a p-x-k matrix of 2D or 3D coordinates for a set of ordered points defining a curve. This can be the pixels 
 #' of an outline calculated in ImageJ (save xy coordinates) or any other reasonable way of obtaining ordered coordinates
-#'  along a curve (including sampling by hand using \code{\link{digit.fixed}} or \code{\link{digitize2d}} - but note 
+#'  along a curve (including sampling by hand using \code{\link{digitize2d}} - but note 
 #'  that there should be more points defining the curve than nPoints in order to accurately calculate the semilandmarks).
 #'
 #' If 'closed = T', the function returns the coordinates of the 'start' landmark plus nPoints. If 'closed = F', the 
@@ -27,7 +27,7 @@
 #' @param nPoints Numeric how many semilandmarks to place equidistantly along the curve (not counting beginning and end points) 
 #' @param closed Logical Whether the curve is closed (TRUE) or open (FALSE)
 #' @return Function returns a matrix of coordinates for nPoints equally spaced semilandmarks sampled along the curve (plus start and end if 'closed = F', or only including start if 'closed = T') 
-#' @seealso \code{\link{digit.fixed}} \code{\link{digitize2d}}
+#' @seealso \code{\link{digitize2d}}
 #' @export
 #' @keywords digitizing
 #' @author Emma Sherratt and Michael Collyer

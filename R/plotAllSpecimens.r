@@ -7,7 +7,7 @@
 #'  Additionally, if a matrix of links is provided, the landmarks of the mean shape will be connected by lines.  
 #'  The link matrix is an m x 2 matrix, where m is the desired number of links. Each row of the link matrix 
 #'  designates the two landmarks to be connected by that link. The function will plot either two- or 
-#'  three-dimensional data (e.g. see \code{\link{define.links}}).
+#'  three-dimensional data.
 #'
 #' @param A A 3D array (p x k x n) containing Procrustes shape variables for a set of specimens
 #' @param mean A logical value indicating whether the mean shape should be included in the plot
@@ -17,7 +17,6 @@
 #' @export
 #' @keywords visualization
 #' @author Dean Adams
-#' @seealso  \code{\link[rgl]{rgl-package}} (used in 3D plotting)
 #' @examples
 #' \dontrun{
 #' data(plethodon) 
@@ -30,7 +29,8 @@ plotAllSpecimens<-function(A,mean=TRUE,links=NULL,label=FALSE,plot_param = list(
     stop("Data matrix not a 3D array (see 'arrayspecs').")  }
   if(any(is.na(A))==T){
     stop("Data matrix contains missing values. Estimate these first (see 'estimate.missing').")  }
-  k<-dim(A)[2]
+  k <- dim(A)[2]
+  p <- dim(A)[1]
   if(mean==TRUE){ mn<-mshape(A) }
   
   p.p <- plot_param
@@ -63,20 +63,67 @@ plotAllSpecimens<-function(A,mean=TRUE,links=NULL,label=FALSE,plot_param = list(
     for (i in 1:dim(A)[[3]]){
       A3d<-rbind(A3d,A[,,i])
     }
-    plot3d(A3d,type="s",col=p.p$pt.bg,xlab="x",ylab="y",zlab="z",size=p.p$pt.cex*1.5,aspect=FALSE)
+    A3d <- data.frame(A3d)
+    
+    fig <- plot_ly()
+    fig <- fig |>
+      plotly::layout(scene = list(aspectmode = "data",
+          xaxis = list(title = '', 
+              showgrid = F, visible = F,showticklabels = F, 
+              zeroline = F, showbackground = F),
+          yaxis = list(title = '', showgrid = F, 
+              visible = F, showticklabels = F, zeroline = F, 
+              showbackground = F),
+          zaxis = list(title = '', showgrid = F, 
+              visible = F, showticklabels = F, zeroline = F, 
+              showbackground = F)),showlegend = FALSE) |>
+       add_trace(x = ~A3d$X, y = ~A3d$Y, z = ~A3d$Z, type = "scatter3d",
+                 mode = "markers", name = "LM",
+                 marker = list(color = p.p$pt.bg, 
+                 size = p.p$pt.cex*1.5),
+              showlegend = FALSE,
+              inherit = FALSE) 
     if(mean==TRUE){ 
-      if(is.null(links)==FALSE){
-        linkcol <- rep(p.p$link.col,nrow(links))[1:nrow(links)]
-        linklwd <- rep(p.p$link.lwd,nrow(links))[1:nrow(links)]
-        linklty <- rep(p.p$link.lty,nrow(links))[1:nrow(links)]
-        for (i in 1:nrow(links)){
-          segments3d(rbind(mn[links[i,1],],mn[links[i,2],]),
-                     col=linkcol[i],lty=linklty[i],lwd=linklwd[i])
-        }
-      }
-      points3d(mn,color=p.p$mean.bg,size=p.p$mean.cex*2)
-      if(label == TRUE){text3d(mn, texts = paste(1:dim(mn)[1]), adj=(p.p$txt.adj+p.p$mean.cex),
-                               pos=p.p$txt.pos,cex=p.p$txt.cex,col=p.p$txt.col)}
+      mn_df <- as.data.frame(mn)
+      colnames(mn_df) <- c("X","Y","Z")
+      fig <- fig |>
+      add_trace(x = ~mn_df$X, y = ~mn_df$Y, z = ~mn_df$Z, 
+        type = "scatter3d", mode = "markers", 
+        name = "Mean", marker = list(color = p.p$mean.bg, 
+                                     size = p.p$mean.cex*2),
+        showlegend = FALSE,
+        inherit = FALSE) 
+    } 
+    if(is.null(links)==FALSE){ 
+      dash_map <- c("solid", "dash", "dot", "dashdot", 
+                    "longdash",  "longdashdot")
+      line_df <- data.frame()
+    for (i in 1:nrow(links)) {
+      line_df <- rbind(
+        line_df,
+        mn_df[links[i, 1], ],
+        mn_df[links[i, 2], ],
+        data.frame(X = NA, Y = NA, Z = NA)
+      )
     }
+      fig <- fig |>
+      add_trace(x = ~line_df$X, y = ~line_df$Y, z = ~line_df$Z,
+          type = "scatter3d", mode = "lines",      
+          line = list(color = p.p$link.col, width = p.p$link.lwd,
+                      dash = dash_map[p.p$link.lty]),
+          showlegend = FALSE,
+          inherit = FALSE)    
+    }  
+    if(label == TRUE){ 
+      fig <- fig |>
+      add_trace(x = ~mn_df$X, y = ~mn_df$Y, z = ~mn_df$Z,
+          type = "scatter3d", mode = "text",
+          text = seq_len(p), 
+          textfont = list(color = p.p$txt.col, size = p.p$txt.cex),
+          textposition = "top center",
+          showlegend = FALSE,
+          inherit = FALSE)
+    } 
+    fig
   }
 }

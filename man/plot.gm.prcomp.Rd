@@ -54,7 +54,7 @@ Plot Function for geomorph
 \code{\link{plotRefToTarget}} \code{\link{picknplot.shape}}
 }
 \author{
-Antigoni Kaliontzopoulou, Michael Collyer
+Dean Adams, Antigoni Kaliontzopoulou, and Michael Collyer
 }
 \keyword{utilities}
 \keyword{visualization}

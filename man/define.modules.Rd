@@ -7,7 +7,7 @@
 define.modules(spec, nmodules)
 }
 \arguments{
-\item{spec}{A p x k matrix containing landmark coordinates of a single specimen (2D or 3D)}
+\item{spec}{A p x k matrix containing landmark coordinates of a single specimen (2D)}
 
 \item{nmodules}{Number of modules to be defined}
 }
@@ -31,20 +31,15 @@ will be filled in. When all landmarks for module 1 are chosen, press 'esc', and 
 landmarks for module 2. Repeat until all modules are defined.
 }
 
- \subsection{Selection in 3D}{ 
-Choosing which landmarks will be included in each module involves landmark selection using a mouse in 
-the rgl plot window. The user is prompted to select one or more landmarks. To do so, use the RIGHT mouse button 
-(or command + LEFT button for Mac users), draw a rectangle around landmarks to select.
-Selected landmarks will be colored yellow. Then type into the console a letter (e.g. 1, 2, 3...) to assign selected landmark(s) 
-to this module. Repeat until all landmarks are assigned to modules.
-}
+ \subsection{Notes for geomorph 4.1}{ 
+ Starting with geomorph version 4.1, interactive module selection in 3D is no longer
+ supported, as RGL is not supported under MacOS Tahoe.
+ }
 }
 \seealso{
 \code{\link{modularity.test}} and \code{\link{integration.test}}
-
-\code{\link[rgl]{rgl-package}} (used in 3D plotting)
 }
 \author{
-Emma Sherratt
+Dean Adams and Emma Sherratt
 }
 \keyword{utilities}

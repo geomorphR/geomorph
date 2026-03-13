@@ -20,7 +20,7 @@ Plot Function for geomorph
 \code{\link{define.links}}
 }
 \author{
-Antigoni Kaliontzopoulou
+Dean Adams and Antigoni Kaliontzopoulou
 }
 \keyword{utilities}
 \keyword{visualization}

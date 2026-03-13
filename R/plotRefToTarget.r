@@ -41,7 +41,7 @@
 #' @param axes A logical value indicating whether the box and axes should be plotted (points and vector only)
 #' @param gridPars An optional object made by \code{\link{gridPar}}
 #' @param useRefPts An option (logical value) to use reference configuration points rather than target configuration points (when method = "TPS")
-#' @param ... Additional parameters not covered by \code{\link{gridPar}} to be passed to \code{\link{plot}}, \code{\link[rgl]{plot3d}} 
+#' @param ... Additional parameters not covered by \code{\link{gridPar}} to be passed to plotting routines
 #' or \code{\link[rgl]{shade3d}}
 #' @return If using method = "surface", function will return the warped mesh3d object.
 #' @keywords visualization
@@ -52,7 +52,6 @@
 #' @seealso  \code{\link{define.links}}
 #' @seealso  \code{\link{warpRefMesh}}
 #' @seealso  \code{\link{warpRefOutline}}
-#' @seealso  \code{\link[rgl]{rgl-package}} (used in 3D plotting)
 #' @examples
 #' \dontrun{
 #' 
@@ -95,6 +94,7 @@ plotRefToTarget<-function(M1, M2, mesh= NULL, outline=NULL,
     stop("Data contains missing values. Estimate these first (see 'estimate.missing').")  }
   if(is.null(gridPars)) gP <- gridPar() else gP <- gridPars
   k <- dim(M1)[2]
+  p <- dim(M1)[1]
   mag <- (mag-1)
   M2 <- M2 + (M2-M1)*mag
   limits <- function(x,s){ 
@@ -203,76 +203,9 @@ plotRefToTarget<-function(M1, M2, mesh= NULL, outline=NULL,
     }      
   }
   if(k==3){
-    #for shape predictor k=2
-#    if(method=="TPS" && class(M2) == "predshape.k2"){
-    if(method=="TPS" && inherits(M2, "predshape.k2")){
-      tps(M1[,1:2],M2[,1:2],gP$n.col.cell, sz=gP$tar.pt.size, pt.bg=gP$tar.pt.bg, 
-          grid.col=gP$grid.col, grid.lwd=gP$grid.lwd, grid.lty=gP$grid.lty, refpts=useRefPts, 
-          k3=TRUE)
-      if(is.null(links)==FALSE){
-        linkcol <- rep(gP$tar.link.col,nrow(links))[1:nrow(links)]
-        linklwd <- rep(gP$tar.link.lwd,nrow(links))[1:nrow(links)]
-        linklty <- rep(gP$tar.link.lty,nrow(links))[1:nrow(links)]
-        for (i in 1:nrow(links)){
-          segments3d(rbind(M2[links[i,1],],M2[links[i,2],]),
-                     col=linkcol[i],lty=linklwd[i],lwd=linklty[i])
-        }
-      }
-      if(label == TRUE){text3d(M2, texts = paste(1:dim(M2)[1]), adj=(gP$txt.adj+gP$pt.size),
-                               pos=gP$txt.pos, cex=gP$txt.cex,col=gP$txt.col)} 
-      if(!is.null(outline)){
-        curve.warp <- tps2d(outline, M1[,1:2],M2[,1:2])
-        points3d(cbind(curve.warp,0), size=gP$tar.out.cex, col=gP$tar.out.col) 
-      }
-    }
-    #for shape predictor k=3
-#    if(method=="TPS" && class(M2) == "predshape.k3"){
-    if(method=="TPS" && inherits(M2, "predshape.k3")){
-      layout3d(matrix(c(1,2),1,2))
-      tps(M1[,1:2],M2[,1:2],gP$n.col.cell, sz=gP$tar.pt.size, pt.bg=gP$tar.pt.bg, 
-          grid.col=gP$grid.col, grid.lwd=gP$grid.lwd, grid.lty=gP$grid.lty, refpts=useRefPts,
-          k3=TRUE)
-      title3d("X,Y tps grid") # doesn't work?
-      if(is.null(links)==FALSE){
-        linkcol <- rep(gP$tar.link.col,nrow(links))[1:nrow(links)]
-        linklwd <- rep(gP$tar.link.lwd,nrow(links))[1:nrow(links)]
-        linklty <- rep(gP$tar.link.lty,nrow(links))[1:nrow(links)]
-        for (i in 1:nrow(links)){
-          segments3d(rbind(M2[links[i,1],],M2[links[i,2],]),
-                     col=linkcol[i],lty=linklwd[i],lwd=linklty[i])
-        }
-      }
-      if(label == TRUE){text3d(M2, texts = paste(1:dim(M2)[1]), adj=(gP$txt.adj+gP$pt.size),
-                               pos=gP$txt.pos, cex=gP$txt.cex,col=gP$txt.col)}
-      if(!is.null(outline)){
-        curve.warp <- tps2d(outline, M1[,1:2],M2[,1:2])
-        points3d(cbind(curve.warp,0), size=gP$tar.out.cex, col=gP$tar.out.col) 
-      }
-      b<-c(1,3)
-      tps(M1[,b],M2[,b],gP$n.col.cell, sz=gP$tar.pt.size, pt.bg=gP$tar.pt.bg, 
-          grid.col=gP$grid.col, grid.lwd=gP$grid.lwd, grid.lty=gP$grid.lty, refpts=useRefPts,
-          k3=TRUE)
-      title3d("X,Y tps grid") # doesn't work?
-      if(is.null(links)==FALSE){
-        linkcol <- rep(gP$tar.link.col,nrow(links))[1:nrow(links)]
-        linklwd <- rep(gP$tar.link.lwd,nrow(links))[1:nrow(links)]
-        linklty <- rep(gP$tar.link.lty,nrow(links))[1:nrow(links)]
-        for (i in 1:nrow(links)){
-          segments3d(rbind(M2[links[i,1],c(1,3,2)],M2[links[i,2],c(1,3,2)]),
-                     col=linkcol[i],lty=linklwd[i],lwd=linklty[i])
-        }
-      }
-      if(label == TRUE){text3d(M2[,c(1,3,2)], texts = paste(1:dim(M2)[1]), adj=(gP$txt.adj+gP$pt.size),
-                               pos=gP$txt.pos, cex=gP$txt.cex,col=gP$txt.col)} # doesn't work? #pos=(gP$txt.pos+gP$pt.size), <- ekb: doesn't work because pos can only be 1,2,3,or4 for 'below', 'left' ....
-      if(!is.null(outline)){
-        curve.warp <- tps2d(outline, M1[,b],M2[,b])
-        points3d(cbind(curve.warp,0), size=gP$tar.out.cex, col=gP$tar.out.col) 
-      }
-    }
-    # Regular TPS plotting for 3D objects
     if(method=="TPS" && any(class(M2) == "matrix")){
       old.par <- par(no.readonly = TRUE)
-      layout(matrix(c(1,2),1,2))
+      par(mfrow = c(1,2))
       par(mar=c(1,1,1,1))
       tps(M1[,1:2],M2[,1:2],gP$n.col.cell, sz=gP$tar.pt.size, pt.bg=gP$tar.pt.bg, grid.col=gP$grid.col, 
           grid.lwd=gP$grid.lwd, grid.lty=gP$grid.lty, refpts=useRefPts)
@@ -309,65 +242,133 @@ plotRefToTarget<-function(M1, M2, mesh= NULL, outline=NULL,
              pos = gP$txt.pos, cex = gP$txt.cex, col = gP$txt.col)
       }
       title("Y,Z tps grid")
-      layout(1)
+      par(mfrow = c(1,1))
       on.exit(par(old.par))
     }
-    if(method=="vector"){
-      if(axes){
-      plot3d(M1,type="s",col=gP$pt.bg,size=gP$pt.size,aspect=FALSE,...)}
+    if(method!="TPS"){
+      fig <- plot_ly()
       if(!axes){
-        plot3d(M1,type="s",col=gP$pt.bg,size=gP$pt.size,aspect=FALSE,xlab="",ylab="",zlab="",axes=F,...)}
-      if(label){text3d(M1, texts = paste(1:dim(M1)[1]), adj=(gP$txt.adj+gP$pt.size),
-                       pos=gP$txt.pos, cex=gP$txt.cex,col=gP$txt.col)}
-      for (i in 1:nrow(M1)){
-        segments3d(rbind(M1[i,],M2[i,]),lwd=2)
-      }
-      if(!is.null(links)){
-        tarlinkcol <- rep(gP$tar.link.col,nrow(links))[1:nrow(links)]
-        tarlinklwd <- rep(gP$tar.link.lwd,nrow(links))[1:nrow(links)]
-        tarlinklty <- rep(gP$tar.link.lty,nrow(links))[1:nrow(links)]
-        for (i in 1:nrow(links)){
-          segments3d(rbind(M2[links[i,1],],M2[links[i,2],]),
-                     col=tarlinkcol[i],lty=tarlinklty[i],lwd=tarlinklwd[i])
-        }
-      }
-    }
-    if(method=="points"){
+        fig <- fig |>
+          plotly::layout(scene = list(aspectmode = "data",
+            xaxis = list(title = '', 
+              showgrid = F, visible = F,showticklabels = F, 
+              zeroline = F, showbackground = F),
+            yaxis = list(title = '', showgrid = F, 
+              visible = F, showticklabels = F, zeroline = F, 
+              showbackground = F),
+            zaxis = list(title = '', showgrid = F, 
+              visible = F, showticklabels = F, zeroline = F, 
+              showbackground = F)),showlegend = FALSE)
+      }  
       if(axes){
-      plot3d(M1,type="s",col=gP$pt.bg,size=gP$pt.size,aspect=FALSE,...)
-      plot3d(M2,type="s",col=gP$tar.pt.bg,size=gP$tar.pt.size,add=TRUE)}
-      if(!axes){
-        plot3d(M1,type="s",col=gP$pt.bg,size=gP$pt.size,aspect=FALSE,xlab="",ylab="",zlab="",axes=F,...)
-        plot3d(M2,type="s",col=gP$tar.pt.bg,size=gP$tar.pt.size,add=TRUE)}
-      
-      if(label){text3d(M1, texts = paste(1:dim(M1)[1]), adj=(gP$txt.adj+gP$pt.size),
-                       pos=gP$txt.pos, cex=gP$txt.cex,col=gP$txt.col)}
-      if(!is.null(links)){
-        linkcol <- rep(gP$link.col,nrow(links))[1:nrow(links)]
-        linklwd <- rep(gP$link.lwd,nrow(links))[1:nrow(links)]
-        linklty <- rep(gP$link.lty,nrow(links))[1:nrow(links)]
-        tarlinkcol <- rep(gP$tar.link.col,nrow(links))[1:nrow(links)]
-        tarlinklwd <- rep(gP$tar.link.lwd,nrow(links))[1:nrow(links)]
-        tarlinklty <- rep(gP$tar.link.lty,nrow(links))[1:nrow(links)]
-        for (i in 1:nrow(links)){
-          segments3d(rbind(M1[links[i,1],],M1[links[i,2],]),
-                     col=linkcol[i],lty=linklty[i],lwd=linklwd[i])
-          segments3d(rbind(M2[links[i,1],],M2[links[i,2],]),
-                     col=tarlinkcol[i],lty=tarlinklty[i],lwd=tarlinklwd[i])
+        fig <- fig |>
+          plotly::layout(scene = list(aspectmode = "data", showlegend = FALSE,
+            xaxis = list(title = "X"),
+            yaxis = list(title = "Y"),
+            zaxis = list(title = "Z")))
+      }
+      if(method!="surface"){
+        if(label == TRUE){ 
+          fig <- fig |>
+            add_trace(x = ~M1[,1], y = ~M1[,2], z = ~M1[,3],
+                type = "scatter3d", mode = "text",
+                text = seq_len(p), 
+                textfont = list(color = gP$txt.col, size = gP$txt.cex),
+                textposition = "top center",
+                showlegend = FALSE,
+                inherit = FALSE)
         }
+        if(is.null(links)==FALSE){ 
+          dash_map <- c("solid", "dash", "dot", "dashdot", 
+              "longdash",  "longdashdot")
+          line_df <- data.frame()
+          for (i in 1:nrow(links)) {
+            line_df <- rbind(
+             line_df,
+             M1[links[i, 1], ],
+             M1[links[i, 2], ],
+             data.frame(X = NA, Y = NA, Z = NA)
+            )
+          }
+          fig <- fig |>
+            add_trace(x = ~line_df$X, y = ~line_df$Y, z = ~line_df$Z,
+              type = "scatter3d", mode = "lines",      
+              line = list(color = gP$link.col, width = gP$link.lwd,
+              dash = dash_map[gP$link.lty]),
+              showlegend = FALSE,
+              inherit = FALSE)
+          if(method!="vector"){
+            line_df2 <- data.frame()
+            for (i in 1:nrow(links)) {
+              line_df2 <- rbind(
+                line_df2,
+                M2[links[i, 1], ],
+                M2[links[i, 2], ],
+                data.frame(X = NA, Y = NA, Z = NA)
+              )
+            }
+            fig <- fig |>
+              add_trace(x = ~line_df2$X, y = ~line_df2$Y, z = ~line_df2$Z,
+                type = "scatter3d", mode = "lines",      
+                line = list(color = gP$tar.link.col, width = gP$tar.link.lwd,
+                dash = dash_map[gP$tar.link.lty]),
+                showlegend = FALSE,
+                inherit = FALSE)
+          }
+        }  
       }
-    }
-    if (method == "surface") {
-      if(is.null(mesh)){
-        stop("Surface plotting requires a template mesh3d object (see 'warpRefMesh').")
+      if(method=="points"){
+        fig <- fig |>
+          add_trace(x = ~M1[,1], y = ~M1[,2], z = ~M1[,3], 
+             type = "scatter3d", mode = "markers", 
+             name = "Mean", marker = list(color = gP$pt.bg, 
+             size = gP$pt.size*2),
+             showlegend = FALSE,
+             inherit = FALSE) 
+        fig <- fig |>
+          add_trace(x = ~M2[,1], y = ~M2[,2], z = ~M2[,3], 
+             type = "scatter3d", mode = "markers", 
+             name = "Mean", marker = list(color = gP$tar.pt.bg, 
+             size = gP$tar.pt.size*2),
+             showlegend = FALSE,
+             inherit = FALSE) 
       }
-      warp.PLY <- mesh
-      vb <- as.matrix(t(mesh$vb)[,-4])
-      cat("\nWarping mesh\n")
-      warp <- tps2d3d(vb, M1, M2)
-      warp.PLY$vb <- rbind(t(warp), 1)
-      shade3d(warp.PLY, meshColor="legacy", ...)
-      return(warp.PLY)
+      if(method=="vector"){
+        fig <- fig |>
+          add_trace(x = ~M1[,1], y = ~M1[,2], z = ~M1[,3], 
+             type = "scatter3d", mode = "markers", 
+             name = "Mean", marker = list(color = gP$pt.bg, 
+             size = gP$pt.size*2),
+             showlegend = FALSE,
+             inherit = FALSE) 
+        x <- as.vector(t(cbind(M1[,1], M2[,1], NA)))
+        y <- as.vector(t(cbind(M1[,2], M2[,2], NA)))
+        z <- as.vector(t(cbind(M1[,3], M2[,3], NA)))
+        fig <- fig |>
+          add_trace(type = "scatter3d", mode = "lines",
+            x = x, y = y, z = z, 
+            line = list(color = gP$tar.link.col, width = gP$tar.link.lwd),
+            inherit = FALSE
+          )
+      }
+      if(method=="surface"){
+        if(is.null(mesh)){
+          stop("Surface plotting requires a template mesh3d object (see 'warpRefMesh').")
+        }
+        warp.PLY <- mesh
+        if (is.null(mesh$material$color)){mesh$material$color <- "gray"} 
+        vb <- as.matrix(t(mesh$vb)[,-4])
+        cat("\nWarping mesh\n")
+        warp <- tps2d3d(vb, M1, M2)
+        warp.PLY$vb <- rbind(t(warp), 1)
+        fig <- fig |>
+          add_trace(type = "mesh3d",
+              x = warp.PLY$vb[1,], y = warp.PLY$vb[2,], z = warp.PLY$vb[3,],
+              i = warp.PLY$it[1,] - 1, j = warp.PLY$it[2,] - 1, k = warp.PLY$it[3,] - 1,
+              vertexcolor = t(grDevices::col2rgb(warp.PLY$material$color, alpha = TRUE)),
+              inherit = FALSE)
+      }
+    fig
     }
-  }
+  } 
 }

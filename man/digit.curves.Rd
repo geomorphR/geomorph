@@ -33,7 +33,7 @@ nPoints are calculated along the curve at equidistant points from the start to t
 
 'curve' is a p-x-k matrix of 2D or 3D coordinates for a set of ordered points defining a curve. This can be the pixels 
 of an outline calculated in ImageJ (save xy coordinates) or any other reasonable way of obtaining ordered coordinates
- along a curve (including sampling by hand using \code{\link{digit.fixed}} or \code{\link{digitize2d}} - but note 
+ along a curve (including sampling by hand using \code{\link{digitize2d}} - but note 
  that there should be more points defining the curve than nPoints in order to accurately calculate the semilandmarks).
 
 If 'closed = T', the function returns the coordinates of the 'start' landmark plus nPoints. If 'closed = F', the 
@@ -49,7 +49,7 @@ Group Differences in Outline Shape. Medical Image Analysis 1(3):225-243.
 Rohlf, F.J., 2015. The tps series of software. Hystrix 26(1):9-12.
 }
 \seealso{
-\code{\link{digit.fixed}} \code{\link{digitize2d}}
+\code{\link{digitize2d}}
 }
 \author{
 Emma Sherratt and Michael Collyer

@@ -42,7 +42,7 @@ plotRefToTarget(
 
 \item{useRefPts}{An option (logical value) to use reference configuration points rather than target configuration points (when method = "TPS")}
 
-\item{...}{Additional parameters not covered by \code{\link{gridPar}} to be passed to \code{\link{plot}}, \code{\link[rgl]{plot3d}} 
+\item{...}{Additional parameters not covered by \code{\link{gridPar}} to be passed to plotting routines
 or \code{\link[rgl]{shade3d}}}
 }
 \value{
@@ -123,8 +123,6 @@ Claude, J. 2008. Morphometrics with R. Springer, New York.
 \code{\link{warpRefMesh}}
 
 \code{\link{warpRefOutline}}
-
-\code{\link[rgl]{rgl-package}} (used in 3D plotting)
 }
 \author{
 Dean Adams, Emma Sherratt, Antigoni Kaliontzopoulou & Michael Collyer
