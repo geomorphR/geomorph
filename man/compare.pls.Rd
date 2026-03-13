@@ -4,7 +4,7 @@
 \alias{compare.pls}
 \title{Comparisons of Effect Sizes from Partial Least Squares}
 \usage{
-compare.pls(..., two.tailed = TRUE)
+\method{compare}{pls}(..., two.tailed = TRUE)
 }
 \arguments{
 \item{...}{saved analyses of class pls}

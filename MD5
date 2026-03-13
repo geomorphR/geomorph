@@ -1,4 +1,4 @@
-69224ba78cce1ec1fef056785d343433 *cran-comments.md
+ff12574abf44c8c272267e89da5dfee9 *cran-comments.md
 247b6e5658356e87edfd560687b239fc *data/hummingbirds.rda
 56558754725fea156eb0820f67a4f508 *data/larvalMorph.rda
 c3fc0e7a97f4cbd5b6cd8944d737b11a *data/lizards.rda
@@ -18,12 +18,12 @@ b87392f0c6a3fc1653025776f7919ab8 *geomorph.Rproj
 c30a54a1de8c2e612102a9cb7ff2a91a *man/bilat.symmetry.Rd
 942bdc27593275eb14da9dbf1fe6c8fe *man/build.template.Rd
 d4b9074e994ab91d679680cb19864d48 *man/combine.subsets.Rd
-bbbd68811cc80502bdae866d0f2481ed *man/compare.CR.Rd
-0a48c0811c9f6c4a2e6b09c56c1c7072 *man/compare.evol.rates.Rd
-d20ec255f7d940fa128096761cd3fda3 *man/compare.multi.evol.rates.Rd
-7a586be29956207b5b720390ab532798 *man/compare.physignal.z.Rd
-7f5a7bac5891db4b7f34d094d2b9592c *man/compare.pls.Rd
-e3e8dd3111cb2a196a03e158a99e19d6 *man/compare.ZVrel.Rd
+2eaca48703f3bcce111347d54a67ad0a *man/compare.CR.Rd
+04b4a6d7d9d86950bcd6ee4b64629843 *man/compare.evol.rates.Rd
+a7bf8a556064724f591adada92cfd980 *man/compare.multi.evol.rates.Rd
+89070bcdbd0d99ae7582fef7fd77101a *man/compare.physignal.z.Rd
+25aeb132f4d2a88dd66a018d52050c5a *man/compare.pls.Rd
+8d7f907b95076f1c34319bf60fff864f *man/compare.ZVrel.Rd
 f3b7b709a94019ee9c38d0e510d7d8f3 *man/coords.subset.Rd
 25b6f3974b3761c85c2cd528956af37a *man/define.links.Rd
 5cfdadaa31de2faa595357cf76830f2d *man/define.modules.Rd
@@ -143,7 +143,7 @@ a149e9263d42cf722a231f35c4645e64 *man/two.b.pls.Rd
 ab4f364c13ae919766bd1720ee9e34c4 *man/warpRefMesh.Rd
 653338d224a0bdc694436ffe32f53f71 *man/warpRefOutline.Rd
 aac14dd389a4f2cd73e97e8fbc0bfbad *man/writeland.tps.Rd
-6448dad548a76246e5cfeebc028e0e2a *NAMESPACE
+723bb65b24f55f6905e0d7f59f97ffb5 *NAMESPACE
 0f765317e83e1ff72b8391ef8a82af3b *NEWS.md
 30e087ae264ca51cb446a66bbbbec440 *R/arrayspecs.r
 e4fee65cd8240655e43ab013bbac5d35 *R/bilat.symmetry.r
