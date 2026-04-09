@@ -154,7 +154,7 @@ ab4f364c13ae919766bd1720ee9e34c4 *man/warpRefMesh.Rd
 653338d224a0bdc694436ffe32f53f71 *man/warpRefOutline.Rd
 aac14dd389a4f2cd73e97e8fbc0bfbad *man/writeland.tps.Rd
 0643bd6b702cb996921c093997a93086 *NAMESPACE
-7d354052c38a2cd69c9126d11aa27de6 *NEWS.md
+5a32059a4136fd4851e0bff58f8b7e6c *NEWS.md
 30e087ae264ca51cb446a66bbbbec440 *R/arrayspecs.r
 e4fee65cd8240655e43ab013bbac5d35 *R/bilat.symmetry.r
 e3f90273ad93ce866df2d82001ce50a7 *R/build.template.r
@@ -203,7 +203,7 @@ fb0ca512dfd9388e97358e78b46ea368 *R/phylo.modularity.r
 4fd74802155991e1e1bd0afe78bc4f5e *R/physignal.z.r
 729ddcc0da51e46f00241d5924a4f8f0 *R/picknplot.shape.r
 4bb7f31726bb839b84de2a0f61340534 *R/plotAllometry.r
-d9837ac1baa3d2a397bc6c8123ed6740 *R/plotAllSpecimens.r
+eb50abb9335a6374e8afa40e024c417d *R/plotAllSpecimens.r
 63151b746efc9c6d6cec3fe112a3779e *R/plotOutliers.r
 76b33f0db5da79805f903626c8abdff7 *R/plotRefToTarget.r
 421adaf73efb413fa29d829ea5d35d2f *R/plotspec.r

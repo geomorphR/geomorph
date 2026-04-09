@@ -64,6 +64,7 @@ plotAllSpecimens<-function(A,mean=TRUE,links=NULL,label=FALSE,plot_param = list(
       A3d<-rbind(A3d,A[,,i])
     }
     A3d <- data.frame(A3d)
+    colnames(A3d) <- c("X","Y","Z")
     
     fig <- plot_ly()
     fig <- fig |>

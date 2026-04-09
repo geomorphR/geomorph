@@ -1,5 +1,11 @@
 # CHANGES IN GEOMORPH VERSION 4.1.0.999
 
+### BUG FIXES
+
+* Fixed 3D plotting for points in `plotAllSpecimens`.
+
+# CHANGES IN GEOMORPH VERSION 4.1.0
+
 ### MAJOR CHANGES
 
 * Internal switch to `plotly` for 3D graphics (was previously `RGL`)
