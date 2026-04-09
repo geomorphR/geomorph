@@ -63,8 +63,10 @@
 #' @keywords analysis
 #' @author Dean Adams
 #' @return Objects of class "pls" from integration.test return a list of the following:
-#'  \item{r.pls}{The estimate of morphological integration: PLS.corr. The mean of pairwise
-#'  PLS correlations between partitions is used when there are more than two partitions.}
+#'  \item{r.pls}{The estimate of morphological integration: PLS.corr. The weighted mean of pairwise
+#'  PLS correlations between partitions is used when there are more than two partitions. Weights are
+#'  equal based on the shared number of landmarks compared, relative to the total number of landmarks
+#'  (see Collyer and Adams, 2026).}
 #'    \item{r.pls.mat}{The pairwise r.pls, if the number of partitions is greater than 2.}
 #'    \item{P.value}{The empirically calculated P-value from the resampling procedure.}
 #'   \item{Effect.Size}{The multivariate effect size associated with sigma.d.ratio.}
@@ -83,6 +85,9 @@
 #'    \item{A2.matrix}{Right block (matrix) found from A2 (for 2 modules only).}
 #'    \item{Pcov}{The phylogenetic transformation matrix, needed for certain other analyses.}
 #'    \item{permutations}{The number of random permutations used in the resampling procedure.}
+#'    \item{comp_weights}{The weights for pairwise comparisons, if more than two modules are analyzed.  
+#'    The weights are equal to the number of comparisons divided by two, times the ratio of pair module 
+#'    dimensions to the total dimensions of all modules. (Dimensions = p * k.)}
 #'    \item{call}{The match call.}
 #' @references  Adams, D.C. and R. Felice. 2014. Assessing phylogenetic morphological 
 #' integration and trait covariation in morphometric data using evolutionary covariance 
@@ -96,6 +101,9 @@
 #' @references Adams, D.C. and M.L. Collyer. 2019. Comparing the strength of modular signal, and evaluating 
 #' alternative modular hypotheses, using covariance ratio effect sizes with morphometric data. 
 #' Evolution. 73:2352-2367.
+#' @references Collyer, M. L., & Adams D. C. (2026). Permutational Biometry: Volume
+#' 1, Univariate Data. Iowa State University Digital Press.  NOT YET PUBLISHED.
+#'
 #' @seealso \code{\link{integration.test}}, \code{\link{modularity.test}}, and 
 #' \code{\link{two.b.pls}}
 #' @examples
@@ -296,6 +304,11 @@ phylo.integration <-function(A, A2 = NULL, phy,
     y <- center(Ptrans %*% x)
     g <- factor(as.numeric(gps))
     gps.combo <- combn(ngps, 2)
+    gp_pk <- as.vector(table(g))
+    sumpk <- sum(gp_pk)
+    ng_comp <- apply(gps.combo, 2, 
+                     function(x) sum(gp_pk[x]))
+    wts <- ngps / 2 * ng_comp / sumpk
     pls.rand <- sapply(1:perms, function(j) {
       step <- j
       if(print.progress) setTxtProgressBar(pb,step)
@@ -314,8 +327,15 @@ phylo.integration <-function(A, A2 = NULL, phy,
     
     p.vals <- apply(abs(pls.rand), 1, pval)
     Zs <- apply(pls.rand, 1, effect.size)
-    p.val <- pval(colMeans(abs(pls.rand)))
-    Z <- effect.size(colMeans(pls.rand), center=TRUE)
+    
+    wtMeanPLS <- wts * pls.rand
+    p.val <- pval(colMeans(abs(wts * pls.rand)))
+    Z <- effect.size(colMeans(wts * pls.rand), center=TRUE)
+    r.pls.mat <- matrix(0, length(nms), length(nms))
+    dimnames(r.pls.mat) <- list(nms, nms)
+    r.pls.mat <- wt.r.pls.mat <- as.dist(r.pls.mat)
+    r.pls.mat[1:nrow(pls.rand)] <- pls.rand[, 1]
+    wt.r.pls.mat[1:nrow(pls.rand)] <- wts * pls.rand[, 1]
     
     r.pls.mat <- matrix(0, length(nms), length(nms))
     dimnames(r.pls.mat) <- list(nms, nms)
@@ -347,7 +367,7 @@ phylo.integration <-function(A, A2 = NULL, phy,
                 method = "PLS")
   }
   if(ngps>2){
-    out <- list(r.pls = mean(r.pls.mat), r.pls.mat = r.pls.mat, 
+    out <- list(r.pls = mean(wt.r.pls.mat), r.pls.mat = r.pls.mat, 
                 P.value = p.val, Z = Z,
                 pairwise.P.values = p.vals, pairwise.Z = Zs,
                 random.r = pls.rand, 
@@ -355,6 +375,8 @@ phylo.integration <-function(A, A2 = NULL, phy,
                 permutations = iter+1, call=match.call(),
                 method = "PLS")
   }
+  
+  out$comp_weights <- if(ngps > 2) wts else NA
   
   class(out) <- "pls"
   out  

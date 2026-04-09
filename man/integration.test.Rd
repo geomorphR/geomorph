@@ -33,8 +33,10 @@ This is helpful for long-running analyses.}
 }
 \value{
 Objects of class "pls" from integration.test return a list of the following:
- \item{r.pls}{The estimate of morphological integration: PLS.corr. The mean of pairwise
- PLS correlations between partitions is used when there are more than two partitions.}
+ \item{r.pls}{The estimate of morphological integration: PLS.corr. The weighted mean of pairwise
+ PLS correlations between partitions is used when there are more than two partitions. Weights are
+ equal based on the shared number of landmarks compared, relative to the total number of landmarks
+ (see Collyer and Adams, 2026).}
    \item{r.pls.mat}{The pairwise r.pls, if the number of partitions is greater than 2.}
    \item{P.value}{The empirically calculated P-value from the resampling procedure.}
   \item{Effect.Size}{The multivariate effect size associated with sigma.d.ratio.}
@@ -52,6 +54,9 @@ Objects of class "pls" from integration.test return a list of the following:
    \item{A1.matrix}{Left block (matrix) found from A1 (for 2 modules only).}
    \item{A2.matrix}{Right block (matrix) found from A2 (for 2 modules only).}
    \item{permutations}{The number of random permutations used in the resampling procedure.}
+   \item{comp_weights}{The weights for pairwise comparisons, if more than two modules are analyzed.  
+   The weights are equal to the number of comparisons divided by two, times the ratio of pair module 
+   dimensions to the total dimensions of all modules. (Dimensions = p * k.)}
    \item{call}{The match call.}
 }
 \description{
@@ -166,6 +171,10 @@ datasets. Evolution. 70:2623-2631.
 Adams, D.C. and M.L. Collyer. 2019. Comparing the strength of modular signal, and evaluating 
 alternative modular hypotheses, using covariance ratio effect sizes with morphometric data. 
 Evolution. 73:2352-2367.
+
+Collyer, M. L., & Adams D. C. (2026). Permutational Biometry: Volume
+1, Univariate Data. Iowa State University Digital Press.  NOT YET PUBLISHED.
+.
 }
 \seealso{
 \code{\link{two.b.pls}}, \code{\link{modularity.test}}, 

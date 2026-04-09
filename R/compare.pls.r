@@ -99,7 +99,14 @@
    bct <- lapply(dots, function(x) box.cox(x$random.r)$transformed)
    list.drs <- sapply(1:k, function(j) bct[[j]][1] - mean(bct[[j]])) 
    list.sds <- sapply(1:k, function(j) sdn(bct[[j]]))
-   list.zs <- sapply(1:k, function(j) effect.size(dots[[j]]$random.r, center=TRUE))
+   list.zs <- sapply(1:k, function(j) {
+     r.r <- dots[[j]]$random.r
+     if(length(r.r) > dots[[j]]$permutations){
+       r.r <- r.r * dots[[j]]$comp_weights
+       zs <- effect.size(colMeans(r.r), center=TRUE)
+     } else zs <- effect.size(r.r, center = TRUE)
+       zs
+     }) 
 
    z12 <- sapply(1:ncol(k.combn), function(j){
      a <- k.combn[1,j]; b <- k.combn[2,j]
