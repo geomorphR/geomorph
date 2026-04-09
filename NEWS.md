@@ -1,5 +1,10 @@
 # CHANGES IN GEOMORPH VERSION 4.1.0.999
 
+### NEW FEATURES
+
+* `pls` objects with pairwise comparisons now use a weighted mean of r_pls
+values to account for disparate module sizes.
+
 ### BUG FIXES
 
 * Fixed 3D plotting for points in `plotAllSpecimens`.
