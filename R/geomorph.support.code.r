@@ -5,7 +5,7 @@
 #' @description Functions in this package allow one to read and manipulate landmark data; generate shape
 #'  variables via Procrustes analysis for points, curves and surface data, perform statistical analyses
 #'  of shape variation and covariation, and provide graphical depictions of shapes and patterns of
-#'  shape variation.
+#'  shape variation. 
 #'
 #' @importFrom jpeg readJPEG
 #' @importFrom ape multi2di.phylo
