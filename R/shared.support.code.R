@@ -241,7 +241,7 @@ pval = function(s){# s = sampling distribution
 # Used in effect.size
 box.cox.true <- function(y, eps = 0.001){
   
-  if(any(y <= 0)) y = y - min(y) + 0.0001
+  y <- y - min(y) + 0.0001
   
   y.obs <- y[1]
   y <- y[-1]
@@ -274,7 +274,7 @@ box.cox.true <- function(y, eps = 0.001){
 
 box.cox.spline <- function(y, eps = 0.001) {
   
-  if(any(y <= 0)) y = y - min(y) + 0.0001
+  y <- y - min(y) + 0.0001
   
   y.obs <- y[1]
   y <- y[-1]
@@ -311,7 +311,7 @@ box.cox.iter <- function(y, eps = 0.001) {
 }
 
 box.cox.fast <- function(y, eps = 0.001) {
-  if(any(y <= 0)) y = y - min(y) + 0.0001
+  y <- y - min(y) + 0.0001
   y.obs <- y[1]
   y <- y[-1]
   
