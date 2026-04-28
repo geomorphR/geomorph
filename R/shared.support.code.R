@@ -366,7 +366,7 @@ box.cox.fast <- function(y, eps = 0.001) {
     yy <- y / exp(mean(log(y)))
     logy <- log(yy)
     
-    result <- optimise(logLik, lower = -5, upper = 5, maximum = TRUE)
+    result <- optimise(logLik, lower = -2, upper = 2, maximum = TRUE)
     lambda.opt <- result$maximum
     
   }
