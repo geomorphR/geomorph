@@ -4,7 +4,7 @@
 
 * Fixed 3D plotting for points in `plotAllSpecimens`.
 
-### NEW FEATURES
+### NEW  
 * `pls` objects with pairwise comparisons now use a weighted mean of r_pls
 values to account for disparate module sizes.
 
