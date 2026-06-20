@@ -257,11 +257,8 @@ pval <- function(s, target = NULL, greater = TRUE){
 # Used in effect.size
 box.cox.true <- function(y, eps = 0.001){
   
-  alpha <- 1 - min(y)
-  
-  if(any(y <= 0))
-    y <- y - min(y) + alpha
-  
+  y <- scale(y)
+  y <- y - min(y) + 1
   y.obs <- y[1]
   y <- y[-1]
   
@@ -270,7 +267,7 @@ box.cox.true <- function(y, eps = 0.001){
   yy <- y / exp(mean(log(y)))
   logy <- log(yy)
   
-  lambda <- seq(-5, 5, 0.001)
+  lambda <- seq(-2, 2, 0.001)
   m <- length(lambda)
   
   loglik <- sapply(1:m, function(j){ # same as MASS::boxcox loglik 
@@ -283,28 +280,6 @@ box.cox.true <- function(y, eps = 0.001){
   
   lambda.opt <- lambda[which.max(loglik)][[1]]
   
-  if(lambda.opt < -1 || lambda.opt > 1.5){
-    
-    y <- y - min(y) + alpha
-    y.obs <- y[1] - min(y) + alpha
-    yy <- y / exp(mean(log(y)))
-    logy <- log(yy)
-    
-    lambda <- seq(-2, 2, 0.001)
-    m <- length(lambda)
-    
-    loglik <- sapply(1:m, function(j){
-      la <- lambda[j]
-      yt <- if(abs(la) > eps) yt <- (yy^la - 1)/la else
-        logy * (1 + (la * logy)/2 * (1 + (la * logy)/3 * (1 + (la * logy)/4)))
-      
-      -n/2 * log(sum(center(yt)^2))
-    })
-    
-    lambda.opt <- lambda[which.max(loglik)][[1]]
-    
-  }
-  
   if(abs(lambda.opt) < eps) lambda.opt <- 0
   y <- c(y.obs, y)
   res <- if(lambda.opt == 0) log(y) else (y^lambda.opt - 1)/lambda.opt
@@ -316,11 +291,8 @@ box.cox.true <- function(y, eps = 0.001){
 
 box.cox.spline <- function(y, eps = 0.001) {
   
-  alpha <- 1 - min(y)
-  
-  if(any(y <= 0))
-    y <- y - min(y) + alpha
-  
+  y <- scale(y)
+  y <- y - min(y) + 1
   y.obs <- y[1]
   y <- y[-1]
   
@@ -359,10 +331,8 @@ box.cox.iter <- function(y, eps = 0.001) {
 
 box.cox.fast <- function(y, eps = 0.001) {
   
-  alpha <- 1 - min(y)
-  
-  if(any(y <= 0))
-    y <- y - min(y) + alpha
+  y <- scale(y)
+  y <- y - min(y) + 1
   y.obs <- y[1]
   y <- y[-1]
   
@@ -378,21 +348,8 @@ box.cox.fast <- function(y, eps = 0.001) {
     -n/2 * log(sum(center(yt)^2))
   }
   
-  result <- optimise(logLik, lower = -5, upper = 5, maximum = TRUE)
+  result <- optimise(logLik, lower = -2, upper = 2, maximum = TRUE)
   lambda.opt <- result$maximum
-  
-  
-  if(lambda.opt < -1 || lambda.opt > 1.5){
-    
-    y <- y - min(y) + alpha
-    y.obs <- y[1] - min(y) + alpha
-    yy <- y / exp(mean(log(y)))
-    logy <- log(yy)
-    
-    result <- optimise(logLik, lower = -2, upper = 2, maximum = TRUE)
-    lambda.opt <- result$maximum
-    
-  }
   
   if(abs(lambda.opt) < eps) lambda.opt <- 0
   y <- c(y.obs, y)

@@ -9,6 +9,7 @@ values to account for disparate module sizes.
 
 * Fixed 3D plotting for points in `plotAllSpecimens`.
 * Fixed some issues with box-cox transformations.
++ Tweaked `box.cox` to be more stable.
 
 # CHANGES IN GEOMORPH VERSION 4.1.0
 
