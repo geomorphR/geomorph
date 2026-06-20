@@ -24,6 +24,7 @@ should be scaled to unit size.
 ### BUG FIXES
 
 * Fixed unused tol argument in `physignal.eigen`.
+* Tweaked `box.cox` to be more stable.
 
 # CHANGES IN GEOMORPH VERSION 4.0.10
 
