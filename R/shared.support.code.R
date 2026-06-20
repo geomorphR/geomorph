@@ -60,14 +60,13 @@ center.scale <- function(x) {
 # apply.pPsup
 # applies a partial Procrustes superimposition to matrices in a list
 # used in gpagen functions
-apply.pPsup<-function(M, Ya, rot.pts = NULL) {	# M = mean (reference); Ya all Y targets
+apply.pPsup<-function(M, Ya) {	# M = mean (reference); Ya all Y targets
   dims <- dim(Ya[[1]])
   k <- dims[2]; p <- dims[1]; n <- length(Ya)
-  if(is.null(rot.pts)) rot.pts <- 1:p
   M <- cs.scale(M)
   lapply(1:n, function(j){
     y <- Ya[[j]]
-    MY <- crossprod(M[rot.pts,], y[rot.pts, ])
+    MY <- crossprod(M,y)
     sv <- La.svd(MY,k,k)
     u <- sv$u; u[,k] <- u[,k]*determinant(MY)$sign
     tcrossprod(y,u%*%sv$vt)
@@ -197,7 +196,7 @@ boot.index <-function(n, iter, block = NULL, seed = NULL){
           out <- array(NA, n)
           r <- unlist(lapply(loc.list, sample, replace = TRUE))
           for(i in indx) out[rindx[i]] <- r[i]
-        } else  out <- sample.int(n, n)
+        } else  out <- sample.int(n, n, replace = TRUE)
         out
       }
       ind <- c(list(1:n), (Map(function(x) get.samp(n), 
@@ -228,11 +227,28 @@ fastLM<- function(U, y){
 # pval
 # P-values form random outcomes
 # any analytical function
-pval = function(s){# s = sampling distribution
-  p = length(s)
-  r = rank(s)[1]-1
-  pv = 1-r/p
-  pv
+
+#' Obtain P-value from a vector of values
+#'
+#' A function to find the probability of values greater or lesser than target,
+#' from a vector of values presumably obtained in random permutations.
+#'
+#' @param s The sampling distribution vector to use.
+#' @param target The value to target in the distribution.  (If null, the first value
+#' in the vector is used.).  If the target exists outside the range of s,
+#' a probability of 0 or 1 is certain.
+#' @param greater Logical value for whether the probability should be "greater than 
+#' or equal to".  Change to greater = FALSE for "less than or equal to".
+#' @export
+#' @author Michael Collyer
+#' @keywords utilities
+pval <- function(s, target = NULL, greater = TRUE){
+  if(is.null(target)) target <- s[1]
+  p <- length(s)
+  pv <- if(greater) 
+    length(which(s >= target)) else 
+      length(which(s <= target))
+  pv / p
 }
 
 # box.cox
@@ -338,8 +354,10 @@ box.cox.iter <- function(y, eps = 0.001) {
 
 box.cox.fast <- function(y, eps = 0.001) {
   
+  alpha <- 1 - min(y)
+  
   if(any(y <= 0))
-    y <- y - min(y) + 0.0001
+    y <- y - min(y) + alpha
   y.obs <- y[1]
   y <- y[-1]
   
@@ -359,10 +377,10 @@ box.cox.fast <- function(y, eps = 0.001) {
   lambda.opt <- result$maximum
   
   
-  if(lambda.opt < -0.5 || lambda.opt > 1.5){
+  if(lambda.opt < -1 || lambda.opt > 1.5){
     
-    y <- y - min(y) + 0.0001
-    y.obs <- y[1] - min(y) + 0.0001
+    y <- y - min(y) + alpha
+    y.obs <- y[1] - min(y) + alpha
     yy <- y / exp(mean(log(y)))
     logy <- log(yy)
     
@@ -388,7 +406,23 @@ box.cox <- function(y, eps = 0.001, iterate = FALSE) {
 # Effect sizes (standard deviates) form random outcomes
 # any analytical function
 
-effect.size <- function(x, center = TRUE) {
+#' Obtain Effect-size from a vector of values
+#'
+#' A function to find the effect size (Z-score) of a target,
+#' from a vector of values presumably obtained in random permutations.
+#'
+#' @param x The vector of data to use.
+#' @param center Logical value for whether to center x.
+#' @param target The value to target in the distribution.  (If null, the first value
+#' in the vector is used.).  If the target exists outside the range of x,
+#' very small or very large z-scores are possible.  Additionally, if the target
+#' is excessively outside of the range of x, it could affect the Box-Cox transformation 
+#' used to transform x.
+#' @export
+#' @author Michael Collyer
+#' @keywords utilities
+effect.size <- function(x, center = TRUE, target = NULL) {
+  if(is.null(target)) target <- x[1] else x <- c(target, x)
   if(length(unique(x)) == 1) {
     sdx <- 1
     x <- 0
@@ -521,6 +555,7 @@ fast.phy.vcv <- function (phy) {
 
 # reorder.phy
 # same as reorder function, but without options
+
 reorder.phy <- function(phy){
   edge <- phy$edge
   edge.length <- phy$edge.length
@@ -560,7 +595,8 @@ pic.prep <- function(phy, nx, px){
 
 ace.pics <- function(ntip, nnode, edge1, edge2, edge_len, phe, contr,
                      var_contr, tip.label, i.seq, x) {
-  phe[1:ntip,] <- if (is.null(rownames(x))) x else x[tip.label,]
+  phe[1:ntip, ] <- if (is.null(rownames(x))) x else 
+    x[tip.label, , drop = FALSE]
   N <- ntip + nnode
   for(ii in 1:nnode) {
     anc <- edge1[i.seq[ii]]
@@ -574,7 +610,8 @@ ace.pics <- function(ntip, nnode, edge1, edge2, edge_len, phe, contr,
     ya <- (phe[d1,] - phe[d2,])/sqrt(sumbl)
     contr[ic, ] <- ya
     var_contr[ic] <- sumbl
-    phe[anc,] <- (phe[d1, ] * edge_len[j] + phe[d2, ] * edge_len[i])/sumbl
+    phe[anc,] <- (phe[d1, , drop = FALSE] * edge_len[j] + 
+                    phe[d2, , drop = FALSE] * edge_len[i])/sumbl
     k <- which(edge2 == anc)
     edge_len[k] <- edge_len[k] + edge_len[i] * edge_len[j] / sumbl
   }
@@ -589,10 +626,10 @@ anc.BM <- function(phy, Y){
   phy <- reorder.phy(phy)
   Y <- as.matrix(Y)
   N <- length(phy$tip.label)
-  Y <- as.matrix(Y[phy$tip.label, ])
+  Y <- as.matrix(Y[phy$tip.label, , drop = FALSE])
   edge <- cbind(phy$edge, phy$edge.length)
   ind <-rank(edge[,1], ties.method = "last")
-  edge <- edge[order(ind, decreasing = TRUE), ]
+  edge <- edge[order(ind, decreasing = TRUE), , drop = FALSE]
   ev <- edge[,3]
   anc <- edge[, 1]
   des <- edge[, 2]
@@ -614,18 +651,18 @@ anc.BM <- function(phy, Y){
     
     if(d <= N){
       p[d] <- 1 / len
-      Z[d, ] <- Y[d, ]
+      Z[d, ] <- Y[d, , drop = FALSE]
     } else {
       pA <- p[d]
-      Z[d, ] <- Z[d, ] / pA
+      Z[d, ] <- Z[d, , drop = FALSE] / pA
       p[d] <- pA / (1 + len * pA)
     }
     
     p[a] <- p[a] + p[d]
-    Z[a, ] <- Z[a, ] + Z[d, ] * p[d]
+    Z[a, ] <- Z[a, , drop = FALSE] + Z[d, , drop = FALSE] * p[d]
   }
   
-  Z[a, ] <- Z[a, ] / p[a]
+  Z[a, ] <- Z[a, , drop = FALSE] / p[a]
   
   for(i in ne:1){
     a <- anc[i] 
@@ -633,8 +670,8 @@ anc.BM <- function(phy, Y){
     len <- ev[i]
     
     if(d > N) {
-      Z[d, ] <-  Z[d, ] * p[d] * len + 
-        Z[a, ] - Z[a, ] * p[d] * len
+      Z[d, ] <-  Z[d, , drop = FALSE] * p[d] * len + 
+        Z[a, ] - Z[a, , drop = FALSE] * p[d] * len
     }
   }
   Z <- Z[-(1:N), , drop = FALSE]
