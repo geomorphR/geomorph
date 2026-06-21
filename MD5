@@ -34,7 +34,6 @@ e7fe48d46bc3513f2185c6e34cd6aa95 *man/digit.fixed.Rd
 a9105238571b6f1f6f233cc2570fcec4 *man/digitize2d.Rd
 abddd472d95be453faa8744f58018dd1 *man/digitsurface.Rd
 b0b82a47f9c7c2e70b043f0ab086c4c9 *man/editTemplate.Rd
-1646dbfc9d72aa7dfad16de9d55df788 *man/effect.size.Rd
 cbd650a7cabe3658cea600861d4e0bb5 *man/estimate.missing.Rd
 035306268b0c131dabc6ef7c9cae36a3 *man/extended.pgls.Rd
 e1a4eb6651e808c3702773df3eb7bd77 *man/findMeanSpec.Rd
@@ -107,7 +106,6 @@ aa9104be734ce6ed986a76ae3a1b8dda *man/print.pls.Rd
 3f05356a57cdec1cdfca3775d0aac5c0 *man/procD.pgls.Rd
 72b91c59988d64411b7538795533db3b *man/pupfish.Rd
 187a726ddf778ba46a5e1e98cbc08ae3 *man/pupfish.ws.Rd
-45d4bffaa35ad64f418ec77d9f999e75 *man/pval.Rd
 a9e642b1b58f83a93ab678d6be98df1c *man/ratland.Rd
 1e64ddacc1be59c4ed9216fe7844ab05 *man/read.morphologika.Rd
 4137079ed17c29c7faa96db27937b792 *man/read.ply.Rd
@@ -146,7 +144,7 @@ a149e9263d42cf722a231f35c4645e64 *man/two.b.pls.Rd
 ab4f364c13ae919766bd1720ee9e34c4 *man/warpRefMesh.Rd
 653338d224a0bdc694436ffe32f53f71 *man/warpRefOutline.Rd
 aac14dd389a4f2cd73e97e8fbc0bfbad *man/writeland.tps.Rd
-803abea178cf4bf7f08f3f9a024f56da *NAMESPACE
+6448dad548a76246e5cfeebc028e0e2a *NAMESPACE
 ea5823db07cd5af4aeb3e6bc52e7342e *NEWS.md
 30e087ae264ca51cb446a66bbbbec440 *R/arrayspecs.r
 e4fee65cd8240655e43ab013bbac5d35 *R/bilat.symmetry.r
@@ -210,7 +208,7 @@ a21a46ac8974d0b4e06508ad0bd92e97 *R/readmulti.nts.r
 98a3598f6a6dc0769e5c09b8d2298661 *R/rotate.coords.R
 64b561da738161de0ef3b19579391f70 *R/shape.predictor.r
 caffb467d24d317af11c77ac3a591214 *R/shapeHulls.r
-8a2ee642e6a0cddeb50654157335b4a5 *R/shared.support.code.R
+42fb5ecc0912864371e953ec566282bb *R/shared.support.code.R
 8d0646612d837f267243f4e32933b461 *R/two.b.pls.r
 8a4c0ac0f0d88b7947e5523e091805b6 *R/two.d.array.r
 b845dc8051276abf289f035119f4b5af *R/warpRefMesh.r
