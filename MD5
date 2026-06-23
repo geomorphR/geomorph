@@ -161,11 +161,11 @@ e65d7da576d1eb0948aacecf1b235a68 *R/arrayspecs.r
 28a0cd88b6a7a020ff356227cbefe15d *R/bilat.symmetry.r
 e3f90273ad93ce866df2d82001ce50a7 *R/build.template.r
 5110503396ae338c8834927f8fd65a53 *R/combine.subsets.R
-fded7f2df7d21f7820a278febb9488bb *R/compare.CR.R
+14a85bfd453f19e0bef6bf1e2f402458 *R/compare.CR.R
 3ae8bc8673536d00657c21705dc1bccf *R/compare.evol.rates.r
 d487d69ccfb0e5184dbe98d5fb68b562 *R/compare.multi.evol.rates.r
-9487ee667aa455f71bcb9e4a0299ed9b *R/compare.physign.z.r
-0c4e3c065124e47276ce0de317cf2161 *R/compare.pls.r
+20444f9afa79ad65c46e51ef9850539c *R/compare.physign.z.r
+a0ff412f34514c6dd0e6a939776b42e7 *R/compare.pls.r
 2bbaf5aabc3870855bbd4057e7aca11e *R/compare.ZVrel.R
 5aa5c09ae5b0e2f6c79faae776e88d98 *R/coords.subset.r
 44dc745a748c9a857b790eb2092938d9 *R/define.links.r
@@ -183,7 +183,7 @@ aac6a4f8a759473e8c37048e5c8e3d91 *R/findMeanSpec.r
 b792f75d1fb825423b03a8711c0120a4 *R/fixed.angle.r
 14c82d650f7cbbf5ef8786303b1e0373 *R/geomorph.data.frame.r
 c71ba3b1b62152769423478099c7a794 *R/geomorph.support.code.r
-e6139e59d9a23958ab15bf2e1044e19f *R/geomorph.utils.r
+eeea4d136cfcfd56a245970f497e7a21 *R/geomorph.utils.r
 d8571c8894e54b32c96c2ce94c6b7101 *R/globalIntegration.r
 02c3a9f0242f86753003cdba36f3db4f *R/gm.measurement.error.R
 23c1c8c54fa323d409e3f99ac51a7ea6 *R/gm.prcomp.R
@@ -206,7 +206,7 @@ aa77b1fafa764c2e06199951593f2f67 *R/physignal.z.r
 41e31a881076379b81bc412eca13d5ce *R/picknplot.shape.r
 c66f942ba7e910f13fdee6ca8aec31bd *R/plotAllometry.r
 1eaeb8eba46ec1af7e2c3b8bc3cabd76 *R/plotAllSpecimens.r
-74c0f14d7ffe617dc6763dc705ed4f1b *R/plotOutliers.r
+f8f362d76fa572a72416bbebf473f2bd *R/plotOutliers.r
 d370a3dc7351193ee9660f6fa85b3a5d *R/plotRefToTarget.r
 421adaf73efb413fa29d829ea5d35d2f *R/plotspec.r
 12d763d62ae7b2affa6a047671664b6d *R/procD.lm.r

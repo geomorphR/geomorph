@@ -96,7 +96,8 @@
    k <- length(list.check)
    if(is.null(list.names)) list.names <- as.list(substitute(list(...)))[-1L]
    k.combn <- combn(k,2)
-   bct <- lapply(dots, function(x) box.cox(x$random.r)$transformed)
+   bct <- lapply(dots, function(x) 
+     powerTrans(x$random.r, useStDev = TRUE)$transformed)
    list.drs <- sapply(1:k, function(j) bct[[j]][1] - mean(bct[[j]])) 
    list.sds <- sapply(1:k, function(j) sdn(bct[[j]]))
    list.zs <- sapply(1:k, function(j) {

@@ -89,7 +89,7 @@ plotOutliers <- function(A, groups = NULL,
     y <- as.matrix(center(Ymat[which(groups == j), ]))
     D <- sqrt(rowSums(y^2))
     D <- D[order(D, decreasing=TRUE)]
-    bc <- box.cox(D)
+    bc <- powerTrans(D)
     b <- bc$transformed
     UL <- quantile(b, 0.75) + 1.5 * IQR(b)
     UL <- (UL * bc$opt.lambda + 1)^(1/bc$opt.lambda)

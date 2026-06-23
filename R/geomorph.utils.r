@@ -635,7 +635,7 @@ plot.physignal.z <- function(x, ...){
   } else {
     
     ll <- x$rand.logL
-    z <- box.cox(ll)$transformed
+    z <- powerTrans(ll, useStDev = TRUE)$transformed
     z[1] <- x$Z
     
     opar <- par()$mfrow
