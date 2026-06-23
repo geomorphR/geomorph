@@ -189,7 +189,7 @@ d8571c8894e54b32c96c2ce94c6b7101 *R/globalIntegration.r
 23c1c8c54fa323d409e3f99ac51a7ea6 *R/gm.prcomp.R
 c0852f88b9286461e0e485edcf982b9e *R/gpagen.r
 51521b135bb93278cecfb48294baab14 *R/gridPar.r
-601742ffeb1dc8936eb33499c5bad862 *R/integration.test.r
+5f91f7a25252346dc3e31e15832acb30 *R/integration.test.r
 88ce73a8fe2c27ef9dfb047bed2ec792 *R/integration.Vrel.r
 63ac4e6afda228b2706bab41800aeb3d *R/interlmkdist.r
 ff5e5b72fcbbe1eaee011c29aee3ce92 *R/K.modules.r
@@ -198,11 +198,11 @@ a154599cedb0b5548dcd575fa7532bfb *R/modularity.test.r
 d7fbf86449a0ac29ec98a7a2001295a6 *R/module.eigen.r
 7838ed223ab132f99bccf498ee4694d4 *R/module.map.r
 2703528f676e23e05b6491d94cd5a01b *R/morphol.disparity.r
-64fb35bdc8ebd197fd284ad4f2434799 *R/phylo.integration.r
+acbc5b6dc3e05a238799cc25ef61d4be *R/phylo.integration.r
 5b3732663b03279af125011d51108032 *R/phylo.modularity.r
 37c471bf95051ca24dce08e05d3e6675 *R/physignal.eigen.R
 a10d2351f5d3ce09e26e005f8f9c1676 *R/physignal.r
-aa77b1fafa764c2e06199951593f2f67 *R/physignal.z.r
+2cd026b6ee42ac6639043ad830259f70 *R/physignal.z.r
 41e31a881076379b81bc412eca13d5ce *R/picknplot.shape.r
 c66f942ba7e910f13fdee6ca8aec31bd *R/plotAllometry.r
 1eaeb8eba46ec1af7e2c3b8bc3cabd76 *R/plotAllSpecimens.r

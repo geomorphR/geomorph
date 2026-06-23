@@ -295,7 +295,7 @@ phylo.integration <-function(A, A2 = NULL, phy,
     p.vals <- NULL
     Zs <- NULL
     p.val <- pval(abs(pls.rand))
-    Z <- effect.size(pls.rand, center=TRUE) 
+    Z <- effect.size(pls.rand, center=TRUE, useStDev = TRUE) 
     XScores <- pls.obs$XScores
     YScores <- pls.obs$YScores
   }
