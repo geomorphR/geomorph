@@ -76,7 +76,7 @@ compare.physignal.z <- function(..., two.tailed = TRUE){
    options(warn = -1) 
    bct <- lapply(dots, function(x) {
      s <- sd(x$rand.logL)
-     res <- if(s > 0) box.cox(x$rand.logL)$transformed else 
+     res <- if(s > 0) powerTrans(x$rand.logL, useStDev = TRUE)$transformed else 
        rep(0, length(x$rand.logL))
      })
      

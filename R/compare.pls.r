@@ -96,15 +96,17 @@
    k <- length(list.check)
    if(is.null(list.names)) list.names <- as.list(substitute(list(...)))[-1L]
    k.combn <- combn(k,2)
-   bct <- lapply(dots, function(x) box.cox(x$random.r)$transformed)
+   bct <- lapply(dots, function(x) powerTrans(x$random.r, useStDev = TRUE)$transformed)
    list.drs <- sapply(1:k, function(j) bct[[j]][1] - mean(bct[[j]])) 
    list.sds <- sapply(1:k, function(j) sdn(bct[[j]]))
    list.zs <- sapply(1:k, function(j) {
      r.r <- dots[[j]]$random.r
      if(length(r.r) > dots[[j]]$permutations){
        r.r <- r.r * dots[[j]]$comp_weights
-       zs <- effect.size(colMeans(r.r), center=TRUE)
-     } else zs <- effect.size(r.r, center = TRUE)
+       zs <- effect.size(colMeans(r.r), center=TRUE, 
+                         useStDev = TRUE)
+     } else zs <- effect.size(r.r, center = TRUE, 
+                              useStDev = TRUE)
        zs
      }) 
 

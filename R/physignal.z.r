@@ -269,7 +269,7 @@ physignal.z <- function(A, phy, lambda = c("burn", "mean", "front", "all"), iter
       detR <- Res$detR
       ll <- 0.5 * (const + p * detC +
                      n * detR + n * p) 
-      effect.size(ll)
+      effect.size(ll, useStDev = TRUE)
     })
     
     spln <- spline(lambdas, Zs)
@@ -297,7 +297,7 @@ physignal.z <- function(A, phy, lambda = c("burn", "mean", "front", "all"), iter
   Pcov.o <- Cov.proj(Cov.o, rownames(Y))
   U.o <- qr.Q(qr(Pcov.o %*% x))
   
-  ind <- perm.index(n, iter, seed = seed)
+  ind <- perm.index(n, iter, seed)
   perms <- length(ind)
   
   if(print.progress) {
@@ -362,7 +362,8 @@ physignal.z <- function(A, phy, lambda = c("burn", "mean", "front", "all"), iter
     K.by.p <- lambda.by.p <- logL.by.p <- NULL
   }
   
-  out <- list(Z = effect.size(logLs), pvalue = pval(logLs),
+  out <- list(Z = effect.size(logLs, useStDev = TRUE), 
+              pvalue = pval(logLs),
               rand.detR = detSig, rand.logL = logLs, 
               lambda = opt,
               K = K, PACA = PaCA, K.by.p = K.by.p,

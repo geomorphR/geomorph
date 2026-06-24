@@ -182,7 +182,7 @@ two.b.pls <- function (A1, A2,  iter = 999, seed = NULL, print.progress=TRUE){
   })
 
   p.val <- pval(abs(pls.rand))
-  Z <- effect.size(pls.rand, center=TRUE) 
+  Z <- effect.size(pls.rand, center=TRUE, useStDev = TRUE) 
   XScores <- pls.obs$XScores
   YScores <- pls.obs$YScores
   out <- list(r.pls = pls.rand[1], P.value = p.val, Z = Z,

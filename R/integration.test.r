@@ -265,7 +265,7 @@ integration.test <-function(A, A2 = NULL,
     p.vals <- NULL
     Zs <- NULL
     p.val <- pval(abs(pls.rand))
-    Z <- effect.size(pls.rand, center=TRUE) 
+    Z <- effect.size(pls.rand, center=TRUE, useStDev = TRUE) 
     XScores <- pls.obs$XScores
     YScores <- pls.obs$YScores
   }
@@ -301,7 +301,8 @@ integration.test <-function(A, A2 = NULL,
     
     wtMeanPLS <- wts * pls.rand
     p.val <- pval(colMeans(abs(wts * pls.rand)))
-    Z <- effect.size(colMeans(wts * pls.rand), center=TRUE)
+    Z <- effect.size(colMeans(wts * pls.rand), 
+                     center=TRUE, useStDev = TRUE)
     r.pls.mat <- matrix(0, length(nms), length(nms))
     dimnames(r.pls.mat) <- list(nms, nms)
     r.pls.mat <- wt.r.pls.mat <- as.dist(r.pls.mat)
