@@ -171,7 +171,7 @@ aac6a4f8a759473e8c37048e5c8e3d91 *R/findMeanSpec.r
 b792f75d1fb825423b03a8711c0120a4 *R/fixed.angle.r
 14c82d650f7cbbf5ef8786303b1e0373 *R/geomorph.data.frame.r
 c71ba3b1b62152769423478099c7a794 *R/geomorph.support.code.r
-ceb674474509cce4113d1f4728935a77 *R/geomorph.utils.r
+43b84340284ef7ff391d5e6b647d7ab8 *R/geomorph.utils.r
 d8571c8894e54b32c96c2ce94c6b7101 *R/globalIntegration.r
 02c3a9f0242f86753003cdba36f3db4f *R/gm.measurement.error.R
 23c1c8c54fa323d409e3f99ac51a7ea6 *R/gm.prcomp.R
@@ -215,5 +215,5 @@ ce64f40b8badacea0852af718e718355 *R/warpRefOutline.r
 ad572d6203f667d37641cee3adbc72b7 *R/writeland.tps.r
 ef912ea23202b2358991b1527824073d *README.md
 0c7f793ce4a81cedc1dfec479f7dce1f *tests/testthat.R
-7ff8fc7da3ec44da406707379d697dee *tests/testthat/Rplots.pdf
+af51d3b5657f141d18a1b763643271bf *tests/testthat/Rplots.pdf
 7507a3a82971a18e61cd5df4386e4ab6 *tests/testthat/test-geomorph.R
