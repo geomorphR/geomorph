@@ -191,7 +191,7 @@ a25de0a92e5a160adba129a98e186967 *R/physignal.z.r
 41e31a881076379b81bc412eca13d5ce *R/picknplot.shape.r
 c66f942ba7e910f13fdee6ca8aec31bd *R/plotAllometry.r
 1eaeb8eba46ec1af7e2c3b8bc3cabd76 *R/plotAllSpecimens.r
-cdeda457fb247b2ffb195f25d920c960 *R/plotOutliers.r
+f8f362d76fa572a72416bbebf473f2bd *R/plotOutliers.r
 d370a3dc7351193ee9660f6fa85b3a5d *R/plotRefToTarget.r
 421adaf73efb413fa29d829ea5d35d2f *R/plotspec.r
 12d763d62ae7b2affa6a047671664b6d *R/procD.lm.r
@@ -215,5 +215,5 @@ ce64f40b8badacea0852af718e718355 *R/warpRefOutline.r
 ad572d6203f667d37641cee3adbc72b7 *R/writeland.tps.r
 ef912ea23202b2358991b1527824073d *README.md
 0c7f793ce4a81cedc1dfec479f7dce1f *tests/testthat.R
-af51d3b5657f141d18a1b763643271bf *tests/testthat/Rplots.pdf
+d126a8c0682b665199122fd1b85a111d *tests/testthat/Rplots.pdf
 7507a3a82971a18e61cd5df4386e4ab6 *tests/testthat/test-geomorph.R
