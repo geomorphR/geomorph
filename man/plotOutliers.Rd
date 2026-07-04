@@ -4,12 +4,16 @@
 \alias{plotOutliers}
 \title{Find potential outliers}
 \usage{
-plotOutliers(A, groups = NULL, inspect.outliers = FALSE)
+plotOutliers(A, groups = NULL, PC = NULL, inspect.outliers = FALSE)
 }
 \arguments{
 \item{A}{A 3D array (p x k x n) containing Procrustes shape variables for a set of specimens}
 
 \item{groups}{An optional factor defining groups}
+
+\item{PC}{A single number or range of principal components that can be used to check for outliers.  If
+NULL, all shape dimensions are used.  This argument might be useful for investigating subtle but
+important aspects of shape that would not elucidate outliers in all dimensions.}
 
 \item{inspect.outliers}{A logical value indicating whether to plot outlier shape configurations as compared to the consensus}
 }
@@ -21,11 +25,19 @@ a list structure and a plot for each level in groups.
 Function plots all specimens ordered by distance from the mean.
 }
 \details{
-The function creates a plot of all specimens ordered by their Procrustes distance from the mean shape. 
-The median distance (unbroken line) and upper and lower quartiles (dashed lines) summarize the distances
-from the mean shape. Specimens falling above the upper quartile are plotted in red. The user may optionally 
-also inspect the shapes of identified outlier configurations as compared to the consensus, in order
-to identify digitization errors or other data issues. The addresses of all specimens are
+The function creates a plot of all specimens ordered by their distance from the mean shape. There
+is an option for using specified principal components (PC) of shape.  If all shape dimensions are used
+then distances are equal to Procrustes distances or distances in the tangent space of shape space that 
+resemble Procrustes distances, depending on whether the projection was performed with generalized 
+Procrustes analysis (GPA).  Once distances are calculated, a power-transformation is perfomed to 
+normalize the distances.  From these data, an upper limit is estimated following Tukey's box-plot rule, 
+as \eqn{Q_3 + 1.5 \times (Q_3 - Q_1)}, where \eqn{Q} refers to quartile.  This upper limit is back-transformed 
+to distance, and any distances greater than this limit are colored red.  (Note: These shapes could 
+be considered outliers but their red color does not mean they are necessarily outliers. )
+
+ The user may optionally 
+also inspect the shapes of identified configurations as compared to the consensus, in order
+to identify potential digitization errors or other data issues. The addresses of all specimens are
 returned in the order displayed in the plot for further inspection by \code{\link{plotRefToTarget}}.
 
 If the data have strong group structure and there is reasonable belief that the whole sample mean should not be used,
@@ -38,8 +50,9 @@ data(plethodon)
 newland <- plethodon$land
 newland[c(1,8),,2] <- newland[c(8,1),,2]
 newland[c(3,11),,26] <- newland[c(11,3),,2]
-Y<- gpagen(newland) # GPA
+Y <- gpagen(newland) # GPA
 out <- plotOutliers(Y$coords) # function returns dimnames and address 
+out
 # of all specimens ordered
 plotOutliers(Y$coords, inspect.outliers = TRUE) # function also produces 
 # plots of identified outlier specimens compared to the mean shape
@@ -47,6 +60,14 @@ plotOutliers(Y$coords, inspect.outliers = TRUE) # function also produces
 # example with groups
 plotOutliers(Y$coords, groups = plethodon$species, 
 inspect.outliers = TRUE)
+
+# previous example using first three PCs of shape
+plotOutliers(Y$coords, groups = plethodon$species, 
+PC = 1:3, inspect.outliers = TRUE)
+
+# previous example using just the first PC of shape
+plotOutliers(Y$coords, groups = plethodon$species, 
+PC = 1, inspect.outliers = TRUE)
  }
 }
 \seealso{
@@ -55,6 +76,6 @@ inspect.outliers = TRUE)
 \code{\link{plotAllSpecimens}}
 }
 \author{
-Emma Sherratt & Antigoni Kaliontzopoulou
+Emma Sherratt, Antigoni Kaliontzopoulou, & Michael Collyer
 }
 \keyword{utilities}
