@@ -11,7 +11,6 @@
 #'
 #' @param file An ASCII ply file
 #' @param ShowSpecimen logical Indicating whether or not the ply file should be displayed
-#' @param addNormals logical Indicating whether or not the normals of each vertex should be calculated (using \code{\link[rgl]{addNormals}})
 #' @export
 #' @keywords IO
 #' @author Dean Adams & Emma Sherratt
@@ -27,7 +26,7 @@
 #' myply$material$color <- "gray" # using color word
 #' myply$material$color <- "#FCE6C9" # using RGB code
 #' }
-read.ply <- function (file, ShowSpecimen = TRUE, addNormals = TRUE) 
+read.ply <- function (file, ShowSpecimen = TRUE) 
 {
   plyfile <- scan(file = file, what = "char", sep = "\n", strip.white = TRUE, 
                   quiet = TRUE)
@@ -71,7 +70,6 @@ read.ply <- function (file, ShowSpecimen = TRUE, addNormals = TRUE)
   mesh <- list(vb = vertices, it = face, primitivetype = "triangle", 
                material = material)
   class(mesh) <- c("mesh3d", "shape3d")
-  if(addNormals==TRUE){ mesh <- addNormals(mesh)}
   if(ShowSpecimen==TRUE){ 
     fig <- plot_ly()
     if (is.null(mesh$material$color)){mesh$material$color <- "gray"} 

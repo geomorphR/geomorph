@@ -4,14 +4,12 @@
 \alias{read.ply}
 \title{Read mesh data (vertices and faces) from ply files}
 \usage{
-read.ply(file, ShowSpecimen = TRUE, addNormals = TRUE)
+read.ply(file, ShowSpecimen = TRUE)
 }
 \arguments{
 \item{file}{An ASCII ply file}
 
 \item{ShowSpecimen}{logical Indicating whether or not the ply file should be displayed}
-
-\item{addNormals}{logical Indicating whether or not the normals of each vertex should be calculated (using \code{\link[rgl]{addNormals}})}
 }
 \value{
 Function returns the following components:
