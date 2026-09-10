@@ -1,5 +1,5 @@
 a0fe69945e7c83dcaa480a5f46ad6d0d *cran-comments.md
-c3f81dd7ddcd9dd0cd458e7349532a7f *CRAN-SUBMISSION
+2784d013802fa7d546b595d96ce46766 *CRAN-SUBMISSION
 247b6e5658356e87edfd560687b239fc *data/hummingbirds.rda
 56558754725fea156eb0820f67a4f508 *data/larvalMorph.rda
 c3fc0e7a97f4cbd5b6cd8944d737b11a *data/lizards.rda
@@ -108,7 +108,7 @@ aa9104be734ce6ed986a76ae3a1b8dda *man/print.pls.Rd
 187a726ddf778ba46a5e1e98cbc08ae3 *man/pupfish.ws.Rd
 a9e642b1b58f83a93ab678d6be98df1c *man/ratland.Rd
 1e64ddacc1be59c4ed9216fe7844ab05 *man/read.morphologika.Rd
-4137079ed17c29c7faa96db27937b792 *man/read.ply.Rd
+e29b01d790d83a2b3b466e7bf32e32bb *man/read.ply.Rd
 020bd641d59052e97a5507b5e8949536 *man/readland.fcsv.Rd
 ae1e3bd95326e74ba4d51d1b091515e8 *man/readland.nts.Rd
 5c2103f4ae181a148f3b840bb8166f26 *man/readland.shapes.Rd
@@ -198,7 +198,7 @@ bd8ce7fa51807e9c7819a74a8db0d93c *R/plotOutliers.r
 2f4d6f6625eee88184117bc7920fe937 *R/procD.lm.r
 502e7ab80416318845383c170e0c82ba *R/procD.pgls.r
 a08fc39fed2410d58fbaa71aaa36290d *R/read.morphologika.r
-c3a2c74ff98a72eff23803e698cd3abf *R/read.ply.r
+942ede48f902ac4d03c647801e2a91c1 *R/read.ply.r
 9c3ee0a53e952c7870a9a5388a7d9eac *R/readland.fcsv.r
 5582cdba4d7c06d59e5efe68fc56420d *R/readland.nts.r
 33fc291d2691db1649365a104104f9c2 *R/readland.shapes.r
