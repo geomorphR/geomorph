@@ -8,7 +8,7 @@
 * `pls` objects with pairwise comparisons now use a weighted mean of r_pls
 values to account for disparate module sizes.
 
-# CHANGES IN GEOMORPH VERSION 4.1.0
+# CHANGES IN GEOMORPH VERSION 4.1.0 
 
 ### MAJOR CHANGES
 
