@@ -60,7 +60,7 @@ warpRefOutline <- function(file, coord, ref){
   coord.sc <- scale(coord, scale=F)
   sc.mat <- matrix(rep(1,nrow(outline)), ncol=1) %*% apply(coord,2,mean)
   outline <- outline - sc.mat
-  warp <- tps2d(outline, coord.sc, ref)
+  warp <- tps2d3d(outline, coord.sc, ref)
     plot(warp, pch=19, cex=0.3, main = "Warped outline", asp=T, xlab="x", ylab="y")
     points(ref, pch=19, cex=0.8, col= "red")
     text(ref, labels = c(1:nrow(ref)), adj=2)

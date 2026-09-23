@@ -2,6 +2,7 @@
 
 ### BUG FIXES
 
+* Updated `warpRefOutline` to use `tps2d3d`.
 * Fixed 3D plotting for points in `plotAllSpecimens`.
 
 ### NEW  

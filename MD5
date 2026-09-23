@@ -144,7 +144,7 @@ ab4f364c13ae919766bd1720ee9e34c4 *man/warpRefMesh.Rd
 653338d224a0bdc694436ffe32f53f71 *man/warpRefOutline.Rd
 aac14dd389a4f2cd73e97e8fbc0bfbad *man/writeland.tps.Rd
 59d2e3a05a19cb46a0390dd9c6cd966b *NAMESPACE
-aedc64998ba637032987712d3d282d1a *NEWS.md
+608cdf02f563186f9c42ec6d99d435ef *NEWS.md
 30e087ae264ca51cb446a66bbbbec440 *R/arrayspecs.r
 e4fee65cd8240655e43ab013bbac5d35 *R/bilat.symmetry.r
 e3f90273ad93ce866df2d82001ce50a7 *R/build.template.r
@@ -211,7 +211,7 @@ caffb467d24d317af11c77ac3a591214 *R/shapeHulls.r
 d8817cab1e30b2417b09e07bb2033e57 *R/two.b.pls.r
 8a4c0ac0f0d88b7947e5523e091805b6 *R/two.d.array.r
 b845dc8051276abf289f035119f4b5af *R/warpRefMesh.r
-ce64f40b8badacea0852af718e718355 *R/warpRefOutline.r
+e9661df3cdf9285fcebc026279909bac *R/warpRefOutline.r
 8b1130e60c2f728555fb787a54a01aad *R/writeland.tps.r
 ef912ea23202b2358991b1527824073d *README.md
 6c02fd04993800b58036caf90014d760 *tests/testthat.R
