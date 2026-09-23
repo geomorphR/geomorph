@@ -141,7 +141,7 @@ f78341c87ee3804663048fa39e0a6c9b *man/summary.procD.lm.Rd
 a149e9263d42cf722a231f35c4645e64 *man/two.b.pls.Rd
 85fbbd7794b87e458cabde81065c92f0 *man/two.d.array.Rd
 ab4f364c13ae919766bd1720ee9e34c4 *man/warpRefMesh.Rd
-653338d224a0bdc694436ffe32f53f71 *man/warpRefOutline.Rd
+6aef038558eb459f0e45e53aad002285 *man/warpRefOutline.Rd
 aac14dd389a4f2cd73e97e8fbc0bfbad *man/writeland.tps.Rd
 59d2e3a05a19cb46a0390dd9c6cd966b *NAMESPACE
 608cdf02f563186f9c42ec6d99d435ef *NEWS.md
@@ -211,7 +211,7 @@ caffb467d24d317af11c77ac3a591214 *R/shapeHulls.r
 d8817cab1e30b2417b09e07bb2033e57 *R/two.b.pls.r
 8a4c0ac0f0d88b7947e5523e091805b6 *R/two.d.array.r
 b845dc8051276abf289f035119f4b5af *R/warpRefMesh.r
-e9661df3cdf9285fcebc026279909bac *R/warpRefOutline.r
+37e1cc8feb93723d078c234db8160f2b *R/warpRefOutline.r
 8b1130e60c2f728555fb787a54a01aad *R/writeland.tps.r
 ef912ea23202b2358991b1527824073d *README.md
 6c02fd04993800b58036caf90014d760 *tests/testthat.R

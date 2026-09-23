@@ -26,7 +26,7 @@
 #' @seealso \code{\link{findMeanSpec}}
 #' @keywords utilities
 #' @keywords visualization
-#' @author Emma Sherratt
+#' @author Emma Sherratt and Dean Adams
 #' @return Function returns an outline object
 #' @references  Bookstein, F. L. 1989 Principal Warps: Thin-Plate Splines and the Decomposition
 #' of Deformations. IEEE Transactions on Pattern Analysis and Machine Intelligence 11(6):567-585.
