@@ -26,7 +26,7 @@
 #' @seealso \code{\link{findMeanSpec}}
 #' @keywords utilities
 #' @keywords visualization
-#' @author Emma Sherratt
+#' @author Emma Sherratt and Dean Adams
 #' @return Function returns an outline object
 #' @references  Bookstein, F. L. 1989 Principal Warps: Thin-Plate Splines and the Decomposition
 #' of Deformations. IEEE Transactions on Pattern Analysis and Machine Intelligence 11(6):567-585.
@@ -60,7 +60,7 @@ warpRefOutline <- function(file, coord, ref){
   coord.sc <- scale(coord, scale=F)
   sc.mat <- matrix(rep(1,nrow(outline)), ncol=1) %*% apply(coord,2,mean)
   outline <- outline - sc.mat
-  warp <- tps2d(outline, coord.sc, ref)
+  warp <- tps2d3d(outline, coord.sc, ref)
     plot(warp, pch=19, cex=0.3, main = "Warped outline", asp=T, xlab="x", ylab="y")
     points(ref, pch=19, cex=0.8, col= "red")
     text(ref, labels = c(1:nrow(ref)), adj=2)

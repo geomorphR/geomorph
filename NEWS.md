@@ -1,19 +1,15 @@
-# CHANGES IN GEOMORPH VERSION 4.1.1.999
-
 # CHANGES IN GEOMORPH VERSION 4.1.1
-
-### NEW FEATURES
-
-* `pls` objects with pairwise comparisons now use a weighted mean of r_pls
-values to account for disparate module sizes.
 
 ### BUG FIXES
 
+* Updated `warpRefOutline` to use `tps2d3d`.
 * Fixed 3D plotting for points in `plotAllSpecimens`.
-* Fixed some issues with box-cox transformations.
-+ Tweaked `box.cox` to be more stable.
 
-# CHANGES IN GEOMORPH VERSION 4.1.0
+### NEW  
+* `pls` objects with pairwise comparisons now use a weighted mean of r_pls
+values to account for disparate module sizes.
+
+# CHANGES IN GEOMORPH VERSION 4.1.0 
 
 ### MAJOR CHANGES
 
@@ -29,6 +25,7 @@ should be scaled to unit size.
 ### BUG FIXES
 
 * Fixed unused tol argument in `physignal.eigen`.
+* Tweaked `box.cox` to be more stable.
 
 # CHANGES IN GEOMORPH VERSION 4.0.10
 

@@ -47,7 +47,7 @@ Rohlf, F. J. 1998. On Applications of Geometric Morphometrics to Studies of Onto
 \code{\link{findMeanSpec}}
 }
 \author{
-Emma Sherratt
+Emma Sherratt and Dean Adams
 }
 \keyword{utilities}
 \keyword{visualization}
