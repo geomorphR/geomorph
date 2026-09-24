@@ -326,7 +326,7 @@ bilat.symmetry <- function(A, ind = NULL, side = NULL, replicate = NULL, object.
   n.ind <- nlevels(ind)
   n.side <- nlevels(side)
   indsq <- seq(n.side, (n.ind*n.side), n.side)
-  asymm.component <- avg.side.symm[-indsq,] - avg.side.symm[indsq,]
+  asymm.component <- asymm.cmp <- avg.side.symm[-indsq,] - avg.side.symm[indsq,]
   mn.shape <- mshape(A)
   asymm.component <- simplify2array(lapply(1:n.ind, function(j) {
     t(matrix(asymm.component[j,],k,p)) + mn.shape
@@ -346,7 +346,8 @@ bilat.symmetry <- function(A, ind = NULL, side = NULL, replicate = NULL, object.
 
 # Calculate individual unsigned asymmetry index (note: symmetric would be identical)
   unsigned.asymm <- two.d.array(asymm.component)
-  unsigned.AI <- sqrt(apply(unsigned.asymm^2, 1, sum))
+#  unsigned.AI <- sqrt(apply(unsigned.asymm^2, 1, sum))
+  unsigned.AI <-   sqrt(apply(asymm.cmp^2,1,sum))
   names(unsigned.AI) <- dimnames(symm.component)[[3]]
 
   out <- list(shape.anova = shape.anova, symm.shape = symm.component,

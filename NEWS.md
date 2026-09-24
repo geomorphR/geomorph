@@ -2,6 +2,7 @@
 
 ### BUG FIXES
 
+* Updated calculation of unsigned.AI in `bilat.symmetry`
 * Updated `warpRefOutline` to use `tps2d3d`.
 * Fixed 3D plotting for points in `plotAllSpecimens`.
 
