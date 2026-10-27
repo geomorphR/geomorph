@@ -95,22 +95,23 @@ plotOutliers <- function(A, groups = NULL,
     UL <- (UL * bc$opt.lambda + 1)^(1/bc$opt.lambda)
 
     plot(D, type="p", ylab= "Distance from Mean", pch=19, xlab="", xaxt='n', main = j)
+    if(is.finite(UL)){
       abline(a=UL,b=0,lty=2,col= "blue")
       text(x= nrow(y), y=UL, labels= "upper limit",col = "blue", cex=0.5, adj=c(0.5, -0.5))
-    if(any(D >= UL)) { 
-      ol <- D[which(D >= UL)]
-      p <- 1:length(ol)
-      points(p, ol, pch=19, col="red")
-      text(p, ol, labels = names(ol), col= "red", adj=0.8, pos=4, cex=0.5)
-    }
+      if(any(D >= UL)) { 
+        ol <- D[which(D >= UL)]
+        p <- 1:length(ol)
+        points(p, ol, pch=19, col="red")
+        text(p, ol, labels = names(ol), col= "red", adj=0.8, pos=4, cex=0.5)
+      }
       
-    if(any(D >= UL)) {   
-      if(inspect.outliers == TRUE){
-        out.config <- names(ol)
-        Alist <- lapply(1:n, function(x) as.matrix(A[,, x]))
-        names(Alist) <- dimnames(A)[[3]]
-        OLlist <- Alist[names(ol)]
-        M <- mshape(A)
+      if(any(D >= UL)) {   
+        if(inspect.outliers == TRUE){
+          out.config <- names(ol)
+          Alist <- lapply(1:n, function(x) as.matrix(A[,, x]))
+          names(Alist) <- dimnames(A)[[3]]
+          OLlist <- Alist[names(ol)]
+          M <- mshape(A)
         
         if(dim(A)[2] == 2){
           for(i in seq_along(OLlist)){
@@ -130,7 +131,8 @@ plotOutliers <- function(A, groups = NULL,
           }
         }
       }
-    } else { text(1:n, D, labels=names(D), adj=c(0.5, 0.1), pos=4, cex=0.5)}
+      } 
+   }  else { text(1:n, D, labels=names(D), adj=c(0.5, 0.1), pos=4, cex=0.5)}
     names(D)
   })
   names(res) <- levels(groups)
