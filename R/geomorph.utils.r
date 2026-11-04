@@ -1214,7 +1214,7 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, flip = NULL, phylo = FALSE,
           inherit = FALSE
         )
     }
-    print(fig)
+    print(fig, view = TRUE)
   }
   out <- list(PC.points = pcdata,   
               call = match.call())
