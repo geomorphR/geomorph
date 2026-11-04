@@ -2,6 +2,7 @@
 
 ### BUG FIXES
 
+* Updated `plot.gm.prcomp` for 3D time plots using `plotly`
 * Added catch for CI line plot in `plotOutliers`
 * Updated calculation of unsigned.AI in `bilat.symmetry`
 * Updated `warpRefOutline` to use `tps2d3d`.
