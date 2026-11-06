@@ -34,7 +34,7 @@ a9105238571b6f1f6f233cc2570fcec4 *man/digitize2d.Rd
 abddd472d95be453faa8744f58018dd1 *man/digitsurface.Rd
 b0b82a47f9c7c2e70b043f0ab086c4c9 *man/editTemplate.Rd
 cbd650a7cabe3658cea600861d4e0bb5 *man/estimate.missing.Rd
-035306268b0c131dabc6ef7c9cae36a3 *man/extended.pgls.Rd
+53ad8fa44eb1f53ffd3cd32630113f3f *man/extended.pgls.Rd
 e1a4eb6651e808c3702773df3eb7bd77 *man/findMeanSpec.Rd
 a324e0c77628b6e28f3547e5c3794e92 *man/fixed.angle.Rd
 1d6923ca70427fc36023f04c8bc9cc68 *man/geomorph-package.Rd
@@ -176,7 +176,7 @@ c47b0747b2dc6d4b069d69f6fad2538d *R/digitize2d.r
 9c177cfc0784a907d4b397505a79e13e *R/digitsurface.r
 0bb6334094fd5f599db91104999e408d *R/editTemplate.r
 6e862a705bb74316be5d5e910431b634 *R/estimate.missing.r
-cec55e91a83e64a24311d222d9b7c415 *R/extended.pgls.r
+3c5a29586d08ab558a7a267376235b63 *R/extended.pgls.r
 7d347f110e6ced2ffc305f488b9035d5 *R/findMeanSpec.r
 b792f75d1fb825423b03a8711c0120a4 *R/fixed.angle.r
 14c82d650f7cbbf5ef8786303b1e0373 *R/geomorph.data.frame.r

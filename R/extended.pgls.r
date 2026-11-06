@@ -126,7 +126,8 @@
 #' # With phylogeny
 #' fit <- extended.pgls(f1 = coords~Species * Sex + Population, 
 #'   data = pupfish.ws, species = "Species",
-#'   phy = pupfish.ws$phy) 
+#'   phy = pupfish.ws$phy
+#'   delta = 0.1) 
 #'   
 #' anova(fit) 
 #'  
@@ -138,11 +139,12 @@
 #' 
 #' fit2 <- extended.pgls(f1 = coords ~ Species * Sex + Population, 
 #'   data = pupfish.ws, species = "Species",
-#'   Cov = pupfish.ws$Cov)
+#'   Cov = pupfish.ws$Cov,
+#'   delta = 0.1)
 #'   
 #' anova(fit2)
 #' 
-#' #sultivariate stats
+#' #multivariate stats
 #' fit2.mult <- manova.update(fit2, PC.no = 40)
 #' summary(fit2.mult, test = "Wilks") 
 #' }
