@@ -1033,8 +1033,9 @@ summary.gm.prcomp <- function (object, ...) {
 #' the tip values.
 #' @return An object of class "plot.gm.prcomp" is a list with components
 #'  that can be used in other plot functions, such as the type of plot, points, 
-#'  a group factor, and other information depending on the plot parameters used.  A time plot
-#'  is an addendum to the normal 2D plot, and does not add additional output.
+#'  a group factor, and other information depending on the plot parameters used.  
+#'  If a class \code{plotly} plot is produced, plot output is retainedso that
+#'  plots can be augmented.
 #'  
 #'  NOTE: To visualize shape variation across PC axes in 2d plots, use \code{\link{picknplot.shape}}.
 #'  
@@ -1050,7 +1051,8 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, flip = NULL, phylo = FALSE,
                            time.plot = FALSE, 
                            phylo.par = NULL, 
                            ...){
-
+  
+  fig <- NULL
   if (time.plot) {
     grDevices::pdf(file = NULL)
     on.exit(grDevices::dev.off(), add = TRUE)
@@ -1062,7 +1064,7 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, flip = NULL, phylo = FALSE,
   xx <- plot(x, axis1 = axis1, axis2 = axis2, flip = flip, ...)
   plot_args <- xx$plot_args
   if(!is.null(plot_args$axes)) axes <- plot_args$axes else axes <- TRUE
-
+  
   if(axes){
     abline(h = 0, lty=2)
     abline(v = 0, lty=2)
@@ -1082,12 +1084,12 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, flip = NULL, phylo = FALSE,
   if(phylo) {
     
     p.p <- list(tip.labels = TRUE, node.labels = TRUE, anc.states = TRUE,
-                            node.bg = "grey", node.pch = 21, node.cex = 1,
-                            edge.color = "black", edge.width = 1,
-                            tip.txt.cex = 1, tip.txt.col = "black", 
-                            tip.txt.adj = c(-0.1, -0.1),
-                            node.txt.cex = 1, node.txt.col = "grey",
-                            node.txt.adj = c(-0.1, -0.1))
+                node.bg = "grey", node.pch = 21, node.cex = 1,
+                edge.color = "black", edge.width = 1,
+                tip.txt.cex = 1, tip.txt.col = "black", 
+                tip.txt.adj = c(-0.1, -0.1),
+                node.txt.cex = 1, node.txt.col = "grey",
+                node.txt.adj = c(-0.1, -0.1))
     m.p <- match(names(phylo.par), names(p.p))
     if(any(is.na(m.p)))
       stop("Some of the arguments in phylo.pars are different than those that are possible (see Arguments).\n",
@@ -1148,33 +1150,33 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, flip = NULL, phylo = FALSE,
     if(!is.null(t.p$bg)) t.p$col <- t.p$bg
     if(is.null(t.p$col)) t.p$col <- "black"
     if(is.null(t.p$cex)) t.p$cex <- 1
-
+    
     fig <- plot_ly() 
     fig <- fig |>
       plotly::layout(
-      scene = list(
-        xaxis = list(title = 'PC 1', range = limits(phy.pcdata[,1], 1.5)),
-        yaxis = list(title = 'PC 2', range = limits(phy.pcdata[,2], 1.5)),
-        zaxis = list(title = 'Time', range = c(max(zaxis), min(zaxis))),
-        aspectmode = 'manual',
-        aspectratio = list(x = 1, y = 1, z = 1)
+        scene = list(
+          xaxis = list(title = 'PC 1', range = limits(phy.pcdata[,1], 1.5)),
+          yaxis = list(title = 'PC 2', range = limits(phy.pcdata[,2], 1.5)),
+          zaxis = list(title = 'Time', range = c(max(zaxis), min(zaxis))),
+          aspectmode = 'manual',
+          aspectratio = list(x = 1, y = 1, z = 1)
+        )
       )
-    )
     fig <- fig |>
       add_trace(x = ~xx$points[,1], y = ~xx$points[,2], z = ~zaxis[1:N.tips], 
-          type = "scatter3d", mode = "markers", 
-          name = "PC data", marker = list(color = t.p$col, 
-          size = t.p$cex*4),
-          showlegend = FALSE,
-          inherit = FALSE)  
+                type = "scatter3d", mode = "markers", 
+                name = "PC data", marker = list(color = t.p$col, 
+                                                size = t.p$cex*4),
+                showlegend = FALSE,
+                inherit = FALSE)  
     if(p.p$anc.states){
       fig <- fig |>
         add_trace(x = ~tp[, 1], y = ~tp[, 2], z = ~zaxis[(N.tips + 1):nrow(phy.pcdata)], 
-           type = "scatter3d", mode = "markers", 
-           name = "Anc data", marker = list(color = p.p$node.bg, 
-           size = p.p$node.cex*4),
-           showlegend = FALSE,
-           inherit = FALSE)   
+                  type = "scatter3d", mode = "markers", 
+                  name = "Anc data", marker = list(color = p.p$node.bg, 
+                                                   size = p.p$node.cex*4),
+                  showlegend = FALSE,
+                  inherit = FALSE)   
     }
     for (i in 1:nrow(phy$edge)) {
       nodes <- phy$edge[i, ]
@@ -1196,27 +1198,27 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, flip = NULL, phylo = FALSE,
     if(p.p$tip.labels){
       fig <- fig |>
         add_trace(x = xx$points[,1],y = xx$points[,2],
-          z = zaxis[1:N.tips],
-          type = "scatter3d", mode = "text",
-          text = rownames(xx$points),
-          textposition = "top center", 
-          textfont = list(color = p.p$tip.txt.col,
-            size = 12 * p.p$tip.txt.cex),
-          showlegend = FALSE,
-          inherit = FALSE
+                  z = zaxis[1:N.tips],
+                  type = "scatter3d", mode = "text",
+                  text = rownames(xx$points),
+                  textposition = "top center", 
+                  textfont = list(color = p.p$tip.txt.col,
+                                  size = 12 * p.p$tip.txt.cex),
+                  showlegend = FALSE,
+                  inherit = FALSE
         )
     }
     if(p.p$node.labels){
       fig <- fig |>
         add_trace(x = tp[, 1], y = tp[, 2], 
-          z = zaxis[(N.tips + 1):nrow(phy.pcdata)],
-          type = "scatter3d", mode = "text",
-          text = rownames(tp),
-          textposition = "top center", 
-          textfont = list(color = p.p$node.txt.col,
-            size = 12 * p.p$node.txt.cex),
-          showlegend = FALSE,
-          inherit = FALSE
+                  z = zaxis[(N.tips + 1):nrow(phy.pcdata)],
+                  type = "scatter3d", mode = "text",
+                  text = rownames(tp),
+                  textposition = "top center", 
+                  textfont = list(color = p.p$node.txt.col,
+                                  size = 12 * p.p$node.txt.cex),
+                  showlegend = FALSE,
+                  inherit = FALSE
         )
     }
     print(fig, view = TRUE)
@@ -1227,6 +1229,8 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, flip = NULL, phylo = FALSE,
   out$GM$A <- x$A
   
   out$plot_args <- plot_args
+  if(!is.null(fig))
+    out$plotly <- fig
   out$Pcov <- Pcov
   if(phylo) {
     out$phylo <- list()

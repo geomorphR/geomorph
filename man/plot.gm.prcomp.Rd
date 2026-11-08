@@ -42,8 +42,9 @@ the tip values.}
 \value{
 An object of class "plot.gm.prcomp" is a list with components
  that can be used in other plot functions, such as the type of plot, points, 
- a group factor, and other information depending on the plot parameters used.  A time plot
- is an addendum to the normal 2D plot, and does not add additional output.
+ a group factor, and other information depending on the plot parameters used.  
+ If a class \code{plotly} plot is produced, plot output is retainedso that
+ plots can be augmented.
  
  NOTE: To visualize shape variation across PC axes in 2d plots, use \code{\link{picknplot.shape}}.
 }
