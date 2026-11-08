@@ -1033,8 +1033,9 @@ summary.gm.prcomp <- function (object, ...) {
 #' the tip values.
 #' @return An object of class "plot.gm.prcomp" is a list with components
 #'  that can be used in other plot functions, such as the type of plot, points, 
-#'  a group factor, and other information depending on the plot parameters used.  A time plot
-#'  is an addendum to the normal 2D plot, and does not add additional output.
+#'  a group factor, and other information depending on the plot parameters used.  
+#'  If a class \code{plotly} plot is produced, plot output is retainedso that
+#'  plots can be augmented.
 #'  
 #'  NOTE: To visualize shape variation across PC axes in 2d plots, use \code{\link{picknplot.shape}}.
 #'  
@@ -1051,6 +1052,7 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, flip = NULL, phylo = FALSE,
                            phylo.par = NULL, 
                            ...){
 
+  fig <- NULL
   if (time.plot) {
     grDevices::pdf(file = NULL)
     on.exit(grDevices::dev.off(), add = TRUE)
@@ -1227,6 +1229,8 @@ plot.gm.prcomp <- function(x, axis1 = 1, axis2 = 2, flip = NULL, phylo = FALSE,
   out$GM$A <- x$A
   
   out$plot_args <- plot_args
+  if(!is.null(fig))
+    out$plotly <- fig
   out$Pcov <- Pcov
   if(phylo) {
     out$phylo <- list()

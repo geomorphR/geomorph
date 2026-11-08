@@ -1,3 +1,10 @@
+# CHANGES IN GEOMORPH VERSION 4.1.1.999
+
+### NEW  
+* Added a `plotly` object output to `gm.prcomp` 
+plots to allow further augmentatiomn.
+
+
 # CHANGES IN GEOMORPH VERSION 4.1.1
 
 ### BUG FIXES
