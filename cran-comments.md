@@ -1,5 +1,5 @@
 ## Resubmission
-This is a minor release, 4.1.1.  This switches 3D graphics to plotly away from RGL.
+This is a patch release, 4.1.2 for minor bug fixes.
 
 ## Test environments
 * local OS X install, R 4.6.1
