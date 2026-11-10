@@ -15,6 +15,6 @@ macos-arm64: OK
 linux-R-devel: OK
 
 ## Downstream dependencies
-I checked 9 reverse dependencies:
-OK: 9  (momocs, internal error NOT caused by geomorph)
+I checked 7 reverse dependencies:
+OK: 7 
 BROKEN: 0 

@@ -1,4 +1,4 @@
-7bb9d7816cad7c5d1e96598c06bc2c7a *cran-comments.md
+9d1604878f959092831296f8d131423b *cran-comments.md
 247b6e5658356e87edfd560687b239fc *data/hummingbirds.rda
 56558754725fea156eb0820f67a4f508 *data/larvalMorph.rda
 c3fc0e7a97f4cbd5b6cd8944d737b11a *data/lizards.rda
@@ -79,7 +79,7 @@ d76235634e77eda4b6feda7e2707e71a *man/plot.physignal.eigen.Rd
 c1bff29ed7a294e4063cb5283b65cbcb *man/plot.procD.lm.Rd
 7d06d0f465d3308d75d90bbd9941ccca *man/plotAllometry.Rd
 b7dc6c7012ddf9f98a6bec6f7431ddf5 *man/plotAllSpecimens.Rd
-521f7f25296eb26270e417141b0576a4 *man/plotOutliers.Rd
+7e5ff9119bc010760854c959aaa918e7 *man/plotOutliers.Rd
 1fb57cb2a18ae3d0c09c585c467861bd *man/plotRefToTarget.Rd
 a86905c243dee37aadc5ee51640be233 *man/plotspec.Rd
 1130127ea19e67ec8dc8c1d6def5df35 *man/print.bilat.symmetry.Rd
@@ -191,7 +191,6 @@ fb0ca512dfd9388e97358e78b46ea368 *R/phylo.modularity.r
 729ddcc0da51e46f00241d5924a4f8f0 *R/picknplot.shape.r
 4bb7f31726bb839b84de2a0f61340534 *R/plotAllometry.r
 eb50abb9335a6374e8afa40e024c417d *R/plotAllSpecimens.r
-a4f64159285dfffaf2384b3815bb75c0 *R/plotOutliers 2.r
 a4f64159285dfffaf2384b3815bb75c0 *R/plotOutliers.r
 76b33f0db5da79805f903626c8abdff7 *R/plotRefToTarget.r
 421adaf73efb413fa29d829ea5d35d2f *R/plotspec.r
