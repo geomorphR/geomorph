@@ -16,5 +16,6 @@ linux-R-devel: OK
 
 ## Downstream dependencies
 I checked 7 reverse dependencies:
-OK: 7 
+OK: 7 (NOTE: 'patternize' throws error, which is also seen on its current CRAN checks: https://cran.r-project.org/web/checks/check_results_patternize.html
+   This is not a geomorph-induced error)
 BROKEN: 0 
